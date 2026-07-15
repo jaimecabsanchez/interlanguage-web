@@ -162,16 +162,6 @@
   }
   .hero-photo-badge strong{font-family:var(--font-display); font-weight:800; font-size:1.6rem; color:var(--coral-dark);}
   .hero-photo-badge span{font-size:.76rem; color:var(--ink-soft); text-transform:uppercase; letter-spacing:.03em;}
-
-  /* ---------- FRANJA DE CONFIANZA ---------- */
-  .trust-strip{background:var(--navy); padding:38px 24px;}
-  .trust-strip-inner{display:flex; justify-content:center; align-items:center; gap:48px; flex-wrap:wrap; text-align:center;}
-  .trust-flags{display:flex; gap:32px; flex-wrap:wrap; align-items:center;}
-  .trust-flags span{font-size:1.15rem; font-weight:800; color:#fff; letter-spacing:.01em;}
-  .trust-sep-v{width:1px; height:32px; background:rgba(255,255,255,.2);}
-  @media (max-width:700px){ .trust-sep-v{display:none;} }
-  .trust-stat strong{display:block; font-family:var(--font-display); font-weight:800; font-size:1.9rem; color:#fff;}
-  .trust-stat span{font-size:.78rem; color:rgba(255,255,255,.65); text-transform:uppercase; letter-spacing:.04em;}
   .btn-outline:hover{background:var(--navy); color:#fff;}
 
 
@@ -492,15 +482,6 @@
   @media (max-width:900px){ .process-step::after{display:none;} }
   .process-step h3{font-size:1.04rem; margin-bottom:6px;}
   .process-step p{font-size:.88rem; color:var(--ink-soft);}
-  .countdown-banner{
-    background:var(--navy); border-radius:22px; padding:30px 34px; display:flex; align-items:center;
-    justify-content:space-between; gap:24px; flex-wrap:wrap;
-  }
-  .countdown-banner strong{display:block; color:#fff; font-family:var(--font-display); font-size:1.16rem; margin-bottom:4px;}
-  .countdown-banner > div:first-child span{color:rgba(255,255,255,.66); font-size:.86rem;}
-  .countdown-days{display:flex; align-items:center; gap:12px;}
-  .cd-num{font-family:var(--font-display); font-weight:800; font-size:2.4rem; color:var(--coral); line-height:1;}
-  .cd-lbl{font-size:.72rem; color:rgba(255,255,255,.7); text-transform:uppercase; letter-spacing:.03em; line-height:1.3;}
 
   /* ---------- TESTIMONIOS ---------- */
 
@@ -518,29 +499,6 @@
   .test-author div span{font-size:.76rem; color:var(--ink-soft);}
 
   /* ---------- FAQ ---------- */
-  /* ---------- COMPARATIVA DE SERVICIOS ---------- */
-  section.compare-section{padding:90px 24px; background:var(--off);}
-  .compare-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:18px; margin-top:38px;}
-  @media (max-width:900px){ .compare-grid{grid-template-columns:1fr 1fr;} }
-  @media (max-width:600px){ .compare-grid{grid-template-columns:1fr;} }
-  .compare-card{
-    display:flex; flex-direction:column; align-items:flex-start; text-align:left;
-    background:#fff; border-radius:18px; border:1px solid var(--line); padding:24px 22px;
-    text-decoration:none; color:inherit; cursor:pointer; -webkit-tap-highlight-color:transparent;
-    transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
-  }
-  .compare-card:hover{transform:translateY(-4px); box-shadow:0 14px 28px rgba(22,41,74,.1); border-color:var(--coral);}
-  .compare-card:active{transform:translateY(-1px); box-shadow:0 6px 14px rgba(22,41,74,.08); border-color:var(--coral);}
-  .compare-card h3{font-size:1.1rem; color:var(--navy); margin-bottom:8px;}
-  .compare-tag{display:inline-block; font-size:.66rem; font-weight:800; text-transform:uppercase; letter-spacing:.05em; padding:4px 11px; border-radius:100px; margin-bottom:12px;}
-  .compare-tag.quick{background:#dff0e8; color:var(--teal-dark);}
-  .compare-tag.slow{background:#f4e4e0; color:#B43F26;}
-  .compare-meta{font-size:.82rem; font-weight:700; color:var(--ink-soft); margin-bottom:8px;}
-  .compare-benefit{font-size:.92rem; color:var(--ink); line-height:1.45; margin-bottom:18px; flex:1;}
-  .compare-cta{font-size:.86rem; font-weight:800; color:#B43F26; margin-top:auto;}
-  .compare-recommender{text-align:center; margin-top:34px; background:#fff; border:1px solid var(--line); border-radius:18px; padding:30px 24px;}
-  .compare-recommender h3{font-size:1.1rem; color:var(--navy); margin-bottom:8px;}
-  .compare-recommender p{color:var(--ink-soft); font-size:.94rem; max-width:480px; margin:0 auto 20px; line-height:1.55;}
 
   section.faq{padding:90px 24px; background:var(--white);}
   .faq-list{max-width:760px; margin:0 auto;}
@@ -625,7 +583,7 @@
       <a href="#propuesta">Por qué nosotros</a>
       <div class="nav-dropdown">
         <button type="button" class="nav-dropdown-trigger" id="servicesTrigger" aria-haspopup="true" aria-expanded="false" aria-controls="servicesMenu">
-          Servicios <span class="caret" aria-hidden="true">▾</span>
+          Programas <span class="caret" aria-hidden="true">▾</span>
         </button>
         <div class="nav-dropdown-menu mega" id="servicesMenu" aria-hidden="true">
           <div class="mega-col">
@@ -679,15 +637,14 @@
 <section class="hero" id="inicio">
   <div class="hero-grid">
     <div class="hero-text">
-      <span class="eyebrow">30 años formando el futuro en inglés</span>
+      <span class="eyebrow">Formando el futuro en inglés</span>
       <h1>El inglés que <span>abre puertas</span> para toda la vida</h1>
-      <p class="lead">Campamentos de verano, inglés extraescolar, estudios en el extranjero y especialidades: un único proyecto educativo.</p>
+      <p class="lead">Acompañamos a niños y jóvenes a aprender, vivir y disfrutar el inglés en cada etapa de su crecimiento.</p>
       <div class="hero-ctas">
-        <a href="#servicios" class="btn-primary" data-cta="hero-servicios">Ver servicios</a>
+        <a href="#servicios" class="btn-primary" data-cta="hero-servicios">Descubrir nuestros programas</a>
         <a href="#contacto" class="btn-outline" data-cta="hero-contacto">Hablar con nosotros</a>
       </div>
-      <!-- PLACEHOLDER: sustituir por la cifra real de familias antes de publicar -->
-      <p class="hero-trust">👨‍👩‍👧 Más de <strong>5.000 familias españolas</strong> ya han confiado en nosotros</p>
+      <p class="hero-trust">👨‍👩‍👧 <strong>30 años</strong> · Profesores nativos · <strong>Más de 5.000 familias</strong></p>
     </div>
     <div class="hero-photo-col">
       <div class="hero-photo-frame" id="heroCarousel">
@@ -706,28 +663,13 @@
   </div>
 </section>
 
-<!-- FRANJA DE CONFIANZA (placeholder, sustituir por cifras reales) -->
-<section class="trust-strip">
-  <div class="container trust-strip-inner">
-    <div class="trust-flags">
-      <span>🇮🇪 Irlanda</span>
-      <span>🇬🇧 Reino Unido</span>
-      <span>🇺🇸 Estados Unidos</span>
-    </div>
-    <div class="trust-sep-v"></div>
-    <div class="trust-stat"><strong>5.000+</strong><span>Familias españolas</span></div>
-    <div class="trust-stat"><strong>30</strong><span>Años de experiencia</span></div>
-    <div class="trust-stat"><strong>100%</strong><span>Profesores nativos</span></div>
-  </div>
-</section>
-
 <!-- SERVICIOS -->
 <section class="services" id="servicios">
   <div class="container">
     <div class="services-head reveal">
-      <span class="eyebrow">Nuestros servicios</span>
-      <h2>Una forma de aprender inglés para cada etapa.</h2>
-      <p>Desde sus primeros años hasta una experiencia en el extranjero. Encuentra el programa que mejor encaja con vuestro hijo.</p>
+      <span class="eyebrow">Nuestros programas</span>
+      <h2>Una opción para cada etapa</h2>
+      <p>Desde sus primeros años hasta una experiencia en el extranjero.</p>
     </div>
   </div>
   <div class="container">
@@ -794,52 +736,6 @@
   </div>
 </section>
 
-<!-- COMPARATIVA DE SERVICIOS -->
-<section class="compare-section">
-  <div class="container">
-    <div class="services-head reveal">
-      <h2>¿Qué estáis buscando para vuestro hijo?</h2>
-      <p>Os ayudamos a encontrar la opción que mejor encaja con su edad y vuestro objetivo.</p>
-    </div>
-    <div class="compare-grid reveal">
-      <a href="#servicio-campamentos" class="compare-card" data-service="campamentos" aria-label="Ver campamentos de verano">
-        <span class="compare-tag quick">Verano</span>
-        <h3>Campamentos de verano</h3>
-        <p class="compare-meta">3 a 10 años · Verano en Madrid</p>
-        <p class="compare-benefit">Inmersión en inglés jugando, sin salir de Madrid.</p>
-        <span class="compare-cta">Ver campamentos →</span>
-      </a>
-      <a href="#servicio-extraescolar" class="compare-card" data-service="extraescolar" aria-label="Ver inglés extraescolar">
-        <span class="compare-tag quick">Durante el curso</span>
-        <h3>Inglés extraescolar</h3>
-        <p class="compare-meta">Todas las edades · En su colegio</p>
-        <p class="compare-benefit">Constancia en inglés durante todo el curso.</p>
-        <span class="compare-cta">Ver inglés extraescolar →</span>
-      </a>
-      <a href="#servicio-extranjero" class="compare-card" data-service="extranjero" aria-label="Ver programas en el extranjero">
-        <span class="compare-tag slow">Experiencia internacional</span>
-        <h3>Estudiar en el extranjero</h3>
-        <p class="compare-meta">Desde 12 años · Irlanda, UK, EE.UU.</p>
-        <p class="compare-benefit">Una experiencia transformadora fuera de España.</p>
-        <span class="compare-cta">Ver programas en el extranjero →</span>
-      </a>
-      <a href="#servicio-especialidades" class="compare-card" data-service="especialidades" aria-label="Ver especialidades">
-        <span class="compare-tag slow">Inglés + talento</span>
-        <h3>Especialidades</h3>
-        <p class="compare-meta">Nivel intermedio-alto · Madrid</p>
-        <p class="compare-benefit">Para quien ya tiene base y quiere ir más allá.</p>
-        <span class="compare-cta">Ver especialidades →</span>
-      </a>
-    </div>
-    <div class="compare-recommender reveal">
-      <h3>¿No sabes cuál elegir?</h3>
-      <p>Dinos la edad de tu hijo y qué estáis buscando. Te ayudamos a encontrar la opción que mejor encaja.</p>
-      <!-- TODO: conectar con un recomendador de servicios; de momento enlaza al formulario de contacto -->
-      <a href="#contacto" class="btn-outline" id="compareRecommenderCta" data-cta="compare-recommender">Encontrar la mejor opción →</a>
-    </div>
-  </div>
-</section>
-
 <!-- METODOLOGÍA -->
 <section class="methodology" id="propuesta">
   <div class="container">
@@ -847,7 +743,7 @@
       <div class="method-copy reveal">
         <span class="eyebrow">El método Interlanguage</span>
         <h2>El inglés se aprende viviéndolo.</h2>
-        <p class="method-intro">Más de 30 años nos han enseñado que un idioma no se memoriza: se utiliza. Por eso creamos experiencias donde los alumnos hablan, participan y ganan confianza en inglés de forma natural.</p>
+        <p class="method-intro">Más de 30 años nos han enseñado que un idioma no se memoriza: se utiliza.</p>
       </div>
       <div class="method-photo-col reveal">
         <div class="method-photo-frame">
@@ -862,7 +758,7 @@
         <p>Nativos de verdad. Formados para enseñar a niños, no solo para hablar el idioma.</p>
       </div>
       <div class="method-principle reveal">
-        <h3>Metodología activa</h3>
+        <h3>Aprender haciendo</h3>
         <p>Aprenden hablando, no memorizando. El inglés como herramienta, no como examen.</p>
       </div>
       <div class="method-principle reveal">
@@ -875,6 +771,42 @@
       <div>
         <span class="method-authority-label">Años enseñando inglés</span>
         <p>Más de tres décadas trabajando con alumnos, familias y colegios.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIOS -->
+<section class="testimonials" id="testimonios">
+  <div class="container">
+    <div class="test-head reveal">
+      <span class="eyebrow">Lo que dicen las familias</span>
+      <h2>Historias de familias que ya han dado el paso</h2>
+    </div>
+    <div class="test-grid">
+      <div class="test-card reveal">
+        <div class="test-stars">★★★★★</div>
+        <p class="test-quote">"Apuntamos a Marcos al campamento de Rosales sin saber si aguantaría 3 semanas seguidas de inglés. Salió pidiendo repetir el verano que viene, y en el cole ya nos han comentado que participa más en clase."</p>
+        <div class="test-author">
+          <div class="test-avatar">MP</div>
+          <div><strong>María Pérez</strong><span>Madre de alumno · Campamento de Verano, sede Rosales 2025</span></div>
+        </div>
+      </div>
+      <div class="test-card reveal">
+        <div class="test-stars">★★★★★</div>
+        <p class="test-quote">"Mandar a Lucía un año entero a Irlanda con 15 años nos daba miedo, sobre todo por la familia de acogida. El equipo de Interlanguage nos llamaba cada mes para contarnos cómo iba. Volvió con el B2 y muchísima más independencia."</p>
+        <div class="test-author">
+          <div class="test-avatar">JG</div>
+          <div><strong>Javier González</strong><span>Padre de alumna · Año Académico en Irlanda, curso 2024-25</span></div>
+        </div>
+      </div>
+      <div class="test-card reveal">
+        <div class="test-stars">★★★★★</div>
+        <p class="test-quote">"Nuestros gemelos llevan dos cursos en la extraescolar de los martes y jueves. Lo que más valoro es que cada trimestre nos mandan un informe real de cada uno, no una plantilla genérica."</p>
+        <div class="test-author">
+          <div class="test-avatar">SL</div>
+          <div><strong>Sonia López</strong><span>Madre de alumnos · Inglés Extraescolar, Colegio Montealto</span></div>
+        </div>
       </div>
     </div>
   </div>
@@ -951,54 +883,6 @@
         <p>Vuestro hijo empieza el programa, con seguimiento cercano desde el primer día.</p>
       </div>
     </div>
-
-    <div class="countdown-banner reveal">
-      <div>
-        <strong>Campamento de verano 2027</strong>
-        <span>Las plazas se agotan cada año. Preinscripción abierta.</span>
-      </div>
-      <div class="countdown-days">
-        <span class="cd-num" id="countdownDays">--</span>
-        <span class="cd-lbl">días para el cierre<br>de preinscripción</span>
-      </div>
-      <a href="#contacto" class="btn-primary" data-cta="countdown-cta">Reservar plaza</a>
-    </div>
-  </div>
-</section>
-
-<!-- TESTIMONIOS -->
-<section class="testimonials" id="testimonios">
-  <div class="container">
-    <div class="test-head reveal">
-      <span class="eyebrow">Lo que dicen las familias</span>
-      <h2>Historias de familias que ya han dado el paso</h2>
-    </div>
-    <div class="test-grid">
-      <div class="test-card reveal">
-        <div class="test-stars">★★★★★</div>
-        <p class="test-quote">"Apuntamos a Marcos al campamento de Rosales sin saber si aguantaría 3 semanas seguidas de inglés. Salió pidiendo repetir el verano que viene, y en el cole ya nos han comentado que participa más en clase."</p>
-        <div class="test-author">
-          <div class="test-avatar">MP</div>
-          <div><strong>María Pérez</strong><span>Madre de alumno · Campamento de Verano, sede Rosales 2025</span></div>
-        </div>
-      </div>
-      <div class="test-card reveal">
-        <div class="test-stars">★★★★★</div>
-        <p class="test-quote">"Mandar a Lucía un año entero a Irlanda con 15 años nos daba miedo, sobre todo por la familia de acogida. El equipo de Interlanguage nos llamaba cada mes para contarnos cómo iba. Volvió con el B2 y muchísima más independencia."</p>
-        <div class="test-author">
-          <div class="test-avatar">JG</div>
-          <div><strong>Javier González</strong><span>Padre de alumna · Año Académico en Irlanda, curso 2024-25</span></div>
-        </div>
-      </div>
-      <div class="test-card reveal">
-        <div class="test-stars">★★★★★</div>
-        <p class="test-quote">"Nuestros gemelos llevan dos cursos en la extraescolar de los martes y jueves. Lo que más valoro es que cada trimestre nos mandan un informe real de cada uno, no una plantilla genérica."</p>
-        <div class="test-author">
-          <div class="test-avatar">SL</div>
-          <div><strong>Sonia López</strong><span>Madre de alumnos · Inglés Extraescolar, Colegio Montealto</span></div>
-        </div>
-      </div>
-    </div>
   </div>
 </section>
 
@@ -1053,9 +937,9 @@
 <section class="contact" id="contacto">
   <div class="container contact-grid">
     <div class="contact-info reveal">
-      <span class="eyebrow">Hablemos</span>
-      <h2>Contadnos qué buscáis y os orientamos sin compromiso</h2>
-      <p>Rellenad el formulario y os contactamos en menos de 24h con toda la información que necesitéis.</p>
+      <span class="eyebrow">Contacto</span>
+      <h2>¿Hablamos?</h2>
+      <p>Cuéntanos qué estás buscando para tu hijo y te ayudamos a encontrar la mejor opción.</p>
       <div class="contact-points">
         <div class="contact-point">
           <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M3 6l9 7 9-7" stroke-linecap="round" stroke-linejoin="round"/><rect x="3" y="5" width="18" height="14" rx="2"/></svg>
@@ -1685,15 +1569,6 @@
   }, { threshold: 0.15 });
   revealEls.forEach(function(el){ revealObserver.observe(el); });
 
-  // countdown de próxima convocatoria
-  (function(){
-    const target = new Date('2027-05-31T23:59:59');
-    const el = document.getElementById('countdownDays');
-    if (!el) return;
-    const diff = Math.max(0, Math.ceil((target - new Date()) / (1000*60*60*24)));
-    el.textContent = diff;
-  })();
-
   // FAQ acordeón
   document.querySelectorAll('.faq-item').forEach(function(item){
     const q = item.querySelector('.faq-q');
@@ -1735,14 +1610,6 @@
 
   // tarjetas de servicio en la home
   document.querySelectorAll('.svc-card2[data-service]').forEach(function(card){
-    card.addEventListener('click', function(e){
-      e.preventDefault();
-      goToServicePage(card.dataset.service);
-    });
-  });
-
-  // tarjetas de la sección comparadora "¿Qué estáis buscando para vuestro hijo?"
-  document.querySelectorAll('.compare-card[data-service]').forEach(function(card){
     card.addEventListener('click', function(e){
       e.preventDefault();
       goToServicePage(card.dataset.service);
