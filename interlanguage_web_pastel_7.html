@@ -511,19 +511,24 @@
   .compare-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:18px; margin-top:38px;}
   @media (max-width:900px){ .compare-grid{grid-template-columns:1fr 1fr;} }
   @media (max-width:520px){ .compare-grid{grid-template-columns:1fr;} }
-  .compare-card{background:#fff; border-radius:18px; border:1px solid var(--line); padding:24px 22px; transition:transform .2s ease, box-shadow .2s ease;}
-  .compare-card:hover{transform:translateY(-4px); box-shadow:0 14px 28px rgba(22,41,74,.1);}
-  .compare-card.featured{border:2px solid var(--coral); box-shadow:0 14px 30px rgba(255,107,74,.14);}
-  .compare-card h3{font-size:1.1rem; color:var(--navy); margin-bottom:10px;}
-  .compare-tag{display:inline-block; font-size:.66rem; font-weight:800; text-transform:uppercase; letter-spacing:.05em; padding:4px 11px; border-radius:100px; margin-bottom:16px;}
+  .compare-card{
+    display:flex; flex-direction:column; align-items:flex-start; text-align:left;
+    background:#fff; border-radius:18px; border:1px solid var(--line); padding:24px 22px;
+    text-decoration:none; color:inherit; cursor:pointer; -webkit-tap-highlight-color:transparent;
+    transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+  }
+  .compare-card:hover{transform:translateY(-4px); box-shadow:0 14px 28px rgba(22,41,74,.1); border-color:var(--coral);}
+  .compare-card:active{transform:translateY(-1px); box-shadow:0 6px 14px rgba(22,41,74,.08); border-color:var(--coral);}
+  .compare-card h3{font-size:1.1rem; color:var(--navy); margin-bottom:8px;}
+  .compare-tag{display:inline-block; font-size:.66rem; font-weight:800; text-transform:uppercase; letter-spacing:.05em; padding:4px 11px; border-radius:100px; margin-bottom:12px;}
   .compare-tag.quick{background:#dff0e8; color:var(--teal-dark);}
   .compare-tag.slow{background:#f4e4e0; color:var(--coral-dark);}
-  .compare-card ul{list-style:none; display:flex; flex-direction:column; gap:11px;}
-  .compare-card li{font-size:.9rem; color:var(--ink); line-height:1.4;}
-  .compare-card .cl{display:block; font-size:.7rem; font-weight:800; text-transform:uppercase; letter-spacing:.04em; color:var(--ink-soft); margin-bottom:2px;}
-  .compare-help{text-align:center; margin-top:34px; font-size:1rem; color:var(--ink-soft);}
-  .compare-help a{color:var(--coral-dark); font-weight:700; text-decoration:none;}
-  .compare-help a:hover{text-decoration:underline;}
+  .compare-meta{font-size:.82rem; font-weight:700; color:var(--ink-soft); margin-bottom:8px;}
+  .compare-benefit{font-size:.92rem; color:var(--ink); line-height:1.45; margin-bottom:18px; flex:1;}
+  .compare-cta{font-size:.86rem; font-weight:800; color:var(--coral-dark); margin-top:auto;}
+  .compare-recommender{text-align:center; margin-top:34px; background:#fff; border:1px solid var(--line); border-radius:18px; padding:30px 24px;}
+  .compare-recommender h3{font-size:1.1rem; color:var(--navy); margin-bottom:8px;}
+  .compare-recommender p{color:var(--ink-soft); font-size:.94rem; max-width:480px; margin:0 auto 20px; line-height:1.55;}
 
   /* ---------- LEAD MAGNET ---------- */
   section.lead-magnet{padding:90px 24px; background:var(--mint);}
@@ -797,48 +802,41 @@
       <p>Os ayudamos a encontrar la opción que mejor encaja con su edad y vuestro objetivo.</p>
     </div>
     <div class="compare-grid reveal">
-      <div class="compare-card">
-        <h3>Campamentos de verano</h3>
+      <a href="#servicio-campamentos" class="compare-card" data-service="campamentos" aria-label="Ver campamentos de verano">
         <span class="compare-tag quick">Verano</span>
-        <ul>
-          <li><span class="cl">Edad</span> 3 a 10 años</li>
-          <li><span class="cl">Cuándo</span> Verano, por semanas</li>
-          <li><span class="cl">Dónde</span> Madrid</li>
-          <li><span class="cl">Ideal si...</span> queréis inmersión sin salir de casa</li>
-        </ul>
-      </div>
-      <div class="compare-card">
-        <h3>Inglés extraescolar</h3>
+        <h3>Campamentos de verano</h3>
+        <p class="compare-meta">3 a 10 años · Verano en Madrid</p>
+        <p class="compare-benefit">Inmersión en inglés jugando, sin salir de Madrid.</p>
+        <span class="compare-cta">Ver campamentos →</span>
+      </a>
+      <a href="#servicio-extraescolar" class="compare-card" data-service="extraescolar" aria-label="Ver inglés extraescolar">
         <span class="compare-tag quick">Durante el curso</span>
-        <ul>
-          <li><span class="cl">Edad</span> Todas</li>
-          <li><span class="cl">Cuándo</span> Durante el curso</li>
-          <li><span class="cl">Dónde</span> En su colegio</li>
-          <li><span class="cl">Ideal si...</span> buscáis constancia todo el año</li>
-        </ul>
-      </div>
-      <div class="compare-card featured">
-        <h3>Estudiar en el extranjero</h3>
+        <h3>Inglés extraescolar</h3>
+        <p class="compare-meta">Todas las edades · En su colegio</p>
+        <p class="compare-benefit">Constancia en inglés durante todo el curso.</p>
+        <span class="compare-cta">Ver inglés extraescolar →</span>
+      </a>
+      <a href="#servicio-extranjero" class="compare-card" data-service="extranjero" aria-label="Ver programas en el extranjero">
         <span class="compare-tag slow">Experiencia internacional</span>
-        <ul>
-          <li><span class="cl">Edad</span> A partir de 12 años</li>
-          <li><span class="cl">Cuándo</span> Verano, trimestre o año</li>
-          <li><span class="cl">Dónde</span> Irlanda, UK, EE.UU.</li>
-          <li><span class="cl">Ideal si...</span> queréis una experiencia transformadora</li>
-        </ul>
-      </div>
-      <div class="compare-card">
-        <h3>Especialidades</h3>
+        <h3>Estudiar en el extranjero</h3>
+        <p class="compare-meta">Desde 12 años · Irlanda, UK, EE.UU.</p>
+        <p class="compare-benefit">Una experiencia transformadora fuera de España.</p>
+        <span class="compare-cta">Ver programas en el extranjero →</span>
+      </a>
+      <a href="#servicio-especialidades" class="compare-card" data-service="especialidades" aria-label="Ver especialidades">
         <span class="compare-tag slow">Inglés + talento</span>
-        <ul>
-          <li><span class="cl">Edad</span> Nivel intermedio-alto</li>
-          <li><span class="cl">Cuándo</span> Según programa</li>
-          <li><span class="cl">Dónde</span> Madrid</li>
-          <li><span class="cl">Ideal si...</span> ya tiene base y quiere más</li>
-        </ul>
-      </div>
+        <h3>Especialidades</h3>
+        <p class="compare-meta">Nivel intermedio-alto · Madrid</p>
+        <p class="compare-benefit">Para quien ya tiene base y quiere ir más allá.</p>
+        <span class="compare-cta">Ver especialidades →</span>
+      </a>
     </div>
-    <p class="compare-help reveal">¿Seguís con dudas? <a href="#contacto" data-cta="compare-help">Hablad con nosotros y os orientamos →</a></p>
+    <div class="compare-recommender reveal">
+      <h3>¿No sabes cuál elegir?</h3>
+      <p>Dinos la edad de tu hijo y qué estáis buscando. Te ayudamos a encontrar la opción que mejor encaja.</p>
+      <!-- TODO: conectar con un recomendador de servicios; de momento enlaza al formulario de contacto -->
+      <a href="#contacto" class="btn-outline" id="compareRecommenderCta" data-cta="compare-recommender">Encontrar la mejor opción →</a>
+    </div>
   </div>
 </section>
 
@@ -1772,6 +1770,14 @@
 
   // tarjetas de servicio en la home
   document.querySelectorAll('.svc-card2[data-service]').forEach(function(card){
+    card.addEventListener('click', function(e){
+      e.preventDefault();
+      goToServicePage(card.dataset.service);
+    });
+  });
+
+  // tarjetas de la sección comparadora "¿Qué estáis buscando para vuestro hijo?"
+  document.querySelectorAll('.compare-card[data-service]').forEach(function(card){
     card.addEventListener('click', function(e){
       e.preventDefault();
       goToServicePage(card.dataset.service);
