@@ -165,9 +165,10 @@
 
 
   /* ---------- MÉTODO INTERLANGUAGE ---------- */
-  section.methodology{padding:100px 24px; background:var(--white); overflow:hidden;}
+  section.methodology{padding:76px 24px 92px; background:#FBF8F1; overflow:hidden;}
   .method-layout{display:grid; grid-template-columns:1.05fr .95fr; gap:64px; align-items:center; max-width:1180px; margin:0 auto;}
-  @media (max-width:960px){ .method-layout{grid-template-columns:1fr; gap:44px;} }
+  @media (max-width:900px){ .method-layout{gap:40px;} }
+  @media (max-width:620px){ .method-layout{grid-template-columns:1fr; gap:36px;} }
   .method-copy{text-align:left;}
   @media (max-width:960px){ .method-copy{text-align:center;} }
   .method-copy h2{font-size:clamp(2.1rem,4vw,3rem); font-weight:800; color:var(--navy); margin:14px 0 22px; line-height:1.14;}
@@ -179,7 +180,7 @@
   .method-photo-scrim{position:absolute; inset:0; background:var(--navy); mix-blend-mode:multiply; opacity:.14;}
 
   /* bloque de autoridad "30+ años", independiente de la fotografía */
-  .method-authority{display:flex; align-items:center; gap:32px; max-width:1180px; margin:60px auto 0; padding:34px 40px; background:var(--off); border-radius:22px;}
+  .method-authority{display:flex; align-items:center; gap:32px; max-width:1180px; margin:60px auto 0; padding:34px 40px; background:#fff; border-radius:22px; box-shadow:0 16px 34px rgba(22,41,74,.08);}
   @media (max-width:640px){ .method-authority{flex-direction:column; text-align:center; gap:10px; padding:30px 24px;} }
   .method-authority-num{font-family:var(--font-display); font-weight:800; font-size:clamp(3.2rem,7vw,5rem); color:var(--coral-dark); line-height:1;}
   .method-authority-label{display:block; font-weight:800; text-transform:uppercase; letter-spacing:.06em; font-size:.8rem; color:var(--navy); margin-bottom:6px;}
@@ -187,12 +188,16 @@
 
   .method-principles{display:grid; grid-template-columns:repeat(3,1fr); gap:40px; max-width:1180px; margin:56px auto 0;}
   @media (max-width:760px){ .method-principles{grid-template-columns:1fr; gap:30px;} }
-  .method-principle h3{display:flex; align-items:center; gap:10px; font-size:1.2rem; margin-bottom:8px; color:var(--navy);}
-  .method-principle h3::before{content:''; flex:0 0 8px; width:8px; height:8px; border-radius:50%; background:var(--coral);}
+  .method-principle{transition:transform .2s ease;}
+  .method-principle:hover{transform:translateX(4px);}
+  .method-principle h3{display:flex; align-items:center; gap:10px; font-size:1.2rem; margin-bottom:8px; color:var(--navy); transition:color .2s ease;}
+  .method-principle:hover h3{color:var(--coral-dark);}
+  .method-principle h3::before{content:''; flex:0 0 8px; width:8px; height:8px; border-radius:50%; background:var(--coral); transition:transform .2s ease;}
+  .method-principle:hover h3::before{transform:scale(1.3);}
   .method-principle:nth-child(2) h3::before{background:var(--teal-dark);}
   .method-principle:nth-child(3) h3::before{background:var(--navy);}
   .method-principle p{font-size:.94rem; color:var(--ink-soft); line-height:1.6; margin-left:18px;}
-  @media (max-width:760px){ .method-principle h3{justify-content:center;} .method-principle p{margin-left:0;} }
+  @media (max-width:760px){ .method-principle h3{justify-content:center;} .method-principle p{margin-left:0;} .method-principle:hover{transform:none;} }
 
   /* ---------- SERVICIOS ---------- */
   section.services{padding:90px 0; background:var(--white);}
@@ -859,13 +864,6 @@
         </div>
       </div>
     </div>
-    <div class="method-authority reveal">
-      <strong class="method-authority-num">30+</strong>
-      <div>
-        <span class="method-authority-label">Años enseñando inglés</span>
-        <p>Más de tres décadas trabajando con alumnos, familias y colegios.</p>
-      </div>
-    </div>
     <div class="method-principles">
       <div class="method-principle reveal">
         <h3>Profesores nativos</h3>
@@ -878,6 +876,13 @@
       <div class="method-principle reveal">
         <h3>Cada alumno tiene su ritmo.</h3>
         <p>Seguimos su evolución y mantenemos a las familias cerca del proceso.</p>
+      </div>
+    </div>
+    <div class="method-authority reveal">
+      <strong class="method-authority-num">30+</strong>
+      <div>
+        <span class="method-authority-label">Años enseñando inglés</span>
+        <p>Más de tres décadas trabajando con alumnos, familias y colegios.</p>
       </div>
     </div>
   </div>
