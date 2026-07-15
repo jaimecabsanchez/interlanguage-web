@@ -47,10 +47,10 @@
   .brand-logo{height:58px; width:auto;}
   .nav-links{display:flex; gap:22px; font-weight:700; font-size:.88rem; align-items:center;}
   .nav-links a{text-decoration:none; color:var(--navy); opacity:.8; transition:opacity .2s;}
-  .nav-links > a:not(.nav-cta), .nav-dropdown > a{position:relative;}
-  .nav-links > a:not(.nav-cta)::after, .nav-dropdown > a::after{content:''; position:absolute; left:0; right:0; bottom:-5px; height:2px; background:var(--coral); transform:scaleX(0); transform-origin:left; transition:transform .25s ease;}
-  .nav-links > a:not(.nav-cta):hover, .nav-dropdown > a:hover{opacity:1;}
-  .nav-links > a:not(.nav-cta):hover::after, .nav-dropdown > a:hover::after{transform:scaleX(1);}
+  .nav-links > a:not(.nav-cta), .nav-dropdown-trigger{position:relative;}
+  .nav-links > a:not(.nav-cta)::after, .nav-dropdown-trigger::after{content:''; position:absolute; left:0; right:0; bottom:-5px; height:2px; background:var(--coral); transform:scaleX(0); transform-origin:left; transition:transform .25s ease;}
+  .nav-links > a:not(.nav-cta):hover, .nav-dropdown-trigger:hover{opacity:1;}
+  .nav-links > a:not(.nav-cta):hover::after, .nav-dropdown-trigger:hover::after, .nav-dropdown.open .nav-dropdown-trigger::after{transform:scaleX(1);}
   .nav-cta{background:var(--coral); color:#fff; padding:10px 24px; border-radius:100px; font-weight:800; font-size:.86rem; transition:transform .15s ease, background .15s ease;}
 
   /* ---------- BARRA STICKY DE CONVERSIÓN ---------- */
@@ -71,32 +71,44 @@
   }
   .nav-cta:hover{transform:translateY(-2px); background:var(--coral-dark);}
   .nav-toggle{display:none; background:none; font-size:1.6rem; color:var(--navy);}
+
+  /* ---------- DESPLEGABLE "SERVICIOS" ---------- */
   .nav-dropdown{position:relative; padding-bottom:16px; margin-bottom:-16px;}
-  .nav-dropdown > a{display:flex; align-items:center; gap:4px;}
-  .nav-dropdown .caret{font-size:.6rem; opacity:.7;}
+  .nav-dropdown-trigger{display:flex; align-items:center; gap:4px; background:none; border:none; padding:0; font:inherit; font-weight:700; color:var(--navy); opacity:.8; cursor:pointer;}
+  .nav-dropdown-trigger:hover, .nav-dropdown.open .nav-dropdown-trigger{opacity:1;}
+  .nav-dropdown .caret{font-size:.6rem; opacity:.7; transition:transform .2s ease;}
+  .nav-dropdown.open .caret{transform:rotate(180deg);}
   .nav-dropdown-menu{
-    position:absolute; top:100%; left:0; margin-top:0; background:#fff; border-radius:14px;
-    box-shadow:0 16px 34px rgba(22,41,74,.16); padding:8px; min-width:230px;
+    position:absolute; top:100%; left:0; margin-top:0; background:#fff; border-radius:18px;
+    box-shadow:0 20px 42px rgba(22,41,74,.14); padding:22px 8px; min-width:520px;
     opacity:0; visibility:hidden; transform:translateY(6px); transition:opacity .18s ease, transform .18s ease, visibility .18s ease;
   }
-  .nav-dropdown:hover .nav-dropdown-menu, .nav-dropdown:focus-within .nav-dropdown-menu, .nav-dropdown.open .nav-dropdown-menu{opacity:1; visibility:visible; transform:translateY(0);}
-  .nav-dropdown-menu a{display:block; padding:10px 14px; border-radius:9px; font-size:.86rem; font-weight:600; color:var(--navy); opacity:1;}
-  .nav-dropdown-menu a:hover{background:var(--off);}
-  .nav-dropdown-menu.mega{display:flex; gap:4px; min-width:380px; padding:8px;}
-  .mega-col{flex:1; display:flex; flex-direction:column; gap:1px;}
-  .mega-col:first-child{border-right:1px solid var(--line); padding-right:10px;}
-  .mega-col-title{font-size:.64rem; font-weight:800; text-transform:uppercase; letter-spacing:.05em; color:var(--coral-dark); padding:2px 10px 4px;}
-  .mega-col a{display:flex; flex-direction:column; gap:1px; padding:6px 10px; border-radius:10px;}
-  .mega-col a strong{font-size:.84rem; font-weight:700; color:var(--navy);}
-  .mega-col a small{font-size:.7rem; font-weight:500; color:var(--ink-soft);}
-  .mega-featured{background:var(--peach); border:1px solid rgba(255,107,74,.3); position:relative;}
-  .mega-featured:hover{background:#fbe4dd !important;}
-  .mega-open-badge{display:inline-block; align-self:flex-start; background:var(--coral); color:#fff; font-size:.58rem; font-weight:800; text-transform:uppercase; letter-spacing:.04em; padding:1px 7px; border-radius:100px; margin-bottom:2px;}
-  .mega-cta{font-size:.7rem; font-weight:800; color:var(--coral-dark); margin-top:2px;}
+  .nav-dropdown.open .nav-dropdown-menu{opacity:1; visibility:visible; transform:translateY(0);}
+  .nav-dropdown-menu.mega{display:flex; gap:0;}
+  .mega-col{flex:1; display:flex; flex-direction:column; gap:2px; padding:0 18px;}
+  .mega-col + .mega-col{border-left:1px solid var(--line);}
+  .mega-col-title{display:block; font-size:.68rem; font-weight:800; text-transform:uppercase; letter-spacing:.06em; color:var(--ink-soft); padding:2px 12px 10px;}
+  .mega-item{position:relative; display:flex; flex-direction:column; gap:3px; padding:11px 34px 11px 12px; border-radius:12px; text-decoration:none; transition:background .18s ease;}
+  .mega-item:hover, .mega-item:focus-visible{background:var(--off);}
+  .mega-item-top{display:flex; align-items:center; gap:8px; flex-wrap:wrap;}
+  .mega-item strong{font-size:.92rem; font-weight:700; color:var(--navy);}
+  .mega-item small{font-size:.76rem; font-weight:500; color:var(--ink-soft);}
+  .mega-item-arrow{position:absolute; top:50%; right:12px; width:14px; height:14px; color:#B43F26; opacity:0; transform:translate(-3px,-50%); transition:opacity .18s ease, transform .18s ease;}
+  .mega-item:hover .mega-item-arrow, .mega-item:focus-visible .mega-item-arrow{opacity:1; transform:translate(0,-50%);}
+  .mega-item--camp{background:rgba(255,107,74,.05);}
+  .mega-item--camp:hover, .mega-item--camp:focus-visible{background:rgba(255,107,74,.09);}
+  .mega-badge{display:inline-block; font-size:.6rem; font-weight:800; text-transform:uppercase; letter-spacing:.03em; color:#B43F26; background:rgba(255,107,74,.16); padding:2px 8px; border-radius:100px; white-space:nowrap;}
   @media (max-width:920px){
-    .nav-dropdown-menu{position:static; box-shadow:none; opacity:1; visibility:visible; transform:none; margin-top:6px; margin-left:10px; padding:0 0 0 6px; border-left:2px solid var(--line);}
-    .nav-dropdown-menu.mega{flex-direction:column; min-width:0; padding:0;}
-    .mega-col:first-child{border-right:none; padding-right:0; border-bottom:1px solid var(--line); padding-bottom:8px; margin-bottom:8px;}
+    .nav-dropdown-menu{
+      position:static; box-shadow:none; min-width:0; padding:0; margin-top:0;
+      opacity:0; visibility:hidden; max-height:0; overflow:hidden; transform:none;
+      transition:max-height .2s ease, opacity .2s ease;
+    }
+    .nav-dropdown.open .nav-dropdown-menu{opacity:1; visibility:visible; max-height:480px; margin-top:8px; padding:2px 0 2px 6px; border-left:2px solid var(--line);}
+    .nav-dropdown-menu.mega{flex-direction:column;}
+    .mega-col{padding:0;}
+    .mega-col + .mega-col{border-left:none;}
+    .mega-col-title{display:none;}
   }
   @media (max-width:920px){
     .nav-links{position:fixed; top:58px; left:0; right:0; background:var(--white); flex-direction:column; align-items:flex-start; padding:20px 24px; gap:16px; box-shadow:0 12px 24px rgba(0,0,0,.08); transform:translateY(-140%); transition:transform .25s ease; z-index:150;}
@@ -615,30 +627,37 @@
     <div class="nav-links" id="navLinks">
       <a href="#propuesta">Por qué nosotros</a>
       <div class="nav-dropdown">
-        <a href="#servicios">Servicios <span class="caret">▾</span></a>
-        <div class="nav-dropdown-menu mega">
+        <button type="button" class="nav-dropdown-trigger" id="servicesTrigger" aria-haspopup="true" aria-expanded="false" aria-controls="servicesMenu">
+          Servicios <span class="caret" aria-hidden="true">▾</span>
+        </button>
+        <div class="nav-dropdown-menu mega" id="servicesMenu" aria-hidden="true">
           <div class="mega-col">
-            <span class="mega-col-title">Decisión rápida</span>
-            <a href="#servicios" data-jump-service="campamentos" class="mega-featured">
-              <span class="mega-open-badge">Inscripción abierta</span>
-              <strong>Campamentos de verano</strong>
-              <small>Madrid · 3 a 10 años</small>
-              <span class="mega-cta">Ver fechas y reservar →</span>
+            <span class="mega-col-title">En Madrid</span>
+            <a href="#servicio-campamentos" data-jump-service="campamentos" class="mega-item mega-item--camp">
+              <span class="mega-item-top">
+                <strong>Campamentos de verano</strong>
+                <span class="mega-badge">Inscripción abierta</span>
+              </span>
+              <small>3–10 años · Madrid</small>
+              <svg class="mega-item-arrow" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </a>
-            <a href="#servicios" data-jump-service="extraescolar">
+            <a href="#servicio-extraescolar" data-jump-service="extraescolar" class="mega-item">
               <strong>Inglés extraescolar</strong>
               <small>Durante el curso</small>
+              <svg class="mega-item-arrow" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </a>
           </div>
           <div class="mega-col">
-            <span class="mega-col-title">Planificación a largo plazo</span>
-            <a href="#servicios" data-jump-service="extranjero">
+            <span class="mega-col-title">Experiencias y programas</span>
+            <a href="#servicio-extranjero" data-jump-service="extranjero" class="mega-item">
               <strong>Estudiar en el extranjero</strong>
-              <small>Curso o año académico</small>
+              <small>Cursos, trimestres y año académico</small>
+              <svg class="mega-item-arrow" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </a>
-            <a href="#servicios" data-jump-service="especialidades">
-              <strong>Especialidades en inglés</strong>
+            <a href="#servicio-especialidades" data-jump-service="especialidades" class="mega-item">
+              <strong>Inglés + Especialidades</strong>
               <small>Teatro, música y proyectos</small>
+              <svg class="mega-item-arrow" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </a>
           </div>
         </div>
@@ -1619,17 +1638,43 @@
   navToggle.addEventListener('click', function(){ navLinks.classList.toggle('open'); });
   navLinks.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', function(){ navLinks.classList.remove('open'); }); });
 
-  // desplegable "Servicios": control por JS con margen de tiempo, más fiable que el hover CSS puro
+  // desplegable "Servicios": hover con margen de tiempo + click + teclado
   (function(){
     const dropdown = document.querySelector('.nav-dropdown');
     if (!dropdown) return;
+    const trigger = document.getElementById('servicesTrigger');
+    const menu = document.getElementById('servicesMenu');
     let closeTimer = null;
-    function openMenu(){ clearTimeout(closeTimer); dropdown.classList.add('open'); }
-    function scheduleClose(){ closeTimer = setTimeout(function(){ dropdown.classList.remove('open'); }, 350); }
+
+    function isOpen(){ return dropdown.classList.contains('open'); }
+    function openMenu(){
+      clearTimeout(closeTimer);
+      dropdown.classList.add('open');
+      trigger.setAttribute('aria-expanded', 'true');
+      menu.setAttribute('aria-hidden', 'false');
+    }
+    function closeMenu(){
+      dropdown.classList.remove('open');
+      trigger.setAttribute('aria-expanded', 'false');
+      menu.setAttribute('aria-hidden', 'true');
+    }
+    function scheduleClose(){ closeTimer = setTimeout(closeMenu, 200); }
+
     dropdown.addEventListener('mouseenter', openMenu);
     dropdown.addEventListener('mouseleave', scheduleClose);
     dropdown.addEventListener('focusin', openMenu);
-    dropdown.addEventListener('focusout', scheduleClose);
+    dropdown.addEventListener('focusout', function(e){
+      if (!dropdown.contains(e.relatedTarget)) scheduleClose();
+    });
+    trigger.addEventListener('click', function(){
+      if (isOpen()) closeMenu(); else openMenu();
+    });
+    document.addEventListener('click', function(e){
+      if (isOpen() && !dropdown.contains(e.target)) closeMenu();
+    });
+    dropdown.addEventListener('keydown', function(e){
+      if (e.key === 'Escape'){ closeMenu(); trigger.focus(); }
+    });
   })();
 
   const revealEls = document.querySelectorAll('.reveal');
