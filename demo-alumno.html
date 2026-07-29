@@ -1,0 +1,389 @@
+<style>
+  :root{
+    --navy:#16294A; --coral:#FF6B4A; --coral-deep:#E14F30; --jade:#1E9C74; --jade-deep:#157B5B;
+    --ink:#1E2B3D; --soft:#5C6B7A; --faint:#8A97A5; --paper:#F6F9F8; --surface-2:#EEF2F6;
+    --line:rgba(22,41,74,.12); --line-2:rgba(22,41,74,.2); --coral-tint:rgba(255,107,74,.12); --jade-tint:rgba(30,156,116,.12); --mint:#E7F1EC;
+    --sans:-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  .wrap{min-height:100vh;display:flex;justify-content:center;background:#dfe5ec;font-family:var(--sans);}
+  .frame{width:100%;max-width:430px;background:var(--paper);min-height:100vh;display:flex;flex-direction:column;position:relative;box-shadow:0 0 50px rgba(0,0,0,.12);overflow:hidden;}
+  .screen{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+  .pad{padding:0 18px 18px;}
+  .view{display:none;}
+  .view.active{display:block;}
+  h1,h2,h3{color:var(--navy);line-height:1.12;letter-spacing:-.02em;}
+  button{font-family:inherit;cursor:pointer;border:none;}
+  .hidden{display:none!important;}
+
+  /* banner */
+  .demo-b{background:repeating-linear-gradient(45deg,#FFF4E6,#FFF4E6 14px,#FFEAD6 14px,#FFEAD6 28px);color:var(--coral-deep);font-weight:700;font-size:.74rem;text-align:center;padding:7px 10px;}
+  .demo-b b{color:var(--navy);}
+
+  /* botones */
+  .btn{display:block;width:100%;text-align:center;background:var(--coral);color:#fff;border-radius:16px;padding:15px;font-weight:800;font-size:1rem;box-shadow:0 12px 24px -12px var(--coral);}
+  .btn:active{transform:translateY(1px);}
+  .btn.jade{background:var(--jade);box-shadow:0 12px 24px -12px var(--jade);}
+  .btn.grey{background:var(--surface-2);color:var(--faint);box-shadow:none;}
+
+  /* LOGIN */
+  #view-login{padding:40px 24px;text-align:center;}
+  .fox{width:74px;height:74px;border-radius:22px;background:linear-gradient(150deg,var(--coral),var(--coral-deep));display:grid;place-items:center;font-size:2.4rem;margin:10px auto 12px;box-shadow:0 14px 26px -12px var(--coral);}
+  .brand{font-weight:800;color:var(--navy);font-size:1.05rem;margin-bottom:24px;}
+  .brand span{color:var(--coral-deep);}
+  #view-login h1{font-size:1.5rem;margin-bottom:4px;}
+  #view-login .sub{color:var(--soft);font-size:.95rem;margin-bottom:22px;}
+  .field{text-align:left;margin-bottom:14px;}
+  .field label{display:block;font-size:.74rem;font-weight:800;color:var(--soft);text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px;}
+  .field input{width:100%;padding:13px 15px;border:1.5px solid var(--line-2);border-radius:14px;font-size:1rem;font-family:inherit;color:var(--ink);}
+  .foot-note{color:var(--faint);font-size:.8rem;margin-top:16px;}
+
+  /* top bar */
+  .top{display:flex;justify-content:space-between;align-items:center;padding:14px 18px 6px;background:linear-gradient(180deg,var(--coral-tint),transparent);}
+  .chip{display:inline-flex;align-items:center;gap:6px;font-weight:800;font-size:1rem;background:#fff;border:1px solid var(--line);border-radius:100px;padding:7px 14px;box-shadow:0 6px 16px -10px rgba(22,41,74,.4);}
+  .chip.s{color:var(--coral-deep);} .chip.g{color:var(--navy);}
+
+  /* HOME */
+  .greet{padding:10px 4px 2px;}
+  .greet h1{font-size:1.5rem;}
+  .greet p{color:var(--soft);font-size:.9rem;margin-top:2px;}
+  .path{display:flex;flex-direction:column;align-items:center;gap:4px;padding:16px 0 4px;}
+  .node{width:52px;height:52px;border-radius:50%;display:grid;place-items:center;font-size:1.25rem;background:#fff;border:2px solid var(--line);color:var(--soft);}
+  .node.done{background:var(--jade);border-color:var(--jade);color:#fff;}
+  .node.now{background:var(--coral);border-color:var(--coral);color:#fff;width:64px;height:64px;font-size:1.5rem;box-shadow:0 12px 24px -8px var(--coral);}
+  .node.l{transform:translateX(-50px);} .node.r{transform:translateX(50px);}
+  .conn{width:3px;height:13px;background:var(--line);}
+  .cta-m{margin-top:14px;}
+  .cta-m small{display:block;font-weight:600;font-size:.72rem;opacity:.9;margin-top:2px;}
+  .card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:0 10px 26px -16px rgba(22,41,74,.3);margin-top:16px;}
+  .card h3{font-size:1rem;margin-bottom:10px;}
+  .row3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+  .stat{background:var(--surface-2);border-radius:12px;padding:12px;text-align:center;}
+  .stat .v{font-weight:800;color:var(--navy);font-size:1.1rem;}
+  .stat .l{font-size:.66rem;color:var(--faint);text-transform:uppercase;letter-spacing:.04em;}
+
+  /* NAV */
+  .nav{flex:none;display:flex;justify-content:space-around;padding:10px 0 12px;border-top:1px solid var(--line);background:#fff;font-size:1.3rem;}
+  .nav button{background:none;color:var(--faint);padding:6px 16px;border-radius:12px;}
+  .nav button.active{color:var(--coral-deep);}
+  .frame.nonav .nav{display:none;}
+
+  /* LESSON */
+  .l-top{display:flex;align-items:center;gap:12px;padding:16px 18px 6px;}
+  .x{background:none;font-size:1.3rem;color:var(--faint);}
+  .prog{flex:1;height:14px;border-radius:10px;background:var(--surface-2);overflow:hidden;}
+  .prog i{display:block;height:100%;width:0;background:var(--coral);transition:width .4s ease;}
+  .l-xp{color:var(--coral-deep);font-weight:800;font-size:.9rem;}
+  .q-tag{font-weight:800;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--coral-deep);}
+  .q-p{font-size:1.4rem;font-weight:800;color:var(--navy);margin:6px 0 20px;line-height:1.2;}
+  .opts{display:grid;gap:11px;}
+  .opts.img{grid-template-columns:1fr 1fr;}
+  .opt{display:flex;align-items:center;gap:12px;background:#fff;border:2px solid var(--line);border-radius:16px;padding:15px;font-size:1.02rem;font-weight:600;color:var(--ink);text-align:left;}
+  .opts.img .opt{flex-direction:column;gap:8px;text-align:center;padding:20px 10px;}
+  .opt .em{font-size:2.3rem;}
+  .opt.sel{border-color:var(--coral);background:var(--coral-tint);}
+  .opt.ok{border-color:var(--jade);background:var(--jade-tint);color:var(--jade-deep);}
+  .opt.no{border-color:var(--coral-deep);background:var(--coral-tint);color:var(--coral-deep);}
+  .ansrow{display:flex;flex-wrap:wrap;gap:8px;min-height:54px;border-bottom:2px dashed var(--line-2);padding:6px 0 12px;margin-bottom:16px;}
+  .bank{display:flex;flex-wrap:wrap;gap:8px;}
+  .tile{background:#fff;border:2px solid var(--line);border-bottom-width:3px;border-radius:12px;padding:10px 14px;font-size:1rem;font-weight:700;color:var(--navy);}
+  .tile.used{visibility:hidden;}
+  .speakc{text-align:center;padding:6px 0;}
+  .speakp{font-size:1.5rem;font-weight:800;color:var(--navy);margin:12px 0 20px;}
+  .mic{width:92px;height:92px;border-radius:50%;background:var(--coral);color:#fff;font-size:2.3rem;margin:0 auto;display:grid;place-items:center;box-shadow:0 16px 30px -12px var(--coral);}
+  .l-bar{padding:12px 18px 18px;}
+  .fb{border-radius:14px;padding:12px 15px;font-weight:700;margin-bottom:12px;display:none;align-items:center;gap:10px;}
+  .fb.show{display:flex;} .fb.ok{background:var(--jade-tint);color:var(--jade-deep);} .fb.no{background:var(--coral-tint);color:var(--coral-deep);}
+  .fb .big{font-size:1.3rem;}
+
+  /* REWARD */
+  #view-reward{text-align:center;padding:40px 24px;}
+  .medal{width:120px;height:120px;border-radius:50%;background:var(--jade-tint);display:grid;place-items:center;font-size:3.6rem;margin:10px auto 6px;animation:pop .5s ease;}
+  @keyframes pop{0%{transform:scale(0)}70%{transform:scale(1.12)}100%{transform:scale(1)}}
+  #view-reward h1{font-size:1.8rem;margin:6px 0;}
+  #view-reward p{color:var(--soft);margin-bottom:22px;}
+  .rw-row{display:flex;gap:10px;justify-content:center;margin-bottom:26px;}
+  .rw{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 16px;}
+  .rw .v{font-weight:800;font-size:1.3rem;color:var(--coral-deep);} .rw .l{font-size:.68rem;color:var(--faint);text-transform:uppercase;}
+
+  /* PERFIL */
+  .pf-hd{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:0 10px 26px -16px rgba(22,41,74,.3);}
+  .pf-hd .nm{font-weight:800;color:var(--navy);font-size:1.15rem;}
+  .pf-hd .lv{font-size:.8rem;color:var(--jade-deep);font-weight:700;margin-top:2px;}
+  .heat{display:grid;grid-template-rows:repeat(7,1fr);grid-auto-flow:column;grid-auto-columns:1fr;gap:3px;}
+  .heat i{aspect-ratio:1;border-radius:2px;background:var(--surface-2);}
+  .heat i.l1{background:rgba(30,156,116,.25);} .heat i.l2{background:rgba(30,156,116,.5);} .heat i.l3{background:rgba(30,156,116,.72);} .heat i.l4{background:var(--jade);}
+  .hh{font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);font-weight:800;margin-bottom:10px;}
+  .skill{margin-bottom:10px;} .skill .t{display:flex;justify-content:space-between;font-size:.85rem;margin-bottom:5px;} .skill .t b{color:var(--navy);} .skill .t span{color:var(--jade-deep);font-weight:800;font-size:.76rem;}
+  .bar{height:9px;border-radius:6px;background:var(--surface-2);overflow:hidden;} .bar i{display:block;height:100%;background:var(--jade);}
+  .chart{width:100%;height:auto;} .chart .ar{fill:var(--jade-tint);} .chart .ln{fill:none;stroke:var(--jade);stroke-width:2.5;stroke-linejoin:round;stroke-linecap:round;} .chart .dt{fill:#fff;stroke:var(--jade);stroke-width:2.5;} .chart .dt.n{fill:var(--coral);stroke:var(--coral);} .chart text{fill:var(--faint);font-size:9px;font-family:var(--sans);} .chart text.lv{fill:var(--navy);font-weight:700;}
+  .medals{display:flex;gap:9px;flex-wrap:wrap;} .md{width:48px;height:48px;border-radius:13px;display:grid;place-items:center;font-size:1.3rem;background:var(--surface-2);border:1px solid var(--line);} .md.on{background:var(--coral-tint);border-color:var(--coral);} .md.lk{opacity:.4;filter:grayscale(1);}
+
+  /* LIGA */
+  .lg-badge{width:70px;height:70px;border-radius:20px;background:linear-gradient(150deg,#FFD873,#F2A900);display:grid;place-items:center;font-size:2.3rem;margin:6px auto 10px;box-shadow:0 14px 26px -12px #E0A100;}
+  .zl{display:flex;align-items:center;gap:8px;margin:14px 2px 8px;font-weight:800;font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;} .zl.up{color:var(--jade-deep);} .zl.dn{color:var(--coral-deep);} .zl .ln{flex:1;height:1px;background:currentColor;opacity:.3;}
+  .lrow{display:grid;grid-template-columns:30px auto 1fr auto;gap:11px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:14px;padding:11px 13px;margin-bottom:8px;box-shadow:0 8px 20px -14px rgba(22,41,74,.4);}
+  .lrow .rk{font-weight:800;color:var(--faint);text-align:center;} .lrow.pr .rk{color:var(--jade-deep);} .lrow.rg .rk{color:var(--coral-deep);}
+  .lrow .av{width:36px;height:36px;border-radius:11px;background:var(--surface-2);display:grid;place-items:center;font-size:1.2rem;}
+  .lrow .nm{font-weight:700;color:var(--navy);font-size:.94rem;} .lrow .nm small{display:block;color:var(--faint);font-size:.7rem;font-weight:500;}
+  .lrow .xp{font-weight:800;color:var(--navy);font-size:.9rem;} .lrow.you{border:2px solid var(--coral);background:var(--coral-tint);} .lrow.you .nm{color:var(--coral-deep);}
+
+  /* TIENDA */
+  .bal{display:inline-flex;align-items:center;gap:6px;background:var(--jade-tint);color:var(--jade-deep);font-weight:800;font-size:1.05rem;padding:8px 18px;border-radius:100px;}
+  .shopfox{width:100px;height:100px;border-radius:28px;background:linear-gradient(150deg,var(--coral),var(--coral-deep));display:grid;place-items:center;font-size:3.2rem;margin:14px auto 4px;box-shadow:0 16px 30px -14px var(--coral);position:relative;}
+  .shopfox .hat{position:absolute;top:-12px;font-size:1.9rem;} .shopfox .acc{position:absolute;bottom:8px;right:6px;font-size:1.5rem;}
+  .cat{font-weight:800;font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;color:var(--faint);margin:16px 2px 10px;}
+  .shop{display:grid;grid-template-columns:1fr 1fr;gap:11px;}
+  .item{background:#fff;border:1px solid var(--line);border-radius:16px;padding:15px 12px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:5px;box-shadow:0 8px 20px -14px rgba(22,41,74,.4);}
+  .item.owned{border-color:var(--jade);} .item .ic{font-size:2.3rem;} .item .nm{font-weight:700;color:var(--navy);font-size:.9rem;} .item .pr{color:var(--jade-deep);font-weight:800;font-size:.88rem;}
+  .buy{margin-top:3px;width:100%;border-radius:12px;padding:9px;font-weight:800;font-size:.84rem;background:var(--coral);color:#fff;} .buy:disabled{background:var(--surface-2);color:var(--faint);} .item.owned .buy{background:var(--jade-tint);color:var(--jade-deep);}
+  .toast{position:fixed;left:50%;bottom:78px;transform:translateX(-50%);background:var(--navy);color:#fff;padding:10px 18px;border-radius:100px;font-weight:700;font-size:.85rem;opacity:0;transition:opacity .2s;z-index:9;} .toast.show{opacity:1;}
+  .center-h{text-align:center;}
+</style>
+
+<div class="wrap">
+  <div class="frame" id="frame">
+    <div class="demo-b">🎮 <b>Demo</b> · así entra y practica un alumno de Interlanguage HOME</div>
+    <div class="screen">
+
+      <!-- LOGIN -->
+      <section class="view active" id="view-login">
+        <div class="fox">🦊</div>
+        <div class="brand">Interlanguage <span>HOME</span></div>
+        <h1>¡Hola de nuevo!</h1>
+        <p class="sub">Entra para seguir tu racha 🔥</p>
+        <div class="field"><label>Usuario</label><input id="u" value="lucia" autocapitalize="none"></div>
+        <div class="field"><label>Contraseña</label><input id="pw" type="password" value="home1234"></div>
+        <button class="btn" onclick="go('home')">Entrar</button>
+        <p class="foot-note">Es una demostración: pulsa <b>Entrar</b> para probarla.</p>
+      </section>
+
+      <!-- HOME -->
+      <section class="view" id="view-home">
+        <div class="top"><span class="chip s">🔥 <span id="h-streak">12</span></span><span class="chip g">💎 <span id="h-gems">240</span></span></div>
+        <div class="pad">
+          <div class="greet"><h1>¡Hola, Lucía! 👋</h1><p>Explorer · A1 · tu misión de hoy, 10 min</p></div>
+          <div class="path">
+            <div class="node done l">✓</div><div class="conn"></div>
+            <div class="node done r">✓</div><div class="conn"></div>
+            <div class="node now">▶</div><div class="conn"></div>
+            <div class="node l">★</div><div class="conn"></div>
+            <div class="node r">🎁</div>
+          </div>
+          <button class="btn cta-m" onclick="startLesson()">EMPEZAR MISIÓN<small>+50 XP · mantén tu racha</small></button>
+          <div class="card"><h3>Tu semana</h3><div class="row3">
+            <div class="stat"><div class="v">5/7</div><div class="l">Días</div></div>
+            <div class="stat"><div class="v">54′</div><div class="l">Practicado</div></div>
+            <div class="stat"><div class="v">+12</div><div class="l">Palabras</div></div>
+          </div></div>
+        </div>
+      </section>
+
+      <!-- LESSON -->
+      <section class="view" id="view-lesson">
+        <div class="l-top"><button class="x" onclick="go('home')">✕</button><div class="prog"><i id="pfill"></i></div><span class="l-xp">🔥 +50</span></div>
+        <div class="pad" id="l-main"></div>
+        <div class="l-bar"><div class="fb" id="fb"></div><button class="btn grey" id="chk" disabled>COMPROBAR</button></div>
+      </section>
+
+      <!-- REWARD -->
+      <section class="view" id="view-reward">
+        <div class="medal">🏆</div>
+        <h1>¡Misión completada!</h1>
+        <p>Has mantenido tu racha un día más 🔥</p>
+        <div class="rw-row">
+          <div class="rw"><div class="v">+50</div><div class="l">XP</div></div>
+          <div class="rw"><div class="v">🔥 <span id="r-streak">13</span></div><div class="l">Racha</div></div>
+          <div class="rw"><div class="v">+20</div><div class="l">Gemas</div></div>
+        </div>
+        <button class="btn jade" onclick="go('home')">VOLVER AL MAPA</button>
+      </section>
+
+      <!-- PERFIL -->
+      <section class="view" id="view-perfil">
+        <div class="top"><span class="chip s">🔥 <span id="p-streak">12</span></span><span class="chip g">💎 <span id="p-gems">240</span></span></div>
+        <div class="pad">
+          <div class="pf-hd"><div class="fox" style="margin:0;width:60px;height:60px;font-size:2rem;">🦊</div><div><div class="nm">Lucía G.</div><div class="lv">Explorer · rumbo a Cambridge Movers (A1)</div></div></div>
+          <div class="card"><div class="hh">Constancia · últimas 26 semanas</div><div class="heat" id="heat"></div></div>
+          <div class="card"><div class="hh">Evolución de nivel · curso completo</div>
+            <svg class="chart" viewBox="0 0 320 150">
+              <path class="ar" d="M4,126 L48,120 L92,108 L136,104 L180,84 L224,66 L268,48 L316,32 L316,140 L4,140 Z"/>
+              <path class="ln" d="M4,126 L48,120 L92,108 L136,104 L180,84 L224,66 L268,48 L316,32"/>
+              <circle class="dt" cx="4" cy="126" r="4"/><circle class="dt n" cx="316" cy="32" r="5"/>
+              <text x="2" y="140">sep</text><text x="150" y="140">ene</text><text x="298" y="140">jun</text>
+              <text class="lv" x="6" y="118">Pre-A1</text><text class="lv" x="288" y="26">A1 ✦</text>
+            </svg>
+          </div>
+          <div class="card"><div class="hh">Destrezas</div>
+            <div class="skill"><div class="t"><b>Vocabulario</b><span>82%</span></div><div class="bar"><i style="width:82%"></i></div></div>
+            <div class="skill"><div class="t"><b>Listening</b><span>76%</span></div><div class="bar"><i style="width:76%"></i></div></div>
+            <div class="skill"><div class="t"><b>Gramática</b><span>61%</span></div><div class="bar"><i style="width:61%"></i></div></div>
+            <div class="skill"><div class="t"><b>Speaking</b><span>54%</span></div><div class="bar"><i style="width:54%"></i></div></div>
+          </div>
+          <div class="card"><div class="hh">Medallas · 14 de 40</div><div class="medals">
+            <div class="md on">🔥</div><div class="md on">📅</div><div class="md on">💯</div><div class="md on">🦉</div><div class="md on">🎯</div><div class="md lk">🔒</div><div class="md lk">🔒</div></div></div>
+        </div>
+      </section>
+
+      <!-- LIGA -->
+      <section class="view" id="view-liga">
+        <div class="top"><span class="chip s">🔥 <span id="lg-streak">12</span></span><span class="chip g">💎 <span id="lg-gems">240</span></span></div>
+        <div class="pad center-h">
+          <div class="lg-badge">🏆</div>
+          <h1 style="font-size:1.35rem;">Liga Coral</h1>
+          <p style="color:var(--soft);font-size:.88rem;margin-top:4px;">Grupo Explorers · Colegio Sagrado Corazón</p>
+          <div class="zl up" style="text-align:left;"><span>▲ Ascienden a Liga Oro</span><span class="ln"></span></div>
+          <div style="text-align:left;">
+            <div class="lrow pr"><div class="rk">1</div><div class="av">🦁</div><div class="nm">Mateo R.<small>Explorers</small></div><div class="xp">920 XP</div></div>
+            <div class="lrow pr you"><div class="rk">2</div><div class="av">🦊</div><div class="nm">Lucía (tú)<small>Explorers</small></div><div class="xp"><span id="lg-you">880</span> XP</div></div>
+            <div class="lrow pr"><div class="rk">3</div><div class="av">🐼</div><div class="nm">Sofía P.<small>Explorers</small></div><div class="xp">810 XP</div></div>
+          </div>
+          <div class="zl dn" style="text-align:left;"><span>▼ Zona de descenso</span><span class="ln"></span></div>
+          <div style="text-align:left;">
+            <div class="lrow"><div class="rk">4</div><div class="av">🐨</div><div class="nm">Hugo M.<small>Explorers</small></div><div class="xp">640 XP</div></div>
+            <div class="lrow rg"><div class="rk">5</div><div class="av">🐧</div><div class="nm">Leo D.<small>Explorers</small></div><div class="xp">500 XP</div></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TIENDA -->
+      <section class="view" id="view-tienda">
+        <div class="top"><span class="chip s">🔥 <span id="t-streak">12</span></span><span class="chip g">💎 <span id="t-gems">240</span></span></div>
+        <div class="pad center-h">
+          <h1 style="font-size:1.35rem;">Tienda</h1>
+          <div style="margin-top:8px;"><span class="bal">💎 <span id="shop-gems">240</span> gemas</span></div>
+          <div class="shopfox">🦊<span class="hat" id="s-hat"></span><span class="acc" id="s-acc"></span></div>
+          <div id="s-note" style="color:var(--soft);font-size:.82rem;min-height:1.2em;">Gana gemas practicando y personaliza a tu zorro</div>
+          <div class="cat" style="text-align:left;">🎩 Ropa y complementos</div>
+          <div class="shop" id="shop"></div>
+        </div>
+      </section>
+
+    </div><!-- /screen -->
+
+    <nav class="nav" id="nav">
+      <button data-v="home" class="active" onclick="go('home')">🗺️</button>
+      <button data-v="liga" onclick="go('liga')">🏆</button>
+      <button data-v="tienda" onclick="go('tienda')">🛍️</button>
+      <button data-v="perfil" onclick="go('perfil')">👤</button>
+    </nav>
+    <div class="toast" id="toast"></div>
+  </div>
+</div>
+
+<script>
+  var P = { gems:240, streak:12, xp:1240, owned:[], hat:"", acc:"", bumped:false };
+  var $ = function(id){ return document.getElementById(id); };
+
+  function paint(){
+    ["h","p","lg","t"].forEach(function(k){ var s=$(k+"-streak"), g=$(k+"-gems"); if(s)s.textContent=P.streak; if(g)g.textContent=P.gems; });
+    if($("shop-gems")) $("shop-gems").textContent = P.gems;
+    if($("lg-you")) $("lg-you").textContent = 880 + (P.bumped?20:0);
+  }
+
+  function go(v){
+    document.querySelectorAll(".view").forEach(function(x){ x.classList.remove("active"); });
+    $("view-"+v).classList.add("active");
+    var noNav = (v==="lesson"||v==="login"||v==="reward");
+    $("frame").classList.toggle("nonav", noNav);
+    document.querySelectorAll(".nav button").forEach(function(b){ b.classList.toggle("active", b.dataset.v===v); });
+    $("screen") && 0; document.querySelector(".screen").scrollTop = 0;
+    if(v==="tienda") renderShop();
+    paint();
+  }
+
+  /* ---- heatmap ---- */
+  (function(){
+    var seed=7, frag=document.createDocumentFragment();
+    for(var w=0; w<26; w++) for(var d=0; d<7; d++){
+      seed=(seed*1103515245+12345)&0x7fffffff; var r=seed/0x7fffffff, prog=w/26, c=document.createElement("i");
+      if(d>=5&&r<0.5){} else if(r<0.16-prog*0.10){} else { var lv=r<0.30?1:r<0.58?2:r<0.82?3:4; if(prog>0.6&&lv<2)lv=2; c.className="l"+lv; }
+      frag.appendChild(c);
+    }
+    $("heat").appendChild(frag);
+  })();
+
+  /* ---- LECCIÓN ---- */
+  var steps = [
+    { tag:"Vocabulario", p:'¿Cuál es "desayunar"?', img:true, o:[{e:"🥣",t:"have breakfast",ok:1},{e:"🚿",t:"take a shower"},{e:"🛏️",t:"go to bed"},{e:"🎒",t:"go to school"}] },
+    { tag:"Comprensión", p:'¿Qué significa "I wake up at 7"?', o:[{t:"Me levanto a las 7",ok:1},{t:"Ceno a las 7"},{t:"Me ducho a las 7"},{t:"Voy al cole a las 7"}] },
+    { type:"order", tag:"Ordena la frase", p:'"Me levanto a las ocho"', words:["up","I","eight","wake","at"], ans:["I","wake","up","at","eight"] },
+    { tag:"Gramática", p:'Completa: "I ___ breakfast every day."', o:[{t:"have",ok:1},{t:"has"},{t:"having"}] },
+    { type:"speak", tag:"A hablar", p:"Di en voz alta:", phrase:"What time do you wake up?" }
+  ];
+  var li=0, answered=false, sel=null, rowW=[];
+  function startLesson(){ li=0; go("lesson"); renderStep(); }
+  function setProg(){ $("pfill").style.width = (li/steps.length*100)+"%"; }
+  function renderStep(){
+    answered=false; sel=null; rowW=[];
+    var fb=$("fb"), chk=$("chk"); fb.className="fb"; chk.className="btn grey"; chk.textContent="COMPROBAR"; chk.disabled=true;
+    var s=steps[li], m=$("l-main"), h='<div class="q-tag">'+s.tag+'</div><div class="q-p">'+s.p+'</div>';
+    if(s.type==="order"){
+      h+='<div class="ansrow" id="ansrow"></div><div class="bank" id="bank">'+s.words.map(function(w,k){return '<button class="tile" data-w="'+k+'">'+w+'</button>';}).join("")+'</div>';
+    } else if(s.type==="speak"){
+      h+='<div class="speakc"><div class="speakp">"'+s.phrase+'"</div><button class="mic" id="mic">🎤</button><div style="color:var(--faint);font-size:.85rem;margin-top:12px;">Toca el micro y repite la frase</div></div>';
+    } else {
+      h+='<div class="opts '+(s.img?"img":"")+'">'+s.o.map(function(o,k){return '<button class="opt" data-k="'+k+'">'+(o.e?'<span class="em">'+o.e+'</span>':'')+'<span>'+o.t+'</span></button>';}).join("")+'</div>';
+    }
+    m.innerHTML=h; setProg();
+    if(s.type==="order"){ renderRow(); m.querySelectorAll("#bank .tile").forEach(function(t){ t.onclick=function(){ if(answered)return; rowW.push(+t.dataset.w); renderRow(); }; }); }
+    else if(s.type==="speak"){ $("mic").onclick=function(){ $("mic").textContent="🎙️"; chk.disabled=false; chk.className="btn"; }; chk.textContent="HE TERMINADO"; }
+    else { m.querySelectorAll(".opt").forEach(function(b){ b.onclick=function(){ if(answered)return; m.querySelectorAll(".opt").forEach(function(o){o.classList.remove("sel");}); b.classList.add("sel"); sel=+b.dataset.k; chk.disabled=false; chk.className="btn"; }; }); }
+  }
+  function renderRow(){
+    var s=steps[li], row=$("ansrow");
+    row.innerHTML=rowW.map(function(k,idx){return '<button class="tile" data-i="'+idx+'">'+s.words[k]+'</button>';}).join("");
+    row.querySelectorAll(".tile").forEach(function(t){ t.onclick=function(){ if(answered)return; rowW.splice(+t.dataset.i,1); renderRow(); }; });
+    document.querySelectorAll("#bank .tile").forEach(function(t){ t.classList.toggle("used", rowW.indexOf(+t.dataset.w)>-1); });
+    var chk=$("chk"); chk.disabled = rowW.length!==s.words.length; chk.className = chk.disabled?"btn grey":"btn";
+  }
+  function checkStep(){
+    var s=steps[li], ok=true, correct="", m=$("l-main");
+    if(s.type==="order"){ ok = rowW.map(function(k){return s.words[k];}).join(" ")===s.ans.join(" "); correct=s.ans.join(" "); }
+    else if(s.type==="speak"){ ok=true; }
+    else { var opts=m.querySelectorAll(".opt"); ok = s.o[sel]&&s.o[sel].ok; opts.forEach(function(o,k){ o.style.pointerEvents="none"; if(s.o[k].ok)o.classList.add("ok"); }); if(!ok)opts[sel].classList.add("no"); }
+    answered=true;
+    var fb=$("fb"); fb.className="fb show "+(ok?"ok":"no");
+    fb.innerHTML = ok ? '<span class="big">🎉</span><span>¡Muy bien!</span>' : '<span class="big">💪</span><span>Casi. Era: <b>'+(correct||s.o.filter(function(o){return o.ok;})[0].t)+'</b></span>';
+    var chk=$("chk"); chk.className="btn jade"; chk.textContent = li<steps.length-1?"CONTINUAR":"TERMINAR"; chk.disabled=false;
+  }
+  $("chk").onclick=function(){
+    if(!answered){ checkStep(); return; }
+    li++;
+    if(li>=steps.length){
+      setProg();
+      if(!P.bumped){ P.streak+=1; P.gems+=20; P.xp+=50; P.bumped=true; }
+      $("r-streak").textContent=P.streak; paint(); go("reward"); return;
+    }
+    renderStep();
+  };
+
+  /* ---- TIENDA ---- */
+  var items=[
+    {id:"shield",ic:"🛡️",nm:"Escudo de racha",pr:200,slot:null},
+    {id:"hat",ic:"🎩",nm:"Sombrero de mago",pr:150,slot:"hat"},
+    {id:"glass",ic:"🕶️",nm:"Gafas de sol",pr:120,slot:"acc"},
+    {id:"crown",ic:"👑",nm:"Corona dorada",pr:450,slot:"hat"},
+    {id:"cat",ic:"🐱",nm:"Gatito",pr:250,slot:"acc"},
+    {id:"cape",ic:"🦸",nm:"Capa de héroe",pr:300,slot:"hat"}
+  ];
+  function renderShop(){
+    if($("s-hat")) $("s-hat").textContent=P.hat; if($("s-acc")) $("s-acc").textContent=P.acc;
+    $("shop").innerHTML=items.map(function(i){
+      var has=P.owned.indexOf(i.id)>-1, can=P.gems>=i.pr;
+      return '<div class="item '+(has?"owned":"")+'"><div class="ic">'+i.ic+'</div><div class="nm">'+i.nm+'</div><div class="pr">'+(has?"":"💎 "+i.pr)+'</div><button class="buy" data-id="'+i.id+'" '+(has||can?"":"disabled")+'>'+(has?(i.slot?"Equipar":"Comprado ✓"):(can?"Comprar":"Sin gemas"))+'</button></div>';
+    }).join("");
+    $("shop").querySelectorAll(".buy").forEach(function(b){ b.onclick=function(){ shopAct(b.dataset.id); }; });
+  }
+  function shopAct(id){
+    var it=items.filter(function(x){return x.id===id;})[0];
+    if(P.owned.indexOf(id)>-1){ equip(it); return; }
+    if(P.gems<it.pr){ toast("Te faltan "+(it.pr-P.gems)+" gemas 💎"); return; }
+    P.gems-=it.pr; P.owned.push(id); toast("¡"+it.nm+" comprado! 🎉");
+    if(it.slot) equip(it); paint(); renderShop();
+  }
+  function equip(it){ if(it.slot==="hat")P.hat=it.ic; if(it.slot==="acc")P.acc=it.ic; if(it.slot)$("s-note").textContent="¡"+it.nm+" equipado! 😎"; renderShop(); }
+  var tt; function toast(m){ var t=$("toast"); t.textContent=m; t.classList.add("show"); clearTimeout(tt); tt=setTimeout(function(){t.classList.remove("show");},1600); }
+
+  paint();
+</script>
