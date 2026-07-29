@@ -1,6 +1,6 @@
 # Experiencia completa del alumno · Plataforma Interlanguage (MVP)
 
-**Fecha:** 2026-07-29 · **Estado:** borrador para aprobación.
+**Fecha:** 2026-07-29 · **Estado:** aprobado.
 Base: `2026-07-29-plataforma-practica-ingles-design.md` y `2026-07-29-roles-permisos-rbac.md`.
 Foco MVP: **Primaria (6–11)**. Se anota lo que cambiaría en ESO (fase posterior).
 
@@ -216,6 +216,6 @@ Error · Móvil · Primaria vs ESO.)*
 
 ---
 
-## Decisiones pendientes de tu aprobación
-1. **Navegación:** ¿4 pestañas (Inicio · Practicar · Progreso · Perfil) en vez de 5? *(recomendado)*
-2. **Diagnóstico:** ¿sin test formal en el MVP (calibración silenciosa + mini-reto opcional para 9+)? *(recomendado)*
+## Decisiones aprobadas (2026-07-29)
+1. ✅ **Navegación: 4 pestañas** — Inicio · Practicar · Progreso (con colección/medallas dentro) · Perfil.
+2. ✅ **Sin diagnóstico formal en el MVP** — se parte del nivel del profe + calibración silenciosa; mini-reto jugado opcional solo para 9+.
