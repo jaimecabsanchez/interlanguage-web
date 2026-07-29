@@ -25,6 +25,8 @@ perfiles alumno + admin + vista de familias · stack ligero (web + Supabase + Ne
 - [ ] **Bloque 4 — Sesión diaria + progreso real + racha.**
       Lógica "¿qué hago hoy?", estados de dominio (nuevo/practicando/dominado/necesita repaso),
       racha flexible, progreso guardado. Repaso simple (avanzado queda para Fase 2).
+      Sigue la arquitectura pedagógica: `docs/superpowers/specs/2026-07-29-arquitectura-pedagogica.md`
+      (umbral Dominado ≥3 aciertos en ≥2 días; repaso 1·3·7·16 días; recomendación por reglas).
 
 - [ ] **Bloque 5 — Vista de familias.**
       Resumen de solo lectura: días de práctica, "lo que ya sabe decir", racha, vigencia del

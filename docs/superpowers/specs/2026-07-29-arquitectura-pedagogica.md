@@ -1,6 +1,6 @@
 # Arquitectura pedagógica · Plataforma Interlanguage
 
-**Fecha:** 2026-07-29 · **Estado:** borrador para aprobación.
+**Fecha:** 2026-07-29 · **Estado:** aprobado (a criterio del asesor).
 Base: diseño del MVP, roles y experiencia del alumno (mismos docs de 2026-07-29).
 
 **Principio rector:** no una biblioteca desordenada de ejercicios, sino una **progresión coherente**.
@@ -151,7 +151,13 @@ golpe de suerte.
 
 ---
 
-### Próximo paso
-Si apruebas esta arquitectura pedagógica, se convierte en la **columna vertebral** del contenido y guía
-los Bloques 3 (CMS) y 4 (sesión diaria + progreso). Dime si te encaja o quieres ajustar algo (p. ej.
-los umbrales de "Dominado" o el orden de habilidades).
+## Decisiones concretas fijadas para el MVP (2026-07-29)
+Aprobado a criterio del asesor. Valores por defecto, **configurables** más adelante:
+- **Habilidades del MVP, por orden:** Vocabulary → Listening → Reading → Grammar → algo de Everyday English.
+- **Umbral "Dominado":** ≥ 3 aciertos en **≥ 2 días distintos**, con los 2 últimos correctos.
+- **Intervalos de repaso (MVP):** 1 · 3 · 7 · 16 días (se alejan al acertar, se acercan al fallar).
+- **Recomendación de siguiente actividad:** por **reglas explicables** (no IA opaca) en el MVP.
+- **Todo en versión simple**; el ajuste fino, la dificultad adaptativa avanzada y writing/pronunciation/
+  speaking quedan para fases posteriores.
+
+Esta arquitectura es la **columna vertebral** del contenido y guía los Bloques 3 (CMS) y 4 (sesión + progreso).
