@@ -29,6 +29,9 @@ perfiles alumno + admin + vista de familias · stack ligero (web + Supabase + Ne
 - [ ] **Bloque 5 — Vista de familias.**
       Resumen de solo lectura: días de práctica, "lo que ya sabe decir", racha, vigencia del
       acceso, solicitar restablecer contraseña. Sin notas ni comparaciones.
+      DECISIÓN (2026-07-29): **informe semanal + resumen web por enlace seguro y caducable**;
+      SIN cuenta familiar con login en el MVP (cuenta completa → Fase 2). Reset lo hace el admin.
+      Roles y RBAC definidos en `docs/superpowers/specs/2026-07-29-roles-permisos-rbac.md`.
 
 - [ ] **Bloque 6 — Conectar Supabase (real).**
       Cuentas y datos reales (contraseñas cifradas, progreso guardado, contenido en base de datos).

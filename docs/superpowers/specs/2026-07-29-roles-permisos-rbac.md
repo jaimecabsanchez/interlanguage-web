@@ -1,6 +1,6 @@
 # Roles, permisos y RBAC · Plataforma Interlanguage (MVP)
 
-**Fecha:** 2026-07-29 · **Estado:** borrador para aprobación.
+**Fecha:** 2026-07-29 · **Estado:** aprobado (incl. decisión §5).
 Complementa: `2026-07-29-plataforma-practica-ingles-design.md`.
 
 Principio rector: **mínimo privilegio** + **verificación siempre en el servidor**.
@@ -99,6 +99,9 @@ Alcance MVP: **Alumno**, **Familia** (vista ligera) y **Admin** activos.
 **Pregunta:** ¿la familia necesita su propia cuenta con login en el MVP, o basta con informes
 enviados desde administración?
 
+> ✅ **DECISIÓN APROBADA (2026-07-29):** opción recomendada — informe + resumen por enlace.
+> Sin cuenta familiar con login en el MVP. Cuenta familiar completa → Fase 2.
+
 **Recomendación para el MVP: NO crear una cuenta familiar completa todavía.** En su lugar:
 
 1. **Informe periódico** (semanal) enviado a la familia (email o WhatsApp) desde el sistema/admin,
@@ -168,5 +171,5 @@ Notación: **✓** permitido · **P** solo lo propio/su ámbito · **R** solo le
 ---
 
 ### Próximo paso
-Falta tu decisión sobre el apartado **§5 (cuenta familiar)**. Con eso aprobado, esta definición
-de roles se incorpora al MVP y guía la construcción de los Bloques 3, 4 y 5.
+Definición de roles **aprobada** (incl. §5: familias con informe + enlace, sin cuenta en MVP).
+Guía la construcción de los Bloques 3, 4 y 5.
