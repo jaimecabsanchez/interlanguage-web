@@ -88,12 +88,15 @@
   <p>Has mantenido tu racha un día más 🔥</p>
   <div class="reward-stats">
     <div class="rw xp"><div class="v">+50</div><div class="l">XP</div></div>
-    <div class="rw streak"><div class="v">🔥 13</div><div class="l">Racha</div></div>
+    <div class="rw streak"><div class="v" id="rwStreak">🔥 13</div><div class="l">Racha</div></div>
     <div class="rw gem"><div class="v">+20</div><div class="l">Gemas</div></div>
   </div>
   <a href="inicio.html" class="btn-check go" style="max-width:320px;text-decoration:none;display:block;">VOLVER AL MAPA</a>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+<script src="auth.js"></script>
 <script>
   const $ = (id) => document.getElementById(id);
   const steps = [
@@ -181,10 +184,14 @@
     btn.className = 'btn-check go'; btn.textContent = i < steps.length - 1 ? 'CONTINUAR' : 'TERMINAR'; btn.disabled = false;
   }
 
-  btn.onclick = () => {
+  btn.onclick = async () => {
     if (!answered) { check(); return; }
     i++;
-    if (i >= steps.length) { setProgress(); $('reward').classList.remove('hidden'); return; }
+    if (i >= steps.length) {
+      setProgress();
+      try { const r = await ILAuth.completeLesson(); if (r) $('rwStreak').textContent = '🔥 ' + r.streak; } catch (e) {}
+      $('reward').classList.remove('hidden'); return;
+    }
     setProgress(); render();
   };
   $('close').onclick = () => { location.href = 'inicio.html'; };

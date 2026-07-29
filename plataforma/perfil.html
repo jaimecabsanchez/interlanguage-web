@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mi perfil · Interlanguage HOME</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/png" sizes="32x32" href="../images/icons/favicon-32.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="app.css">
+<style>
+  .pf-hd{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:20px;padding:18px;box-shadow:var(--shadow-soft);}
+  .pf-av{width:64px;height:64px;border-radius:20px;background:linear-gradient(150deg,var(--coral),var(--coral-deep));display:grid;place-items:center;font-size:2rem;box-shadow:0 10px 20px -10px var(--coral);}
+  .pf-hd .nm{font-family:var(--font-display);font-weight:800;color:var(--navy);font-size:1.2rem;}
+  .pf-hd .lvl{font-size:.82rem;color:var(--jade-deep);font-weight:700;margin-top:2px;}
+  .pf-hd .lvl b{color:var(--navy);}
+  .pf-mini{grid-column:1/-1;display:flex;gap:10px;margin-top:4px;}
+  .pf-mini .m{flex:1;background:var(--surface-2);border-radius:12px;padding:10px;text-align:center;}
+  .pf-mini .m .v{font-family:var(--font-display);font-weight:800;color:var(--navy);font-size:1.1rem;}
+  .pf-mini .m .l{font-size:.66rem;color:var(--faint);text-transform:uppercase;letter-spacing:.04em;}
+  .card-soft h3.h{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);font-family:var(--font-display);margin-bottom:12px;}
+  .card-soft h3.h b{color:var(--jade-deep);}
+  .heat{display:grid;grid-template-rows:repeat(7,1fr);grid-auto-flow:column;grid-auto-columns:1fr;gap:3px;}
+  .heat i{aspect-ratio:1;border-radius:2px;background:var(--surface-2);}
+  .heat i.l1{background:color-mix(in srgb,var(--jade) 22%,var(--surface-2));}
+  .heat i.l2{background:color-mix(in srgb,var(--jade) 48%,var(--surface-2));}
+  .heat i.l3{background:color-mix(in srgb,var(--jade) 72%,transparent);}
+  .heat i.l4{background:var(--jade);}
+  .legend{display:flex;gap:5px;justify-content:flex-end;align-items:center;margin-top:8px;font-size:.6rem;color:var(--faint);}
+  .legend i{width:9px;height:9px;border-radius:2px;display:inline-block;background:var(--surface-2);}
+  .legend i.l1{background:color-mix(in srgb,var(--jade) 22%,var(--surface-2));}
+  .legend i.l2{background:color-mix(in srgb,var(--jade) 48%,var(--surface-2));}
+  .legend i.l3{background:color-mix(in srgb,var(--jade) 72%,transparent);}
+  .legend i.l4{background:var(--jade);}
+  .chart{width:100%;height:auto;display:block;}
+  .chart .grid{stroke:var(--line);stroke-width:1;}
+  .chart .area{fill:var(--jade-tint);}
+  .chart .line{fill:none;stroke:var(--jade);stroke-width:2.5;stroke-linejoin:round;stroke-linecap:round;}
+  .chart .dot{fill:#fff;stroke:var(--jade);stroke-width:2.5;}
+  .chart .dot.now{fill:var(--coral);stroke:var(--coral);}
+  .chart text{fill:var(--faint);font-family:var(--font-body);font-size:9px;}
+  .chart text.lv{fill:var(--navy);font-weight:700;}
+  .skill{margin-bottom:11px;}
+  .skill .top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px;}
+  .skill .top b{color:var(--navy);font-weight:700;font-family:var(--font-display);font-size:.9rem;}
+  .skill .top span{color:var(--jade-deep);font-size:.76rem;font-weight:700;}
+  .skill .bar{height:9px;border-radius:6px;background:var(--surface-2);overflow:hidden;}
+  .skill .bar i{display:block;height:100%;border-radius:6px;background:linear-gradient(90deg,var(--jade-deep),var(--jade));}
+  .phrases{display:flex;flex-wrap:wrap;gap:8px;}
+  .phrase{background:var(--jade-tint);border:1px solid color-mix(in srgb,var(--jade) 32%,transparent);color:var(--navy);border-radius:100px;padding:6px 13px;font-size:.85rem;font-weight:600;}
+  .phrase.more{background:transparent;border-style:dashed;color:var(--faint);}
+  .medals{display:flex;gap:10px;flex-wrap:wrap;}
+  .medal{width:52px;height:52px;border-radius:14px;display:grid;place-items:center;font-size:1.4rem;background:var(--surface-2);border:1px solid var(--line);}
+  .medal.on{background:var(--coral-tint);border-color:var(--coral);}
+  .medal.lock{opacity:.4;filter:grayscale(1);}
+  .goal{display:flex;align-items:center;gap:14px;background:var(--coral-tint);border:1px solid var(--coral);border-radius:16px;padding:16px;margin-top:18px;}
+  .goal .gi{font-size:1.6rem;}
+  .goal b{color:var(--navy);font-family:var(--font-display);display:block;font-size:.95rem;}
+  .goal span{font-size:.85rem;color:var(--soft);}
+</style>
+</head>
+<body>
+<div id="app" class="hidden">
+  <div class="app-top">
+    <span class="chip-stat streak">🔥 <span id="topStreak">12</span></span>
+    <span class="chip-stat coins">💎 <span id="topGems">240</span></span>
+  </div>
+
+  <div class="app-shell">
+    <div class="pf-hd">
+      <div class="pf-av">🦊</div>
+      <div>
+        <div class="nm" id="pfName">Lucía G.</div>
+        <div class="lvl">Explorer · rumbo a <b>Cambridge Movers (A1)</b></div>
+      </div>
+      <div class="pf-mini">
+        <div class="m"><div class="v">🔥 <span id="hdrStreak">12</span></div><div class="l">Racha</div></div>
+        <div class="m"><div class="v">86</div><div class="l">Días</div></div>
+        <div class="m"><div class="v">2º</div><div class="l">Liga cole</div></div>
+      </div>
+    </div>
+
+    <div class="card-soft">
+      <h3 class="h">Constancia · <b>últimas 26 semanas</b></h3>
+      <div class="heat" id="heat" aria-hidden="true"></div>
+      <div class="legend">menos <i></i><i class="l1"></i><i class="l2"></i><i class="l3"></i><i class="l4"></i> más</div>
+    </div>
+
+    <div class="card-soft">
+      <h3 class="h">Evolución de nivel · <b>curso completo</b></h3>
+      <svg class="chart" viewBox="0 0 320 150" role="img" aria-label="Curva de progreso ascendente de Pre-A1 a A1">
+        <line class="grid" x1="0" y1="34" x2="320" y2="34"/>
+        <line class="grid" x1="0" y1="74" x2="320" y2="74"/>
+        <line class="grid" x1="0" y1="114" x2="320" y2="114"/>
+        <path class="area" d="M4,126 L48,120 L92,108 L136,104 L180,84 L224,66 L268,48 L316,32 L316,140 L4,140 Z"/>
+        <path class="line" d="M4,126 L48,120 L92,108 L136,104 L180,84 L224,66 L268,48 L316,32"/>
+        <circle class="dot" cx="4" cy="126" r="4"/>
+        <circle class="dot" cx="136" cy="104" r="4"/>
+        <circle class="dot now" cx="316" cy="32" r="5"/>
+        <text x="2" y="140">sep</text>
+        <text x="128" y="140">ene</text>
+        <text x="298" y="140">jun</text>
+        <text class="lv" x="6" y="118">Pre-A1</text>
+        <text class="lv" x="286" y="26">A1 ✦</text>
+      </svg>
+    </div>
+
+    <div class="card-soft">
+      <h3 class="h">Destrezas · <b>dónde brilla y dónde reforzar</b></h3>
+      <div class="skill"><div class="top"><b>Vocabulario</b><span>82%</span></div><div class="bar"><i style="width:82%"></i></div></div>
+      <div class="skill"><div class="top"><b>Listening</b><span>76%</span></div><div class="bar"><i style="width:76%"></i></div></div>
+      <div class="skill"><div class="top"><b>Reading</b><span>68%</span></div><div class="bar"><i style="width:68%"></i></div></div>
+      <div class="skill"><div class="top"><b>Gramática</b><span>61%</span></div><div class="bar"><i style="width:61%"></i></div></div>
+      <div class="skill"><div class="top"><b>Speaking</b><span>54%</span></div><div class="bar"><i style="width:54%"></i></div></div>
+    </div>
+
+    <div class="card-soft">
+      <h3 class="h">Lo que ya sé decir · <b>128 frases</b></h3>
+      <div class="phrases">
+        <span class="phrase">My name is…</span>
+        <span class="phrase">I wake up at 8</span>
+        <span class="phrase">I have breakfast</span>
+        <span class="phrase">She is my sister</span>
+        <span class="phrase">I like pizza</span>
+        <span class="phrase">It's sunny today</span>
+        <span class="phrase">Can I have…?</span>
+        <span class="phrase more">+120 más · buscar 🔎</span>
+      </div>
+    </div>
+
+    <div class="card-soft">
+      <h3 class="h">Medallas · <b>14 de 40</b></h3>
+      <div class="medals">
+        <div class="medal on">🔥</div><div class="medal on">📅</div><div class="medal on">💯</div>
+        <div class="medal on">🦉</div><div class="medal on">🎯</div><div class="medal on">🏅</div>
+        <div class="medal lock">🔒</div><div class="medal lock">🔒</div><div class="medal lock">🔒</div>
+      </div>
+      <div class="mini-stats" style="margin-top:16px;">
+        <div class="s"><div class="v">7h 40′</div><div class="l">Total</div></div>
+        <div class="s"><div class="v">412</div><div class="l">Palabras</div></div>
+        <div class="s"><div class="v">91%</div><div class="l">Precisión</div></div>
+      </div>
+    </div>
+
+    <div class="goal">
+      <span class="gi">🎯</span>
+      <span><b>Próxima meta: “Explorador de 100 días”</b><span>Te faltan 14 días de racha. ¡Ya casi!</span></span>
+    </div>
+  </div>
+
+  <nav class="app-nav">
+    <button title="Camino" onclick="location.href='inicio.html'">🗺️</button>
+    <button title="Liga" onclick="location.href='liga.html'">🏆</button>
+    <button title="Tienda" onclick="location.href='tienda.html'">🛍️</button>
+    <button class="active" title="Perfil">👤</button>
+  </nav>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+<script src="auth.js"></script>
+<script>
+  (async () => {
+    const p = await ILAuth.getProfile();
+    if (!p) { location.href = "index.html"; return; }
+    if (p.is_admin) { location.href = "admin.html"; return; }
+    const name = p.full_name || "Alumno";
+    document.getElementById("pfName").textContent = name;
+    document.getElementById("app").classList.remove("hidden");
+    const pr = await ILAuth.getProgress();
+    if (pr) {
+      document.getElementById("topStreak").textContent = pr.streak;
+      document.getElementById("topGems").textContent = pr.gems;
+      document.getElementById("hdrStreak").textContent = pr.streak;
+    }
+
+    const heat = document.getElementById("heat");
+    let seed = 7, frag = document.createDocumentFragment();
+    for (let w = 0; w < 26; w++) for (let d = 0; d < 7; d++) {
+      seed = (seed * 1103515245 + 12345) & 0x7fffffff; const r = seed / 0x7fffffff;
+      const prog = w / 26, cell = document.createElement("i");
+      if (d >= 5 && r < 0.5) {} else if (r < 0.16 - prog * 0.10) {}
+      else { let lvl = r < 0.30 ? 1 : r < 0.58 ? 2 : r < 0.82 ? 3 : 4; if (prog > 0.6 && lvl < 2) lvl = 2; cell.className = "l" + lvl; }
+      frag.appendChild(cell);
+    }
+    heat.appendChild(frag);
+  })();
+</script>
+</body>
+</html>

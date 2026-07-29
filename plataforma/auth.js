@@ -126,5 +126,66 @@
     }
   };
 
+  /* ---------------- PROGRESO (racha, gemas, XP, tienda) ---------------- */
+  const today = () => new Date().toISOString().slice(0, 10);
+  const dayAdd = (n) => { const d = new Date(); d.setDate(d.getDate() + n); return d.toISOString().slice(0, 10); };
+  const PKEY = (u) => "il_progress_" + u;
+  function seedProgress(username) {
+    // Lucía es una cuenta de demostración ya poblada; el resto empiezan a cero.
+    if (username === "lucia")
+      return { gems: 240, streak: 12, best: 18, xp: 1240, lessons: 24, last: dayAdd(-1), owned: [], hat: "", acc: "" };
+    return { gems: 0, streak: 0, best: 0, xp: 0, lessons: 0, last: "", owned: [], hat: "", acc: "" };
+  }
+
+  API.getProgress = async function () {
+    const prof = await this.getProfile();
+    if (!prof) return null;
+    let p;
+    if (DEMO) {
+      try { p = JSON.parse(localStorage.getItem(PKEY(prof.username))); } catch (e) {}
+      if (!p) { p = seedProgress(prof.username); localStorage.setItem(PKEY(prof.username), JSON.stringify(p)); }
+    } else {
+      const { data } = await sb.from("progress").select("*").eq("id", prof.id).single();
+      p = data || seedProgress(prof.username);
+      if (!data) { p.id = prof.id; await sb.from("progress").upsert(p); }
+      if (!Array.isArray(p.owned)) p.owned = [];
+    }
+    p.id = prof.id; p.username = prof.username; p.full_name = prof.full_name; p.level = prof.level;
+    return p;
+  };
+
+  API._save = async function (p) {
+    if (DEMO) { localStorage.setItem(PKEY(p.username), JSON.stringify(p)); return; }
+    await sb.from("progress").upsert({
+      id: p.id, gems: p.gems, streak: p.streak, best: p.best, xp: p.xp,
+      lessons: p.lessons, last: p.last, owned: p.owned, hat: p.hat, acc: p.acc
+    });
+  };
+
+  API.completeLesson = async function () {
+    const p = await this.getProgress(); if (!p) return null;
+    const t = today();
+    if (p.last === t) { /* ya practicó hoy: no sube la racha */ }
+    else if (p.last === dayAdd(-1)) { p.streak += 1; }
+    else { p.streak = 1; }
+    p.last = t; p.gems += 20; p.xp += 50; p.lessons += 1;
+    p.best = Math.max(p.best || 0, p.streak);
+    await this._save(p); return p;
+  };
+
+  API.buyItem = async function (id, price) {
+    const p = await this.getProgress(); if (!p) return { ok: false, gems: 0 };
+    if (p.owned.includes(id)) return { ok: true, gems: p.gems, owned: p.owned };
+    if (p.gems < price) return { ok: false, gems: p.gems, short: price - p.gems };
+    p.gems -= price; p.owned.push(id); await this._save(p);
+    return { ok: true, gems: p.gems, owned: p.owned };
+  };
+
+  API.equipItem = async function (slot, ico) {
+    const p = await this.getProgress(); if (!p) return;
+    if (slot === "hat") p.hat = ico; if (slot === "acc") p.acc = ico;
+    await this._save(p);
+  };
+
   window.ILAuth = API;
 })();

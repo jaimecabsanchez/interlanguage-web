@@ -56,7 +56,7 @@
   <nav class="app-nav">
     <button class="active" title="Camino" onclick="location.href='inicio.html'">🗺️</button>
     <button title="Liga" onclick="location.href='liga.html'">🏆</button>
-    <button title="Tienda" onclick="alert('🛍️ La tienda de avatares llegará pronto: gasta tus gemas en ropa, mascotas y fondos para tu personaje.')">🛍️</button>
+    <button title="Tienda" onclick="location.href='tienda.html'">🛍️</button>
     <button title="Perfil" onclick="location.href='perfil.html'">👤</button>
   </nav>
 </div>
@@ -78,6 +78,9 @@
     $("greet").textContent = "¡Hola, " + name + "! 👋";
     if (p.level) $("sub").textContent = p.level + " · misión de hoy, 10 min";
     $("app").classList.remove("hidden");
+
+    const pr = await ILAuth.getProgress();
+    if (pr) { $("streak").textContent = pr.streak; $("coins").textContent = pr.gems; }
   })();
 
   $("logout").addEventListener("click", async () => { await ILAuth.signOut(); location.href = "index.html"; });

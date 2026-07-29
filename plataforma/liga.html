@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Liga del cole · Interlanguage HOME</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/png" sizes="32x32" href="../images/icons/favicon-32.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="app.css">
+<style>
+  .liga-hd{text-align:center;padding:14px 0 6px;}
+  .liga-badge{width:74px;height:74px;border-radius:22px;background:linear-gradient(150deg,#FFD873,#F2A900);display:grid;place-items:center;font-size:2.4rem;margin:0 auto 10px;box-shadow:0 14px 26px -12px #E0A100;}
+  .liga-hd h1{font-size:1.4rem;color:var(--navy);}
+  .liga-hd p{color:var(--soft);font-size:.9rem;margin:4px 0 0;}
+  .liga-hd .timer{display:inline-flex;align-items:center;gap:6px;margin-top:12px;background:var(--coral-tint);color:var(--coral-deep);font-weight:800;font-size:.82rem;padding:7px 15px;border-radius:100px;}
+  .zone-label{display:flex;align-items:center;gap:8px;margin:16px 2px 8px;font-family:var(--font-display);font-weight:800;font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;}
+  .zone-label.up{color:var(--jade-deep);} .zone-label.down{color:var(--coral-deep);}
+  .zone-label .line{flex:1;height:1px;background:currentColor;opacity:.3;}
+  .board{display:flex;flex-direction:column;gap:8px;}
+  .row{display:grid;grid-template-columns:34px auto 1fr auto;gap:12px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 14px;box-shadow:var(--shadow-soft);}
+  .row .rank{font-family:var(--font-display);font-weight:800;color:var(--faint);font-size:1.05rem;text-align:center;}
+  .row.promo .rank{color:var(--jade-deep);}
+  .row.releg .rank{color:var(--coral-deep);}
+  .row .ava{width:38px;height:38px;border-radius:12px;background:var(--surface-2);display:grid;place-items:center;font-size:1.3rem;}
+  .row .name{font-family:var(--font-display);font-weight:700;color:var(--navy);font-size:.98rem;}
+  .row .name small{display:block;font-family:var(--font-body);font-weight:500;color:var(--faint);font-size:.72rem;}
+  .row .xp{font-family:var(--font-display);font-weight:800;color:var(--navy);font-size:.95rem;white-space:nowrap;}
+  .row .xp small{color:var(--faint);font-weight:600;font-size:.72rem;}
+  .row.you{border:2px solid var(--coral);background:var(--coral-tint);}
+  .row.you .name{color:var(--coral-deep);}
+  .medal-em{font-size:1.1rem;}
+</style>
+</head>
+<body>
+<div id="app" class="hidden">
+  <div class="app-top">
+    <span class="chip-stat streak">🔥 <span id="topStreak">12</span></span>
+    <span class="chip-stat coins">💎 <span id="topGems">240</span></span>
+  </div>
+
+  <div class="app-shell">
+    <div class="liga-hd">
+      <div class="liga-badge">🏆</div>
+      <h1>Liga Coral</h1>
+      <p>Grupo Explorers · Colegio Sagrado Corazón</p>
+      <span class="timer">⏳ Quedan 3 días — ¡sigue sumando!</span>
+    </div>
+
+    <div class="zone-label up"><span>▲ Ascienden a la Liga Oro</span><span class="line"></span></div>
+    <div class="board">
+      <div class="row promo"><div class="rank">1</div><div class="ava">🦁</div><div class="name">Mateo R. <small>Explorers</small></div><div class="xp">920 <small>XP</small></div></div>
+      <div class="row promo you"><div class="rank">2</div><div class="ava">🦊</div><div class="name" id="youName">Lucía G. (tú) <small>Explorers</small></div><div class="xp">880 <small>XP</small></div></div>
+      <div class="row promo"><div class="rank">3</div><div class="ava">🐼</div><div class="name">Sofía P. <small>Explorers</small></div><div class="xp">810 <small>XP</small></div></div>
+    </div>
+
+    <div class="zone-label down" style="margin-top:18px;"><span>▼ Zona de descenso</span><span class="line"></span></div>
+    <div class="board">
+      <div class="row"><div class="rank">4</div><div class="ava">🐨</div><div class="name">Hugo M. <small>Explorers</small></div><div class="xp">640 <small>XP</small></div></div>
+      <div class="row"><div class="rank">5</div><div class="ava">🐵</div><div class="name">Emma L. <small>Explorers</small></div><div class="xp">590 <small>XP</small></div></div>
+      <div class="row"><div class="rank">6</div><div class="ava">🐧</div><div class="name">Leo D. <small>Explorers</small></div><div class="xp">500 <small>XP</small></div></div>
+      <div class="row releg"><div class="rank">7</div><div class="ava">🐢</div><div class="name">Nora V. <small>Explorers</small></div><div class="xp">410 <small>XP</small></div></div>
+      <div class="row releg"><div class="rank">8</div><div class="ava">🐥</div><div class="name">Iker B. <small>Explorers</small></div><div class="xp">260 <small>XP</small></div></div>
+    </div>
+
+    <div class="card-soft" style="text-align:center;">
+      <p style="margin:0;color:var(--soft);font-size:.9rem;">🏅 Cada semana, el profe reconoce en clase al <b style="color:var(--navy)">nº1 de la liga</b>. Los 3 primeros suben de división.</p>
+    </div>
+  </div>
+
+  <nav class="app-nav">
+    <button title="Camino" onclick="location.href='inicio.html'">🗺️</button>
+    <button class="active" title="Liga">🏆</button>
+    <button title="Tienda" onclick="location.href='tienda.html'">🛍️</button>
+    <button title="Perfil" onclick="location.href='perfil.html'">👤</button>
+  </nav>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+<script src="auth.js"></script>
+<script>
+  (async () => {
+    const p = await ILAuth.getProfile();
+    if (!p) { location.href = "index.html"; return; }
+    if (p.is_admin) { location.href = "admin.html"; return; }
+    const first = (p.full_name || "Tú").split(" ")[0];
+    document.getElementById("youName").innerHTML = first + " (tú) <small>Explorers</small>";
+    document.getElementById("app").classList.remove("hidden");
+    const pr = await ILAuth.getProgress();
+    if (pr) { document.getElementById("topStreak").textContent = pr.streak; document.getElementById("topGems").textContent = pr.gems; }
+  })();
+</script>
+</body>
+</html>

@@ -86,6 +86,25 @@ create policy "own update" on public.profiles for update using (auth.uid() = id)
 -- los administradores pueden ver todos los perfiles (para el panel)
 create policy "admin read" on public.profiles for select using (public.is_admin(auth.uid()));
 
+-- 6) Progreso del alumno (racha, gemas, XP, tienda) — se guarda aquí de verdad
+create table if not exists public.progress (
+  id       uuid primary key references auth.users(id) on delete cascade,
+  gems     integer not null default 0,
+  streak   integer not null default 0,
+  best     integer not null default 0,
+  xp       integer not null default 0,
+  lessons  integer not null default 0,
+  last     text,
+  owned    jsonb not null default '[]'::jsonb,
+  hat      text default '',
+  acc      text default ''
+);
+alter table public.progress enable row level security;
+drop policy if exists "own progress" on public.progress;
+-- cada alumno solo puede ver y modificar su propio progreso
+create policy "own progress" on public.progress for all
+  using (auth.uid() = id) with check (auth.uid() = id);
+
 -- ============================================================
 --  DESPUÉS de crear tu primer usuario admin (ver SETUP.md paso 4),
 --  ejecuta esta línea cambiando el email por el de tu admin:

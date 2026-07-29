@@ -9,3 +9,10 @@
 
 /*.html
   Cache-Control: public, max-age=0, must-revalidate
+
+# La plataforma revalida siempre, para que los cambios de código lleguen a las familias
+/plataforma/*.js
+  Cache-Control: no-cache
+
+/plataforma/*.css
+  Cache-Control: no-cache
