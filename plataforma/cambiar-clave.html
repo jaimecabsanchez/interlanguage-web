@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cambiar contraseña · Interlanguage HOME</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/png" sizes="32x32" href="../images/icons/favicon-32.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<div id="demoBanner" class="demo-banner hidden">🧪 <b>Modo demo</b> · el cambio se guarda solo en este navegador</div>
+
+<div class="auth-wrap">
+  <form class="auth-card" id="pwForm">
+    <div class="brand-mark">
+      <div class="brand-fox">🔒</div>
+      <div class="brand-name">Interlanguage <span>HOME</span></div>
+    </div>
+    <h1 id="title">Cambiar contraseña</h1>
+    <p class="sub" id="subtitle">Elige una contraseña nueva que recuerdes.</p>
+
+    <div class="msg error" id="msg"></div>
+    <div class="msg success" id="ok"></div>
+
+    <div class="field">
+      <label for="p1">Nueva contraseña</label>
+      <div class="inp">
+        <input type="password" id="p1" autocomplete="new-password" placeholder="mínimo 8 caracteres">
+        <button type="button" class="toggle-eye" id="eye" aria-label="Mostrar contraseña">👁️</button>
+      </div>
+      <div class="pw-bars" id="bars"><i></i><i></i><i></i><i></i></div>
+      <div class="hint">Usa al menos 8 caracteres. Mezcla letras y números.</div>
+    </div>
+    <div class="field">
+      <label for="p2">Repite la contraseña</label>
+      <div class="inp"><input type="password" id="p2" autocomplete="new-password" placeholder="otra vez"></div>
+    </div>
+
+    <button type="submit" class="btn btn-primary btn-block" id="submitBtn">Guardar contraseña</button>
+    <p class="auth-foot"><a href="#" id="logout">Salir sin cambiar</a></p>
+  </form>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+<script src="auth.js"></script>
+<script>
+  const $ = (id) => document.getElementById(id);
+  if (ILAuth.isDemo()) $("demoBanner").classList.remove("hidden");
+
+  let profile = null, forced = false;
+  (async () => {
+    profile = await ILAuth.getProfile();
+    if (!profile) { location.href = "index.html"; return; }
+    forced = !!profile.must_change_password;
+    if (forced) {
+      $("title").textContent = "¡Bienvenido! 👋";
+      $("subtitle").textContent = "Antes de empezar, crea tu propia contraseña.";
+      $("logout").parentElement.classList.add("hidden"); // en primer acceso, obligamos a cambiar
+    }
+  })();
+
+  $("eye").addEventListener("click", () => {
+    const i = $("p1"); i.type = i.type === "password" ? "text" : "password";
+  });
+
+  function strength(p) {
+    let s = 0;
+    if (p.length >= 8) s++;
+    if (p.length >= 12) s++;
+    if (/[0-9]/.test(p) && /[a-zA-Z]/.test(p)) s++;
+    if (/[^a-zA-Z0-9]/.test(p)) s++;
+    return Math.min(s, 4);
+  }
+  $("p1").addEventListener("input", () => {
+    const s = strength($("p1").value), bars = $("bars");
+    bars.className = "pw-bars" + (s <= 1 ? " weak" : s === 2 ? " mid" : "");
+    [...bars.children].forEach((b, i) => b.classList.toggle("on", i < s));
+  });
+
+  $("pwForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const msg = $("msg"), ok = $("ok"); msg.classList.remove("show"); ok.classList.remove("show");
+    const p1 = $("p1").value, p2 = $("p2").value;
+    if (p1 !== p2) { msg.textContent = "Las dos contraseñas no coinciden."; msg.classList.add("show"); return; }
+    const btn = $("submitBtn"); btn.disabled = true; const old = btn.textContent; btn.textContent = "Guardando…";
+    const res = await ILAuth.changePassword(p1);
+    if (!res.ok) { msg.textContent = res.error; msg.classList.add("show"); btn.disabled = false; btn.textContent = old; return; }
+    ok.textContent = "✅ ¡Contraseña guardada! Entrando…"; ok.classList.add("show");
+    setTimeout(() => { location.href = profile.is_admin ? "admin.html" : "inicio.html"; }, 900);
+  });
+
+  $("logout").addEventListener("click", async (e) => { e.preventDefault(); await ILAuth.signOut(); location.href = "index.html"; });
+</script>
+</body>
+</html>

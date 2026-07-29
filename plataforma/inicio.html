@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mi misión · Interlanguage HOME</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/png" sizes="32x32" href="../images/icons/favicon-32.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<div id="demoBanner" class="demo-banner hidden">🧪 <b>Modo demo</b> · los datos de progreso son de ejemplo</div>
+
+<div id="app" class="hidden">
+  <div class="app-top">
+    <span class="chip-stat streak">🔥 <span id="streak">12</span></span>
+    <span class="chip-stat coins">💎 <span id="coins">240</span></span>
+  </div>
+
+  <div class="app-shell">
+    <div class="greet">
+      <h1 id="greet">¡Hola! 👋</h1>
+      <p id="sub">Tu misión de hoy · 10 minutos</p>
+    </div>
+
+    <div class="path">
+      <div class="node done l">✓</div>
+      <div class="conn"></div>
+      <div class="node done r">✓</div>
+      <div class="conn"></div>
+      <div class="node now">▶</div>
+      <div class="conn"></div>
+      <div class="node l">★</div>
+      <div class="conn"></div>
+      <div class="node r">🎁</div>
+    </div>
+    <a href="#" class="cta-mission" id="startBtn">EMPEZAR MISIÓN<small>+50 XP · mantén tu racha</small></a>
+
+    <div class="card-soft">
+      <h3>Tu semana</h3>
+      <div class="mini-stats">
+        <div class="s"><div class="v">5/7</div><div class="l">Días</div></div>
+        <div class="s"><div class="v">54′</div><div class="l">Practicado</div></div>
+        <div class="s"><div class="v">+12</div><div class="l">Palabras</div></div>
+      </div>
+      <div class="acct-row">
+        <a href="cambiar-clave.html" class="btn btn-ghost">🔒 Cambiar contraseña</a>
+        <button class="btn btn-ghost" id="logout">Salir</button>
+      </div>
+    </div>
+  </div>
+
+  <nav class="app-nav">
+    <button class="active" title="Camino">🗺️</button>
+    <button title="Liga">🏆</button>
+    <button title="Tienda">🛍️</button>
+    <button title="Perfil">👤</button>
+  </nav>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+<script src="auth.js"></script>
+<script>
+  const $ = (id) => document.getElementById(id);
+  if (ILAuth.isDemo()) $("demoBanner").classList.remove("hidden");
+
+  (async () => {
+    const p = await ILAuth.getProfile();
+    if (!p) { location.href = "index.html"; return; }
+    if (p.is_admin) { location.href = "admin.html"; return; }
+    if (p.must_change_password) { location.href = "cambiar-clave.html"; return; }
+
+    const name = (p.full_name || "").split(" ")[0] || "campeón";
+    $("greet").textContent = "¡Hola, " + name + "! 👋";
+    if (p.level) $("sub").textContent = p.level + " · misión de hoy, 10 min";
+    $("app").classList.remove("hidden");
+  })();
+
+  $("startBtn").addEventListener("click", (e) => {
+    e.preventDefault();
+    alert("🚧 ¡Las lecciones están en camino! Aquí arrancará la misión diaria de 10 minutos.");
+  });
+  $("logout").addEventListener("click", async () => { await ILAuth.signOut(); location.href = "index.html"; });
+</script>
+</body>
+</html>

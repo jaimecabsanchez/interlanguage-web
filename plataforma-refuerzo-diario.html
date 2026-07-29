@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Interlanguage HOME · El hábito diario de inglés que puedes ver</title>
+<meta name="description" content="La plataforma de refuerzo diario de Interlanguage: 10 minutos al día de inglés en casa, sincronizados con la clase de tu hijo. Rachas, ligas del cole y un reporte semanal para padres. Por 0,33 €/día.">
+<link rel="canonical" href="https://www.interlanguagestudies.es/plataforma-refuerzo-diario.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Interlanguage Studies">
+<meta property="og:title" content="Interlanguage HOME · El hábito diario de inglés que puedes ver">
+<meta property="og:description" content="10 minutos al día de inglés en casa, sincronizados con la clase. Rachas, ligas del cole y reporte semanal a padres. Por 0,33 €/día.">
+<meta property="og:locale" content="es_ES">
+<meta name="theme-color" content="#16294A">
+<link rel="icon" type="image/png" sizes="32x32" href="images/icons/favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="images/icons/favicon-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="images/icons/favicon-180.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preload" href="css/styles.css?v=8" as="style">
+<link rel="stylesheet" href="css/styles.css?v=8">
+
+<!-- ====== Estilos específicos de esta página (reutilizan los tokens del sitio) ====== -->
+<style>
+  /* nav simplificado y toggle propio (sin depender de main.js) */
+  .nav-links.home-open{transform:translateY(0)!important;}
+  .home-badge-new{display:inline-block;background:var(--coral);color:#fff;font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;padding:4px 10px;border-radius:100px;vertical-align:middle;margin-left:6px;}
+
+  /* highlight del precio en hero */
+  .price-anchor{display:inline-flex;align-items:baseline;gap:10px;background:#fff;border:1.5px solid rgba(255,107,74,.35);border-radius:16px;padding:12px 18px;box-shadow:0 8px 22px rgba(255,107,74,.12);margin:4px 0 26px;}
+  .price-anchor .pa-num{font-family:var(--font-display);font-weight:800;color:var(--coral-dark);font-size:1.7rem;line-height:1;}
+  .price-anchor .pa-txt{font-size:.9rem;color:var(--ink-soft);font-weight:600;}
+  .price-anchor .pa-txt b{color:var(--navy);}
+
+  /* maqueta de la app en el hero */
+  .home-phone{width:250px;margin:0 auto;background:linear-gradient(160deg,#22304a,#16294A);border-radius:38px;padding:11px;box-shadow:0 34px 64px rgba(22,41,74,.28);position:relative;}
+  .home-phone::before{content:"";position:absolute;top:17px;left:50%;transform:translateX(-50%);width:72px;height:5px;border-radius:5px;background:rgba(255,255,255,.2);z-index:3;}
+  .home-screen{background:var(--off);border-radius:28px;overflow:hidden;display:flex;flex-direction:column;min-height:480px;}
+  .hs-top{display:flex;justify-content:space-between;align-items:center;padding:24px 16px 10px;background:linear-gradient(180deg,rgba(255,107,74,.12),transparent);}
+  .hs-streak{font-family:var(--font-display);font-weight:800;color:var(--coral-dark);font-size:.95rem;}
+  .hs-coins{font-family:var(--font-display);font-weight:800;color:var(--navy);font-size:.9rem;}
+  .hs-hd{padding:0 18px 6px;}
+  .hs-hd .g{font-family:var(--font-display);font-weight:800;color:var(--navy);font-size:1.05rem;}
+  .hs-hd .s{font-size:.74rem;color:var(--ink-soft);}
+  .hs-path{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 0;}
+  .hs-node{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;font-size:1rem;background:#fff;border:2px solid var(--line);color:var(--teal);}
+  .hs-node.done{background:#2E9E7B;border-color:#2E9E7B;color:#fff;}
+  .hs-node.now{background:var(--coral);border-color:var(--coral);color:#fff;width:54px;height:54px;font-size:1.25rem;box-shadow:0 10px 20px rgba(255,107,74,.4);}
+  .hs-node.l{transform:translateX(-42px);}
+  .hs-node.r{transform:translateX(42px);}
+  .hs-conn{width:3px;height:11px;background:var(--line);}
+  .hs-cta{margin:6px 14px 4px;background:var(--coral);color:#fff;text-align:center;padding:12px;border-radius:14px;font-family:var(--font-display);font-weight:800;font-size:.9rem;box-shadow:0 10px 20px rgba(255,107,74,.32);}
+  .hs-cta small{display:block;font-weight:600;font-size:.66rem;opacity:.9;}
+  .hs-nav{display:flex;justify-content:space-around;padding:10px 0 14px;border-top:1px solid var(--line);font-size:1.1rem;color:var(--teal);}
+  .hs-nav span:first-child{color:var(--coral-dark);}
+
+  /* sección "lo que ve tu hijo / lo que ves tú" */
+  .home-split{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:start;}
+  @media (max-width:820px){ .home-split{grid-template-columns:1fr;} }
+  .split-card{background:#fff;border:1px solid var(--line);border-radius:22px;padding:26px;box-shadow:0 8px 20px rgba(22,41,74,.05);}
+  .split-card h3{font-size:1.15rem;color:var(--navy);margin:0 0 4px;}
+  .split-card .lead{font-size:.92rem;color:var(--ink-soft);margin:0 0 18px;}
+  .split-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:11px;}
+  .split-list li{position:relative;padding-left:26px;font-size:.92rem;color:var(--ink-soft);}
+  .split-list li::before{content:"";position:absolute;left:0;top:.5em;width:9px;height:9px;border-radius:3px;background:var(--coral);}
+
+  /* tarjeta de WhatsApp */
+  .wa-card{background:#0b141a;border-radius:20px;padding:14px 12px 16px;}
+  .wa-h{display:flex;align-items:center;gap:10px;padding:2px 4px 12px;border-bottom:1px solid rgba(255,255,255,.08);}
+  .wa-a{width:32px;height:32px;border-radius:50%;background:var(--coral);display:grid;place-items:center;color:#fff;font-weight:800;font-size:.78rem;flex:none;}
+  .wa-n{color:#e9edef;font-family:var(--font-display);font-weight:700;font-size:.86rem;line-height:1.2;}
+  .wa-s{color:#8696a0;font-size:.68rem;}
+  .wa-b{background:#005c4b;color:#e9edef;border-radius:12px;border-top-left-radius:4px;padding:12px 14px;margin-top:12px;font-size:.86rem;line-height:1.55;}
+  .wa-b .big{font-family:var(--font-display);font-weight:800;font-size:.94rem;color:#fff;display:block;margin-bottom:8px;}
+  .wa-b .ln{display:flex;gap:8px;margin:5px 0;}
+  .wa-b .ask{margin-top:11px;background:rgba(255,255,255,.1);border-radius:8px;padding:9px 11px;font-style:italic;}
+  .wa-b .lnk{margin-top:11px;color:#53bdeb;font-weight:600;font-size:.82rem;}
+  .wa-b .tm{text-align:right;font-size:.6rem;color:#8696a0;margin-top:8px;}
+
+  /* planes / pricing */
+  .home-tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;align-items:stretch;margin-top:14px;}
+  @media (max-width:820px){ .home-tiers{grid-template-columns:1fr;} }
+  .home-tier{background:#fff;border:1px solid var(--line);border-radius:20px;padding:28px 24px;display:flex;flex-direction:column;box-shadow:0 8px 20px rgba(22,41,74,.05);position:relative;}
+  .home-tier.feat{border:2px solid var(--coral);box-shadow:0 20px 44px rgba(255,107,74,.18);}
+  .home-tier .badge{position:absolute;top:-13px;left:24px;background:var(--coral);color:#fff;font-size:.64rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;padding:6px 13px;border-radius:100px;box-shadow:0 6px 14px rgba(255,107,74,.3);}
+  .home-tier .tname{font-family:var(--font-display);font-weight:800;color:var(--navy);font-size:1.1rem;}
+  .home-tier .tprice{font-family:var(--font-display);font-size:2rem;font-weight:800;color:var(--navy);margin:8px 0 2px;}
+  .home-tier.feat .tprice{color:var(--coral-dark);}
+  .home-tier .tprice small{font-size:.85rem;color:var(--ink-soft);font-weight:600;}
+  .home-tier .tdesc{font-size:.85rem;color:var(--ink-soft);margin-bottom:16px;min-height:2.6em;}
+  .home-tier ul{list-style:none;padding:0;margin:0 0 20px;display:flex;flex-direction:column;gap:10px;font-size:.88rem;}
+  .home-tier ul li{position:relative;padding-left:24px;color:var(--ink-soft);}
+  .home-tier ul li::before{content:"✓";position:absolute;left:0;top:0;color:#2E9E7B;font-weight:800;}
+  .home-tier ul li.off{color:var(--ink-soft);opacity:.55;}
+  .home-tier ul li.off::before{content:"–";color:var(--ink-soft);}
+  .home-tier .btn-primary,.home-tier .btn-outline{width:100%;text-align:center;margin-top:auto;font-size:.92rem;padding:13px 20px;}
+  .price-note{text-align:center;font-size:.86rem;color:var(--ink-soft);margin-top:20px;}
+
+  /* mini-faq */
+  .home-faq{max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:12px;}
+  .home-faq details{background:#fff;border:1px solid var(--line);border-radius:14px;padding:4px 20px;}
+  .home-faq summary{cursor:pointer;font-family:var(--font-display);font-weight:700;color:var(--navy);font-size:.98rem;padding:14px 0;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:12px;}
+  .home-faq summary::-webkit-details-marker{display:none;}
+  .home-faq summary::after{content:"+";color:var(--coral-dark);font-size:1.3rem;font-weight:700;flex:none;}
+  .home-faq details[open] summary::after{content:"–";}
+  .home-faq p{color:var(--ink-soft);font-size:.92rem;line-height:1.6;padding:0 0 16px;margin:0;}
+
+  /* etapas */
+  .stage-tag{font-family:var(--font-body);font-weight:800;font-size:.7rem;text-transform:uppercase;letter-spacing:.05em;color:var(--coral-dark);}
+</style>
+</head>
+<body>
+
+<!-- ====== HEADER (versión estática, enlaza a la home) ====== -->
+<header class="site">
+  <nav class="nav container" style="max-width:1200px; padding-left:40px; padding-right:40px;">
+    <a href="index.html#inicio"><picture><source type="image/webp" srcset="images/icons/logo.webp"><img src="images/icons/logo.png" class="brand-logo" alt="Interlanguage Studies" width="334" height="152"></picture></a>
+    <div class="nav-links" id="navLinks">
+      <a href="index.html#servicio-metodologia">Metodología</a>
+      <a href="index.html#servicios">Programas</a>
+      <a href="index.html#testimonios">Testimonios</a>
+      <a href="index.html#contacto" class="nav-cta">Reservar una llamada</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menú" aria-expanded="false">☰</button>
+  </nav>
+</header>
+
+<!-- ====== 1 · HERO ====== -->
+<section class="camp-hero">
+  <div class="container">
+    <div class="camp-hero-grid">
+      <div class="camp-hero-content">
+        <span class="eyebrow">Nuevo · Refuerzo diario en casa <span class="home-badge-new">Interlanguage HOME</span></span>
+        <h1>El método Interlanguage, ahora también <span style="color:var(--coral-dark)">en casa</span>.</h1>
+        <p style="font-size:1.12rem; color:var(--ink-soft); max-width:30em; margin:0 0 18px;">Dos horas de clase a la semana construyen. Pero el inglés se fija <strong style="color:var(--navy)">todos los días</strong>. HOME son 10 minutos diarios, jugados, sincronizados con la clase de tu hijo — y un reporte cada domingo para que veas exactamente qué ha aprendido.</p>
+
+        <div class="price-anchor">
+          <span class="pa-num">0,33 €</span>
+          <span class="pa-txt">al día<br><b>+10 €/mes</b> en la actividad</span>
+        </div>
+
+        <ul class="camp-hero-facts">
+          <li>🔥 10–15 min al día</li>
+          <li>📱 Tablet, móvil o web</li>
+          <li>🏆 Ligas con su propia clase</li>
+          <li>👨‍👩‍👧 Reporte semanal a padres</li>
+        </ul>
+        <div class="hero-ctas" style="display:flex; gap:12px; flex-wrap:wrap;">
+          <a href="index.html#contacto" class="btn-primary" data-cta="home-hero">Añadir a mi matrícula</a>
+          <a href="#planes" class="btn-outline">Ver planes y precio</a>
+        </div>
+      </div>
+
+      <div class="camp-hero-media" style="background:none; box-shadow:none; overflow:visible; aspect-ratio:auto;">
+        <div class="home-phone" role="img" aria-label="La app de Interlanguage HOME: mapa del día con racha y misión diaria">
+          <div class="home-screen">
+            <div class="hs-top"><span class="hs-streak">🔥 12</span><span class="hs-coins">💎 240</span></div>
+            <div class="hs-hd"><div class="g">¡Hola, Lucía! 👋</div><div class="s">Tu misión de hoy · 10 min</div></div>
+            <div class="hs-path">
+              <div class="hs-node done l">✓</div>
+              <div class="hs-conn"></div>
+              <div class="hs-node done r">✓</div>
+              <div class="hs-conn"></div>
+              <div class="hs-node now">▶</div>
+              <div class="hs-conn"></div>
+              <div class="hs-node l">★</div>
+              <div class="hs-conn"></div>
+              <div class="hs-node r">🎁</div>
+            </div>
+            <div class="hs-cta">EMPEZAR MISIÓN<small>+50 XP · mantén tu racha</small></div>
+            <div class="hs-nav"><span>🗺️</span><span>🏆</span><span>🛍️</span><span>👤</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== 2 · POR QUÉ (los 3 pilares) ====== -->
+<section class="camp-section bg-white">
+  <div class="container">
+    <div class="camp-section-head">
+      <span class="eyebrow">Por qué funciona</span>
+      <h2>Tres métodos probados, en una sola rutina de 10 minutos</h2>
+      <p>Tomamos lo mejor de cada mundo y lo unimos con lo único que tenemos nosotros y una app no tiene: un profesor de verdad.</p>
+    </div>
+    <div class="pillar-grid">
+      <div class="pillar-card">
+        <div class="pillar-ic">📅</div>
+        <h3>Constancia (Kumon)</h3>
+        <p>Sesiones muy cortas y diarias, con micro-objetivos que suman. Poco cada día, todos los días. Así se crea el hábito.</p>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-ic">🎮</div>
+        <h3>Ganas de volver (Duolingo)</h3>
+        <p>Rachas, gemas, avatares y ligas. El niño quiere entrar sin que se lo pidas. Feedback inmediato y cero frustración.</p>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-ic">👩‍🏫</div>
+        <h3>Su profe de verdad</h3>
+        <p>El contenido está sincronizado con su clase. El profe reconoce en persona a la "estrella de la semana". Eso no lo da ninguna app.</p>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-ic">📊</div>
+        <h3>Tú lo ves todo</h3>
+        <p>Cada domingo recibes en tu WhatsApp qué inglés nuevo sabe tu hijo esta semana. Tangible y comprobable en casa.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== 3 · CÓMO ES UNA SESIÓN ====== -->
+<section class="camp-section bg-cream">
+  <div class="container">
+    <div class="camp-section-head">
+      <span class="eyebrow">Una sesión de 10 minutos</span>
+      <h2>Corta, divertida y con un premio al final</h2>
+      <p>Diseñada para que tu hijo la termine con una sonrisa y con ganas de volver mañana.</p>
+    </div>
+    <div style="display:flex; flex-wrap:wrap; gap:18px 0;">
+      <div class="day-step"><div class="day-step-ic">1</div><span>Repaso relámpago de lo de ayer</span></div>
+      <div class="day-step"><div class="day-step-ic">2</div><span>Un concepto nuevo, con animación</span></div>
+      <div class="day-step"><div class="day-step-ic">3</div><span>Práctica: escuchar, elegir y hablar al micro</span></div>
+      <div class="day-step"><div class="day-step-ic">4</div><span>Reto del día con puntos extra</span></div>
+      <div class="day-step"><div class="day-step-ic">5</div><span>Recompensa: XP, racha y medallas</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== 4 · LO QUE VE TU HIJO / LO QUE VES TÚ ====== -->
+<section class="camp-section bg-white">
+  <div class="container">
+    <div class="camp-section-head">
+      <span class="eyebrow">Dos vistas, una misma app</span>
+      <h2>Tu hijo juega. Tú compruebas que aprende.</h2>
+    </div>
+    <div class="home-split">
+      <div class="split-card">
+        <h3>🎒 Lo que ve tu hijo</h3>
+        <p class="lead">Su propio perfil que crece con él — su "sala de trofeos".</p>
+        <ul class="split-list">
+          <li>El mapa del día: sabe siempre qué hacer, sin decisiones.</li>
+          <li>Su racha 🔥, sus gemas y su puesto en la liga del cole.</li>
+          <li>Un perfil con su evolución: constancia, nivel y medallas.</li>
+          <li>La biblioteca "lo que ya sé decir": cada frase que desbloquea se guarda.</li>
+          <li>Una mascota que evoluciona según practica.</li>
+        </ul>
+      </div>
+      <div class="split-card">
+        <h3>📲 Lo que ves tú</h3>
+        <p class="lead">Cada domingo, en tu WhatsApp. Sin abrir otra app.</p>
+        <div class="wa-card" role="img" aria-label="Ejemplo de reporte semanal por WhatsApp">
+          <div class="wa-h"><div class="wa-a">IL</div><div><div class="wa-n">Interlanguage HOME</div><div class="wa-s">en línea</div></div></div>
+          <div class="wa-b">
+            <span class="big">📚 Resumen de Lucía · esta semana</span>
+            <div class="ln"><span>✅</span><span><b>5/7 días</b> de práctica — ¡racha de 12 días!</span></div>
+            <div class="ln"><span>🆕</span><span><b>12 palabras</b> nuevas · <i>la rutina diaria</i></span></div>
+            <div class="ln"><span>🎯</span><span>Ya sabe decir a qué hora se levanta y desayuna.</span></div>
+            <div class="ask">👉 Pregúntale: <b>"What time do you wake up?"</b></div>
+            <div class="lnk">Ver informe completo →</div>
+            <div class="tm">dom 19:04 ✓✓</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== 5 · PLANES / PRECIO ====== -->
+<section class="camp-section bg-mint" id="planes">
+  <div class="container">
+    <div class="camp-section-head">
+      <span class="eyebrow">Planes</span>
+      <h2>Elige cómo quieres que aprenda tu hijo</h2>
+      <p>HOME se añade a la actividad extraescolar que ya conoces. Sin permanencia adicional: se activa y se pausa cuando quieras.</p>
+    </div>
+    <div class="home-tiers">
+      <div class="home-tier">
+        <span class="tname">Solo Clase</span>
+        <div class="tprice">Tu cuota <small>actual</small></div>
+        <p class="tdesc">La actividad extraescolar presencial, tal como es hoy.</p>
+        <ul>
+          <li>Clases presenciales con profe Interlanguage</li>
+          <li class="off">Práctica diaria guiada en casa</li>
+          <li class="off">Reporte de avance a padres</li>
+          <li class="off">Ligas, rachas y perfil de evolución</li>
+        </ul>
+        <a href="index.html#contacto" class="btn-outline">Seguir así</a>
+      </div>
+      <div class="home-tier feat">
+        <span class="badge">El recomendado · 8 de cada 10 familias</span>
+        <span class="tname">Clase + HOME</span>
+        <div class="tprice">+10 €<small>/mes</small></div>
+        <p class="tdesc">El método completo: se aprende en clase, se fija en casa.</p>
+        <ul>
+          <li>Todo lo de Solo Clase</li>
+          <li><strong>Plataforma diaria</strong> (10–15 min)</li>
+          <li>Contenido <strong>sincronizado con su clase</strong></li>
+          <li><strong>Reporte semanal</strong> a padres por WhatsApp</li>
+          <li>Ligas del cole, rachas, medallas y perfil</li>
+        </ul>
+        <a href="index.html#contacto" class="btn-primary" data-cta="home-plan">Añadir HOME</a>
+      </div>
+      <div class="home-tier">
+        <span class="tname">Interlanguage Full</span>
+        <div class="tprice">+22 €<small>/mes</small></div>
+        <p class="tdesc">Para familias que quieren acompañamiento cercano.</p>
+        <ul>
+          <li>Todo lo de Clase + HOME</li>
+          <li>Informe mensual detallado</li>
+          <li>Videollamada de tutoría trimestral</li>
+          <li>Club de conversación online</li>
+        </ul>
+        <a href="index.html#contacto" class="btn-outline">Me interesa</a>
+      </div>
+    </div>
+    <p class="price-note">💡 <strong>Prueba 14 días incluidos</strong> al activarlo. Si no encaja con tu hijo, lo pausas y no pagas el extra.</p>
+  </div>
+</section>
+
+<!-- ====== 6 · POR EDADES ====== -->
+<section class="camp-section bg-white">
+  <div class="container">
+    <div class="camp-section-head">
+      <span class="eyebrow">Adaptado a su edad</span>
+      <h2>Una experiencia distinta para cada etapa</h2>
+      <p>No cambia solo el contenido: cambian la duración, el tipo de juego y la forma de aprender. Todo con Cambridge como horizonte.</p>
+    </div>
+    <div class="pillar-grid">
+      <div class="pillar-card">
+        <span class="stage-tag">Infantil · 3–5</span>
+        <h3>Little</h3>
+        <p>5–8 min. Sin texto: audio, imagen y voz. Vocabulario y phonics por juego, con el papá o la mamá al lado.</p>
+      </div>
+      <div class="pillar-card">
+        <span class="stage-tag">Primaria baja · 6–8</span>
+        <h3>Explorers</h3>
+        <p>8–10 min. Phonics, inicio de lectura y primeras frases. Gamificación alta: rachas, gemas y avatar.</p>
+      </div>
+      <div class="pillar-card">
+        <span class="stage-tag">Primaria alta · 9–11</span>
+        <h3>Adventurers</h3>
+        <p>10–12 min. Lectura, escritura y gramática funcional. Ligas competitivas con su clase. Movers y Flyers.</p>
+      </div>
+      <div class="pillar-card">
+        <span class="stage-tag">Secundaria · 12–16</span>
+        <h3>Achievers</h3>
+        <p>12–15 min. Inglés real y preparación de examen (KET/PET). Un diseño más maduro, orientado a metas.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== 7 · FAQ ====== -->
+<section class="camp-section bg-off">
+  <div class="container">
+    <div class="camp-section-head" style="margin-left:auto;margin-right:auto;text-align:center;">
+      <span class="eyebrow">Dudas frecuentes</span>
+      <h2>Lo que más nos preguntan los padres</h2>
+    </div>
+    <div class="home-faq">
+      <details>
+        <summary>¿No es demasiada pantalla?</summary>
+        <p>Son 10 minutos estructurados y educativos, muy distintos de una hora pasiva de vídeos. La app tiene un límite de sesión visible y, cada semana, incluye algún reto "sin pantalla" (hablar con un familiar, buscar objetos por casa). El objetivo es hábito, no tiempo delante del móvil.</p>
+      </details>
+      <details>
+        <summary>¿Tengo que estar encima para que lo haga?</summary>
+        <p>No. El sistema está pensado para que tu hijo entre solo: la racha, las ligas con sus compañeros y las recompensas tiran de él. Tú recibes el reporte del domingo; el día a día lo lleva él.</p>
+      </details>
+      <details>
+        <summary>¿Sirve de algo o es solo un juego?</summary>
+        <p>El contenido está sincronizado con lo que da en su clase de Interlanguage y mapeado a los niveles de Cambridge. Cada domingo verás, en concreto, qué palabras y estructuras nuevas sabe. Y podrás comprobarlo tú mismo en casa.</p>
+      </details>
+      <details>
+        <summary>¿Y si a mi hijo no le engancha?</summary>
+        <p>Por eso incluimos 14 días de prueba. Si en dos semanas no ha encendido su rutina, lo pausas y no pagas el extra. Sin permanencia.</p>
+      </details>
+      <details>
+        <summary>¿Necesito una tablet?</summary>
+        <p>No. Funciona en tablet, en móvil (incluso de gama media) y en el navegador del ordenador. Con el mismo usuario en todos.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ====== 8 · CTA FINAL ====== -->
+<section class="camp-section bg-white">
+  <div class="container">
+    <div class="final-cta">
+      <h2>Dale a tu hijo el hábito del inglés esta temporada</h2>
+      <p>Por 0,33 € al día. Actívalo con tu matrícula de septiembre y empieza con 14 días de prueba.</p>
+      <a href="index.html#contacto" class="btn-primary" data-cta="home-final">Añadir HOME a mi matrícula</a>
+    </div>
+  </div>
+</section>
+
+<!-- ====== FOOTER ====== -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <picture><source type="image/webp" srcset="images/icons/logo.webp"><img src="images/icons/logo.png" class="footer-logo" alt="Interlanguage Studies" width="334" height="152"></picture>
+      <p>30 años formando el inglés de generaciones de familias españolas, desde los campamentos de verano hasta los estudios en el extranjero.</p>
+      <div class="footer-social">
+        <a href="#" aria-label="Instagram">IG</a>
+        <a href="#" aria-label="Facebook">FB</a>
+        <a href="#" aria-label="LinkedIn">IN</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Navegación</h4>
+      <ul>
+        <li><a href="index.html#servicio-metodologia">Por qué nosotros</a></li>
+        <li><a href="index.html#servicios">Servicios</a></li>
+        <li><a href="index.html#destinos">Destinos</a></li>
+        <li><a href="index.html#testimonios">Testimonios</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Servicios</h4>
+      <ul>
+        <li><a href="index.html#servicios">Campamentos de verano</a></li>
+        <li><a href="index.html#servicios">Inglés extraescolar</a></li>
+        <li><a href="plataforma-refuerzo-diario.html">Interlanguage HOME</a></li>
+        <li><a href="index.html#destinos">Estudiar en el extranjero</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contacto</h4>
+      <ul>
+        <li><a href="mailto:info@interlanguagestudies.es">info@interlanguagestudies.es</a></li>
+        <li><a href="tel:+34910000000">+34 910 000 000</a></li>
+        <li><a href="index.html#contacto">Formulario de contacto</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© Interlanguage Studies · 30 años enseñando inglés</span>
+    <div><a href="#">Aviso legal</a><a href="#">Política de privacidad</a></div>
+  </div>
+</footer>
+
+<script>
+  /* toggle de menú móvil, autocontenido (no depende de main.js) */
+  (function(){
+    var t=document.getElementById('navToggle'), l=document.getElementById('navLinks');
+    if(t&&l){ t.addEventListener('click', function(){
+      var open=l.classList.toggle('home-open');
+      t.setAttribute('aria-expanded', open?'true':'false');
+    }); }
+  })();
+</script>
+</body>
+</html>

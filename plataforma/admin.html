@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Panel · Interlanguage HOME</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/png" sizes="32x32" href="../images/icons/favicon-32.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<div id="demoBanner" class="demo-banner hidden">🧪 <b>Modo demo</b> · las cuentas se guardan solo en este navegador</div>
+
+<div id="panel" class="admin-shell hidden">
+  <div class="admin-head">
+    <div>
+      <h1>🦊 Panel · Interlanguage HOME</h1>
+      <div class="who" id="who"></div>
+    </div>
+    <button class="btn btn-ghost" id="logout">Salir</button>
+  </div>
+
+  <div class="admin-grid">
+    <!-- CREAR ALUMNO -->
+    <div class="panel">
+      <h2>Nueva cuenta de alumno</h2>
+      <p class="pdesc">Se genera automáticamente una contraseña. El alumno la cambiará en su primer acceso.</p>
+      <div class="msg error" id="cmsg"></div>
+      <form id="createForm">
+        <div class="field">
+          <label for="full_name">Nombre del alumno</label>
+          <input type="text" id="full_name" placeholder="Ej: Lucía García" autocomplete="off">
+        </div>
+        <div class="field">
+          <label for="username">Usuario</label>
+          <input type="text" id="username" placeholder="lucia.g" autocapitalize="none" spellcheck="false" autocomplete="off">
+          <div class="hint">Solo letras, números y puntos. Sin espacios.</div>
+        </div>
+        <div class="field">
+          <label for="stage">Etapa</label>
+          <select id="stage" style="width:100%;padding:13px 15px;border:1.5px solid var(--line-2);border-radius:14px;font-size:1rem;font-family:inherit;background:#fff;color:var(--ink);">
+            <option value="Little">Little · Infantil (3–5)</option>
+            <option value="Explorers" selected>Explorers · Primaria baja (6–8)</option>
+            <option value="Adventurers">Adventurers · Primaria alta (9–11)</option>
+            <option value="Achievers">Achievers · Secundaria (12–16)</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="level">Nivel (opcional)</label>
+          <input type="text" id="level" placeholder="Ej: Explorer · A1" autocomplete="off">
+        </div>
+        <div class="field">
+          <label for="parent_email">Email del padre/madre (opcional)</label>
+          <input type="text" id="parent_email" placeholder="para avisos y recuperación" autocomplete="off">
+        </div>
+        <button type="submit" class="btn btn-primary btn-block" id="createBtn">Crear y generar credenciales</button>
+      </form>
+
+      <div class="cred-box hidden" id="credBox">
+        <h3>✅ Cuenta creada — entrega estos datos a la familia</h3>
+        <div class="cred-row"><span class="k">Usuario</span><span class="v" id="credUser"></span><button class="copy-btn" data-copy="credUser">Copiar</button></div>
+        <div class="cred-row"><span class="k">Contraseña</span><span class="v" id="credPass"></span><button class="copy-btn" data-copy="credPass">Copiar</button></div>
+        <button class="btn btn-ghost btn-block" id="copyAll" style="margin-top:6px;font-size:.9rem;padding:11px;">Copiar mensaje para WhatsApp</button>
+      </div>
+    </div>
+
+    <!-- LISTA -->
+    <div class="panel">
+      <h2>Alumnos con acceso</h2>
+      <p class="pdesc"><span id="count">0</span> cuentas activas.</p>
+      <div class="table-wrap">
+        <table class="students">
+          <thead><tr><th>Alumno</th><th>Usuario</th><th>Etapa</th><th>Estado</th><th></th></tr></thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+<script src="auth.js"></script>
+<script>
+  const $ = (id) => document.getElementById(id);
+  if (ILAuth.isDemo()) $("demoBanner").classList.remove("hidden");
+
+  let me = null;
+  (async () => {
+    me = await ILAuth.getProfile();
+    if (!me) { location.href = "index.html"; return; }
+    if (!me.is_admin) { location.href = "inicio.html"; return; }
+    $("who").textContent = "Conectado como " + (me.full_name || me.username);
+    $("panel").classList.remove("hidden");
+    renderList();
+  })();
+
+  // sugerir usuario a partir del nombre
+  $("full_name").addEventListener("input", () => {
+    if ($("username").dataset.touched) return;
+    const parts = $("full_name").value.trim().toLowerCase().split(/\s+/);
+    if (parts[0]) $("username").value = parts[0] + (parts[1] ? "." + parts[1][0] : "");
+  });
+  $("username").addEventListener("input", () => { $("username").dataset.touched = "1"; });
+
+  async function renderList() {
+    const list = await ILAuth.listStudents();
+    $("count").textContent = list.length;
+    $("rows").innerHTML = list.map(s => `
+      <tr>
+        <td><strong>${esc(s.full_name || "—")}</strong></td>
+        <td class="mono">${esc(s.username)}</td>
+        <td>${esc(s.stage || "—")}</td>
+        <td>${s.must_change_password
+            ? '<span class="tag warn">Pendiente 1.er acceso</span>'
+            : '<span class="tag ok">Activa</span>'}</td>
+        <td><button class="link-btn" data-reset="${esc(s.username)}">Restablecer clave</button></td>
+      </tr>`).join("") || `<tr><td colspan="5" style="color:var(--faint);padding:18px;">Aún no hay alumnos. Crea el primero →</td></tr>`;
+    document.querySelectorAll("[data-reset]").forEach(b =>
+      b.addEventListener("click", () => doReset(b.getAttribute("data-reset"))));
+  }
+  const esc = (s) => String(s == null ? "" : s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+  function showCreds(username, password) {
+    $("credUser").textContent = username;
+    $("credPass").textContent = password;
+    $("credBox").classList.remove("hidden");
+    $("credBox").scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }
+
+  $("createForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const m = $("cmsg"); m.classList.remove("show");
+    const btn = $("createBtn"); btn.disabled = true; const old = btn.textContent; btn.textContent = "Creando…";
+    const res = await ILAuth.createStudent({
+      full_name: $("full_name").value.trim(),
+      username: $("username").value.trim(),
+      stage: $("stage").value,
+      level: $("level").value.trim(),
+      parent_email: $("parent_email").value.trim()
+    });
+    btn.disabled = false; btn.textContent = old;
+    if (!res.ok) { m.textContent = res.error; m.classList.add("show"); return; }
+    showCreds(res.username, res.password);
+    $("createForm").reset(); delete $("username").dataset.touched;
+    renderList();
+  });
+
+  async function doReset(username) {
+    if (!confirm("¿Generar una nueva contraseña para \"" + username + "\"? La actual dejará de funcionar.")) return;
+    const res = await ILAuth.resetPassword(username);
+    if (!res.ok) { alert(res.error); return; }
+    showCreds(res.username, res.password);
+    renderList();
+  }
+
+  document.querySelectorAll(".copy-btn").forEach(b => b.addEventListener("click", () => {
+    navigator.clipboard.writeText($(b.getAttribute("data-copy")).textContent);
+    b.textContent = "¡Copiado!"; setTimeout(() => b.textContent = "Copiar", 1200);
+  }));
+  $("copyAll").addEventListener("click", () => {
+    const msg = `¡Hola! Ya tenéis acceso a Interlanguage HOME 🦊\n\nEntrad en: ${location.origin}/plataforma/\nUsuario: ${$("credUser").textContent}\nContraseña: ${$("credPass").textContent}\n\nEn el primer acceso os pedirá crear vuestra propia contraseña. ¡A por la primera racha! 🔥`;
+    navigator.clipboard.writeText(msg);
+    $("copyAll").textContent = "¡Mensaje copiado!"; setTimeout(() => $("copyAll").textContent = "Copiar mensaje para WhatsApp", 1400);
+  });
+
+  $("logout").addEventListener("click", async () => { await ILAuth.signOut(); location.href = "index.html"; });
+</script>
+</body>
+</html>
