@@ -37,7 +37,7 @@
       <div class="conn"></div>
       <div class="node r">🎁</div>
     </div>
-    <a href="#" class="cta-mission" id="startBtn">EMPEZAR MISIÓN<small>+50 XP · mantén tu racha</small></a>
+    <a href="leccion.html" class="cta-mission" id="startBtn">EMPEZAR MISIÓN<small>+50 XP · mantén tu racha</small></a>
 
     <div class="card-soft">
       <h3>Tu semana</h3>
@@ -54,10 +54,10 @@
   </div>
 
   <nav class="app-nav">
-    <button class="active" title="Camino">🗺️</button>
-    <button title="Liga">🏆</button>
-    <button title="Tienda">🛍️</button>
-    <button title="Perfil">👤</button>
+    <button class="active" title="Camino" onclick="location.href='inicio.html'">🗺️</button>
+    <button title="Liga" onclick="location.href='liga.html'">🏆</button>
+    <button title="Tienda" onclick="alert('🛍️ La tienda de avatares llegará pronto: gasta tus gemas en ropa, mascotas y fondos para tu personaje.')">🛍️</button>
+    <button title="Perfil" onclick="location.href='perfil.html'">👤</button>
   </nav>
 </div>
 
@@ -80,10 +80,6 @@
     $("app").classList.remove("hidden");
   })();
 
-  $("startBtn").addEventListener("click", (e) => {
-    e.preventDefault();
-    alert("🚧 ¡Las lecciones están en camino! Aquí arrancará la misión diaria de 10 minutos.");
-  });
   $("logout").addEventListener("click", async () => { await ILAuth.signOut(); location.href = "index.html"; });
 </script>
 </body>
