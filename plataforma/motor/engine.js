@@ -132,6 +132,79 @@
     return { read: () => "hablado", correct: () => true, answered: () => true, solution: () => {}, selfDone: true };
   };
 
+  /* P3 · Emparejar (unir parejas). Accesible: tocar izquierda, luego su pareja. */
+  T.emparejar = (host, ex) => {
+    const pairs = ex.pares || [];
+    const rights = shuffle(pairs.map((p, i) => ({ label: p.b, i })));
+    const assign = {};          // índice izquierda -> índice original de la derecha
+    let sel = null;             // fila de la izquierda seleccionada
+    const rowsWrap = el("div", "eng-match");
+    const bank = el("div", "eng-bank");
+    host.appendChild(rowsWrap); host.appendChild(bank);
+
+    const rightUsed = (ri) => Object.keys(assign).some(k => assign[k] === ri);
+    function redraw() {
+      rowsWrap.innerHTML = ""; bank.innerHTML = "";
+      pairs.forEach((p, li) => {
+        const row = el("button", "eng-mrow" + (sel === li ? " sel" : "")); row.type = "button";
+        row.setAttribute("aria-label", "Emparejar " + p.a);
+        row.appendChild(el("span", "eng-mleft", p.a));
+        const slot = el("span", "eng-mslot" + (assign[li] != null ? " filled" : ""), assign[li] != null ? pairs[assign[li]].b : "?");
+        row.appendChild(slot);
+        row.addEventListener("click", () => {
+          if (assign[li] != null) { delete assign[li]; sel = null; }   // liberar
+          else sel = (sel === li ? null : li);
+          redraw();
+        });
+        rowsWrap.appendChild(row);
+      });
+      rights.forEach(r => {
+        if (rightUsed(r.i)) return;
+        const b = el("button", "eng-chip", r.label); b.type = "button";
+        b.addEventListener("click", () => { if (sel == null) return; assign[sel] = r.i; sel = null; redraw(); });
+        bank.appendChild(b);
+      });
+    }
+    redraw();
+    return {
+      read: () => assign,
+      answered: () => Object.keys(assign).length === pairs.length,
+      correct: () => pairs.every((p, li) => assign[li] === li),
+      solution: () => host.appendChild(el("div", "eng-sol", "Parejas: " + pairs.map(p => p.a + "–" + p.b).join(", ")))
+    };
+  };
+
+  /* P7 · Comprensión (estímulo + subpreguntas de opción única) */
+  T.comprension = (host, ex) => {
+    const est = ex.estimulo || {};
+    if (est.texto) host.appendChild(el("div", "eng-stimulus", est.texto));
+    const qs = ex.preguntas || [];
+    const sels = new Array(qs.length).fill(-1);
+    const box = el("div", "eng-subqs"); host.appendChild(box);
+    qs.forEach((q, qi) => {
+      const qEl = el("div", "eng-subq");
+      qEl.appendChild(el("div", "eng-subq-q", q.pregunta));
+      const opts = el("div", "eng-suboptions");
+      (q.opciones || []).forEach((o, oi) => {
+        const b = el("button", "eng-subopt", o.texto); b.type = "button";
+        b.setAttribute("aria-pressed", "false");
+        b.addEventListener("click", () => {
+          sels[qi] = oi;
+          opts.querySelectorAll(".eng-subopt").forEach((x, xi) => { x.classList.toggle("sel", xi === oi); x.setAttribute("aria-pressed", xi === oi ? "true" : "false"); });
+        });
+        opts.appendChild(b);
+      });
+      qEl.appendChild(opts); box.appendChild(qEl);
+    });
+    return {
+      read: () => sels,
+      answered: () => sels.every(s => s >= 0),
+      correct: () => qs.every((q, qi) => q.opciones[sels[qi]] && q.opciones[sels[qi]].correcta === true),
+      solution: () => box.querySelectorAll(".eng-subq").forEach((qEl, qi) =>
+        qEl.querySelectorAll(".eng-subopt").forEach((x, xi) => { if (qs[qi].opciones[xi].correcta) x.classList.add("good"); }))
+    };
+  };
+
   /* ============================================================
      RENDER (el ciclo: mostrar -> comprobar -> feedback -> continuar)
      ============================================================ */

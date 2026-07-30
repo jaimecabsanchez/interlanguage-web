@@ -131,6 +131,25 @@ window.IL_CONTENIDO = {
           id: "lc-5", tipo: "hablar", habilidad: "speaking", nivel: "A1", edad: [7,11],
           etiqueta: "A hablar", instruccion: "Di en voz alta:",
           frase: "I like apples and bananas."
+        },
+        {
+          id: "lc-6", tipo: "emparejar", habilidad: "vocabulary", nivel: "Pre-A1", edad: [6,10],
+          etiqueta: "Relaciona", instruccion: "Une cada palabra con su dibujo",
+          pares: [
+            { a: "apple", b: "🍎" },
+            { a: "banana", b: "🍌" },
+            { a: "milk", b: "🥛" },
+            { a: "bread", b: "🍞" }
+          ]
+        },
+        {
+          id: "lc-7", tipo: "comprension", habilidad: "reading", nivel: "A1", edad: [8,11],
+          etiqueta: "Lee y responde", instruccion: "Lee y responde:",
+          estimulo: { texto: "Tom likes apples and milk. He doesn't like bread." },
+          preguntas: [
+            { pregunta: "Does Tom like apples?", opciones: [{ texto: "Yes", correcta: true }, { texto: "No" }] },
+            { pregunta: "Does Tom like bread?", opciones: [{ texto: "Yes" }, { texto: "No", correcta: true }] }
+          ]
         }
       ]
     }
