@@ -123,7 +123,9 @@
   /* P9 · Hablar (interino): escuchar y repetir, sin grabar ni evaluar */
   T.hablar = (host, ex) => {
     const card = el("div", "eng-speak");
-    card.appendChild(el("div", "eng-speak-phrase", ex.frase || ""));
+    const phrase = el("div", "eng-speak-phrase", ex.frase || "");
+    phrase.setAttribute("lang", "en");   // pronunciación correcta del lector de pantalla
+    card.appendChild(phrase);
     const listen = el("button", "btn btn-ghost", "🔊 Escuchar");
     listen.type = "button";
     listen.addEventListener("click", () => speak(ex.frase));
@@ -177,7 +179,7 @@
   /* P7 · Comprensión (estímulo + subpreguntas de opción única) */
   T.comprension = (host, ex) => {
     const est = ex.estimulo || {};
-    if (est.texto) host.appendChild(el("div", "eng-stimulus", est.texto));
+    if (est.texto) { const s = el("div", "eng-stimulus", est.texto); s.setAttribute("lang", est.lang || "en"); host.appendChild(s); }
     const qs = ex.preguntas || [];
     const sels = new Array(qs.length).fill(-1);
     const box = el("div", "eng-subqs"); host.appendChild(box);

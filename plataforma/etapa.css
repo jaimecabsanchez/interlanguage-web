@@ -45,6 +45,13 @@ body[data-stage="eso"] .pf-av{ border-radius:16px; }
 .il-done h2{ font-family:'Plus Jakarta Sans'; color:#16294A; margin:8px 0 4px; }
 .il-done p{ color:#5C6B7A; margin:0 0 14px; }
 
+/* Foco visible por teclado (accesibilidad) en toda la app del alumno */
+.app-nav button:focus-visible,
+.cta-mission:focus-visible,
+.btn:focus-visible,
+a:focus-visible{ outline:3px solid #FF6B4A; outline-offset:2px; border-radius:10px; }
+
 @media (prefers-reduced-motion: reduce){
   .il-skeleton .bar::after{ animation:none; }
+  .cta-mission, .node.now{ animation:none !important; }
 }
