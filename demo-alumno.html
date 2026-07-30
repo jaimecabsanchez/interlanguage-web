@@ -7,7 +7,11 @@
   }
   *{box-sizing:border-box;margin:0;padding:0;}
   .wrap{min-height:100vh;display:flex;justify-content:center;background:#dfe5ec;font-family:var(--sans);}
-  .frame{width:100%;max-width:430px;background:var(--paper);min-height:100vh;display:flex;flex-direction:column;position:relative;box-shadow:0 0 50px rgba(0,0,0,.12);overflow:hidden;}
+  .frame{width:100%;max-width:430px;background:var(--paper);height:100vh;display:flex;flex-direction:column;position:relative;box-shadow:0 0 50px rgba(0,0,0,.12);overflow:hidden;}
+  @media(min-width:520px){
+    .wrap{align-items:center;background:radial-gradient(1100px 560px at 50% -5%, #FDE7DF 0%, #EAF1F8 55%, #E3EBF3 100%);padding:22px 0;}
+    .frame{height:min(90vh,840px);max-width:400px;border-radius:48px;border:12px solid #16294A;box-shadow:0 44px 90px -34px rgba(22,41,74,.55);}
+  }
   .screen{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;}
   .pad{padding:0 18px 18px;}
   .view{display:none;}
@@ -142,7 +146,7 @@
 </style>
 
 <div class="wrap">
-  <div class="frame" id="frame">
+  <div class="frame nonav" id="frame">
     <div class="demo-b">🎮 <b>Demo</b> · así entra y practica un alumno de Interlanguage HOME</div>
     <div class="screen">
 

@@ -21,6 +21,8 @@ perfiles alumno + admin + vista de familias · stack ligero (web + Supabase + Ne
 - [ ] **Bloque 3 — Panel de admin + mini-CMS.**
       Alta de alumnos (código de alumno + contraseña temporal) y herramienta sencilla para
       crear/editar/publicar ejercicios con un formulario (estados: borrador → revisión → publicado).
+      Sigue la estrategia de contenido: `docs/superpowers/specs/2026-07-29-estrategia-contenido-editorial.md`
+      (plantillas P1–P7, duplicar, etiquetas, búsqueda, versionado mínimo, alertas de calidad, IA solo borradores).
 
 - [ ] **Bloque 4 — Sesión diaria + progreso real + racha.**
       Lógica "¿qué hago hoy?", estados de dominio (nuevo/practicando/dominado/necesita repaso),
@@ -42,6 +44,9 @@ perfiles alumno + admin + vista de familias · stack ligero (web + Supabase + Ne
 - [ ] **Bloque 7 — Contenido inicial + piloto + legal.**
       6–8 unidades reales (IA genera borradores, un profe revisa/aprueba), prueba con 2–3
       familias piloto, y **revisión legal (RGPD/menores)** antes de lanzar.
+      DECISIÓN (2026-07-29): nivel de lanzamiento **3.º–4.º Primaria (A1)**; ~100–130 ejercicios
+      (6–8 unidades × ~4 objetivos × ~4 ejercicios) para cubrir **6–8 semanas**; ampliar 1–2 unidades/mes.
+      Estructura de las 8 unidades y flujo editorial en la estrategia de contenido (mismo doc del Bloque 3).
 
 ---
 

@@ -1,6 +1,6 @@
 # Estrategia de contenido y flujo editorial
 
-**Fecha:** 2026-07-29 · **Estado:** borrador para aprobación.
+**Fecha:** 2026-07-29 · **Estado:** aprobado (visto bueno).
 Base: arquitectura pedagógica, catálogo de actividades y motor, banco de contenido (`plataforma/contenido.js`).
 
 ## Principio rector
