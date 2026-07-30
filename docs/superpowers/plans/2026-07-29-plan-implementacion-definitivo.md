@@ -143,9 +143,11 @@ motivación/Nemo, arquitectura técnica (Stack A), modelo de datos/API, segurida
 
 ## B8 · Inicio del alumno  🟢  ✅ HECHO (2026-07-30)
 > Inicio + lección conectados al motor real y a datos reales. Verificado end-to-end con alumno
-> blue-fox-317 (login→cambio clave→inicio→lección 5/5→recompensa→progreso guardado en Supabase).
-> Falta: sesión compuesta por el modelo pedagógico (hoy usa la 1ª unidad del banco) y persistir
-> attempts/mastery (B9/B10/B11 a la UI).
+> blue-fox-317. **Añadido 2026-07-30:** adaptación por **etapa** (un solo sistema visual, variaciones
+> primaria_inicial/superior/eso, `?etapa=` para probar) + **estados** (cargando/error/sin conexión/
+> sesión ya completada hoy/contenido no disponible) + "qué hago hoy" más claro + reduced-motion.
+> Pendiente (no MVP crítico): "continuar pendiente" y "práctica libre" (diferidas); sesión compuesta
+> por el modelo pedagógico y attempts/mastery en la UI (B9/B10/B11).
 - **Objetivo:** pantalla de inicio (4 pestañas: Inicio/Practicar/Progreso/Perfil) con Nemo, clara y ligera.
 - **Archivos/módulos:** `inicio.html`, navegación, `perfil.html`, estilos `app.css`, assets de Nemo (sencillos).
 - **Dependencias:** B2, B7.
