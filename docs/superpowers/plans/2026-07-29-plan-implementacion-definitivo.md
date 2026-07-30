@@ -39,7 +39,8 @@ motivación/Nemo, arquitectura técnica (Stack A), modelo de datos/API, segurida
 - **Riesgos:** RLS mal puesta = fuga de datos de menores (crítico) → revisar tabla por tabla.
 - **Orden:** 2.º.
 
-## B2 · Autenticación  🟡
+## B2 · Autenticación  🟡  ✅ HECHO (2026-07-30)
+> Login real verificado (conexión end-to-end OK). Usuario admin creado y con rol `admin`.
 - **Objetivo:** login real con usuario **pseudónimo** (`blue-fox-317`), temporal + cambio obligatorio.
 - **Archivos/módulos:** `plataforma/auth.js` (real vs demo), `plataforma/index.html`, `cambiar-clave.html`,
   `supabase/functions/generar-usuario` (código único), config de sesión/cookies seguras.
