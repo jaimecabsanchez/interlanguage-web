@@ -1,19 +1,25 @@
 /* ============================================================
-   Interlanguage HOME · capa de autenticación
+   Interlanguage · capa de autenticación
    Funciona con Supabase real, o en MODO DEMO si no hay claves.
    API pública: window.ILAuth
+   Modelo real: users + user_roles + students + student_state + streaks
    ============================================================ */
 (function () {
   const CFG = window.IL_SUPABASE || {};
   const DOMAIN = CFG.emailDomain || "alumnos.interlanguage-home.es";
-  const DEMO = !CFG.url || CFG.url.indexOf("TU-PROYECTO") !== -1 || !CFG.anonKey || CFG.anonKey.indexOf("TU-ANON") !== -1;
+  const KEY = CFG.publishableKey || CFG.anonKey || "";
+  const DEMO = !CFG.url || CFG.url.indexOf("TU-PROYECTO") !== -1
+            || !KEY || KEY.indexOf("TU-ANON") !== -1 || KEY.indexOf("TU-PUBLISHABLE") !== -1;
 
   let sb = null;
   if (!DEMO && window.supabase && window.supabase.createClient) {
-    sb = window.supabase.createClient(CFG.url, CFG.anonKey);
+    sb = window.supabase.createClient(CFG.url, KEY);
   }
 
+  // Un alumno entra con su código (blue-fox-317); un adulto/admin con su email.
+  const looksLikeEmail = (s) => String(s).indexOf("@") !== -1;
   const usernameToEmail = (u) => String(u).trim().toLowerCase() + "@" + DOMAIN;
+  const toLoginEmail = (id) => looksLikeEmail(id) ? String(id).trim().toLowerCase() : usernameToEmail(id);
 
   /* ---------------- MODO DEMO (localStorage) ---------------- */
   const DEMO_DB = "il_demo_db_v1", DEMO_SESSION = "il_demo_session_v1";
@@ -26,7 +32,7 @@
   function demoLoad() { try { return JSON.parse(localStorage.getItem(DEMO_DB)) || seed(); } catch (e) { return seed(); } }
   function demoSave(db) { localStorage.setItem(DEMO_DB, JSON.stringify(db)); }
   function demoSession() { return localStorage.getItem(DEMO_SESSION); }
-  function pub(acc) { if (!acc) return null; const { password, ...rest } = acc; return { ...rest, id: rest.username }; }
+  function pub(acc) { if (!acc) return null; const { password, ...rest } = acc; return { ...rest, id: rest.username, is_student: !rest.is_admin }; }
   function randPass() {
     const a = "abcdefghijkmnpqrstuvwxyz", n = "23456789";
     let p = ""; for (let i = 0; i < 5; i++) p += a[Math.floor(Math.random() * a.length)];
@@ -39,17 +45,21 @@
     DEMO,
     isDemo() { return DEMO; },
 
-    async signIn(username, password) {
-      username = String(username || "").trim().toLowerCase();
-      if (!username || !password) return { ok: false, error: "Escribe tu usuario y tu contraseña." };
+    async signIn(identifier, password) {
+      identifier = String(identifier || "").trim();
+      if (!identifier || !password) return { ok: false, error: "Escribe tu usuario y tu contraseña." };
       if (DEMO) {
-        const acc = demoLoad().find(a => a.username === username);
+        const u = identifier.toLowerCase();
+        const acc = demoLoad().find(a => a.username === u);
         if (!acc || acc.password !== password) return { ok: false, error: "Usuario o contraseña incorrectos." };
-        localStorage.setItem(DEMO_SESSION, username);
+        localStorage.setItem(DEMO_SESSION, u);
         return { ok: true, profile: pub(acc) };
       }
-      const { error } = await sb.auth.signInWithPassword({ email: usernameToEmail(username), password });
+      const { error } = await sb.auth.signInWithPassword({ email: toLoginEmail(identifier), password });
       if (error) return { ok: false, error: "Usuario o contraseña incorrectos." };
+      // Marca de último acceso (no crítico; se ignora si falla)
+      try { const { data: { user } } = await sb.auth.getUser();
+            if (user) await sb.from("users").update({ last_login_at: new Date().toISOString() }).eq("id", user.id); } catch (e) {}
       const profile = await this.getProfile();
       return { ok: true, profile };
     },
@@ -61,9 +71,37 @@
       }
       const { data: { user } } = await sb.auth.getUser();
       if (!user) return null;
-      const { data, error } = await sb.from("profiles").select("*").eq("id", user.id).single();
-      if (error || !data) return { id: user.id, username: (user.email || "").split("@")[0], full_name: "", must_change_password: false, is_admin: false };
-      return data;
+
+      // Fila base en 'users'
+      const { data: urow } = await sb.from("users").select("*").eq("id", user.id).single();
+      // Roles del usuario
+      const { data: roles } = await sb.from("user_roles").select("role_id").eq("user_id", user.id);
+      const roleIds = (roles || []).map(r => r.role_id);
+      const is_admin = roleIds.includes("admin");
+      const is_teacher = roleIds.includes("teacher");
+      const is_student = roleIds.includes("student");
+
+      const profile = {
+        id: user.id,
+        username: (urow && urow.username) || (user.email || "").split("@")[0],
+        display_name: (urow && urow.display_name) || "",
+        full_name: (urow && urow.display_name) || "",
+        must_change_password: urow ? !!urow.must_change_password : false,
+        is_admin, is_teacher, is_student,
+        student_id: null, level: ""
+      };
+
+      // Si es alumno, traemos su ficha para el nombre de pila y su id de alumno
+      if (is_student || (!is_admin && !is_teacher)) {
+        const { data: st } = await sb.from("students").select("id, first_name, level_id").eq("user_id", user.id).maybeSingle();
+        if (st) {
+          profile.student_id = st.id;
+          profile.first_name = st.first_name || "";
+          profile.full_name = st.first_name || profile.full_name;
+          profile.is_student = true;
+        }
+      }
+      return profile;
     },
 
     async changePassword(newPass) {
@@ -78,7 +116,7 @@
       const { error } = await sb.auth.updateUser({ password: newPass });
       if (error) return { ok: false, error: error.message || "No se pudo cambiar la contraseña." };
       const { data: { user } } = await sb.auth.getUser();
-      if (user) await sb.from("profiles").update({ must_change_password: false }).eq("id", user.id);
+      if (user) await sb.from("users").update({ must_change_password: false }).eq("id", user.id);
       return { ok: true };
     },
 
@@ -87,29 +125,37 @@
       await sb.auth.signOut();
     },
 
-    /* ------- ADMIN ------- */
+    /* ------- ADMIN (gestión de alumnos: se completa en el Bloque 5) ------- */
     async listStudents() {
       if (DEMO) return demoLoad().filter(a => !a.is_admin).map(pub);
-      const { data, error } = await sb.from("profiles").select("*").eq("is_admin", false).order("created_at", { ascending: false });
+      // Une la ficha de alumno con su cuenta para mostrar el código de acceso
+      const { data, error } = await sb
+        .from("students")
+        .select("id, first_name, level_id, created_at, users:users!students_user_id_fkey(username, status)")
+        .order("created_at", { ascending: false });
       if (error) return [];
-      return data;
+      return (data || []).map(s => ({
+        id: s.id,
+        full_name: s.first_name || "",
+        username: s.users ? s.users.username : "",
+        created_at: s.created_at
+      }));
     },
 
-    async createStudent({ full_name, username, level, stage, parent_email }) {
-      username = String(username || "").trim().toLowerCase().replace(/\s+/g, "");
-      if (!full_name || !username) return { ok: false, error: "Faltan el nombre y el usuario." };
+    async createStudent(payload) {
       if (DEMO) {
+        const username = String(payload.username || "").trim().toLowerCase().replace(/\s+/g, "");
+        if (!payload.full_name || !username) return { ok: false, error: "Faltan el nombre y el usuario." };
         const db = demoLoad();
         if (db.find(a => a.username === username)) return { ok: false, error: "Ese usuario ya existe." };
         const password = randPass();
-        db.push({ username, password, full_name, level: level || "", stage: stage || "", parent_email: parent_email || "", is_admin: false, must_change_password: true, created_at: new Date().toISOString().slice(0, 10) });
+        db.push({ username, password, full_name: payload.full_name, level: payload.level || "", stage: payload.stage || "", parent_email: payload.parent_email || "", is_admin: false, must_change_password: true, created_at: new Date().toISOString().slice(0, 10) });
         demoSave(db);
         return { ok: true, username, password };
       }
-      const { data, error } = await sb.functions.invoke("admin-create-student", {
-        body: { action: "create", full_name, username, level, stage, parent_email }
-      });
-      if (error || (data && data.error)) return { ok: false, error: (data && data.error) || error.message || "No se pudo crear la cuenta." };
+      // Real: lo hará una Edge Function con service_role (Bloque 5).
+      const { data, error } = await sb.functions.invoke("admin-create-student", { body: { action: "create", ...payload } });
+      if (error || (data && data.error)) return { ok: false, error: (data && data.error) || (error && error.message) || "No se pudo crear la cuenta." };
       return { ok: true, username: data.username, password: data.password };
     },
 
@@ -126,40 +172,50 @@
     }
   };
 
-  /* ---------------- PROGRESO (racha, gemas, XP, tienda) ---------------- */
+  /* ---------------- PROGRESO (racha, gemas, XP, tienda) ----------------
+     Bridge hacia el modelo real (student_state + streaks). La lógica
+     pedagógica completa llega en los Bloques 10–12. */
   const today = () => new Date().toISOString().slice(0, 10);
   const dayAdd = (n) => { const d = new Date(); d.setDate(d.getDate() + n); return d.toISOString().slice(0, 10); };
   const PKEY = (u) => "il_progress_" + u;
   function seedProgress(username) {
-    // Lucía es una cuenta de demostración ya poblada; el resto empiezan a cero.
     if (username === "lucia")
       return { gems: 240, streak: 12, best: 18, xp: 1240, lessons: 24, last: dayAdd(-1), owned: [], hat: "", acc: "" };
     return { gems: 0, streak: 0, best: 0, xp: 0, lessons: 0, last: "", owned: [], hat: "", acc: "" };
   }
+  function blankProgress() { return { gems: 0, streak: 0, best: 0, xp: 0, lessons: 0, last: "", owned: [], hat: "", acc: "" }; }
 
   API.getProgress = async function () {
     const prof = await this.getProfile();
     if (!prof) return null;
-    let p;
     if (DEMO) {
+      let p;
       try { p = JSON.parse(localStorage.getItem(PKEY(prof.username))); } catch (e) {}
       if (!p) { p = seedProgress(prof.username); localStorage.setItem(PKEY(prof.username), JSON.stringify(p)); }
-    } else {
-      const { data } = await sb.from("progress").select("*").eq("id", prof.id).single();
-      p = data || seedProgress(prof.username);
-      if (!data) { p.id = prof.id; await sb.from("progress").upsert(p); }
-      if (!Array.isArray(p.owned)) p.owned = [];
+      p.id = prof.id; p.username = prof.username; p.full_name = prof.full_name; p.level = prof.level;
+      return p;
     }
-    p.id = prof.id; p.username = prof.username; p.full_name = prof.full_name; p.level = prof.level;
+    // Real: solo tiene sentido para alumnos
+    if (!prof.student_id) { const p = blankProgress(); p.id = prof.id; p.username = prof.username; p.full_name = prof.full_name; return p; }
+    const sid = prof.student_id;
+    const [{ data: state }, { data: streak }] = await Promise.all([
+      sb.from("student_state").select("*").eq("student_id", sid).maybeSingle(),
+      sb.from("streaks").select("*").eq("student_id", sid).maybeSingle()
+    ]);
+    const p = blankProgress();
+    if (state) { p.gems = state.gems; p.xp = state.xp; p.lessons = state.lessons; p.owned = Array.isArray(state.owned) ? state.owned : []; p.hat = state.hat || ""; p.acc = state.acc || ""; }
+    if (streak) { p.streak = streak.current; p.best = streak.longest; p.last = streak.last_practice_date || ""; }
+    p.id = prof.id; p.student_id = sid; p.username = prof.username; p.full_name = prof.full_name; p.level = prof.level;
     return p;
   };
 
   API._save = async function (p) {
     if (DEMO) { localStorage.setItem(PKEY(p.username), JSON.stringify(p)); return; }
-    await sb.from("progress").upsert({
-      id: p.id, gems: p.gems, streak: p.streak, best: p.best, xp: p.xp,
-      lessons: p.lessons, last: p.last, owned: p.owned, hat: p.hat, acc: p.acc
-    });
+    if (!p.student_id) return;
+    await Promise.all([
+      sb.from("student_state").upsert({ student_id: p.student_id, gems: p.gems, xp: p.xp, lessons: p.lessons, owned: p.owned, hat: p.hat, acc: p.acc }),
+      sb.from("streaks").upsert({ student_id: p.student_id, current: p.streak, longest: p.best, last_practice_date: p.last || null })
+    ]);
   };
 
   API.completeLesson = async function () {
