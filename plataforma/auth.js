@@ -449,6 +449,17 @@
     return data || { correct: false };
   };
 
+  // "Lo que ya sé decir": objetivos DOMINADOS del alumno (can-do)
+  API.getMasteredPhrases = async function () {
+    if (DEMO || !sb) return [];
+    const prof = await this.getProfile();
+    if (!prof || !prof.student_id) return [];
+    const { data } = await sb.from("mastery")
+      .select("mastery_state, objectives(can_do)")
+      .eq("student_id", prof.student_id).eq("mastery_state", "mastered");
+    return (data || []).map(m => m.objectives && m.objectives.can_do).filter(Boolean);
+  };
+
   // Cierra la sesión con su resumen
   API.finishPracticeSession = async function (sessionId, correct, total) {
     if (DEMO || !sb || !sessionId) return;

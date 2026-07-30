@@ -76,20 +76,20 @@
         <div class="lvl">Explorer · rumbo a <b>Cambridge Movers (A1)</b></div>
       </div>
       <div class="pf-mini">
-        <div class="m"><div class="v">🔥 <span id="hdrStreak">12</span></div><div class="l">Racha</div></div>
-        <div class="m"><div class="v">86</div><div class="l">Días</div></div>
-        <div class="m"><div class="v">2º</div><div class="l">Liga cole</div></div>
+        <div class="m"><div class="v">🔥 <span id="hdrStreak">0</span></div><div class="l">Racha</div></div>
+        <div class="m"><div class="v" id="hdrLessons">0</div><div class="l">Lecciones</div></div>
+        <div class="m"><div class="v" id="hdrGems">0</div><div class="l">Gemas</div></div>
       </div>
     </div>
 
     <div class="card-soft">
-      <h3 class="h">Constancia · <b>últimas 26 semanas</b></h3>
+      <h3 class="h">Constancia · <b>últimas 26 semanas</b> · <em style="color:var(--faint);font-style:normal">ejemplo</em></h3>
       <div class="heat" id="heat" aria-hidden="true"></div>
       <div class="legend">menos <i></i><i class="l1"></i><i class="l2"></i><i class="l3"></i><i class="l4"></i> más</div>
     </div>
 
     <div class="card-soft">
-      <h3 class="h">Evolución de nivel · <b>curso completo</b></h3>
+      <h3 class="h">Evolución de nivel · <b>curso completo</b> · <em style="color:var(--faint);font-style:normal">ejemplo</em></h3>
       <svg class="chart" viewBox="0 0 320 150" role="img" aria-label="Curva de progreso ascendente de Pre-A1 a A1">
         <line class="grid" x1="0" y1="34" x2="320" y2="34"/>
         <line class="grid" x1="0" y1="74" x2="320" y2="74"/>
@@ -108,7 +108,7 @@
     </div>
 
     <div class="card-soft">
-      <h3 class="h">Destrezas · <b>dónde brilla y dónde reforzar</b></h3>
+      <h3 class="h">Destrezas · <b>dónde brilla y dónde reforzar</b> · <em style="color:var(--faint);font-style:normal">ejemplo</em></h3>
       <div class="skill"><div class="top"><b>Vocabulario</b><span>82%</span></div><div class="bar"><i style="width:82%"></i></div></div>
       <div class="skill"><div class="top"><b>Listening</b><span>76%</span></div><div class="bar"><i style="width:76%"></i></div></div>
       <div class="skill"><div class="top"><b>Reading</b><span>68%</span></div><div class="bar"><i style="width:68%"></i></div></div>
@@ -117,17 +117,8 @@
     </div>
 
     <div class="card-soft">
-      <h3 class="h">Lo que ya sé decir · <b>128 frases</b></h3>
-      <div class="phrases">
-        <span class="phrase">My name is…</span>
-        <span class="phrase">I wake up at 8</span>
-        <span class="phrase">I have breakfast</span>
-        <span class="phrase">She is my sister</span>
-        <span class="phrase">I like pizza</span>
-        <span class="phrase">It's sunny today</span>
-        <span class="phrase">Can I have…?</span>
-        <span class="phrase more">+120 más · buscar 🔎</span>
-      </div>
+      <h3 class="h">Lo que ya sé decir · <b id="phraseCount">0</b></h3>
+      <div class="phrases" id="phrases"></div>
     </div>
 
     <div class="card-soft">
@@ -167,7 +158,18 @@
       document.getElementById("topStreak").textContent = pr.streak;
       document.getElementById("topGems").textContent = pr.gems;
       document.getElementById("hdrStreak").textContent = pr.streak;
+      document.getElementById("hdrLessons").textContent = pr.lessons || 0;
+      document.getElementById("hdrGems").textContent = pr.gems;
     }
+
+    // "Lo que ya sé decir": frases dominadas reales (con estado vacío amable)
+    try {
+      const phrases = await ILAuth.getMasteredPhrases();
+      document.getElementById("phraseCount").textContent = phrases.length ? (phrases.length + " frases") : "aún ninguna";
+      document.getElementById("phrases").innerHTML = phrases.length
+        ? phrases.map(f => '<span class="phrase">' + f + '</span>').join("")
+        : '<span class="phrase more">Practica para desbloquear frases 💪</span>';
+    } catch (e) {}
 
     // Medallas reales (ganadas + bloqueadas)
     try {
