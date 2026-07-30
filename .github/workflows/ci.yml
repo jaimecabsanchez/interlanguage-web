@@ -33,6 +33,9 @@ jobs:
       - name: Smoke test de arranque
         run: node plataforma/smoke.test.js
 
+      - name: Tests unitarios de autenticación
+        run: node plataforma/auth-utils.test.js
+
       - name: Tests del modelo pedagógico
         run: node plataforma/motor/pedagogia.test.js
 

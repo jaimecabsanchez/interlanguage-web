@@ -16,10 +16,13 @@
     sb = window.supabase.createClient(CFG.url, KEY);
   }
 
-  // Un alumno entra con su código (blue-fox-317); un adulto/admin con su email.
-  const looksLikeEmail = (s) => String(s).indexOf("@") !== -1;
-  const usernameToEmail = (u) => String(u).trim().toLowerCase() + "@" + DOMAIN;
-  const toLoginEmail = (id) => looksLikeEmail(id) ? String(id).trim().toLowerCase() : usernameToEmail(id);
+  // Utilidades puras (módulo testeable) con fallback inline por seguridad.
+  const U = window.IL_AUTH_UTILS || {};
+  const looksLikeEmail = U.looksLikeEmail || ((s) => String(s).indexOf("@") !== -1);
+  const usernameToEmail = U.usernameToEmail ? (u) => U.usernameToEmail(u, DOMAIN)
+    : (u) => String(u).trim().toLowerCase() + "@" + DOMAIN;
+  const toLoginEmail = U.toLoginEmail ? (id) => U.toLoginEmail(id, DOMAIN)
+    : (id) => looksLikeEmail(id) ? String(id).trim().toLowerCase() : usernameToEmail(id);
 
   /* ---------------- MODO DEMO (localStorage) ---------------- */
   const DEMO_DB = "il_demo_db_v1", DEMO_SESSION = "il_demo_session_v1";
@@ -33,12 +36,12 @@
   function demoSave(db) { localStorage.setItem(DEMO_DB, JSON.stringify(db)); }
   function demoSession() { return localStorage.getItem(DEMO_SESSION); }
   function pub(acc) { if (!acc) return null; const { password, ...rest } = acc; return { ...rest, id: rest.username, is_student: !rest.is_admin }; }
-  function randPass() {
+  const randPass = U.generatePassword || function () {
     const a = "abcdefghijkmnpqrstuvwxyz", n = "23456789";
     let p = ""; for (let i = 0; i < 5; i++) p += a[Math.floor(Math.random() * a.length)];
     for (let i = 0; i < 3; i++) p += n[Math.floor(Math.random() * n.length)];
     return p;
-  }
+  };
 
   /* ---------------- API ---------------- */
   const API = {
@@ -172,7 +175,9 @@
     },
 
     async changePassword(newPass) {
-      if (!newPass || newPass.length < 8) return { ok: false, error: "La contraseña debe tener al menos 8 caracteres." };
+      const v = U.validatePassword ? U.validatePassword(newPass)
+        : (newPass && newPass.length >= 8 ? { ok: true } : { ok: false, error: "La contraseña debe tener al menos 8 caracteres." });
+      if (!v.ok) return { ok: false, error: v.error };
       if (DEMO) {
         const u = demoSession(); if (!u) return { ok: false, error: "Sesión caducada." };
         const db = demoLoad(); const acc = db.find(a => a.username === u);

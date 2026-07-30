@@ -46,6 +46,12 @@ motivación/Nemo, arquitectura técnica (Stack A), modelo de datos/API, segurida
 
 ## B2 · Autenticación  🟡  ✅ HECHO (2026-07-30)
 > Login real verificado (conexión end-to-end OK). Usuario admin creado y con rol `admin`.
+> **= tarea "sistema de autenticación y autorización"** (no repetir): login, temporal, cambio obligatorio,
+> hash (Supabase), reset por admin, cierre de sesión, roles, permisos en servidor (B3), MFA admin (B4).
+> **Tests añadidos 2026-07-30:** `auth-utils.js` + `auth-utils.test.js` (unitarios, en CI) y
+> `supabase/tests/permisos-auth.sh` (integración/permisos/enumeración en vivo, 11/11 OK).
+> **Se apoya en Supabase Auth:** rate limiting y bloqueo por intentos (límites por endpoint/IP).
+> **Diferido (no MVP crítico):** revocación de sesiones por admin desde UI + poblar tabla `sessions`.
 - **Objetivo:** login real con usuario **pseudónimo** (`blue-fox-317`), temporal + cambio obligatorio.
 - **Archivos/módulos:** `plataforma/auth.js` (real vs demo), `plataforma/index.html`, `cambiar-clave.html`,
   `supabase/functions/generar-usuario` (código único), config de sesión/cookies seguras.
