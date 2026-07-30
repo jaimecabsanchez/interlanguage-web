@@ -241,10 +241,12 @@ motivación/Nemo, arquitectura técnica (Stack A), modelo de datos/API, segurida
 - **Riesgos:** un hueco = datos de menores → checklist de seguridad como **gate de lanzamiento**.
 - **Orden:** 16.º (verificación final antes de piloto).
 
-## B16 · Accesibilidad (verificación AA)  🟡  ◻️ EN CURSO (2026-07-30)  *(transversal)*
+## B16 · Accesibilidad (verificación AA)  🟡  ◻️ PASADA (alumno) (2026-07-30)  *(transversal)*
 > Motor accesible (teclado, foco visible, objetivos ≥44px, no solo color, reduced-motion) + `lang="en"`
-> en el contenido en inglés (pronunciación del lector de pantalla). Falta auditoría manual completa
-> (lector de pantalla real) sobre todas las vistas y contraste AA en todo.
+> en el contenido inglés. **Añadido:** navegación con nombres accesibles (aria-label/aria-current),
+> foco visible global en la app del alumno, reduced-motion también en CTA/nodo activo. Auditoría en
+> navegador OK (0 botones sin nombre / 0 img sin alt / 0 inputs sin label / 1 h1 / lang página es).
+> Falta: repaso del panel admin + prueba con lector de pantalla real y contraste AA en todo (antes del piloto).
 - **Objetivo:** garantizar AA base en toda la app (no solo en el motor).
 - **Archivos/módulos:** revisión de todas las vistas (foco, contraste, ARIA, teclado, `lang`), transcripciones.
 - **Dependencias:** vistas construidas.
