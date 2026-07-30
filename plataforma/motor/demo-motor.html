@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prueba del motor · Interlanguage</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../app.css">
+<link rel="stylesheet" href="motor.css">
+<style>
+  body{font-family:Inter,system-ui,sans-serif;background:#fff;margin:0;color:#2B3646}
+  .demo-top{max-width:640px;margin:0 auto;padding:18px 16px 6px;display:flex;justify-content:space-between;align-items:center}
+  .demo-top .brand{font-family:'Plus Jakarta Sans';font-weight:800;color:#16294A}
+  .demo-prog{height:8px;background:#eef1f4;border-radius:999px;max-width:640px;margin:6px auto 18px;overflow:hidden}
+  .demo-prog i{display:block;height:100%;background:#FF6B4A;width:0;transition:width .2s}
+  #stage{padding:0 16px 40px}
+  .demo-end{max-width:640px;margin:20px auto;text-align:center;padding:30px;border:2px solid #E4E8EE;border-radius:20px}
+  .demo-end h2{font-family:'Plus Jakarta Sans';color:#16294A}
+  .demo-score{font-size:3rem;font-weight:800;color:#1E9C74}
+</style>
+</head>
+<body>
+  <div class="demo-top">
+    <span class="brand">🦊 Prueba del motor</span>
+    <span id="counter" style="color:#8A97A6;font-size:.9rem"></span>
+  </div>
+  <div class="demo-prog"><i id="bar"></i></div>
+  <div id="stage"></div>
+
+<script src="../contenido.js"></script>
+<script src="engine.js"></script>
+<script>
+  const $ = (id) => document.getElementById(id);
+  // Aplana todos los ejercicios de todas las unidades
+  const items = [];
+  (window.IL_CONTENIDO.unidades || []).forEach(u => (u.ejercicios || []).forEach(e => items.push(e)));
+  let idx = 0, correct = 0;
+
+  function show() {
+    $("counter").textContent = (idx + 1) + " / " + items.length;
+    $("bar").style.width = Math.round((idx) / items.length * 100) + "%";
+    const ex = items[idx];
+    const ctrl = IL_ENGINE.render($("stage"), ex, {
+      lastOne: idx === items.length - 1,
+      onResult: (ev) => { if (ev.correct) correct++; console.log("resultado:", JSON.stringify(ev)); },
+      onNext: () => { idx++; if (idx < items.length) show(); else end(); }
+    });
+    ctrl.focus();
+  }
+  function end() {
+    $("bar").style.width = "100%"; $("counter").textContent = "";
+    $("stage").innerHTML = `<div class="demo-end">
+      <h2>¡Sesión completada! 🎉</h2>
+      <div class="demo-score">${correct} / ${items.length}</div>
+      <p style="color:#8A97A6">Aciertos en esta ronda.</p>
+      <button class="btn btn-primary" onclick="location.reload()">Repetir</button>
+    </div>`;
+  }
+  show();
+</script>
+</body>
+</html>
