@@ -1,0 +1,50 @@
+/* ============================================================
+   Variaciones por etapa (un solo sistema visual)
+   Se aplican con body[data-stage="..."]. Cambian tono/tamaño,
+   nunca la estructura. + estados comunes (carga/vacío/error/offline).
+   ============================================================ */
+
+/* --- Primaria inicial: más grande, más redondo, más juguetón --- */
+body[data-stage="primaria_inicial"] .greet h1{ font-size:2rem; }
+body[data-stage="primaria_inicial"] .cta-mission{ font-size:1.15rem; padding:20px; border-radius:22px; }
+body[data-stage="primaria_inicial"] .card-soft{ border-radius:22px; }
+
+/* --- Primaria superior: por defecto (equilibrado) --- */
+
+/* --- ESO: más sobrio, menos "peluche", titulares contenidos --- */
+body[data-stage="eso"] .greet h1{ font-size:1.45rem; letter-spacing:-.01em; }
+body[data-stage="eso"] .cta-mission{ font-size:.98rem; padding:15px; border-radius:14px; text-transform:none; letter-spacing:0; }
+body[data-stage="eso"] .cta-mission small{ opacity:.85; }
+body[data-stage="eso"] .card-soft{ border-radius:14px; }
+body[data-stage="eso"] .pf-av{ border-radius:16px; }
+
+/* ============================================================
+   Estados comunes de UI (carga, vacío, error, offline, hecho)
+   ============================================================ */
+.il-offline{ position:fixed; top:0; left:0; right:0; z-index:100; background:#5C6B7A; color:#fff;
+  text-align:center; font-size:.85rem; padding:8px 12px; }
+.il-offline[hidden]{ display:none; }
+
+.il-state{ max-width:420px; margin:60px auto; text-align:center; padding:24px; color:#5C6B7A; }
+.il-state .ic{ font-size:3rem; margin-bottom:10px; }
+.il-state h2{ font-family:'Plus Jakarta Sans',system-ui,sans-serif; color:#16294A; font-size:1.3rem; margin:0 0 6px; }
+.il-state p{ margin:0 0 16px; }
+
+/* Skeleton de carga */
+.il-skeleton{ max-width:520px; margin:24px auto; padding:0 18px; }
+.il-skeleton .bar{ height:16px; border-radius:8px; background:#eef1f4; margin:12px 0; overflow:hidden; position:relative; }
+.il-skeleton .bar.big{ height:44px; border-radius:16px; }
+.il-skeleton .bar::after{ content:""; position:absolute; inset:0; transform:translateX(-100%);
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.6),transparent); animation:il-shimmer 1.2s infinite; }
+@keyframes il-shimmer{ 100%{ transform:translateX(100%); } }
+
+/* Sesión ya completada hoy */
+.il-done{ max-width:420px; margin:30px auto; text-align:center; padding:26px; background:#E7F1EC;
+  border:1px solid #bfe0d0; border-radius:20px; }
+.il-done .ic{ font-size:2.6rem; }
+.il-done h2{ font-family:'Plus Jakarta Sans'; color:#16294A; margin:8px 0 4px; }
+.il-done p{ color:#5C6B7A; margin:0 0 14px; }
+
+@media (prefers-reduced-motion: reduce){
+  .il-skeleton .bar::after{ animation:none; }
+}

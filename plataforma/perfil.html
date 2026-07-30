@@ -10,6 +10,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="app.css">
+<link rel="stylesheet" href="etapa.css">
 <style>
   .pf-hd{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:20px;padding:18px;box-shadow:var(--shadow-soft);}
   .pf-av{width:64px;height:64px;border-radius:20px;background:linear-gradient(150deg,var(--coral),var(--coral-deep));display:grid;place-items:center;font-size:2rem;box-shadow:0 10px 20px -10px var(--coral);}
@@ -143,6 +144,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-config.js"></script>
 <script src="auth-utils.js"></script>
+<script src="etapa.js"></script>
 <script src="motor/motivacion.js"></script>
 <script src="auth.js"></script>
 <script>
@@ -150,6 +152,7 @@
     const p = await ILAuth.getProfile();
     if (!p) { location.href = "index.html"; return; }
     if (p.is_admin) { location.href = "admin.html"; return; }
+    IL_ETAPA.apply(p);
     const name = p.full_name || "Alumno";
     document.getElementById("pfName").textContent = name;
     document.getElementById("app").classList.remove("hidden");

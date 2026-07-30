@@ -3,41 +3,65 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mi misión · Interlanguage HOME</title>
+<title>Mi misión · Interlanguage</title>
 <meta name="robots" content="noindex">
 <link rel="icon" type="image/png" sizes="32x32" href="../images/icons/favicon-32.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="app.css">
+<link rel="stylesheet" href="etapa.css">
 </head>
 <body>
+<div class="il-offline" id="offline" hidden>📶 Sin conexión — puedes seguir viendo, se guardará al volver la red.</div>
 <div id="demoBanner" class="demo-banner hidden">🧪 <b>Modo demo</b> · los datos de progreso son de ejemplo</div>
+
+<!-- Estado: CARGANDO -->
+<div id="loading" class="il-skeleton" aria-hidden="true">
+  <div class="bar" style="width:55%"></div>
+  <div class="bar big"></div>
+  <div class="bar" style="width:80%"></div>
+  <div class="bar" style="width:70%"></div>
+</div>
+
+<!-- Estado: ERROR -->
+<div id="errState" class="il-state" hidden>
+  <div class="ic">😕</div>
+  <h2>No hemos podido cargar tu misión</h2>
+  <p>Revisa tu conexión e inténtalo otra vez.</p>
+  <button class="btn btn-primary" onclick="location.reload()">Reintentar</button>
+</div>
 
 <div id="app" class="hidden">
   <div class="app-top">
-    <span class="chip-stat streak">🔥 <span id="streak">12</span></span>
-    <span class="chip-stat coins">💎 <span id="coins">240</span></span>
+    <span class="chip-stat streak">🔥 <span id="streak">0</span></span>
+    <span class="chip-stat coins">💎 <span id="coins">0</span></span>
   </div>
 
   <div class="app-shell">
     <div class="greet">
       <h1 id="greet">¡Hola! 👋</h1>
-      <p id="sub">Tu misión de hoy · 10 minutos</p>
+      <p id="sub">Tu misión de hoy</p>
     </div>
 
-    <div class="path">
-      <div class="node done l">✓</div>
-      <div class="conn"></div>
-      <div class="node done r">✓</div>
-      <div class="conn"></div>
-      <div class="node now">▶</div>
-      <div class="conn"></div>
-      <div class="node l">★</div>
-      <div class="conn"></div>
-      <div class="node r">🎁</div>
+    <!-- Sesión YA COMPLETADA hoy -->
+    <div id="doneToday" class="il-done" hidden>
+      <div class="ic">🎉</div>
+      <h2 id="doneMsg">¡Ya has practicado hoy!</h2>
+      <p>Vuelve mañana para mantener tu racha 🔥 — o repasa si te apetece.</p>
+      <a href="leccion.html" class="btn btn-ghost">Repasar de nuevo</a>
     </div>
-    <a href="leccion.html" class="cta-mission" id="startBtn">EMPEZAR MISIÓN<small>+50 XP · mantén tu racha</small></a>
+
+    <div id="todayBlock">
+      <div class="path" aria-hidden="true">
+        <div class="node done l">✓</div><div class="conn"></div>
+        <div class="node done r">✓</div><div class="conn"></div>
+        <div class="node now">▶</div><div class="conn"></div>
+        <div class="node l">★</div><div class="conn"></div>
+        <div class="node r">🎁</div>
+      </div>
+      <a href="leccion.html" class="cta-mission" id="startBtn">EMPEZAR MISIÓN<small id="ctaSub">+50 XP · mantén tu racha</small></a>
+    </div>
 
     <div class="card-soft">
       <h3>Tu progreso</h3>
@@ -64,28 +88,57 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-config.js"></script>
 <script src="auth-utils.js"></script>
+<script src="etapa.js"></script>
 <script src="auth.js"></script>
 <script>
   const $ = (id) => document.getElementById(id);
+  const today = () => new Date().toISOString().slice(0, 10);
+
+  // Sin conexión: aviso y reintento al volver la red
+  function refreshOffline() { $("offline").hidden = navigator.onLine; }
+  window.addEventListener("online", () => { refreshOffline(); location.reload(); });
+  window.addEventListener("offline", refreshOffline);
+  refreshOffline();
+
   if (ILAuth.isDemo()) $("demoBanner").classList.remove("hidden");
 
+  function showError() { $("loading").hidden = true; $("app").classList.add("hidden"); $("errState").hidden = false; }
+
   (async () => {
-    const p = await ILAuth.getProfile();
-    if (!p) { location.href = "index.html"; return; }
-    if (p.is_admin) { location.href = "admin.html"; return; }
-    if (p.must_change_password) { location.href = "cambiar-clave.html"; return; }
+    try {
+      const p = await ILAuth.getProfile();
+      if (!p) { location.href = "index.html"; return; }
+      if (p.is_admin) { location.href = "admin.html"; return; }
+      if (p.must_change_password) { location.href = "cambiar-clave.html"; return; }
 
-    const name = (p.full_name || "").split(" ")[0] || "campeón";
-    $("greet").textContent = "¡Hola, " + name + "! 👋";
-    if (p.level) $("sub").textContent = p.level + " · misión de hoy, 10 min";
-    $("app").classList.remove("hidden");
+      // Adaptación por etapa (mismo sistema, variaciones)
+      const stage = IL_ETAPA.apply(p);
+      const c = IL_ETAPA.copy(stage);
+      const name = (p.full_name || "").split(" ")[0] || "campeón";
+      $("greet").textContent = c.greet(name);
+      $("sub").textContent = c.sub;
+      $("startBtn").childNodes[0].nodeValue = c.cta;
 
-    const pr = await ILAuth.getProgress();
-    if (pr) {
-      $("streak").textContent = pr.streak; $("coins").textContent = pr.gems;
-      $("stRacha").textContent = pr.streak;
-      $("stLecciones").textContent = pr.lessons || 0;
-      $("stGemas").textContent = pr.gems;
+      const pr = await ILAuth.getProgress();
+      if (pr) {
+        $("streak").textContent = pr.streak; $("coins").textContent = pr.gems;
+        $("stRacha").textContent = pr.streak;
+        $("stLecciones").textContent = pr.lessons || 0;
+        $("stGemas").textContent = pr.gems;
+
+        // Sesión YA completada hoy -> estado claro
+        if (pr.last === today()) {
+          $("doneMsg").textContent = c.done;
+          $("todayBlock").hidden = true;
+          $("doneToday").hidden = false;
+          $("sub").textContent = "Hoy ya está hecho ✓";
+        }
+      }
+
+      $("loading").hidden = true;
+      $("app").classList.remove("hidden");
+    } catch (e) {
+      showError();
     }
   })();
 

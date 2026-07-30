@@ -11,6 +11,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="app.css">
 <link rel="stylesheet" href="motor/motor.css">
+<link rel="stylesheet" href="etapa.css">
 <style>
   body{background:#fff}
   .lesson{max-width:600px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;padding:0 16px}
@@ -39,6 +40,7 @@
 </style>
 </head>
 <body>
+<div class="il-offline" id="offline" hidden>📶 Sin conexión — tus respuestas se guardarán al volver la red.</div>
 <div class="lesson">
   <div class="lesson-top">
     <button class="close" id="close" aria-label="Salir">✕</button>
@@ -64,6 +66,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-config.js"></script>
 <script src="auth-utils.js"></script>
+<script src="etapa.js"></script>
 <script src="auth.js"></script>
 <script src="contenido.js"></script>
 <script src="motor/motivacion.js"></script>
@@ -71,13 +74,28 @@
 <script>
   const $ = (id) => document.getElementById(id);
 
+  function refreshOffline() { $("offline").hidden = navigator.onLine; }
+  window.addEventListener("online", refreshOffline);
+  window.addEventListener("offline", refreshOffline);
+  refreshOffline();
+
+  function stateCard(ic, title, text) {
+    $("stage").innerHTML = '<div class="il-state"><div class="ic">' + ic + '</div><h2>' + title +
+      '</h2><p>' + text + '</p><a class="btn btn-ghost" href="inicio.html">Volver</a></div>';
+  }
+
   (async () => {
-    // Guard: solo alumnos con la contraseña ya cambiada
-    const p = await ILAuth.getProfile();
-    if (!p) { location.href = "index.html"; return; }
-    if (p.is_admin) { location.href = "admin.html"; return; }
-    if (p.must_change_password) { location.href = "cambiar-clave.html"; return; }
-    start();
+    try {
+      // Guard: solo alumnos con la contraseña ya cambiada
+      const p = await ILAuth.getProfile();
+      if (!p) { location.href = "index.html"; return; }
+      if (p.is_admin) { location.href = "admin.html"; return; }
+      if (p.must_change_password) { location.href = "cambiar-clave.html"; return; }
+      IL_ETAPA.apply(p);
+      start();
+    } catch (e) {
+      stateCard("😕", "No hemos podido cargar la sesión", "Revisa tu conexión e inténtalo de nuevo.");
+    }
   })();
 
   // La sesión de hoy: muestra variada con todas las plantillas (más adelante la compondrá el
@@ -88,7 +106,7 @@
   let idx = 0, correct = 0, curStreak = 0, maxStreak = 0;
 
   function start() {
-    if (!items.length) { $("stage").innerHTML = "<p style='text-align:center;color:#8A97A6;padding:40px'>Aún no hay ejercicios.</p>"; return; }
+    if (!items.length) { stateCard("📭", "Contenido no disponible", "Todavía no hay ejercicios para hoy. Vuelve pronto."); return; }
     show();
   }
   function setProgress() { $("pfill").style.width = Math.round(idx / items.length * 100) + "%"; }
