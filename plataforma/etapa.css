@@ -4,14 +4,19 @@
    nunca la estructura. + estados comunes (carga/vacío/error/offline).
    ============================================================ */
 
-/* --- Primaria inicial: más grande, más redondo, más juguetón --- */
-body[data-stage="primaria_inicial"] .greet h1{ font-size:2rem; }
-body[data-stage="primaria_inicial"] .cta-mission{ font-size:1.15rem; padding:20px; border-radius:22px; }
-body[data-stage="primaria_inicial"] .card-soft{ border-radius:22px; }
+/* --- 1.º–2.º (p12): lo más grande, redondo y juguetón --- */
+body[data-stage="p12"] .greet h1{ font-size:2.1rem; }
+body[data-stage="p12"] .cta-mission{ font-size:1.2rem; padding:22px; border-radius:22px; }
+body[data-stage="p12"] .card-soft{ border-radius:22px; }
 
-/* --- Primaria superior: por defecto (equilibrado) --- */
+/* --- 3.º–4.º (p34): grande y cálido --- */
+body[data-stage="p34"] .greet h1{ font-size:1.9rem; }
+body[data-stage="p34"] .cta-mission{ font-size:1.12rem; padding:20px; border-radius:20px; }
+body[data-stage="p34"] .card-soft{ border-radius:20px; }
 
-/* --- ESO: más sobrio, menos "peluche", titulares contenidos --- */
+/* --- 5.º–6.º (p56): por defecto, equilibrado (sin overrides) --- */
+
+/* --- ESO: sobrio, menos "peluche", titulares contenidos --- */
 body[data-stage="eso"] .greet h1{ font-size:1.45rem; letter-spacing:-.01em; }
 body[data-stage="eso"] .cta-mission{ font-size:.98rem; padding:15px; border-radius:14px; text-transform:none; letter-spacing:0; }
 body[data-stage="eso"] .cta-mission small{ opacity:.85; }

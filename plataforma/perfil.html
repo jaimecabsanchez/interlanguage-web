@@ -9,6 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="design-system.css">
 <link rel="stylesheet" href="app.css">
 <link rel="stylesheet" href="etapa.css">
 <style>
@@ -127,16 +128,20 @@
       <div class="medals" id="medalsGrid"></div>
     </div>
 
-    <div class="goal">
-      <span class="gi">🎯</span>
-      <span><b>Próxima meta: “Explorador de 100 días”</b><span>Te faltan 14 días de racha. ¡Ya casi!</span></span>
+    <div class="card-soft">
+      <h3 class="h">Tu cuenta</h3>
+      <div class="acct-row" style="display:flex;flex-wrap:wrap;gap:10px">
+        <a href="tienda.html" class="btn btn-ghost">🛍️ Personalizar a Nemo</a>
+        <a href="cambiar-clave.html" class="btn btn-ghost">🔒 Cambiar contraseña</a>
+        <button class="btn btn-ghost" id="logout">Salir</button>
+      </div>
     </div>
   </div>
 
   <nav class="app-nav" aria-label="Navegación principal">
-    <button aria-label="Camino" onclick="location.href='inicio.html'"><span aria-hidden="true">🗺️</span></button>
-    <button aria-label="Liga" onclick="location.href='liga.html'"><span aria-hidden="true">🏆</span></button>
-    <button aria-label="Tienda" onclick="location.href='tienda.html'"><span aria-hidden="true">🛍️</span></button>
+    <button aria-label="Inicio" onclick="location.href='inicio.html'"><span aria-hidden="true">🏠</span></button>
+    <button aria-label="Practicar" onclick="location.href='leccion.html'"><span aria-hidden="true">🎯</span></button>
+    <button aria-label="Progreso" onclick="location.href='perfil.html'"><span aria-hidden="true">📈</span></button>
     <button class="active" aria-label="Perfil" aria-current="page"><span aria-hidden="true">👤</span></button>
   </nav>
 </div>
@@ -195,6 +200,8 @@
     }
     heat.appendChild(frag);
   })();
+
+  document.getElementById("logout").addEventListener("click", async () => { await ILAuth.signOut(); location.href = "index.html"; });
 </script>
 </body>
 </html>

@@ -1,0 +1,44 @@
+/* ============================================================
+   Interlanguage · SISTEMA DE DISEÑO · tokens canónicos
+   Fuente de verdad de color, tipografía, escala, espaciado,
+   radios, sombras y motion. Namespace --il-* (no pisa estilos
+   existentes; los componentes migran a estos tokens gradualmente).
+   Spec: docs/superpowers/specs/2026-07-31-sistema-diseno-final.md
+   ============================================================ */
+:root{
+  /* Color */
+  --il-navy:#16294A; --il-coral:#FF6B4A; --il-coral-ink:#E14F30;
+  --il-jade:#1E9C74; --il-jade-bg:#E7F1EC; --il-red:#C0392B; --il-red-bg:#FDECEA;
+  --il-cream:#FBF8F1; --il-ink:#2B3646; --il-soft:#5C6B7A; --il-faint:#8A97A6;
+  --il-line:#E4E8EE; --il-line-2:#D9DEE5; --il-warm:#FBF8F1; --il-white:#FFFFFF;
+
+  /* Tipografía */
+  --il-font-display:'Plus Jakarta Sans',system-ui,sans-serif;
+  --il-font-body:'Inter',system-ui,sans-serif;
+
+  /* Escala de tamaños (rem) · la base escala por banda (ver data-stage) */
+  --il-fs-xs:.75rem; --il-fs-sm:.875rem; --il-fs-base:1rem; --il-fs-lg:1.125rem;
+  --il-fs-xl:1.3rem; --il-fs-2xl:1.6rem; --il-fs-3xl:2rem;
+
+  /* Espaciado (base 4px) */
+  --il-space-1:4px; --il-space-2:8px; --il-space-3:12px; --il-space-4:16px;
+  --il-space-5:20px; --il-space-6:24px; --il-space-7:32px; --il-space-8:40px;
+
+  /* Radios (22 Primaria baja → 14 ESO) y sombra */
+  --il-r-sm:10px; --il-r-md:14px; --il-r-lg:18px; --il-r-xl:22px;
+  --il-shadow:0 10px 24px -14px rgba(22,41,74,.28);
+
+  /* Objetivos táctiles y motion */
+  --il-touch:44px;
+  --il-motion-fast:120ms; --il-motion:200ms; --il-ease:cubic-bezier(.2,.7,.3,1);
+}
+
+/* La escala tipográfica base cambia por banda (mismo sistema, distinta piel) */
+:root[data-stage="p12"], body[data-stage="p12"]{ --il-scale:1.08; --il-radius:var(--il-r-xl); }
+:root[data-stage="p34"], body[data-stage="p34"]{ --il-scale:1.04; --il-radius:var(--il-r-xl); }
+:root[data-stage="p56"], body[data-stage="p56"]{ --il-scale:1.00; --il-radius:var(--il-r-lg); }
+:root[data-stage="eso"], body[data-stage="eso"]{ --il-scale:.96;  --il-radius:var(--il-r-md); }
+
+@media (prefers-reduced-motion: reduce){
+  :root{ --il-motion-fast:0ms; --il-motion:0ms; }
+}
