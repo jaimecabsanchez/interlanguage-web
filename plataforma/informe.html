@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Informe de práctica · Interlanguage</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/png" sizes="32x32" href="../images/icons/favicon-32.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="etapa.css">
+<style>
+  body{font-family:Inter,system-ui,sans-serif;background:#FBF8F1;color:#2B3646;margin:0}
+  .wrap{max-width:600px;margin:0 auto;padding:24px 18px 50px}
+  .brand{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+  .brand .fox{font-size:1.6rem} .brand b{font-family:'Plus Jakarta Sans';color:#16294A}
+  h1{font-family:'Plus Jakarta Sans';color:#16294A;font-size:1.5rem;margin:10px 0 2px}
+  .sub{color:#5C6B7A;margin:0 0 18px}
+  .cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px}
+  .card{background:#fff;border:1px solid #E4E8EE;border-radius:18px;padding:18px;text-align:center}
+  .card .v{font-family:'Plus Jakarta Sans';font-weight:800;font-size:1.9rem;color:#16294A}
+  .card .l{font-size:.78rem;color:#8A97A6;text-transform:uppercase;letter-spacing:.04em;margin-top:4px}
+  .sec{background:#fff;border:1px solid #E4E8EE;border-radius:18px;padding:18px;margin-bottom:14px}
+  .sec h2{font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:#8A97A6;font-family:'Plus Jakarta Sans';margin:0 0 12px}
+  .medals{display:flex;flex-wrap:wrap;gap:8px}
+  .medal{display:inline-flex;align-items:center;gap:6px;background:#FFF7E6;border:1px solid #FFE2A8;border-radius:999px;padding:7px 13px;font-size:.9rem;font-weight:600;color:#7a5a10}
+  .note{font-size:.85rem;color:#8A97A6;text-align:center;margin-top:8px}
+  .preview{background:#EAF2FB;border:1px solid #c7ddf5;color:#1c5488;border-radius:12px;padding:10px 14px;font-size:.85rem;text-align:center;margin-bottom:16px}
+</style>
+</head>
+<body>
+<div class="il-offline" id="offline" hidden>📶 Sin conexión.</div>
+<div class="wrap">
+  <div class="brand"><span class="fox" aria-hidden="true">🦊</span><b>Interlanguage</b></div>
+
+  <div id="loading" class="il-skeleton"><div class="bar" style="width:50%"></div><div class="bar big"></div><div class="bar" style="width:80%"></div></div>
+
+  <div id="err" class="il-state" hidden>
+    <div class="ic">🔗</div>
+    <h2>Abre tu informe desde el enlace</h2>
+    <p>Este informe se abre desde el enlace seguro que te enviamos desde Interlanguage.</p>
+  </div>
+
+  <div id="report" hidden>
+    <div id="previewNote" class="preview" hidden>Vista previa · así verá la familia el informe de <b id="pvName"></b>.</div>
+    <h1 id="title">Informe de práctica</h1>
+    <p class="sub" id="subtitle">Constancia y logros · sin notas ni comparaciones</p>
+
+    <div class="cards">
+      <div class="card"><div class="v" id="days">0</div><div class="l">Días de práctica</div></div>
+      <div class="card"><div class="v" id="streak">🔥 0</div><div class="l">Racha actual</div></div>
+      <div class="card"><div class="v" id="best">0</div><div class="l">Mejor racha</div></div>
+      <div class="card"><div class="v" id="lessons">0</div><div class="l">Lecciones</div></div>
+    </div>
+
+    <div class="sec">
+      <h2>Medallas conseguidas</h2>
+      <div class="medals" id="medals"></div>
+    </div>
+
+    <p class="note">Interlanguage muestra el <b>esfuerzo y la constancia</b> de tu hijo/a, no una nota.
+      Para cualquier duda, habla con su profe.</p>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+<script src="auth-utils.js"></script>
+<script src="motor/motivacion.js"></script>
+<script src="auth.js"></script>
+<script>
+  const $ = (id) => document.getElementById(id);
+  function refreshOffline(){ $("offline").hidden = navigator.onLine; }
+  window.addEventListener("online", refreshOffline); window.addEventListener("offline", refreshOffline); refreshOffline();
+
+  (async () => {
+    try {
+      // MVP: vista previa con la sesión del alumno. (El acceso por enlace seguro para la
+      // familia se activa al desplegar la Edge Function share-report.)
+      const rep = await ILAuth.getReport();
+      if (!rep) { $("loading").hidden = true; $("err").hidden = false; return; }
+
+      const prof = await ILAuth.getProfile();
+      if (prof && prof.is_student) { $("previewNote").hidden = false; $("pvName").textContent = rep.first_name; }
+
+      $("title").textContent = "Informe de " + rep.first_name;
+      $("days").textContent = rep.days;
+      $("streak").textContent = "🔥 " + rep.streak;
+      $("best").textContent = rep.best;
+      $("lessons").textContent = rep.lessons;
+      $("medals").innerHTML = rep.medals.length
+        ? rep.medals.map(m => '<span class="medal"><span aria-hidden="true">' + m.icon + '</span>' + m.name + '</span>').join("")
+        : '<span class="note">Aún no hay medallas — ¡las primeras están al caer!</span>';
+
+      $("loading").hidden = true; $("report").hidden = false;
+    } catch (e) {
+      $("loading").hidden = true; $("err").hidden = false;
+    }
+  })();
+</script>
+</body>
+</html>

@@ -460,6 +460,30 @@
     return (data || []).map(m => m.objectives && m.objectives.can_do).filter(Boolean);
   };
 
+  // Resumen para el INFORME de la familia (solo lectura, sin notas ni comparaciones)
+  API.getReport = async function () {
+    const prof = await this.getProfile();
+    if (!prof) return null;
+    const pr = await this.getProgress();
+    const medals = (typeof window !== "undefined" && window.IL_MOTIVACION) ? await this.listMedals() : [];
+    let days = pr ? (pr.lessons || 0) : 0;
+    if (!DEMO && sb && prof.student_id) {
+      try {
+        const { count } = await sb.from("practice_sessions").select("id", { count: "exact", head: true }).eq("student_id", prof.student_id);
+        if (count != null) days = count;
+      } catch (e) {}
+    }
+    return {
+      first_name: prof.first_name || (prof.full_name || "").split(" ")[0] || "Alumno",
+      level: prof.level || "",
+      lessons: pr ? (pr.lessons || 0) : 0,
+      streak: pr ? (pr.streak || 0) : 0,
+      best: pr ? (pr.best || 0) : 0,
+      days: days,
+      medals: (medals || []).filter(m => m.earned)
+    };
+  };
+
   // Cierra la sesión con su resumen
   API.finishPracticeSession = async function (sessionId, correct, total) {
     if (DEMO || !sb || !sessionId) return;
