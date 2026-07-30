@@ -64,7 +64,10 @@ motivación/Nemo, arquitectura técnica (Stack A), modelo de datos/API, segurida
 - **Riesgos:** control de acceso roto (OWASP #1) → suite de pruebas de autorización obligatoria.
 - **Orden:** 4.º.
 
-## B4 · Administración básica  🟡
+## B4 · Administración básica  🟡  ✅ HECHO (2026-07-30)
+> Panel solo-admin (guard verificado), 2FA (TOTP) con QR, visor de auditoría. 2FA muy
+> recomendado ahora; obligatoriedad estricta se activa antes del piloto. Falta que el usuario
+> pruebe el login al panel y (opcional) active su 2FA.
 - **Objetivo:** panel admin mínimo con **MFA** para gestionar la plataforma.
 - **Archivos/módulos:** `plataforma/admin.html`, vistas admin, **MFA (TOTP)** admin, lectura de `audit_log`.
 - **Dependencias:** B2, B3.
