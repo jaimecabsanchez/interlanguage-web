@@ -30,6 +30,9 @@ jobs:
           if [ "$fail" -ne 0 ]; then exit 1; fi
           echo "✅ Sintaxis correcta."
 
+      - name: Tests del modelo pedagógico
+        run: node plataforma/motor/pedagogia.test.js
+
       - name: Escanear secretos que no deben subirse
         run: |
           echo "Buscando secretos filtrados…"
