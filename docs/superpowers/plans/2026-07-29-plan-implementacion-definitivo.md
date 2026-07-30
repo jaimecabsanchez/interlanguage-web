@@ -76,7 +76,10 @@ motivación/Nemo, arquitectura técnica (Stack A), modelo de datos/API, segurida
 - **Riesgos:** panel = mayor superficie de ataque → MFA e idle-timeout.
 - **Orden:** 5.º.
 
-## B5 · Gestión de alumnos y grupos  🟡
+## B5 · Gestión de alumnos y grupos  🟡  ◻️ CÓDIGO LISTO (2026-07-30) · pendiente desplegar
+> Edge Function reescrita (genera `blue-fox-317`, crea alumno completo + auditoría) y UI de alta en el
+> panel. **Falta paso del usuario:** desplegar la función y darle el secreto `IL_SERVICE_KEY`
+> (`supabase/functions/admin-create-student/DEPLOY.md`). Al hacerlo se cierra también la verificación de B3.
 - **Objetivo:** dar de alta alumnos (código+temporal), crear grupos, matrícula/acceso vigente.
 - **Archivos/módulos:** `supabase/functions/admin-create-student` (service_role), vistas de alumnos/grupos,
   `students`/`groups`/`group_members`/`enrollments`, reset de clave.
@@ -86,6 +89,11 @@ motivación/Nemo, arquitectura técnica (Stack A), modelo de datos/API, segurida
 - **Pruebas:** alta→login del nuevo alumno; acceso caducado bloqueado; reset funciona; auditoría.
 - **Riesgos:** manejo de datos de menores → minimización y validación servidor.
 - **Orden:** 6.º.
+
+> **B6 (Conectar Supabase)** — ◻️ DEV CONECTADO (2026-07-30): esquema aplicado, app conectada al proyecto
+> de desarrollo, login/panel reales funcionando. Falta: staging/producción separados, backups y CI de
+> migraciones (ops, antes del piloto). *(Numeración: en el plan B6 aparece más abajo como "CMS"; el
+> "Conectar Supabase" es el Bloque 6 de la hoja de ruta corta. Ambos avanzan.)*
 
 ## B6 · Gestión de contenidos (CMS + biblioteca multimedia)  🔴
 - **Objetivo:** crear/editar/publicar ejercicios y subir media sin tocar código (estados y versiones).
@@ -98,7 +106,9 @@ motivación/Nemo, arquitectura técnica (Stack A), modelo de datos/API, segurida
 - **Riesgos:** complejidad del CMS → empezar por lo mínimo por plantilla; media pesada → validar/optimizar.
 - **Orden:** 7.º.
 
-## B7 · Motor de actividades  🔴  *(primer trozo "jugable")*
+## B7 · Motor de actividades  🔴  ✅ HECHO (2026-07-30)  *(primer trozo "jugable")*
+> Motor P1/P5/P6/P9 verificado en navegador (`plataforma/motor/demo-motor.html`). Falta
+> validación de acierto en servidor contra answer_keys (llega con B10) y code-splitting (B17).
 - **Objetivo:** motor que lee un ejercicio del banco y lo **pinta, valida y da feedback** (P1,P3,P5,P6,P7).
 - **Archivos/módulos:** `plataforma/motor/engine.js`, `plataforma/motor/plantillas/p1..p7.js`, `leccion.html`,
   validación **en servidor** contra `answer_keys` (Edge Function o RPC), emisión de evento de intento.
@@ -119,7 +129,9 @@ motivación/Nemo, arquitectura técnica (Stack A), modelo de datos/API, segurida
 - **Riesgos:** peso de imágenes/animación → presupuesto.
 - **Orden:** 9.º.
 
-## B9 · Sesión diaria  🔴
+## B9 · Sesión diaria  🔴  ◻️ LÓGICA HECHA (2026-07-30)
+> `pedagogia.js` compone la sesión por reglas (verificado con tests). Falta conectarla a datos reales
+> del alumno y a la UI (necesita alumno de B5).
 - **Objetivo:** "¿qué hago hoy?" — el motor **compone** la sesión (repaso+errores+nuevo) por reglas.
 - **Archivos/módulos:** `plataforma/motor/sesion.js`, `progreso.js` (recomendación por reglas), `practice_sessions`.
 - **Dependencias:** B7, B10 (progreso), pedagogía.
@@ -139,7 +151,9 @@ motivación/Nemo, arquitectura técnica (Stack A), modelo de datos/API, segurida
 - **Riesgos:** volumen alto → índices; luego particionar (Fase 2).
 - **Orden:** 11.º (va muy pegado a B7/B9).
 
-## B11 · Progreso y dominio  🔴
+## B11 · Progreso y dominio  🔴  ◻️ LÓGICA HECHA (2026-07-30)
+> Modelo de dominio (5 estados, evidencia, espaciado 1·3·7·16) en `pedagogia.js`, 17 tests en verde.
+> Falta persistir a `mastery`/`attempts` en Supabase y mostrarlo en la UI (necesita alumno de B5).
 - **Objetivo:** convertir intentos en **estados de dominio** (5 estados) y repaso espaciado.
 - **Archivos/módulos:** `progreso.js` (modelo de evidencia), `progress`/`mastery`, cálculo de `next_review_at`
   (1·3·7·16), vista "Progreso" del alumno.
@@ -212,7 +226,9 @@ motivación/Nemo, arquitectura técnica (Stack A), modelo de datos/API, segurida
 - **Riesgos:** audio/imagen pesan → optimizar en el pipeline de contenido.
 - **Orden:** 18.º.
 
-## B18 · Testing (suite y CI)  🟡  *(se va construyendo desde B1; se consolida aquí)*
+## B18 · Testing (suite y CI)  🟡  ◻️ INICIADO (2026-07-30)  *(se va construyendo desde B1; se consolida aquí)*
+> Tests del modelo pedagógico en CI (Node) + comprobación de sintaxis + escáner de secretos. Faltan
+> tests de autorización (con alumnos de B5) y E2E del recorrido del alumno.
 - **Objetivo:** red de seguridad automatizada para no romper lo que funciona.
 - **Archivos/módulos:** tests unitarios (validación del motor, modelo de dominio, recomendación), tests de
   autorización (RLS/roles), smoke E2E del recorrido del alumno, CI que los ejecuta.
