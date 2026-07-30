@@ -1,6 +1,6 @@
 # Modelo de datos inicial y API del MVP
 
-**Fecha:** 2026-07-29 · **Estado:** borrador para aprobación.
+**Fecha:** 2026-07-29 · **Estado:** aprobado (visto bueno).
 Base: arquitectura técnica (Stack A · Postgres/Supabase + RLS), RBAC, arquitectura pedagógica y catálogo/motor.
 Amplía el `supabase/schema.sql` actual (profiles + progress), que queda subsumido aquí.
 
