@@ -183,7 +183,12 @@ motivación/Nemo, arquitectura técnica (Stack A), modelo de datos/API, segurida
 - **Riesgos:** que el modelo "regale" o "castigue" dominio → calibrar con tests; es **lógica pura, muy testeable**.
 - **Orden:** 12.º.
 
-## B12 · Motivación  🟡
+## B12 · Motivación  🟡  ◻️ HECHO (lógica+UI) (2026-07-30)
+> `motivacion.js` (10 medallas: constancia/aciertos/mejora/dominio) + racha FLEXIBLE con comodín;
+> 16 tests en CI. Otorgadas al completar lección y mostradas en la recompensa; colección en el perfil.
+> Verificado: 8/8 lógica + E2E (lección perfecta → aciertos_5/pleno/primera). **Pendiente del usuario:**
+> aplicar migración `0004` (sembrar catálogo rewards) para que las medallas se PERSISTAN entre sesiones.
+> Objetivos semanales/misiones ricas → mejora futura.
 - **Objetivo:** racha flexible, objetivos semanales, medallas, celebraciones discretas (sin competición).
 - **Archivos/módulos:** `motivacion.js`, `streaks`/`rewards`/`student_rewards`, UI de medallas/mapa, celebraciones.
 - **Dependencias:** B11.
