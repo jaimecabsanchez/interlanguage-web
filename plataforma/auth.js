@@ -411,5 +411,51 @@
     await this._save(p);
   };
 
+  /* ---------------- CONTENIDO DE LA BD + VALIDACIÓN EN SERVIDOR (B6/B10) ----------------
+     Para actividades que viven en la base de datos: el alumno recibe la actividad
+     SIN la solución (la RLS oculta answer_keys) y valida en el servidor con submit_attempt. */
+
+  // Actividades publicadas de un objetivo (sin answer_keys) + sus opciones
+  API.getPublishedActivities = async function (objectiveId) {
+    if (DEMO || !sb) return [];
+    let q = sb.from("activities")
+      .select("id, template, instruction, explanation, objective_id, options(id, label, media_id, \"order\")")
+      .eq("status", "published");
+    if (objectiveId) q = q.eq("objective_id", objectiveId);
+    const { data, error } = await q;
+    if (error) return [];
+    return data || [];
+  };
+
+  // Crea la sesión de práctica del día (para agrupar los intentos)
+  API.startPracticeSession = async function () {
+    if (DEMO || !sb) return null;
+    const prof = await this.getProfile();
+    if (!prof || !prof.student_id) return null;
+    const { data } = await sb.from("practice_sessions").insert({ student_id: prof.student_id }).select("id").single();
+    return data ? data.id : null;
+  };
+
+  // Envía una respuesta de selección: valida EN SERVIDOR y registra el intento
+  API.submitAttempt = async function (activityId, optionId, meta) {
+    if (DEMO || !sb) return { correct: false };
+    meta = meta || {};
+    const { data, error } = await sb.rpc("submit_attempt", {
+      p_activity: activityId, p_option: optionId,
+      p_attempt_no: meta.attempt_no || 1, p_hint: !!meta.hint,
+      p_duration: meta.duration || null, p_session: meta.session || null
+    });
+    if (error) return { correct: false, error: error.message };
+    return data || { correct: false };
+  };
+
+  // Cierra la sesión con su resumen
+  API.finishPracticeSession = async function (sessionId, correct, total) {
+    if (DEMO || !sb || !sessionId) return;
+    await sb.from("practice_sessions").update({
+      completed: true, correct_count: correct, total_count: total, finished_at: new Date().toISOString()
+    }).eq("id", sessionId);
+  };
+
   window.ILAuth = API;
 })();
