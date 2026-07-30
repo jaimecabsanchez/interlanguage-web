@@ -247,6 +247,10 @@
     container.appendChild(root);
 
     const impl = (T[ex.tipo] || T.elegir_texto)(body, ex);
+    // Accesibilidad: marca el contenido en inglés (en los contenedores, para que se herede
+    // aunque las fichas se redibujen) y así el lector de pantalla lo pronuncie bien.
+    body.querySelectorAll(".eng-options,.eng-bank,.eng-line,.eng-match,.eng-suboptions,.eng-stimulus,.eng-speak-phrase")
+      .forEach(e => e.setAttribute("lang", "en"));
     let attempt = 0, hintUsed = false, done = false;
 
     // Ejercicio de hablar: el botón es "¡Hecho!"
