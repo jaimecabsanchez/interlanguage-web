@@ -40,6 +40,9 @@ perfiles alumno + admin + vista de familias · stack ligero (web + Supabase + Ne
 - [ ] **Bloque 6 — Conectar Supabase (real).**
       Cuentas y datos reales (contraseñas cifradas, progreso guardado, contenido en base de datos).
       ⚠️ Necesita que el usuario cree su proyecto Supabase — hay que guiarle.
+      Stack aprobado (2026-07-29): **Stack A** — web ligera + Supabase (Postgres+RLS+Auth+Storage, región UE) +
+      Netlify; correos Resend; analítica sin cookies (Plausible/Umami); Sentry. Entornos, secretos, backups,
+      migraciones y CI/CD en `docs/superpowers/specs/2026-07-29-arquitectura-tecnica-mvp.md`.
 
 - [ ] **Bloque 7 — Contenido inicial + piloto + legal.**
       6–8 unidades reales (IA genera borradores, un profe revisa/aprueba), prueba con 2–3

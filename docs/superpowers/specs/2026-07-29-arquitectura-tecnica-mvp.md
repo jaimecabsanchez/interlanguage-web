@@ -1,6 +1,6 @@
 # Arquitectura técnica recomendada para el MVP
 
-**Fecha:** 2026-07-29 · **Estado:** borrador para aprobación.
+**Fecha:** 2026-07-29 · **Estado:** aprobado (visto bueno). Stack elegido: **Stack A** (web ligera + Supabase + Netlify).
 Base: MVP aprobado (Primaria 3.º–4.º · contenido como datos · perfiles alumno/admin/familia · motor P1–P7).
 
 ## Resumen para no-técnicos
