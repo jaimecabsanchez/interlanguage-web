@@ -2,3 +2,13 @@
 fotos-nuevas-campamento/
 .superpowers/
 backup/
+
+# Secretos y entorno (NUNCA subir a git)
+.env
+.env.local
+.env.*.local
+
+# Dependencias / build (por si en el futuro hay herramientas)
+node_modules/
+dist/
+*.log

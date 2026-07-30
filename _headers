@@ -1,3 +1,19 @@
+# ============================================================
+#  Cabeceras para Netlify · Interlanguage
+#  Seguridad base (segura para todo el sitio) + caché.
+#  La Content-Security-Policy (CSP) se afina en el Bloque 15.
+#  Ref: docs/superpowers/specs/2026-07-29-seguridad-privacidad.md
+# ============================================================
+
+# --- Seguridad: aplica a TODO el sitio ---
+/*
+  Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), interest-cohort=()
+
+# --- Caché: assets versionados (inmutables) ---
 /images/*
   Cache-Control: public, max-age=31536000, immutable
 
@@ -7,12 +23,19 @@
 /js/*
   Cache-Control: public, max-age=31536000, immutable
 
+# --- HTML: revalida siempre (los cambios llegan enseguida) ---
 /*.html
   Cache-Control: public, max-age=0, must-revalidate
 
-# La plataforma revalida siempre, para que los cambios de código lleguen a las familias
+# --- Plataforma: revalida el código mientras no esté versionado por hash ---
+# (En el Bloque 17 pasará a immutable con nombres con hash.)
 /plataforma/*.js
   Cache-Control: no-cache
 
 /plataforma/*.css
   Cache-Control: no-cache
+
+# --- Datos privados de la plataforma: nunca en caché compartida ---
+# (Refuerzo; la respuesta de la API/Supabase ya marca su propio Cache-Control.)
+/plataforma/datos/*
+  Cache-Control: private, no-store

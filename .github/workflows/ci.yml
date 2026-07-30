@@ -1,0 +1,47 @@
+name: CI
+
+# Comprobaciones básicas en cada cambio. Se activa automáticamente
+# cuando el repositorio se conecte a GitHub. No necesita instalar nada.
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Comprobar sintaxis de JavaScript
+        run: |
+          echo "Verificando sintaxis de los .js de la plataforma…"
+          fail=0
+          while IFS= read -r f; do
+            if ! node --check "$f"; then
+              echo "❌ Error de sintaxis en: $f"
+              fail=1
+            fi
+          done < <(find plataforma -name '*.js' -not -path '*/node_modules/*')
+          if [ "$fail" -ne 0 ]; then exit 1; fi
+          echo "✅ Sintaxis correcta."
+
+      - name: Escanear secretos que no deben subirse
+        run: |
+          echo "Buscando secretos filtrados…"
+          # 1) El archivo .env nunca debe estar en git.
+          if git ls-files --error-unmatch .env >/dev/null 2>&1; then
+            echo "❌ .env está en git. Debe estar ignorado."
+            exit 1
+          fi
+          # 2) La clave service_role de Supabase nunca en el código del cliente.
+          if grep -rIl --exclude-dir=.git --exclude='*.example' \
+               -e 'service_role' plataforma/ 2>/dev/null; then
+            echo "❌ Aparece 'service_role' en el cliente (plataforma/). Muévelo a una Edge Function."
+            exit 1
+          fi
+          echo "✅ Sin secretos filtrados."

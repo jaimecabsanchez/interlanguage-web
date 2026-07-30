@@ -32,6 +32,29 @@ python3 -m http.server 8000
 
 Basta con desplegar esta carpeta tal cual: Netlify sirve `index.html` en la raíz automáticamente y aplica el caché de `_headers`.
 
+## La plataforma de práctica (`plataforma/`)
+
+Además de la web pública, este repo contiene la **plataforma de práctica de inglés** (proyecto aparte, en
+construcción). Su diseño completo está en `docs/superpowers/` (specs y planes, todo aprobado) y su hoja de
+ruta operativa en `docs/superpowers/plans/2026-07-29-plan-implementacion-definitivo.md`.
+
+```
+plataforma/
+├── index.html · inicio.html · leccion.html · perfil.html · admin.html …  ← pantallas
+├── auth.js            ← login (modo demo con localStorage, o Supabase real)
+├── contenido.js       ← banco de ejercicios de ejemplo (en real vendrá de Supabase)
+├── motor/             ← motor de actividades (plantillas P1–P7) · Bloque 7
+└── supabase-config.js ← claves PÚBLICAS (anon). NUNCA la service_role aquí.
+
+supabase/
+├── schema.sql         ← modelo de datos (estado actual)
+├── migrations/        ← cambios de BD versionados (se aplican en orden)
+└── functions/         ← Edge Functions (lógica de servidor: alta de alumnos, etc.)
+```
+
+Stack: **web ligera + Supabase (Postgres/Auth/Storage) + Netlify**. Datos de menores → privacidad desde el
+diseño (RGPD). Los secretos van en variables de entorno (ver `.env.example`), **nunca** en el repo.
+
 ## Desarrollo con Claude Code
 
 Abre esta carpeta con `claude` desde la terminal para seguir editando el proyecto. No hay build ni `npm install`: es HTML/CSS/JS plano.
