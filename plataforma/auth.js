@@ -331,7 +331,8 @@
     ]);
     const p = blankProgress();
     if (state) { p.gems = state.gems; p.xp = state.xp; p.lessons = state.lessons; p.owned = Array.isArray(state.owned) ? state.owned : []; p.hat = state.hat || ""; p.acc = state.acc || ""; }
-    if (streak) { p.streak = streak.current; p.best = streak.longest; p.last = streak.last_practice_date || ""; }
+    if (streak) { p.streak = streak.current; p.best = streak.longest; p.last = streak.last_practice_date || ""; p.freezes = streak.freezes_available; }
+    if (p.freezes == null) p.freezes = 1;
     p.id = prof.id; p.student_id = sid; p.username = prof.username; p.full_name = prof.full_name; p.level = prof.level;
     return p;
   };
@@ -341,19 +342,59 @@
     if (!p.student_id) return;
     await Promise.all([
       sb.from("student_state").upsert({ student_id: p.student_id, gems: p.gems, xp: p.xp, lessons: p.lessons, owned: p.owned, hat: p.hat, acc: p.acc }),
-      sb.from("streaks").upsert({ student_id: p.student_id, current: p.streak, longest: p.best, last_practice_date: p.last || null })
+      sb.from("streaks").upsert({ student_id: p.student_id, current: p.streak, longest: p.best, last_practice_date: p.last || null, freezes_available: (p.freezes == null ? 1 : p.freezes) })
     ]);
   };
 
-  API.completeLesson = async function () {
+  // Medallas ganadas (ids). Best-effort.
+  API._earnedMedals = async function (p) {
+    if (DEMO) { try { return JSON.parse(localStorage.getItem("il_medals_" + p.username)) || []; } catch (e) { return []; } }
+    if (!p.student_id) return [];
+    const { data } = await sb.from("student_rewards").select("reward_id").eq("student_id", p.student_id);
+    return (data || []).map(r => r.reward_id);
+  };
+  API._awardMedals = async function (p, ids) {
+    if (!ids || !ids.length) return;
+    if (DEMO) { const cur = await this._earnedMedals(p); localStorage.setItem("il_medals_" + p.username, JSON.stringify(cur.concat(ids))); return; }
+    if (!p.student_id) return;
+    // Best-effort: si el catálogo rewards aún no está sembrado (migración 0004), se ignora sin romper.
+    try { await sb.from("student_rewards").insert(ids.map(id => ({ student_id: p.student_id, reward_id: id }))); } catch (e) {}
+  };
+  // Lista de medallas ganadas con su info de catálogo (para el perfil)
+  API.listMedals = async function () {
+    const Mot = (typeof window !== "undefined" && window.IL_MOTIVACION) || null;
+    const p = await this.getProgress(); if (!p || !Mot) return [];
+    const earned = new Set(await this._earnedMedals(p));
+    return Mot.MEDALS.map(m => ({ ...m, earned: earned.has(m.id) }));
+  };
+
+  API.completeLesson = async function (summary) {
+    summary = summary || { correct: 0, total: 0, allCorrect: false, maxCorrectStreak: 0 };
+    const Mot = (typeof window !== "undefined" && window.IL_MOTIVACION) || null;
     const p = await this.getProgress(); if (!p) return null;
     const t = today();
-    if (p.last === t) { /* ya practicó hoy: no sube la racha */ }
-    else if (p.last === dayAdd(-1)) { p.streak += 1; }
-    else { p.streak = 1; }
+    const prevBest = p.best || 0;
+
+    // Racha FLEXIBLE (con comodín) si el módulo está cargado
+    if (Mot) {
+      const ns = Mot.nextStreak({ current: p.streak, last_practice_date: p.last, freezes_available: p.freezes }, t);
+      p.streak = ns.current; p.freezes = ns.freezes_available;
+    } else {
+      if (p.last === t) { } else if (p.last === dayAdd(-1)) { p.streak += 1; } else { p.streak = 1; }
+    }
     p.last = t; p.gems += 20; p.xp += 50; p.lessons += 1;
-    p.best = Math.max(p.best || 0, p.streak);
-    await this._save(p); return p;
+    p.best = Math.max(prevBest, p.streak);
+    await this._save(p);
+
+    // Medallas recién ganadas
+    let newMedals = [];
+    if (Mot) {
+      const earned = await this._earnedMedals(p);
+      newMedals = Mot.evaluate({ streak: p.streak, prevBest: prevBest, lessons: p.lessons, session: summary, earned: earned });
+      if (newMedals.length) await this._awardMedals(p, newMedals);
+    }
+    p.newMedals = newMedals.map(id => (Mot ? Mot.byId[id] : { id, name: id, icon: "🏅" }));
+    return p;
   };
 
   API.buyItem = async function (id, price) {

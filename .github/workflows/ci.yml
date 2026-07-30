@@ -39,6 +39,9 @@ jobs:
       - name: Tests del modelo pedagógico
         run: node plataforma/motor/pedagogia.test.js
 
+      - name: Tests de motivación
+        run: node plataforma/motor/motivacion.test.js
+
       - name: Escanear secretos que no deben subirse
         run: |
           echo "Buscando secretos filtrados…"

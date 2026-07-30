@@ -32,6 +32,10 @@
   .rw .v{font-family:'Plus Jakarta Sans';font-weight:800;font-size:1.4rem;color:#16294A}
   .rw .l{font-size:.72rem;color:#8A97A6;text-transform:uppercase;letter-spacing:.04em}
   .hidden{display:none!important}
+  .new-medals{background:#FFF7E6;border:1px solid #FFE2A8;border-radius:16px;padding:14px 18px;margin-bottom:20px;max-width:340px}
+  .nm-title{font-family:'Plus Jakarta Sans';font-weight:800;color:#B8860B;margin-bottom:8px}
+  .nm{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #FFE2A8;border-radius:999px;padding:6px 12px;margin:3px;font-size:.9rem;font-weight:600;color:#7a5a10}
+  .nm-ico{font-size:1.1rem}
 </style>
 </head>
 <body>
@@ -53,6 +57,7 @@
     <div class="rw"><div class="v" id="rwStreak">🔥 –</div><div class="l">Racha</div></div>
     <div class="rw"><div class="v">+20</div><div class="l">Gemas</div></div>
   </div>
+  <div id="rwMedals"></div>
   <a href="inicio.html" class="btn btn-primary" style="max-width:320px;text-decoration:none;display:block;">VOLVER AL MAPA</a>
 </div>
 
@@ -61,6 +66,7 @@
 <script src="auth-utils.js"></script>
 <script src="auth.js"></script>
 <script src="contenido.js"></script>
+<script src="motor/motivacion.js"></script>
 <script src="motor/engine.js"></script>
 <script>
   const $ = (id) => document.getElementById(id);
@@ -77,7 +83,7 @@
   // La sesión de hoy: la primera unidad del banco (más adelante la compondrá el motor pedagógico)
   const unidad = (window.IL_CONTENIDO.unidades || [])[0] || { ejercicios: [] };
   const items = unidad.ejercicios || [];
-  let idx = 0, correct = 0;
+  let idx = 0, correct = 0, curStreak = 0, maxStreak = 0;
 
   function start() {
     if (!items.length) { $("stage").innerHTML = "<p style='text-align:center;color:#8A97A6;padding:40px'>Aún no hay ejercicios.</p>"; return; }
@@ -89,7 +95,10 @@
     setProgress();
     const ctrl = IL_ENGINE.render($("stage"), items[idx], {
       lastOne: idx === items.length - 1,
-      onResult: (ev) => { if (ev.correct) correct++; },
+      onResult: (ev) => {
+        if (ev.correct) { correct++; curStreak++; if (curStreak > maxStreak) maxStreak = curStreak; }
+        else { curStreak = 0; }
+      },
       onNext: () => { idx++; if (idx < items.length) show(); else finish(); }
     });
     ctrl.focus();
@@ -98,7 +107,18 @@
   async function finish() {
     $("pfill").style.width = "100%";
     $("rwScore").textContent = correct + "/" + items.length;
-    try { const r = await ILAuth.completeLesson(); if (r) $("rwStreak").textContent = "🔥 " + r.streak; } catch (e) {}
+    const summary = { correct: correct, total: items.length, allCorrect: correct === items.length, maxCorrectStreak: maxStreak };
+    try {
+      const r = await ILAuth.completeLesson(summary);
+      if (r) {
+        $("rwStreak").textContent = "🔥 " + r.streak;
+        if (r.newMedals && r.newMedals.length) {
+          $("rwMedals").innerHTML = '<div class="new-medals"><div class="nm-title">¡Medalla' +
+            (r.newMedals.length > 1 ? "s" : "") + ' nueva' + (r.newMedals.length > 1 ? "s" : "") + '!</div>' +
+            r.newMedals.map(m => '<span class="nm"><span class="nm-ico">' + m.icon + '</span>' + m.name + '</span>').join("") + '</div>';
+        }
+      }
+    } catch (e) {}
     $("reward").classList.remove("hidden");
   }
 

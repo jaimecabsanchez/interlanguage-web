@@ -131,17 +131,8 @@
     </div>
 
     <div class="card-soft">
-      <h3 class="h">Medallas · <b>14 de 40</b></h3>
-      <div class="medals">
-        <div class="medal on">🔥</div><div class="medal on">📅</div><div class="medal on">💯</div>
-        <div class="medal on">🦉</div><div class="medal on">🎯</div><div class="medal on">🏅</div>
-        <div class="medal lock">🔒</div><div class="medal lock">🔒</div><div class="medal lock">🔒</div>
-      </div>
-      <div class="mini-stats" style="margin-top:16px;">
-        <div class="s"><div class="v">7h 40′</div><div class="l">Total</div></div>
-        <div class="s"><div class="v">412</div><div class="l">Palabras</div></div>
-        <div class="s"><div class="v">91%</div><div class="l">Precisión</div></div>
-      </div>
+      <h3 class="h">Medallas · <b id="medalsCount">0 de 0</b></h3>
+      <div class="medals" id="medalsGrid"></div>
     </div>
 
     <div class="goal">
@@ -160,6 +151,8 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-config.js"></script>
+<script src="auth-utils.js"></script>
+<script src="motor/motivacion.js"></script>
 <script src="auth.js"></script>
 <script>
   (async () => {
@@ -175,6 +168,16 @@
       document.getElementById("topGems").textContent = pr.gems;
       document.getElementById("hdrStreak").textContent = pr.streak;
     }
+
+    // Medallas reales (ganadas + bloqueadas)
+    try {
+      const medals = await ILAuth.listMedals();
+      const got = medals.filter(m => m.earned).length;
+      document.getElementById("medalsCount").textContent = got + " de " + medals.length;
+      document.getElementById("medalsGrid").innerHTML = medals.map(m =>
+        '<div class="medal ' + (m.earned ? "on" : "lock") + '" title="' + m.name + '">' + (m.earned ? m.icon : "🔒") + '</div>'
+      ).join("");
+    } catch (e) {}
 
     const heat = document.getElementById("heat");
     let seed = 7, frag = document.createDocumentFragment();
