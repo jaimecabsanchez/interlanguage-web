@@ -219,7 +219,11 @@ motivación/Nemo, arquitectura técnica (Stack A), modelo de datos/API, segurida
 - **Riesgos:** fuga entre grupos → pruebas de pertenencia.
 - **Orden:** 14.º.
 
-## B14 · Panel familiar (informe + enlace seguro)  🟡
+## B14 · Panel familiar (informe + enlace seguro)  🟡  ◻️ VISTA HECHA (2026-07-30)
+> `informe.html`: informe de la familia (solo lectura, datos reales, sin notas ni comparaciones) —
+> verificado con alumno real (vista previa). Edge Function `share-report` (enlace seguro caducable con
+> token HMAC firmado) escrita. **Falta paso del usuario:** desplegar `share-report` + secretos
+> (`IL_SERVICE_KEY`, `IL_SHARE_SECRET`) para el enlace real de la familia; envío por email (Resend).
 - **Objetivo:** que la familia vea un resumen **solo lectura** por **enlace seguro caducable** (sin cuenta en MVP).
 - **Archivos/módulos:** `supabase/functions/share-report` (token firmado caducable), vista pública de informe,
   envío por email (Resend), `consents.comms`.
@@ -279,7 +283,10 @@ motivación/Nemo, arquitectura técnica (Stack A), modelo de datos/API, segurida
 - **Riesgos:** intentar 100% de cobertura de UI → priorizar lógica y seguridad.
 - **Orden:** 19.º (continuo).
 
-## B19 · Despliegue (staging → producción)  🟡
+## B19 · Despliegue (staging → producción)  🟡  ◻️ GUÍA LISTA (2026-07-30)
+> `docs/DESPLIEGUE.md`: guía sencilla para publicar en Netlify (arrastrar o conectar GitHub) → enlace
+> normal para las familias. **Falta paso del usuario:** publicar; y antes del lanzamiento real, crear
+> proyecto Supabase de **producción** + separar staging/prod + backups + excluir docs/supabase del sitio.
 - **Objetivo:** publicar de forma segura y reversible, con entornos separados.
 - **Archivos/módulos:** Netlify (main=prod, previews), proyectos Supabase **staging** y **producción** **[TÚ]**,
   despliegue de Edge Functions y migraciones desde CI, backups activados, secretos por entorno.
