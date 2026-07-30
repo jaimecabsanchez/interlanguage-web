@@ -203,14 +203,15 @@
       // Une la ficha de alumno con su cuenta para mostrar el código de acceso
       const { data, error } = await sb
         .from("students")
-        .select("id, first_name, level_id, created_at, users:users!students_user_id_fkey(username, status)")
+        .select("id, first_name, level_id, created_at, users:users!students_user_id_fkey(username, status), enrollments(status)")
         .order("created_at", { ascending: false });
       if (error) return [];
       return (data || []).map(s => ({
         id: s.id,
         full_name: s.first_name || "",
         username: s.users ? s.users.username : "",
-        created_at: s.created_at
+        created_at: s.created_at,
+        active: !((s.enrollments || []).length) || (s.enrollments || []).some(e => e.status === "active")
       }));
     },
 
@@ -241,6 +242,60 @@
       const { data, error } = await sb.functions.invoke("admin-create-student", { body: { action: "reset", username } });
       if (error || (data && data.error)) return { ok: false, error: (data && data.error) || "No se pudo restablecer." };
       return { ok: true, username, password: data.password };
+    },
+
+    /* Auditoría best-effort desde el cliente (requiere migración 0003; si no, se ignora) */
+    async _audit(action, entity, entity_id) {
+      if (DEMO || !sb) return;
+      try { const { data: { user } } = await sb.auth.getUser();
+            await sb.from("audit_log").insert({ actor_user_id: user && user.id, action, entity, entity_id }); } catch (e) {}
+    },
+
+    // Editar el nombre de un alumno
+    async updateStudentName(studentId, name) {
+      name = String(name || "").trim();
+      if (!name) return { ok: false, error: "El nombre no puede estar vacío." };
+      if (DEMO) return { ok: true };
+      const { error } = await sb.from("students").update({ first_name: name }).eq("id", studentId);
+      if (error) return { ok: false, error: error.message };
+      await this._audit("student.update", "students", studentId);
+      return { ok: true };
+    },
+
+    // Activar / desactivar el acceso del alumno (matrícula)
+    async setStudentAccess(studentId, active) {
+      if (DEMO) return { ok: true };
+      const status = active ? "active" : "paused";
+      const { data: rows } = await sb.from("enrollments").select("id").eq("student_id", studentId);
+      let error;
+      if (rows && rows.length) ({ error } = await sb.from("enrollments").update({ status }).eq("student_id", studentId));
+      else ({ error } = await sb.from("enrollments").insert({ student_id: studentId, plan_id: "premium_home", status, starts_on: new Date().toISOString().slice(0, 10) }));
+      if (error) return { ok: false, error: error.message };
+      await this._audit(active ? "access.enable" : "access.disable", "students", studentId);
+      return { ok: true };
+    },
+
+    /* ------- GRUPOS ------- */
+    async listGroups() {
+      if (DEMO || !sb) return [];
+      const { data } = await sb.from("groups").select("id, name, status, group_members(student_id)").order("name");
+      return (data || []).map(g => ({ id: g.id, name: g.name, status: g.status, count: (g.group_members || []).length }));
+    },
+    async createGroup(name) {
+      name = String(name || "").trim();
+      if (!name) return { ok: false, error: "Ponle un nombre al grupo." };
+      if (DEMO) return { ok: true };
+      const { data, error } = await sb.from("groups").insert({ name }).select("id").single();
+      if (error) return { ok: false, error: error.message };
+      await this._audit("group.create", "groups", data.id);
+      return { ok: true, id: data.id };
+    },
+    async addStudentToGroup(groupId, studentId) {
+      if (DEMO) return { ok: true };
+      const { error } = await sb.from("group_members").insert({ group_id: groupId, student_id: studentId });
+      if (error) return { ok: false, error: /duplicate|unique/i.test(error.message) ? "Ese alumno ya está en el grupo." : error.message };
+      await this._audit("group.add_member", "groups", groupId);
+      return { ok: true };
     }
   };
 

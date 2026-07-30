@@ -20,6 +20,9 @@
   .audit-row{display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px solid var(--line,#eef1f4);font-size:.9rem}
   .audit-row .when{color:var(--faint,#8a97a6);white-space:nowrap}
   .muted{color:var(--faint,#8a97a6)}
+  .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
+  #search{width:100%;padding:12px 14px;border:1.5px solid var(--line-2,#d9dee5);border-radius:12px;font-size:1rem;font-family:inherit}
+  .grp-sel{padding:8px 10px;border:1.5px solid var(--line-2,#d9dee5);border-radius:10px;font-family:inherit}
 </style>
 </head>
 <body>
@@ -103,12 +106,31 @@
     <div class="panel">
       <h2>Alumnos con acceso</h2>
       <p class="pdesc"><span id="count">0</span> cuentas.</p>
+      <div class="field">
+        <label for="search" class="sr-only">Buscar alumno</label>
+        <input type="search" id="search" placeholder="🔎 Buscar por nombre o usuario…" autocomplete="off">
+      </div>
       <div class="table-wrap">
         <table class="students">
-          <thead><tr><th>Alumno</th><th>Usuario</th><th>Alta</th><th></th></tr></thead>
+          <thead><tr><th>Alumno</th><th>Usuario</th><th>Acceso</th><th></th></tr></thead>
           <tbody id="rows"></tbody>
         </table>
       </div>
+    </div>
+
+    <!-- GRUPOS -->
+    <div class="panel">
+      <h2>Grupos</h2>
+      <p class="pdesc">Organiza a los alumnos en grupos (para el panel del profesor).</p>
+      <div class="msg error" id="gmsg"></div>
+      <form id="groupForm" style="display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap">
+        <div class="field" style="flex:1;min-width:180px;margin:0">
+          <label for="groupName">Nuevo grupo</label>
+          <input type="text" id="groupName" placeholder="Ej: Explorers · martes" autocomplete="off">
+        </div>
+        <button type="submit" class="btn btn-primary">Crear grupo</button>
+      </form>
+      <div id="groups" style="margin-top:12px"></div>
     </div>
 
     <!-- AUDITORÍA -->
@@ -138,7 +160,8 @@
     $("who").textContent = "Conectado como " + (me.full_name || me.display_name || me.username);
     $("panel").classList.remove("hidden");
     refreshMFA();
-    renderList();
+    await renderList();
+    renderGroups();
     renderAudit();
   })();
 
@@ -185,18 +208,47 @@
     await ILAuth.mfaDisable(); refreshMFA();
   });
 
-  /* -------- Alumnos: alta, lista y reset -------- */
+  /* -------- Alumnos: alta, lista, búsqueda, editar, acceso, reset -------- */
+  let allStudents = [];
   async function renderList() {
-    const list = await ILAuth.listStudents();
-    $("count").textContent = list.length;
+    allStudents = await ILAuth.listStudents();
+    $("count").textContent = allStudents.length;
+    paintList();
+  }
+  function paintList() {
+    const q = ($("search").value || "").trim().toLowerCase();
+    const list = allStudents.filter(s => !q || (s.full_name || "").toLowerCase().includes(q) || (s.username || "").toLowerCase().includes(q));
     $("rows").innerHTML = list.map(s => `
       <tr>
         <td><strong>${esc(s.full_name || "—")}</strong></td>
         <td class="mono">${esc(s.username)}</td>
-        <td>${esc((s.created_at || "").slice(0,10))}</td>
-        <td><button class="link-btn" data-reset="${esc(s.username)}">Restablecer clave</button></td>
-      </tr>`).join("") || `<tr><td colspan="4" class="muted" style="padding:16px">Aún no hay alumnos. Crea el primero →</td></tr>`;
-    document.querySelectorAll("[data-reset]").forEach(b => b.addEventListener("click", () => doReset(b.getAttribute("data-reset"))));
+        <td>${s.active ? '<span class="sec-tag">Activo</span>' : '<span class="sec-tag off">Inactivo</span>'}</td>
+        <td style="white-space:nowrap">
+          <button class="link-btn" data-edit="${esc(s.id)}">Editar</button> ·
+          <button class="link-btn" data-access="${esc(s.id)}" data-active="${s.active ? 1 : 0}">${s.active ? "Desactivar" : "Activar"}</button> ·
+          <button class="link-btn" data-reset="${esc(s.username)}">Clave</button>
+        </td>
+      </tr>`).join("") || `<tr><td colspan="4" class="muted" style="padding:16px">Sin resultados.</td></tr>`;
+    $("rows").querySelectorAll("[data-reset]").forEach(b => b.onclick = () => doReset(b.getAttribute("data-reset")));
+    $("rows").querySelectorAll("[data-edit]").forEach(b => b.onclick = () => doEdit(b.getAttribute("data-edit")));
+    $("rows").querySelectorAll("[data-access]").forEach(b => b.onclick = () => doAccess(b.getAttribute("data-access"), b.getAttribute("data-active") === "1"));
+  }
+  $("search").addEventListener("input", paintList);
+
+  async function doEdit(id) {
+    const s = allStudents.find(x => x.id === id); if (!s) return;
+    const name = prompt("Nombre del alumno:", s.full_name || "");
+    if (name === null) return;
+    const res = await ILAuth.updateStudentName(id, name);
+    if (!res.ok) { alert(res.error); return; }
+    renderList();
+  }
+  async function doAccess(id, isActive) {
+    const verb = isActive ? "DESACTIVAR" : "ACTIVAR";
+    if (!confirm("¿" + verb + " el acceso de este alumno?")) return;   // confirmación en acción sensible
+    const res = await ILAuth.setStudentAccess(id, !isActive);
+    if (!res.ok) { alert(res.error); return; }
+    renderList();
   }
 
   function showCreds(username, password) {
@@ -240,6 +292,32 @@
       "En el primer acceso os pedirá crear vuestra propia contraseña. ¡A por la primera racha! 🔥";
     navigator.clipboard.writeText(msg);
     $("copyAll").textContent = "¡Mensaje copiado!"; setTimeout(() => $("copyAll").textContent = "Copiar mensaje para la familia", 1400);
+  });
+
+  /* -------- Grupos -------- */
+  async function renderGroups() {
+    const groups = await ILAuth.listGroups();
+    const opts = allStudents.map(s => `<option value="${esc(s.id)}">${esc(s.full_name || s.username)}</option>`).join("");
+    $("groups").innerHTML = groups.length ? groups.map(g => `
+      <div class="audit-row" style="align-items:center">
+        <span><strong>${esc(g.name)}</strong> <span class="muted">· ${g.count} alumno(s)</span></span>
+        <span style="display:flex;gap:6px;align-items:center">
+          <select class="grp-sel" data-g="${esc(g.id)}" aria-label="Alumno a añadir"><option value="">+ añadir alumno…</option>${opts}</select>
+        </span>
+      </div>`).join("") : '<p class="muted">Aún no hay grupos.</p>';
+    $("groups").querySelectorAll(".grp-sel").forEach(sel => sel.onchange = async () => {
+      if (!sel.value) return;
+      const res = await ILAuth.addStudentToGroup(sel.getAttribute("data-g"), sel.value);
+      if (!res.ok) alert(res.error);
+      renderGroups();
+    });
+  }
+  $("groupForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const gm = $("gmsg"); gm.classList.remove("show");
+    const res = await ILAuth.createGroup($("groupName").value);
+    if (!res.ok) { gm.textContent = res.error; gm.classList.add("show"); return; }
+    $("groupName").value = ""; renderGroups();
   });
 
   /* -------- Auditoría -------- */

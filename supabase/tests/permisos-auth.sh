@@ -46,5 +46,17 @@ if [ -z "$TOKEN" ]; then echo "❌ no se pudo iniciar sesión como alumno (¿cam
   chk "el alumno tiene rol student" "$role" "student"
 fi
 
+echo; echo "== 4) Un ALUMNO NO puede hacer cosas de administrador =="
+if [ -n "${TOKEN:-}" ]; then
+  audit=$(curl -s "$URL/rest/v1/audit_log?select=id&limit=3" -H "apikey: $PUB" -H "Authorization: Bearer $TOKEN" --max-time 20)
+  chk "el alumno NO lee la auditoría" "$audit" "[]"
+  code_grp=$(curl -s -o /dev/null -w "%{http_code}" -X POST "$URL/rest/v1/groups" \
+    -H "apikey: $PUB" -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+    -d '{"name":"grupo-no-permitido"}' --max-time 20)
+  case "$code_grp" in 401|403) echo "✅ el alumno NO puede crear grupos (HTTP $code_grp)"; pass=$((pass+1));; *) echo "❌ el alumno pudo tocar grupos (HTTP $code_grp)"; fail=$((fail+1));; esac
+else
+  echo "   (sin sesión de alumno; se omite)"
+fi
+
 echo; echo "-----"; echo "$pass OK · $fail fallidas"
 [ "$fail" -eq 0 ] && exit 0 || exit 1
