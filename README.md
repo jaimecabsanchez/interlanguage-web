@@ -55,6 +55,26 @@ supabase/
 Stack: **web ligera + Supabase (Postgres/Auth/Storage) + Netlify**. Datos de menores → privacidad desde el
 diseño (RGPD). Los secretos van en variables de entorno (ver `.env.example`), **nunca** en el repo.
 
+## Entornos y ejecución
+
+**Local** (desarrollo):
+```bash
+cd ~/Desktop/interlanguage-web
+python3 -m http.server 8000
+# abre http://localhost:8000/plataforma/index.html
+```
+Usa el proyecto Supabase de **desarrollo** (claves públicas en `plataforma/supabase-config.js`).
+
+**Staging** (ensayo antes de producción): proyecto Supabase **separado** + Deploy Preview de Netlify.
+Config de ejemplo en `.env.staging.example`. Regla: datos de prueba y datos reales **siempre separados**.
+
+**Comprobaciones** (las mismas que corren en CI en cada cambio):
+```bash
+node plataforma/smoke.test.js          # base técnica bien montada
+node plataforma/motor/pedagogia.test.js # modelo pedagógico (17 pruebas)
+```
+Node 20 (ver `.nvmrc`). No hay build ni `npm install`: es HTML/CSS/JS plano; las Edge Functions son TS de Deno.
+
 ## Desarrollo con Claude Code
 
 Abre esta carpeta con `claude` desde la terminal para seguir editando el proyecto. No hay build ni `npm install`: es HTML/CSS/JS plano.

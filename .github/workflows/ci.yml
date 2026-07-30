@@ -30,6 +30,9 @@ jobs:
           if [ "$fail" -ne 0 ]; then exit 1; fi
           echo "✅ Sintaxis correcta."
 
+      - name: Smoke test de arranque
+        run: node plataforma/smoke.test.js
+
       - name: Tests del modelo pedagógico
         run: node plataforma/motor/pedagogia.test.js
 

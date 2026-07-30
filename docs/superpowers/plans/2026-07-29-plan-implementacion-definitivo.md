@@ -17,6 +17,11 @@ motivación/Nemo, arquitectura técnica (Stack A), modelo de datos/API, segurida
 ---
 
 ## B0 · Preparación del proyecto  🟢  ✅ HECHO (2026-07-30)
+> **= tarea "base técnica del proyecto"** (no repetir). Cubre: estructura, entorno de ejemplo, conexión a
+> BD, migraciones, carpetas, entorno local, docs. Deltas añadidos 2026-07-30: `.editorconfig`, `.nvmrc`,
+> `.env.staging.example` (config staging; **falta crear el proyecto staging = usuario**), y
+> `plataforma/smoke.test.js` (prueba de arranque, en CI). TypeScript N/A en frontend (JS plano por diseño;
+> Edge Functions ya son TS de Deno). Lint = `node --check` en CI + `.editorconfig` (sin npm por diseño).
 - **Objetivo:** dejar el repo listo para construir con orden (estructura, entornos, calidad, CI mínimo).
 - **Archivos/módulos:** estructura de carpetas (`plataforma/motor/`, `supabase/migrations/`, `supabase/functions/`),
   `.env.example`, `.gitignore`, `_headers`, `.github/workflows/ci.yml` (lint/format), `README`/`SETUP` actualizados.
