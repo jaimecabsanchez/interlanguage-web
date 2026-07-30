@@ -120,7 +120,11 @@ motivación/Nemo, arquitectura técnica (Stack A), modelo de datos/API, segurida
 - **Riesgos:** que la solución viaje al cliente (trampa) → validación servidor; INP en drag → optimizar.
 - **Orden:** 8.º.
 
-## B8 · Inicio del alumno  🟢
+## B8 · Inicio del alumno  🟢  ✅ HECHO (2026-07-30)
+> Inicio + lección conectados al motor real y a datos reales. Verificado end-to-end con alumno
+> blue-fox-317 (login→cambio clave→inicio→lección 5/5→recompensa→progreso guardado en Supabase).
+> Falta: sesión compuesta por el modelo pedagógico (hoy usa la 1ª unidad del banco) y persistir
+> attempts/mastery (B9/B10/B11 a la UI).
 - **Objetivo:** pantalla de inicio (4 pestañas: Inicio/Practicar/Progreso/Perfil) con Nemo, clara y ligera.
 - **Archivos/módulos:** `inicio.html`, navegación, `perfil.html`, estilos `app.css`, assets de Nemo (sencillos).
 - **Dependencias:** B2, B7.
