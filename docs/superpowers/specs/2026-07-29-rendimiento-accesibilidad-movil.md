@@ -1,6 +1,7 @@
 # Estrategia de rendimiento, accesibilidad y experiencia móvil
 
-**Fecha:** 2026-07-29 · **Estado:** borrador para aprobación.
+**Fecha:** 2026-07-29 · **Estado:** aprobado (visto bueno). DECISIONES: lanzar el MVP **sin PWA** (añadirla
+justo después: manifest + SW app-shell); presupuesto de peso **~400 KB** primera carga; accesibilidad AA base en el MVP.
 Base: Stack A (web ligera + Supabase + Netlify), experiencia del alumno, seguridad/privacidad.
 Contexto: **niños en móviles modestos y redes irregulares** → ligereza y accesibilidad **desde el diseño**.
 
