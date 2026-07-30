@@ -127,8 +127,9 @@ motivación/Nemo, arquitectura técnica (Stack A), modelo de datos/API, segurida
 - **Orden:** 7.º.
 
 ## B7 · Motor de actividades  🔴  ✅ HECHO (2026-07-30)  *(primer trozo "jugable")*
-> Motor P1/P5/P6/P9 verificado en navegador (`plataforma/motor/demo-motor.html`). Falta
-> validación de acierto en servidor contra answer_keys (llega con B10) y code-splitting (B17).
+> Motor con TODAS las plantillas del MVP: P1 (selección), P3 (emparejar), P5 (ordenar), P6 (huecos),
+> P7 (comprensión), P9 (hablar). Verificado en navegador. La lección muestra una sesión variada.
+> Validación en servidor contra answer_keys → B10 (base hecha). Code-splitting → B17.
 - **Objetivo:** motor que lee un ejercicio del banco y lo **pinta, valida y da feedback** (P1,P3,P5,P6,P7).
 - **Archivos/módulos:** `plataforma/motor/engine.js`, `plataforma/motor/plantillas/p1..p7.js`, `leccion.html`,
   validación **en servidor** contra `answer_keys` (Edge Function o RPC), emisión de evento de intento.
@@ -238,7 +239,10 @@ motivación/Nemo, arquitectura técnica (Stack A), modelo de datos/API, segurida
 - **Riesgos:** un hueco = datos de menores → checklist de seguridad como **gate de lanzamiento**.
 - **Orden:** 16.º (verificación final antes de piloto).
 
-## B16 · Accesibilidad (verificación AA)  🟡  *(transversal)*
+## B16 · Accesibilidad (verificación AA)  🟡  ◻️ EN CURSO (2026-07-30)  *(transversal)*
+> Motor accesible (teclado, foco visible, objetivos ≥44px, no solo color, reduced-motion) + `lang="en"`
+> en el contenido en inglés (pronunciación del lector de pantalla). Falta auditoría manual completa
+> (lector de pantalla real) sobre todas las vistas y contraste AA en todo.
 - **Objetivo:** garantizar AA base en toda la app (no solo en el motor).
 - **Archivos/módulos:** revisión de todas las vistas (foco, contraste, ARIA, teclado, `lang`), transcripciones.
 - **Dependencias:** vistas construidas.

@@ -80,9 +80,11 @@
     start();
   })();
 
-  // La sesión de hoy: la primera unidad del banco (más adelante la compondrá el motor pedagógico)
-  const unidad = (window.IL_CONTENIDO.unidades || [])[0] || { ejercicios: [] };
-  const items = unidad.ejercicios || [];
+  // La sesión de hoy: muestra variada con todas las plantillas (más adelante la compondrá el
+  // motor pedagógico a partir del contenido de la BD).
+  const _all = (window.IL_CONTENIDO.unidades || []).flatMap(u => u.ejercicios || []);
+  const _pick = (id) => _all.find(e => e.id === id);
+  const items = ["rd-1", "rd-3", "rd-4", "lc-6", "lc-7", "rd-5"].map(_pick).filter(Boolean);
   let idx = 0, correct = 0, curStreak = 0, maxStreak = 0;
 
   function start() {
