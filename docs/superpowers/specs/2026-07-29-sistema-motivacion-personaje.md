@@ -1,6 +1,7 @@
 # Sistema de motivación y personaje propio
 
-**Fecha:** 2026-07-29 · **Estado:** borrador para aprobación.
+**Fecha:** 2026-07-29 · **Estado:** aprobado. Sistema de motivación con **visto bueno**;
+personaje elegido para empezar: **Concepto A · Nemo (zorro viajero)**.
 Base: experiencia del alumno, arquitectura pedagógica, catálogo de actividades.
 
 ## Principio rector
@@ -54,9 +55,28 @@ emocionales, nada de mecánicas adictivas. El objetivo real es **crear un hábit
 - Se **coleccionan logros con significado**: can-dos dominados ("cosas que ya sé decir"), sellos de unidades,
   objetos temáticos del mundo del personaje (ver §4). Coleccionar = ver crecer lo aprendido, no acumular por acumular.
 
-### Insignias
-- Por hitos reales: **constancia** (semanas practicadas), **mejora** (superé mi récord), **dominio**
-  (completé una unidad), **esfuerzo** (reintenté hasta acertar). Insignias de esfuerzo, no solo de acierto.
+### Insignias y medallas (catálogo concreto)
+Por hitos reales y siempre **personales** (contra uno mismo). Cuatro familias:
+
+**🔥 Constancia (hábito)**
+- "2 días seguidos", "**5 días seguidos**", "10 días seguidos", "**racha de un mes**".
+- "Semana completa" (cumplí mi objetivo semanal), "5 semanas practicando", "madrugador/nocturno" (opcional).
+- "Volví a la carga" (retomé tras faltar) → premia **volver**, no castiga faltar.
+
+**🎯 Aciertos / precisión**
+- "**5 aciertos seguidos**", "10 aciertos seguidos", "**pleno**" (una sesión sin fallos).
+- "Sin pistas" (acerté sin usar ayudas), "a la primera" (acerté al primer intento en toda una lección).
+
+**📈 Mejora (contra mi récord)**
+- "Nuevo récord de aciertos seguidos", "más rápido que ayer", "lo que antes fallaba ya lo domino".
+- "Remontada" (fallé y acabé dominándolo).
+
+**🏆 Dominio / progreso**
+- "Primera unidad completada", "10 cosas que ya sé decir", "unidad dominada", "mapa: nueva zona".
+
+Reglas: medallas de **esfuerzo** además de las de acierto; cada una se gana **una vez** y queda en la
+colección (no se pierde). Los umbrales (5, 10, 30…) son **configurables**. Nada de medallas por comparar
+con otros. Las de racha respetan el comodín/congelado (§rachas): un descanso previsto **no** rompe el hito.
 
 ### Desbloqueos
 - Al progresar se **abren** zonas del mapa, nuevos temas, accesorios del personaje, mini-retos.
@@ -188,10 +208,12 @@ comunicación o viajes**, y todas tienen que **escalar de Primaria a ESO** bajan
 | E · Leo (mentor) | **Muy buena** | Muy bajo | Alto (real) | Bajo | Medio |
 | F · Elenco | Buena | Bajo | Alto | Alto | **Alto** → Fase 2 |
 
-**Mi recomendación:** para el MVP, **Concepto A (Nemo, zorro viajero)** como personaje principal **o**
-**Concepto D (Orbi, brújula)** si quieres el mínimo riesgo infantil y máxima diferenciación. Un combo muy
-potente y barato sería **D como guía del mapa** + más adelante un personaje con más "cara" (A o C) para las
-celebraciones. Para el MVP conviene **UN solo personaje** bien resuelto (el elenco F es Fase 2).
+**DECISIÓN (2026-07-29):** se empieza por el **Concepto A · Nemo (zorro viajero)** y se va viendo.
+Se desarrollará en versión sencilla (pocas poses) para el MVP; el resto de conceptos quedan como
+alternativas por si se cambia de rumbo. Para el MVP, **UN solo personaje** (el elenco F es Fase 2).
+
+*(Recomendación original conservada: A o D eran las mejores opciones; D/Orbi tenía el mínimo riesgo
+infantil, pero se elige A por su mayor carisma para celebraciones y su encaje con el ángulo viaje.)*
 
 > **Crítica honesta:** el personaje es importante pero **no es el motor**; el motor es la progresión y el
 > hábito (§1–§2). Un buen personaje **suma**, pero lanzaría el MVP con el personaje **en versión sencilla**
