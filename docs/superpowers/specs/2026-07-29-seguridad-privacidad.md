@@ -1,6 +1,7 @@
 # Revisión de seguridad y privacidad (previa a programar)
 
-**Fecha:** 2026-07-29 · **Estado:** borrador para aprobación.
+**Fecha:** 2026-07-29 · **Estado:** aprobado (visto bueno). DECISIÓN: **usuario pseudónimo `blue-fox-317`**
+(NO nombre+apellido); MFA obligatorio para admin; track legal **[JUR]** obligatorio antes del piloto.
 Base: Stack A (Supabase + Netlify), modelo de datos y API, RBAC. Enfoque: **privacidad desde el diseño**,
 **RGPD** (y LOPDGDD española), **buenas prácticas OWASP**. Usuarios: **menores en España**.
 
