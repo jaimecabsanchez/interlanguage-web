@@ -111,10 +111,11 @@ motivación/Nemo, arquitectura técnica (Stack A), modelo de datos/API, segurida
 > "Conectar Supabase" es el Bloque 6 de la hoja de ruta corta. Ambos avanzan.)*
 
 ## B6 · Gestión de contenidos (CMS + biblioteca multimedia)  🔴  ◻️ BASE (2026-07-30)
-> Base de datos-first: migración `0005` siembra una unidad publicada de muestra (con solución en
-> answer_keys, oculta al alumno). **Pendiente:** UI del CMS (crear/editar/publicar/duplicar/buscar
-> actividades + biblioteca multimedia), reconectar el motor a la BD, y plantillas P3/P7. Requiere
-> aplicar `0005` y (para crear contenido desde el panel) login admin.
+> Base de datos-first: migración `0005` **aplicada** → unidad publicada de muestra en la BD con la
+> solución en answer_keys (verificado: oculta al alumno). **Pendiente:** UI del CMS (crear/editar/
+> publicar/duplicar/buscar actividades + biblioteca multimedia), reconectar el motor a la BD, y
+> plantillas P3/P7. Para crear contenido desde el panel: login admin.
+> **Migraciones aplicadas hasta hoy: 0001–0005** (`0003` auditoría admin también aplicada y correcta).
 - **Objetivo:** crear/editar/publicar ejercicios y subir media sin tocar código (estados y versiones).
 - **Archivos/módulos:** CMS en `admin.html`, formularios por plantilla (P1,P3,P5,P6,P7), subida a Storage con
   `alt_text`/transcripción, **duplicar**, etiquetas, búsqueda, `activities`/`questions`/`options`/`answer_keys`/`media`.
@@ -164,11 +165,11 @@ motivación/Nemo, arquitectura técnica (Stack A), modelo de datos/API, segurida
 - **Riesgos:** lógica pedagógica compleja → empezar simple (MVP) y cubrir con tests.
 - **Orden:** 10.º.
 
-## B10 · Registro de intentos  🟡  ◻️ BASE (2026-07-30)
-> Función `submit_attempt` (migración `0005`): valida en servidor y registra el intento
-> (inicio/respuesta/resultado/intento nº/pista/tiempo/sesión) para actividades de la BD. Métodos
-> cliente listos. **Falta:** reconectar el motor para que use la BD + RPC (hoy la lección usa el banco
-> semilla con validación en cliente), y registrar attempts para todas las plantillas.
+## B10 · Registro de intentos  🟡  ◻️ BASE VERIFICADA (2026-07-30)
+> Función `submit_attempt` (migración `0005` **aplicada**): **verificado en vivo** — valida en servidor
+> (acierto/fallo+explicación, sin exponer la solución) y REGISTRA el intento (resultado/intento nº/…).
+> `answer_keys` sigue oculta al alumno. **Falta:** reconectar el motor para que use la BD + RPC (hoy la
+> lección usa el banco semilla con validación en cliente), y registrar attempts para todas las plantillas.
 - **Objetivo:** cada respuesta emite un **evento** que se guarda (base del progreso).
 - **Archivos/módulos:** endpoint `POST /attempts` (Edge Function/RPC), `attempts`, enganche desde el motor.
 - **Dependencias:** B7, B1.
@@ -191,11 +192,10 @@ motivación/Nemo, arquitectura técnica (Stack A), modelo de datos/API, segurida
 - **Riesgos:** que el modelo "regale" o "castigue" dominio → calibrar con tests; es **lógica pura, muy testeable**.
 - **Orden:** 12.º.
 
-## B12 · Motivación  🟡  ◻️ HECHO (lógica+UI) (2026-07-30)
+## B12 · Motivación  🟡  ✅ HECHO (2026-07-30)
 > `motivacion.js` (10 medallas: constancia/aciertos/mejora/dominio) + racha FLEXIBLE con comodín;
-> 16 tests en CI. Otorgadas al completar lección y mostradas en la recompensa; colección en el perfil.
-> Verificado: 8/8 lógica + E2E (lección perfecta → aciertos_5/pleno/primera). **Pendiente del usuario:**
-> aplicar migración `0004` (sembrar catálogo rewards) para que las medallas se PERSISTAN entre sesiones.
+> 16 tests en CI. Otorgadas al completar lección, mostradas en la recompensa y en el perfil.
+> Migración `0004` aplicada → **medallas PERSISTEN verificado** (awardedNow = earnedInDb en BD).
 > Objetivos semanales/misiones ricas → mejora futura.
 - **Objetivo:** racha flexible, objetivos semanales, medallas, celebraciones discretas (sin competición).
 - **Archivos/módulos:** `motivacion.js`, `streaks`/`rewards`/`student_rewards`, UI de medallas/mapa, celebraciones.
