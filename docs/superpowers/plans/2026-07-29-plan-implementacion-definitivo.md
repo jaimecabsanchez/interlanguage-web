@@ -148,6 +148,10 @@ motivación/Nemo, arquitectura técnica (Stack A), modelo de datos/API, segurida
 > sesión ya completada hoy/contenido no disponible) + "qué hago hoy" más claro + reduced-motion.
 > Pendiente (no MVP crítico): "continuar pendiente" y "práctica libre" (diferidas); sesión compuesta
 > por el modelo pedagógico y attempts/mastery en la UI (B9/B10/B11).
+> **UX/visual aprobado 2026-07-31** (`docs/superpowers/specs/2026-07-31-ux-vision-visual-design.md`).
+> Acciones concretas priorizadas: (1) **corregir navegación** a 4 pestañas Inicio·Practicar·Progreso·Perfil
+> — **quitar "Liga"** (ranking prohibido) y meter "Tienda" dentro de Perfil; (2) ampliar `data-stage` a
+> **4 bandas** (p12/p34/p56/eso); (3) **puerta de la matriz** de adecuación en recomendación (B9) y CMS (B6).
 - **Objetivo:** pantalla de inicio (4 pestañas: Inicio/Practicar/Progreso/Perfil) con Nemo, clara y ligera.
 - **Archivos/módulos:** `inicio.html`, navegación, `perfil.html`, estilos `app.css`, assets de Nemo (sencillos).
 - **Dependencias:** B2, B7.
