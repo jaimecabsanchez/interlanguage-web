@@ -87,10 +87,14 @@ motivación/Nemo, arquitectura técnica (Stack A), modelo de datos/API, segurida
 - **Riesgos:** panel = mayor superficie de ataque → MFA e idle-timeout.
 - **Orden:** 5.º.
 
-## B5 · Gestión de alumnos y grupos  🟡  ◻️ CÓDIGO LISTO (2026-07-30) · pendiente desplegar
-> Edge Function reescrita (genera `blue-fox-317`, crea alumno completo + auditoría) y UI de alta en el
-> panel. **Falta paso del usuario:** desplegar la función y darle el secreto `IL_SERVICE_KEY`
-> (`supabase/functions/admin-create-student/DEPLOY.md`). Al hacerlo se cierra también la verificación de B3.
+## B5 · Gestión de alumnos y grupos  🟡  ◻️ AVANZADO (2026-07-30)
+> Alta de alumnos: código listo (Edge Function), **pendiente de desplegar** + secreto `IL_SERVICE_KEY`
+> (`DEPLOY.md`). Gestión añadida en el panel: **buscar, editar nombre, activar/desactivar acceso** (con
+> confirmación + auditoría vía migración `0003`), y **Grupos** (crear + asignar). Verificado: panel carga
+> sin errores + tests de permisos 13/13 (no-admin denegado). **Pendiente de probar por el usuario**
+> (login admin) el CRUD end-to-end; **aplicar migración 0003** para que se auditen esas acciones.
+> **Fuera de alcance MVP:** colegios/cursos/planes CRUD (una academia = config), importación CSV (no
+> aprobada), alta de profesores (código en la Edge Function, requiere despliegue).
 - **Objetivo:** dar de alta alumnos (código+temporal), crear grupos, matrícula/acceso vigente.
 - **Archivos/módulos:** `supabase/functions/admin-create-student` (service_role), vistas de alumnos/grupos,
   `students`/`groups`/`group_members`/`enrollments`, reset de clave.
