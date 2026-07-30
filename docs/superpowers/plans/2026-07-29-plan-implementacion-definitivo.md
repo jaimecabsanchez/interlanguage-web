@@ -27,7 +27,8 @@ motivación/Nemo, arquitectura técnica (Stack A), modelo de datos/API, segurida
 - **Riesgos:** sobre-ingeniería temprana → mantenerlo mínimo.
 - **Orden:** 1.º.
 
-## B1 · Base de datos (esquema + RLS + migraciones)  🔴
+## B1 · Base de datos (esquema + RLS + migraciones)  🔴  ✅ HECHO (2026-07-30)
+> Migración `0001_init.sql` aplicada con éxito en el proyecto Supabase de desarrollo.
 - **Objetivo:** crear el modelo de datos aprobado con seguridad por fila, versionado.
 - **Archivos/módulos:** `supabase/schema.sql`, `supabase/migrations/0001_*`, `supabase/seed.sql`
   (roles, skills, levels, plan, unidad de ejemplo), políticas RLS por tabla.
