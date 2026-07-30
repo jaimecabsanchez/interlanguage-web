@@ -37,6 +37,13 @@
       </div>
     </div>
 
+    <!-- Paso 2FA (solo aparece si la cuenta tiene verificación en dos pasos) -->
+    <div class="field hidden" id="mfaField">
+      <label for="mfacode">Código de verificación</label>
+      <div class="inp"><input type="text" id="mfacode" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="6 dígitos de tu app"></div>
+      <div class="hint">Abre tu app de autenticación (Google Authenticator, Authy…) y escribe el código.</div>
+    </div>
+
     <button type="submit" class="btn btn-primary btn-block" id="submitBtn">Entrar</button>
     <p class="auth-foot">¿Olvidaste tu contraseña? Pídesela a tu profe de Interlanguage.</p>
   </form>
@@ -62,11 +69,30 @@
     const i = $("password"); i.type = i.type === "password" ? "text" : "password";
   });
 
+  let mfaFactorId = null;   // se rellena si la cuenta pide 2FA
+
   $("loginForm").addEventListener("submit", async (e) => {
     e.preventDefault();
     const msg = $("msg"); msg.classList.remove("show");
     const btn = $("submitBtn"); btn.disabled = true; const old = btn.textContent; btn.textContent = "Entrando…";
+
+    // Segundo paso: ya tenemos la contraseña validada y estamos pidiendo el código 2FA
+    if (mfaFactorId) {
+      const res = await ILAuth.completeMFA(mfaFactorId, $("mfacode").value);
+      if (!res.ok) { msg.textContent = res.error; msg.classList.add("show"); btn.disabled = false; btn.textContent = old; return; }
+      location.href = routeFor(res.profile); return;
+    }
+
     const res = await ILAuth.signIn($("username").value, $("password").value);
+    if (res.mfa) {
+      // La contraseña es correcta; ahora pedimos el código de la app
+      mfaFactorId = res.factorId;
+      $("mfaField").classList.remove("hidden");
+      $("username").disabled = true; $("password").disabled = true;
+      $("mfacode").focus();
+      btn.disabled = false; btn.textContent = "Verificar";
+      return;
+    }
     if (!res.ok) {
       msg.textContent = res.error; msg.classList.add("show");
       btn.disabled = false; btn.textContent = old;

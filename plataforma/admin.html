@@ -3,13 +3,24 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Panel · Interlanguage HOME</title>
+<title>Panel · Interlanguage</title>
 <meta name="robots" content="noindex">
 <link rel="icon" type="image/png" sizes="32x32" href="../images/icons/favicon-32.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="app.css">
+<style>
+  .sec-tag{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;padding:3px 9px;border-radius:999px;background:var(--mint,#e7f1ec);color:var(--jade,#1e9c74)}
+  .sec-tag.off{background:#fdecea;color:#c0392b}
+  .sec-tag.soon{background:#f1eef8;color:#6c5ce7}
+  .qr-wrap{display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap;margin-top:10px}
+  .qr-wrap img{width:170px;height:170px;border:1px solid var(--line-2,#d9dee5);border-radius:12px;background:#fff}
+  .secret{font-family:ui-monospace,monospace;background:#f6f7f9;padding:8px 10px;border-radius:8px;font-size:.9rem;word-break:break-all}
+  .audit-row{display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px solid var(--line,#eef1f4);font-size:.9rem}
+  .audit-row .when{color:var(--faint,#8a97a6);white-space:nowrap}
+  .muted{color:var(--faint,#8a97a6)}
+</style>
 </head>
 <body>
 <div id="demoBanner" class="demo-banner hidden">🧪 <b>Modo demo</b> · las cuentas se guardan solo en este navegador</div>
@@ -17,67 +28,70 @@
 <div id="panel" class="admin-shell hidden">
   <div class="admin-head">
     <div>
-      <h1>🦊 Panel · Interlanguage HOME</h1>
+      <h1>🦊 Panel · Interlanguage</h1>
       <div class="who" id="who"></div>
     </div>
     <button class="btn btn-ghost" id="logout">Salir</button>
   </div>
 
   <div class="admin-grid">
-    <!-- CREAR ALUMNO -->
-    <div class="panel">
-      <h2>Nueva cuenta de alumno</h2>
-      <p class="pdesc">Se genera automáticamente una contraseña. El alumno la cambiará en su primer acceso.</p>
-      <div class="msg error" id="cmsg"></div>
-      <form id="createForm">
-        <div class="field">
-          <label for="full_name">Nombre del alumno</label>
-          <input type="text" id="full_name" placeholder="Ej: Lucía García" autocomplete="off">
-        </div>
-        <div class="field">
-          <label for="username">Usuario</label>
-          <input type="text" id="username" placeholder="lucia.g" autocapitalize="none" spellcheck="false" autocomplete="off">
-          <div class="hint">Solo letras, números y puntos. Sin espacios.</div>
-        </div>
-        <div class="field">
-          <label for="stage">Etapa</label>
-          <select id="stage" style="width:100%;padding:13px 15px;border:1.5px solid var(--line-2);border-radius:14px;font-size:1rem;font-family:inherit;background:#fff;color:var(--ink);">
-            <option value="Little">Little · Infantil (3–5)</option>
-            <option value="Explorers" selected>Explorers · Primaria baja (6–8)</option>
-            <option value="Adventurers">Adventurers · Primaria alta (9–11)</option>
-            <option value="Achievers">Achievers · Secundaria (12–16)</option>
-          </select>
-        </div>
-        <div class="field">
-          <label for="level">Nivel (opcional)</label>
-          <input type="text" id="level" placeholder="Ej: Explorer · A1" autocomplete="off">
-        </div>
-        <div class="field">
-          <label for="parent_email">Email del padre/madre (opcional)</label>
-          <input type="text" id="parent_email" placeholder="para avisos y recuperación" autocomplete="off">
-        </div>
-        <button type="submit" class="btn btn-primary btn-block" id="createBtn">Crear y generar credenciales</button>
-      </form>
 
-      <div class="cred-box hidden" id="credBox">
-        <h3>✅ Cuenta creada — entrega estos datos a la familia</h3>
-        <div class="cred-row"><span class="k">Usuario</span><span class="v" id="credUser"></span><button class="copy-btn" data-copy="credUser">Copiar</button></div>
-        <div class="cred-row"><span class="k">Contraseña</span><span class="v" id="credPass"></span><button class="copy-btn" data-copy="credPass">Copiar</button></div>
-        <button class="btn btn-ghost btn-block" id="copyAll" style="margin-top:6px;font-size:.9rem;padding:11px;">Copiar mensaje para WhatsApp</button>
+    <!-- SEGURIDAD · 2FA -->
+    <div class="panel">
+      <h2>Seguridad de tu cuenta <span class="sec-tag off" id="mfaTag">2FA desactivado</span></h2>
+      <p class="pdesc">La <b>verificación en dos pasos</b> añade un código de un solo uso (desde una app del móvil)
+        además de tu contraseña. Muy recomendable para el administrador.</p>
+      <div class="msg error" id="mfaMsg"></div>
+      <div class="msg success" id="mfaOk"></div>
+
+      <div id="mfaOff">
+        <button class="btn btn-primary" id="mfaEnable">Activar verificación en dos pasos</button>
+      </div>
+
+      <div id="mfaEnroll" class="hidden">
+        <p class="pdesc">1) Abre tu app de autenticación (Google Authenticator, Authy, 1Password…) y escanea este código.
+          Si no puedes escanear, introduce la clave a mano.</p>
+        <div class="qr-wrap">
+          <img id="mfaQr" alt="Código QR para la app de autenticación">
+          <div>
+            <div class="muted" style="font-size:.85rem;margin-bottom:4px">Clave manual:</div>
+            <div class="secret" id="mfaSecret"></div>
+          </div>
+        </div>
+        <div class="field" style="margin-top:12px">
+          <label for="mfaCode">2) Escribe el código de 6 dígitos que muestra la app</label>
+          <input type="text" id="mfaCode" inputmode="numeric" maxlength="6" placeholder="6 dígitos" autocomplete="one-time-code">
+        </div>
+        <button class="btn btn-primary" id="mfaConfirm">Confirmar y activar</button>
+        <button class="btn btn-ghost" id="mfaCancel">Cancelar</button>
+      </div>
+
+      <div id="mfaOn" class="hidden">
+        <p class="pdesc">✅ La verificación en dos pasos está <b>activa</b>. Al entrar te pediremos el código de la app.</p>
+        <button class="btn btn-ghost" id="mfaDisable">Desactivar</button>
       </div>
     </div>
 
-    <!-- LISTA -->
+    <!-- ALUMNOS (lista; el alta se activa en B5) -->
     <div class="panel">
-      <h2>Alumnos con acceso</h2>
-      <p class="pdesc"><span id="count">0</span> cuentas activas.</p>
+      <h2>Alumnos con acceso <span class="sec-tag soon">Alta: siguiente paso</span></h2>
+      <p class="pdesc"><span id="count">0</span> cuentas. El <b>alta de alumnos</b> (generar código + contraseña)
+        se activa en el siguiente bloque.</p>
       <div class="table-wrap">
         <table class="students">
-          <thead><tr><th>Alumno</th><th>Usuario</th><th>Etapa</th><th>Estado</th><th></th></tr></thead>
+          <thead><tr><th>Alumno</th><th>Usuario</th><th>Alta</th></tr></thead>
           <tbody id="rows"></tbody>
         </table>
       </div>
     </div>
+
+    <!-- AUDITORÍA -->
+    <div class="panel">
+      <h2>Actividad reciente</h2>
+      <p class="pdesc">Registro de acciones importantes (altas, cambios, publicaciones…). Solo lo ve el administrador.</p>
+      <div id="audit"><p class="muted">Cargando…</p></div>
+    </div>
+
   </div>
 </div>
 
@@ -86,6 +100,7 @@
 <script src="auth.js"></script>
 <script>
   const $ = (id) => document.getElementById(id);
+  const esc = (s) => String(s == null ? "" : s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
   if (ILAuth.isDemo()) $("demoBanner").classList.remove("hidden");
 
   let me = null;
@@ -93,19 +108,57 @@
     me = await ILAuth.getProfile();
     if (!me) { location.href = "index.html"; return; }
     if (!me.is_admin) { location.href = "inicio.html"; return; }
-    $("who").textContent = "Conectado como " + (me.full_name || me.username);
+    $("who").textContent = "Conectado como " + (me.full_name || me.display_name || me.username);
     $("panel").classList.remove("hidden");
+    refreshMFA();
     renderList();
+    renderAudit();
   })();
 
-  // sugerir usuario a partir del nombre
-  $("full_name").addEventListener("input", () => {
-    if ($("username").dataset.touched) return;
-    const parts = $("full_name").value.trim().toLowerCase().split(/\s+/);
-    if (parts[0]) $("username").value = parts[0] + (parts[1] ? "." + parts[1][0] : "");
-  });
-  $("username").addEventListener("input", () => { $("username").dataset.touched = "1"; });
+  /* -------- 2FA -------- */
+  let enrollFactorId = null;
+  async function refreshMFA() {
+    const s = await ILAuth.mfaStatus();
+    if (!s.supported) { $("mfaTag").textContent = "No disponible"; $("mfaTag").className = "sec-tag off"; return; }
+    if (s.enabled) {
+      $("mfaTag").textContent = "2FA activado"; $("mfaTag").className = "sec-tag";
+      $("mfaOff").classList.add("hidden"); $("mfaEnroll").classList.add("hidden"); $("mfaOn").classList.remove("hidden");
+    } else {
+      $("mfaTag").textContent = "2FA desactivado"; $("mfaTag").className = "sec-tag off";
+      $("mfaOn").classList.add("hidden"); $("mfaOff").classList.remove("hidden");
+    }
+  }
+  function mfaError(t){ const m=$("mfaMsg"); m.textContent=t; m.classList.add("show"); setTimeout(()=>m.classList.remove("show"),4000); }
 
+  $("mfaEnable").addEventListener("click", async () => {
+    $("mfaEnable").disabled = true;
+    const r = await ILAuth.mfaEnrollStart();
+    $("mfaEnable").disabled = false;
+    if (!r.ok) { mfaError(r.error || "No se pudo iniciar."); return; }
+    enrollFactorId = r.factorId;
+    $("mfaQr").src = r.qr; $("mfaSecret").textContent = r.secret;
+    $("mfaOff").classList.add("hidden"); $("mfaEnroll").classList.remove("hidden");
+    $("mfaCode").focus();
+  });
+  $("mfaCancel").addEventListener("click", async () => {
+    if (enrollFactorId) { try { await ILAuth.mfaDisable(); } catch(e){} enrollFactorId = null; }
+    $("mfaEnroll").classList.add("hidden"); refreshMFA();
+  });
+  $("mfaConfirm").addEventListener("click", async () => {
+    $("mfaConfirm").disabled = true;
+    const r = await ILAuth.mfaEnrollConfirm(enrollFactorId, $("mfaCode").value);
+    $("mfaConfirm").disabled = false;
+    if (!r.ok) { mfaError(r.error || "Código incorrecto."); return; }
+    enrollFactorId = null; $("mfaCode").value = "";
+    const ok = $("mfaOk"); ok.textContent = "✅ Verificación en dos pasos activada."; ok.classList.add("show"); setTimeout(()=>ok.classList.remove("show"),4000);
+    refreshMFA();
+  });
+  $("mfaDisable").addEventListener("click", async () => {
+    if (!confirm("¿Desactivar la verificación en dos pasos?")) return;
+    await ILAuth.mfaDisable(); refreshMFA();
+  });
+
+  /* -------- Alumnos (solo lista por ahora) -------- */
   async function renderList() {
     const list = await ILAuth.listStudents();
     $("count").textContent = list.length;
@@ -113,59 +166,20 @@
       <tr>
         <td><strong>${esc(s.full_name || "—")}</strong></td>
         <td class="mono">${esc(s.username)}</td>
-        <td>${esc(s.stage || "—")}</td>
-        <td>${s.must_change_password
-            ? '<span class="tag warn">Pendiente 1.er acceso</span>'
-            : '<span class="tag ok">Activa</span>'}</td>
-        <td><button class="link-btn" data-reset="${esc(s.username)}">Restablecer clave</button></td>
-      </tr>`).join("") || `<tr><td colspan="5" style="color:var(--faint);padding:18px;">Aún no hay alumnos. Crea el primero →</td></tr>`;
-    document.querySelectorAll("[data-reset]").forEach(b =>
-      b.addEventListener("click", () => doReset(b.getAttribute("data-reset"))));
-  }
-  const esc = (s) => String(s == null ? "" : s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
-
-  function showCreds(username, password) {
-    $("credUser").textContent = username;
-    $("credPass").textContent = password;
-    $("credBox").classList.remove("hidden");
-    $("credBox").scrollIntoView({ behavior: "smooth", block: "nearest" });
+        <td>${esc((s.created_at || "").slice(0,10))}</td>
+      </tr>`).join("") || `<tr><td colspan="3" class="muted" style="padding:16px">Aún no hay alumnos. El alta llega en el siguiente paso →</td></tr>`;
   }
 
-  $("createForm").addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const m = $("cmsg"); m.classList.remove("show");
-    const btn = $("createBtn"); btn.disabled = true; const old = btn.textContent; btn.textContent = "Creando…";
-    const res = await ILAuth.createStudent({
-      full_name: $("full_name").value.trim(),
-      username: $("username").value.trim(),
-      stage: $("stage").value,
-      level: $("level").value.trim(),
-      parent_email: $("parent_email").value.trim()
-    });
-    btn.disabled = false; btn.textContent = old;
-    if (!res.ok) { m.textContent = res.error; m.classList.add("show"); return; }
-    showCreds(res.username, res.password);
-    $("createForm").reset(); delete $("username").dataset.touched;
-    renderList();
-  });
-
-  async function doReset(username) {
-    if (!confirm("¿Generar una nueva contraseña para \"" + username + "\"? La actual dejará de funcionar.")) return;
-    const res = await ILAuth.resetPassword(username);
-    if (!res.ok) { alert(res.error); return; }
-    showCreds(res.username, res.password);
-    renderList();
+  /* -------- Auditoría -------- */
+  async function renderAudit() {
+    const rows = await ILAuth.recentAudit(20);
+    if (!rows.length) { $("audit").innerHTML = '<p class="muted">Todavía no hay actividad registrada.</p>'; return; }
+    $("audit").innerHTML = rows.map(r => `
+      <div class="audit-row">
+        <span><strong>${esc(r.action)}</strong> ${r.entity ? '<span class="muted">· ' + esc(r.entity) + '</span>' : ''}</span>
+        <span class="when">${esc((r.created_at || "").replace("T"," ").slice(0,16))}</span>
+      </div>`).join("");
   }
-
-  document.querySelectorAll(".copy-btn").forEach(b => b.addEventListener("click", () => {
-    navigator.clipboard.writeText($(b.getAttribute("data-copy")).textContent);
-    b.textContent = "¡Copiado!"; setTimeout(() => b.textContent = "Copiar", 1200);
-  }));
-  $("copyAll").addEventListener("click", () => {
-    const msg = `¡Hola! Ya tenéis acceso a Interlanguage HOME 🦊\n\nEntrad en: ${location.origin}/plataforma/\nUsuario: ${$("credUser").textContent}\nContraseña: ${$("credPass").textContent}\n\nEn el primer acceso os pedirá crear vuestra propia contraseña. ¡A por la primera racha! 🔥`;
-    navigator.clipboard.writeText(msg);
-    $("copyAll").textContent = "¡Mensaje copiado!"; setTimeout(() => $("copyAll").textContent = "Copiar mensaje para WhatsApp", 1400);
-  });
 
   $("logout").addEventListener("click", async () => { await ILAuth.signOut(); location.href = "index.html"; });
 </script>

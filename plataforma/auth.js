@@ -57,11 +57,78 @@
       }
       const { error } = await sb.auth.signInWithPassword({ email: toLoginEmail(identifier), password });
       if (error) return { ok: false, error: "Usuario o contraseña incorrectos." };
-      // Marca de último acceso (no crítico; se ignora si falla)
+      // ¿Requiere segundo factor (2FA)? (obligatorio para admin con 2FA activado)
+      try {
+        const { data: aal } = await sb.auth.mfa.getAuthenticatorAssuranceLevel();
+        if (aal && aal.nextLevel === "aal2" && aal.currentLevel === "aal1") {
+          const { data: f } = await sb.auth.mfa.listFactors();
+          const factor = ((f && f.totp) || []).find(x => x.status === "verified");
+          return { ok: false, mfa: true, factorId: factor ? factor.id : null };
+        }
+      } catch (e) { /* si el proyecto no soporta MFA, se ignora */ }
+      await this._afterLogin();
+      return { ok: true, profile: await this.getProfile() };
+    },
+
+    // Completa el segundo paso (código de la app de autenticación)
+    async completeMFA(factorId, code) {
+      if (DEMO) return { ok: true, profile: await this.getProfile() };
+      code = String(code || "").replace(/\s+/g, "");
+      const ch = await sb.auth.mfa.challenge({ factorId });
+      if (ch.error) return { ok: false, error: "No se pudo verificar. Inténtalo de nuevo." };
+      const v = await sb.auth.mfa.verify({ factorId, challengeId: ch.data.id, code });
+      if (v.error) return { ok: false, error: "Código incorrecto o caducado." };
+      await this._afterLogin();
+      return { ok: true, profile: await this.getProfile() };
+    },
+
+    async _afterLogin() {
       try { const { data: { user } } = await sb.auth.getUser();
             if (user) await sb.from("users").update({ last_login_at: new Date().toISOString() }).eq("id", user.id); } catch (e) {}
-      const profile = await this.getProfile();
-      return { ok: true, profile };
+    },
+
+    /* ------- 2FA (verificación en dos pasos, TOTP) ------- */
+    async mfaStatus() {
+      if (DEMO || !sb) return { enabled: false, supported: false };
+      const { data, error } = await sb.auth.mfa.listFactors();
+      if (error) return { enabled: false, supported: true, error: error.message };
+      const totp = (data && data.totp) || [];
+      const verified = totp.filter(f => f.status === "verified");
+      const pending = totp.filter(f => f.status === "unverified");
+      return { enabled: verified.length > 0, supported: true, verified, pending };
+    },
+    async mfaEnrollStart() {
+      if (DEMO || !sb) return { ok: false, error: "No disponible en modo demo." };
+      // Limpia inscripciones a medias para no acumular factores sin verificar
+      try { const s = await this.mfaStatus(); for (const p of (s.pending || [])) await sb.auth.mfa.unenroll({ factorId: p.id }); } catch (e) {}
+      const { data, error } = await sb.auth.mfa.enroll({ factorType: "totp", friendlyName: "Interlanguage " + Date.now() });
+      if (error) return { ok: false, error: error.message };
+      return { ok: true, factorId: data.id, qr: data.totp.qr_code, secret: data.totp.secret, uri: data.totp.uri };
+    },
+    async mfaEnrollConfirm(factorId, code) {
+      if (DEMO || !sb) return { ok: false, error: "No disponible en modo demo." };
+      code = String(code || "").replace(/\s+/g, "");
+      const ch = await sb.auth.mfa.challenge({ factorId });
+      if (ch.error) return { ok: false, error: ch.error.message };
+      const v = await sb.auth.mfa.verify({ factorId, challengeId: ch.data.id, code });
+      if (v.error) return { ok: false, error: "Código incorrecto o caducado. Prueba con el siguiente." };
+      return { ok: true };
+    },
+    async mfaDisable() {
+      if (DEMO || !sb) return { ok: false };
+      const s = await this.mfaStatus();
+      for (const f of [...(s.verified || []), ...(s.pending || [])]) await sb.auth.mfa.unenroll({ factorId: f.id });
+      return { ok: true };
+    },
+
+    /* ------- Auditoría (solo admin la puede leer) ------- */
+    async recentAudit(limit) {
+      if (DEMO || !sb) return [];
+      const { data, error } = await sb.from("audit_log")
+        .select("action, entity, entity_id, created_at")
+        .order("created_at", { ascending: false }).limit(limit || 20);
+      if (error) return [];
+      return data || [];
     },
 
     async getProfile() {
