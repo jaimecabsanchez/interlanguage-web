@@ -110,7 +110,11 @@ motivación/Nemo, arquitectura técnica (Stack A), modelo de datos/API, segurida
 > migraciones (ops, antes del piloto). *(Numeración: en el plan B6 aparece más abajo como "CMS"; el
 > "Conectar Supabase" es el Bloque 6 de la hoja de ruta corta. Ambos avanzan.)*
 
-## B6 · Gestión de contenidos (CMS + biblioteca multimedia)  🔴
+## B6 · Gestión de contenidos (CMS + biblioteca multimedia)  🔴  ◻️ BASE (2026-07-30)
+> Base de datos-first: migración `0005` siembra una unidad publicada de muestra (con solución en
+> answer_keys, oculta al alumno). **Pendiente:** UI del CMS (crear/editar/publicar/duplicar/buscar
+> actividades + biblioteca multimedia), reconectar el motor a la BD, y plantillas P3/P7. Requiere
+> aplicar `0005` y (para crear contenido desde el panel) login admin.
 - **Objetivo:** crear/editar/publicar ejercicios y subir media sin tocar código (estados y versiones).
 - **Archivos/módulos:** CMS en `admin.html`, formularios por plantilla (P1,P3,P5,P6,P7), subida a Storage con
   `alt_text`/transcripción, **duplicar**, etiquetas, búsqueda, `activities`/`questions`/`options`/`answer_keys`/`media`.
@@ -160,7 +164,11 @@ motivación/Nemo, arquitectura técnica (Stack A), modelo de datos/API, segurida
 - **Riesgos:** lógica pedagógica compleja → empezar simple (MVP) y cubrir con tests.
 - **Orden:** 10.º.
 
-## B10 · Registro de intentos  🟡
+## B10 · Registro de intentos  🟡  ◻️ BASE (2026-07-30)
+> Función `submit_attempt` (migración `0005`): valida en servidor y registra el intento
+> (inicio/respuesta/resultado/intento nº/pista/tiempo/sesión) para actividades de la BD. Métodos
+> cliente listos. **Falta:** reconectar el motor para que use la BD + RPC (hoy la lección usa el banco
+> semilla con validación en cliente), y registrar attempts para todas las plantillas.
 - **Objetivo:** cada respuesta emite un **evento** que se guarda (base del progreso).
 - **Archivos/módulos:** endpoint `POST /attempts` (Edge Function/RPC), `attempts`, enganche desde el motor.
 - **Dependencias:** B7, B1.
