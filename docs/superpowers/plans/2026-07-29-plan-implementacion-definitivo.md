@@ -51,10 +51,10 @@ motivación/Nemo, arquitectura técnica (Stack A), modelo de datos/API, segurida
 - **Riesgos:** enumeración de usuarios / fuerza bruta → límites y mensajes neutros.
 - **Orden:** 3.º.
 
-## B3 · Roles y permisos (RBAC + RLS aplicada)  🟡  ◻️ NÚCLEO VERIFICADO (2026-07-30)
-> Anónimo denegado (en vivo) + revisión estática completa. Hallazgo corregido: migración
-> `0002_protect_users.sql` (pendiente de aplicar). Tests de rol autenticado se cierran con B5
-> (usuarios de prueba reales). Ver `docs/superpowers/specs/2026-07-30-b3-verificacion-permisos.md`.
+## B3 · Roles y permisos (RBAC + RLS aplicada)  🟡  ✅ HECHO (2026-07-30)
+> Anónimo denegado + revisión estática + candado `0002` aplicado. **Cerrado con alumno real**
+> (blue-fox-317): ve solo su ficha, NO ve answer_keys, ve su rol/estado. Verificación end-to-end OK.
+> Ver `docs/superpowers/specs/2026-07-30-b3-verificacion-permisos.md`.
 - **Objetivo:** que cada rol vea y haga **solo lo suyo** en toda la app.
 - **Archivos/módulos:** `roles`/`user_roles`, helpers `is_admin()`/`is_teacher_of()`, políticas RLS afinadas,
   guardas en Edge Functions.
