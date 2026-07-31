@@ -118,8 +118,21 @@ input:focus{border-color:var(--coral); box-shadow:0 0 0 4px var(--coral-tint); o
 .mini-stats .s .v{font-family:var(--font-display); font-weight:800; color:var(--navy); font-size:1.15rem;}
 .mini-stats .s .l{font-size:.68rem; color:var(--faint); text-transform:uppercase; letter-spacing:.04em; margin-top:2px;}
 .app-nav{position:fixed; bottom:0; left:0; right:0; background:#fff; border-top:1px solid var(--line);
-  display:flex; justify-content:space-around; padding:10px 0 14px; font-size:1.35rem; max-width:520px; margin:0 auto;}
-.app-nav button{background:none; border:none; color:var(--faint); padding:6px 14px; border-radius:12px;}
+  display:flex; justify-content:space-around; padding:6px 0 calc(6px + env(safe-area-inset-bottom));
+  max-width:520px; margin:0 auto; z-index:40;}
+/* Navegación con icono + etiqueta (accesible: no depende solo del color) */
+.app-nav__item{position:relative; flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:3px; min-height:52px; padding:6px 4px; color:var(--faint); text-decoration:none; font-weight:600;
+  transition:color .15s ease;}
+.app-nav__item svg{width:24px; height:24px;}
+.app-nav__label{font-size:.7rem; letter-spacing:.01em; line-height:1;}
+.app-nav__item:hover{color:var(--navy);}
+.app-nav__item.is-active{color:var(--coral-deep);}
+.app-nav__item.is-active .app-nav__label{font-weight:800;}
+.app-nav__item.is-active::before{content:""; position:absolute; top:0; width:26px; height:3px;
+  border-radius:0 0 4px 4px; background:var(--coral);}
+/* compat: navegación antigua de botones+emoji en pantallas aún no migradas */
+.app-nav button{background:none; border:none; color:var(--faint); padding:6px 14px; border-radius:12px; font-size:1.35rem;}
 .app-nav button.active{color:var(--coral-deep);}
 .acct-row{display:flex; gap:10px; margin-top:16px;}
 .acct-row .btn{flex:1; font-size:.9rem; padding:12px;}

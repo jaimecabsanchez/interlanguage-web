@@ -102,10 +102,22 @@
   </div>
 
   <nav class="app-nav" aria-label="Navegación principal">
-    <button aria-label="Inicio" onclick="location.href='inicio.html'"><span aria-hidden="true">🏠</span></button>
-    <button aria-label="Practicar" onclick="location.href='leccion.html'"><span aria-hidden="true">🎯</span></button>
-    <button class="active" aria-label="Progreso" aria-current="page"><span aria-hidden="true">📈</span></button>
-    <button aria-label="Perfil" onclick="location.href='perfil.html'"><span aria-hidden="true">👤</span></button>
+    <a class="app-nav__item" href="inicio.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11 12 4l8 7"/><path d="M6 10v9h4v-5h4v5h4v-9"/></svg>
+      <span class="app-nav__label">Inicio</span>
+    </a>
+    <a class="app-nav__item" href="leccion.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.4"/></svg>
+      <span class="app-nav__label">Practicar</span>
+    </a>
+    <a class="app-nav__item is-active" href="progreso.html" aria-current="page">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19V5"/><path d="M4 19h16"/><path d="m7 15 3.5-4 3 2.5L20 7"/></svg>
+      <span class="app-nav__label">Progreso</span>
+    </a>
+    <a class="app-nav__item" href="perfil.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg>
+      <span class="app-nav__label">Perfil</span>
+    </a>
   </nav>
 </div>
 

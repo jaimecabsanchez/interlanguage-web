@@ -2,8 +2,8 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mi misión · Interlanguage</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Mi inicio · Interlanguage HOME</title>
 <meta name="robots" content="noindex">
 <link rel="icon" type="image/png" sizes="32x32" href="../images/icons/favicon-32.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,10 +12,134 @@
 <link rel="stylesheet" href="design-system.css">
 <link rel="stylesheet" href="app.css">
 <link rel="stylesheet" href="etapa.css">
+<style>
+  /* ===== Home del alumno · estilos propios de esta pantalla ===== */
+  /* El atributo hidden debe ganar a cualquier display de clase (flex/block) */
+  [hidden]{display:none !important;}
+  .home{max-width:520px;margin:0 auto;padding:0 18px calc(96px + env(safe-area-inset-bottom));min-height:100vh;}
+
+  /* Franja demo fina y descartable */
+  .demo-strip{display:flex;align-items:center;gap:8px;justify-content:center;
+    font-size:.72rem;color:var(--soft);background:var(--surface-2);
+    border-radius:0 0 12px 12px;padding:5px 12px;max-width:520px;margin:0 auto;}
+  .demo-strip b{color:var(--navy);font-weight:700;}
+  .demo-strip .x{margin-left:2px;background:none;border:none;color:var(--faint);font-size:1rem;line-height:1;padding:2px 4px;border-radius:6px;}
+  .demo-strip[hidden]{display:none;}
+
+  /* 1 · Cabecera compacta */
+  .home-head{display:flex;align-items:center;gap:12px;padding:16px 2px 6px;}
+  .home-head .who{flex:1;min-width:0;}
+  .home-head h1{font-size:1.35rem;line-height:1.1;}
+  .home-head .ctx{color:var(--soft);font-size:.9rem;margin:3px 0 0;}
+  .home-head .stats{display:flex;gap:8px;flex-shrink:0;}
+  .stat-pill{display:inline-flex;align-items:center;gap:5px;font-family:var(--font-display);font-weight:800;
+    font-size:.9rem;background:#fff;border:1px solid var(--line);border-radius:100px;padding:6px 11px;box-shadow:var(--shadow-soft);}
+  .stat-pill.streak{color:var(--coral-deep);} .stat-pill.gems{color:var(--navy);}
+  .stat-pill svg{width:15px;height:15px;}
+  .avatar-link{width:44px;height:44px;flex-shrink:0;border-radius:14px;display:grid;place-items:center;
+    background:linear-gradient(150deg,var(--coral),var(--coral-deep));box-shadow:0 8px 16px -9px var(--coral);
+    text-decoration:none;}
+  .avatar-link svg{width:24px;height:24px;color:#fff;}
+
+  /* 2 · Tarjeta principal del día */
+  .day-card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:22px 20px;
+    box-shadow:var(--shadow-soft);margin-top:12px;animation:cardIn .34s cubic-bezier(.2,.7,.3,1) both;}
+  .eyebrow{font-family:var(--font-display);font-weight:800;font-size:.72rem;text-transform:uppercase;
+    letter-spacing:.08em;color:var(--coral-deep);margin-bottom:8px;display:flex;align-items:center;gap:6px;}
+  .eyebrow svg{width:15px;height:15px;flex-shrink:0;}
+  .day-card h2{font-size:1.35rem;margin:0 0 4px;}
+  .day-desc{color:var(--soft);font-size:.92rem;margin:0 0 14px;}
+  .meta-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px;}
+  .meta{display:inline-flex;align-items:center;gap:6px;font-size:.8rem;font-weight:600;color:var(--navy);
+    background:var(--surface-2);border-radius:100px;padding:6px 12px;}
+  .meta svg{width:15px;height:15px;color:var(--soft);}
+  .day-cta{display:flex;width:100%;align-items:center;justify-content:center;gap:9px;background:var(--coral);color:#fff;
+    border:none;border-radius:16px;padding:16px;font-family:var(--font-display);font-weight:800;font-size:1.05rem;
+    text-decoration:none;box-shadow:0 14px 28px -12px var(--coral);
+    transition:transform .16s ease,box-shadow .16s ease,background .16s ease;}
+  .day-cta:hover{transform:translateY(-2px);background:var(--coral-deep);}
+  .day-cta:active{transform:translateY(0);}
+  .day-cta svg{width:20px;height:20px;}
+
+  /* Estado completado */
+  .done-head{display:flex;align-items:center;gap:14px;margin-bottom:14px;}
+  .done-badge{width:56px;height:56px;flex-shrink:0;border-radius:50%;background:var(--jade);display:grid;place-items:center;
+    box-shadow:0 10px 20px -8px var(--jade);animation:badgePop .5s cubic-bezier(.2,1.2,.3,1) both;}
+  .done-badge svg{width:30px;height:30px;color:#fff;}
+  .done-head .t{font-family:var(--font-display);font-weight:800;color:var(--navy);font-size:1.2rem;line-height:1.15;}
+  .done-head .s{color:var(--jade-deep);font-size:.84rem;font-weight:700;margin-top:2px;}
+  .done-summary{background:var(--mint);border-radius:14px;padding:14px 16px;color:var(--navy);font-size:.92rem;}
+  .done-summary b{font-weight:700;}
+  /* Espacio reservado para la ilustración de Nemo (aún sin recurso gráfico propio) */
+  .nemo-slot{display:none;}
+
+  /* 3 · Siguiente acción (opcional) */
+  .next-action{margin-top:14px;background:#fff;border:1px solid var(--line);border-radius:18px;
+    padding:16px 18px;box-shadow:var(--shadow-soft);display:flex;align-items:center;gap:14px;
+    animation:cardIn .34s cubic-bezier(.2,.7,.3,1) .05s both;}
+  .next-action .na-ico{width:42px;height:42px;flex-shrink:0;border-radius:12px;background:var(--coral-tint);
+    display:grid;place-items:center;}
+  .next-action .na-ico svg{width:22px;height:22px;color:var(--coral-deep);}
+  .next-action .na-txt{flex:1;min-width:0;}
+  .next-action .na-txt b{display:block;color:var(--navy);font-family:var(--font-display);font-size:.98rem;}
+  .next-action .na-txt span{font-size:.78rem;color:var(--faint);}
+  .na-go{flex-shrink:0;background:transparent;border:1.5px solid var(--line-2);color:var(--navy);
+    border-radius:100px;padding:9px 16px;font-weight:700;font-size:.85rem;text-decoration:none;
+    transition:background .15s ease,color .15s ease,border-color .15s ease;}
+  .na-go:hover{background:var(--navy);color:#fff;border-color:var(--navy);}
+  .na-done{display:block;width:100%;text-align:center;background:none;border:none;color:var(--faint);
+    font-size:.82rem;padding:12px;margin-top:2px;text-decoration:underline;text-underline-offset:3px;}
+  .na-closed{text-align:center;color:var(--jade-deep);font-size:.86rem;font-weight:600;padding:10px 0 2px;}
+
+  /* 4 · Progreso semanal */
+  .week-card{margin-top:14px;background:#fff;border:1px solid var(--line);border-radius:18px;
+    padding:18px;box-shadow:var(--shadow-soft);}
+  .week-card .wk-top{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:12px;}
+  .week-card .wk-top h3{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);font-family:var(--font-display);}
+  .week-card .wk-count{font-family:var(--font-display);font-weight:800;color:var(--navy);font-size:.95rem;}
+  .week-card .wk-count b{color:var(--jade-deep);}
+  .wk-bar{height:12px;border-radius:8px;background:var(--surface-2);overflow:hidden;}
+  .wk-fill{display:block;height:100%;width:0;border-radius:8px;
+    background:linear-gradient(90deg,var(--jade-deep),var(--jade));transition:width .5s cubic-bezier(.2,.7,.3,1);}
+  .wk-sub{display:flex;justify-content:space-between;gap:10px;margin-top:12px;font-size:.8rem;color:var(--soft);}
+  .wk-sub .m b{color:var(--navy);font-family:var(--font-display);}
+
+  /* 5 · Recomendación */
+  .next-topic{margin-top:14px;background:var(--jade-tint);border:1px solid color-mix(in srgb,var(--jade) 26%,transparent);
+    border-radius:18px;padding:16px 18px;display:flex;align-items:center;gap:14px;}
+  .next-topic .nt-ico{width:40px;height:40px;flex-shrink:0;border-radius:12px;background:#fff;display:grid;place-items:center;}
+  .next-topic .nt-ico svg{width:22px;height:22px;color:var(--jade-deep);}
+  .next-topic .nt-txt{min-width:0;}
+  .next-topic .nt-txt .h{font-family:var(--font-display);font-weight:800;font-size:.72rem;text-transform:uppercase;
+    letter-spacing:.06em;color:var(--jade-deep);}
+  .next-topic .nt-txt p{margin:2px 0 0;color:var(--navy);font-size:.92rem;font-weight:600;}
+
+  /* Microinteracciones */
+  @keyframes cardIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:none;}}
+  @keyframes badgePop{0%{transform:scale(0);}70%{transform:scale(1.12);}100%{transform:scale(1);}}
+  @media (prefers-reduced-motion:reduce){
+    .day-card,.next-action{animation:none;}
+    .done-badge{animation:none;}
+    .wk-fill{transition:none;}
+  }
+
+  /* ESO: sobrio, menos color de acento en la cabecera */
+  body[data-stage="eso"] .eyebrow{color:var(--soft);}
+  body[data-stage="eso"] .day-card{border-radius:14px;}
+  /* Primaria inicial (p12): tarjeta y CTA algo mayores */
+  body[data-stage="p12"] .day-card h2{font-size:1.5rem;}
+  body[data-stage="p12"] .day-cta{font-size:1.15rem;padding:18px;}
+</style>
 </head>
 <body>
-<div class="il-offline" id="offline" hidden>📶 Sin conexión — puedes seguir viendo, se guardará al volver la red.</div>
-<div id="demoBanner" class="demo-banner hidden">🧪 <b>Modo demo</b> · los datos de progreso son de ejemplo</div>
+<!-- Aviso sin conexión (se mantiene) -->
+<div class="il-offline" id="offline" hidden>Sin conexión — puedes seguir viendo; se guardará al volver la red.</div>
+
+<!-- Franja de modo demo, fina y descartable -->
+<div class="demo-strip" id="demoStrip" hidden>
+  <span>Modo demo · <b>datos de ejemplo</b></span>
+  <button class="x" id="demoClose" aria-label="Ocultar aviso de modo demo">✕</button>
+</div>
 
 <!-- Estado: CARGANDO -->
 <div id="loading" class="il-skeleton" aria-hidden="true">
@@ -26,63 +150,126 @@
 </div>
 
 <!-- Estado: ERROR -->
-<div id="errState" class="il-state" hidden>
-  <div class="ic">😕</div>
-  <h2>No hemos podido cargar tu misión</h2>
+<div id="errState" class="il-state" role="alert" hidden>
+  <div class="ic" aria-hidden="true">😕</div>
+  <h2>No hemos podido cargar tu inicio</h2>
   <p>Revisa tu conexión e inténtalo otra vez.</p>
   <button class="btn btn-primary" onclick="location.reload()">Reintentar</button>
 </div>
 
 <div id="app" class="hidden">
-  <div class="app-top">
-    <span class="chip-stat streak">🔥 <span id="streak">0</span></span>
-    <span class="chip-stat coins">💎 <span id="coins">0</span></span>
+  <div class="home">
+    <!-- 1 · Cabecera compacta -->
+    <header class="home-head">
+      <div class="who">
+        <h1 id="greet">¡Hola!</h1>
+        <p class="ctx" id="ctx">Cargando tu día…</p>
+      </div>
+      <div class="stats" aria-label="Tu racha y tus gemas">
+        <span class="stat-pill streak" id="streakPill" title="Racha">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2c1 3-1 4.5-1 6.5A2.5 2.5 0 0 0 13.5 11c1.7 0 2.6-1.2 2.7-2.4C18 10 19 12.4 19 15a7 7 0 1 1-14 0c0-3.3 2-5.6 3.4-7.5C10.2 5.3 11.6 4 12 2Z"/></svg>
+          <span id="streak">0</span>
+        </span>
+        <span class="stat-pill gems" id="gemsPill" title="Gemas">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="m6 3 12 0 3 5-9 13L3 8Z"/><path d="M3 8h18M9 3 6 8l6 13 6-13-3-5"/></svg>
+          <span id="coins">0</span>
+        </span>
+      </div>
+      <a class="avatar-link" href="perfil.html" aria-label="Ir a mi perfil">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg>
+      </a>
+    </header>
+
+    <!-- 2 · Tarjeta principal del día -->
+    <!-- Modo PENDIENTE -->
+    <section class="day-card" id="cardPending" hidden aria-labelledby="pendTitle">
+      <div class="eyebrow">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+        <span id="pendEyebrow">Tu sesión de hoy</span>
+      </div>
+      <h2 id="pendTitle">Mi rutina diaria</h2>
+      <p class="day-desc" id="pendDesc"></p>
+      <div class="meta-row" id="pendMeta"></div>
+      <a class="day-cta" href="leccion.html" id="pendCta">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+        <span>Empezar mi sesión</span>
+      </a>
+    </section>
+
+    <!-- Modo COMPLETADA -->
+    <section class="day-card" id="cardDone" hidden aria-labelledby="doneTitle">
+      <div class="done-head">
+        <div class="done-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 13 4 4 10-11"/></svg>
+        </div>
+        <div>
+          <div class="t" id="doneTitle">Sesión de hoy completada</div>
+          <div class="s" id="doneKicker">¡Buen trabajo!</div>
+        </div>
+      </div>
+      <p class="done-summary" id="doneSummary"></p>
+      <div class="nemo-slot" id="nemoSlot" aria-hidden="true"></div>
+    </section>
+
+    <!-- 3 · Siguiente acción (solo tras completar) -->
+    <section class="next-action" id="nextAction" hidden aria-label="Actividad opcional">
+      <div class="na-ico">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v4h4"/></svg>
+      </div>
+      <div class="na-txt">
+        <b>Repasar lo de hoy</b>
+        <span>Actividad opcional · unos 5 min</span>
+      </div>
+      <a class="na-go" href="leccion.html">Repasar</a>
+    </section>
+    <button class="na-done" id="naDone" hidden>Ya he terminado por hoy</button>
+    <p class="na-closed" id="naClosed" hidden>Perfecto, nos vemos mañana 👋</p>
+
+    <!-- 4 · Progreso semanal -->
+    <section class="week-card" aria-labelledby="wkHead">
+      <div class="wk-top">
+        <h3 id="wkHead">Esta semana</h3>
+        <span class="wk-count"><b id="wkNow">0</b> de <span id="wkGoal">5</span> sesiones</span>
+      </div>
+      <div class="wk-bar" id="wkBar" role="progressbar" aria-valuemin="0" aria-valuemax="5" aria-valuenow="0" aria-label="Sesiones completadas esta semana">
+        <span class="wk-fill" id="wkFill"></span>
+      </div>
+      <div class="wk-sub">
+        <span class="m">Lecciones en total: <b id="totLessons">0</b></span>
+        <span class="m">Mejor racha: <b id="bestStreak">0</b> días</span>
+      </div>
+    </section>
+
+    <!-- 5 · Recomendación para la próxima sesión -->
+    <section class="next-topic" id="nextTopic" hidden>
+      <div class="nt-ico">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v3M12 18v3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M3 12h3M18 12h3M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/><circle cx="12" cy="12" r="3.2"/></svg>
+      </div>
+      <div class="nt-txt">
+        <div class="h">Para tu próxima sesión</div>
+        <p id="nextTopicMsg"></p>
+      </div>
+    </section>
   </div>
 
-  <div class="app-shell">
-    <div class="greet">
-      <h1 id="greet">¡Hola! 👋</h1>
-      <p id="sub">Tu misión de hoy</p>
-    </div>
-
-    <!-- Sesión YA COMPLETADA hoy -->
-    <div id="doneToday" class="il-done" hidden>
-      <div class="ic">🎉</div>
-      <h2 id="doneMsg">¡Ya has practicado hoy!</h2>
-      <p>Vuelve mañana para mantener tu racha 🔥 — o repasa si te apetece.</p>
-      <a href="leccion.html" class="btn btn-ghost">Repasar de nuevo</a>
-    </div>
-
-    <div id="todayBlock">
-      <div class="path" aria-hidden="true">
-        <div class="node done l">✓</div><div class="conn"></div>
-        <div class="node done r">✓</div><div class="conn"></div>
-        <div class="node now">▶</div><div class="conn"></div>
-        <div class="node l">★</div><div class="conn"></div>
-        <div class="node r">🎁</div>
-      </div>
-      <a href="leccion.html" class="cta-mission" id="startBtn">EMPEZAR MISIÓN<small id="ctaSub">+50 XP · mantén tu racha</small></a>
-    </div>
-
-    <div class="card-soft">
-      <h3>Tu progreso</h3>
-      <div class="mini-stats">
-        <div class="s"><div class="v" id="stRacha">0</div><div class="l">Racha</div></div>
-        <div class="s"><div class="v" id="stLecciones">0</div><div class="l">Lecciones</div></div>
-        <div class="s"><div class="v" id="stGemas">0</div><div class="l">Gemas</div></div>
-      </div>
-      <div class="acct-row">
-        <a href="cambiar-clave.html" class="btn btn-ghost">🔒 Cambiar contraseña</a>
-        <button class="btn btn-ghost" id="logout">Salir</button>
-      </div>
-    </div>
-  </div>
-
+  <!-- 6 · Navegación inferior (componente compartido: icono + etiqueta) -->
   <nav class="app-nav" aria-label="Navegación principal">
-    <button class="active" aria-label="Inicio" aria-current="page" onclick="location.href='inicio.html'"><span aria-hidden="true">🏠</span></button>
-    <button aria-label="Practicar" onclick="location.href='leccion.html'"><span aria-hidden="true">🎯</span></button>
-    <button aria-label="Progreso" onclick="location.href='progreso.html'"><span aria-hidden="true">📈</span></button>
-    <button aria-label="Perfil" onclick="location.href='perfil.html'"><span aria-hidden="true">👤</span></button>
+    <a class="app-nav__item is-active" href="inicio.html" aria-current="page">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11 12 4l8 7"/><path d="M6 10v9h4v-5h4v5h4v-9"/></svg>
+      <span class="app-nav__label">Inicio</span>
+    </a>
+    <a class="app-nav__item" href="leccion.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.4"/></svg>
+      <span class="app-nav__label">Practicar</span>
+    </a>
+    <a class="app-nav__item" href="progreso.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19V5"/><path d="M4 19h16"/><path d="m7 15 3.5-4 3 2.5L20 7"/></svg>
+      <span class="app-nav__label">Progreso</span>
+    </a>
+    <a class="app-nav__item" href="perfil.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg>
+      <span class="app-nav__label">Perfil</span>
+    </a>
   </nav>
 </div>
 
@@ -90,6 +277,7 @@
 <script src="supabase-config.js"></script>
 <script src="auth-utils.js"></script>
 <script src="etapa.js"></script>
+<script src="contenido.js"></script>
 <script src="auth.js"></script>
 <script>
   const $ = (id) => document.getElementById(id);
@@ -101,9 +289,37 @@
   window.addEventListener("offline", refreshOffline);
   refreshOffline();
 
-  if (ILAuth.isDemo()) $("demoBanner").classList.remove("hidden");
+  // Franja demo, compacta y descartable (solo durante esta pestaña)
+  if (ILAuth.isDemo() && sessionStorage.getItem("il_demo_strip_off") !== "1") $("demoStrip").hidden = false;
+  $("demoClose").addEventListener("click", () => { $("demoStrip").hidden = true; sessionStorage.setItem("il_demo_strip_off", "1"); });
 
   function showError() { $("loading").hidden = true; $("app").classList.add("hidden"); $("errState").hidden = false; }
+
+  // --- Datos reales del contenido para describir la sesión (no se inventa nada) ---
+  // Mismos ejercicios que compone hoy leccion.html (MVP: lista fija).
+  const SESSION_IDS = ["rd-1", "rd-3", "rd-4", "lc-6", "lc-7", "rd-5"];
+  const SKILL_LABEL = { vocabulary: "vocabulario", listening: "listening", grammar: "gramática", reading: "comprensión", speaking: "expresión oral" };
+  const UNITS = (window.IL_CONTENIDO && window.IL_CONTENIDO.unidades) || [];
+  const byId = {}; const unitOf = {};
+  UNITS.forEach(u => (u.ejercicios || []).forEach(e => { byId[e.id] = e; unitOf[e.id] = u; }));
+  const sessionItems = SESSION_IDS.map(id => byId[id]).filter(Boolean);
+
+  function sessionSkills() {
+    const seen = [];
+    sessionItems.forEach(e => { const l = SKILL_LABEL[e.habilidad]; if (l && seen.indexOf(l) === -1) seen.push(l); });
+    return seen;
+  }
+  function joinNatural(arr) {
+    if (arr.length <= 1) return arr.join("");
+    return arr.slice(0, -1).join(", ") + " y " + arr[arr.length - 1];
+  }
+  function primaryUnit() { return unitOf[SESSION_IDS[0]] || UNITS[0] || null; }
+  function nextUnit() {
+    // La unidad de la sesión de hoy vs. la siguiente del banco (para dar curiosidad).
+    const cur = primaryUnit();
+    const i = UNITS.indexOf(cur);
+    return UNITS[(i + 1) % Math.max(UNITS.length, 1)] || cur;
+  }
 
   (async () => {
     try {
@@ -112,29 +328,90 @@
       if (p.is_admin) { location.href = "admin.html"; return; }
       if (p.must_change_password) { location.href = "cambiar-clave.html"; return; }
 
-      // Adaptación por etapa (mismo sistema, variaciones)
       const stage = IL_ETAPA.apply(p);
-      const c = IL_ETAPA.copy(stage);
+      const isEso = stage === "eso";
       const name = (p.full_name || "").split(" ")[0] || "campeón";
-      $("greet").textContent = c.greet(name);
-      $("sub").textContent = c.sub;
-      $("startBtn").childNodes[0].nodeValue = c.cta;
+      $("greet").textContent = isEso ? ("Hola, " + name) : ("¡Hola, " + name + "!");
 
       const pr = await ILAuth.getProgress();
-      if (pr) {
-        $("streak").textContent = pr.streak; $("coins").textContent = pr.gems;
-        $("stRacha").textContent = pr.streak;
-        $("stLecciones").textContent = pr.lessons || 0;
-        $("stGemas").textContent = pr.gems;
+      const streak = pr ? (pr.streak || 0) : 0;
+      const gems = pr ? (pr.gems || 0) : 0;
+      const lessons = pr ? (pr.lessons || 0) : 0;
+      const best = pr ? (pr.best || 0) : 0;
+      const last = pr ? (pr.last || "") : "";
+      $("streak").textContent = streak;
+      $("coins").textContent = gems;
+      $("totLessons").textContent = lessons;
+      $("bestStreak").textContent = best;
 
-        // Sesión YA completada hoy -> estado claro
-        if (pr.last === today()) {
-          $("doneMsg").textContent = c.done;
-          $("todayBlock").hidden = true;
-          $("doneToday").hidden = false;
-          $("sub").textContent = "Hoy ya está hecho ✓";
+      // --- Estado del día ---
+      const hasContent = sessionItems.length > 0;
+      const doneToday = last === today();
+      const dayGap = last ? Math.round((Date.parse(today()) - Date.parse(last)) / 86400000) : null;
+
+      // Mensaje contextual de la cabecera según estado (sin culpa ni presión)
+      let ctx;
+      if (!hasContent) ctx = "Hoy no hay sesión disponible, pero puedes practicar libremente.";
+      else if (doneToday) ctx = isEso ? "Buen trabajo. Ya has completado tu práctica de hoy." : "¡Buen trabajo! Ya has completado tu práctica de hoy.";
+      else if (!last) ctx = "Empecemos con una primera sesión corta.";
+      else if (dayGap != null && dayGap >= 3) ctx = isEso ? "Qué bien verte de nuevo. Retomamos con algo breve." : "¡Qué bien verte de nuevo! Retomamos con algo breve.";
+      else ctx = "Tienes tu sesión de hoy preparada.";
+      $("ctx").textContent = ctx;
+
+      // Tarjeta principal
+      const skills = sessionSkills();
+      if (!hasContent) {
+        // Estado D · sin contenido: tarjeta pendiente adaptada, sin reproches
+        $("cardPending").hidden = false;
+        $("pendEyebrow").textContent = "Práctica libre";
+        $("pendTitle").textContent = "Repasa a tu ritmo";
+        $("pendDesc").textContent = "Todavía no hay una sesión nueva para hoy. Puedes repasar lo que quieras.";
+        $("pendMeta").innerHTML = "";
+        $("pendCta").querySelector("span").textContent = "Practicar libremente";
+      } else if (doneToday) {
+        // Estado C · completada
+        $("cardDone").hidden = false;
+        $("doneKicker").textContent = isEso ? "Práctica registrada" : "¡Buen trabajo!";
+        const skillsTxt = joinNatural(skills);
+        $("doneSummary").innerHTML = "Hoy has practicado <b>" + skillsTxt + "</b> en " +
+          sessionItems.length + " actividades.";
+        // Siguiente acción opcional + progreso semanal + recomendación
+        $("nextAction").hidden = false;
+        $("naDone").hidden = false;
+        const nu = nextUnit();
+        if (nu) {
+          $("nextTopic").hidden = false;
+          $("nextTopicMsg").textContent = "Seguiremos con “" + nu.titulo + "”: " + (nu.descripcion || "").toLowerCase().replace(/\.$/, "") + ".";
         }
+      } else {
+        // Estado A · pendiente (incluye primera vez y vuelta tras días)
+        $("cardPending").hidden = false;
+        const u = primaryUnit();
+        $("pendTitle").textContent = u ? u.titulo : "Tu sesión de hoy";
+        $("pendDesc").textContent = u && u.descripcion ? u.descripcion : "";
+        const meta = [
+          ['<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>', "unos 10 min"],
+          ['<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M4 9h16"/></svg>', sessionItems.length + " actividades"]
+        ];
+        if (skills.length) meta.push(['<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h10"/></svg>', joinNatural(skills.slice(0, 3))]);
+        $("pendMeta").innerHTML = meta.map(m => '<span class="meta">' + m[0] + m[1] + '</span>').join("");
+        $("pendCta").querySelector("span").textContent = (!last || (dayGap != null && dayGap >= 3)) ? "Retomar con una sesión corta" : "Empezar mi sesión";
       }
+
+      // 4 · Progreso semanal (datos reales)
+      try {
+        const w = await ILAuth.getWeekActivity();
+        const goal = w.goal || 5;
+        const count = Math.min(w.count || 0, goal);
+        $("wkGoal").textContent = goal;
+        $("wkNow").textContent = count;
+        const bar = $("wkBar");
+        bar.setAttribute("aria-valuemax", goal);
+        bar.setAttribute("aria-valuenow", count);
+        bar.setAttribute("aria-label", count + " de " + goal + " sesiones esta semana");
+        // Animación de la barra al cargar
+        requestAnimationFrame(() => { $("wkFill").style.width = Math.round(count / goal * 100) + "%"; });
+      } catch (e) {}
 
       $("loading").hidden = true;
       $("app").classList.remove("hidden");
@@ -143,7 +420,12 @@
     }
   })();
 
-  $("logout").addEventListener("click", async () => { await ILAuth.signOut(); location.href = "index.html"; });
+  // "Ya he terminado por hoy": cierra la experiencia con calma (sin salir de la cuenta)
+  $("naDone").addEventListener("click", () => {
+    $("nextAction").hidden = true;
+    $("naDone").hidden = true;
+    $("naClosed").hidden = false;
+  });
 </script>
 </body>
 </html>
