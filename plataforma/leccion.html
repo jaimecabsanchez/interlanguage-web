@@ -34,6 +34,22 @@
   .rw .v{font-family:'Plus Jakarta Sans';font-weight:800;font-size:1.4rem;color:#16294A}
   .rw .l{font-size:.72rem;color:#8A97A6;text-transform:uppercase;letter-spacing:.04em}
   .hidden{display:none!important}
+  /* Banda temática de la unidad (acento por tema; se atenúa en ESO) */
+  .theme-bar{display:flex;align-items:center;gap:8px;padding:0 2px 10px;color:var(--tb-color,#5C6B7A);font-weight:700;font-size:.9rem;}
+  .theme-bar[hidden]{display:none;}
+  .theme-bar .tb-ico{font-size:1.15rem;}
+  body[data-stage="eso"] .theme-bar{color:#5C6B7A;font-weight:600;font-size:.82rem;}
+  body[data-stage="eso"] .theme-bar .tb-ico{display:none;}
+  /* Reacción breve de Nemo al acertar */
+  .nemo-react{position:fixed;left:50%;bottom:92px;transform:translateX(-50%) scale(0);font-size:3.2rem;z-index:60;
+    pointer-events:none;filter:drop-shadow(0 10px 16px rgba(22,41,74,.22));}
+  .nemo-react.show{animation:nemoPop .9s ease forwards;}
+  @keyframes nemoPop{0%{transform:translateX(-50%) scale(0) rotate(-8deg);}
+    30%{transform:translateX(-50%) scale(1.12) rotate(5deg);}
+    60%{transform:translateX(-50%) scale(1) rotate(0);opacity:1;}
+    100%{transform:translateX(-50%) scale(.9) translateY(18px);opacity:0;}}
+  body[data-stage="eso"] .nemo-react{font-size:2.1rem;bottom:76px;}
+  @media (prefers-reduced-motion:reduce){ .nemo-react.show{animation:none;opacity:0;} }
   .new-medals{background:#FFF7E6;border:1px solid #FFE2A8;border-radius:16px;padding:14px 18px;margin-bottom:20px;max-width:340px}
   .nm-title{font-family:'Plus Jakarta Sans';font-weight:800;color:#B8860B;margin-bottom:8px}
   .nm{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #FFE2A8;border-radius:999px;padding:6px 12px;margin:3px;font-size:.9rem;font-weight:600;color:#7a5a10}
@@ -48,11 +64,16 @@
     <div class="progress"><i id="pfill"></i></div>
     <span class="hearts">🔥</span>
   </div>
+  <div class="theme-bar" id="themeBar" hidden>
+    <span class="tb-ico" aria-hidden="true"></span><span class="tb-title"></span>
+  </div>
   <div id="stage"></div>
 </div>
 
+<div class="nemo-react" id="nemoReact" aria-hidden="true">🦊</div>
+
 <div class="reward hidden" id="reward">
-  <div class="medal">🏆</div>
+  <div class="medal" aria-hidden="true">🦊</div>
   <h1>¡Misión completada!</h1>
   <p id="rwMsg">Has mantenido tu racha un día más 🔥</p>
   <div class="reward-stats">
@@ -107,6 +128,27 @@
   const CEFR_IDX = { "Pre-A1": 0, "A1": 1, "A2": 2, "B1": 3 };
   let items = [], idx = 0, correct = 0, curStreak = 0, maxStreak = 0;
 
+  // Mapa ejercicio -> unidad (para el tema de cada actividad)
+  const _unitOf = {};
+  (window.IL_CONTENIDO.unidades || []).forEach(u => (u.ejercicios || []).forEach(e => { _unitOf[e.id] = u; }));
+
+  function updateTheme() {
+    const u = _unitOf[items[idx] && items[idx].id];
+    const tb = $("themeBar");
+    if (u && u.tema) {
+      tb.hidden = false;
+      tb.style.setProperty("--tb-color", u.tema.color || "#5C6B7A");
+      tb.querySelector(".tb-ico").textContent = u.tema.icono || "";
+      tb.querySelector(".tb-title").textContent = u.titulo || "";
+    } else { tb.hidden = true; }
+  }
+
+  // Reacción breve de Nemo al acertar (sobria; se atenúa/oculta con reduced-motion)
+  function nemoCheer() {
+    const n = $("nemoReact");
+    n.classList.remove("show"); void n.offsetWidth; n.classList.add("show");
+  }
+
   function composeByLevel(banda, cefr) {
     const all = (window.IL_CONTENIDO.unidades || []).flatMap(u => u.ejercicios || []);
     let pool = window.IL_MATRIZ ? IL_MATRIZ.filtra(all, banda) : all.slice();
@@ -136,10 +178,11 @@
 
   function show() {
     setProgress();
+    updateTheme();
     const ctrl = IL_ENGINE.render($("stage"), items[idx], {
       lastOne: idx === items.length - 1,
       onResult: (ev) => {
-        if (ev.correct) { correct++; curStreak++; if (curStreak > maxStreak) maxStreak = curStreak; }
+        if (ev.correct) { correct++; curStreak++; if (curStreak > maxStreak) maxStreak = curStreak; nemoCheer(); }
         else { curStreak = 0; }
       },
       onNext: () => { idx++; if (idx < items.length) show(); else finish(); }

@@ -36,6 +36,7 @@ window.IL_CONTENIDO = {
       nivel: "A1",
       etapa: "Primaria",
       descripcion: "Las acciones del día: levantarse, desayunar, ir al cole…",
+      tema: { icono: "☀️", color: "#F4A73B" },
       ejercicios: [
         {
           id: "rd-1", tipo: "elegir_imagen", habilidad: "vocabulary", nivel: "A1", edad: [6,11],
@@ -88,6 +89,7 @@ window.IL_CONTENIDO = {
       nivel: "Pre-A1",
       etapa: "Primaria",
       descripcion: "Vocabulario básico de alimentos y gustos.",
+      tema: { icono: "🍎", color: "#1E9C74" },
       ejercicios: [
         {
           id: "lc-1", tipo: "elegir_imagen", habilidad: "vocabulary", nivel: "Pre-A1", edad: [6,9],
