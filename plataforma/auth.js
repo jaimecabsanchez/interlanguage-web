@@ -321,6 +321,11 @@
   const today = () => new Date().toISOString().slice(0, 10);
   const dayAdd = (n) => { const d = new Date(); d.setDate(d.getDate() + n); return d.toISOString().slice(0, 10); };
   const PKEY = (u) => "il_progress_" + u;
+  // Registro de días con práctica (para el objetivo semanal, coherente con "completada hoy")
+  const DKEY = (u) => "il_days_" + u;
+  function loadDays(u) { try { return JSON.parse(localStorage.getItem(DKEY(u))) || []; } catch (e) { return []; } }
+  function saveDays(u, arr) { try { localStorage.setItem(DKEY(u), JSON.stringify(arr)); } catch (e) {} }
+  function markDay(u, d) { const a = loadDays(u); if (a.indexOf(d) === -1) { a.push(d); saveDays(u, a); } }
   function seedProgress(username) {
     if (username === "lucia")
       return { gems: 240, streak: 12, best: 18, xp: 1240, lessons: 24, last: dayAdd(-1), owned: [], hat: "", acc: "" };
@@ -401,6 +406,7 @@
     p.last = t; p.gems += 20; p.xp += 50; p.lessons += 1;
     p.best = Math.max(prevBest, p.streak);
     await this._save(p);
+    markDay(p.username, t);   // cuenta para el objetivo semanal
 
     // Medallas recién ganadas
     let newMedals = [];
@@ -484,18 +490,26 @@
     const dow = (now.getDay() + 6) % 7;               // 0 = lunes
     const monday = new Date(now); monday.setHours(0, 0, 0, 0); monday.setDate(now.getDate() - dow);
     const iso = (d) => d.toISOString().slice(0, 10);
-    const empty = { goal: GOAL, monday: iso(monday), practiced: [], count: 0 };
-    if (DEMO || !sb) return empty;
+    const mondayIso = iso(monday);
+    const sunday = new Date(monday); sunday.setDate(monday.getDate() + 6);
+    const sundayIso = iso(sunday);
     const prof = await this.getProfile();
-    if (!prof || !prof.student_id) return empty;
-    try {
-      const { data } = await sb.from("practice_sessions")
-        .select("created_at").eq("student_id", prof.student_id)
-        .gte("created_at", monday.toISOString());
-      const set = new Set((data || []).map(s => (new Date(s.created_at).getDay() + 6) % 7)); // 0=lunes
-      const practiced = [...set].sort((a, b) => a - b);
-      return { goal: GOAL, monday: iso(monday), practiced: practiced, count: practiced.length };
-    } catch (e) { return empty; }
+    if (!prof) return { goal: GOAL, monday: mondayIso, practiced: [], count: 0 };
+    // Días con práctica esta semana. Fuente coherente con "completada hoy":
+    // registro local + el último día de práctica; en real, además las sesiones de BD.
+    const idx = new Set();
+    const addYmd = (d) => { if (d && d >= mondayIso && d <= sundayIso) idx.add((new Date(d + "T00:00:00Z").getUTCDay() + 6) % 7); };
+    loadDays(prof.username).forEach(addYmd);
+    try { const pr = await this.getProgress(); if (pr && pr.last) addYmd(pr.last); } catch (e) {}
+    if (!DEMO && sb && prof.student_id) {
+      try {
+        const { data } = await sb.from("practice_sessions")
+          .select("created_at").eq("student_id", prof.student_id).gte("created_at", monday.toISOString());
+        (data || []).forEach(s => addYmd(iso(new Date(s.created_at))));
+      } catch (e) {}
+    }
+    const practiced = [...idx].sort((a, b) => a - b);
+    return { goal: GOAL, monday: mondayIso, practiced: practiced, count: practiced.length };
   };
 
   /* ---------------- NIVEL DE INGLÉS (test de colocación) ----------------
