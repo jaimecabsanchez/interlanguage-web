@@ -155,8 +155,14 @@ motivación/Nemo, arquitectura técnica (Stack A), modelo de datos/API, segurida
 > (`onboarding.html`, 3 pasos con Nemo, tras primer acceso) · ✅ **puerta de la matriz** (`motor/matriz.js`,
 > filtra por banda; 13 tests en CI; integrada en la lección) · ✅ **de-fake del perfil** (fuera heatmap/
 > curva/destrezas inventados; solo datos reales). Todo verificado en navegador.
-> **Pendiente:** split real Progreso/Perfil (hoy comparten `perfil.html`); migrar componentes a los
-> tokens `--il-*`; la matriz también en el CMS al publicar (B6).
+> **HECHO 2026-07-31 (cont.):** ✅ **split Progreso/Perfil**: `progreso.html` propio (📈) con datos
+> reales (objetivo semanal desde `practice_sessions` vía `getWeekActivity`, racha+comodín, cifras,
+> "lo que ya sé decir", medallas); `perfil.html` pasa a identidad/cuenta (código, nivel, personalizar
+> Nemo, contraseña, salir) · ✅ **tokens de marca unificados**: `app.css` deriva los colores idénticos
+> de `--il-*` con literal de respaldo (cero cambio visual, verificado navy/coral por ambas vías) ·
+> ✅ **eliminada `liga.html`** (huérfana y contraria a "sin competición"); nav de `tienda.html` a 4 pestañas.
+> **Pendiente:** la matriz también en el CMS al publicar (B6, requiere UI de administración); alinear
+> los pocos tokens que aún difieren (`--line`/`--ink`/`--faint`) si se decide un único set.
 - **Objetivo:** pantalla de inicio (4 pestañas: Inicio/Practicar/Progreso/Perfil) con Nemo, clara y ligera.
 - **Archivos/módulos:** `inicio.html`, navegación, `perfil.html`, estilos `app.css`, assets de Nemo (sencillos).
 - **Dependencias:** B2, B7.
