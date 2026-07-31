@@ -8,8 +8,24 @@
   const CFG = window.IL_SUPABASE || {};
   const DOMAIN = CFG.emailDomain || "alumnos.interlanguage-home.es";
   const KEY = CFG.publishableKey || CFG.anonKey || "";
-  const DEMO = !CFG.url || CFG.url.indexOf("TU-PROYECTO") !== -1
+  const noKeys = !CFG.url || CFG.url.indexOf("TU-PROYECTO") !== -1
             || !KEY || KEY.indexOf("TU-ANON") !== -1 || KEY.indexOf("TU-PUBLISHABLE") !== -1;
+
+  // Vista previa: en localhost se puede forzar el modo demo con ?demo=1 (se recuerda);
+  // ?demo=0 lo desactiva. Nunca se activa en un dominio real, así que el despliegue
+  // en producción sigue usando siempre Supabase real.
+  let forceDemo = false;
+  try {
+    const host = location.hostname || "";
+    const isLocal = host === "localhost" || host === "127.0.0.1" || host === "" || host.endsWith(".local");
+    if (isLocal) {
+      const qs = new URLSearchParams(location.search);
+      if (qs.get("demo") === "1") localStorage.setItem("il_force_demo", "1");
+      if (qs.get("demo") === "0") localStorage.removeItem("il_force_demo");
+      forceDemo = localStorage.getItem("il_force_demo") === "1";
+    }
+  } catch (e) {}
+  const DEMO = noKeys || forceDemo;
 
   let sb = null;
   if (!DEMO && window.supabase && window.supabase.createClient) {
