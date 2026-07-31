@@ -92,7 +92,7 @@
     const res = await ILAuth.changePassword(p1);
     if (!res.ok) { msg.textContent = res.error; msg.classList.add("show"); btn.disabled = false; btn.textContent = old; return; }
     ok.textContent = "✅ ¡Contraseña guardada! Entrando…"; ok.classList.add("show");
-    setTimeout(() => { location.href = profile.is_admin ? "admin.html" : "inicio.html"; }, 900);
+    setTimeout(() => { location.href = profile.is_admin ? "admin.html" : "onboarding.html"; }, 900);
   });
 
   $("logout").addEventListener("click", async (e) => { e.preventDefault(); await ILAuth.signOut(); location.href = "index.html"; });
