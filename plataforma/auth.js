@@ -498,6 +498,38 @@
     } catch (e) { return empty; }
   };
 
+  /* ---------------- NIVEL DE INGLÉS (test de colocación) ----------------
+     Escalera CEFR que usa el contenido del MVP. El test del primer acceso
+     fija el punto de partida; la sesión se compone alrededor de ese nivel. */
+  const CEFR_ORDER = ["Pre-A1", "A1", "A2", "B1"];
+  function levelLabel(cefr) {
+    return ({ "Pre-A1": "Principiante", "A1": "Explorer · A1", "A2": "Explorer · A2", "B1": "Adventurer · B1" })[cefr] || cefr;
+  }
+  const LKEY = (u) => "il_level_" + u;
+  API.CEFR_ORDER = CEFR_ORDER;
+  API.levelLabel = levelLabel;
+
+  // Devuelve el nivel colocado del alumno (o null si aún no ha hecho el test)
+  API.getPlacement = async function () {
+    const prof = await this.getProfile();
+    if (!prof) return { cefr: null, placed: false, label: "" };
+    let cefr = null;
+    try { cefr = localStorage.getItem(LKEY(prof.username)); } catch (e) {}
+    if (!cefr && CEFR_ORDER.indexOf((prof.cefr || "")) !== -1) cefr = prof.cefr;
+    return { cefr: cefr, placed: !!cefr, label: cefr ? levelLabel(cefr) : "" };
+  };
+
+  // Guarda el resultado del test. Fuente de verdad local para componer la sesión hoy;
+  // la persistencia definitiva en BD (students.level_id) es una pequeña migración pendiente.
+  API.savePlacement = async function (cefr) {
+    if (CEFR_ORDER.indexOf(cefr) === -1) return { ok: false };
+    const prof = await this.getProfile();
+    if (!prof) return { ok: false };
+    try { localStorage.setItem(LKEY(prof.username), cefr); } catch (e) {}
+    if (DEMO) { const db = demoLoad(); const acc = db.find(a => a.username === prof.username); if (acc) { acc.level = levelLabel(cefr); demoSave(db); } }
+    return { ok: true, cefr: cefr, label: levelLabel(cefr) };
+  };
+
   // Resumen para el INFORME de la familia (solo lectura, sin notas ni comparaciones)
   API.getReport = async function () {
     const prof = await this.getProfile();

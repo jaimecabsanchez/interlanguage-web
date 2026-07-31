@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Test de nivel · Interlanguage HOME</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/png" sizes="32x32" href="../images/icons/favicon-32.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="design-system.css">
+<link rel="stylesheet" href="app.css">
+<link rel="stylesheet" href="etapa.css">
+<style>
+  body{background:#fff;}
+  .tn{max-width:560px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;padding:0 18px calc(24px + env(safe-area-inset-bottom));}
+  .tn-top{display:flex;align-items:center;gap:12px;padding:20px 2px 8px;}
+  .tn-top .lbl{font-size:.78rem;color:var(--faint);font-weight:600;white-space:nowrap;}
+  .tn-bar{flex:1;height:10px;border-radius:8px;background:var(--surface-2);overflow:hidden;}
+  .tn-bar i{display:block;height:100%;width:0;border-radius:8px;background:linear-gradient(90deg,var(--coral),var(--coral-deep));transition:width .3s cubic-bezier(.2,.7,.3,1);}
+  .tn-main{flex:1;display:flex;flex-direction:column;justify-content:center;padding:8px 0 16px;}
+  .eyebrow{font-family:var(--font-display);font-weight:800;font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--coral-deep);margin-bottom:10px;}
+  .q{font-family:var(--font-display);font-weight:800;color:var(--navy);font-size:1.4rem;line-height:1.2;margin:0 0 20px;}
+  .q .en{background:var(--surface-2);border-radius:8px;padding:2px 8px;}
+  .opts{display:flex;flex-direction:column;gap:10px;border:none;padding:0;margin:0;}
+  .opt{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:#fff;border:1.5px solid var(--line-2);
+    border-radius:14px;padding:15px 16px;font-size:1.05rem;color:var(--ink);font-family:inherit;font-weight:600;
+    transition:border-color .15s ease,background .15s ease,transform .1s ease;}
+  .opt:hover{border-color:var(--coral);}
+  .opt[aria-pressed="true"]{border-color:var(--coral);background:var(--coral-tint);color:var(--navy);}
+  .opt .mk{width:22px;height:22px;flex-shrink:0;border-radius:50%;border:2px solid var(--line-2);display:grid;place-items:center;}
+  .opt[aria-pressed="true"] .mk{border-color:var(--coral);background:var(--coral);}
+  .opt[aria-pressed="true"] .mk::after{content:"";width:8px;height:8px;border-radius:50%;background:#fff;}
+  .tn-foot{padding-top:8px;}
+  .tn-foot .btn{width:100%;}
+  /* Resultado */
+  .result{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:20px 0;}
+  .result .badge{width:96px;height:96px;border-radius:28px;display:grid;place-items:center;margin-bottom:16px;
+    background:linear-gradient(150deg,var(--jade),var(--jade-deep));box-shadow:0 16px 30px -14px var(--jade);animation:pop .5s cubic-bezier(.2,1.2,.3,1) both;}
+  .result .badge svg{width:46px;height:46px;color:#fff;}
+  .result h1{font-size:1.6rem;margin:0 0 6px;}
+  .result .lvl{font-family:var(--font-display);font-weight:800;color:var(--jade-deep);font-size:1.15rem;margin-bottom:10px;}
+  .result p{color:var(--soft);max-width:400px;margin:0 auto 26px;}
+  @keyframes pop{0%{transform:scale(0);}70%{transform:scale(1.1);}100%{transform:scale(1);}}
+  @media (prefers-reduced-motion:reduce){ .result .badge{animation:none;} .tn-bar i{transition:none;} }
+  body[data-stage="eso"] .q{font-size:1.25rem;}
+</style>
+</head>
+<body>
+<div class="tn">
+  <div class="tn-top" id="topBar">
+    <span class="lbl" id="progLbl">Pregunta 1 de 8</span>
+    <div class="tn-bar"><i id="progFill"></i></div>
+  </div>
+
+  <div class="tn-main" id="main"></div>
+
+  <div class="tn-foot" id="foot">
+    <button class="btn btn-primary" id="next" disabled>Siguiente</button>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+<script src="auth-utils.js"></script>
+<script src="etapa.js"></script>
+<script src="auth.js"></script>
+<script>
+  const $ = (id) => document.getElementById(id);
+
+  // Preguntas ordenadas de menor a mayor dificultad. Sin feedback (es evaluación).
+  // "n" = nivel CEFR que representa la pregunta · "c" = índice de la opción correcta.
+  const QUESTIONS = [
+    { n: "Pre-A1", q: 'What is <span class="en">perro</span> in English?', o: ["dog", "cat", "bird"], c: 0 },
+    { n: "Pre-A1", q: 'Choose the color <span class="en">rojo</span>:', o: ["blue", "red", "green"], c: 1 },
+    { n: "A1", q: 'Complete: <span class="en">She ___ a teacher.</span>', o: ["is", "are", "am"], c: 0 },
+    { n: "A1", q: '<span class="en">I go to school every day</span> significa:', o: ["Fui al colegio ayer", "Voy al colegio cada día", "Iré al colegio mañana"], c: 1 },
+    { n: "A2", q: 'Complete: <span class="en">Yesterday I ___ to the park.</span>', o: ["go", "went", "going"], c: 1 },
+    { n: "A2", q: 'Complete: <span class="en">There ___ some milk in the fridge.</span>', o: ["are", "be", "is"], c: 2 },
+    { n: "B1", q: 'Complete: <span class="en">If it rains, we ___ stay at home.</span>', o: ["will", "did", "are"], c: 0 },
+    { n: "B1", q: '<span class="en">I have been studying English for three years</span> significa:', o: ["Estudié inglés hace tres años", "Voy a estudiar inglés tres años", "Llevo tres años estudiando inglés"], c: 2 }
+  ];
+
+  let i = 0;
+  const answers = new Array(QUESTIONS.length).fill(null);
+
+  function render() {
+    const item = QUESTIONS[i];
+    $("progLbl").textContent = "Pregunta " + (i + 1) + " de " + QUESTIONS.length;
+    $("progFill").style.width = Math.round((i) / QUESTIONS.length * 100) + "%";
+    $("main").innerHTML =
+      '<div class="eyebrow">Nos vamos conociendo</div>' +
+      '<h2 class="q">' + item.q + '</h2>' +
+      '<div class="opts" role="group" aria-label="Elige una respuesta">' +
+      item.o.map((t, idx) =>
+        '<button class="opt" type="button" data-idx="' + idx + '" aria-pressed="' + (answers[i] === idx) + '">' +
+        '<span class="mk" aria-hidden="true"></span><span>' + t + '</span></button>').join("") +
+      '</div>';
+    $("main").querySelectorAll(".opt").forEach(b => b.addEventListener("click", () => {
+      answers[i] = parseInt(b.getAttribute("data-idx"), 10);
+      $("main").querySelectorAll(".opt").forEach(x => x.setAttribute("aria-pressed", x === b));
+      $("next").disabled = false;
+    }));
+    $("next").disabled = answers[i] === null;
+    $("next").textContent = (i === QUESTIONS.length - 1) ? "Ver mi nivel" : "Siguiente";
+  }
+
+  // Puntuación transparente: nº de aciertos → punto de partida CEFR.
+  function computeLevel() {
+    let score = 0;
+    QUESTIONS.forEach((it, idx) => { if (answers[idx] === it.c) score++; });
+    if (score <= 2) return "Pre-A1";
+    if (score <= 4) return "A1";
+    if (score <= 6) return "A2";
+    return "B1";
+  }
+
+  async function finish() {
+    const cefr = computeLevel();
+    const r = await ILAuth.savePlacement(cefr);
+    const label = (r && r.label) || cefr;
+    // Con contenido hasta A2 en el MVP, avisamos con honestidad si sale B1.
+    const noContentYet = (cefr === "B1");
+    $("topBar").style.visibility = "hidden";
+    $("foot").innerHTML = '';
+    $("main").innerHTML =
+      '<div class="result">' +
+      '<div class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4 10-11"/></svg></div>' +
+      '<h1>¡Ya te conocemos un poco!</h1>' +
+      '<div class="lvl">Tu punto de partida: ' + label + '</div>' +
+      '<p>' + (noContentYet
+        ? "¡Vas muy bien! De momento practicarás con lo más avanzado disponible; pronto añadiremos retos de tu nivel."
+        : "Adaptaremos las misiones a tu nivel. Podrás subir a tu ritmo, sin prisa.") + '</p>' +
+      '<a class="btn btn-primary" style="max-width:320px;text-decoration:none" href="inicio.html">Empezar</a>' +
+      '</div>';
+  }
+
+  $("next").addEventListener("click", () => {
+    if (answers[i] === null) return;
+    if (i < QUESTIONS.length - 1) { i++; render(); }
+    else finish();
+  });
+
+  (async () => {
+    const p = await ILAuth.getProfile();
+    if (!p) { location.href = "index.html"; return; }
+    if (p.is_admin) { location.href = "admin.html"; return; }
+    if (p.must_change_password) { location.href = "cambiar-clave.html"; return; }
+    IL_ETAPA.apply(p);
+    // Si ya tiene nivel colocado, no repetimos el test.
+    const pl = await ILAuth.getPlacement();
+    if (pl.placed) { location.href = "inicio.html"; return; }
+    render();
+  })();
+</script>
+</body>
+</html>

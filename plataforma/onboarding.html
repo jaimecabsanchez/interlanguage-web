@@ -84,7 +84,7 @@
 
   function finish() {
     try { const u = (window.__user||''); localStorage.setItem('il_onboarded_'+u, '1'); } catch(e){}
-    location.href = "leccion.html";   // termina lanzando la primera misión (éxito garantizado)
+    location.href = "test-nivel.html";   // primero el test de nivel; luego ya empieza a practicar
   }
   $("next").addEventListener("click", () => { if (i < steps().length-1) { i++; render(); } else finish(); });
   $("skip").addEventListener("click", finish);
