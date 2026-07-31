@@ -151,9 +151,12 @@ motivación/Nemo, arquitectura técnica (Stack A), modelo de datos/API, segurida
 > **UX/visual aprobado 2026-07-31**: specs `ux-vision-visual-design`, `pantallas-alumno-mvp`,
 > `experiencia-ejercicios`, `experiencia-motivacion-progreso`, `sistema-diseno-final` (con 3 recorridos).
 > **HECHO 2026-07-31:** ✅ navegación corregida a 4 pestañas (quitada "Liga"; "Tienda" dentro de Perfil) ·
-> ✅ `data-stage` de **4 bandas** (p12/p34/p56/eso) · ✅ tokens `design-system.css`. Verificado en navegador.
-> **Pendiente:** Onboarding (nuevo); **puerta de la matriz** en recomendación (B9)/CMS (B6); split real
-> Progreso/Perfil (hoy comparten `perfil.html`); migrar componentes a los tokens `--il-*`.
+> ✅ `data-stage` de **4 bandas** (p12/p34/p56/eso) · ✅ tokens `design-system.css` · ✅ **Onboarding**
+> (`onboarding.html`, 3 pasos con Nemo, tras primer acceso) · ✅ **puerta de la matriz** (`motor/matriz.js`,
+> filtra por banda; 13 tests en CI; integrada en la lección) · ✅ **de-fake del perfil** (fuera heatmap/
+> curva/destrezas inventados; solo datos reales). Todo verificado en navegador.
+> **Pendiente:** split real Progreso/Perfil (hoy comparten `perfil.html`); migrar componentes a los
+> tokens `--il-*`; la matriz también en el CMS al publicar (B6).
 - **Objetivo:** pantalla de inicio (4 pestañas: Inicio/Practicar/Progreso/Perfil) con Nemo, clara y ligera.
 - **Archivos/módulos:** `inicio.html`, navegación, `perfil.html`, estilos `app.css`, assets de Nemo (sencillos).
 - **Dependencias:** B2, B7.
