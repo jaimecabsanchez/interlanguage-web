@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mi progreso · Interlanguage HOME</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/png" sizes="32x32" href="../images/icons/favicon-32.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="design-system.css">
+<link rel="stylesheet" href="app.css">
+<link rel="stylesheet" href="etapa.css">
+<style>
+  /* Objetivo semanal: tira de 7 días reales (sin datos inventados) */
+  .week{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-top:12px;}
+  .week .d{display:flex;flex-direction:column;align-items:center;gap:6px;}
+  .week .d .dot{width:100%;aspect-ratio:1;max-width:38px;border-radius:12px;background:var(--surface-2);display:grid;place-items:center;font-size:.95rem;color:var(--faint);}
+  .week .d.on .dot{background:var(--jade);color:#fff;box-shadow:0 8px 16px -8px var(--jade);}
+  .week .d.today .dot{outline:2px solid var(--coral);outline-offset:2px;}
+  .week .d .lbl{font-size:.62rem;color:var(--faint);text-transform:uppercase;letter-spacing:.03em;}
+  .week-head{display:flex;justify-content:space-between;align-items:baseline;}
+  .week-head b{color:var(--jade-deep);font-family:var(--font-display);}
+  /* Racha */
+  .streak-card{display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:center;}
+  .streak-flame{width:64px;height:64px;border-radius:20px;background:var(--coral-tint);display:grid;place-items:center;font-size:2.1rem;}
+  .streak-nums{display:flex;gap:22px;}
+  .streak-nums .n .v{font-family:var(--font-display);font-weight:800;color:var(--navy);font-size:1.5rem;}
+  .streak-nums .n .l{font-size:.68rem;color:var(--faint);text-transform:uppercase;letter-spacing:.04em;}
+  .comodin{grid-column:1/-1;display:flex;align-items:center;gap:8px;background:var(--surface-2);border-radius:12px;padding:9px 12px;font-size:.82rem;color:var(--soft);margin-top:4px;}
+  /* Cifras */
+  .nums3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+  .nums3 .n{background:var(--surface-2);border-radius:14px;padding:14px 8px;text-align:center;}
+  .nums3 .n .v{font-family:var(--font-display);font-weight:800;color:var(--navy);font-size:1.35rem;}
+  .nums3 .n .l{font-size:.66rem;color:var(--faint);text-transform:uppercase;letter-spacing:.04em;}
+  .card-soft h3.h{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);font-family:var(--font-display);margin-bottom:12px;}
+  .card-soft h3.h b{color:var(--jade-deep);}
+  .phrases{display:flex;flex-wrap:wrap;gap:8px;}
+  .phrase{background:var(--jade-tint);border:1px solid color-mix(in srgb,var(--jade) 32%,transparent);color:var(--navy);border-radius:100px;padding:6px 13px;font-size:.85rem;font-weight:600;}
+  .phrase.more{background:transparent;border-style:dashed;color:var(--faint);}
+  .medals{display:flex;gap:10px;flex-wrap:wrap;}
+  .medal{width:52px;height:52px;border-radius:14px;display:grid;place-items:center;font-size:1.4rem;background:var(--surface-2);border:1px solid var(--line);}
+  .medal.on{background:var(--coral-tint);border-color:var(--coral);}
+  .medal.lock{opacity:.4;filter:grayscale(1);}
+</style>
+</head>
+<body>
+<div id="app" class="hidden">
+  <div class="app-top">
+    <span class="chip-stat streak">🔥 <span id="topStreak">0</span></span>
+    <span class="chip-stat coins">💎 <span id="topGems">0</span></span>
+  </div>
+
+  <div class="app-shell">
+    <div class="greet">
+      <h1>Tu progreso 📈</h1>
+      <p id="sub">Todo lo que llevas hecho</p>
+    </div>
+
+    <!-- Objetivo de la semana -->
+    <div class="card-soft">
+      <div class="week-head">
+        <h3 class="h" style="margin:0">Esta semana · <b id="weekCount">0 de 5 días</b></h3>
+      </div>
+      <div class="week" id="week"></div>
+    </div>
+
+    <!-- Racha -->
+    <div class="card-soft">
+      <div class="streak-card">
+        <div class="streak-flame">🔥</div>
+        <div class="streak-nums">
+          <div class="n"><div class="v" id="stStreak">0</div><div class="l">Racha actual</div></div>
+          <div class="n"><div class="v" id="stBest">0</div><div class="l">Mejor racha</div></div>
+        </div>
+        <div class="comodin" id="comodin">🛟 Tienes un comodín: si un día no puedes, tu racha no se rompe.</div>
+      </div>
+    </div>
+
+    <!-- Cifras reales -->
+    <div class="card-soft">
+      <h3 class="h">En total</h3>
+      <div class="nums3">
+        <div class="n"><div class="v" id="nLessons">0</div><div class="l">Misiones</div></div>
+        <div class="n"><div class="v" id="nXP">0</div><div class="l">XP</div></div>
+        <div class="n"><div class="v" id="nGems">0</div><div class="l">Gemas</div></div>
+      </div>
+    </div>
+
+    <!-- Lo que ya sé decir -->
+    <div class="card-soft">
+      <h3 class="h">Lo que ya sé decir · <b id="phraseCount">0</b></h3>
+      <div class="phrases" id="phrases"></div>
+    </div>
+
+    <!-- Medallas -->
+    <div class="card-soft">
+      <h3 class="h">Medallas · <b id="medalsCount">0 de 0</b></h3>
+      <div class="medals" id="medalsGrid"></div>
+    </div>
+  </div>
+
+  <nav class="app-nav" aria-label="Navegación principal">
+    <button aria-label="Inicio" onclick="location.href='inicio.html'"><span aria-hidden="true">🏠</span></button>
+    <button aria-label="Practicar" onclick="location.href='leccion.html'"><span aria-hidden="true">🎯</span></button>
+    <button class="active" aria-label="Progreso" aria-current="page"><span aria-hidden="true">📈</span></button>
+    <button aria-label="Perfil" onclick="location.href='perfil.html'"><span aria-hidden="true">👤</span></button>
+  </nav>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+<script src="auth-utils.js"></script>
+<script src="etapa.js"></script>
+<script src="motor/motivacion.js"></script>
+<script src="auth.js"></script>
+<script>
+  const $ = (id) => document.getElementById(id);
+  const DIAS = ["L", "M", "X", "J", "V", "S", "D"];
+
+  (async () => {
+    const p = await ILAuth.getProfile();
+    if (!p) { location.href = "index.html"; return; }
+    if (p.is_admin) { location.href = "admin.html"; return; }
+    if (p.must_change_password) { location.href = "cambiar-clave.html"; return; }
+    IL_ETAPA.apply(p);
+    $("app").classList.remove("hidden");
+
+    const pr = await ILAuth.getProgress();
+    if (pr) {
+      $("topStreak").textContent = pr.streak;
+      $("topGems").textContent = pr.gems;
+      $("stStreak").textContent = pr.streak;
+      $("stBest").textContent = pr.best || 0;
+      $("nLessons").textContent = pr.lessons || 0;
+      $("nXP").textContent = pr.xp || 0;
+      $("nGems").textContent = pr.gems || 0;
+      if (pr.freezes === 0) $("comodin").textContent = "🛟 Comodín usado esta vez — practica para recuperarlo.";
+    }
+
+    // Semana real (días practicados de lunes a domingo)
+    try {
+      const w = await ILAuth.getWeekActivity();
+      const todayIdx = (new Date().getDay() + 6) % 7;
+      const done = new Set(w.practiced);
+      $("weekCount").textContent = w.count + " de " + w.goal + " días";
+      $("week").innerHTML = DIAS.map((d, i) =>
+        '<div class="d' + (done.has(i) ? " on" : "") + (i === todayIdx ? " today" : "") + '">' +
+        '<div class="dot">' + (done.has(i) ? "✓" : "") + '</div><div class="lbl">' + d + '</div></div>'
+      ).join("");
+    } catch (e) {}
+
+    // Lo que ya sé decir (frases dominadas reales)
+    try {
+      const phrases = await ILAuth.getMasteredPhrases();
+      $("phraseCount").textContent = phrases.length ? (phrases.length + " frases") : "aún ninguna";
+      $("phrases").innerHTML = phrases.length
+        ? phrases.map(f => '<span class="phrase">' + f + '</span>').join("")
+        : '<span class="phrase more">Practica para desbloquear frases 💪</span>';
+    } catch (e) {}
+
+    // Medallas reales (ganadas + bloqueadas)
+    try {
+      const medals = await ILAuth.listMedals();
+      const got = medals.filter(m => m.earned).length;
+      $("medalsCount").textContent = got + " de " + medals.length;
+      $("medalsGrid").innerHTML = medals.map(m =>
+        '<div class="medal ' + (m.earned ? "on" : "lock") + '" title="' + m.name + '">' + (m.earned ? m.icon : "🔒") + '</div>'
+      ).join("");
+    } catch (e) {}
+  })();
+</script>
+</body>
+</html>

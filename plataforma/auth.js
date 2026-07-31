@@ -460,6 +460,28 @@
     return (data || []).map(m => m.objectives && m.objectives.can_do).filter(Boolean);
   };
 
+  // Objetivo semanal: días de ESTA semana (lunes→domingo) con práctica real.
+  // Nunca inventa: en demo o sin alumno, devuelve la semana vacía.
+  API.getWeekActivity = async function () {
+    const GOAL = 5;
+    const now = new Date();
+    const dow = (now.getDay() + 6) % 7;               // 0 = lunes
+    const monday = new Date(now); monday.setHours(0, 0, 0, 0); monday.setDate(now.getDate() - dow);
+    const iso = (d) => d.toISOString().slice(0, 10);
+    const empty = { goal: GOAL, monday: iso(monday), practiced: [], count: 0 };
+    if (DEMO || !sb) return empty;
+    const prof = await this.getProfile();
+    if (!prof || !prof.student_id) return empty;
+    try {
+      const { data } = await sb.from("practice_sessions")
+        .select("created_at").eq("student_id", prof.student_id)
+        .gte("created_at", monday.toISOString());
+      const set = new Set((data || []).map(s => (new Date(s.created_at).getDay() + 6) % 7)); // 0=lunes
+      const practiced = [...set].sort((a, b) => a - b);
+      return { goal: GOAL, monday: iso(monday), practiced: practiced, count: practiced.length };
+    } catch (e) { return empty; }
+  };
+
   // Resumen para el INFORME de la familia (solo lectura, sin notas ni comparaciones)
   API.getReport = async function () {
     const prof = await this.getProfile();

@@ -13,91 +13,42 @@
 <link rel="stylesheet" href="app.css">
 <link rel="stylesheet" href="etapa.css">
 <style>
-  .pf-hd{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:20px;padding:18px;box-shadow:var(--shadow-soft);}
-  .pf-av{width:64px;height:64px;border-radius:20px;background:linear-gradient(150deg,var(--coral),var(--coral-deep));display:grid;place-items:center;font-size:2rem;box-shadow:0 10px 20px -10px var(--coral);}
-  .pf-hd .nm{font-family:var(--font-display);font-weight:800;color:var(--navy);font-size:1.2rem;}
-  .pf-hd .lvl{font-size:.82rem;color:var(--jade-deep);font-weight:700;margin-top:2px;}
-  .pf-hd .lvl b{color:var(--navy);}
-  .pf-mini{grid-column:1/-1;display:flex;gap:10px;margin-top:4px;}
-  .pf-mini .m{flex:1;background:var(--surface-2);border-radius:12px;padding:10px;text-align:center;}
-  .pf-mini .m .v{font-family:var(--font-display);font-weight:800;color:var(--navy);font-size:1.1rem;}
-  .pf-mini .m .l{font-size:.66rem;color:var(--faint);text-transform:uppercase;letter-spacing:.04em;}
+  .pf-hd{display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:20px;padding:20px;box-shadow:var(--shadow-soft);}
+  .pf-av{width:72px;height:72px;border-radius:22px;background:linear-gradient(150deg,var(--coral),var(--coral-deep));display:grid;place-items:center;font-size:2.2rem;box-shadow:0 10px 20px -10px var(--coral);}
+  .pf-hd .nm{font-family:var(--font-display);font-weight:800;color:var(--navy);font-size:1.3rem;}
+  .pf-hd .code{font-size:.82rem;color:var(--soft);margin-top:3px;}
+  .pf-hd .code b{color:var(--jade-deep);font-family:var(--font-display);letter-spacing:.02em;}
+  .pf-hd .lvl{display:inline-block;margin-top:8px;font-size:.74rem;font-weight:700;color:var(--jade-deep);background:var(--jade-tint);border-radius:100px;padding:4px 11px;}
   .card-soft h3.h{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);font-family:var(--font-display);margin-bottom:12px;}
-  .card-soft h3.h b{color:var(--jade-deep);}
-  .heat{display:grid;grid-template-rows:repeat(7,1fr);grid-auto-flow:column;grid-auto-columns:1fr;gap:3px;}
-  .heat i{aspect-ratio:1;border-radius:2px;background:var(--surface-2);}
-  .heat i.l1{background:color-mix(in srgb,var(--jade) 22%,var(--surface-2));}
-  .heat i.l2{background:color-mix(in srgb,var(--jade) 48%,var(--surface-2));}
-  .heat i.l3{background:color-mix(in srgb,var(--jade) 72%,transparent);}
-  .heat i.l4{background:var(--jade);}
-  .legend{display:flex;gap:5px;justify-content:flex-end;align-items:center;margin-top:8px;font-size:.6rem;color:var(--faint);}
-  .legend i{width:9px;height:9px;border-radius:2px;display:inline-block;background:var(--surface-2);}
-  .legend i.l1{background:color-mix(in srgb,var(--jade) 22%,var(--surface-2));}
-  .legend i.l2{background:color-mix(in srgb,var(--jade) 48%,var(--surface-2));}
-  .legend i.l3{background:color-mix(in srgb,var(--jade) 72%,transparent);}
-  .legend i.l4{background:var(--jade);}
-  .chart{width:100%;height:auto;display:block;}
-  .chart .grid{stroke:var(--line);stroke-width:1;}
-  .chart .area{fill:var(--jade-tint);}
-  .chart .line{fill:none;stroke:var(--jade);stroke-width:2.5;stroke-linejoin:round;stroke-linecap:round;}
-  .chart .dot{fill:#fff;stroke:var(--jade);stroke-width:2.5;}
-  .chart .dot.now{fill:var(--coral);stroke:var(--coral);}
-  .chart text{fill:var(--faint);font-family:var(--font-body);font-size:9px;}
-  .chart text.lv{fill:var(--navy);font-weight:700;}
-  .skill{margin-bottom:11px;}
-  .skill .top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px;}
-  .skill .top b{color:var(--navy);font-weight:700;font-family:var(--font-display);font-size:.9rem;}
-  .skill .top span{color:var(--jade-deep);font-size:.76rem;font-weight:700;}
-  .skill .bar{height:9px;border-radius:6px;background:var(--surface-2);overflow:hidden;}
-  .skill .bar i{display:block;height:100%;border-radius:6px;background:linear-gradient(90deg,var(--jade-deep),var(--jade));}
-  .phrases{display:flex;flex-wrap:wrap;gap:8px;}
-  .phrase{background:var(--jade-tint);border:1px solid color-mix(in srgb,var(--jade) 32%,transparent);color:var(--navy);border-radius:100px;padding:6px 13px;font-size:.85rem;font-weight:600;}
-  .phrase.more{background:transparent;border-style:dashed;color:var(--faint);}
-  .medals{display:flex;gap:10px;flex-wrap:wrap;}
-  .medal{width:52px;height:52px;border-radius:14px;display:grid;place-items:center;font-size:1.4rem;background:var(--surface-2);border:1px solid var(--line);}
-  .medal.on{background:var(--coral-tint);border-color:var(--coral);}
-  .medal.lock{opacity:.4;filter:grayscale(1);}
-  .goal{display:flex;align-items:center;gap:14px;background:var(--coral-tint);border:1px solid var(--coral);border-radius:16px;padding:16px;margin-top:18px;}
-  .goal .gi{font-size:1.6rem;}
-  .goal b{color:var(--navy);font-family:var(--font-display);display:block;font-size:.95rem;}
-  .goal span{font-size:.85rem;color:var(--soft);}
+  .acct-row{display:flex;flex-wrap:wrap;gap:10px;}
+  .nemo-cta{display:flex;align-items:center;gap:14px;background:var(--coral-tint);border:1px solid var(--coral);border-radius:16px;padding:16px;text-decoration:none;}
+  .nemo-cta .gi{font-size:1.9rem;}
+  .nemo-cta b{color:var(--navy);font-family:var(--font-display);display:block;font-size:.98rem;}
+  .nemo-cta span{font-size:.83rem;color:var(--soft);}
+  .nemo-cta .go{margin-left:auto;color:var(--coral-deep);font-weight:800;font-size:1.2rem;}
 </style>
 </head>
 <body>
 <div id="app" class="hidden">
-  <div class="app-top">
-    <span class="chip-stat streak">🔥 <span id="topStreak">12</span></span>
-    <span class="chip-stat coins">💎 <span id="topGems">240</span></span>
-  </div>
-
   <div class="app-shell">
     <div class="pf-hd">
-      <div class="pf-av">🦊</div>
+      <div class="pf-av" id="pfAv">🦊</div>
       <div>
         <div class="nm" id="pfName">Alumno</div>
+        <div class="code">Tu código: <b id="pfCode">—</b></div>
         <div class="lvl" id="pfLevel">Aprendiendo inglés con Nemo 🦊</div>
       </div>
-      <div class="pf-mini">
-        <div class="m"><div class="v">🔥 <span id="hdrStreak">0</span></div><div class="l">Racha</div></div>
-        <div class="m"><div class="v" id="hdrLessons">0</div><div class="l">Lecciones</div></div>
-        <div class="m"><div class="v" id="hdrGems">0</div><div class="l">Gemas</div></div>
-      </div>
     </div>
 
-    <div class="card-soft">
-      <h3 class="h">Lo que ya sé decir · <b id="phraseCount">0</b></h3>
-      <div class="phrases" id="phrases"></div>
-    </div>
-
-    <div class="card-soft">
-      <h3 class="h">Medallas · <b id="medalsCount">0 de 0</b></h3>
-      <div class="medals" id="medalsGrid"></div>
-    </div>
+    <a href="tienda.html" class="nemo-cta">
+      <span class="gi">🎨</span>
+      <span><b>Personalizar a Nemo</b><span>Gorros, colores y complementos con tus gemas</span></span>
+      <span class="go" aria-hidden="true">›</span>
+    </a>
 
     <div class="card-soft">
       <h3 class="h">Tu cuenta</h3>
-      <div class="acct-row" style="display:flex;flex-wrap:wrap;gap:10px">
-        <a href="tienda.html" class="btn btn-ghost">🛍️ Personalizar a Nemo</a>
+      <div class="acct-row">
         <a href="cambiar-clave.html" class="btn btn-ghost">🔒 Cambiar contraseña</a>
         <button class="btn btn-ghost" id="logout">Salir</button>
       </div>
@@ -107,7 +58,7 @@
   <nav class="app-nav" aria-label="Navegación principal">
     <button aria-label="Inicio" onclick="location.href='inicio.html'"><span aria-hidden="true">🏠</span></button>
     <button aria-label="Practicar" onclick="location.href='leccion.html'"><span aria-hidden="true">🎯</span></button>
-    <button aria-label="Progreso" onclick="location.href='perfil.html'"><span aria-hidden="true">📈</span></button>
+    <button aria-label="Progreso" onclick="location.href='progreso.html'"><span aria-hidden="true">📈</span></button>
     <button class="active" aria-label="Perfil" aria-current="page"><span aria-hidden="true">👤</span></button>
   </nav>
 </div>
@@ -116,49 +67,21 @@
 <script src="supabase-config.js"></script>
 <script src="auth-utils.js"></script>
 <script src="etapa.js"></script>
-<script src="motor/motivacion.js"></script>
 <script src="auth.js"></script>
 <script>
+  const $ = (id) => document.getElementById(id);
   (async () => {
     const p = await ILAuth.getProfile();
     if (!p) { location.href = "index.html"; return; }
     if (p.is_admin) { location.href = "admin.html"; return; }
+    if (p.must_change_password) { location.href = "cambiar-clave.html"; return; }
     IL_ETAPA.apply(p);
-    const name = p.full_name || "Alumno";
-    document.getElementById("pfName").textContent = name;
-    if (p.level) document.getElementById("pfLevel").textContent = p.level;
-    document.getElementById("app").classList.remove("hidden");
-    const pr = await ILAuth.getProgress();
-    if (pr) {
-      document.getElementById("topStreak").textContent = pr.streak;
-      document.getElementById("topGems").textContent = pr.gems;
-      document.getElementById("hdrStreak").textContent = pr.streak;
-      document.getElementById("hdrLessons").textContent = pr.lessons || 0;
-      document.getElementById("hdrGems").textContent = pr.gems;
-    }
-
-    // "Lo que ya sé decir": frases dominadas reales (con estado vacío amable)
-    try {
-      const phrases = await ILAuth.getMasteredPhrases();
-      document.getElementById("phraseCount").textContent = phrases.length ? (phrases.length + " frases") : "aún ninguna";
-      document.getElementById("phrases").innerHTML = phrases.length
-        ? phrases.map(f => '<span class="phrase">' + f + '</span>').join("")
-        : '<span class="phrase more">Practica para desbloquear frases 💪</span>';
-    } catch (e) {}
-
-    // Medallas reales (ganadas + bloqueadas)
-    try {
-      const medals = await ILAuth.listMedals();
-      const got = medals.filter(m => m.earned).length;
-      document.getElementById("medalsCount").textContent = got + " de " + medals.length;
-      document.getElementById("medalsGrid").innerHTML = medals.map(m =>
-        '<div class="medal ' + (m.earned ? "on" : "lock") + '" title="' + m.name + '">' + (m.earned ? m.icon : "🔒") + '</div>'
-      ).join("");
-    } catch (e) {}
-
+    $("pfName").textContent = p.full_name || "Alumno";
+    $("pfCode").textContent = p.username || "—";
+    if (p.level) $("pfLevel").textContent = p.level;
+    $("app").classList.remove("hidden");
   })();
-
-  document.getElementById("logout").addEventListener("click", async () => { await ILAuth.signOut(); location.href = "index.html"; });
+  $("logout").addEventListener("click", async () => { await ILAuth.signOut(); location.href = "index.html"; });
 </script>
 </body>
 </html>
