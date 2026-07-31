@@ -42,6 +42,9 @@ jobs:
       - name: Tests de motivación
         run: node plataforma/motor/motivacion.test.js
 
+      - name: Tests de la puerta de la matriz
+        run: node plataforma/motor/matriz.test.js
+
       - name: Escanear secretos que no deben subirse
         run: |
           echo "Buscando secretos filtrados…"

@@ -71,6 +71,7 @@
 <script src="auth.js"></script>
 <script src="contenido.js"></script>
 <script src="motor/motivacion.js"></script>
+<script src="motor/matriz.js"></script>
 <script src="motor/engine.js"></script>
 <script>
   const $ = (id) => document.getElementById(id);
@@ -103,11 +104,14 @@
   // motor pedagógico a partir del contenido de la BD).
   const _all = (window.IL_CONTENIDO.unidades || []).flatMap(u => u.ejercicios || []);
   const _pick = (id) => _all.find(e => e.id === id);
-  const items = ["rd-1", "rd-3", "rd-4", "lc-6", "lc-7", "rd-5"].map(_pick).filter(Boolean);
+  let items = ["rd-1", "rd-3", "rd-4", "lc-6", "lc-7", "rd-5"].map(_pick).filter(Boolean);
   let idx = 0, correct = 0, curStreak = 0, maxStreak = 0;
 
   function start() {
-    if (!items.length) { stateCard("📭", "Contenido no disponible", "Todavía no hay ejercicios para hoy. Vuelve pronto."); return; }
+    // Puerta de la matriz: solo ejercicios aptos para la banda del alumno
+    const banda = document.body.dataset.stage || "p56";
+    if (window.IL_MATRIZ) { const apt = IL_MATRIZ.filtra(items, banda); if (apt.length) items = apt; }
+    if (!items.length) { stateCard("📭", "Contenido no disponible", "Todavía no hay ejercicios para tu nivel hoy. Vuelve pronto."); return; }
     show();
   }
   function setProgress() { $("pfill").style.width = Math.round(idx / items.length * 100) + "%"; }
