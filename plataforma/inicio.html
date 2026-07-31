@@ -13,25 +13,44 @@
 <link rel="stylesheet" href="app.css">
 <link rel="stylesheet" href="etapa.css">
 <style>
-  /* ===== Home del alumno · rediseño visual ===== */
+  /* ===== Home del alumno · layout editorial y responsive ===== */
   [hidden]{display:none !important;}
-  /* Fondo general cálido (sin blanco puro) + acento orgánico suave */
   body{background:
-    radial-gradient(120% 60% at 100% 0%, #FDEDE6 0%, transparent 55%),
-    radial-gradient(120% 60% at 0% 8%, #E9F3EE 0%, transparent 50%),
-    var(--paper);
-    background-attachment:fixed;}
-  .home{max-width:520px;margin:0 auto;padding:0 18px calc(96px + env(safe-area-inset-bottom));min-height:100vh;}
+    radial-gradient(130% 55% at 100% 0%, #FDECE4 0%, transparent 55%),
+    radial-gradient(120% 55% at 0% 6%, #E7F2ED 0%, transparent 52%),
+    var(--paper); background-attachment:fixed;}
 
+  .il-offline{}
   .demo-strip{display:flex;align-items:center;gap:8px;justify-content:center;font-size:.72rem;color:var(--soft);
-    background:rgba(255,255,255,.6);border-radius:0 0 12px 12px;padding:5px 12px;max-width:520px;margin:0 auto;}
+    background:rgba(255,255,255,.55);border-radius:0 0 12px 12px;padding:5px 12px;max-width:560px;margin:0 auto;}
   .demo-strip b{color:var(--navy);font-weight:700;} .demo-strip .x{margin-left:2px;background:none;border:none;color:var(--faint);font-size:1rem;padding:2px 4px;border-radius:6px;}
 
-  /* 1 · Cabecera compacta */
-  .home-head{display:flex;align-items:center;gap:12px;padding:16px 2px 8px;}
+  /* Contenedor: móvil = una columna; escritorio = rail + contenido */
+  .home{max-width:560px;margin:0 auto;padding:6px 18px calc(92px + env(safe-area-inset-bottom));}
+  .rail{display:none;}
+
+  /* --- Barra lateral (escritorio) --- */
+  .rail .brand{display:flex;align-items:center;gap:9px;font-family:var(--font-display);font-weight:800;color:var(--navy);font-size:1.05rem;padding:6px 10px 18px;}
+  .rail .brand .logo{width:34px;height:34px;border-radius:11px;background:linear-gradient(150deg,var(--coral),var(--coral-deep));display:grid;place-items:center;}
+  .rail .brand .logo svg{width:19px;height:19px;color:#fff;}
+  .rail .brand span b{color:var(--coral-deep);}
+  .rail nav{display:flex;flex-direction:column;gap:4px;}
+  .rail a{display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:12px;color:var(--soft);text-decoration:none;font-weight:700;font-size:.94rem;transition:background .15s ease,color .15s ease;}
+  .rail a svg{width:22px;height:22px;}
+  .rail a:hover{background:rgba(22,41,74,.05);color:var(--navy);}
+  .rail a.is-active{background:var(--coral-tint);color:var(--coral-deep);}
+
+  /* --- Contenido en rejilla por áreas --- */
+  .content{display:grid;gap:15px;grid-template-columns:1fr;
+    grid-template-areas:"head" "card" "action" "weekly" "next";}
+  .gs-head{grid-area:head;} .gs-card{grid-area:card;} .gs-action{grid-area:action;}
+  .gs-weekly{grid-area:weekly;} .gs-next{grid-area:next;} .gs-brand{grid-area:brand;display:none;}
+
+  /* 1 · Cabecera */
+  .home-head{display:flex;align-items:center;gap:12px;padding:10px 2px 4px;}
   .home-head .who{flex:1;min-width:0;}
-  .home-head h1{font-size:1.4rem;line-height:1.1;}
-  .home-head .ctx{color:var(--soft);font-size:.9rem;margin:3px 0 0;}
+  .home-head h1{font-size:1.45rem;line-height:1.1;}
+  .home-head .ctx{color:var(--soft);font-size:.92rem;margin:3px 0 0;}
   .home-head .stats{display:flex;gap:7px;flex-shrink:0;}
   .stat-pill{display:inline-flex;align-items:center;gap:5px;font-family:var(--font-display);font-weight:800;font-size:.85rem;
     background:rgba(255,255,255,.85);border:1px solid var(--line);border-radius:100px;padding:6px 10px;}
@@ -40,84 +59,108 @@
     background:linear-gradient(150deg,var(--coral),var(--coral-deep));box-shadow:0 8px 16px -9px var(--coral);text-decoration:none;}
   .avatar-link svg{width:23px;height:23px;color:#fff;}
 
-  /* Ilustración de marca (abstracta: viaje/aprendizaje). No es el personaje definitivo. */
-  .brand-art{position:absolute;top:14px;right:14px;width:78px;height:78px;opacity:.96;animation:floaty 5s ease-in-out infinite;}
-  @keyframes floaty{0%,100%{transform:translateY(0) rotate(-1deg);}50%{transform:translateY(-6px) rotate(1deg);}}
-  body[data-stage="eso"] .brand-art{width:56px;height:56px;opacity:.7;animation:none;}
+  /* Ilustración de marca abstracta (viaje/aprendizaje). No es el personaje definitivo. */
+  .brand-art{animation:floaty 5.5s ease-in-out infinite;}
+  @keyframes floaty{0%,100%{transform:translateY(0) rotate(-1deg);}50%{transform:translateY(-6px) rotate(1.5deg);}}
   @media (prefers-reduced-motion:reduce){ .brand-art{animation:none;} }
 
-  /* 2 · Tarjeta principal */
-  .day-card{position:relative;background:#fff;border-radius:22px;padding:22px 20px;overflow:hidden;
-    box-shadow:0 14px 34px -20px rgba(22,41,74,.35);margin-top:10px;animation:cardIn .32s cubic-bezier(.2,.7,.3,1) both;}
+  /* 2 · Bloque principal del día */
+  .day-card{position:relative;background:#fff;border-radius:24px;padding:24px 22px;overflow:hidden;
+    box-shadow:0 16px 38px -22px rgba(22,41,74,.34);animation:cardIn .3s cubic-bezier(.2,.7,.3,1) both;}
+  .day-card .brand-art{position:absolute;top:16px;right:16px;width:84px;height:84px;}
   .eyebrow{font-family:var(--font-display);font-weight:800;font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--coral-deep);margin-bottom:8px;}
-  .day-card h2{font-size:1.35rem;margin:0 0 4px;padding-right:80px;}
-  .day-desc{color:var(--soft);font-size:.9rem;margin:0 0 14px;padding-right:80px;}
-  .meta-line{color:var(--navy);font-weight:700;font-size:.92rem;margin:0 0 14px;}
-  .meta-line .dot{color:var(--faint);margin:0 6px;}
-  /* Chips de habilidad */
-  .chips{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:4px;}
-  .chip{font-size:.74rem;font-weight:700;padding:5px 11px;border-radius:100px;letter-spacing:.01em;}
+  .day-card h2{font-size:1.4rem;margin:0 0 4px;padding-right:88px;}
+  .day-desc{color:var(--soft);font-size:.9rem;margin:0 0 14px;padding-right:88px;}
+  .meta-line{color:var(--navy);font-weight:700;font-size:.95rem;margin:0 0 14px;}
+  .meta-line .sep{color:var(--faint);margin:0 7px;}
+  .chips{display:flex;flex-wrap:wrap;gap:7px;}
+  .chip{font-size:.74rem;font-weight:700;padding:5px 11px;border-radius:100px;}
   .chip--voc{background:var(--coral-tint);color:var(--coral-deep);}
   .chip--gram{background:rgba(22,41,74,.09);color:var(--navy);}
   .chip--lis{background:var(--jade-tint);color:var(--jade-deep);}
-  .chip--read{background:rgba(244,167,59,.16);color:#B87514;}
-  .chip--spk{background:rgba(142,124,195,.16);color:#5f4f96;}
-  /* Éxito */
-  .done-head{display:flex;align-items:center;gap:14px;margin-bottom:14px;padding-right:70px;}
+  .chip--read{background:rgba(244,167,59,.16);color:#B0700F;}
+  .chip--spk{background:rgba(142,124,195,.18);color:#5b4b92;}
+  .done-head{display:flex;align-items:center;gap:14px;margin-bottom:14px;padding-right:78px;}
   .done-badge{width:52px;height:52px;flex-shrink:0;border-radius:50%;background:var(--jade);display:grid;place-items:center;
     box-shadow:0 10px 18px -8px var(--jade);animation:pop .5s cubic-bezier(.2,1.2,.3,1) both;}
   .done-badge svg{width:28px;height:28px;color:#fff;}
-  .done-head .t{font-family:var(--font-display);font-weight:800;color:var(--navy);font-size:1.2rem;}
-  /* CTA */
+  .done-head .t{font-family:var(--font-display);font-weight:800;color:var(--navy);font-size:1.25rem;}
   .day-cta{display:flex;width:100%;align-items:center;justify-content:center;gap:9px;background:var(--coral);color:#fff;border:none;
     border-radius:16px;padding:16px;font-family:var(--font-display);font-weight:800;font-size:1.05rem;text-decoration:none;
-    box-shadow:0 14px 26px -12px var(--coral);transition:transform .16s ease,box-shadow .16s ease,background .16s ease;margin-top:6px;}
+    box-shadow:0 14px 26px -12px var(--coral);transition:transform .16s ease,box-shadow .16s ease,background .16s ease;margin-top:16px;}
   .day-cta:hover{transform:translateY(-2px);background:var(--coral-deep);} .day-cta:active{transform:translateY(0);}
   .day-cta svg{width:20px;height:20px;}
 
-  /* 3 · Siguiente acción (bloque ligero, sin borde) */
-  .soft-row{display:flex;align-items:center;gap:13px;border-radius:16px;padding:14px 16px;margin-top:12px;}
-  .soft-row .sr-ico{width:40px;height:40px;flex-shrink:0;border-radius:12px;display:grid;place-items:center;background:#fff;}
-  .soft-row .sr-ico svg{width:21px;height:21px;}
-  .soft-row .sr-txt{flex:1;min-width:0;}
-  .soft-row .sr-txt b{display:block;color:var(--navy);font-family:var(--font-display);font-size:.98rem;}
+  /* 3 · Acción opcional (bloque ligero por color) */
+  .soft-row{display:flex;align-items:center;gap:13px;border-radius:18px;padding:15px 16px;background:var(--coral-tint);}
+  .soft-row .sr-ico{width:42px;height:42px;flex-shrink:0;border-radius:13px;display:grid;place-items:center;background:#fff;}
+  .soft-row .sr-ico svg{width:21px;height:21px;color:var(--coral-deep);}
+  .soft-row .sr-txt{flex:1;min-width:0;} .soft-row .sr-txt b{display:block;color:var(--navy);font-family:var(--font-display);font-size:1rem;}
   .soft-row .sr-txt span{font-size:.78rem;color:var(--soft);}
-  .soft-row .sr-go{flex-shrink:0;border-radius:100px;padding:9px 15px;font-weight:800;font-size:.84rem;text-decoration:none;border:none;}
-  .next-action{background:var(--coral-tint);} .next-action .sr-ico svg{color:var(--coral-deep);} .next-action .sr-go{background:var(--coral);color:#fff;}
-  .next-action .sr-go:hover{background:var(--coral-deep);}
-  .na-done{display:block;margin:8px auto 0;background:none;border:none;color:var(--faint);font-size:.8rem;padding:8px;text-decoration:underline;text-underline-offset:3px;}
-  .na-closed{text-align:center;color:var(--jade-deep);font-size:.85rem;font-weight:600;padding:8px 0 0;}
+  .soft-row .sr-go{flex-shrink:0;border-radius:100px;padding:10px 16px;font-weight:800;font-size:.84rem;text-decoration:none;border:none;background:var(--coral);color:#fff;transition:background .15s ease,transform .12s ease;}
+  .soft-row .sr-go:hover{background:var(--coral-deep);} .soft-row .sr-go:active{transform:scale(.97);}
 
-  /* 4 · Progreso semanal integrado (pasos, no tarjeta blanca) */
-  .week{background:linear-gradient(160deg,#EAF4EF,#F4FAF7);border-radius:18px;padding:16px 18px;margin-top:14px;}
-  .week .wk-top{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:12px;}
+  /* 4 · Semana como RUTA de 5 paradas */
+  .week{background:linear-gradient(165deg,#E8F3EE,#F3FAF7);border-radius:20px;padding:18px 18px 16px;}
+  .week .wk-top{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:16px;}
   .week .wk-top h3{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--jade-deep);font-family:var(--font-display);}
-  .week .wk-count{font-family:var(--font-display);font-weight:800;color:var(--navy);font-size:.92rem;}
-  .steps{display:flex;gap:8px;}
-  .step{flex:1;height:34px;border-radius:11px;background:rgba(30,156,116,.13);display:grid;place-items:center;color:var(--jade-deep);}
-  .step svg{width:16px;height:16px;opacity:0;transform:scale(.5);transition:opacity .3s ease,transform .3s cubic-bezier(.2,1.4,.3,1);}
-  .step.on{background:var(--jade);color:#fff;}
-  .step.on svg{opacity:1;transform:scale(1);}
-  .week .wk-goal{margin:12px 0 0;font-size:.82rem;color:var(--soft);}
+  .week .wk-count{font-family:var(--font-display);font-weight:800;color:var(--navy);font-size:.9rem;}
+  .route{display:flex;align-items:center;}
+  .route .stop{width:34px;height:34px;flex-shrink:0;border-radius:50%;display:grid;place-items:center;background:#fff;
+    border:2px solid rgba(30,156,116,.28);color:rgba(30,156,116,.5);transition:transform .3s cubic-bezier(.2,1.4,.3,1);}
+  .route .stop svg{width:16px;height:16px;opacity:0;transition:opacity .3s ease;}
+  .route .stop.on{background:var(--jade);border-color:var(--jade);color:#fff;box-shadow:0 6px 12px -5px var(--jade);}
+  .route .stop.on svg{opacity:1;} .route .stop.pop{transform:scale(1.12);}
+  .route .link{flex:1;height:3px;border-radius:3px;background:rgba(30,156,116,.2);}
+  .route .link.on{background:var(--jade);}
+  .week .wk-msg{margin:14px 0 0;font-size:.9rem;font-weight:700;color:var(--jade-deep);}
 
-  /* 5 · Próxima misión (compacta, acento propio) */
-  .next-mission{display:flex;align-items:center;gap:13px;background:var(--jade-tint);border-radius:16px;padding:14px 16px;margin-top:12px;}
-  .nm-badge{width:44px;height:44px;flex-shrink:0;border-radius:13px;display:grid;place-items:center;background:var(--nm-color,var(--jade));box-shadow:0 8px 16px -9px rgba(22,41,74,.3);}
-  .nm-badge svg{width:22px;height:22px;color:#fff;}
-  .nm-txt{min-width:0;}
-  .nm-txt .h{font-family:var(--font-display);font-weight:800;font-size:.68rem;text-transform:uppercase;letter-spacing:.06em;color:var(--jade-deep);}
-  .nm-txt .title{color:var(--navy);font-family:var(--font-display);font-weight:800;font-size:1rem;margin:1px 0 3px;}
-  .nm-txt .sub{display:flex;align-items:center;gap:8px;font-size:.78rem;color:var(--soft);}
+  /* 5 · Próxima misión (visual) */
+  .next-mission{position:relative;overflow:hidden;border-radius:20px;padding:18px;background:linear-gradient(150deg,#FFF3EC,#FDECE4);}
+  .nm-badge{width:48px;height:48px;border-radius:15px;display:grid;place-items:center;background:var(--nm-color,var(--coral));box-shadow:0 10px 18px -9px rgba(22,41,74,.3);margin-bottom:12px;}
+  .nm-badge svg{width:24px;height:24px;color:#fff;}
+  .next-mission .h{font-family:var(--font-display);font-weight:800;font-size:.68rem;text-transform:uppercase;letter-spacing:.06em;color:var(--coral-deep);}
+  .next-mission .title{font-family:var(--font-display);font-weight:800;color:var(--navy);font-size:1.15rem;margin:2px 0 3px;}
+  .next-mission .desc{color:var(--soft);font-size:.85rem;margin:0 0 12px;}
+  .next-mission .foot{display:flex;align-items:center;gap:8px;font-size:.8rem;color:var(--soft);}
+
+  /* Panel de marca (columna secundaria en escritorio) */
+  .brand-panel{background:linear-gradient(160deg,#EAF3EF,#F4FAF7);border-radius:20px;padding:22px;text-align:center;}
+  .brand-panel .brand-art{width:120px;height:120px;margin:0 auto 8px;}
+  .brand-panel p{color:var(--soft);font-size:.88rem;margin:0;}
+  body[data-stage="eso"] .brand-panel .brand-art{width:84px;height:84px;opacity:.7;}
+  body[data-stage="eso"] .day-card .brand-art{opacity:.6;}
 
   /* Microinteracciones */
   @keyframes cardIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:none;}}
   @keyframes pop{0%{transform:scale(0);}70%{transform:scale(1.1);}100%{transform:scale(1);}}
-  @media (prefers-reduced-motion:reduce){ .day-card{animation:none;} .done-badge{animation:none;} .step svg{transition:none;} }
+  @media (prefers-reduced-motion:reduce){ .day-card{animation:none;} .done-badge{animation:none;} .route .stop{transition:none;} }
 
   /* Variantes por etapa */
-  body[data-stage="p12"] .day-card h2{font-size:1.5rem;} body[data-stage="p12"] .day-cta{font-size:1.15rem;padding:18px;}
+  body[data-stage="p12"] .day-card h2{font-size:1.55rem;} body[data-stage="p12"] .day-cta{font-size:1.15rem;padding:18px;}
   body[data-stage="eso"] .eyebrow{color:var(--soft);} body[data-stage="eso"] .day-card{border-radius:16px;}
-  body[data-stage="eso"] .brand-art{opacity:.6;}
+
+  /* ===== TABLET ===== */
+  @media (min-width:640px) and (max-width:959px){ .home{max-width:660px;} }
+
+  /* ===== ESCRITORIO ===== */
+  @media (min-width:960px){
+    .home{max-width:1060px;display:grid;grid-template-columns:212px 1fr;gap:38px;align-items:start;padding:26px 28px 40px;}
+    .rail{display:flex;flex-direction:column;position:sticky;top:26px;}
+    .app-nav{display:none;}                 /* fuera la nav inferior en escritorio (solo en la home) */
+    .avatar-link{display:none;}             /* el perfil ya está en el rail */
+    .content{grid-template-columns:1.6fr 1fr;gap:20px;
+      grid-template-areas:
+        "head   head"
+        "card   weekly"
+        "action weekly"
+        "next   brand";}
+    .gs-brand{display:block;}
+    .home-head{padding-top:2px;}
+    .day-card{padding:28px 26px;}
+    .day-card .brand-art{width:96px;height:96px;}
+  }
+  @media (min-width:960px) and (prefers-reduced-motion:reduce){ .brand-art{animation:none;} }
 </style>
 </head>
 <body>
@@ -139,7 +182,7 @@
   <button class="btn btn-primary" onclick="location.reload()">Reintentar</button>
 </div>
 
-<!-- SVG de marca reutilizable (abstracto: avión de papel + estela + destello) -->
+<!-- SVG de marca reutilizable (avión de papel + estela + destello) -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ilBrand" viewBox="0 0 96 96">
   <rect x="8" y="8" width="80" height="80" rx="24" fill="var(--jade-tint)"/>
   <path d="M20 66 Q42 78 74 58" fill="none" stroke="var(--navy)" stroke-width="3" stroke-linecap="round" stroke-dasharray="0.5 7" opacity=".5"/>
@@ -150,98 +193,84 @@
 
 <div id="app" class="hidden">
   <div class="home">
-    <!-- 1 · Cabecera -->
-    <header class="home-head">
-      <div class="who">
-        <h1 id="greet">¡Hola!</h1>
-        <p class="ctx" id="ctx"></p>
-      </div>
-      <div class="stats" aria-label="Tu racha y tus gemas">
-        <span class="stat-pill streak" title="Racha">
-          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2c1 3-1 4.5-1 6.5A2.5 2.5 0 0 0 13.5 11c1.7 0 2.6-1.2 2.7-2.4C18 10 19 12.4 19 15a7 7 0 1 1-14 0c0-3.3 2-5.6 3.4-7.5C10.2 5.3 11.6 4 12 2Z"/></svg>
-          <span id="streak">0</span></span>
-        <span class="stat-pill gems" title="Gemas">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="m6 3 12 0 3 5-9 13L3 8Z"/><path d="M3 8h18M9 3 6 8l6 13 6-13-3-5"/></svg>
-          <span id="coins">0</span></span>
-      </div>
-      <a class="avatar-link" href="perfil.html" aria-label="Ir a mi perfil">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg>
-      </a>
-    </header>
+    <!-- Barra lateral (escritorio) -->
+    <aside class="rail" aria-label="Navegación principal">
+      <div class="brand"><span class="logo"><svg viewBox="0 0 96 96" aria-hidden="true"><use href="#ilBrand"/></svg></span><span>Inter<b>language</b></span></div>
+      <nav>
+        <a class="is-active" href="inicio.html" aria-current="page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11 12 4l8 7"/><path d="M6 10v9h4v-5h4v5h4v-9"/></svg><span>Inicio</span></a>
+        <a href="leccion.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.4"/></svg><span>Practicar</span></a>
+        <a href="progreso.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19V5"/><path d="M4 19h16"/><path d="m7 15 3.5-4 3 2.5L20 7"/></svg><span>Progreso</span></a>
+        <a href="perfil.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg><span>Perfil</span></a>
+      </nav>
+    </aside>
 
-    <!-- 2 · Tarjeta principal · PENDIENTE -->
-    <section class="day-card" id="cardPending" hidden aria-labelledby="pendTitle">
-      <svg class="brand-art" aria-hidden="true"><use href="#ilBrand"/></svg>
-      <div class="eyebrow" id="pendEyebrow">Hoy practicas</div>
-      <h2 id="pendTitle">Tu sesión de hoy</h2>
-      <p class="day-desc" id="pendDesc"></p>
-      <p class="meta-line" id="pendMeta"></p>
-      <div class="chips" id="pendChips"></div>
-      <a class="day-cta" href="leccion.html" id="pendCta">
-        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-        <span>Empezar sesión</span>
-      </a>
-    </section>
+    <div class="content">
+      <!-- 1 · Cabecera -->
+      <header class="home-head gs-head">
+        <div class="who"><h1 id="greet">¡Hola!</h1><p class="ctx" id="ctx"></p></div>
+        <div class="stats" aria-label="Tu racha y tus gemas">
+          <span class="stat-pill streak" title="Racha"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2c1 3-1 4.5-1 6.5A2.5 2.5 0 0 0 13.5 11c1.7 0 2.6-1.2 2.7-2.4C18 10 19 12.4 19 15a7 7 0 1 1-14 0c0-3.3 2-5.6 3.4-7.5C10.2 5.3 11.6 4 12 2Z"/></svg><span id="streak">0</span></span>
+          <span class="stat-pill gems" title="Gemas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="m6 3 12 0 3 5-9 13L3 8Z"/><path d="M3 8h18M9 3 6 8l6 13 6-13-3-5"/></svg><span id="coins">0</span></span>
+        </div>
+        <a class="avatar-link" href="perfil.html" aria-label="Ir a mi perfil"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg></a>
+      </header>
 
-    <!-- 2 · Tarjeta principal · COMPLETADA -->
-    <section class="day-card" id="cardDone" hidden aria-labelledby="doneTitle">
-      <svg class="brand-art" aria-hidden="true"><use href="#ilBrand"/></svg>
-      <div class="done-head">
-        <div class="done-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 13 4 4 10-11"/></svg></div>
-        <div class="t" id="doneTitle">Sesión completada</div>
-      </div>
-      <p class="meta-line" id="doneMeta"></p>
-      <div class="chips" id="doneChips"></div>
-    </section>
+      <!-- 2 · Bloque principal · PENDIENTE -->
+      <section class="day-card gs-card" id="cardPending" hidden aria-labelledby="pendTitle">
+        <svg class="brand-art" aria-hidden="true"><use href="#ilBrand"/></svg>
+        <div class="eyebrow" id="pendEyebrow">Hoy practicas</div>
+        <h2 id="pendTitle">Tu sesión de hoy</h2>
+        <p class="day-desc" id="pendDesc" hidden></p>
+        <p class="meta-line" id="pendMeta"></p>
+        <div class="chips" id="pendChips"></div>
+        <a class="day-cta" href="leccion.html" id="pendCta"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg><span>Empezar mi sesión</span></a>
+      </section>
 
-    <!-- 3 · Siguiente acción -->
-    <section class="soft-row next-action" id="nextAction" hidden aria-label="Actividad opcional">
-      <span class="sr-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v4h4"/></svg></span>
-      <span class="sr-txt"><b id="naTitle">Repasar</b><span id="naSub">Actividad opcional · unos 4 min</span></span>
-      <a class="sr-go" href="leccion.html">Repasar</a>
-    </section>
-    <button class="na-done" id="naDone" hidden>Ya he terminado por hoy</button>
-    <p class="na-closed" id="naClosed" hidden>Perfecto, nos vemos mañana.</p>
+      <!-- 2 · Bloque principal · COMPLETADA -->
+      <section class="day-card gs-card" id="cardDone" hidden aria-labelledby="doneTitle">
+        <svg class="brand-art" aria-hidden="true"><use href="#ilBrand"/></svg>
+        <div class="done-head"><div class="done-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 13 4 4 10-11"/></svg></div><div class="t" id="doneTitle">¡Bien hecho!</div></div>
+        <p class="meta-line" id="doneMeta"></p>
+        <div class="chips" id="doneChips"></div>
+      </section>
 
-    <!-- 4 · Progreso semanal -->
-    <section class="week" aria-labelledby="wkHead">
-      <div class="wk-top">
-        <h3 id="wkHead">Esta semana</h3>
-        <span class="wk-count"><b id="wkNow">0</b> de <span id="wkGoal">5</span> sesiones</span>
-      </div>
-      <div class="steps" id="steps" role="progressbar" aria-valuemin="0" aria-valuemax="5" aria-valuenow="0" aria-label="Sesiones completadas esta semana"></div>
-      <p class="wk-goal" id="wkGoalMsg"></p>
-    </section>
+      <!-- 3 · Acción opcional -->
+      <section class="soft-row gs-action" id="nextAction" hidden aria-label="Actividad opcional">
+        <span class="sr-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v4h4"/></svg></span>
+        <span class="sr-txt"><b id="naTitle">Repasar</b><span id="naSub">Actividad opcional · unos 4 min</span></span>
+        <a class="sr-go" href="leccion.html">Empezar repaso</a>
+      </section>
 
-    <!-- 5 · Próxima misión -->
-    <section class="next-mission" id="nextMission" hidden aria-label="Próxima misión">
-      <span class="nm-badge" id="nmBadge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4v16"/><path d="M4 5h11l-1.5 3L15 11H4"/></svg></span>
-      <span class="nm-txt">
-        <span class="h">Próxima misión</span>
-        <span class="title" id="nmTitle"></span>
-        <span class="sub"><span id="nmChip" class="chip chip--voc"></span><span id="nmTime"></span></span>
-      </span>
-    </section>
+      <!-- 4 · Semana (ruta) -->
+      <section class="week gs-weekly" aria-labelledby="wkHead">
+        <div class="wk-top"><h3 id="wkHead">Esta semana</h3><span class="wk-count"><b id="wkNow">0</b> de <span id="wkGoal">5</span> sesiones</span></div>
+        <div class="route" id="route" role="progressbar" aria-valuemin="0" aria-valuemax="5" aria-valuenow="0" aria-label="Sesiones completadas esta semana"></div>
+        <p class="wk-msg" id="wkMsg"></p>
+      </section>
+
+      <!-- 5 · Próxima misión -->
+      <section class="next-mission gs-next" id="nextMission" hidden aria-label="Próxima misión">
+        <span class="nm-badge" id="nmBadge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4v16"/><path d="M4 5h11l-1.5 3L15 11H4"/></svg></span>
+        <div class="h">Próxima misión</div>
+        <div class="title" id="nmTitle"></div>
+        <p class="desc" id="nmDesc"></p>
+        <div class="foot"><span id="nmChip" class="chip chip--voc"></span><span id="nmTime"></span></div>
+      </section>
+
+      <!-- Panel de marca (escritorio) -->
+      <aside class="brand-panel gs-brand" aria-hidden="true">
+        <svg class="brand-art" aria-hidden="true"><use href="#ilBrand"/></svg>
+        <p id="brandLine">Cada día, un poco más cerca del inglés.</p>
+      </aside>
+    </div>
   </div>
 
-  <!-- 6 · Navegación -->
+  <!-- Navegación inferior (móvil / tablet) -->
   <nav class="app-nav" aria-label="Navegación principal">
-    <a class="app-nav__item is-active" href="inicio.html" aria-current="page">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11 12 4l8 7"/><path d="M6 10v9h4v-5h4v5h4v-9"/></svg>
-      <span class="app-nav__label">Inicio</span>
-    </a>
-    <a class="app-nav__item" href="leccion.html">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.4"/></svg>
-      <span class="app-nav__label">Practicar</span>
-    </a>
-    <a class="app-nav__item" href="progreso.html">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19V5"/><path d="M4 19h16"/><path d="m7 15 3.5-4 3 2.5L20 7"/></svg>
-      <span class="app-nav__label">Progreso</span>
-    </a>
-    <a class="app-nav__item" href="perfil.html">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg>
-      <span class="app-nav__label">Perfil</span>
-    </a>
+    <a class="app-nav__item is-active" href="inicio.html" aria-current="page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11 12 4l8 7"/><path d="M6 10v9h4v-5h4v5h4v-9"/></svg><span class="app-nav__label">Inicio</span></a>
+    <a class="app-nav__item" href="leccion.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.4"/></svg><span class="app-nav__label">Practicar</span></a>
+    <a class="app-nav__item" href="progreso.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19V5"/><path d="M4 19h16"/><path d="m7 15 3.5-4 3 2.5L20 7"/></svg><span class="app-nav__label">Progreso</span></a>
+    <a class="app-nav__item" href="perfil.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg><span class="app-nav__label">Perfil</span></a>
   </nav>
 </div>
 
@@ -268,6 +297,7 @@
   // Descripción real de la sesión (mismos ejercicios que hoy compone leccion.html; nada inventado)
   const SESSION_IDS = ["rd-1", "rd-3", "rd-4", "lc-6", "lc-7", "rd-5"];
   const SKILL_EN = { vocabulary: "Vocabulary", grammar: "Grammar", listening: "Listening", reading: "Reading", speaking: "Speaking" };
+  const SKILL_ES_SIMPLE = { vocabulary: "Palabras", grammar: "Gramática", listening: "Escuchar", reading: "Leer", speaking: "Hablar" };
   const SKILL_ES = { vocabulary: "vocabulario", grammar: "gramática", listening: "listening", reading: "comprensión", speaking: "expresión oral" };
   const SKILL_CLS = { vocabulary: "chip--voc", grammar: "chip--gram", listening: "chip--lis", reading: "chip--read", speaking: "chip--spk" };
   const UNITS = (window.IL_CONTENIDO && window.IL_CONTENIDO.unidades) || [];
@@ -276,9 +306,14 @@
   const sessionItems = SESSION_IDS.map(id => byId[id]).filter(Boolean);
   function sessionSkills() { const s = []; sessionItems.forEach(e => { if (s.indexOf(e.habilidad) === -1) s.push(e.habilidad); }); return s; }
   function estMin(n) { return Math.max(4, Math.round(n * 1.5)); }
-  function chipHtml(hab) { return '<span class="chip ' + (SKILL_CLS[hab] || "chip--voc") + '">' + (SKILL_EN[hab] || hab) + '</span>'; }
   function primaryUnit() { return unitOf[SESSION_IDS[0]] || UNITS[0] || null; }
   function nextUnit() { const cur = primaryUnit(); const i = UNITS.indexOf(cur); return UNITS[(i + 1) % Math.max(UNITS.length, 1)] || cur; }
+  // Nº real de palabras de vocabulario de la sesión (para "Repasar N palabras")
+  function reviewWordCount() {
+    let n = 0;
+    sessionItems.forEach(e => { if (e.habilidad === "vocabulary") { if (e.pares) n += e.pares.length; else if (e.opciones) n += 1; } });
+    return n;
+  }
 
   (async () => {
     try {
@@ -289,6 +324,9 @@
 
       const stage = IL_ETAPA.apply(p);
       const isEso = stage === "eso";
+      const simpleLabels = (stage === "p12" || stage === "p34");
+      const LBL = simpleLabels ? SKILL_ES_SIMPLE : SKILL_EN;
+      const chipHtml = (hab) => '<span class="chip ' + (SKILL_CLS[hab] || "chip--voc") + '">' + (LBL[hab] || hab) + '</span>';
       const name = (p.full_name || "").split(" ")[0] || "campeón";
       $("greet").textContent = isEso ? ("Hola, " + name) : ("¡Hola, " + name + "!");
 
@@ -302,72 +340,80 @@
       const skills = sessionSkills();
 
       if (!hasContent) {
-        $("ctx").textContent = "Hoy no hay sesión nueva.";
+        $("ctx").textContent = "Hoy sin misión nueva.";
         $("cardPending").hidden = false;
         $("pendEyebrow").textContent = "Práctica libre";
         $("pendTitle").textContent = "Repasa a tu ritmo";
-        $("pendDesc").textContent = "Todavía no hay una misión nueva. Puedes repasar lo que quieras.";
+        $("pendDesc").hidden = false; $("pendDesc").textContent = "Todavía no hay una misión nueva. Puedes repasar lo que quieras.";
         $("pendMeta").hidden = true;
         $("pendCta").querySelector("span").textContent = "Practicar";
       } else if (doneToday) {
-        $("ctx").textContent = isEso ? "Sesión completada." : "¡Buen trabajo de hoy!";
+        $("ctx").textContent = "Sesión de hoy completada.";
         $("cardDone").hidden = false;
-        $("doneMeta").innerHTML = sessionItems.length + " actividades <span class=\"dot\">·</span> ~" + estMin(sessionItems.length) + " min";
+        if (isEso) $("doneTitle").textContent = "Sesión completada";
+        $("doneMeta").innerHTML = sessionItems.length + " actividades <span class=\"sep\">·</span> ~" + estMin(sessionItems.length) + " min";
         $("doneChips").innerHTML = skills.slice(0, 3).map(chipHtml).join("");
-        // Siguiente acción concreta
-        const prim = skills[0] || "vocabulary";
-        $("naTitle").textContent = "Repasar " + (SKILL_ES[prim] || "");
+        // Acción opcional concreta (nº real de palabras)
+        const words = reviewWordCount();
+        $("naTitle").textContent = words > 0 ? ("Repasar " + words + (words === 1 ? " palabra" : " palabras")) : ("Repasar " + (SKILL_ES[skills[0] || "vocabulary"]));
         $("naSub").textContent = "Actividad opcional · unos 4 min";
-        $("nextAction").hidden = false; $("naDone").hidden = false;
+        $("nextAction").hidden = false;
         // Próxima misión
         const nu = nextUnit();
         if (nu) {
           $("nextMission").hidden = false;
           $("nmTitle").textContent = nu.titulo;
+          $("nmDesc").textContent = nu.descripcion || "";
           if (nu.tema && nu.tema.color) $("nmBadge").style.setProperty("--nm-color", nu.tema.color);
           const nuSkills = (nu.ejercicios || []).map(e => e.habilidad);
           const nuPrim = nuSkills.indexOf("vocabulary") !== -1 ? "vocabulary" : (nuSkills[0] || "vocabulary");
           $("nmChip").className = "chip " + (SKILL_CLS[nuPrim] || "chip--voc");
-          $("nmChip").textContent = SKILL_EN[nuPrim] || "Vocabulary";
+          $("nmChip").textContent = LBL[nuPrim] || "Vocabulary";
           $("nmTime").textContent = "~10 min";
         }
+        if (isEso) $("brandLine").textContent = "Constancia diaria, progreso real.";
       } else {
-        // Pendiente / primera vez / vuelta tras días
-        if (!last) $("ctx").textContent = "¡Bienvenida! Vamos a empezar.";
-        else if (dayGap != null && dayGap >= 3) $("ctx").textContent = isEso ? "Cuánto tiempo. Volvemos con algo breve." : "¡Cuánto tiempo! Volvemos con algo breve.";
+        if (!last) $("ctx").textContent = "¡Bienvenida! Vamos allá.";
+        else if (dayGap != null && dayGap >= 3) $("ctx").textContent = isEso ? "Cuánto tiempo. Retomamos con algo breve." : "¡Cuánto tiempo! Retomamos con algo breve.";
         else $("ctx").textContent = "Lista para tu práctica.";
         $("cardPending").hidden = false;
         const u = primaryUnit();
         $("pendEyebrow").textContent = "Hoy practicas";
         $("pendTitle").textContent = u ? u.titulo : "Tu sesión de hoy";
-        $("pendDesc").hidden = true;
-        $("pendMeta").innerHTML = sessionItems.length + " actividades <span class=\"dot\">·</span> ~" + estMin(sessionItems.length) + " min";
+        $("pendMeta").innerHTML = sessionItems.length + " actividades <span class=\"sep\">·</span> ~" + estMin(sessionItems.length) + " min";
         $("pendChips").innerHTML = skills.slice(0, 3).map(chipHtml).join("");
-        $("pendCta").querySelector("span").textContent = (!last || (dayGap != null && dayGap >= 3)) ? "Volver a practicar" : "Empezar sesión";
+        $("pendCta").querySelector("span").textContent = (!last || (dayGap != null && dayGap >= 3)) ? "Volver a practicar" : "Empezar mi sesión";
       }
 
-      // 4 · Semana (datos reales; ya coherente con "completada hoy")
+      // 4 · Semana como ruta (real y coherente con "completada hoy"), mensaje positivo
       try {
         const w = await ILAuth.getWeekActivity();
         const goal = w.goal || 5, count = Math.min(w.count || 0, goal);
         $("wkGoal").textContent = goal; $("wkNow").textContent = count;
-        const steps = $("steps");
-        steps.setAttribute("aria-valuemax", goal); steps.setAttribute("aria-valuenow", count);
-        steps.setAttribute("aria-label", count + " de " + goal + " sesiones esta semana");
+        const route = $("route");
+        route.setAttribute("aria-valuemax", goal); route.setAttribute("aria-valuenow", count);
+        route.setAttribute("aria-label", count + " de " + goal + " sesiones esta semana");
         const check = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4 10-11"/></svg>';
-        steps.innerHTML = Array.from({ length: goal }, (_, k) => '<span class="step" data-on="' + (k < count) + '">' + check + '</span>').join("");
-        // Anima el llenado al cargar (escalonado)
-        requestAnimationFrame(() => steps.querySelectorAll('.step[data-on="true"]').forEach((el, k) => setTimeout(() => el.classList.add("on"), 80 * k)));
-        const left = goal - count;
-        $("wkGoalMsg").textContent = left <= 0 ? "¡Meta de la semana conseguida!" : ("Te " + (left === 1 ? "falta 1 sesión" : "faltan " + left + " sesiones") + " para tu meta.");
+        let html = "";
+        for (let k = 0; k < goal; k++) {
+          if (k > 0) html += '<span class="link" data-on="' + (k <= count - 1 && k < count ? "true" : (k < count ? "true" : "false")) + '"></span>';
+          html += '<span class="stop" data-on="' + (k < count) + '">' + check + '</span>';
+        }
+        route.innerHTML = html;
+        // Enlaces encendidos entre paradas completadas
+        route.querySelectorAll(".link").forEach((el, li) => { if (li + 1 < count) el.classList.add("on"); });
+        // Animación escalonada al cargar
+        requestAnimationFrame(() => route.querySelectorAll('.stop[data-on="true"]').forEach((el, k) =>
+          setTimeout(() => { el.classList.add("on", "pop"); setTimeout(() => el.classList.remove("pop"), 260); }, 90 * k)));
+        $("wkMsg").textContent = count <= 0 ? "¡Empieza tu semana!"
+          : (count >= goal ? "¡Meta de la semana conseguida!"
+          : (count === 1 ? "¡Primera sesión de la semana!" : "¡Buen ritmo esta semana!"));
       } catch (e) {}
 
       $("loading").hidden = true;
       $("app").classList.remove("hidden");
     } catch (e) { showError(); }
   })();
-
-  $("naDone").addEventListener("click", () => { $("nextAction").hidden = true; $("naDone").hidden = true; $("naClosed").hidden = false; });
 </script>
 </body>
 </html>
