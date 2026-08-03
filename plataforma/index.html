@@ -10,11 +10,51 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="app.css">
+<style>
+  /* Fondo cálido con formas (coherente con la app) */
+  body{background:
+    radial-gradient(120% 55% at 100% 0%, #FDECE4 0%, transparent 55%),
+    radial-gradient(120% 55% at 0% 8%, #E7F2ED 0%, transparent 52%),
+    var(--paper);}
+  .auth-wrap{min-height:100vh;display:grid;place-items:center;padding:24px 18px;}
+  .auth-shell{width:100%;max-width:420px;animation:authIn .4s cubic-bezier(.2,.7,.3,1) both;}
+  @keyframes authIn{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:none;}}
+  @media (prefers-reduced-motion:reduce){ .auth-shell{animation:none;} .auth-hero .plane{animation:none;} }
+  /* Panel de marca (solo escritorio) */
+  .auth-hero{display:none;}
+  .auth-hero .plane{width:112px;height:112px;margin-bottom:22px;animation:floatY 5.5s ease-in-out infinite;}
+  @keyframes floatY{0%,100%{transform:translateY(0) rotate(-2deg);}50%{transform:translateY(-8px) rotate(2deg);}}
+  .auth-hero h2{color:#fff;font-family:var(--font-display);font-size:1.8rem;line-height:1.15;margin:0 0 12px;letter-spacing:-.01em;}
+  .auth-hero p{color:rgba(255,255,255,.82);font-size:1rem;margin:0;max-width:300px;}
+  .auth-hero .tags{display:flex;gap:8px;margin-top:22px;flex-wrap:wrap;}
+  .auth-hero .tag{background:rgba(255,255,255,.12);color:#fff;border-radius:100px;padding:6px 13px;font-size:.78rem;font-weight:700;}
+
+  @media (min-width:880px){
+    .auth-shell{max-width:920px;display:grid;grid-template-columns:1.05fr 1fr;background:#fff;border-radius:30px;overflow:hidden;box-shadow:var(--shadow);}
+    .auth-hero{display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden;
+      background:linear-gradient(160deg,var(--navy),#0e1a30);padding:48px 44px;}
+    .auth-hero::after{content:"";position:absolute;width:260px;height:260px;border-radius:50%;right:-90px;bottom:-90px;
+      background:radial-gradient(circle at 30% 30%, rgba(255,107,74,.5), transparent 70%);}
+    .auth-card{box-shadow:none;border:none;border-radius:0;max-width:none;display:flex;flex-direction:column;justify-content:center;padding:48px 44px;}
+  }
+</style>
 </head>
 <body>
 <div id="demoBanner" class="demo-banner hidden">🧪 <b>Modo demo</b> · prueba con usuario <b>lucia</b> / contraseña <b>home1234</b> (o <b>admin</b> / <b>admin1234</b>)</div>
 
 <div class="auth-wrap">
+ <div class="auth-shell">
+  <aside class="auth-hero" aria-hidden="true">
+    <svg class="plane" viewBox="0 0 96 96" fill="none" aria-hidden="true">
+      <path d="M18 66 Q42 80 78 58" stroke="rgba(255,255,255,.45)" stroke-width="3" stroke-linecap="round" stroke-dasharray="0.5 8"/>
+      <path d="M20 48 L78 22 L54 72 L46 54 Z" fill="#FF6B4A"/>
+      <path d="M78 22 L46 54 L54 72 Z" fill="#E14F30"/>
+      <path d="M70 32 l3 -6 3 6 6 3 -6 3 -3 6 -3 -6 -6 -3 Z" fill="#1E9C74"/>
+    </svg>
+    <h2>Aprende inglés,<br>un poco cada día.</h2>
+    <p>Sesiones cortas y divertidas para practicar en casa, a tu ritmo.</p>
+    <div class="tags"><span class="tag">🎯 Misión diaria</span><span class="tag">🔥 Sin agobios</span></div>
+  </aside>
   <form class="auth-card" id="loginForm" autocomplete="on">
     <div class="brand-mark">
       <div class="brand-fox">🦊</div>
@@ -47,6 +87,7 @@
     <button type="submit" class="btn btn-primary btn-block" id="submitBtn">Entrar</button>
     <p class="auth-foot">¿Olvidaste tu contraseña? Pídesela a tu profe de Interlanguage.</p>
   </form>
+ </div><!-- /.auth-shell -->
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
