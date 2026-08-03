@@ -10,6 +10,15 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="app.css">
+<style>
+  body{background:
+    radial-gradient(120% 55% at 100% 0%, #FDECE4 0%, transparent 55%),
+    radial-gradient(120% 55% at 0% 8%, #E7F2ED 0%, transparent 52%),
+    var(--paper);}
+  .auth-card{animation:authIn .4s cubic-bezier(.2,.7,.3,1) both;}
+  @keyframes authIn{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:none;}}
+  @media (prefers-reduced-motion:reduce){ .auth-card{animation:none;} }
+</style>
 </head>
 <body>
 <div id="demoBanner" class="demo-banner hidden">🧪 <b>Modo demo</b> · el cambio se guarda solo en este navegador</div>
