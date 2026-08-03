@@ -13,23 +13,34 @@
 <link rel="stylesheet" href="app.css">
 <link rel="stylesheet" href="etapa.css">
 <style>
-  body{background:var(--il-cream);font-family:var(--il-font-body)}
+  body{font-family:var(--il-font-body);background:
+    radial-gradient(120% 45% at 100% 0%, #FDECE4 0%, transparent 55%),
+    radial-gradient(120% 45% at 0% 4%, #E7F2ED 0%, transparent 52%),
+    var(--il-cream);}
   .ob{max-width:520px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;padding:0 20px}
-  .ob-top{display:flex;justify-content:center;gap:8px;padding:22px 0 6px}
-  .dot{width:9px;height:9px;border-radius:50%;background:var(--il-line-2);transition:background var(--il-motion)}
+  .ob-top{display:flex;justify-content:center;gap:8px;padding:26px 0 6px}
+  .dot{width:9px;height:9px;border-radius:50%;background:var(--il-line-2);transition:background var(--il-motion),width var(--il-motion)}
   .dot.on{background:var(--il-coral)}
+  .dot.now{width:24px;border-radius:6px}
   .ob-main{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
-  .ob-fox{font-size:5rem;line-height:1;margin-bottom:8px}
-  body[data-stage="eso"] .ob-fox{font-size:3rem}
-  .ob-h{font-family:var(--il-font-display);font-weight:800;color:var(--il-navy);font-size:1.7rem;margin:6px 0 8px}
-  .ob-p{color:var(--il-soft);font-size:1.1rem;max-width:360px;margin:0 auto}
-  .colors{display:flex;gap:14px;justify-content:center;margin-top:22px}
-  .swatch{width:52px;height:52px;border-radius:50%;border:3px solid transparent;cursor:pointer}
-  .swatch[aria-pressed="true"]{border-color:var(--il-navy);transform:scale(1.08)}
+  /* Nemo con badge suave + pop de entrada en cada paso */
+  .ob-fox{width:136px;height:136px;margin:0 auto 16px;border-radius:50%;display:grid;place-items:center;font-size:4.6rem;line-height:1;
+    background:radial-gradient(circle at 50% 32%, #fff, var(--il-jade-bg));box-shadow:0 22px 44px -22px rgba(22,41,74,.32);
+    animation:obPop .42s cubic-bezier(.2,1.25,.3,1) both}
+  @keyframes obPop{from{opacity:0;transform:scale(.55)}to{opacity:1;transform:scale(1)}}
+  @keyframes obUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+  body[data-stage="eso"] .ob-fox{width:96px;height:96px;font-size:3rem;background:var(--il-jade-bg)}
+  .ob-h{font-family:var(--il-font-display);font-weight:800;color:var(--il-navy);font-size:1.7rem;margin:6px 0 8px;animation:obUp .38s cubic-bezier(.2,.7,.3,1) .07s both}
+  .ob-p{color:var(--il-soft);font-size:1.1rem;max-width:360px;margin:0 auto;animation:obUp .38s cubic-bezier(.2,.7,.3,1) .13s both}
+  .colors{display:flex;gap:14px;justify-content:center;margin-top:24px;animation:obUp .38s cubic-bezier(.2,.7,.3,1) .19s both}
+  .swatch{width:52px;height:52px;border-radius:50%;border:3px solid transparent;cursor:pointer;transition:transform .15s ease,box-shadow .15s ease}
+  .swatch:hover{transform:scale(1.06)}
+  .swatch[aria-pressed="true"]{border-color:var(--il-navy);transform:scale(1.1);box-shadow:0 10px 20px -10px rgba(22,41,74,.4)}
   .ob-actions{padding:16px 0 28px;display:flex;gap:10px;align-items:center}
-  .ob-actions .btn{flex:1}
+  .ob-actions .btn{flex:1;transition:transform .15s ease,box-shadow .15s ease,background .15s ease}
+  .ob-actions .btn:active{transform:scale(.98)}
   .ob-skip{background:none;border:none;color:var(--il-faint);font-family:inherit;font-size:.9rem;cursor:pointer}
-  @media (prefers-reduced-motion: reduce){ .swatch[aria-pressed="true"]{transform:none} }
+  @media (prefers-reduced-motion: reduce){ .ob-fox,.ob-h,.ob-p,.colors{animation:none} .swatch[aria-pressed="true"]{transform:none} }
 </style>
 </head>
 <body>
@@ -77,7 +88,7 @@
       try { localStorage.setItem('il_avatar_color', color); } catch(e){}
       $("main").querySelectorAll('.swatch').forEach(x => x.setAttribute('aria-pressed', x===b));
     });
-    document.querySelectorAll('.dot').forEach((d,di)=>d.classList.toggle('on', di<=i));
+    document.querySelectorAll('.dot').forEach((d,di)=>{ d.classList.toggle('on', di<=i); d.classList.toggle('now', di===i); });
     $("next").textContent = i === steps().length-1 ? "¡Empezar!" : "Siguiente";
     $("skip").hidden = (stage !== "eso") || i === steps().length-1;
   }
