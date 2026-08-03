@@ -44,6 +44,17 @@
   .medal{width:52px;height:52px;border-radius:14px;display:grid;place-items:center;font-size:1.4rem;background:var(--surface-2);border:1px solid var(--line);}
   .medal.on{background:var(--coral-tint);border-color:var(--coral);}
   .medal.lock{opacity:.4;filter:grayscale(1);}
+  /* Entrada suave de las tarjetas (escalonada) */
+  .card-soft{animation:cardUp .34s cubic-bezier(.2,.7,.3,1) both;}
+  .card-soft:nth-of-type(2){animation-delay:.05s;} .card-soft:nth-of-type(3){animation-delay:.1s;}
+  .card-soft:nth-of-type(4){animation-delay:.15s;} .card-soft:nth-of-type(5){animation-delay:.2s;}
+  @keyframes cardUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:none;}}
+  @media (prefers-reduced-motion:reduce){ .card-soft{animation:none;} }
+  /* Escritorio: composición editorial a 2 columnas */
+  @media (min-width:960px){
+    .app-shell{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start;}
+    .app-shell > .greet, .app-shell > *:nth-child(2){grid-column:1 / -1;}
+  }
 </style>
 </head>
 <body>
