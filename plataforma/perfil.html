@@ -12,6 +12,7 @@
 <link rel="stylesheet" href="design-system.css">
 <link rel="stylesheet" href="app.css">
 <link rel="stylesheet" href="etapa.css">
+<link rel="stylesheet" href="shell.css">
 <style>
   .pf-hd{display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:20px;padding:20px;box-shadow:var(--shadow-soft);}
   .pf-av{width:72px;height:72px;border-radius:22px;background:linear-gradient(150deg,var(--coral),var(--coral-deep));display:grid;place-items:center;font-size:2.2rem;box-shadow:0 10px 20px -10px var(--coral);}
@@ -29,7 +30,18 @@
 </style>
 </head>
 <body>
-<div id="app" class="hidden">
+<div id="app" class="hidden app-with-rail">
+  <div class="shell">
+    <aside class="rail" aria-label="Navegación principal">
+      <div class="brand"><span class="logo"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 11 21 3l-7 18-3-7-8-3Z"/></svg></span><span>Inter<b>language</b></span></div>
+      <nav>
+        <a href="inicio.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11 12 4l8 7"/><path d="M6 10v9h4v-5h4v5h4v-9"/></svg><span>Inicio</span></a>
+        <a href="leccion.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.4"/></svg><span>Practicar</span></a>
+        <a href="progreso.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19V5"/><path d="M4 19h16"/><path d="m7 15 3.5-4 3 2.5L20 7"/></svg><span>Progreso</span></a>
+        <a class="is-active" href="perfil.html" aria-current="page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg><span>Perfil</span></a>
+      </nav>
+    </aside>
+    <div class="shell-main">
   <div class="app-shell">
     <div class="pf-hd">
       <div class="pf-av" id="pfAv">🦊</div>
@@ -54,6 +66,8 @@
       </div>
     </div>
   </div>
+    </div><!-- /.shell-main -->
+  </div><!-- /.shell -->
 
   <nav class="app-nav" aria-label="Navegación principal">
     <a class="app-nav__item" href="inicio.html">
