@@ -123,6 +123,7 @@
       if (p.is_admin) { location.href = "admin.html"; return; }
       if (p.must_change_password) { location.href = "cambiar-clave.html"; return; }
       IL_ETAPA.apply(p);
+      _user = p.username || "";
       const pl = await ILAuth.getPlacement();
       start(pl.cefr);
     } catch (e) {
@@ -134,7 +135,12 @@
   // (test de colocación). Se prioriza su nivel y el inmediatamente inferior; lo de más nivel
   // queda al final (así a un peque no le caen ejercicios difíciles y a un mayor no le caen fáciles).
   const CEFR_IDX = { "Pre-A1": 0, "A1": 1, "A2": 2, "B1": 3 };
-  let items = [], idx = 0, correct = 0, curStreak = 0, maxStreak = 0;
+  let items = [], idx = 0, correct = 0, curStreak = 0, maxStreak = 0, _user = "";
+
+  // --- Variedad diaria: baraja estable por día + evita lo de la sesión anterior ---
+  const todayStr = () => new Date().toISOString().slice(0, 10);
+  function hashStr(s) { let h = 0; s = String(s); for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0; return h; }
+  function seededRand(n) { n = (n ^ 0x9E3779B9) >>> 0; n = Math.imul(n ^ (n >>> 15), 1 | n); n ^= n + Math.imul(n ^ (n >>> 7), 61 | n); return ((n ^ (n >>> 14)) >>> 0) / 4294967296; }
 
   // Mapa ejercicio -> unidad (para el tema de cada actividad)
   const _unitOf = {};
@@ -160,12 +166,27 @@
   function composeByLevel(banda, cefr) {
     const all = (window.IL_CONTENIDO.unidades || []).flatMap(u => u.ejercicios || []);
     let pool = window.IL_MATRIZ ? IL_MATRIZ.filtra(all, banda) : all.slice();
+    const byId = {}; all.forEach(e => { byId[e.id] = e; });
+
+    // Sesión del día cacheada: la misma durante todo el día (coherente si recarga)
+    const skey = "il_session_" + _user;
+    let cached = null; try { cached = JSON.parse(localStorage.getItem(skey)); } catch (e) {}
+    if (cached && cached.date === todayStr() && Array.isArray(cached.ids)) {
+      const its = cached.ids.map(id => byId[id]).filter(Boolean);
+      if (its.length) return its;
+    }
+    const prevIds = (cached && Array.isArray(cached.ids)) ? cached.ids : [];  // lo de la sesión anterior
+
     const target = (CEFR_IDX[cefr] != null) ? CEFR_IDX[cefr] : 1;   // sin nivel: por defecto A1
+    const seed = hashStr(_user + "|" + todayStr());
     const scored = pool.map(e => {
       const li = (CEFR_IDX[e.nivel] != null) ? CEFR_IDX[e.nivel] : 0;
       const score = (li > target) ? (100 + (li - target)) : (target - li); // 0 = tu nivel exacto
-      return { e: e, score: score };
-    }).sort((a, b) => a.score - b.score);
+      const recent = prevIds.indexOf(e.id) !== -1 ? 1 : 0;           // penaliza lo del día anterior
+      const rnd = seededRand(seed + hashStr(e.id));                  // baraja estable del día
+      return { e: e, score: score, recent: recent, rnd: rnd };
+    }).sort((a, b) => (a.score - b.score) || (a.recent - b.recent) || (a.rnd - b.rnd));
+
     // Intercala habilidades y coge hasta 6
     const picked = []; let lastSkill = null; const rest = scored.slice();
     while (rest.length && picked.length < 6) {
@@ -173,6 +194,7 @@
       if (k === -1) k = 0;
       const x = rest.splice(k, 1)[0]; picked.push(x.e); lastSkill = x.e.habilidad;
     }
+    try { localStorage.setItem(skey, JSON.stringify({ date: todayStr(), ids: picked.map(e => e.id) })); } catch (e) {}
     return picked;
   }
 
