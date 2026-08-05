@@ -155,6 +155,12 @@
         "card   weekly"
         "action weekly"
         "next   brand";}
+    /* Pendiente: tarjeta hero a lo ancho + semana | marca debajo (sin huecos) */
+    .content.state-pending{grid-template-columns:1fr 1fr;
+      grid-template-areas:
+        "head   head"
+        "card   card"
+        "weekly brand";}
     .gs-brand{display:block;}
     .home-head{padding-top:2px;}
     .day-card{padding:28px 26px;}
@@ -338,6 +344,8 @@
       const doneToday = last === today();
       const dayGap = last ? Math.round((Date.parse(today()) - Date.parse(last)) / 86400000) : null;
       const skills = sessionSkills();
+      // Marca el estado para adaptar la rejilla de escritorio (evita huecos en "pendiente")
+      document.querySelector(".content").classList.add((hasContent && doneToday) ? "state-done" : "state-pending");
 
       if (!hasContent) {
         $("ctx").textContent = "Hoy sin misión nueva.";
