@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contenidos · Interlanguage HOME</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/png" sizes="32x32" href="../images/icons/favicon-32.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="design-system.css">
+<link rel="stylesheet" href="app.css">
+<style>
+  body{background:
+    radial-gradient(120% 45% at 100% 0%, #FDECE4 0%, transparent 55%),
+    radial-gradient(120% 45% at 0% 6%, #E7F2ED 0%, transparent 52%),
+    var(--paper);}
+  .fld{margin-bottom:12px;}
+  .fld label{display:block;font-size:.74rem;font-weight:700;color:var(--soft);text-transform:uppercase;letter-spacing:.04em;margin-bottom:5px;}
+  .fld select, .fld input[type=text]{width:100%;padding:11px 13px;border:1.5px solid var(--line-2);border-radius:12px;font-size:.95rem;font-family:inherit;color:var(--ink);background:#fff;}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .opt-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+  .opt-row input[type=text]{flex:1;}
+  .opt-row .emoji{width:56px;text-align:center;}
+  .opt-row .ok{display:flex;align-items:center;gap:5px;font-size:.78rem;color:var(--soft);white-space:nowrap;}
+  .opt-row .del{background:none;border:none;color:var(--faint);font-size:1.1rem;cursor:pointer;}
+  .u-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--line);border-radius:12px;margin-bottom:8px;background:#fff;cursor:pointer;}
+  .u-item.sel{border-color:var(--coral);background:var(--coral-tint);}
+  .u-item .ic{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;font-size:1.1rem;flex-shrink:0;color:#fff;}
+  .u-item .nm{flex:1;font-weight:700;color:var(--navy);font-size:.92rem;}
+  .u-item .ct{font-size:.75rem;color:var(--faint);}
+  .ex-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border:1px solid var(--line);border-radius:10px;margin-bottom:7px;background:#fff;font-size:.86rem;}
+  .ex-item .tg{font-size:.66rem;font-weight:800;text-transform:uppercase;letter-spacing:.03em;color:var(--jade-deep);background:var(--jade-tint);padding:2px 7px;border-radius:100px;}
+  .ex-item .q{flex:1;color:var(--navy);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .ex-item .del{background:none;border:none;color:var(--faint);font-size:1.05rem;cursor:pointer;}
+  .swatches{display:flex;gap:8px;}
+  .swatches button{width:30px;height:30px;border-radius:50%;border:2px solid transparent;cursor:pointer;}
+  .swatches button[aria-pressed=true]{border-color:var(--navy);}
+  .muted{color:var(--soft);font-size:.85rem;}
+  .note{background:var(--mint);border:1px dashed var(--jade);border-radius:12px;padding:11px 14px;font-size:.84rem;color:var(--navy);margin-bottom:16px;}
+</style>
+</head>
+<body>
+<div class="center-min" id="gate"><div class="spinner" style="border-top-color:var(--coral)"></div></div>
+
+<div class="admin-shell hidden" id="app">
+  <div class="admin-head">
+    <div>
+      <h1>Contenidos 📚</h1>
+      <p class="who">Crea unidades y ejercicios. Aparecen en las misiones al instante.</p>
+    </div>
+    <a class="btn btn-ghost" href="admin.html">← Volver al panel</a>
+  </div>
+
+  <div class="note">💡 Los ejercicios se guardan en este navegador (modo de trabajo). Para producción vivirán en la base de datos. Tipos disponibles: elegir texto, imagen y completar (una respuesta correcta).</div>
+
+  <div class="admin-grid">
+    <!-- Unidades -->
+    <div class="panel">
+      <h2>Unidades</h2>
+      <p class="pdesc">Agrupan ejercicios por tema.</p>
+      <form id="unitForm">
+        <div class="fld"><label for="uTitle">Título</label><input type="text" id="uTitle" placeholder="p. ej. Los animales" required></div>
+        <div class="row2">
+          <div class="fld"><label for="uIcon">Icono (emoji)</label><input type="text" id="uIcon" maxlength="2" placeholder="🐶"></div>
+          <div class="fld"><label>Color</label><div class="swatches" id="uColors"></div></div>
+        </div>
+        <button class="btn btn-primary btn-block" type="submit">Añadir unidad</button>
+      </form>
+      <div style="margin-top:16px" id="unitList"></div>
+    </div>
+
+    <!-- Ejercicios -->
+    <div class="panel">
+      <h2 id="exHead">Ejercicios</h2>
+      <p class="pdesc" id="exSub">Selecciona una unidad para añadir ejercicios.</p>
+      <div id="exArea" class="hidden">
+        <div id="exList" style="margin-bottom:16px"></div>
+        <h3 style="font-size:1rem;margin-bottom:10px">Nuevo ejercicio</h3>
+        <form id="exForm">
+          <div class="row2">
+            <div class="fld"><label for="exType">Tipo</label>
+              <select id="exType">
+                <option value="elegir_texto">Elegir (texto)</option>
+                <option value="elegir_imagen">Elegir (imagen + emoji)</option>
+                <option value="completar">Completar hueco</option>
+              </select></div>
+            <div class="fld"><label for="exSkill">Habilidad</label>
+              <select id="exSkill">
+                <option value="vocabulary">Vocabulary</option>
+                <option value="grammar">Grammar</option>
+                <option value="reading">Reading</option>
+                <option value="listening">Listening</option>
+              </select></div>
+          </div>
+          <div class="row2">
+            <div class="fld"><label for="exLevel">Nivel</label>
+              <select id="exLevel"><option>Pre-A1</option><option>A1</option><option>A2</option><option>B1</option></select></div>
+            <div class="fld"><label for="exTag">Etiqueta</label><input type="text" id="exTag" placeholder="Vocabulario"></div>
+          </div>
+          <div class="fld"><label for="exIns">Pregunta / consigna</label><input type="text" id="exIns" placeholder='¿Cuál es "gato"?' required></div>
+          <div class="fld"><label>Opciones (marca la correcta)</label><div id="optRows"></div>
+            <button type="button" class="link-btn" id="addOpt">+ añadir opción</button></div>
+          <div class="fld"><label for="exExpl">Explicación (opcional, si falla)</label><input type="text" id="exExpl" placeholder="cat = gato"></div>
+          <button class="btn btn-primary btn-block" type="submit">Guardar ejercicio</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+<script src="auth-utils.js"></script>
+<script src="auth.js"></script>
+<script>
+  const $ = (id) => document.getElementById(id);
+  const KEY = "il_cms_content";
+  const COLORS = ["#FF6B4A", "#1E9C74", "#16294A", "#F4A73B", "#8E7CC3"];
+  let content = [];
+  let sel = -1;
+  let uColor = COLORS[0];
+
+  function load() { try { content = JSON.parse(localStorage.getItem(KEY) || "[]"); } catch (e) { content = []; } if (!Array.isArray(content)) content = []; }
+  function save() { localStorage.setItem(KEY, JSON.stringify(content)); }
+  const uid = (p) => p + "-" + Date.now().toString(36) + Math.floor(Math.random() * 1e3);
+  const esc = (s) => String(s == null ? "" : s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+  function renderColors() {
+    $("uColors").innerHTML = COLORS.map(c => '<button type="button" style="background:' + c + '" data-c="' + c + '" aria-pressed="' + (c === uColor) + '" aria-label="Color"></button>').join("");
+    $("uColors").querySelectorAll("button").forEach(b => b.onclick = () => { uColor = b.getAttribute("data-c"); renderColors(); });
+  }
+
+  function renderUnits() {
+    if (!content.length) { $("unitList").innerHTML = '<p class="muted">Aún no hay unidades creadas.</p>'; return; }
+    $("unitList").innerHTML = content.map((u, i) =>
+      '<div class="u-item ' + (i === sel ? "sel" : "") + '" data-i="' + i + '">' +
+      '<span class="ic" style="background:' + (u.tema && u.tema.color || "#1E9C74") + '">' + (u.tema && u.tema.icono || "📘") + '</span>' +
+      '<span class="nm">' + esc(u.titulo) + '</span>' +
+      '<span class="ct">' + (u.ejercicios ? u.ejercicios.length : 0) + ' ej.</span>' +
+      '<button class="del" data-del="' + i + '" title="Eliminar unidad" aria-label="Eliminar unidad">🗑️</button></div>'
+    ).join("");
+    $("unitList").querySelectorAll(".u-item").forEach(el => el.onclick = (ev) => {
+      if (ev.target.hasAttribute("data-del")) return;
+      sel = parseInt(el.getAttribute("data-i"), 10); renderUnits(); renderExercises();
+    });
+    $("unitList").querySelectorAll("[data-del]").forEach(b => b.onclick = (ev) => {
+      ev.stopPropagation();
+      const i = parseInt(b.getAttribute("data-del"), 10);
+      if (!confirm("¿Eliminar la unidad y sus ejercicios?")) return;
+      content.splice(i, 1); if (sel === i) sel = -1; else if (sel > i) sel--; save(); renderUnits(); renderExercises();
+    });
+  }
+
+  function renderExercises() {
+    if (sel < 0) { $("exArea").classList.add("hidden"); $("exHead").textContent = "Ejercicios"; $("exSub").textContent = "Selecciona una unidad para añadir ejercicios."; return; }
+    const u = content[sel];
+    $("exHead").textContent = "Ejercicios · " + u.titulo;
+    $("exSub").textContent = (u.ejercicios.length) + " ejercicio(s) en esta unidad.";
+    $("exArea").classList.remove("hidden");
+    $("exList").innerHTML = u.ejercicios.length ? u.ejercicios.map((e, j) =>
+      '<div class="ex-item"><span class="tg">' + esc(e.habilidad || "") + " · " + esc(e.nivel || "") + '</span>' +
+      '<span class="q">' + esc(e.instruccion) + '</span>' +
+      '<button class="del" data-ex="' + j + '" aria-label="Eliminar ejercicio">🗑️</button></div>'
+    ).join("") : '<p class="muted">Todavía sin ejercicios.</p>';
+    $("exList").querySelectorAll("[data-ex]").forEach(b => b.onclick = () => {
+      const j = parseInt(b.getAttribute("data-ex"), 10);
+      u.ejercicios.splice(j, 1); save(); renderExercises(); renderUnits();
+    });
+  }
+
+  // Filas de opciones (2–4, una correcta)
+  function optRow(txt, emoji, correct) {
+    const wrap = document.createElement("div"); wrap.className = "opt-row";
+    wrap.innerHTML =
+      '<input type="text" class="emoji" placeholder="🐱" maxlength="2" value="' + esc(emoji || "") + '">' +
+      '<input type="text" placeholder="respuesta" value="' + esc(txt || "") + '">' +
+      '<label class="ok"><input type="radio" name="correct">correcta</label>' +
+      '<button type="button" class="del" title="Quitar">✕</button>';
+    if (correct) wrap.querySelector('input[type=radio]').checked = true;
+    wrap.querySelector(".del").onclick = () => { if ($("optRows").children.length > 2) wrap.remove(); };
+    return wrap;
+  }
+  function resetOpts() { $("optRows").innerHTML = ""; $("optRows").appendChild(optRow("", "", true)); $("optRows").appendChild(optRow("", "", false)); $("optRows").appendChild(optRow("", "", false)); toggleEmoji(); }
+  function toggleEmoji() { const on = $("exType").value === "elegir_imagen"; $("optRows").querySelectorAll(".emoji").forEach(e => e.style.display = on ? "" : "none"); }
+
+  $("addOpt").onclick = () => { if ($("optRows").children.length < 4) { $("optRows").appendChild(optRow("", "", false)); toggleEmoji(); } };
+  $("exType").onchange = toggleEmoji;
+
+  $("unitForm").onsubmit = (e) => {
+    e.preventDefault();
+    const t = $("uTitle").value.trim(); if (!t) return;
+    content.push({ id: uid("u"), titulo: t, nivel: "A1", tema: { icono: $("uIcon").value.trim() || "📘", color: uColor }, ejercicios: [] });
+    save(); $("uTitle").value = ""; $("uIcon").value = ""; sel = content.length - 1; renderUnits(); renderExercises();
+  };
+
+  $("exForm").onsubmit = (e) => {
+    e.preventDefault();
+    if (sel < 0) return;
+    const rows = [...$("optRows").querySelectorAll(".opt-row")];
+    const opts = rows.map(r => {
+      const inputs = r.querySelectorAll('input[type=text]');
+      return { emoji: inputs[0].value.trim(), texto: inputs[1].value.trim(), correcta: r.querySelector('input[type=radio]').checked };
+    }).filter(o => o.texto);
+    if (opts.length < 2) { alert("Añade al menos 2 opciones con texto."); return; }
+    if (!opts.some(o => o.correcta)) { alert("Marca cuál es la opción correcta."); return; }
+    const type = $("exType").value;
+    const ex = {
+      id: uid("cms"), tipo: type, habilidad: $("exSkill").value, nivel: $("exLevel").value, edad: [6, 14],
+      etiqueta: $("exTag").value.trim() || "Ejercicio", instruccion: $("exIns").value.trim(),
+      opciones: opts.map(o => { const oo = { texto: o.texto }; if (type === "elegir_imagen" && o.emoji) oo.emoji = o.emoji; if (o.correcta) oo.correcta = true; return oo; })
+    };
+    const expl = $("exExpl").value.trim(); if (expl) ex.explicacion = expl;
+    content[sel].ejercicios.push(ex);
+    save(); e.target.reset(); resetOpts(); renderExercises(); renderUnits();
+  };
+
+  (async () => {
+    const p = await ILAuth.getProfile();
+    if (!p) { location.href = "index.html"; return; }
+    if (!p.is_admin) { location.href = "inicio.html"; return; }
+    load(); renderColors(); renderUnits(); renderExercises(); resetOpts();
+    $("gate").classList.add("hidden"); $("app").classList.remove("hidden");
+  })();
+</script>
+</body>
+</html>

@@ -157,3 +157,20 @@ window.IL_CONTENIDO = {
     }
   ]
 };
+
+/* ============================================================
+   CONTENIDO CREADO CON EL MINI-CMS (panel de administración)
+   ------------------------------------------------------------
+   Las unidades creadas en admin-contenido.html se guardan en
+   localStorage ("il_cms_content") y aquí se fusionan con el banco,
+   para que aparezcan en las misiones sin tocar código.
+   (Persistencia local por ahora; en producción vivirá en Supabase.)
+   ============================================================ */
+(function () {
+  try {
+    var extra = JSON.parse(localStorage.getItem("il_cms_content") || "[]");
+    if (Array.isArray(extra) && extra.length) {
+      extra.forEach(function (u) { if (u && Array.isArray(u.ejercicios)) window.IL_CONTENIDO.unidades.push(u); });
+    }
+  } catch (e) { /* si falla, seguimos con el banco base */ }
+})();
