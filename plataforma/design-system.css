@@ -6,11 +6,16 @@
    Spec: docs/superpowers/specs/2026-07-31-sistema-diseno-final.md
    ============================================================ */
 :root{
-  /* Color */
-  --il-navy:#16294A; --il-coral:#FF6B4A; --il-coral-ink:#E14F30;
-  --il-jade:#1E9C74; --il-jade-bg:#E7F1EC; --il-red:#C0392B; --il-red-bg:#FDECEA;
-  --il-cream:#FBF8F1; --il-ink:#2B3646; --il-soft:#5C6B7A; --il-faint:#8A97A6;
-  --il-line:#E4E8EE; --il-line-2:#D9DEE5; --il-warm:#FBF8F1; --il-white:#FFFFFF;
+  /* Color · ÚNICA fuente de verdad. app.css y motor.css derivan de aquí. */
+  --il-navy:#16294A; --il-navy-2:#22304a;
+  --il-coral:#FF6B4A; --il-coral-ink:#E14F30; --il-coral-deep:#E14F30;
+  --il-jade:#1E9C74; --il-jade-deep:#157B5B; --il-jade-bg:#E7F1EC;
+  --il-red:#C0392B; --il-red-bg:#FDECEA;
+  --il-cream:#FBF8F1; --il-warm:#FBF8F1; --il-paper:#F6F9F8; --il-white:#FFFFFF; --il-card:#FFFFFF; --il-surface-2:#EEF2F6;
+  --il-ink:#1E2B3D; --il-soft:#5C6B7A; --il-faint:#8A97A6;
+  --il-line:#E4E8EE; --il-line-2:#D9DEE5;
+  --il-coral-tint:rgba(255,107,74,.12); --il-jade-tint:rgba(30,156,116,.12);
+  --il-shadow-soft:0 10px 26px -16px rgba(22,41,74,.3);
 
   /* Tipografía */
   --il-font-display:'Plus Jakarta Sans',system-ui,sans-serif;

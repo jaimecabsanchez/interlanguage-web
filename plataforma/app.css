@@ -1,20 +1,18 @@
 /* ===== Interlanguage HOME · estilos de la plataforma ===== */
 :root{
-  /* Los colores de marca derivan de los tokens canónicos --il-* (design-system.css)
-     cuando está cargado; si no, usan el literal de respaldo. Misma fuente de verdad
-     para un futuro rebrand, sin cambios visuales. Los valores que aún difieren entre
-     ambos sistemas se mantienen literales a propósito. */
-  --navy:var(--il-navy,#16294A); --navy-2:#22304a;
-  --coral:var(--il-coral,#FF6B4A); --coral-deep:var(--il-coral-ink,#E14F30);
-  --jade:var(--il-jade,#1E9C74); --jade-deep:#157B5B;
-  --ink:#1E2B3D; --soft:var(--il-soft,#5C6B7A); --faint:#8A97A5;
-  --paper:#F6F9F8; --card:#FFFFFF; --surface-2:#EEF2F6; --mint:var(--il-jade-bg,#E7F1EC);
-  --line:rgba(22,41,74,.12); --line-2:rgba(22,41,74,.2);
-  --coral-tint:rgba(255,107,74,.12); --jade-tint:rgba(30,156,116,.12);
-  --font-display:'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --font-body:'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  /* Alias cortos: TODOS derivan de los tokens canónicos --il-* (design-system.css),
+     que se carga antes en todas las pantallas. Una sola fuente de color para la app. */
+  --navy:var(--il-navy); --navy-2:var(--il-navy-2);
+  --coral:var(--il-coral); --coral-deep:var(--il-coral-deep);
+  --jade:var(--il-jade); --jade-deep:var(--il-jade-deep);
+  --ink:var(--il-ink); --soft:var(--il-soft); --faint:var(--il-faint);
+  --paper:var(--il-paper); --card:var(--il-card); --surface-2:var(--il-surface-2); --mint:var(--il-jade-bg);
+  --line:var(--il-line); --line-2:var(--il-line-2);
+  --coral-tint:var(--il-coral-tint); --jade-tint:var(--il-jade-tint);
+  --font-display:var(--il-font-display);
+  --font-body:var(--il-font-body);
   --shadow:0 22px 48px -24px rgba(22,41,74,.45);
-  --shadow-soft:0 10px 26px -16px rgba(22,41,74,.3);
+  --shadow-soft:var(--il-shadow-soft);
 }
 *{box-sizing:border-box;}
 html,body{margin:0;}

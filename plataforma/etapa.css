@@ -26,13 +26,13 @@ body[data-stage="eso"] .pf-av{ border-radius:16px; }
 /* ============================================================
    Estados comunes de UI (carga, vacío, error, offline, hecho)
    ============================================================ */
-.il-offline{ position:fixed; top:0; left:0; right:0; z-index:100; background:#5C6B7A; color:#fff;
+.il-offline{ position:fixed; top:0; left:0; right:0; z-index:100; background:var(--il-soft,#5C6B7A); color:#fff;
   text-align:center; font-size:.85rem; padding:8px 12px; }
 .il-offline[hidden]{ display:none; }
 
-.il-state{ max-width:420px; margin:60px auto; text-align:center; padding:24px; color:#5C6B7A; }
+.il-state{ max-width:420px; margin:60px auto; text-align:center; padding:24px; color:var(--il-soft,#5C6B7A); }
 .il-state .ic{ font-size:3rem; margin-bottom:10px; }
-.il-state h2{ font-family:'Plus Jakarta Sans',system-ui,sans-serif; color:#16294A; font-size:1.3rem; margin:0 0 6px; }
+.il-state h2{ font-family:'Plus Jakarta Sans',system-ui,sans-serif; color:var(--il-navy,#16294A); font-size:1.3rem; margin:0 0 6px; }
 .il-state p{ margin:0 0 16px; }
 
 /* Skeleton de carga */
@@ -44,17 +44,17 @@ body[data-stage="eso"] .pf-av{ border-radius:16px; }
 @keyframes il-shimmer{ 100%{ transform:translateX(100%); } }
 
 /* Sesión ya completada hoy */
-.il-done{ max-width:420px; margin:30px auto; text-align:center; padding:26px; background:#E7F1EC;
+.il-done{ max-width:420px; margin:30px auto; text-align:center; padding:26px; background:var(--il-jade-bg,#E7F1EC);
   border:1px solid #bfe0d0; border-radius:20px; }
 .il-done .ic{ font-size:2.6rem; }
-.il-done h2{ font-family:'Plus Jakarta Sans'; color:#16294A; margin:8px 0 4px; }
-.il-done p{ color:#5C6B7A; margin:0 0 14px; }
+.il-done h2{ font-family:'Plus Jakarta Sans'; color:var(--il-navy,#16294A); margin:8px 0 4px; }
+.il-done p{ color:var(--il-soft,#5C6B7A); margin:0 0 14px; }
 
 /* Foco visible por teclado (accesibilidad) en toda la app del alumno */
 .app-nav button:focus-visible,
 .cta-mission:focus-visible,
 .btn:focus-visible,
-a:focus-visible{ outline:3px solid #FF6B4A; outline-offset:2px; border-radius:10px; }
+a:focus-visible{ outline:3px solid var(--il-coral,#FF6B4A); outline-offset:2px; border-radius:10px; }
 
 @media (prefers-reduced-motion: reduce){
   .il-skeleton .bar::after{ animation:none; }

@@ -4,10 +4,12 @@
    nunca solo color: acierto/error llevan icono + texto).
    ============================================================ */
 :root{
-  --eng-navy:#16294A; --eng-coral:#FF6B4A; --eng-coral-ink:#E14F30;
-  --eng-jade:#1E9C74; --eng-jade-bg:#E7F1EC; --eng-red:#C0392B; --eng-red-bg:#FDECEA;
-  --eng-ink:#2B3646; --eng-faint:#8A97A6; --eng-line:#E4E8EE; --eng-line-2:#D9DEE5;
-  --eng-warm:#FBF8F1;
+  /* Derivan de los tokens canónicos --il-* (design-system.css). El literal es solo
+     respaldo por si el motor se prueba en una página sin design-system.css. */
+  --eng-navy:var(--il-navy,#16294A); --eng-coral:var(--il-coral,#FF6B4A); --eng-coral-ink:var(--il-coral-ink,#E14F30);
+  --eng-jade:var(--il-jade,#1E9C74); --eng-jade-bg:var(--il-jade-bg,#E7F1EC); --eng-red:var(--il-red,#C0392B); --eng-red-bg:var(--il-red-bg,#FDECEA);
+  --eng-ink:var(--il-ink,#1E2B3D); --eng-faint:var(--il-faint,#8A97A6); --eng-line:var(--il-line,#E4E8EE); --eng-line-2:var(--il-line-2,#D9DEE5);
+  --eng-warm:var(--il-warm,#FBF8F1);
 }
 
 .eng-card{max-width:640px;margin:0 auto;padding:4px}
