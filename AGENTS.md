@@ -18,6 +18,17 @@ Este repo tiene **dos proyectos**. Trabaja en el que corresponda y no los mezcle
 - **Despliegue:** Netlify publica `web-publica/` (ver `netlify.toml`). No metas la plataforma dentro de `web-publica/`.
 - **`supabase/` no se renombra** (lo exige la CLI de Supabase).
 
+## Colaboración entre agentes (Codex + Claude, a la vez)
+
+Dos agentes editan este repo. Para no pisaros:
+
+- **Sincroniza antes de empezar** (`git pull --rebase`) y **haz commits pequeños y frecuentes**, cada uno con una sola intención y un mensaje claro.
+- **No dejes el árbol roto**: corre los tests y comprueba en el navegador antes de commitear.
+- **Trabajad en zonas distintas** cuando sea posible (p. ej. uno en `web-publica/`, otro en `plataforma/`) para reducir conflictos.
+- **`AGENTS.md` es la fuente única de reglas.** Si estableces una convención nueva, escríbela aquí en el mismo commit.
+- Si cambias un `.js`/`.css`, **sube el `?v=`** en las páginas afectadas (si no, el otro verá versiones viejas por caché).
+- Ante un conflicto de merge, **no borres el trabajo del otro**: integra ambos cambios.
+
 ## Cómo probar
 
 ```bash
