@@ -5,13 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Mi inicio · Interlanguage HOME</title>
 <meta name="robots" content="noindex">
-<link rel="icon" type="image/png" sizes="32x32" href="../images/icons/favicon-32.png">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="design-system.css">
-<link rel="stylesheet" href="app.css">
-<link rel="stylesheet" href="etapa.css">
+<link rel="stylesheet" href="design-system.css?v=20260809">
+<link rel="stylesheet" href="app.css?v=20260809">
+<link rel="stylesheet" href="etapa.css?v=20260809">
 <style>
   /* ===== Home del alumno · layout editorial y responsive ===== */
   [hidden]{display:none !important;}
@@ -105,7 +105,14 @@
   .week .wk-top{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:16px;}
   .week .wk-top h3{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--jade-deep);font-family:var(--font-display);}
   .week .wk-count{font-family:var(--font-display);font-weight:800;color:var(--navy);font-size:.9rem;}
-  .route{display:flex;align-items:center;}
+  .route{display:flex;align-items:center;position:relative;padding-top:28px;}
+  /* Avión de papel que "viaja" hasta tu posición de la semana */
+  .wk-plane{position:absolute;top:2px;width:24px;height:24px;transform:translateX(-50%);
+    left:0;transition:left .7s cubic-bezier(.2,.7,.3,1);pointer-events:none;filter:drop-shadow(0 4px 6px rgba(225,79,48,.35));}
+  .wk-plane svg{display:block;width:24px;height:24px;}
+  .wk-plane.arrived{animation:planeBob 2.4s ease-in-out infinite;}
+  @keyframes planeBob{0%,100%{transform:translateX(-50%) translateY(0);}50%{transform:translateX(-50%) translateY(-3px);}}
+  @media (prefers-reduced-motion:reduce){ .wk-plane{transition:none;} .wk-plane.arrived{animation:none;} }
   .route .stop{width:34px;height:34px;flex-shrink:0;border-radius:50%;display:grid;place-items:center;background:#fff;
     border:2px solid rgba(30,156,116,.28);color:rgba(30,156,116,.5);transition:transform .3s cubic-bezier(.2,1.4,.3,1);}
   .route .stop svg{width:16px;height:16px;opacity:0;transition:opacity .3s ease;}
@@ -182,7 +189,9 @@
 </div>
 
 <div id="errState" class="il-state" role="alert" hidden>
-  <div class="ic" aria-hidden="true">😕</div>
+  <div class="ic" aria-hidden="true" style="width:52px;height:52px;margin:0 auto 10px;border-radius:16px;display:grid;place-items:center;background:var(--surface-2,#EEF2F6);color:var(--soft,#5C6B7A)">
+    <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4l16 16"/><path d="M7.5 8A4.5 4.5 0 0 0 6 16.8h9"/><path d="M17.5 15.8A3.5 3.5 0 0 0 16 9.2a5 5 0 0 0-7.6-2.3"/></svg>
+  </div>
   <h2>No hemos podido cargar tu inicio</h2>
   <p>Revisa tu conexión e inténtalo otra vez.</p>
   <button class="btn btn-primary" onclick="location.reload()">Reintentar</button>
@@ -267,13 +276,13 @@
   <nav class="app-nav" data-il-nav="inicio"></nav>
 </div>
 
-<script src="layout.js"></script>
+<script src="layout.js?v=20260809"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="supabase-config.js"></script>
-<script src="auth-utils.js"></script>
-<script src="etapa.js"></script>
-<script src="contenido.js"></script>
-<script src="auth.js"></script>
+<script src="supabase-config.js?v=20260809"></script>
+<script src="auth-utils.js?v=20260809"></script>
+<script src="etapa.js?v=20260809"></script>
+<script src="contenido.js?v=20260809"></script>
+<script src="auth.js?v=20260809"></script>
 <script>
   const $ = (id) => document.getElementById(id);
   const today = () => new Date().toISOString().slice(0, 10);
@@ -404,6 +413,22 @@
         $("wkMsg").textContent = count <= 0 ? "¡Empieza tu semana!"
           : (count >= goal ? "¡Meta de la semana conseguida!"
           : (count === 1 ? "¡Primera sesión de la semana!" : "¡Buen ritmo esta semana!"));
+
+        // Avión de papel: viaja hasta tu parada actual (identidad de "recorrido")
+        const arrived = count >= goal;
+        const frontier = arrived ? goal - 1 : count;   // parada a la que llega tu avión
+        const plane = document.createElement("span");
+        plane.className = "wk-plane" + (arrived ? " arrived" : "");
+        plane.setAttribute("aria-hidden", "true");
+        plane.innerHTML = '<svg viewBox="0 0 24 24"><path d="M2 12 22 3 15 21 11 14 Z" fill="var(--coral)"/><path d="M22 3 11 14 15 21 Z" fill="var(--coral-deep)"/></svg>';
+        route.appendChild(plane);
+        const placePlane = () => {
+          const stops = route.querySelectorAll(".stop");
+          const target = stops[Math.min(frontier, stops.length - 1)];
+          if (target) plane.style.left = (target.offsetLeft + target.offsetWidth / 2) + "px";
+        };
+        requestAnimationFrame(() => { plane.style.left = "12px"; requestAnimationFrame(placePlane); });
+        window.addEventListener("resize", placePlane);
       } catch (e) {}
 
       $("loading").hidden = true;

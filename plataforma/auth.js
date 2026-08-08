@@ -42,11 +42,11 @@
     : (id) => looksLikeEmail(id) ? String(id).trim().toLowerCase() : usernameToEmail(id);
 
   /* ---------------- MODO DEMO (localStorage) ---------------- */
-  const DEMO_DB = "il_demo_db_v1", DEMO_SESSION = "il_demo_session_v1";
+  const DEMO_DB = "il_demo_db_v2", DEMO_SESSION = "il_demo_session_v2";
   function seed() {
     return [
       { username: "admin", password: "admin1234", full_name: "Equipo Interlanguage", level: "", stage: "", parent_email: "", is_admin: true, must_change_password: false, created_at: "2026-07-01" },
-      { username: "lucia", password: "home1234", full_name: "Lucía G.", level: "Explorer · A1", stage: "Explorers", parent_email: "familia.g@email.com", is_admin: false, must_change_password: true, created_at: "2026-07-20" }
+      { username: "lucia", password: "home1234", full_name: "Lucía G.", level: "Explorer · A1", stage: "Explorers", parent_email: "familia.g@email.com", is_admin: false, must_change_password: false, created_at: "2026-07-20" }
     ];
   }
   function demoLoad() { try { return JSON.parse(localStorage.getItem(DEMO_DB)) || seed(); } catch (e) { return seed(); } }
@@ -327,6 +327,39 @@
   function loadDays(u) { try { return JSON.parse(localStorage.getItem(DKEY(u))) || []; } catch (e) { return []; } }
   function saveDays(u, arr) { try { localStorage.setItem(DKEY(u), JSON.stringify(arr)); } catch (e) {} }
   function markDay(u, d) { const a = loadDays(u); if (a.indexOf(d) === -1) { a.push(d); saveDays(u, a); } }
+  // Solo DEMO: si una cuenta de muestra tiene racha pero aún no hay registro de días,
+  // rellena un historial coherente con esa racha (datos de muestra en cuenta de muestra,
+  // para que el panel de progreso se pueda enseñar). Nunca toca cuentas reales.
+  function ensureDemoDays(username, p) {
+    if (!p || !p.streak || loadDays(username).length) return;
+    const set = {};
+    // La racha actual: N días consecutivos que terminan en el último día de práctica.
+    const endOffset = (p.last === today()) ? 0 : -1;
+    for (let i = 0; i < p.streak; i++) set[dayAdd(endOffset - i)] = 1;
+    // Actividad anterior dispersa (para que el mapa mensual respire), determinista.
+    [15, 16, 18, 21, 22, 25, 28, 30, 33, 36, 40, 43].forEach(function (n) {
+      if (n > (p.best || p.streak) + 20) return;
+      set[dayAdd(-n)] = 1;
+    });
+    saveDays(username, Object.keys(set).sort());
+  }
+  // Solo DEMO: medallas coherentes con las cifras de muestra (las que el umbral justifica).
+  // No otorga medallas de aciertos/sesión perfecta: dependen de la precisión real de una sesión.
+  function ensureDemoMedals(username, p) {
+    if (!p) return;
+    const mkey = "il_medals_" + username;
+    try { if ((JSON.parse(localStorage.getItem(mkey)) || []).length) return; } catch (e) { return; }
+    const earned = [];
+    const streak = p.streak || 0, best = p.best || 0, lessons = p.lessons || 0;
+    if (streak >= 2) earned.push("streak_2");
+    if (streak >= 5) earned.push("streak_5");
+    if (streak >= 10) earned.push("streak_10");
+    if (streak >= 30) earned.push("streak_30");
+    if (best >= 2) earned.push("record_racha");
+    if (lessons >= 1) earned.push("primera");
+    if (lessons >= 10) earned.push("diez_lecciones");
+    if (earned.length) { try { localStorage.setItem(mkey, JSON.stringify(earned)); } catch (e) {} }
+  }
   function seedProgress(username) {
     if (username === "lucia")
       return { gems: 240, streak: 12, best: 18, xp: 1240, lessons: 24, last: dayAdd(-1), owned: [], hat: "", acc: "" };
@@ -341,6 +374,8 @@
       let p;
       try { p = JSON.parse(localStorage.getItem(PKEY(prof.username))); } catch (e) {}
       if (!p) { p = seedProgress(prof.username); localStorage.setItem(PKEY(prof.username), JSON.stringify(p)); }
+      ensureDemoDays(prof.username, p);
+      ensureDemoMedals(prof.username, p);
       p.id = prof.id; p.username = prof.username; p.full_name = prof.full_name; p.level = prof.level;
       return p;
     }
@@ -481,6 +516,67 @@
       .select("mastery_state, objectives(can_do)")
       .eq("student_id", prof.student_id).eq("mastery_state", "mastered");
     return (data || []).map(m => m.objectives && m.objectives.can_do).filter(Boolean);
+  };
+
+  // Días con práctica dentro de una ventana (por defecto, últimos ~112 días para el mapa mensual).
+  // Fuente coherente con el objetivo semanal: registro local (+ último día) y, en real, sesiones de BD.
+  // Devuelve un array ordenado de fechas "YYYY-MM-DD". Nunca inventa en cuentas reales.
+  API.getActivityDays = async function (daysBack) {
+    daysBack = daysBack || 112;
+    const prof = await this.getProfile();
+    if (!prof) return [];
+    const cutoff = dayAdd(-daysBack);
+    const set = new Set();
+    loadDays(prof.username).forEach(d => { if (d >= cutoff) set.add(d); });
+    try { const pr = await this.getProgress(); if (pr && pr.last && pr.last >= cutoff) set.add(pr.last); } catch (e) {}
+    if (!DEMO && sb && prof.student_id) {
+      try {
+        const { data } = await sb.from("practice_sessions")
+          .select("created_at").eq("student_id", prof.student_id).gte("created_at", cutoff + "T00:00:00Z");
+        (data || []).forEach(s => set.add(new Date(s.created_at).toISOString().slice(0, 10)));
+      } catch (e) {}
+    }
+    return [...set].sort();
+  };
+
+  // Equilibrio por habilidad. Producción: agrupa objetivos dominados por skill (real).
+  // Demo: valores de muestra coherentes con la actividad (cuenta de muestra). Sin datos → hasData:false.
+  const SKILL_DEFS = [
+    { key: "vocabulary", label: "Vocabulario", icon: "book" },
+    { key: "grammar", label: "Gramática", icon: "pencil" },
+    { key: "listening", label: "Listening", icon: "ear" },
+    { key: "reading", label: "Reading", icon: "chat" }
+  ];
+  API.getSkillBreakdown = async function () {
+    const prof = await this.getProfile();
+    if (!prof) return { hasData: false, skills: SKILL_DEFS.map(s => ({ ...s, pct: 0 })) };
+    if (DEMO) {
+      const pr = await this.getProgress();
+      const n = pr ? (pr.lessons || 0) : 0;
+      if (!n) return { hasData: false, skills: SKILL_DEFS.map(s => ({ ...s, pct: 0 })) };
+      // Perfil de muestra determinista; sube suavemente con las misiones hechas.
+      const base = { vocabulary: 46, grammar: 34, listening: 22, reading: 40 };
+      const skills = SKILL_DEFS.map(s => ({ ...s, pct: Math.max(6, Math.min(94, Math.round(base[s.key] + n * 1.1))) }));
+      return { hasData: true, skills: skills };
+    }
+    if (!sb || !prof.student_id) return { hasData: false, skills: SKILL_DEFS.map(s => ({ ...s, pct: 0 })) };
+    try {
+      const { data } = await sb.from("mastery")
+        .select("mastery_state, objectives(skill)")
+        .eq("student_id", prof.student_id);
+      if (!data || !data.length) return { hasData: false, skills: SKILL_DEFS.map(s => ({ ...s, pct: 0 })) };
+      const tot = {}, mas = {};
+      data.forEach(r => {
+        const sk = (r.objectives && r.objectives.skill || "").toLowerCase();
+        if (!sk) return;
+        tot[sk] = (tot[sk] || 0) + 1;
+        if (r.mastery_state === "mastered") mas[sk] = (mas[sk] || 0) + 1;
+      });
+      const skills = SKILL_DEFS.map(s => ({ ...s, pct: tot[s.key] ? Math.round(100 * (mas[s.key] || 0) / tot[s.key]) : 0 }));
+      return { hasData: skills.some(s => s.pct > 0), skills: skills };
+    } catch (e) {
+      return { hasData: false, skills: SKILL_DEFS.map(s => ({ ...s, pct: 0 })) };
+    }
   };
 
   // Objetivo semanal: días de ESTA semana (lunes→domingo) con práctica real.

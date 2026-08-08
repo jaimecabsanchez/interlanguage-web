@@ -1,0 +1,12 @@
+# ============================================================
+#  Netlify · Interlanguage
+#  La WEB PÚBLICA vive en la carpeta "web-publica/".
+#  Con esto Netlify publica esa carpeta como raíz del sitio,
+#  y lee "web-publica/_headers" para caché y seguridad.
+#
+#  (La plataforma "Interlanguage HOME" es un proyecto aparte:
+#   se desarrolla en /plataforma y se desplegará por separado
+#   cuando esté lista para producción.)
+# ============================================================
+[build]
+  publish = "web-publica"

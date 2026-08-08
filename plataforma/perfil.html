@@ -5,14 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Mi perfil · Interlanguage HOME</title>
 <meta name="robots" content="noindex">
-<link rel="icon" type="image/png" sizes="32x32" href="../images/icons/favicon-32.png">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="design-system.css">
-<link rel="stylesheet" href="app.css">
-<link rel="stylesheet" href="etapa.css">
-<link rel="stylesheet" href="shell.css">
+<link rel="stylesheet" href="design-system.css?v=20260809">
+<link rel="stylesheet" href="app.css?v=20260809">
+<link rel="stylesheet" href="etapa.css?v=20260809">
+<link rel="stylesheet" href="shell.css?v=20260809">
 <style>
   .pf-hd{display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:20px;padding:20px;box-shadow:var(--shadow-soft);}
   .pf-av{width:72px;height:72px;border-radius:22px;background:linear-gradient(150deg,var(--coral),var(--coral-deep));display:grid;place-items:center;font-size:2.2rem;box-shadow:0 10px 20px -10px var(--coral);}
@@ -23,7 +23,10 @@
   .card-soft h3.h{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);font-family:var(--font-display);margin-bottom:12px;}
   .acct-row{display:flex;flex-wrap:wrap;gap:10px;}
   .nemo-cta{display:flex;align-items:center;gap:14px;background:var(--coral-tint);border:1px solid var(--coral);border-radius:16px;padding:16px;text-decoration:none;}
-  .nemo-cta .gi{font-size:1.9rem;}
+  .nemo-cta .gi{display:grid;place-items:center;width:44px;height:44px;border-radius:12px;background:#fff;color:var(--coral-deep);flex:0 0 auto;}
+.nemo-cta .gi svg{width:22px;height:22px;}
+.btn-ghost [data-il-icon]{display:inline-flex;vertical-align:-2px;margin-right:6px;}
+.btn-ghost [data-il-icon] svg{width:1em;height:1em;}
   .nemo-cta b{color:var(--navy);font-family:var(--font-display);display:block;font-size:.98rem;}
   .nemo-cta span{font-size:.83rem;color:var(--soft);}
   .nemo-cta .go{margin-left:auto;color:var(--coral-deep);font-weight:800;font-size:1.2rem;transition:transform .15s ease;}
@@ -55,7 +58,7 @@
     </div>
 
     <a href="tienda.html" class="nemo-cta">
-      <span class="gi">🎨</span>
+      <span class="gi" data-il-icon="shirt"></span>
       <span><b>Personalizar a Nemo</b><span>Gorros, colores y complementos con tus gemas</span></span>
       <span class="go" aria-hidden="true">›</span>
     </a>
@@ -63,7 +66,7 @@
     <div class="card-soft">
       <h3 class="h">Tu cuenta</h3>
       <div class="acct-row">
-        <a href="cambiar-clave.html" class="btn btn-ghost">🔒 Cambiar contraseña</a>
+        <a href="cambiar-clave.html" class="btn btn-ghost"><span data-il-icon="lock"></span>Cambiar contraseña</a>
         <button class="btn btn-ghost" id="logout">Salir</button>
       </div>
     </div>
@@ -74,12 +77,12 @@
   <nav class="app-nav" data-il-nav="perfil"></nav>
 </div>
 
-<script src="layout.js"></script>
+<script src="layout.js?v=20260809"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="supabase-config.js"></script>
-<script src="auth-utils.js"></script>
-<script src="etapa.js"></script>
-<script src="auth.js"></script>
+<script src="supabase-config.js?v=20260809"></script>
+<script src="auth-utils.js?v=20260809"></script>
+<script src="etapa.js?v=20260809"></script>
+<script src="auth.js?v=20260809"></script>
 <script>
   const $ = (id) => document.getElementById(id);
   (async () => {
@@ -90,7 +93,11 @@
     IL_ETAPA.apply(p);
     $("pfName").textContent = p.full_name || "Alumno";
     $("pfCode").textContent = p.username || "—";
-    if (p.level) $("pfLevel").textContent = p.level;
+    // Nivel: misma fuente de verdad que Progreso y la composición de la sesión (test de colocación)
+    try {
+      const pl = await ILAuth.getPlacement();
+      $("pfLevel").textContent = pl && pl.placed ? pl.label : (p.level || "Sin nivel aún · haz el test");
+    } catch (e) { if (p.level) $("pfLevel").textContent = p.level; }
     $("app").classList.remove("hidden");
   })();
   $("logout").addEventListener("click", async () => { await ILAuth.signOut(); location.href = "index.html"; });
