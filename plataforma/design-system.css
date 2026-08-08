@@ -33,6 +33,15 @@
   --il-r-sm:10px; --il-r-md:14px; --il-r-lg:18px; --il-r-xl:22px;
   --il-shadow:0 10px 24px -14px rgba(22,41,74,.28);
 
+  /* Sistema de ELEVACIÓN por niveles (coherente en toda la app) */
+  --il-e1:0 1px 2px rgba(22,41,74,.06), 0 2px 8px -4px rgba(22,41,74,.10);   /* tarjeta en reposo */
+  --il-e2:0 6px 16px -8px rgba(22,41,74,.18);                                 /* elemento elevado / hover */
+  --il-e3:0 18px 40px -18px rgba(22,41,74,.34);                               /* flotante / modal */
+  --il-e-coral:0 12px 24px -12px rgba(225,79,48,.45);                         /* CTA coral */
+
+  /* Anillo de foco accesible (teclado) */
+  --il-focus:0 0 0 3px rgba(255,107,74,.45);
+
   /* Objetivos táctiles y motion */
   --il-touch:44px;
   --il-motion-fast:120ms; --il-motion:200ms; --il-ease:cubic-bezier(.2,.7,.3,1);

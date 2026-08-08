@@ -87,6 +87,62 @@
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", mount);
   else mount();
+
+  /* ---------- PWA: manifest + tema + icono de app (sin tocar cada <head>) ---------- */
+  function ensurePWA() {
+    var head = document.head; if (!head) return;
+    function add(sel, make) { if (!document.querySelector(sel)) head.appendChild(make()); }
+    add('link[rel="manifest"]', function () { var l = document.createElement("link"); l.rel = "manifest"; l.href = "manifest.webmanifest"; return l; });
+    add('meta[name="theme-color"]', function () { var m = document.createElement("meta"); m.name = "theme-color"; m.content = "#16294A"; return m; });
+    add('link[rel="apple-touch-icon"]', function () { var l = document.createElement("link"); l.rel = "apple-touch-icon"; l.href = "assets/apple-touch-icon.png"; return l; });
+    add('meta[name="apple-mobile-web-app-capable"]', function () { var m = document.createElement("meta"); m.name = "apple-mobile-web-app-capable"; m.content = "yes"; return m; });
+    add('meta[name="apple-mobile-web-app-status-bar-style"]', function () { var m = document.createElement("meta"); m.name = "apple-mobile-web-app-status-bar-style"; m.content = "default"; return m; });
+  }
+  ensurePWA();
+
+  /* ---------- Toasts (window.ILToast) ---------- */
+  function toastLayer() {
+    var l = document.querySelector(".il-toasts");
+    if (!l) { l = document.createElement("div"); l.className = "il-toasts"; l.setAttribute("aria-live", "polite"); document.body.appendChild(l); }
+    return l;
+  }
+  function ILToast(msg, opts) {
+    opts = opts || {};
+    var type = opts.type || "info";            // "ok" | "err" | "info"
+    var ms = opts.duration || 2200;
+    var t = document.createElement("div");
+    t.className = "il-toast " + type;
+    var ic = { ok: "check", err: "shield", info: "" }[type];
+    t.innerHTML = (ic && ICONS[ic] ? '<span class="ic">' + ICONS[ic] + "</span>" : "") + "<span></span>";
+    t.lastChild.textContent = msg;             // texto seguro (sin inyección)
+    toastLayer().appendChild(t);
+    requestAnimationFrame(function () { t.classList.add("show"); });
+    setTimeout(function () { t.classList.remove("show"); setTimeout(function () { t.remove(); }, 260); }, ms);
+    return t;
+  }
+
+  /* ---------- Microcelebración sobria (window.ILConfetti) ---------- */
+  function ILConfetti(opts) {
+    opts = opts || {};
+    if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    var n = opts.count || 26;
+    var colors = ["#FF6B4A", "#1E9C74", "#16294A", "#F4A73B"];
+    var wrap = document.createElement("div"); wrap.className = "il-confetti";
+    for (var i = 0; i < n; i++) {
+      var p = document.createElement("i");
+      p.style.left = Math.random() * 100 + "%";
+      p.style.background = colors[i % colors.length];
+      p.style.animationDuration = (1.6 + Math.random() * 1.4) + "s";
+      p.style.animationDelay = (Math.random() * 0.25) + "s";
+      p.style.transform = "translateY(0) rotate(" + (Math.random() * 360) + "deg)";
+      wrap.appendChild(p);
+    }
+    document.body.appendChild(wrap);
+    setTimeout(function () { wrap.remove(); }, 3400);
+  }
+
   window.ILLayout = { railHTML: railHTML, navHTML: navHTML, mount: mount, icon: icon };
   window.ILIcon = icon;
+  window.ILToast = ILToast;
+  window.ILConfetti = ILConfetti;
 })();

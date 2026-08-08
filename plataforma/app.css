@@ -169,3 +169,64 @@ table.students tr:last-child td{border-bottom:none;}
 .spinner{width:18px; height:18px; border:3px solid rgba(255,255,255,.4); border-top-color:#fff; border-radius:50%; animation:spin .7s linear infinite; display:inline-block;}
 .center-min{min-height:100vh; display:grid; place-items:center; padding:24px;}
 .hidden{display:none !important;}
+
+/* ============================================================
+   PULIDO "APP PROFESIONAL" (Bloque B) · compartido por todas las
+   pantallas (app.css se carga en todas). Usa los tokens --il-*.
+   ============================================================ */
+
+/* — Números que no "bailan": cifras siempre tabulares — */
+.chip-stat, .stat-pill, .nums4 .v, .nums3 .v, .streak-nums .v,
+.bal, .cred-row .v, [data-tnum]{ font-variant-numeric:tabular-nums; font-feature-settings:"tnum" 1; }
+
+/* — Selección de texto con color de marca — */
+::selection{ background:var(--il-coral-tint); color:var(--navy); }
+
+/* — Elevación coherente (utilidades) — */
+.elev-1{ box-shadow:var(--il-e1); } .elev-2{ box-shadow:var(--il-e2); } .elev-3{ box-shadow:var(--il-e3); }
+
+/* — Feedback táctil unificado en TODO lo interactivo — */
+.btn, button, a.btn, .day-cta, .buy, .lh-cta, .sr-go, .nemo-cta, .soft-row .sr-go{
+  transition:transform var(--il-motion-fast,120ms) var(--il-ease), box-shadow var(--il-motion,200ms) var(--il-ease), background var(--il-motion,200ms) var(--il-ease), opacity var(--il-motion,200ms) var(--il-ease);
+}
+.btn:active, button:not(:disabled):active, .day-cta:active, .buy:active, .lh-cta:active{ transform:translateY(0) scale(.97); }
+.btn-primary{ box-shadow:var(--il-e-coral); }
+.btn-primary:hover{ box-shadow:0 18px 30px -12px rgba(225,79,48,.55); }
+/* Anillo de foco por teclado, suave y de marca */
+:focus-visible{ outline:none; box-shadow:var(--il-focus); border-radius:10px; }
+a:focus-visible, button:focus-visible, .btn:focus-visible{ position:relative; z-index:1; }
+
+/* — Entrada suave de la pantalla (sin pelear con las animaciones de tarjetas) — */
+#app:not(.hidden){ animation:ilAppIn .34s var(--il-ease) both; }
+@keyframes ilAppIn{ from{ opacity:0; } to{ opacity:1; } }
+
+/* — Skeletons de carga (reutilizable): <div class="skeleton" style="height:…"></div> — */
+.skeleton{ position:relative; overflow:hidden; background:var(--surface-2); border-radius:12px; }
+.skeleton::after{ content:""; position:absolute; inset:0; transform:translateX(-100%);
+  background:linear-gradient(90deg, transparent, rgba(255,255,255,.55), transparent); animation:ilShimmer 1.3s infinite; }
+.skeleton.line{ height:12px; border-radius:100px; }
+.skeleton.round{ border-radius:50%; }
+@keyframes ilShimmer{ 100%{ transform:translateX(100%); } }
+
+/* — Toasts con estilo propio (window.ILToast) — */
+.il-toasts{ position:fixed; left:50%; bottom:calc(84px + env(safe-area-inset-bottom,0px)); transform:translateX(-50%);
+  display:flex; flex-direction:column; gap:8px; z-index:9000; pointer-events:none; width:max-content; max-width:92vw; }
+.il-toast{ display:flex; align-items:center; gap:9px; background:var(--navy); color:#fff; font-weight:700; font-size:.88rem;
+  padding:11px 16px; border-radius:14px; box-shadow:var(--il-e3); opacity:0; transform:translateY(10px) scale(.98);
+  transition:opacity .22s var(--il-ease), transform .22s var(--il-ease); }
+.il-toast.show{ opacity:1; transform:none; }
+.il-toast.ok{ background:var(--jade-deep); } .il-toast.err{ background:var(--il-red); } .il-toast.info{ background:var(--navy); }
+.il-toast .ic{ display:inline-flex; line-height:0; } .il-toast .ic svg{ width:1.1em; height:1.1em; }
+@media (min-width:960px){ .il-toasts{ bottom:24px; } }
+
+/* — Microcelebración sobria (window.ILConfetti) — */
+.il-confetti{ position:fixed; inset:0; pointer-events:none; z-index:8000; overflow:hidden; }
+.il-confetti i{ position:absolute; top:-12px; width:9px; height:14px; border-radius:2px; opacity:.95; animation:ilFall linear forwards; }
+@keyframes ilFall{ to{ transform:translateY(105vh) rotate(720deg); opacity:.9; } }
+
+@media (prefers-reduced-motion:reduce){
+  #app:not(.hidden){ animation:none; }
+  .skeleton::after{ animation:none; }
+  .il-confetti{ display:none; }
+  .btn:active, button:active{ transform:none; }
+}
