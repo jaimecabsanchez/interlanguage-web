@@ -40,14 +40,14 @@
     <aside class="rail" data-il-rail="perfil"></aside>
     <div class="shell-main">
   <div class="app-top">
-    <span class="chip-stat streak">🔥 12</span>
-    <span class="chip-stat coins">💎 <span id="topGems">240</span></span>
+    <span class="chip-stat streak"><span data-il-icon="flame"></span> <span id="topStreak">0</span></span>
+    <span class="chip-stat coins"><span data-il-icon="gem"></span> <span id="topGems">240</span></span>
   </div>
 
   <div class="app-shell">
     <div class="shop-hd">
       <h1>Tienda</h1>
-      <span class="bal">💎 <span id="gems">240</span> gemas</span>
+      <span class="bal"><span data-il-icon="gem"></span> <span id="gems">240</span> gemas</span>
       <div class="avatar-preview" id="avatar">🦊<span class="hat" id="hat"></span><span class="acc" id="acc"></span></div>
       <div class="equipped-note" id="note">Gana gemas practicando y personaliza a tu zorro</div>
     </div>
@@ -130,7 +130,7 @@
     if (!p) { location.href = "index.html"; return; }
     if (p.is_admin) { location.href = "admin.html"; return; }
     const pr = await ILAuth.getProgress();
-    if (pr) { gems = pr.gems; owned = pr.owned || []; if (pr.hat) $("hat").textContent = pr.hat; if (pr.acc) $("acc").textContent = pr.acc; }
+    if (pr) { gems = pr.gems; owned = pr.owned || []; $("topStreak").textContent = pr.streak || 0; if (pr.hat) $("hat").textContent = pr.hat; if (pr.acc) $("acc").textContent = pr.acc; }
     $("app").classList.remove("hidden");
     render();
   })();

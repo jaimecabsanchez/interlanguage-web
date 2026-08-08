@@ -92,6 +92,10 @@ input:focus{border-color:var(--coral); box-shadow:0 0 0 4px var(--coral-tint); o
   background:#fff; border:1px solid var(--line); border-radius:100px; padding:7px 14px; box-shadow:var(--shadow-soft);}
 .chip-stat.streak{color:var(--coral-deep);}
 .chip-stat.coins{color:var(--navy);}
+/* Iconos propios (SVG) inyectados por layout.js — reemplazan a los emojis de UI */
+[data-il-icon]{display:inline-flex; align-items:center; line-height:0;}
+[data-il-icon] svg{width:1em; height:1em;}
+.chip-stat [data-il-icon] svg{width:1.05em; height:1.05em;}
 .greet{margin:14px 2px 4px;}
 .greet h1{font-size:1.5rem;}
 .greet p{color:var(--soft); font-size:.92rem; margin:2px 0 0;}
