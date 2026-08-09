@@ -184,3 +184,82 @@ body[data-age-mode="secondary"] .setting-row{min-height:64px}
 @media (prefers-reduced-motion:reduce){
   .age-mode-switcher,body[data-age-mode] .daily-mission::after{backdrop-filter:none}
 }
+
+/* ============================================================
+   FASE 2 · PRIMARIA INICIAL (6–8): menos densidad, más juego.
+   Regla: "¿necesita el niño esta información AHORA para saber
+   qué hacer?" Si no → se oculta (sigue disponible en superior/ESO
+   y en el panel familiar). Sin tocar el HTML: solo capa de etapa.
+   ============================================================ */
+
+/* — Paleta más cálida y suave (mint + crema + azul claro + amarillo cálido) — */
+body[data-age-mode="primary-young"]{
+  background:
+    radial-gradient(120% 72% at 100% 0%, var(--il-warning-soft) 0%, transparent 44%),
+    radial-gradient(110% 64% at 0% 3%, var(--il-success-soft) 0%, transparent 42%),
+    radial-gradient(130% 85% at 50% 104%, var(--il-primary-soft) 0%, transparent 54%),
+    var(--il-background) !important;
+}
+body[data-age-mode="primary-young"] .daily-mission{
+  background:linear-gradient(180deg, var(--il-surface) 62%, var(--il-success-soft));
+}
+body[data-age-mode="primary-young"] .daily-mission::after{
+  border-color:var(--il-warning-soft);opacity:.8;   /* aro cálido en lugar de azul */
+}
+body[data-age-mode="primary-young"] .insight-card{
+  background:linear-gradient(180deg, var(--il-surface) 70%, var(--il-primary-soft));
+}
+
+/* — MENOS TEXTO: se ocultan explicaciones y métricas no imprescindibles AHORA — */
+/*   Inicio */
+body[data-age-mode="primary-young"] .mission-outcome,
+body[data-age-mode="primary-young"] .mission-meta,
+body[data-age-mode="primary-young"] .skill-list,
+body[data-age-mode="primary-young"] .mission-context,
+body[data-age-mode="primary-young"] .weekly-goal .sub,
+body[data-age-mode="primary-young"] .week-reward,
+body[data-age-mode="primary-young"] .mission-progress-copy span:last-child,
+body[data-age-mode="primary-young"] .stamp-copy p{
+  display:none !important;
+}
+/*   Progreso · fuera captions y textos de segundo nivel */
+body[data-age-mode="primary-young"] .learning-intro > p,
+body[data-age-mode="primary-young"] .skills-section .section-heading p,
+body[data-age-mode="primary-young"] .week-support #weekComparison,
+body[data-age-mode="primary-young"] .consistency-item small,
+body[data-age-mode="primary-young"] .stamps-intro > p{
+  display:none !important;
+}
+/*   Menos métricas simultáneas: se muestran las 3 primeras (lo esencial) */
+body[data-age-mode="primary-young"] .learning-metric:nth-child(n+4){ display:none; }
+
+/* — TÍTULOS más grandes y saludo más presente — */
+body[data-age-mode="primary-young"] .home-greeting h1{ font-size:clamp(1.9rem,1.5rem + 1.4vw,2.5rem); }
+body[data-age-mode="primary-young"] .home-greeting p{ font-size:var(--il-fs-base); }
+
+/* — PROGRESO VISUAL con más presencia — */
+body[data-age-mode="primary-young"] .week-progress{ height:11px; }
+body[data-age-mode="primary-young"] .mission-route__track .route-step{ height:6px; }
+body[data-age-mode="primary-young"] .week-day__dot{ font-size:var(--il-fs-sm); border-width:2.5px; }
+
+/* — BOTÓN principal ligeramente más expresivo (sin estridencias) — */
+body[data-age-mode="primary-young"] .mission-cta{
+  border-radius:var(--il-radius-xl);
+  box-shadow:0 14px 26px -12px color-mix(in srgb, var(--il-secondary) 60%, transparent);
+}
+body[data-age-mode="primary-young"] .mission-cta:hover{ transform:translateY(-2px); }
+body[data-age-mode="primary-young"] .mission-cta:active{ transform:translateY(0) scale(.98); }
+
+/* — MOVIMIENTO sutil: el avión "flota" despacio (solo young, respeta reduced-motion) — */
+@media (prefers-reduced-motion:no-preference){
+  body[data-age-mode="primary-young"] .stamp-mark .il-icon,
+  body[data-age-mode="primary-young"] .stamp-mark [data-il-icon]{
+    animation:il-young-float 3.6s var(--il-ease) infinite;
+  }
+}
+@keyframes il-young-float{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-4px); } }
+
+/* — ESO: un punto más sobrio y directo (refuerza el contraste entre etapas) — */
+body[data-age-mode="secondary"] .daily-mission::after{ display:none; }
+body[data-age-mode="secondary"] .home-greeting p{ color:var(--il-muted); font-size:var(--il-fs-sm); }
+body[data-age-mode="secondary"] .mission-context{ font-size:var(--il-fs-xs); }
