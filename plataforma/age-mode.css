@@ -213,13 +213,13 @@ body[data-age-mode="primary-young"] .insight-card{
 /* — MENOS TEXTO: se ocultan explicaciones y métricas no imprescindibles AHORA — */
 /*   Inicio */
 body[data-age-mode="primary-young"] .mission-outcome,
-body[data-age-mode="primary-young"] .mission-meta,
-body[data-age-mode="primary-young"] .skill-list,
 body[data-age-mode="primary-young"] .mission-context,
 body[data-age-mode="primary-young"] .weekly-goal .sub,
 body[data-age-mode="primary-young"] .week-reward,
 body[data-age-mode="primary-young"] .mission-progress-copy span:last-child,
-body[data-age-mode="primary-young"] .stamp-copy p{
+body[data-age-mode="primary-young"] .stamp-copy p:not(.stamp-count),
+body[data-age-mode="primary-young"] #stampRemaining,
+body[data-age-mode="primary-young"] .stamp-bar{
   display:none !important;
 }
 /*   Progreso · fuera captions y textos de segundo nivel */
@@ -258,6 +258,24 @@ body[data-age-mode="primary-young"] .mission-cta:active{ transform:translateY(0)
   }
 }
 @keyframes il-young-float{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-4px); } }
+
+/* — Inicio · Primaria inicial: ilustración protagonista + habilidades como iconos + CTA con energía — */
+body[data-age-mode="primary-young"] .mission-illo{ display:block; position:static; width:88px; height:88px; margin:0 0 var(--il-space-2); }
+body[data-age-mode="primary-young"] .daily-mission::after{ display:none; }   /* la ilustración sustituye al aro decorativo */
+/*   habilidades: iconos redondos con tooltip (título), sin palabras grandes */
+body[data-age-mode="primary-young"] .skill-list{ gap:10px; margin-bottom:var(--il-space-5); }
+body[data-age-mode="primary-young"] .skill-chip{ width:46px; height:46px; padding:0; border-radius:50%; display:grid; place-items:center; }
+body[data-age-mode="primary-young"] .skill-chip__label{ display:none; }
+body[data-age-mode="primary-young"] .skill-chip__icon svg{ width:22px; height:22px; }
+/*   CTA con más energía (coral); "Hecho" se mantiene en verde — */
+body[data-age-mode="primary-young"] .mission-cta:not(.is-complete){ background:var(--il-secondary); color:var(--il-on-primary); }
+body[data-age-mode="primary-young"] .mission-cta:not(.is-complete):hover{ background:var(--il-secondary-hover); }
+body[data-age-mode="primary-young"] .mission-nemo{ font-size:var(--il-fs-base); }
+body[data-age-mode="primary-young"] .week-note{ font-size:var(--il-fs-lg); }
+/*   Sello más grande y protagonista, con contador simple — */
+body[data-age-mode="primary-young"] .stamp-body{ grid-template-columns:96px minmax(0,1fr); }
+body[data-age-mode="primary-young"] .stamp-mark{ width:92px; height:92px; }
+body[data-age-mode="primary-young"] .stamp-mark svg{ width:44px; height:44px; }
 
 /* — ESO: un punto más sobrio y directo (refuerza el contraste entre etapas) — */
 body[data-age-mode="secondary"] .daily-mission::after{ display:none; }
