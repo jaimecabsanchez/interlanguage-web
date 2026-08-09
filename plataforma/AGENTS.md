@@ -7,6 +7,7 @@ App de práctica de inglés (alumnos de Primaria + ESO). HTML/CSS/JS plano + Sup
 - **Pantallas**: `inicio.html`, `leccion.html`, `progreso.html`, `perfil.html`, `tienda.html`, `test-nivel.html`, `index.html` (login), `admin*.html`, `onboarding.html`, `cambiar-clave.html`, `informe.html`.
 - **`auth.js`** → `window.ILAuth`: login, perfil, progreso, racha, medallas, nivel (CEFR), actividad. Funciona con **Supabase real** o en **modo DEMO** (localStorage).
 - **`layout.js`** → `window.ILLayout` / `window.ILIcon`: **única** fuente de la navegación (rail + nav inferior) y de los **iconos SVG**.
+- **`il-visual.js`** → `window.ILVisual`: **única** fuente del lenguaje visual con función. `nemo(mood)` = personaje guía (zorro), `stamp(id,{locked})` = sello de pasaporte, `plane(kind,el)` = avión del progreso, `reveal(el)` = revelado de desbloqueo. Estilos en `il-visual.css`.
 - **`contenido.js`** → `window.IL_CONTENIDO`: banco de unidades/ejercicios de ejemplo (en real vendrá de Supabase). El mini-CMS (`admin-contenido.html`) añade contenido en `localStorage.il_cms_content`.
 - **`motor/`**: motor de actividades (plantillas P1–P7), pedagogía (repaso espaciado), motivación (medallas), matriz (edad↔ejercicio).
 - **CSS**: `design-system.css` (tokens `--il-*`) → `app.css` (alias) → `shell.css` (layout con rail) → `etapa.css`.
@@ -18,7 +19,12 @@ App de práctica de inglés (alumnos de Primaria + ESO). HTML/CSS/JS plano + Sup
 - **Iconos por JS**: `ILIcon('nombre')` devuelve un `<svg>` **sin tamaño**. Al inyectarlo, dale tamaño con una regla directa `.contenedor svg{width:…}` (NO con `[data-il-icon] svg`, que no aplica a SVG crudos).
 - Tras inyectar HTML nuevo que contenga `data-il-icon`, llama a **`window.ILLayout.mount()`** para que se pinten los iconos.
 - **Cache-busting**: los `<script>`/`<link>` locales llevan `?v=YYYYMMDD`. **Si cambias un `.js` o `.css`, sube ese número** en las páginas que lo usan (si no, el navegador sirve la versión vieja).
-- **No emojis como iconografía de interfaz** (usa SVG de `layout.js`). Las excepciones son contenido editorial o cosméticos deliberados. El avión de papel es la identidad actual; no consolides una mascota hasta que Dirección de Producto la defina.
+- **No emojis como iconografía de interfaz** (usa SVG de `layout.js` / `il-visual.js`). Las excepciones son contenido editorial o cosméticos deliberados.
+- **Lenguaje visual con función (no decoración)**, todo desde `il-visual.js`:
+  - **Avión de papel** = hilo del progreso (llegar/avanzar/despegar/ruta/nivel). No repitas el icono como adorno.
+  - **Nemo** (zorro guía) aparece **solo en momentos** (bienvenida, pista, acierto, error, misión, desbloqueo), nunca fijo en pantalla. Presencia por etapa: inicial > superior (ocasional) > ESO (mínima/nula). No uses el avión ni la letra "N" como su cara.
+  - **Sellos** = pasaporte con identidad propia por `id` (marco común + motivo único), sin emojis ni medallas genéricas; bloqueado = desaturado con candado.
+  - **Microanimaciones ligadas a acciones** y **siempre** con `prefers-reduced-motion` (usa `ILVisual.reduceMotion()`).
 
 ## Modo DEMO (para desarrollo local)
 
