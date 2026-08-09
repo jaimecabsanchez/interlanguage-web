@@ -220,7 +220,7 @@
         : (inProgress ? "Tu misión está en marcha. Continúa donde la dejaste."
         : (gap != null && gap >= 3 ? "Qué bien verte de nuevo. Retomamos con una misión breve." : "Tienes una misión breve preparada para hoy."));
       const streak = progress ? (progress.streak || 0) : 0; $("streak").textContent = streak + (streak === 1 ? " día" : " días");
-      $("level").textContent = profile.level || (placement && placement.cefr) || "Explorer";
+      $("level").textContent = (placement && placement.placed ? placement.label : profile.level) || "Explorer";
       $("missionTitle").textContent = titleFor(unit); $("missionOutcome").textContent = outcomeFor(unit);
       $("activityCount").textContent = session.length + (session.length === 1 ? " actividad" : " actividades"); $("missionTime").textContent = "~" + estimateMinutes(session.length) + " min";
       const skills = Array.from(new Set(session.map(item => item.habilidad).filter(Boolean))).slice(0, 4); $("skillList").innerHTML = "";

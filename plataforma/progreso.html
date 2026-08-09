@@ -13,568 +13,149 @@
 <link rel="stylesheet" href="app.css?v=20260809d">
 <link rel="stylesheet" href="etapa.css?v=20260809d">
 <link rel="stylesheet" href="shell.css?v=20260809d">
-<style>
-  /* Números tabulares en todo el panel: que las cifras no "bailen" */
-  .app-shell{font-variant-numeric:tabular-nums;}
-  .greet h1{display:flex;align-items:center;gap:8px;}
-
-  /* Tarjeta base del panel */
-  .card-soft h3.h{display:flex;align-items:center;gap:7px;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);font-family:var(--font-display);margin-bottom:12px;}
-  .card-soft h3.h b{color:var(--jade-deep);}
-  .card-soft h3.h [data-il-icon] svg{width:1.05em;height:1.05em;}
-
-  /* ---- Nivel CEFR (hero) ---- */
-  .level-hero{background:linear-gradient(135deg,var(--navy),#1d3a63);color:#fff;border-radius:20px;padding:20px;box-shadow:0 18px 34px -20px rgba(22,41,74,.75);}
-  .level-hero .lh-top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
-  .level-hero .lh-lbl{font-size:.68rem;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.66);}
-  .level-hero .lh-name{font-family:var(--font-display);font-weight:800;font-size:1.5rem;line-height:1.1;margin-top:2px;}
-  .level-hero .lh-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.22);border-radius:100px;padding:6px 12px;font-weight:700;font-size:.82rem;}
-  .level-hero .lh-badge [data-il-icon] svg{width:1.05em;height:1.05em;}
-  .ladder{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:18px;}
-  .ladder .step{position:relative;text-align:center;}
-  .ladder .step .bar{height:8px;border-radius:100px;background:rgba(255,255,255,.16);overflow:hidden;}
-  .ladder .step .bar i{display:block;height:100%;width:0;background:var(--il-success);transition:width var(--il-duration-slow) var(--il-ease);}
-  .ladder .step.done .bar i{width:100%;}
-  .ladder .step.current .bar i{width:100%;}
-  .ladder .step .nm{font-size:.68rem;margin-top:7px;color:rgba(255,255,255,.6);font-weight:600;}
-  .ladder .step.current .nm{color:#fff;font-weight:800;}
-  .ladder .step.current::after{content:"";position:absolute;top:-9px;left:50%;transform:translateX(-50%);width:7px;height:7px;border-radius:50%;background:var(--il-secondary);box-shadow:0 0 0 3px rgba(242,107,74,.28);}
-  .lh-foot{margin-top:14px;font-size:.86rem;color:rgba(255,255,255,.82);line-height:1.4;}
-  .lh-cta{display:inline-flex;align-items:center;justify-content:center;min-height:var(--il-touch);margin-top:12px;background:var(--il-primary);color:#fff;text-decoration:none;font-family:var(--font-display);font-weight:800;font-size:.9rem;padding:11px 18px;border-radius:var(--il-radius-sm);box-shadow:var(--il-shadow-sm);}
-  .lh-cta:hover{background:var(--il-primary-hover);color:#fff}
-
-  /* ---- Objetivo semanal ---- */
-  .week{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-top:6px;}
-  .week .d{display:flex;flex-direction:column;align-items:center;gap:6px;}
-  .week .d .dot{width:100%;aspect-ratio:1;max-width:40px;border-radius:12px;background:var(--surface-2);display:grid;place-items:center;color:var(--faint);}
-  .week .d .dot [data-il-icon] svg{width:1.1em;height:1.1em;}
-  .week .d.on .dot{background:var(--jade);color:#fff;box-shadow:0 8px 16px -8px var(--jade);}
-  .week .d.today .dot{outline:2px solid var(--il-primary);outline-offset:2px;}
-  .week .d .lbl{font-size:.62rem;color:var(--faint);text-transform:uppercase;letter-spacing:.03em;}
-  .week-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;}
-  .week-head b{color:var(--jade-deep);font-family:var(--font-display);}
-
-  /* ---- Racha ---- */
-  .streak-card{display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:center;}
-  .streak-flame{width:60px;height:60px;border-radius:18px;background:var(--il-warning-soft);color:var(--il-warning);display:grid;place-items:center;}
-  .streak-flame [data-il-icon] svg{width:30px;height:30px;}
-  .streak-nums{display:flex;gap:22px;}
-  .streak-nums .n .v{font-family:var(--font-display);font-weight:800;color:var(--navy);font-size:1.5rem;}
-  .streak-nums .n .l{font-size:.68rem;color:var(--faint);text-transform:uppercase;letter-spacing:.04em;}
-  .comodin{grid-column:1/-1;display:flex;align-items:center;gap:8px;background:var(--surface-2);border-radius:12px;padding:9px 12px;font-size:.82rem;color:var(--soft);margin-top:4px;}
-  .comodin [data-il-icon]{color:var(--jade-deep);}
-  .comodin svg{width:1.1em;height:1.1em;flex:0 0 auto;}
-
-  /* ---- Mapa de actividad (heatmap) ---- */
-  .heat-wrap{max-width:100%;overflow-x:auto;padding:0 1px 8px;overscroll-behavior-inline:contain;scrollbar-width:thin;}
-  .heat{display:grid;grid-auto-flow:column;grid-template-rows:repeat(7,1fr);gap:4px;min-width:max-content;}
-  .heat .c{width:15px;height:15px;border-radius:4px;background:var(--surface-2);}
-  .heat .c.on{background:var(--jade);}
-  .heat .c.on.soft{background:color-mix(in srgb,var(--jade) 45%,var(--surface-2));}
-  .heat .c.today{outline:2px solid var(--il-primary);outline-offset:1px;}
-  .heat .c.empty{background:transparent;}
-  .heat-legend{display:flex;align-items:center;gap:8px;margin-top:12px;font-size:.72rem;color:var(--faint);}
-  .heat-legend .sw{width:12px;height:12px;border-radius:3px;}
-  .heat-months{display:flex;gap:4px;font-size:.62rem;color:var(--faint);margin-bottom:6px;min-width:max-content;}
-
-  /* ---- Cifras ---- */
-  .nums4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
-  .nums4 .n{background:var(--surface-2);border-radius:14px;padding:14px 8px;text-align:center;}
-  .nums4 .n .v{font-family:var(--font-display);font-weight:800;color:var(--navy);font-size:1.35rem;}
-  .nums4 .n .l{font-size:.64rem;color:var(--faint);text-transform:uppercase;letter-spacing:.03em;margin-top:2px;}
-  @media (max-width:420px){ .nums4{grid-template-columns:repeat(2,1fr);} }
-
-  /* ---- Habilidades ---- */
-  .skills{display:flex;flex-direction:column;gap:14px;}
-  .skill{display:grid;grid-template-columns:26px 1fr auto;align-items:center;gap:10px;}
-  .skill .ic{width:26px;height:26px;border-radius:8px;background:var(--jade-tint);color:var(--jade-deep);display:grid;place-items:center;}
-  .skill .ic [data-il-icon] svg{width:16px;height:16px;}
-  .skill .track{height:9px;border-radius:100px;background:var(--surface-2);overflow:hidden;}
-  .skill .track i{display:block;height:100%;width:0;border-radius:100px;background:linear-gradient(90deg,var(--jade),var(--jade-deep));transition:width .7s cubic-bezier(.2,.7,.3,1);}
-  .skill .nm{font-size:.8rem;color:var(--navy);font-weight:600;margin-bottom:5px;}
-  .skill .pct{font-family:var(--font-display);font-weight:800;color:var(--navy);font-size:.86rem;min-width:34px;text-align:right;}
-  .skills-empty{color:var(--soft);font-size:.86rem;line-height:1.4;background:var(--surface-2);border-radius:12px;padding:14px;}
-
-  /* ---- Tu recorrido (mapa de viaje) ---- */
-  .route{position:relative;margin-top:4px;}
-  .stop{position:relative;display:grid;grid-template-columns:48px 1fr;gap:14px;padding:0 0 18px 0;}
-  .stop:last-child{padding-bottom:0;}
-  /* Línea de ruta (discontinua) que une las paradas */
-  .stop::before{content:"";position:absolute;left:23px;top:44px;bottom:-4px;width:3px;background:repeating-linear-gradient(var(--line-2) 0 6px,transparent 6px 12px);}
-  .stop:last-child::before{display:none;}
-  .stop .node{width:48px;height:48px;border-radius:16px;display:grid;place-items:center;font-size:1.5rem;line-height:1;color:#fff;box-shadow:var(--shadow-soft);position:relative;z-index:1;}
-  .stop .node svg{width:22px;height:22px;}
-  .stop .body{padding-top:4px;}
-  .stop .t{font-family:var(--font-display);font-weight:800;color:var(--navy);font-size:1rem;line-height:1.15;}
-  .stop .meta{display:flex;align-items:center;gap:8px;margin-top:5px;flex-wrap:wrap;}
-  .stop .lv{font-size:.66rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--faint);background:var(--surface-2);padding:3px 9px;border-radius:100px;}
-  .stop .state{font-size:.78rem;font-weight:700;}
-  .stop.open .state{color:var(--jade-deep);}
-  .stop.lock .state{color:var(--faint);}
-  .stop.lock .node{background:var(--surface-2)!important;color:var(--faint);box-shadow:none;}
-  .stop.lock .t{color:var(--soft);}
-  .stop .here{display:inline-flex;align-items:center;gap:5px;font-size:.66rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:#fff;background:var(--il-primary);padding:3px 9px 3px 7px;border-radius:100px;}
-  .stop .here svg{width:12px;height:12px;}
-  .stop.milestone .node{background:var(--navy);}
-  .stop.goal .node{background:linear-gradient(135deg,var(--coral),var(--coral-deep));}
-  @media (prefers-reduced-motion:no-preference){
-    .stop{animation:cardUp .3s cubic-bezier(.2,.7,.3,1) both;}
-    .stop:nth-child(2){animation-delay:.04s;} .stop:nth-child(3){animation-delay:.08s;}
-    .stop:nth-child(4){animation-delay:.12s;} .stop:nth-child(5){animation-delay:.16s;} .stop:nth-child(6){animation-delay:.2s;}
-  }
-
-  /* ---- Evolución / constancia ---- */
-  .evo-compare{display:inline-flex;align-items:center;gap:8px;background:var(--jade-tint);color:var(--jade-deep);border-radius:100px;padding:6px 13px;font-size:.84rem;font-weight:700;margin-bottom:12px;}
-  .evo-compare.flat{background:var(--surface-2);color:var(--soft);}
-  .evo-compare svg{width:1.05em;height:1.05em;flex:0 0 auto;}
-  .evo-chart{width:100%;}
-  .evo-chart svg{width:100%;height:132px;display:block;overflow:visible;}
-  .evo-area{fill:var(--jade-tint);}
-  .evo-line{fill:none;stroke:var(--jade);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;}
-  .evo-dot{fill:#fff;stroke:var(--jade);stroke-width:2.4;}
-  .evo-dot.last{fill:var(--jade);}
-  .evo-grid{stroke:var(--line);stroke-width:1;}
-  .evo-x{display:flex;justify-content:space-between;font-size:.62rem;color:var(--faint);margin-top:6px;}
-
-  /* ---- Frases ---- */
-  .phrases{display:flex;flex-wrap:wrap;gap:8px;}
-  .phrase{background:var(--jade-tint);border:1px solid color-mix(in srgb,var(--jade) 32%,transparent);color:var(--navy);border-radius:100px;padding:6px 13px;font-size:.85rem;font-weight:600;}
-  .phrase.more{background:transparent;border-style:dashed;color:var(--faint);}
-
-  /* ---- Medallas ---- */
-  .medals{display:flex;gap:10px;flex-wrap:wrap;}
-  .medal{width:52px;height:52px;border-radius:14px;display:grid;place-items:center;font-size:1.4rem;background:var(--surface-2);border:1px solid var(--line);}
-  .medal.on{background:var(--coral-tint);border-color:var(--coral);}
-  .medal.lock{color:var(--faint);}
-  .medal.lock [data-il-icon] svg{width:20px;height:20px;}
-  button.medal{cursor:pointer;padding:0;transition:transform .12s ease;}
-  button.medal:hover{transform:translateY(-2px);}
-  button.medal.sel{outline:2px solid var(--navy);outline-offset:2px;}
-  .medal-detail{margin-top:14px;background:var(--surface-2);border-radius:12px;padding:12px 14px;font-size:.86rem;color:var(--soft);line-height:1.4;}
-  .medal-detail .md-hd{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
-  .medal-detail .md-ico{font-size:1.3rem;line-height:1;display:inline-flex;}
-  .medal-detail .md-ico svg{width:1.3rem;height:1.3rem;}
-  .medal-detail .md-nm{font-family:var(--font-display);font-weight:800;color:var(--navy);font-size:.95rem;}
-  .medal-detail .md-tag{margin-left:auto;font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;padding:3px 9px;border-radius:100px;}
-  .medal-detail .md-tag.got{background:var(--jade-tint);color:var(--jade-deep);}
-  .medal-detail .md-tag.pend{background:var(--coral-tint);color:var(--coral-deep);}
-  .medal-detail .md-bar{height:8px;border-radius:100px;background:var(--line);overflow:hidden;margin-top:8px;}
-  .medal-detail .md-bar i{display:block;height:100%;background:linear-gradient(90deg,var(--jade),var(--jade-deep));border-radius:100px;}
-  .medal-detail .md-prog{font-size:.74rem;color:var(--faint);margin-top:5px;}
-
-  /* Entrada suave escalonada */
-  .card-soft,.level-hero{animation:cardUp .34s cubic-bezier(.2,.7,.3,1) both;}
-  .g-a2{animation-delay:.02s;} .g-b{animation-delay:.04s;} .g-c{animation-delay:.08s;} .g-d{animation-delay:.12s;}
-  .g-e{animation-delay:.16s;} .g-f2{animation-delay:.2s;} .g-f{animation-delay:.24s;} .g-g{animation-delay:.28s;} .g-h{animation-delay:.32s;}
-  @keyframes cardUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:none;}}
-  @media (prefers-reduced-motion:reduce){ .card-soft,.level-hero,.ladder .step .bar i,.skill .track i{animation:none;transition:none;} }
-
-  /* ---- Escritorio: rejilla editorial a 2 columnas con spans propios ---- */
-  @media (min-width:1024px){
-    .app-shell{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start;}
-    .span-2{grid-column:1 / -1;}
-  }
-</style>
+<link rel="stylesheet" href="progreso.css?v=20260809c">
 </head>
 <body>
+<div id="loading" class="il-state il-state--loading"><span class="il-spinner" aria-hidden="true"></span><p>Preparando tu progreso…</p></div>
+<div id="errorState" class="il-state" role="alert" hidden>
+  <div class="ic"><span data-il-icon="warning"></span></div>
+  <h2>No hemos podido cargar tu progreso</h2>
+  <p>Inténtalo de nuevo en unos segundos.</p>
+  <button class="btn btn-primary" type="button" onclick="location.reload()">Reintentar</button>
+</div>
+
 <div id="app" class="hidden app-with-rail">
   <div class="shell">
     <aside class="rail" data-il-rail="progreso"></aside>
     <div class="shell-main">
-  <div class="app-top">
-    <span class="chip-stat streak"><span data-il-icon="flame"></span> <span id="topStreak">0</span></span>
-    <span class="chip-stat coins"><span data-il-icon="gem"></span> <span id="topGems">0</span></span>
-  </div>
+      <div class="demo-strip" id="demoStrip" hidden>
+        <span><span data-il-icon="info" aria-hidden="true"></span> Estás viendo datos de ejemplo de Lucía.</span>
+        <button id="demoClose" type="button" aria-label="Ocultar aviso de datos de ejemplo"><span data-il-icon="close"></span></button>
+      </div>
 
-  <div class="app-shell">
-    <div class="greet span-2">
-      <h1>Tu progreso <span data-il-icon="trend" style="color:var(--jade-deep)"></span></h1>
-      <p id="sub">Todo lo que llevas hecho, de un vistazo</p>
-    </div>
+      <main class="app-shell progress-shell">
+        <header class="progress-header">
+          <div>
+            <p class="ui-label">Tu aprendizaje</p>
+            <h1>Tu progreso, <span id="studentName">paso a paso</span></h1>
+            <p>Descubre qué estás aprendiendo y qué te conviene practicar después.</p>
+          </div>
+          <div class="identity-summary" aria-label="Resumen del alumno">
+            <span><span data-il-icon="route" aria-hidden="true"></span><b id="studentLevel">—</b></span>
+            <span><span data-il-icon="plane" aria-hidden="true"></span><b id="studentSessions">0</b> misiones</span>
+          </div>
+        </header>
 
-    <!-- Nivel CEFR (hero) -->
-    <div class="level-hero span-2" id="levelHero">
-      <div class="lh-top">
-        <div>
-          <div class="lh-lbl">Tu nivel de inglés</div>
-          <div class="lh-name" id="lvName">—</div>
+        <div class="progress-tabs" role="tablist" aria-label="Secciones de progreso">
+          <button class="progress-tab" id="tab-week" type="button" role="tab" aria-selected="true" aria-controls="panel-week" data-tab="week">
+            <span data-il-icon="calendar" aria-hidden="true"></span><span>Esta semana</span>
+          </button>
+          <button class="progress-tab" id="tab-learning" type="button" role="tab" aria-selected="false" aria-controls="panel-learning" tabindex="-1" data-tab="learning">
+            <span data-il-icon="book" aria-hidden="true"></span><span>Mi aprendizaje</span>
+          </button>
+          <button class="progress-tab" id="tab-stamps" type="button" role="tab" aria-selected="false" aria-controls="panel-stamps" tabindex="-1" data-tab="stamps">
+            <span data-il-icon="stamp" aria-hidden="true"></span><span>Logros</span>
+          </button>
         </div>
-        <span class="lh-badge"><span data-il-icon="target"></span> <span id="lvTag">CEFR</span></span>
-      </div>
-      <div class="ladder" id="ladder"></div>
-      <div class="lh-foot" id="lvFoot"></div>
-    </div>
 
-    <!-- Tu recorrido (mapa de aprendizaje / identidad de viaje) -->
-    <div class="card-soft span-2 g-a2">
-      <h3 class="h"><span data-il-icon="flag"></span> Tu recorrido</h3>
-      <div class="route" id="route"></div>
-    </div>
+        <section class="progress-panel" id="panel-week" role="tabpanel" tabindex="0" aria-labelledby="tab-week">
+          <div class="week-layout">
+            <article class="week-primary" aria-labelledby="weekTitle">
+              <div class="section-heading section-heading--inverse">
+                <div><p class="ui-label">Esta semana</p><h2 id="weekTitle">Objetivo semanal</h2></div>
+                <strong><span id="weekCount">0</span> de <span id="weekGoal">5</span> sesiones</strong>
+              </div>
+              <div class="week-bar" id="weekBar" role="progressbar" aria-valuemin="0" aria-valuemax="5" aria-valuenow="0"><span></span></div>
+              <div class="week-days" id="weekDays" aria-label="Actividad de lunes a domingo"></div>
+              <div class="week-support">
+                <div><span data-il-icon="clock" aria-hidden="true"></span><span><b id="weekMinutes">—</b><small>minutos esta semana</small></span></div>
+                <p id="weekComparison"><span data-il-icon="trend" aria-hidden="true"></span><span>Compararemos tu ritmo cuando haya más datos.</span></p>
+              </div>
+            </article>
 
-    <!-- Objetivo de la semana -->
-    <div class="card-soft g-b">
-      <div class="week-head">
-        <h3 class="h" style="margin:0"><span data-il-icon="calendar"></span> Esta semana · <b id="weekCount">0 de 5 días</b></h3>
-      </div>
-      <div class="week" id="week"></div>
-    </div>
+            <aside class="next-stamp" aria-labelledby="nextStampTitle">
+              <div class="section-heading"><div><p class="ui-label">Próximo sello</p><h2 id="nextStampTitle">Tu siguiente logro</h2></div></div>
+              <div class="passport-stamp" aria-hidden="true"><span data-il-icon="plane"></span></div>
+              <p class="next-stamp__copy" id="nextStampCopy">Cada sesión te acerca un poco más.</p>
+              <div class="mini-progress" id="nextStampProgress" role="progressbar" aria-valuemin="0" aria-valuemax="1" aria-valuenow="0"><span></span></div>
+              <button class="text-action" type="button" data-open-tab="stamps">Ver todos los sellos <span aria-hidden="true">→</span></button>
+            </aside>
+          </div>
 
-    <!-- Racha -->
-    <div class="card-soft g-c">
-      <div class="streak-card">
-        <div class="streak-flame"><span data-il-icon="flame"></span></div>
-        <div class="streak-nums">
-          <div class="n"><div class="v" id="stStreak">0</div><div class="l">Racha actual</div></div>
-          <div class="n"><div class="v" id="stBest">0</div><div class="l">Mejor racha</div></div>
-        </div>
-        <div class="comodin" id="comodin"><span data-il-icon="buoy"></span> Tienes un comodín: si un día no puedes, tu racha no se rompe.</div>
-      </div>
-    </div>
+          <div class="consistency-band">
+            <div class="consistency-item">
+              <span class="consistency-icon"><span data-il-icon="flame" aria-hidden="true"></span></span>
+              <div><p>Racha actual</p><strong><span id="streakNow">0</span> días</strong><small>Tu mejor racha: <span id="streakBest">0</span> días</small></div>
+            </div>
+            <div class="consistency-divider" aria-hidden="true"></div>
+            <div class="consistency-item">
+              <span class="consistency-icon consistency-icon--flex"><span data-il-icon="buoy" aria-hidden="true"></span></span>
+              <div><p>Día flexible</p><strong>Tu semana puede adaptarse</strong><small>Si un día no puedes practicar, tu constancia semanal se mantiene.</small></div>
+            </div>
+          </div>
+        </section>
 
-    <!-- Mapa de actividad (heatmap) -->
-    <div class="card-soft span-2 g-d">
-      <h3 class="h"><span data-il-icon="calendar"></span> Mapa de actividad · <b id="activeDays">0 días</b></h3>
-      <div class="heat-wrap" aria-hidden="true">
-        <div class="heat-months" id="heatMonths"></div>
-        <div class="heat" id="heat"></div>
-      </div>
-      <div class="heat-legend">
-        <span>Menos</span>
-        <span class="sw" style="background:var(--surface-2)"></span>
-        <span class="sw" style="background:color-mix(in srgb,var(--jade) 45%,var(--surface-2))"></span>
-        <span class="sw" style="background:var(--jade)"></span>
-        <span>Más</span>
-      </div>
-    </div>
+        <section class="progress-panel" id="panel-learning" role="tabpanel" tabindex="0" aria-labelledby="tab-learning" hidden>
+          <div class="learning-intro">
+            <div><p class="ui-label">Mi aprendizaje</p><h2>Lo importante no es solo practicar: es avanzar.</h2></div>
+            <p>Estas métricas reflejan tu actividad y lo que ya puedes utilizar en inglés.</p>
+          </div>
 
-    <!-- Evolución: constancia por semana + comparación contigo mismo -->
-    <div class="card-soft span-2 g-e">
-      <h3 class="h"><span data-il-icon="trend"></span> Tu constancia · <b id="evoRange">últimas 8 semanas</b></h3>
-      <div class="evo-compare" id="evoCompare"></div>
-      <div class="evo-chart"><svg id="evoSvg" viewBox="0 0 320 128" preserveAspectRatio="none" aria-hidden="true"></svg></div>
-      <div class="evo-x" id="evoX"></div>
-    </div>
+          <div class="learning-metrics" id="learningMetrics" aria-label="Métricas de aprendizaje"></div>
 
-    <!-- Cifras reales -->
-    <div class="card-soft span-2 g-f2">
-      <h3 class="h"><span data-il-icon="trophy"></span> En total</h3>
-      <div class="nums4">
-        <div class="n"><div class="v" id="nLessons">0</div><div class="l">Misiones</div></div>
-        <div class="n"><div class="v" id="nDays">0</div><div class="l">Días activos</div></div>
-        <div class="n"><div class="v" id="nXP">0</div><div class="l">XP</div></div>
-        <div class="n"><div class="v" id="nGems">0</div><div class="l">Gemas</div></div>
-      </div>
-    </div>
+          <div class="learning-layout">
+            <section class="skills-section" aria-labelledby="skillsTitle">
+              <div class="section-heading"><div><p class="ui-label">Por habilidad</p><h2 id="skillsTitle">Cómo va tu inglés</h2></div><p>El porcentaje solo aparece cuando hay evidencia suficiente.</p></div>
+              <div class="skills-list" id="skillsList"></div>
+            </section>
 
-    <!-- Habilidades -->
-    <div class="card-soft span-2 g-f">
-      <h3 class="h"><span data-il-icon="star"></span> Equilibrio por habilidad</h3>
-      <div class="skills" id="skills"></div>
-    </div>
+            <div class="learning-side">
+              <section class="phrases-section" aria-labelledby="phrasesTitle">
+                <div class="section-heading"><div><p class="ui-label">Ya sé decir</p><h2 id="phrasesTitle">Inglés que ya es tuyo</h2></div></div>
+                <div class="phrase-list" id="phraseList"></div>
+              </section>
 
-    <!-- Lo que ya sé decir -->
-    <div class="card-soft g-g">
-      <h3 class="h"><span data-il-icon="chat"></span> Lo que ya sé decir · <b id="phraseCount">0</b></h3>
-      <div class="phrases" id="phrases"></div>
-    </div>
+              <section class="reinforce-panel" aria-labelledby="reinforceTitle">
+                <span class="reinforce-icon"><span data-il-icon="ear" aria-hidden="true"></span></span>
+                <div><p class="ui-label">Para reforzar</p><h2 id="reinforceTitle">Listening</h2><p id="reinforceCopy">Practica un poco más para descubrir tu próxima recomendación.</p></div>
+                <a class="btn btn-primary" id="reinforceCta" href="leccion.html">Practicar listening</a>
+              </section>
+            </div>
+          </div>
+        </section>
 
-    <!-- Medallas -->
-    <div class="card-soft g-h">
-      <h3 class="h"><span data-il-icon="medal"></span> Medallas · <b id="medalsCount">0 de 0</b></h3>
-      <div class="medals" id="medalsGrid"></div>
-      <div class="medal-detail" id="medalDetail" aria-live="polite">Toca una medalla para ver cómo se consigue.</div>
+        <section class="progress-panel" id="panel-stamps" role="tabpanel" tabindex="0" aria-labelledby="tab-stamps" hidden>
+          <div class="stamps-intro">
+            <div><p class="ui-label">Tu pasaporte</p><h2>Sellos que reconocen tu avance</h2><p>Cada sello corresponde a una acción o aprendizaje concreto.</p></div>
+            <strong><span id="stampsUnlocked">0</span> conseguidos</strong>
+          </div>
+          <div class="stamp-grid" id="stampGrid"></div>
+        </section>
+      </main>
     </div>
   </div>
-    </div><!-- /.shell-main -->
-  </div><!-- /.shell -->
-
   <nav class="app-nav" data-il-nav="progreso"></nav>
 </div>
+
+<dialog class="stamp-dialog" id="stampDialog" aria-labelledby="stampDialogTitle">
+  <button class="dialog-close" id="stampDialogClose" type="button" aria-label="Cerrar detalle del sello"><span data-il-icon="close"></span></button>
+  <div class="dialog-stamp" id="stampDialogVisual" aria-hidden="true"><span data-il-icon="stamp"></span></div>
+  <p class="ui-label" id="stampDialogState">En progreso</p>
+  <h2 id="stampDialogTitle">Sello</h2>
+  <p id="stampDialogDescription"></p>
+  <div class="dialog-requirement"><span data-il-icon="target" aria-hidden="true"></span><span id="stampDialogRequirement"></span></div>
+  <div class="dialog-progress" id="stampDialogProgress" role="progressbar"><span></span></div>
+  <p class="dialog-progress-copy" id="stampDialogProgressCopy"></p>
+</dialog>
 
 <script src="layout.js?v=20260809d"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-config.js?v=20260809d"></script>
 <script src="auth-utils.js?v=20260809d"></script>
 <script src="etapa.js?v=20260809d"></script>
-<script src="motor/motivacion.js?v=20260809d"></script>
-<script src="contenido.js?v=20260809e"></script>
 <script src="auth.js?v=20260809d"></script>
-<script>
-  const $ = (id) => document.getElementById(id);
-  const ICO = (n) => (window.ILIcon ? window.ILIcon(n) : "");
-  const DIAS = ["L", "M", "X", "J", "V", "S", "D"];
-  const MESES = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
-
-  // Cómo se consigue cada medalla (+ progreso cuando es medible con datos que tenemos)
-  const MEDAL_INFO = {
-    streak_2:       { how: "Practica 2 días seguidos.",  metric: s => ({ cur: s.streak, tar: 2 }) },
-    streak_5:       { how: "Practica 5 días seguidos.",  metric: s => ({ cur: s.streak, tar: 5 }) },
-    streak_10:      { how: "Practica 10 días seguidos.", metric: s => ({ cur: s.streak, tar: 10 }) },
-    streak_30:      { how: "Un mes entero de racha (30 días).", metric: s => ({ cur: s.streak, tar: 30 }) },
-    aciertos_5:     { how: "Encadena 5 aciertos seguidos en una sesión." },
-    aciertos_10:    { how: "Encadena 10 aciertos seguidos en una sesión." },
-    pleno:          { how: "Termina una sesión sin ningún fallo." },
-    record_racha:   { how: "Supera tu mejor racha anterior." },
-    primera:        { how: "Completa tu primera misión.", metric: s => ({ cur: s.lessons, tar: 1 }) },
-    diez_lecciones: { how: "Completa 10 misiones.", metric: s => ({ cur: s.lessons, tar: 10 }) }
-  };
-
-  // --- Nivel: escalera CEFR ---
-  function renderLevel(pl) {
-    const order = (ILAuth.CEFR_ORDER || ["Pre-A1", "A1", "A2", "B1"]);
-    const nice = { "Pre-A1": "Principiante", "A1": "A1", "A2": "A2", "B1": "B1" };
-    if (!pl || !pl.placed) {
-      $("lvName").textContent = "Sin nivel aún";
-      $("lvTag").textContent = "Test";
-      $("ladder").innerHTML = order.map(c => '<div class="step"><div class="bar"><i></i></div><div class="nm">' + (nice[c] || c) + '</div></div>').join("");
-      $("lvFoot").innerHTML = 'Haz el test de nivel (2 minutos) y colocamos tus ejercicios en tu punto justo.' +
-        '<br><a class="lh-cta" href="test-nivel.html">Hacer el test de nivel</a>';
-      return;
-    }
-    const idx = Math.max(0, order.indexOf(pl.cefr));
-    $("lvName").textContent = pl.label || pl.cefr;
-    $("lvTag").textContent = pl.cefr;
-    $("ladder").innerHTML = order.map((c, i) =>
-      '<div class="step ' + (i < idx ? "done" : (i === idx ? "current" : "")) + '">' +
-      '<div class="bar"><i></i></div><div class="nm">' + (nice[c] || c) + '</div></div>'
-    ).join("");
-    const next = order[idx + 1];
-    $("lvFoot").textContent = next
-      ? "Estás en " + (nice[pl.cefr] || pl.cefr) + ". Sigue practicando para acercarte a " + (nice[next] || next) + "."
-      : "¡Estás en el nivel más alto del recorrido actual! Mantén la práctica para consolidarlo.";
-  }
-
-  // --- Tu recorrido: destinos (unidades) a lo largo de una ruta ---
-  // Estado honesto: "disponible" si la unidad es de tu nivel o inferior; "próximo" si es superior.
-  function renderRoute(placement) {
-    const order = (ILAuth.CEFR_ORDER || ["Pre-A1", "A1", "A2", "B1"]);
-    const rank = (c) => { const i = order.indexOf(c); return i === -1 ? 0 : i; };
-    const myRank = (placement && placement.placed) ? rank(placement.cefr) : -1;
-    const units = ((window.IL_CONTENIDO && window.IL_CONTENIDO.unidades) || [])
-      .slice()
-      .sort((a, b) => rank(a.nivel) - rank(b.nivel));
-
-    const stops = [];
-    // Inicio (avión de papel)
-    stops.push('<div class="stop milestone"><div class="node">' + ICO("chart") + '</div>' +
-      '<div class="body"><div class="t">Empiezas aquí</div>' +
-      '<div class="meta"><span class="state" style="color:var(--soft)">Tu punto de partida</span></div></div></div>');
-
-    // Marca "estás aquí" en la primera unidad bloqueada (frontera de tu nivel)
-    let hereShown = myRank < 0; // si no hay nivel, no marcamos frontera aún
-    units.forEach(u => {
-      const uRank = rank(u.nivel);
-      const open = myRank >= 0 && uRank <= myRank;
-      let here = "";
-      if (!open && !hereShown) { here = '<span class="here">' + ICO("target") + ' Estás aquí</span>'; hereShown = true; }
-      const color = (u.tema && u.tema.color) || "var(--jade)";
-      const icono = ICO("book");
-      stops.push(
-        '<div class="stop ' + (open ? "open" : "lock") + '">' +
-          '<div class="node" style="background:' + color + '">' + (open ? icono : ICO("lock")) + '</div>' +
-          '<div class="body"><div class="t">' + (u.titulo || "Unidad") + '</div>' +
-          '<div class="meta"><span class="lv">' + (u.nivel || "") + '</span>' +
-          '<span class="state">' + (open ? "Disponible" : "Próximo destino") + '</span>' + here + '</div></div>' +
-        '</div>'
-      );
-    });
-
-    // Meta (bandera)
-    const goal = order[order.length - 1];
-    stops.push('<div class="stop goal"><div class="node">' + ICO("flag") + '</div>' +
-      '<div class="body"><div class="t">' + goal + ' · tu meta</div>' +
-      '<div class="meta"><span class="state" style="color:var(--coral-deep)">El final del recorrido actual</span></div></div></div>');
-
-    $("route").innerHTML = stops.join("");
-    if (window.ILLayout) window.ILLayout.mount();
-  }
-
-  // --- Heatmap: últimas ~16 semanas ---
-  function renderHeat(daysSet, weeks) {
-    weeks = weeks || 16;
-    const today = new Date(); today.setHours(0, 0, 0, 0);
-    const todayIso = today.toISOString().slice(0, 10);
-    const dow = (today.getDay() + 6) % 7;                 // 0 = lunes
-    const start = new Date(today); start.setDate(today.getDate() - dow - (weeks - 1) * 7);
-    const cells = [];
-    const monthCols = [];
-    let lastMonth = -1;
-    for (let w = 0; w < weeks; w++) {
-      const colDate = new Date(start); colDate.setDate(start.getDate() + w * 7);
-      const m = colDate.getMonth();
-      monthCols.push(m !== lastMonth ? MESES[m] : "");
-      lastMonth = m;
-      for (let r = 0; r < 7; r++) {
-        const d = new Date(start); d.setDate(start.getDate() + w * 7 + r);
-        const iso = d.toISOString().slice(0, 10);
-        if (iso > todayIso) { cells.push('<div class="c empty"></div>'); continue; }
-        const on = daysSet.has(iso);
-        cells.push('<div class="c' + (on ? " on" : "") + (iso === todayIso ? " today" : "") + '"></div>');
-      }
-    }
-    $("heat").innerHTML = cells.join("");
-    $("heatMonths").innerHTML = monthCols.map(m => '<span style="width:19px">' + m + '</span>').join("");
-  }
-
-  // --- Constancia por semana (días activos) + comparación contigo mismo ---
-  function mondayOffset(weeks) {
-    const d = new Date(); d.setHours(0, 0, 0, 0);
-    const dow = (d.getDay() + 6) % 7;
-    d.setDate(d.getDate() - dow - weeks * 7);
-    return d;
-  }
-  function weekDayCount(set, monday) {
-    let c = 0;
-    for (let i = 0; i < 7; i++) {
-      const d = new Date(monday); d.setDate(monday.getDate() + i);
-      if (set.has(d.toISOString().slice(0, 10))) c++;
-    }
-    return c;
-  }
-  function renderEvolution(set) {
-    const N = 8, MAXV = 7;
-    const counts = [], mons = [];
-    for (let w = N - 1; w >= 0; w--) { const m = mondayOffset(w); mons.push(m); counts.push(weekDayCount(set, m)); }
-    // Geometría del SVG
-    const W = 320, H = 128, padL = 6, padR = 6, padT = 12, padB = 20;
-    const n = counts.length;
-    const X = (i) => padL + i * (W - padL - padR) / (n - 1);
-    const Y = (v) => padT + (1 - v / MAXV) * (H - padT - padB);
-    const pts = counts.map((v, i) => [X(i), Y(v)]);
-    const line = pts.map((p, i) => (i ? "L" : "M") + p[0].toFixed(1) + " " + p[1].toFixed(1)).join(" ");
-    const base = (H - padB).toFixed(1);
-    const area = line + " L " + X(n - 1).toFixed(1) + " " + base + " L " + X(0).toFixed(1) + " " + base + " Z";
-    const grid = [0, MAXV].map(v => '<line class="evo-grid" x1="' + padL + '" y1="' + Y(v).toFixed(1) + '" x2="' + (W - padR) + '" y2="' + Y(v).toFixed(1) + '"/>').join("");
-    const dots = pts.map((p, i) => '<circle class="evo-dot' + (i === n - 1 ? " last" : "") + '" cx="' + p[0].toFixed(1) + '" cy="' + p[1].toFixed(1) + '" r="' + (i === n - 1 ? 4.5 : 3) + '"/>').join("");
-    $("evoSvg").innerHTML = grid + '<path class="evo-area" d="' + area + '"/><path class="evo-line" d="' + line + '"/>' + dots;
-    // Etiquetas X: primer mes, mitad, "esta semana"
-    $("evoX").innerHTML = mons.map((m, i) =>
-      "<span>" + (i === n - 1 ? "esta" : (i === 0 || i === Math.floor(n / 2) ? (m.getDate() + " " + MESES[m.getMonth()]) : "")) + "</span>"
-    ).join("");
-    // Comparación contigo mismo (sin culpa)
-    const thisW = counts[n - 1], lastW = counts[n - 2];
-    const el = $("evoCompare");
-    if (thisW > lastW) el.innerHTML = ICO("trend") + " Vas mejor que la semana pasada · " + thisW + " días (antes " + lastW + ")";
-    else if (thisW === lastW && thisW > 0) el.innerHTML = ICO("check") + " Mantienes tu ritmo · " + thisW + " días como la semana pasada";
-    else if (thisW === lastW && thisW === 0) { el.className = "evo-compare flat"; el.innerHTML = ICO("target") + " Empieza tu semana: un día ya cuenta"; }
-    else { el.className = "evo-compare flat"; el.innerHTML = ICO("target") + " Esta semana llevas " + thisW + " " + (thisW === 1 ? "día" : "días") + " · ¡aún puedes sumar más!"; }
-  }
-
-  function renderSkills(res) {
-    if (!res || !res.hasData) {
-      $("skills").innerHTML = '<div class="skills-empty">Aún no hay datos suficientes. En cuanto practiques unos días, aquí verás tu equilibrio entre vocabulario, gramática, listening y reading.</div>';
-      return;
-    }
-    $("skills").innerHTML = res.skills.map(s =>
-      '<div class="skill">' +
-        '<div class="ic"><span data-il-icon="' + s.icon + '"></span></div>' +
-        '<div><div class="nm">' + s.label + '</div><div class="track"><i style="width:' + s.pct + '%"></i></div></div>' +
-        '<div class="pct">' + s.pct + '%</div>' +
-      '</div>'
-    ).join("");
-    if (window.ILLayout) window.ILLayout.mount();   // pintar los iconos recién insertados
-  }
-
-  (async () => {
-    const p = await ILAuth.getProfile();
-    if (!p) { location.href = "index.html"; return; }
-    if (p.is_admin) { location.href = "admin.html"; return; }
-    if (p.must_change_password) { location.href = "cambiar-clave.html"; return; }
-    IL_ETAPA.apply(p);
-    $("app").classList.remove("hidden");
-
-    const pr = await ILAuth.getProgress();
-    if (pr) {
-      $("topStreak").textContent = pr.streak;
-      $("topGems").textContent = pr.gems;
-      $("stStreak").textContent = pr.streak;
-      $("stBest").textContent = pr.best || 0;
-      $("nLessons").textContent = pr.lessons || 0;
-      $("nXP").textContent = pr.xp || 0;
-      $("nGems").textContent = pr.gems || 0;
-      if (pr.freezes === 0) $("comodin").innerHTML = ICO("buoy") + " Comodín usado esta vez — practica para recuperarlo.";
-    }
-
-    // Nivel + recorrido (comparten la colocación)
-    try {
-      const pl = await ILAuth.getPlacement();
-      renderLevel(pl);
-      renderRoute(pl);
-    } catch (e) {}
-
-    // Semana real
-    try {
-      const w = await ILAuth.getWeekActivity();
-      const todayIdx = (new Date().getDay() + 6) % 7;
-      const done = new Set(w.practiced);
-      $("weekCount").textContent = w.count >= w.goal
-        ? (w.count + " días · ¡meta cumplida!")
-        : (w.count + " de " + w.goal + " días");
-      $("week").innerHTML = DIAS.map((d, i) =>
-        '<div class="d' + (done.has(i) ? " on" : "") + (i === todayIdx ? " today" : "") + '">' +
-        '<div class="dot">' + (done.has(i) ? ICO("check") : "") + '</div><div class="lbl">' + d + '</div></div>'
-      ).join("");
-    } catch (e) {}
-
-    // Mapa de actividad + días activos (una sola consulta)
-    try {
-      const days = await ILAuth.getActivityDays(3650);
-      const set = new Set(days);
-      $("nDays").textContent = days.length;
-      $("activeDays").textContent = days.length + (days.length === 1 ? " día" : " días");
-      renderHeat(set, 16);
-      renderEvolution(set);
-    } catch (e) {}
-
-    // Habilidades
-    try { renderSkills(await ILAuth.getSkillBreakdown()); } catch (e) {}
-
-    // Lo que ya sé decir
-    try {
-      const phrases = await ILAuth.getMasteredPhrases();
-      $("phraseCount").textContent = phrases.length ? (phrases.length + " frases") : "aún ninguna";
-      $("phrases").innerHTML = phrases.length
-        ? phrases.map(f => '<span class="phrase">' + f + '</span>').join("")
-        : '<span class="phrase more">Practica para desbloquear frases</span>';
-    } catch (e) {}
-
-    // Medallas (con detalle: cómo se consigue y cuánto falta)
-    try {
-      const medals = await ILAuth.listMedals();
-      const got = medals.filter(m => m.earned).length;
-      $("medalsCount").textContent = got + " de " + medals.length;
-      $("medalsGrid").innerHTML = medals.map((m, i) =>
-        '<button type="button" class="medal ' + (m.earned ? "on" : "lock") + '" data-i="' + i + '" title="' + m.name + '" aria-label="' + m.name + '">' +
-        (m.earned ? ICO("medal") : ICO("lock")) + '</button>'
-      ).join("");
-      const st = { streak: (pr && pr.streak) || 0, best: (pr && pr.best) || 0, lessons: (pr && pr.lessons) || 0 };
-      function detail(m) {
-        const info = MEDAL_INFO[m.id] || { how: "Sigue practicando para conseguirla." };
-        let bar = "";
-        if (info.metric) {
-          const mm = info.metric(st); const cur = Math.min(mm.cur, mm.tar);
-          const pct = Math.max(0, Math.min(100, Math.round(100 * mm.cur / mm.tar)));
-          bar = '<div class="md-bar"><i style="width:' + pct + '%"></i></div>' +
-            '<div class="md-prog">' + (m.earned ? "Conseguida" : (cur + " de " + mm.tar)) + '</div>';
-        }
-        $("medalDetail").innerHTML =
-          '<div class="md-hd"><span class="md-ico">' + (m.earned ? ICO("medal") : ICO("lock")) + '</span>' +
-          '<span class="md-nm">' + m.name + '</span>' +
-          '<span class="md-tag ' + (m.earned ? "got" : "pend") + '">' + (m.earned ? "Conseguida" : "En progreso") + '</span></div>' +
-          '<div>' + info.how + '</div>' + bar;
-      }
-      $("medalsGrid").querySelectorAll("button.medal").forEach(btn => {
-        btn.addEventListener("click", () => {
-          $("medalsGrid").querySelectorAll("button.medal").forEach(b => b.classList.remove("sel"));
-          btn.classList.add("sel");
-          detail(medals[+btn.dataset.i]);
-        });
-      });
-    } catch (e) {}
-
-    // Repintar iconos insertados dinámicamente (semana, comodín, medallas)
-    if (window.ILLayout) window.ILLayout.mount();
-  })();
-</script>
+<script src="mission-state.js?v=20260809e"></script>
+<script src="progress-data.js?v=20260809b"></script>
+<script src="progreso.js?v=20260809c"></script>
 </body>
 </html>

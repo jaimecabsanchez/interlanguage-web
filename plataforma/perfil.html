@@ -34,10 +34,14 @@
   .profile-reward:hover .go{transform:translateX(3px);}
   .profile-reward{transition:transform .15s ease,box-shadow .15s ease;}
   .profile-reward:hover{transform:translateY(-2px);box-shadow:var(--il-shadow-md);}
+  .pf-progress{padding:var(--il-space-5);border:1px solid var(--il-border);border-radius:var(--il-radius-lg);background:var(--il-surface)}
+  .pf-progress__head{display:flex;align-items:center;justify-content:space-between;gap:var(--il-space-3);margin-bottom:var(--il-space-4)}.pf-progress__head h2{margin:0;font-size:var(--il-fs-lg)}.pf-progress__head a{min-height:var(--il-touch);display:inline-flex;align-items:center;color:var(--il-primary);font-family:var(--il-font-display);font-size:var(--il-fs-sm);font-weight:var(--il-weight-bold);text-decoration:none}
+  .pf-progress__stats{display:grid;grid-template-columns:repeat(3,1fr);border-block:1px solid var(--il-border)}.pf-progress__stat{padding:var(--il-space-4);text-align:center;border-right:1px solid var(--il-border)}.pf-progress__stat:last-child{border-right:0}.pf-progress__stat strong{display:block;color:var(--il-text-primary);font-family:var(--il-font-display);font-size:var(--il-fs-xl)}.pf-progress__stat span{display:block;margin-top:2px;color:var(--il-text-secondary);font-size:var(--il-fs-xs)}
   /* Entradas suaves */
   .pf-hd,.profile-reward,.card-soft{animation:pfIn .34s cubic-bezier(.2,.7,.3,1) both;}
   .profile-reward{animation-delay:.05s;} .card-soft{animation-delay:.1s;}
   @keyframes pfIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:none;}}
+  @media (max-width:480px){.pf-progress__stat{padding-inline:var(--il-space-2)}}
   @media (prefers-reduced-motion:reduce){ .pf-hd,.profile-reward,.card-soft{animation:none;} .profile-reward:hover{transform:none;} }
   /* Escritorio: ancho cómodo (no estirar) */
   @media (min-width:1024px){ .app-with-rail .app-shell{max-width:680px;} }
@@ -64,6 +68,15 @@
       <span class="go" aria-hidden="true">›</span>
     </a>
 
+    <section class="pf-progress" aria-labelledby="pfProgressTitle">
+      <div class="pf-progress__head"><h2 id="pfProgressTitle">Tu aprendizaje</h2><a href="progreso.html">Ver progreso →</a></div>
+      <div class="pf-progress__stats">
+        <div class="pf-progress__stat"><strong id="pfSessions">—</strong><span>misiones</span></div>
+        <div class="pf-progress__stat"><strong id="pfStreak">—</strong><span>días de racha</span></div>
+        <div class="pf-progress__stat"><strong id="pfStamps">—</strong><span>sellos</span></div>
+      </div>
+    </section>
+
     <div class="card-soft">
       <h3 class="h">Tu cuenta</h3>
       <div class="acct-row">
@@ -84,6 +97,8 @@
 <script src="auth-utils.js?v=20260809d"></script>
 <script src="etapa.js?v=20260809d"></script>
 <script src="auth.js?v=20260809d"></script>
+<script src="mission-state.js?v=20260809e"></script>
+<script src="progress-data.js?v=20260809b"></script>
 <script>
   const $ = (id) => document.getElementById(id);
   (async () => {
@@ -99,6 +114,12 @@
       const pl = await ILAuth.getPlacement();
       $("pfLevel").textContent = pl && pl.placed ? pl.label : (p.level || "Sin nivel aún · haz el test");
     } catch (e) { if (p.level) $("pfLevel").textContent = p.level; }
+    try {
+      const learning = await ILProgressData.load(ILAuth, window.ILMission);
+      $("pfSessions").textContent = learning.lessons;
+      $("pfStreak").textContent = learning.streak;
+      $("pfStamps").textContent = learning.stamps.unlocked;
+    } catch (e) {}
     $("app").classList.remove("hidden");
   })();
   $("logout").addEventListener("click", async () => { await ILAuth.signOut(); location.href = "index.html"; });
