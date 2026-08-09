@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Panel para familias · Interlanguage HOME</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="design-system.css?v=20260809e">
+<link rel="stylesheet" href="app.css?v=20260809d">
+<link rel="stylesheet" href="family.css?v=20260809b">
+</head>
+<body class="family-page">
+<a class="skip-link" href="#familyMain">Saltar al contenido</a>
+<div class="il-offline" id="offline" hidden><span data-il-icon="wifiOff" aria-hidden="true"></span> Sin conexión.</div>
+
+<header class="family-topbar">
+  <a class="family-brand" href="familias.html" aria-label="Panel para familias de Interlanguage">
+    <span class="family-brand__mark" aria-hidden="true"><span data-il-icon="plane"></span></span>
+    <span class="family-brand__copy"><span class="family-brand__name">Inter<b>language</b></span><small>Familias</small></span>
+  </a>
+  <nav class="family-nav" aria-label="Secciones del panel familiar">
+    <a href="#resumen">Resumen</a>
+    <a href="#aprendizaje">Aprendizaje</a>
+    <a href="#evolucion">Evolución</a>
+    <a href="#clase">Clase</a>
+  </nav>
+  <a class="student-area-link" href="inicio.html" aria-label="Volver a la zona del alumno"><span data-il-icon="arrowLeft" aria-hidden="true"></span><span>Zona alumno</span></a>
+</header>
+
+<main class="family-shell" id="familyMain">
+  <div class="family-loading" id="loading" aria-busy="true" aria-label="Preparando el panel familiar">
+    <div class="family-skeleton family-skeleton--title"></div>
+    <div class="family-skeleton family-skeleton--hero"></div>
+    <div class="family-skeleton-grid"><div class="family-skeleton"></div><div class="family-skeleton"></div></div>
+  </div>
+
+  <section class="family-state" id="accessState" hidden>
+    <span class="family-state__icon" aria-hidden="true"><span data-il-icon="shield"></span></span>
+    <p class="family-kicker">Acceso familiar</p>
+    <h1>Este panel necesita un alumno vinculado</h1>
+    <p>En la siguiente fase podrá abrirse con una cuenta familiar o mediante un enlace seguro de Interlanguage.</p>
+    <a class="btn btn-primary" href="index.html">Entrar en la plataforma</a>
+  </section>
+
+  <section class="family-state" id="errorState" role="alert" hidden>
+    <span class="family-state__icon" aria-hidden="true"><span data-il-icon="warning"></span></span>
+    <p class="family-kicker">Panel para familias</p>
+    <h1>No hemos podido preparar el resumen</h1>
+    <p>La información sigue guardada. Inténtalo de nuevo en unos segundos.</p>
+    <button class="btn btn-primary" id="familyRetry" type="button">Reintentar</button>
+  </section>
+
+  <div id="dashboard" hidden>
+    <section class="family-hero" id="resumen" aria-labelledby="familyTitle">
+      <div class="family-hero__intro">
+        <div class="family-heading-line">
+          <p class="family-kicker">Resumen familiar</p>
+          <span class="preview-pill" id="previewPill" hidden>Vista previa</span>
+        </div>
+        <h1 id="familyTitle">Progreso de Lucía</h1>
+        <p class="family-period"><span data-il-icon="calendar" aria-hidden="true"></span>Esta semana</p>
+      </div>
+      <dl class="family-metrics" id="familyMetrics" aria-label="Resumen de esta semana"></dl>
+      <div class="family-headline" id="familyHeadline">
+        <span aria-hidden="true"><span data-il-icon="trend"></span></span>
+        <p id="headlineCopy"></p>
+      </div>
+    </section>
+
+    <section class="low-data" id="lowData" role="status" hidden>
+      <span aria-hidden="true"><span data-il-icon="info"></span></span>
+      <div><h2>Estamos reuniendo evidencia</h2><p id="lowDataCopy"></p></div>
+    </section>
+
+    <div class="family-sections" id="aprendizaje">
+      <section class="family-section constancy-section" aria-labelledby="constancyTitle">
+        <div class="family-section__heading">
+          <div><p class="family-kicker">Constancia</p><h2 id="constancyTitle">Sesiones por semana</h2></div>
+          <span class="section-icon" aria-hidden="true"><span data-il-icon="calendar"></span></span>
+        </div>
+        <div class="session-chart" id="sessionChart" role="img" aria-label="Sesiones completadas durante las últimas cuatro semanas"></div>
+        <p class="interpretation" id="constancyMessage"></p>
+      </section>
+
+      <section class="family-section contents-section" aria-labelledby="contentsTitle">
+        <div class="family-section__heading">
+          <div><p class="family-kicker">Contenidos trabajados</p><h2 id="contentsTitle">Qué ha practicado</h2></div>
+          <span class="section-icon" aria-hidden="true"><span data-il-icon="book"></span></span>
+        </div>
+        <div class="content-list" id="contentList"></div>
+      </section>
+
+      <section class="family-section strengths-section" aria-labelledby="strengthsTitle">
+        <div class="family-section__heading">
+          <div><p class="family-kicker">Fortalezas</p><h2 id="strengthsTitle">Dónde muestra más seguridad</h2></div>
+          <span class="section-icon" aria-hidden="true"><span data-il-icon="trend"></span></span>
+        </div>
+        <div class="family-skills" id="strengthList"></div>
+        <p class="interpretation" id="strengthMessage"></p>
+      </section>
+
+      <section class="family-section reinforce-section" aria-labelledby="reinforceTitle">
+        <div class="family-section__heading">
+          <div><p class="family-kicker">Para reforzar</p><h2 id="reinforceTitle">Próximo foco</h2></div>
+          <span class="section-icon" aria-hidden="true"><span data-il-icon="ear"></span></span>
+        </div>
+        <strong class="focus-skill" id="reinforceSkill">Listening</strong>
+        <p id="reinforceCopy"></p>
+        <a class="text-link" id="reinforceLink" href="leccion.html">Ver práctica recomendada <span aria-hidden="true">→</span></a>
+      </section>
+
+      <section class="family-section evolution-section" id="evolucion" aria-labelledby="evolutionTitle">
+        <div class="family-section__heading">
+          <div><p class="family-kicker">Evolución</p><h2 id="evolutionTitle">Minutos y precisión</h2></div>
+          <span class="section-icon" aria-hidden="true"><span data-il-icon="chart"></span></span>
+        </div>
+        <div class="evolution-chart" id="evolutionChart" role="img" aria-label="Evolución semanal de minutos y precisión"></div>
+        <p class="interpretation" id="evolutionMessage"></p>
+      </section>
+
+      <section class="family-section recommendation-section" aria-labelledby="recommendationTitle">
+        <div class="family-section__heading">
+          <div><p class="family-kicker">Próxima recomendación</p><h2 id="recommendationTitle">Siguiente paso útil</h2></div>
+          <span class="section-icon" aria-hidden="true"><span data-il-icon="target"></span></span>
+        </div>
+        <h3 id="recommendationName"></h3>
+        <p id="recommendationCopy"></p>
+        <a class="btn btn-primary" id="recommendationAction" href="leccion.html">Practicar listening</a>
+      </section>
+
+      <section class="family-section class-section" id="clase" aria-labelledby="classTitle">
+        <div class="family-section__heading">
+          <div><p class="family-kicker" id="classPeriod">Esta semana en clase</p><h2 id="classTitle">Daily routines</h2></div>
+          <span class="section-icon" aria-hidden="true"><span data-il-icon="route"></span></span>
+        </div>
+        <p class="class-label">La práctica digital está reforzando:</p>
+        <div class="class-skills" id="classSkills"></div>
+        <p class="interpretation" id="classMessage"></p>
+      </section>
+    </div>
+
+    <footer class="family-method">
+      <span aria-hidden="true"><span data-il-icon="shield"></span></span>
+      <p><strong>Cómo leer este panel.</strong> Mostramos tendencias de aprendizaje, no notas ni comparaciones con otros alumnos. Las recomendaciones necesitan varias sesiones para ser fiables.</p>
+    </footer>
+  </div>
+</main>
+
+<script src="layout.js?v=20260809d"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js?v=20260809d"></script>
+<script src="auth-utils.js?v=20260809d"></script>
+<script src="auth.js?v=20260809e"></script>
+<script src="mission-state.js?v=20260809f"></script>
+<script src="progress-data.js?v=20260809f"></script>
+<script src="family-data.js?v=20260809a"></script>
+<script src="family.js?v=20260809b"></script>
+</body>
+</html>

@@ -24,9 +24,11 @@
       minutesTotal: 186,
       minutesWeek: 24,
       wordsLearned: 43,
-      accuracy: 80,
+      accuracy: 77,
       topicsCompleted: 4,
       listeningCorrect: 14,
+      expressionsMastered: 12,
+      week: Object.freeze({ goal: 5, count: 4, practiced: Object.freeze([0, 1, 3, 5]) }),
       phrases: Object.freeze([
         "I get up at seven.",
         "I have breakfast before school.",
@@ -45,6 +47,33 @@
         levelProgress: 65,
         approximateLevel: "A1",
         description: "Estás aprendiendo a hablar sobre rutinas y actividades cotidianas."
+      }),
+      family: Object.freeze({
+        exercisesWeek: 31,
+        newExpressionsWeek: 12,
+        weeklyHistory: Object.freeze([
+          Object.freeze({ label: "Hace 3 semanas", shortLabel: "-3", sessions: 2, minutes: 13, accuracy: 68 }),
+          Object.freeze({ label: "Hace 2 semanas", shortLabel: "-2", sessions: 3, minutes: 17, accuracy: 71 }),
+          Object.freeze({ label: "Semana pasada", shortLabel: "-1", sessions: 4, minutes: 21, accuracy: 74 }),
+          Object.freeze({ label: "Esta semana", shortLabel: "Ahora", sessions: null, minutes: 24, accuracy: 77 })
+        ]),
+        contents: Object.freeze([
+          Object.freeze({ title: "Daily routines", detail: "Acciones y expresiones para hablar de la rutina diaria.", skills: Object.freeze(["Vocabulary", "Listening"]) }),
+          Object.freeze({ title: "Telling the time", detail: "Horas y momentos habituales del día.", skills: Object.freeze(["Listening", "Grammar"]) }),
+          Object.freeze({ title: "Present simple", detail: "Frases afirmativas para describir hábitos.", skills: Object.freeze(["Grammar", "Reading"]) })
+        ]),
+        recommendation: Object.freeze({
+          title: "Reconocer rutinas al escucharlas",
+          description: "Una misión corta de listening ayudará a consolidar expresiones que Lucía ya reconoce por escrito.",
+          action: "Practicar listening",
+          href: "leccion.html"
+        }),
+        classConnection: Object.freeze({
+          period: "Esta semana en clase",
+          topic: "Daily routines",
+          skills: Object.freeze(["Vocabulary", "Listening"]),
+          message: "La práctica digital está reforzando el vocabulario y la comprensión oral trabajados en clase."
+        })
       })
     })
   });
@@ -103,11 +132,18 @@
     if (current === previous) return { tone: "neutral", text: "Mantienes el mismo ritmo que la semana pasada." };
     return { tone: "neutral", text: "Aún puedes sumar sesiones esta semana, a tu ritmo." };
   }
+  function normalizeWeek(profile, week, isDemo) {
+    const key = String((profile && profile.username) || "").toLowerCase();
+    const demo = isDemo ? DEMO_LEARNING[key] : null;
+    const source = demo && demo.week ? demo.week : (week || { goal: 5, count: 0, practiced: [] });
+    return { goal: Number(source.goal) || 5, count: Number(source.count) || 0, practiced: (source.practiced || []).slice() };
+  }
   function buildSnapshot(input) {
     input = input || {};
-    const profile = input.profile || {}; const progress = input.progress || {}; const week = input.week || { goal: 5, count: 0, practiced: [] };
+    const profile = input.profile || {}; const progress = input.progress || {};
     const key = String(profile.username || "").toLowerCase();
     const demo = input.isDemo ? (DEMO_LEARNING[key] || null) : null;
+    const week = normalizeWeek(profile, input.week, input.isDemo);
     const days = input.activityDays || [];
     const previousWeek = countWeek(days, -1, input.now);
     const hasPreviousData = previousWeek > 0;
@@ -129,12 +165,13 @@
       accuracy: demo ? demo.accuracy : null,
       topicsCompleted: demo ? demo.topicsCompleted : null,
       phrases: phrases,
-      expressionsMastered: phrases.length || (demo ? demo.phrases.length : 0),
+      expressionsMastered: demo ? demo.expressionsMastered : phrases.length,
       skills: normalizeSkills(input.authSkills, demo),
       reinforce: demo ? demo.reinforce : { skill: "Listening", description: "Practica un poco más para descubrir qué habilidad conviene reforzar.", href: "leccion.html" },
       routineMissions: input.routineMissions == null ? 0 : input.routineMissions,
       listeningCorrect: demo ? demo.listeningCorrect : null,
-      comeback: demo ? demo.comeback : detectComeback(days)
+      comeback: demo ? demo.comeback : detectComeback(days),
+      familyEvidence: demo ? demo.family : null
     };
     data.profileSummary = demo ? demo.profile : {
       levelName: (profile.level || (input.placement && input.placement.label) || "Nivel por descubrir").replace(" · ", " "),
@@ -162,5 +199,5 @@
     });
   }
 
-  return { SKILLS, DEMO_LEARNING, countWeek, detectComeback, buildStamps, buildSnapshot, load };
+  return { SKILLS, DEMO_LEARNING, countWeek, detectComeback, buildStamps, normalizeWeek, buildSnapshot, load };
 });

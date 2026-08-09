@@ -14,11 +14,15 @@ const demo = P.buildSnapshot({
 
 assert.equal(demo.minutesWeek, 24);
 assert.equal(demo.wordsLearned, 43);
+assert.equal(demo.accuracy, 77);
+assert.equal(demo.expressionsMastered, 12);
+assert.equal(demo.familyEvidence.exercisesWeek, 31);
+assert.equal(demo.week.count, 4, "la semana demo procede de la fuente central");
 assert.equal(demo.skills.length, 6);
 assert.equal(demo.skills.find(s => s.id === "writing").percent, null);
 assert.equal(demo.phrases[0], "I get up at seven.");
 assert.equal(demo.stamps.items.find(s => s.id === "first-flight").unlocked, true);
-assert.equal(demo.stamps.items.find(s => s.id === "weekly-explorer").percent, 60);
+assert.equal(demo.stamps.items.find(s => s.id === "weekly-explorer").percent, 80);
 assert.equal(demo.stamps.items.find(s => s.id === "morning-explorer").percent, 60);
 assert.equal(demo.stamps.next.id, "word-collector");
 assert.equal(demo.profileSummary.levelName, "Explorer 2");
@@ -43,4 +47,4 @@ assert.equal(real.comeback, true);
 assert.equal(P.detectComeback(["2026-08-01", "2026-08-02"]), false);
 assert.equal(P.countWeek(["2026-08-03", "2026-08-04"], 0, "2026-08-06T12:00:00Z"), 2);
 
-console.log("progress-data: 18 comprobaciones correctas");
+console.log("progress-data: 22 comprobaciones correctas");

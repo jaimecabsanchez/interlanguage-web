@@ -136,6 +136,7 @@
 <script src="auth.js?v=20260809e"></script>
 <script src="motor/matriz.js?v=20260809d"></script>
 <script src="mission-state.js?v=20260809f"></script>
+<script src="progress-data.js?v=20260809f"></script>
 <script src="profile-settings.js?v=20260809a"></script>
 <script>
   const $ = id => document.getElementById(id);
@@ -209,7 +210,8 @@
       ILProfileSettings.setActive(profile.username || "");
       const stage = IL_ETAPA.apply(profile);
       const experience = IL_ETAPA.current().config;
-      const [progress, week, placement] = await Promise.all([ILAuth.getProgress(), ILAuth.getWeekActivity(), ILAuth.getPlacement()]);
+      const [progress, rawWeek, placement] = await Promise.all([ILAuth.getProgress(), ILAuth.getWeekActivity(), ILAuth.getPlacement()]);
+      const week = ILProgressData.normalizeWeek(profile, rawWeek, ILAuth.isDemo());
       const username = profile.username || "";
       const session = ILMission.getOrCreateSession({ username, units, banda: stage, cefr: placement.cefr, matrix: window.IL_MATRIZ, limit: experience.exerciseLimit, unitIds: experience.unitIds, skillPriority: experience.skillPriority });
       if (!session.length) throw new Error("No mission content");
