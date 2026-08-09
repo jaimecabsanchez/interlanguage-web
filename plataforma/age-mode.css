@@ -384,3 +384,57 @@ body[data-age-mode="primary-young"] .learning-layout{ grid-template-columns:1fr;
 body[data-age-mode="primary-young"] .stamp-card > p{ display:none; }
 body[data-age-mode="primary-young"] .stamp-card{ min-height:186px; }
 body[data-age-mode="primary-young"] .stamps-intro p:not(.ui-label){ display:none; }
+
+/* ============================================================
+   FASE 2 · PERFIL · Primaria inicial: "mi personaje y mis cosas".
+   Nivel 1 = perfil del niño; Nivel 2 = ajustes/cuenta (pantalla aparte).
+   ============================================================ */
+body[data-age-mode="primary-young"] .profile-columns{ grid-template-columns:1fr; }
+body[data-age-mode="primary-young"] .learning-description,
+body[data-age-mode="primary-young"] #approxLevel,
+body[data-age-mode="primary-young"] .avatar-options,
+body[data-age-mode="primary-young"] .field-control,
+body[data-age-mode="primary-young"] .personalization-library,
+body[data-age-mode="primary-young"] .nemo-guide,
+body[data-age-mode="primary-young"] .highlight-item:first-child{ display:none; }
+body[data-age-mode="primary-young"] .avatar-visual{ width:132px; height:132px; }
+body[data-age-mode="primary-young"] .avatar-visual > svg{ width:56px; height:56px; }
+
+/* Categorías visuales de personalización */
+.yp{ display:grid; gap:var(--il-space-5); margin-top:var(--il-space-5); }
+.yp-cat__label{ margin:0 0 var(--il-space-2); font-family:var(--il-font-display); font-weight:var(--il-weight-extrabold); font-size:var(--il-fs-sm); color:var(--il-text-primary); }
+.yp-row{ display:flex; flex-wrap:wrap; gap:var(--il-space-3); }
+.yp-tile{ width:92px; display:flex; flex-direction:column; align-items:center; gap:var(--il-space-2); padding:var(--il-space-2); border:0; background:transparent; cursor:pointer; }
+.yp-tile__art{ position:relative; width:72px; height:72px; display:grid; place-items:center; border-radius:var(--il-radius-lg); background:var(--il-surface); border:2px solid var(--il-border); transition:transform 120ms var(--il-ease), border-color 120ms var(--il-ease), box-shadow 120ms var(--il-ease); }
+.yp-tile__art svg{ width:44px; height:44px; }
+.yp-tile__art--color{ border:0; }
+.yp-tile:hover:not(.is-locked) .yp-tile__art{ transform:translateY(-2px); box-shadow:var(--il-shadow-sm); }
+.yp-tile.is-selected .yp-tile__art{ border-color:var(--il-primary); box-shadow:0 0 0 3px color-mix(in srgb,var(--il-primary) 16%,transparent); }
+.yp-tile__name{ font-size:var(--il-fs-sm); font-weight:var(--il-weight-bold); color:var(--il-text-secondary); }
+.yp-tile.is-locked .yp-tile__art{ filter:grayscale(1); opacity:.5; }
+.yp-tile__lock{ position:absolute; right:-4px; bottom:-4px; width:24px; height:24px; display:grid; place-items:center; border-radius:50%; background:var(--il-primary); color:var(--il-on-primary); filter:none; opacity:1; }
+.yp-tile__lock svg{ width:13px; height:13px; }
+.yp-hint{ margin:0; padding:var(--il-space-3) var(--il-space-4); border-radius:var(--il-radius-md); background:var(--il-secondary-soft); color:var(--il-coral-ink); font-weight:var(--il-weight-semibold); font-size:var(--il-fs-sm); }
+
+/* Sello favorito como fichas */
+.yp-seal{ display:inline-flex; align-items:center; gap:var(--il-space-2); padding:8px 14px 8px 8px; border:2px solid var(--il-border); border-radius:var(--il-radius-pill); background:var(--il-surface); cursor:pointer; font-weight:var(--il-weight-bold); color:var(--il-text-primary); }
+.yp-seal__mark{ width:34px; height:34px; display:grid; place-items:center; border-radius:50%; background:var(--il-success-soft); color:var(--il-success); }
+.yp-seal__mark svg{ width:19px; height:19px; }
+.yp-seal.is-selected{ border-color:var(--il-primary); box-shadow:0 0 0 3px color-mix(in srgb,var(--il-primary) 14%,transparent); }
+.yp-empty{ margin:0; color:var(--il-text-secondary); }
+
+/* Nivel 2 · entradas a ajustes/familias */
+.yp-nivel2{ display:grid; gap:var(--il-space-2); margin-top:var(--il-space-6); }
+.yp-entry{ display:flex; align-items:center; gap:var(--il-space-3); min-height:60px; padding:0 var(--il-space-4); border:1px solid var(--il-border); border-radius:var(--il-radius-lg); background:var(--il-surface); color:var(--il-text-primary); text-decoration:none; font-family:var(--il-font-display); font-weight:var(--il-weight-bold); cursor:pointer; }
+.yp-entry:hover{ border-color:var(--il-border-strong); background:var(--il-surface-secondary); }
+.yp-entry__ic{ width:38px; height:38px; display:grid; place-items:center; border-radius:var(--il-radius-md); background:var(--il-primary-soft); color:var(--il-primary); }
+.yp-entry__ic svg{ width:20px; height:20px; }
+.yp-entry__go{ margin-left:auto; color:var(--il-muted); font-size:1.3rem; }
+
+/* Pantalla secundaria (ajustes + cuenta) */
+.kid-settings-dialog{ width:min(560px, calc(100% - var(--il-space-5))); max-height:calc(100dvh - var(--il-space-7)); overflow:auto; padding:var(--il-space-6); border:0; border-radius:var(--il-radius-xl); background:var(--il-background); color:var(--il-text-primary); box-shadow:var(--il-shadow-lg); }
+.kid-settings-dialog::backdrop{ background:var(--il-overlay); backdrop-filter:blur(3px); }
+.kid-settings__head{ display:flex; align-items:center; justify-content:space-between; margin-bottom:var(--il-space-4); }
+.kid-settings__head h2{ font-size:var(--il-fs-xl); }
+.kid-settings__head .dialog-close{ position:static; }
+.kid-settings-dialog .profile-section{ margin-bottom:var(--il-space-5); }
