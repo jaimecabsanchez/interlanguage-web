@@ -140,6 +140,7 @@
       if (!profile) { location.href = "index.html"; return; }
       if (profile.is_admin) { location.href = "admin.html"; return; }
       if (profile.must_change_password) { location.href = "cambiar-clave.html"; return; }
+      ILProfileSettings.setActive(profile.username || "");
       IL_ETAPA.apply(profile); snapshot = await ILProgressData.load(ILAuth, window.ILMission); if (!snapshot) throw new Error("No progress snapshot");
       renderHeader(snapshot); renderWeek(snapshot); renderLearning(snapshot); renderStamps(snapshot); setupTabs(); setupDialog();
       if (snapshot.isDemo && sessionStorage.getItem("il_demo_strip_off") !== "1") $("demoStrip").hidden = false;

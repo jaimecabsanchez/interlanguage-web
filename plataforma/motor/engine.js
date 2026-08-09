@@ -27,6 +27,7 @@
   const icon = name => window.ILIcon ? window.ILIcon(name) : "";
   const disableAll = (host, disabled) => host.querySelectorAll("button,input,textarea,select")
     .forEach(control => { control.disabled = !!disabled; });
+  const audioSettings = () => window.ILProfileSettings ? window.ILProfileSettings.getActive() : { sound: true, autoplayAudio: true, audioSpeed: 0.9 };
 
   function instructionFor(exercise, stage) {
     const variants = exercise.instructions || {};
@@ -36,6 +37,11 @@
   function speak(text, callbacks) {
     callbacks = callbacks || {};
     try {
+      const settings = audioSettings();
+      if (!settings.sound) {
+        if (callbacks.onDisabled) callbacks.onDisabled();
+        return null;
+      }
       if (!("speechSynthesis" in window) || !text) {
         if (callbacks.onError) callbacks.onError();
         return null;
@@ -43,7 +49,7 @@
       window.speechSynthesis.cancel();
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.lang = "en-US";
-      utterance.rate = 0.9;
+      utterance.rate = settings.audioSpeed || 0.9;
       utterance.onstart = () => callbacks.onStart && callbacks.onStart();
       utterance.onend = () => callbacks.onEnd && callbacks.onEnd();
       utterance.onerror = event => callbacks.onError && callbacks.onError(event);
@@ -348,10 +354,13 @@
     const note = el("p", "eng-speaking-note", "Escucha y repite a tu ritmo. En esta fase no evaluamos tu pronunciación.");
     const listen = el("button", "btn btn-ghost"); listen.type = "button";
     listen.innerHTML = icon("speaker") + "<span>Escuchar</span>";
+    const speakingAudio = audioSettings();
+    if (!speakingAudio.sound) { listen.disabled = true; listen.title = "Activa el sonido en Perfil para escuchar esta frase."; listen.setAttribute("aria-label", "Audio desactivado. Actívalo en Perfil."); }
     const setListenText = text => { const label = listen.querySelector("span"); if (label) label.textContent = text; };
     listen.addEventListener("click", () => speak(exercise.frase, {
       onStart: () => { setListenText("Reproduciendo…"); listen.setAttribute("aria-pressed", "true"); },
       onEnd: () => { setListenText("Repetir"); listen.setAttribute("aria-pressed", "false"); onChange(); },
+      onDisabled: () => { setListenText("Audio desactivado"); },
       onError: () => { setListenText("Reintentar audio"); onChange(); }
     }));
     card.appendChild(phrase); card.appendChild(note); card.appendChild(listen); host.appendChild(card);
@@ -405,6 +414,8 @@
       audio.innerHTML = icon("speaker") + '<span class="eng-audio-label">Escuchar</span>';
       audio.setAttribute("aria-label", "Escuchar audio del ejercicio");
       audio.setAttribute("aria-pressed", "false");
+      const exerciseAudio = audioSettings();
+      if (!exerciseAudio.sound) { audio.disabled = true; audio.title = "Activa el sonido en Perfil para escuchar este audio."; audio.setAttribute("aria-label", "Audio desactivado. Actívalo en Perfil."); audio.querySelector(".eng-audio-label").textContent = "Audio desactivado"; }
       audio.addEventListener("click", () => speak(audioText, {
         onStart: () => {
           audio.classList.add("is-playing"); audio.setAttribute("aria-pressed", "true");
@@ -414,6 +425,10 @@
           audio.classList.remove("is-playing"); audio.setAttribute("aria-pressed", "false");
           audio.querySelector(".eng-audio-label").textContent = "Repetir";
         },
+        onDisabled: () => {
+          audio.classList.remove("is-playing"); audio.setAttribute("aria-pressed", "false");
+          audio.querySelector(".eng-audio-label").textContent = "Audio desactivado";
+        },
         onError: () => {
           audio.classList.remove("is-playing"); audio.setAttribute("aria-pressed", "false");
           audio.querySelector(".eng-audio-label").textContent = "Reintentar";
@@ -421,7 +436,7 @@
         }
       }));
       header.appendChild(audio);
-      if (exercise.audio_auto) setTimeout(() => audio.click(), 350);
+      if (exercise.audio_auto && exerciseAudio.sound && exerciseAudio.autoplayAudio) setTimeout(() => audio.click(), 350);
     }
     root.appendChild(header);
 

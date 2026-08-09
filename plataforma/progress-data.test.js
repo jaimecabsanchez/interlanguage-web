@@ -21,6 +21,8 @@ assert.equal(demo.stamps.items.find(s => s.id === "first-flight").unlocked, true
 assert.equal(demo.stamps.items.find(s => s.id === "weekly-explorer").percent, 60);
 assert.equal(demo.stamps.items.find(s => s.id === "morning-explorer").percent, 60);
 assert.equal(demo.stamps.next.id, "word-collector");
+assert.equal(demo.profileSummary.levelName, "Explorer 2");
+assert.equal(demo.profileSummary.levelProgress, 65);
 
 const real = P.buildSnapshot({
   isDemo: false,
@@ -36,8 +38,9 @@ const real = P.buildSnapshot({
 assert.equal(real.minutesTotal, null, "no inventa minutos en cuentas reales");
 assert.equal(real.wordsLearned, null, "no inventa palabras en cuentas reales");
 assert.equal(real.skills.every(s => s.percent === null), true);
+assert.equal(real.profileSummary.levelProgress, null, "no inventa progreso de nivel en cuentas reales");
 assert.equal(real.comeback, true);
 assert.equal(P.detectComeback(["2026-08-01", "2026-08-02"]), false);
 assert.equal(P.countWeek(["2026-08-03", "2026-08-04"], 0, "2026-08-06T12:00:00Z"), 2);
 
-console.log("progress-data: 15 comprobaciones correctas");
+console.log("progress-data: 18 comprobaciones correctas");

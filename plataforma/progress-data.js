@@ -38,7 +38,14 @@
         description: "Te cuesta un poco más reconocer algunas expresiones de rutinas.",
         href: "leccion.html"
       }),
-      comeback: true
+      comeback: true,
+      profile: Object.freeze({
+        levelName: "Explorer 2",
+        nextLevel: "Explorer 3",
+        levelProgress: 65,
+        approximateLevel: "A1",
+        description: "Estás aprendiendo a hablar sobre rutinas y actividades cotidianas."
+      })
     })
   });
 
@@ -128,6 +135,13 @@
       routineMissions: input.routineMissions == null ? 0 : input.routineMissions,
       listeningCorrect: demo ? demo.listeningCorrect : null,
       comeback: demo ? demo.comeback : detectComeback(days)
+    };
+    data.profileSummary = demo ? demo.profile : {
+      levelName: (profile.level || (input.placement && input.placement.label) || "Nivel por descubrir").replace(" · ", " "),
+      nextLevel: "Siguiente nivel",
+      levelProgress: null,
+      approximateLevel: input.placement && input.placement.cefr ? input.placement.cefr : null,
+      description: phrases.length ? "Estás convirtiendo lo que practicas en inglés que ya puedes utilizar." : "Tu recorrido de aprendizaje empieza con cada misión que completas."
     };
     data.weekCount = data.week.count;
     data.stamps = buildStamps(data);

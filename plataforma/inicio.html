@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="design-system.css?v=20260809d">
+<link rel="stylesheet" href="design-system.css?v=20260809e">
 <link rel="stylesheet" href="app.css?v=20260809d">
 <link rel="stylesheet" href="shell.css?v=20260809d">
 <link rel="stylesheet" href="etapa.css?v=20260809d">
@@ -135,6 +135,7 @@
 <script src="auth.js?v=20260809d"></script>
 <script src="motor/matriz.js?v=20260809d"></script>
 <script src="mission-state.js?v=20260809e"></script>
+<script src="profile-settings.js?v=20260809a"></script>
 <script>
   const $ = id => document.getElementById(id);
   const units = (window.IL_CONTENIDO && window.IL_CONTENIDO.unidades) || [];
@@ -203,6 +204,7 @@
       if (!profile) { location.href = "index.html"; return; }
       if (profile.is_admin) { location.href = "admin.html"; return; }
       if (profile.must_change_password) { location.href = "cambiar-clave.html"; return; }
+      ILProfileSettings.setActive(profile.username || "");
       const stage = IL_ETAPA.apply(profile);
       const [progress, week, placement] = await Promise.all([ILAuth.getProgress(), ILAuth.getWeekActivity(), ILAuth.getPlacement()]);
       const username = profile.username || "";

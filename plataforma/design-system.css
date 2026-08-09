@@ -202,6 +202,27 @@
   --il-radius:var(--il-radius-sm);
 }
 
+html[data-il-text-size="large"]{font-size:112.5%;}
+
+html[data-il-reduce-motion="true"]{
+  --il-duration-instant:0ms;
+  --il-duration-fast:0ms;
+  --il-duration-base:0ms;
+  --il-duration-slow:0ms;
+  --il-motion-fast:0ms;
+  --il-motion:0ms;
+  scroll-behavior:auto;
+}
+
+html[data-il-reduce-motion="true"] *,
+html[data-il-reduce-motion="true"] *::before,
+html[data-il-reduce-motion="true"] *::after{
+  animation-duration:0.001ms!important;
+  animation-iteration-count:1!important;
+  transition-duration:0.001ms!important;
+  scroll-behavior:auto!important;
+}
+
 @media (prefers-reduced-motion:reduce){
   :root{
     --il-duration-instant:0ms;
