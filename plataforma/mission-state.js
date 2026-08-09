@@ -204,11 +204,18 @@
   function getOrCreateSession(options) {
     options = options || {};
     const units = options.units || [];
-    const all = units.flatMap(unit => unit.ejercicios || []);
-    const byId = {}; all.forEach(ex => { byId[ex.id] = ex; });
+    const allContent = units.flatMap(unit => unit.ejercicios || []);
+    const selectedUnits = Array.isArray(options.unitIds) && options.unitIds.length
+      ? units.filter(unit => options.unitIds.indexOf(unit.id) !== -1)
+      : units;
+    const all = selectedUnits.flatMap(unit => unit.ejercicios || []);
+    const byId = {}; allContent.forEach(ex => { byId[ex.id] = ex; });
     const date = options.date || isoDay();
+    const context = [options.banda || "", options.limit || 6, (options.unitIds || []).join(","), (options.skillPriority || []).join(",")].join("|");
     const cached = read(sessionKey(options.username), null);
-    if (cached && cached.date === date && Array.isArray(cached.ids)) {
+    const legacyState = cached && !cached.context ? get(options.username, date) : null;
+    const compatible = cached && (cached.context === context || (!cached.context && legacyState && legacyState.status === "in_progress"));
+    if (cached && cached.date === date && Array.isArray(cached.ids) && compatible) {
       const current = cached.ids.map(id => byId[id]).filter(Boolean);
       if (current.length) return current;
     }
@@ -217,6 +224,7 @@
       : all.slice();
     const previous = cached && Array.isArray(cached.ids) ? cached.ids : [];
     const target = CEFR_IDX[options.cefr] != null ? CEFR_IDX[options.cefr] : 1;
+    const skillPriority = Array.isArray(options.skillPriority) ? options.skillPriority : [];
     const seed = hashStr(String(options.username || "") + "|" + date);
     const scored = pool.map(ex => {
       const level = CEFR_IDX[ex.nivel] != null ? CEFR_IDX[ex.nivel] : 0;
@@ -224,9 +232,10 @@
         ex: ex,
         score: level > target ? 100 + level - target : target - level,
         recent: previous.indexOf(ex.id) !== -1 ? 1 : 0,
+        priority: skillPriority.indexOf(ex.habilidad) === -1 ? skillPriority.length : skillPriority.indexOf(ex.habilidad),
         random: seededRand(seed + hashStr(ex.id))
       };
-    }).sort((a, b) => (a.score - b.score) || (a.recent - b.recent) || (a.random - b.random));
+    }).sort((a, b) => (a.score - b.score) || (a.recent - b.recent) || (a.priority - b.priority) || (a.random - b.random));
     const picked = []; let lastSkill = null; const rest = scored.slice();
     while (rest.length && picked.length < (options.limit || 6)) {
       let index = rest.findIndex(entry => entry.ex.habilidad !== lastSkill);
@@ -234,7 +243,7 @@
       const entry = rest.splice(index, 1)[0];
       picked.push(entry.ex); lastSkill = entry.ex.habilidad;
     }
-    write(sessionKey(options.username), { date: date, ids: picked.map(ex => ex.id) });
+    write(sessionKey(options.username), { date: date, context: context, ids: picked.map(ex => ex.id) });
     return picked;
   }
 

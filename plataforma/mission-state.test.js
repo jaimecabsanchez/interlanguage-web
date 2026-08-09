@@ -56,4 +56,12 @@ const second = M.getOrCreateSession({ username: "ana", date: "2026-08-09", units
 assert.deepEqual(first.map(x => x.id), second.map(x => x.id), "sesión diaria estable");
 assert.equal(new Set(first.map(x => x.habilidad)).size, 2, "intercala habilidades");
 
-console.log("mission-state: 15 comprobaciones correctas");
+const scopedUnits = [
+  { id: "young", ejercicios: [{ id: "y1", habilidad: "vocabulary", nivel: "A1" }, { id: "y2", habilidad: "listening", nivel: "A1" }] },
+  { id: "teen", ejercicios: [{ id: "t1", habilidad: "reading", nivel: "A1" }, { id: "t2", habilidad: "grammar", nivel: "A1" }] }
+];
+const scoped = M.getOrCreateSession({ username: "marta", date: "2026-08-10", units: scopedUnits, banda: "p56", cefr: "A1", limit: 2, unitIds: ["teen"], skillPriority: ["grammar", "reading"] });
+assert.deepEqual(new Set(scoped.map(item => item.id)), new Set(["t1", "t2"]), "la sesión respeta la unidad del perfil");
+assert.equal(scoped[0].habilidad, "grammar", "la prioridad resuelve candidatos equivalentes");
+
+console.log("mission-state: 17 comprobaciones correctas");

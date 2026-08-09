@@ -1,43 +1,254 @@
 /* ============================================================
-   Interlanguage · Adaptación por ETAPA (un solo sistema visual)
-   No son varias apps: es la misma con variaciones controladas por
-   data-stage. 4 bandas:
-     p12 (1.º–2.º) · p34 (3.º–4.º) · p56 (5.º–6.º) · eso
-   Para probar: añade ?etapa=p12 (o p34/p56/eso) a la URL.
+   Interlanguage · Adaptación por etapa
+   Una arquitectura, dos capas:
+   - banda pedagógica: p12 / p34 / p56 / eso
+   - perfil de experiencia: primary-young / primary-upper / secondary
    ============================================================ */
-(function () {
+(function (root, factory) {
   "use strict";
-  const STAGES = ["p12", "p34", "p56", "eso"];
-  // Alias por compatibilidad con enlaces antiguos
-  const ALIAS = { primaria_inicial: "p12", primaria_superior: "p56", primaria: "p34" };
-  const q = new URLSearchParams(location.search);
+  const api = factory(root);
+  if (typeof module === "object" && module.exports) module.exports = factory;
+  else root.IL_ETAPA = api;
+})(typeof globalThis !== "undefined" ? globalThis : this, function createAgeExperience(environment) {
+  "use strict";
 
-  function stageFor(profile) {
-    let override = q.get("etapa");
-    if (override && ALIAS[override]) override = ALIAS[override];
-    if (STAGES.indexOf(override) !== -1) return override;
-    const y = profile && profile.birth_year;
-    if (y) {
-      const age = new Date().getFullYear() - y;
-      if (age <= 7) return "p12";
-      if (age <= 9) return "p34";
-      if (age <= 11) return "p56";
-      return "eso";
+  const env = environment || {};
+  const MODES = ["primary-young", "primary-upper", "secondary"];
+  const BANDS = ["p12", "p34", "p56", "eso"];
+  const STORAGE_KEY = "il_demo_age_mode_v1";
+  const MODE_FROM_BAND = { p12: "primary-young", p34: "primary-young", p56: "primary-upper", eso: "secondary" };
+  const DEMO_BAND = { "primary-young": "p34", "primary-upper": "p56", secondary: "eso" };
+  const MODE_ALIAS = {
+    p12: "primary-young", p34: "primary-young", p56: "primary-upper", eso: "secondary",
+    primaria_inicial: "primary-young", primaria_superior: "primary-upper", primaria: "primary-upper"
+  };
+
+  const PROFILES = {
+    "primary-young": {
+      id: "primary-young",
+      label: "Primaria inicial",
+      sessionLabel: "5–7 min",
+      exerciseLimit: 5,
+      guide: "visible",
+      languageSupport: "spanish",
+      celebration: "frequent",
+      skillPriority: ["listening", "vocabulary", "speaking", "grammar", "reading"],
+      unitIds: ["primer-vuelo"],
+      themes: ["school life", "everyday situations"],
+      copy: {
+        greeting: name => "¡Hola, " + name + "!",
+        ready: "Hoy tienes una misión corta y divertida.",
+        active: "¡Muy bien! Sigue desde donde lo dejaste.",
+        complete: "¡Misión lista! Hoy tu inglés ha avanzado.",
+        comeback: "¡Qué alegría verte! Empezamos con algo sencillo.",
+        missionEyebrow: "TU MISIÓN DE HOY",
+        startCta: "Empezar",
+        continueCta: "Seguir",
+        reviewCta: "Practicar otra vez",
+        completedCta: "¡Misión lista!",
+        exercise: "Actividad",
+        countJoin: "de",
+        pace: "Una actividad cada vez",
+        summaryTitle: "¡Misión completada!",
+        summaryLead: "¡Buen trabajo! Has aprendido un poco más de inglés."
+      }
+    },
+    "primary-upper": {
+      id: "primary-upper",
+      label: "Primaria superior",
+      sessionLabel: "7–10 min",
+      exerciseLimit: 6,
+      guide: "discreet",
+      languageSupport: "mixed",
+      celebration: "balanced",
+      skillPriority: ["vocabulary", "listening", "grammar", "reading", "writing", "speaking"],
+      unitIds: ["rutina-diaria"],
+      themes: ["school life", "friends", "everyday situations"],
+      copy: {
+        greeting: name => "¡Hola, " + name + "!",
+        ready: "Tienes una misión breve preparada para hoy.",
+        active: "Tu misión está en marcha. Continúa donde la dejaste.",
+        complete: "Misión completada. Hoy ya has avanzado.",
+        comeback: "Qué bien verte de nuevo. Retomamos con una misión breve.",
+        missionEyebrow: "TU MISIÓN DE HOY",
+        startCta: "Empezar misión",
+        continueCta: "Continuar",
+        reviewCta: "Repasar errores",
+        completedCta: "Misión completada",
+        exercise: "Ejercicio",
+        countJoin: "de",
+        pace: "Una actividad cada vez",
+        summaryTitle: "¡Misión completada!",
+        summaryLead: "Has completado tu misión de hoy y ya sabes un poco más."
+      }
+    },
+    secondary: {
+      id: "secondary",
+      label: "ESO",
+      sessionLabel: "8–12 min",
+      exerciseLimit: 7,
+      guide: "hidden",
+      languageSupport: "english",
+      celebration: "minimal",
+      skillPriority: ["listening", "reading", "grammar", "writing", "vocabulary", "speaking"],
+      unitIds: ["future-plans"],
+      themes: ["travel", "school life", "friends", "technology", "music", "everyday situations", "social situations", "future plans"],
+      copy: {
+        greeting: name => "Hola, " + name,
+        ready: "Tu sesión de hoy está preparada.",
+        active: "Continúa tu sesión desde el último ejercicio.",
+        complete: "Sesión completada. Objetivo de hoy conseguido.",
+        comeback: "Bienvenido de nuevo. Retoma con una sesión breve.",
+        missionEyebrow: "TODAY’S SESSION",
+        startCta: "Start session",
+        continueCta: "Continue",
+        reviewCta: "Review mistakes",
+        completedCta: "Session complete",
+        exercise: "Exercise",
+        countJoin: "of",
+        pace: "One step at a time",
+        summaryTitle: "Session complete",
+        summaryLead: "You’ve completed today’s session and strengthened your English."
+      }
     }
-    return "p56"; // por defecto, Primaria superior
+  };
+
+  let active = { mode: "primary-upper", band: "p56", config: PROFILES["primary-upper"] };
+
+  function year() { return (env.Date || Date).now ? new (env.Date || Date)().getFullYear() : new Date().getFullYear(); }
+  function normalMode(value) {
+    const candidate = MODE_ALIAS[value] || value;
+    return MODES.indexOf(candidate) !== -1 ? candidate : null;
+  }
+  function ageFor(profile) {
+    if (profile && Number.isFinite(Number(profile.age))) return Number(profile.age);
+    const birthYear = profile && Number(profile.birth_year);
+    return birthYear ? year() - birthYear : null;
+  }
+  function bandFor(profile) {
+    const explicitBand = profile && profile.stage;
+    if (BANDS.indexOf(explicitBand) !== -1) return explicitBand;
+    const explicitMode = normalMode(profile && (profile.age_mode || profile.ageMode));
+    if (explicitMode) return DEMO_BAND[explicitMode];
+    const age = ageFor(profile);
+    if (age == null) return "p56";
+    if (age <= 7) return "p12";
+    if (age <= 9) return "p34";
+    if (age <= 11) return "p56";
+    return "eso";
+  }
+  function modeFor(profile) {
+    const explicit = normalMode(profile && (profile.age_mode || profile.ageMode));
+    return explicit || MODE_FROM_BAND[bandFor(profile)] || "primary-upper";
+  }
+  function config(mode) { return PROFILES[normalMode(mode) || active.mode] || PROFILES["primary-upper"]; }
+  function safeStorage(storage, action, key, value) {
+    try { return storage && typeof storage[action] === "function" ? storage[action](key, value) : null; }
+    catch (error) { return null; }
+  }
+  function queryMode() {
+    try {
+      const params = new URLSearchParams((env.location && env.location.search) || "");
+      return normalMode(params.get("ageMode") || params.get("etapa"));
+    } catch (error) { return null; }
+  }
+  function demoMode() {
+    return queryMode() || normalMode(safeStorage(env.sessionStorage, "getItem", STORAGE_KEY));
+  }
+  function isDemo(options) {
+    if (options && typeof options.demo === "boolean") return options.demo;
+    return !!(env.ILAuth && typeof env.ILAuth.isDemo === "function" && env.ILAuth.isDemo());
+  }
+  function demoToolsEnabled(options) {
+    if (!isDemo(options)) return false;
+    if (options && typeof options.demo === "boolean") return options.demo;
+    const host = String((env.location && env.location.hostname) || "");
+    return host === "localhost" || host === "127.0.0.1" || host === "" || host.endsWith(".local");
   }
 
-  // Copys por banda (mismo significado, distinto tono/intensidad)
-  const COPY = {
-    p12: { greet: (n) => "¡Hola, " + n + "!", today: "Tu misión de hoy", cta: "EMPEZAR", done: "¡Ya has practicado hoy!", sub: "Un ratito de inglés" },
-    p34: { greet: (n) => "¡Hola, " + n + "!", today: "Tu misión de hoy", cta: "EMPEZAR MISIÓN", done: "¡Ya has practicado hoy!", sub: "Tu misión de hoy" },
-    p56: { greet: (n) => "¡Hola, " + n + "!", today: "Tu misión de hoy", cta: "EMPEZAR MISIÓN", done: "¡Ya has practicado hoy!", sub: "Tu misión de hoy · 10 min" },
-    eso: { greet: (n) => "Hola, " + n, today: "Tu sesión de hoy", cta: "EMPEZAR", done: "Sesión de hoy completada ✓", sub: "Sesión de hoy · ~10 min" }
-  };
+  function clearDemoMission(profile) {
+    const username = String((profile && profile.username) || "");
+    if (!username) return;
+    safeStorage(env.localStorage, "removeItem", "il_session_" + username);
+    safeStorage(env.localStorage, "removeItem", "il_mission_state_v1_" + encodeURIComponent(username.trim().toLowerCase()));
+  }
 
-  window.IL_ETAPA = {
-    STAGES,
-    apply(profile) { const s = stageFor(profile); document.body.dataset.stage = s; return s; },
-    copy(stage) { return COPY[stage] || COPY.p56; }
+  function mountDemoSelector(profile, demo) {
+    const document = env.document;
+    if (!document || !document.body) return null;
+    const existing = document.getElementById("ilAgeModeSwitcher");
+    if (!demo) { if (existing) existing.remove(); return null; }
+    if (existing) {
+      const select = existing.querySelector("select");
+      if (select) select.value = active.mode;
+      return existing;
+    }
+    const wrapper = document.createElement("div");
+    wrapper.id = "ilAgeModeSwitcher";
+    wrapper.className = "age-mode-switcher";
+    wrapper.setAttribute("role", "group");
+    wrapper.setAttribute("aria-label", "Vista de etapa en modo demo");
+    const label = document.createElement("label");
+    label.htmlFor = "ilAgeModeSelect";
+    label.textContent = "Vista demo";
+    const select = document.createElement("select");
+    select.id = "ilAgeModeSelect";
+    select.setAttribute("aria-label", "Probar interfaz por etapa");
+    MODES.forEach(mode => {
+      const option = document.createElement("option");
+      option.value = mode;
+      option.textContent = PROFILES[mode].label;
+      select.appendChild(option);
+    });
+    select.value = active.mode;
+    select.addEventListener("change", event => {
+      const next = normalMode(event.target.value) || "primary-upper";
+      safeStorage(env.sessionStorage, "setItem", STORAGE_KEY, next);
+      clearDemoMission(profile);
+      if (env.location && env.location.href && typeof env.location.assign === "function") {
+        const target = new URL(env.location.href);
+        target.searchParams.set("ageMode", next);
+        target.searchParams.delete("etapa");
+        env.location.assign(target.toString());
+      } else if (env.location && typeof env.location.reload === "function") env.location.reload();
+    });
+    wrapper.append(label, select);
+    document.body.appendChild(wrapper);
+    return wrapper;
+  }
+
+  function apply(profile, options) {
+    const demo = demoToolsEnabled(options);
+    const requested = demo ? queryMode() : null;
+    const stored = demo ? normalMode(safeStorage(env.sessionStorage, "getItem", STORAGE_KEY)) : null;
+    if (requested && requested !== stored) {
+      safeStorage(env.sessionStorage, "setItem", STORAGE_KEY, requested);
+      clearDemoMission(profile);
+    }
+    const override = demo ? (requested || stored || demoMode()) : null;
+    const mode = override || modeFor(profile);
+    const band = override ? DEMO_BAND[mode] : bandFor(profile);
+    active = { mode, band, config: PROFILES[mode] };
+    if (env.document && env.document.body) {
+      env.document.body.dataset.ageMode = mode;
+      env.document.body.dataset.stage = band;
+      env.document.body.dataset.guide = PROFILES[mode].guide;
+    }
+    mountDemoSelector(profile, demo);
+    return band;
+  }
+
+  return {
+    MODES,
+    STAGES: BANDS,
+    PROFILES,
+    apply,
+    bandFor,
+    modeFor,
+    config,
+    current() { return active; },
+    copy(value) { return config(value).copy; },
+    mountDemoSelector,
+    _storageKey: STORAGE_KEY
   };
-})();
+});

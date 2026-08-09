@@ -107,9 +107,18 @@
     dialog.addEventListener("click", event => { if (event.target === dialog) dialog.close(); });
   }
 
-  function renderNemo(stage) {
-    if (stage === "p12" || stage === "p34") $("nemoCopy").textContent = "Nemo te dará pequeñas pistas y celebrará tus avances.";
-    else if (stage === "p56") $("nemoCopy").textContent = "Una ayuda discreta para orientarte cuando la necesites.";
+  function renderExperience(mode) {
+    if (mode === "primary-young") {
+      $("profileEyebrow").textContent = "MI ESPACIO";
+      $("profilePageSubtitle").textContent = "Tu avatar, tus logros y la forma en la que más te gusta aprender.";
+      $("nemoCopy").textContent = "Nemo te dará pistas sencillas y celebrará tus avances.";
+    } else if (mode === "primary-upper") {
+      $("nemoCopy").textContent = "Una ayuda discreta para orientarte cuando la necesites.";
+    } else {
+      $("profileEyebrow").textContent = "ACCOUNT & PREFERENCES";
+      $("profilePageSubtitle").textContent = "Consulta tu nivel, personaliza la experiencia y gestiona tus preferencias.";
+      $("nemoGuide").setAttribute("aria-hidden", "true");
+    }
   }
 
   (async function init() {
@@ -120,10 +129,11 @@
       if (profile.must_change_password) { location.href = "cambiar-clave.html"; return; }
       username = profile.username || "";
       settings = ILProfileSettings.setActive(username);
-      const stage = IL_ETAPA.apply(profile);
+      IL_ETAPA.apply(profile);
+      const ageMode = IL_ETAPA.current().mode;
       learning = await ILProgressData.load(ILAuth, window.ILMission);
       if (!learning) throw new Error("No profile data");
-      renderIdentity(profile); renderHighlights(); renderPersonalization(); renderSettings(); renderNemo(stage); setupControls(); setupPrivacy();
+      renderIdentity(profile); renderHighlights(); renderPersonalization(); renderSettings(); renderExperience(ageMode); setupControls(); setupPrivacy();
       $("logout").addEventListener("click", async () => { ILProfileSettings.clearActive(); await ILAuth.signOut(); location.href = "index.html"; });
       if (window.ILLayout) window.ILLayout.mount();
       $("loading").hidden = true; $("app").classList.remove("hidden");

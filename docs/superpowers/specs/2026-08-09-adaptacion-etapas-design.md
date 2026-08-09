@@ -27,7 +27,7 @@ La banda interna seguirá distinguiendo `p12` y `p34` dentro de Primaria inicial
 
 ## Selector de demostración
 
-`etapa.js` montará un selector compartido únicamente cuando `ILAuth.isDemo()` sea verdadero. La selección se guardará en `sessionStorage`, recargará la pantalla para reconstruir la sesión de forma coherente y aceptará `?ageMode=` solo en demo. En producción no se insertará ningún nodo, no se leerá el override y el perfil será la única fuente.
+`etapa.js` montará un selector compartido únicamente cuando `ILAuth.isDemo()` sea verdadero y la aplicación se ejecute en un entorno local de demostración. La selección se guardará en `sessionStorage`, recargará la pantalla para reconstruir la sesión de forma coherente y aceptará `?ageMode=` solo en demo local. En un dominio de producción no se insertará ningún nodo, no se leerá el override y el perfil será la única fuente, incluso si faltase configuración externa.
 
 ## Adaptación visual
 
@@ -68,4 +68,3 @@ El selector demo será un control nativo con etiqueta accesible. Todos los modos
 - suite Node existente;
 - revisión en navegador de Inicio, Lección, Progreso y Perfil en los tres modos;
 - revisión móvil representativa y consola sin errores provocados por los cambios.
-

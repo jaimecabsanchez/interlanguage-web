@@ -4,6 +4,7 @@
   const DAYS = ["L", "M", "X", "J", "V", "S", "D"];
   const DAY_NAMES = ["lunes", "martes", "miércoles", "jueves", "viernes", "sábado", "domingo"];
   let snapshot = null;
+  let ageMode = "primary-upper";
 
   function icon(name) { return window.ILIcon ? window.ILIcon(name) : ""; }
   function firstName(profile) { return String(profile.full_name || "").trim().split(/\s+/)[0] || "paso a paso"; }
@@ -20,6 +21,15 @@
     $("studentName").textContent = firstName(data.profile);
     $("studentLevel").textContent = (data.placement && data.placement.placed ? data.placement.label : data.profile.level) || "Nivel por descubrir";
     $("studentSessions").textContent = data.lessons;
+    if (ageMode === "primary-young") {
+      $("progressEyebrow").textContent = "MIS AVANCES";
+      $("progressTitleLead").textContent = "¡Mira cuánto avanzas,";
+      $("progressSubtitle").textContent = "Aquí puedes ver todo lo que ya estás aprendiendo.";
+    } else if (ageMode === "secondary") {
+      $("progressEyebrow").textContent = "LEARNING OVERVIEW";
+      $("progressTitleLead").textContent = "Tu progreso,";
+      $("progressSubtitle").textContent = "Revisa tu práctica, tus habilidades y el próximo objetivo.";
+    }
   }
 
   function renderWeek(data) {
@@ -126,7 +136,9 @@
       });
     });
     document.querySelectorAll("[data-open-tab]").forEach(button => button.addEventListener("click", () => activateTab(button.dataset.openTab, true)));
-    const initial = location.hash.slice(1); activateTab(["week", "learning", "stamps"].includes(initial) ? initial : "week", false);
+    const initial = location.hash.slice(1);
+    const defaultTab = ageMode === "secondary" ? "learning" : "week";
+    activateTab(["week", "learning", "stamps"].includes(initial) ? initial : defaultTab, false);
   }
 
   function setupDialog() {
@@ -141,7 +153,7 @@
       if (profile.is_admin) { location.href = "admin.html"; return; }
       if (profile.must_change_password) { location.href = "cambiar-clave.html"; return; }
       ILProfileSettings.setActive(profile.username || "");
-      IL_ETAPA.apply(profile); snapshot = await ILProgressData.load(ILAuth, window.ILMission); if (!snapshot) throw new Error("No progress snapshot");
+      IL_ETAPA.apply(profile); ageMode = IL_ETAPA.current().mode; snapshot = await ILProgressData.load(ILAuth, window.ILMission); if (!snapshot) throw new Error("No progress snapshot");
       renderHeader(snapshot); renderWeek(snapshot); renderLearning(snapshot); renderStamps(snapshot); setupTabs(); setupDialog();
       if (snapshot.isDemo && sessionStorage.getItem("il_demo_strip_off") !== "1") $("demoStrip").hidden = false;
       $("demoClose").addEventListener("click", () => { $("demoStrip").hidden = true; sessionStorage.setItem("il_demo_strip_off", "1"); });

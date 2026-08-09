@@ -57,6 +57,7 @@
   body[data-stage="eso"] .mission-eyebrow{color:var(--il-text-secondary)}
   @media (prefers-reduced-motion:reduce){.daily-mission{animation:none}.mission-plane,.week-progress span,.stamp-bar span{transition:none}.stamp-mark{transform:none}}
 </style>
+<link rel="stylesheet" href="age-mode.css?v=20260809a">
 </head>
 <body>
 <div class="il-offline" id="offline" hidden><span data-il-icon="wifiOff" aria-hidden="true"></span> Sin conexión.</div>
@@ -80,7 +81,7 @@
 
       <div class="home-grid">
         <section class="daily-mission" aria-labelledby="missionTitle">
-          <div class="mission-eyebrow"><span data-il-icon="plane" aria-hidden="true"></span><span>Tu misión de hoy</span></div>
+          <div class="mission-eyebrow"><span data-il-icon="plane" aria-hidden="true"></span><span id="missionEyebrowText">Tu misión de hoy</span></div>
           <h2 id="missionTitle">My daily routine</h2>
           <p class="mission-outcome" id="missionOutcome">Aprenderás a hablar sobre lo que haces cada mañana.</p>
           <div class="mission-meta">
@@ -91,7 +92,7 @@
           <div class="mission-route" id="missionRoute" role="progressbar" aria-valuemin="0" aria-valuemax="6" aria-valuenow="0" aria-label="Progreso de la misión">
             <span class="mission-plane" aria-hidden="true"><span data-il-icon="plane"></span></span>
             <div class="mission-route__track" id="missionRouteTrack"></div>
-            <div class="mission-progress-copy"><span id="missionProgressText">0 de 6 completadas</span><span>Una actividad cada vez</span></div>
+            <div class="mission-progress-copy"><span id="missionProgressText">0 de 6 completadas</span><span id="missionPaceText">Una actividad cada vez</span></div>
           </div>
           <a class="btn btn-primary mission-cta" id="missionCta" href="leccion.html"><span data-il-icon="play" aria-hidden="true"></span><span id="missionCtaText">Empezar misión</span></a>
           <div class="mission-context">
@@ -130,18 +131,18 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-config.js?v=20260809d"></script>
 <script src="auth-utils.js?v=20260809d"></script>
-<script src="etapa.js?v=20260809d"></script>
-<script src="contenido.js?v=20260809e"></script>
-<script src="auth.js?v=20260809d"></script>
+<script src="etapa.js?v=20260809a"></script>
+<script src="contenido.js?v=20260809f"></script>
+<script src="auth.js?v=20260809e"></script>
 <script src="motor/matriz.js?v=20260809d"></script>
-<script src="mission-state.js?v=20260809e"></script>
+<script src="mission-state.js?v=20260809f"></script>
 <script src="profile-settings.js?v=20260809a"></script>
 <script>
   const $ = id => document.getElementById(id);
   const units = (window.IL_CONTENIDO && window.IL_CONTENIDO.unidades) || [];
   const byId = {}, unitOf = {};
   units.forEach(unit => (unit.ejercicios || []).forEach(exercise => { byId[exercise.id] = exercise; unitOf[exercise.id] = unit; }));
-  const skillLabels = { vocabulary: "Vocabulary", grammar: "Grammar", listening: "Listening", reading: "Reading", speaking: "Speaking" };
+  const skillLabels = { vocabulary: "Vocabulary", grammar: "Grammar", listening: "Listening", reading: "Reading", writing: "Writing", speaking: "Speaking" };
 
   function refreshOffline() { $("offline").hidden = navigator.onLine; }
   addEventListener("online", () => { refreshOffline(); location.reload(); }); addEventListener("offline", refreshOffline); refreshOffline();
@@ -151,10 +152,9 @@
   function firstName(profile) { return (profile.full_name || "").trim().split(/\s+/)[0] || "explorer"; }
   function titleFor(unit) { return unit && unit.id === "rutina-diaria" ? "My daily routine" : ((unit && unit.titulo) || "Tu misión de hoy"); }
   function outcomeFor(unit) { return unit && unit.id === "rutina-diaria" ? "Aprenderás a hablar sobre lo que haces cada mañana." : ((unit && unit.descripcion) || "Practicarás inglés con actividades breves y variadas."); }
-  function estimateMinutes(total) { return Math.max(4, Math.round(total * 1.3)); }
   function dayGap(last) { return last ? Math.round((Date.parse(ILMission.today()) - Date.parse(last)) / 86400000) : null; }
 
-  function renderMissionRoute(total, completed, done) {
+  function renderMissionRoute(total, completed, done, experience) {
     const track = $("missionRouteTrack"); track.innerHTML = ""; track.style.setProperty("--route-count", total);
     const visibleCompleted = done ? total : Math.min(completed, total);
     for (let i = 0; i < total; i++) {
@@ -165,8 +165,10 @@
     const pct = total ? Math.min(96, Math.max(4, (visibleCompleted + .5) / total * 100)) : 4;
     $("missionRoute").style.setProperty("--mission-progress", pct + "%");
     $("missionRoute").setAttribute("aria-valuemax", total); $("missionRoute").setAttribute("aria-valuenow", visibleCompleted);
-    $("missionRoute").setAttribute("aria-label", visibleCompleted + " de " + total + " actividades completadas");
-    $("missionProgressText").textContent = visibleCompleted + " de " + total + " completadas";
+    const isSecondary = experience.id === "secondary";
+    $("missionRoute").setAttribute("aria-label", isSecondary ? (visibleCompleted + " of " + total + " exercises complete") : (visibleCompleted + " de " + total + " actividades completadas"));
+    $("missionProgressText").textContent = isSecondary ? (visibleCompleted + " of " + total + " complete") : (visibleCompleted + " de " + total + " completadas");
+    $("missionPaceText").textContent = experience.copy.pace;
   }
 
   function renderWeek(week) {
@@ -206,9 +208,10 @@
       if (profile.must_change_password) { location.href = "cambiar-clave.html"; return; }
       ILProfileSettings.setActive(profile.username || "");
       const stage = IL_ETAPA.apply(profile);
+      const experience = IL_ETAPA.current().config;
       const [progress, week, placement] = await Promise.all([ILAuth.getProgress(), ILAuth.getWeekActivity(), ILAuth.getPlacement()]);
       const username = profile.username || "";
-      const session = ILMission.getOrCreateSession({ username, units, banda: stage, cefr: placement.cefr, matrix: window.IL_MATRIZ, limit: 6 });
+      const session = ILMission.getOrCreateSession({ username, units, banda: stage, cefr: placement.cefr, matrix: window.IL_MATRIZ, limit: experience.exerciseLimit, unitIds: experience.unitIds, skillPriority: experience.skillPriority });
       if (!session.length) throw new Error("No mission content");
       const unit = unitOf[session[0].id] || units[0];
       const meta = { date: ILMission.today(), unitId: unit ? unit.id : "", unitTitle: titleFor(unit), itemIds: session.map(item => item.id) };
@@ -217,23 +220,25 @@
       const inProgress = state.status === "in_progress" && state.completedCount > 0 && !doneToday;
       const gap = dayGap(progress && progress.last);
 
-      $("greeting").textContent = (stage === "eso" ? "Hola, " : "¡Hola, ") + firstName(profile) + (stage === "eso" ? "" : "!");
-      $("greetingMessage").textContent = doneToday ? "Misión completada. Hoy ya has avanzado."
-        : (inProgress ? "Tu misión está en marcha. Continúa donde la dejaste."
-        : (gap != null && gap >= 3 ? "Qué bien verte de nuevo. Retomamos con una misión breve." : "Tienes una misión breve preparada para hoy."));
+      $("greeting").textContent = experience.copy.greeting(firstName(profile));
+      $("greetingMessage").textContent = doneToday ? experience.copy.complete
+        : (inProgress ? experience.copy.active
+        : (gap != null && gap >= 3 ? experience.copy.comeback : experience.copy.ready));
       const streak = progress ? (progress.streak || 0) : 0; $("streak").textContent = streak + (streak === 1 ? " día" : " días");
       $("level").textContent = (placement && placement.placed ? placement.label : profile.level) || "Explorer";
+      $("missionEyebrowText").textContent = experience.copy.missionEyebrow;
       $("missionTitle").textContent = titleFor(unit); $("missionOutcome").textContent = outcomeFor(unit);
-      $("activityCount").textContent = session.length + (session.length === 1 ? " actividad" : " actividades"); $("missionTime").textContent = "~" + estimateMinutes(session.length) + " min";
+      const exerciseLabel = experience.copy.exercise.toLowerCase();
+      $("activityCount").textContent = session.length + " " + exerciseLabel + (session.length === 1 ? "" : (exerciseLabel === "actividad" ? "es" : "s")); $("missionTime").textContent = experience.sessionLabel;
       const skills = Array.from(new Set(session.map(item => item.habilidad).filter(Boolean))).slice(0, 4); $("skillList").innerHTML = "";
       skills.forEach(skill => { const chip = document.createElement("span"); chip.className = "skill-chip"; chip.dataset.skill = skill; chip.textContent = skillLabels[skill] || skill; $("skillList").appendChild(chip); });
-      renderMissionRoute(session.length, state.completedCount || 0, doneToday);
+      renderMissionRoute(session.length, state.completedCount || 0, doneToday, experience);
 
       const cta = $("missionCta"), ctaText = $("missionCtaText");
-      if (doneToday && (state.incorrectIds || []).length) { cta.href = "leccion.html?mode=errors"; ctaText.textContent = "Repasar errores"; cta.querySelector("[data-il-icon]").setAttribute("data-il-icon", "refresh"); }
-      else if (doneToday) { cta.removeAttribute("href"); cta.setAttribute("aria-disabled", "true"); cta.classList.add("is-complete"); ctaText.textContent = "Misión completada"; cta.querySelector("[data-il-icon]").setAttribute("data-il-icon", "check"); }
-      else if (inProgress) { ctaText.textContent = "Continuar · " + state.completedCount + " de " + session.length; }
-      else { ctaText.textContent = "Empezar misión"; }
+      if (doneToday && (state.incorrectIds || []).length) { cta.href = "leccion.html?mode=errors"; ctaText.textContent = experience.copy.reviewCta; cta.querySelector("[data-il-icon]").setAttribute("data-il-icon", "refresh"); }
+      else if (doneToday) { cta.removeAttribute("href"); cta.setAttribute("aria-disabled", "true"); cta.classList.add("is-complete"); ctaText.textContent = experience.copy.completedCta; cta.querySelector("[data-il-icon]").setAttribute("data-il-icon", "check"); }
+      else if (inProgress) { ctaText.textContent = experience.copy.continueCta + " · " + state.completedCount + " " + experience.copy.countJoin + " " + session.length; }
+      else { ctaText.textContent = experience.copy.startCta; }
       ILLayout.mount();
       renderWeek(week); renderStamp(username, unit);
       $("loading").hidden = true; $("app").classList.remove("hidden");

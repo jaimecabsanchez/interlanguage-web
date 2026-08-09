@@ -180,11 +180,13 @@
 
       // Si es alumno, traemos su ficha para el nombre de pila y su id de alumno
       if (is_student || (!is_admin && !is_teacher)) {
-        const { data: st } = await sb.from("students").select("id, first_name, level_id").eq("user_id", user.id).maybeSingle();
+        const { data: st } = await sb.from("students").select("id, first_name, birth_year, level_id, course_ref").eq("user_id", user.id).maybeSingle();
         if (st) {
           profile.student_id = st.id;
           profile.first_name = st.first_name || "";
           profile.full_name = st.first_name || profile.full_name;
+          profile.birth_year = st.birth_year || null;
+          profile.course_ref = st.course_ref || "";
           profile.is_student = true;
         }
       }

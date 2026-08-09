@@ -64,8 +64,9 @@
   @media (min-width:1024px){.lesson{max-width:820px;padding-inline:var(--il-space-6)}.lesson-header{padding-top:var(--il-space-5)}}
   @media (prefers-reduced-motion:reduce){.segment,.progress-plane{transition:none}.success-react.is-visible,.summary-card,.summary-seal::after{animation:none}.summary-seal::after{display:none}}
 </style>
+<link rel="stylesheet" href="age-mode.css?v=20260809a">
 </head>
-<body>
+<body class="lesson-page">
 <div class="il-offline" id="offline" hidden><span data-il-icon="wifiOff" aria-hidden="true"></span> Sin conexión.</div>
 
 <main class="lesson" id="lesson">
@@ -107,8 +108,8 @@
     <h1 id="summaryTitle">¡Misión completada!</h1>
     <p class="summary-lead" id="summaryLead">Has avanzado un poco más con tu inglés.</p>
     <div class="summary-stats" aria-label="Resumen de la misión">
-      <div class="summary-stat"><strong id="summaryScore">0/0</strong><span>correctas</span></div>
-      <div class="summary-stat"><strong id="summaryTime">0 min</strong><span>tiempo</span></div>
+      <div class="summary-stat"><strong id="summaryScore">0/0</strong><span id="summaryScoreLabel">correctas</span></div>
+      <div class="summary-stat"><strong id="summaryTime">0 min</strong><span id="summaryTimeLabel">tiempo</span></div>
       <div class="summary-stat"><strong id="summaryLearned">0</strong><span id="summaryLearnedLabel">expresiones</span></div>
     </div>
     <div class="learned" id="learnedBlock" hidden>
@@ -127,12 +128,12 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-config.js?v=20260809d"></script>
 <script src="auth-utils.js?v=20260809d"></script>
-<script src="etapa.js?v=20260809d"></script>
-<script src="auth.js?v=20260809d"></script>
-<script src="contenido.js?v=20260809e"></script>
+<script src="etapa.js?v=20260809a"></script>
+<script src="auth.js?v=20260809e"></script>
+<script src="contenido.js?v=20260809f"></script>
 <script src="motor/motivacion.js?v=20260809d"></script>
 <script src="motor/matriz.js?v=20260809d"></script>
-<script src="mission-state.js?v=20260809e"></script>
+<script src="mission-state.js?v=20260809f"></script>
 <script src="profile-settings.js?v=20260809a"></script>
 <script src="motor/engine.js?v=20260809f"></script>
 <script>
@@ -145,6 +146,7 @@
 
   let username = "";
   let stageName = "p56";
+  let ageExperience = IL_ETAPA.config("primary-upper");
   let items = [];
   let dailyItems = [];
   let index = 0;
@@ -172,7 +174,7 @@
   function updateHeader() {
     const total = items.length || 1;
     const current = Math.min(index + 1, total);
-    $("exerciseCount").textContent = "Ejercicio " + current + " de " + total;
+    $("exerciseCount").textContent = ageExperience.copy.exercise + " " + current + " " + ageExperience.copy.countJoin + " " + total;
     const progress = $("segmentProgress");
     progress.setAttribute("aria-valuemax", total); progress.setAttribute("aria-valuenow", Math.min(index, total));
     progress.setAttribute("aria-label", index + " de " + total + " ejercicios completados");
@@ -219,14 +221,19 @@
   function renderSummary(state, isReview) {
     const learned = isReview ? [] : (state.learnedExpressions || []).slice(0, 4);
     const errors = isReview ? Math.max(0, items.length - reviewCorrect) : (state.incorrectIds || []).length;
-    $("summaryTitle").textContent = isReview ? "¡Errores repasados!" : "¡Misión completada!";
+    $("summaryTitle").textContent = isReview ? ageExperience.copy.reviewCta : ageExperience.copy.summaryTitle;
     $("summaryLead").textContent = isReview
       ? (reviewCorrect === items.length ? "Has resuelto todos los ejercicios del repaso." : "Has reforzado lo que necesitaba un poco más de práctica.")
-      : "Has completado tu misión de hoy y ya sabes un poco más.";
+      : ageExperience.copy.summaryLead;
     $("summaryScore").textContent = (isReview ? reviewCorrect : state.correctCount) + "/" + (isReview ? items.length : state.total);
     $("summaryTime").textContent = minutes(isReview ? 0 : state.elapsedMs) + " min";
     $("summaryLearned").textContent = isReview ? reviewCorrect : learned.length;
     $("summaryLearnedLabel").textContent = isReview ? "errores resueltos" : "expresiones";
+    if (ageExperience.id === "secondary") {
+      $("summaryScoreLabel").textContent = "correct";
+      $("summaryTimeLabel").textContent = "time";
+      $("summaryLearnedLabel").textContent = isReview ? "mistakes resolved" : "expressions";
+    }
     $("learnedBlock").hidden = !learned.length;
     $("learnedList").innerHTML = "";
     learned.forEach(value => { const chip = document.createElement("span"); chip.className = "learned-chip"; chip.lang = "en"; chip.textContent = value; $("learnedList").appendChild(chip); });
@@ -275,11 +282,11 @@
       if (!profile) { location.href = "index.html"; return; }
       if (profile.is_admin) { location.href = "admin.html"; return; }
       if (profile.must_change_password) { location.href = "cambiar-clave.html"; return; }
-      username = profile.username || ""; stageName = IL_ETAPA.apply(profile);
+      username = profile.username || ""; stageName = IL_ETAPA.apply(profile); ageExperience = IL_ETAPA.current().config;
       ILProfileSettings.setActive(username);
       const [placement, progress] = await Promise.all([ILAuth.getPlacement(), ILAuth.getProgress()]);
       $("headerStreak").textContent = progress ? (progress.streak || 0) : 0;
-      dailyItems = ILMission.getOrCreateSession({ username, units, banda: stageName, cefr: placement.cefr, matrix: window.IL_MATRIZ, limit: 6 });
+      dailyItems = ILMission.getOrCreateSession({ username, units, banda: stageName, cefr: placement.cefr, matrix: window.IL_MATRIZ, limit: ageExperience.exerciseLimit, unitIds: ageExperience.unitIds, skillPriority: ageExperience.skillPriority });
       if (!dailyItems.length) { errorState("Contenido no disponible", "Todavía no hay ejercicios preparados para tu nivel hoy."); return; }
       const primaryUnit = unitOf[dailyItems[0].id] || units[0];
       missionMeta = { date: ILMission.today(), unitId: primaryUnit ? primaryUnit.id : "", unitTitle: missionTitle(primaryUnit), itemIds: dailyItems.map(item => item.id) };
