@@ -30,20 +30,23 @@ jobs:
           if [ "$fail" -ne 0 ]; then exit 1; fi
           echo "✅ Sintaxis correcta."
 
-      - name: Smoke test de arranque
-        run: node plataforma/smoke.test.js
-
-      - name: Tests unitarios de autenticación
-        run: node plataforma/auth-utils.test.js
-
-      - name: Tests del modelo pedagógico
-        run: node plataforma/motor/pedagogia.test.js
-
-      - name: Tests de motivación
-        run: node plataforma/motor/motivacion.test.js
-
-      - name: Tests de la puerta de la matriz
-        run: node plataforma/motor/matriz.test.js
+      - name: Ejecutar TODOS los tests (descubiertos automáticamente)
+        run: |
+          echo "Buscando y ejecutando todos los *.test.js de la plataforma…"
+          fail=0
+          count=0
+          while IFS= read -r t; do
+            count=$((count + 1))
+            echo "▶ $t"
+            if ! node "$t"; then
+              echo "❌ Falló: $t"
+              fail=1
+            fi
+          done < <(find plataforma -name '*.test.js' -not -path '*/node_modules/*' | sort)
+          echo "Tests ejecutados: $count"
+          if [ "$count" -eq 0 ]; then echo "❌ No se encontró ningún test (algo va mal)."; exit 1; fi
+          if [ "$fail" -ne 0 ]; then exit 1; fi
+          echo "✅ Todos los tests pasaron ($count)."
 
       - name: Escanear secretos que no deben subirse
         run: |
