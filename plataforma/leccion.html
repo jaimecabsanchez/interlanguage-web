@@ -9,10 +9,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="design-system.css?v=20260809b">
-<link rel="stylesheet" href="app.css?v=20260809b">
-<link rel="stylesheet" href="motor/motor.css?v=20260809b">
-<link rel="stylesheet" href="etapa.css?v=20260809b">
+<link rel="stylesheet" href="design-system.css?v=20260809d">
+<link rel="stylesheet" href="app.css?v=20260809d">
+<link rel="stylesheet" href="motor/motor.css?v=20260809d">
+<link rel="stylesheet" href="etapa.css?v=20260809d">
 <style>
   body{background:
     radial-gradient(120% 40% at 100% 0%, #FDECE4 0%, transparent 55%),
@@ -21,10 +21,11 @@
   .lesson{background:transparent}
   .lesson{max-width:600px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;padding:0 16px}
   .lesson-top{display:flex;align-items:center;gap:14px;padding:18px 2px 10px}
-  .close{background:none;border:none;font-size:1.4rem;color:#8A97A6;cursor:pointer;line-height:1}
+  .close{display:grid;place-items:center;width:var(--il-touch);height:var(--il-touch);padding:0;background:var(--il-surface);border:1px solid var(--il-border);border-radius:50%;color:var(--il-text-secondary);cursor:pointer;line-height:1}
+  .close svg{width:20px;height:20px}
   .progress{flex:1;height:12px;border-radius:10px;background:#eef1f4;overflow:hidden}
-  .progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,#FF6B4A,#E14F30);transition:width .3s}
-  .hearts{color:#E14F30;font-weight:800;font-size:.95rem}
+  .progress i{display:block;height:100%;width:0;background:var(--il-success);transition:width var(--il-duration-slow) var(--il-ease)}
+  .hearts{color:var(--il-warning);font-weight:800;font-size:.95rem}
   #stage{flex:1;padding:16px 2px 30px}
   /* recompensa */
   .reward{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:30px;z-index:50;
@@ -48,16 +49,16 @@
   .theme-bar .tb-ico{font-size:1.15rem;}
   body[data-stage="eso"] .theme-bar{color:#5C6B7A;font-weight:600;font-size:.82rem;}
   body[data-stage="eso"] .theme-bar .tb-ico{display:none;}
-  /* Reacción breve de Nemo al acertar */
-  .nemo-react{position:fixed;left:50%;bottom:92px;transform:translateX(-50%) scale(0);font-size:3.2rem;z-index:60;
+  /* Reacción breve de marca al acertar */
+  .success-react{position:fixed;left:50%;bottom:92px;display:grid;place-items:center;width:58px;height:58px;border-radius:18px;background:var(--il-primary);color:#fff;transform:translateX(-50%) scale(0);z-index:60;
     pointer-events:none;filter:drop-shadow(0 10px 16px rgba(22,41,74,.22));}
-  .nemo-react.show{animation:nemoPop .9s ease forwards;}
-  @keyframes nemoPop{0%{transform:translateX(-50%) scale(0) rotate(-8deg);}
+  .success-react svg{width:28px;height:28px}.success-react.show{animation:successPop .9s ease forwards;}
+  @keyframes successPop{0%{transform:translateX(-50%) scale(0) rotate(-8deg);}
     30%{transform:translateX(-50%) scale(1.12) rotate(5deg);}
     60%{transform:translateX(-50%) scale(1) rotate(0);opacity:1;}
     100%{transform:translateX(-50%) scale(.9) translateY(18px);opacity:0;}}
-  body[data-stage="eso"] .nemo-react{font-size:2.1rem;bottom:76px;}
-  @media (prefers-reduced-motion:reduce){ .nemo-react.show{animation:none;opacity:0;} }
+  body[data-stage="eso"] .success-react{width:48px;height:48px;bottom:76px;}
+  @media (prefers-reduced-motion:reduce){ .success-react.show{animation:none;opacity:0;} }
   .new-medals{background:#FFF7E6;border:1px solid #FFE2A8;border-radius:16px;padding:14px 18px;margin-bottom:20px;max-width:340px}
   .nm-title{font-family:'Plus Jakarta Sans';font-weight:800;color:#B8860B;margin-bottom:8px}
   .nm{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #FFE2A8;border-radius:999px;padding:6px 12px;margin:3px;font-size:.9rem;font-weight:600;color:#7a5a10}
@@ -65,10 +66,10 @@
 </style>
 </head>
 <body>
-<div class="il-offline" id="offline" hidden>📶 Sin conexión — tus respuestas se guardarán al volver la red.</div>
+<div class="il-offline" id="offline" hidden><span data-il-icon="wifiOff" aria-hidden="true"></span> Sin conexión.</div>
 <div class="lesson">
   <div class="lesson-top">
-    <button class="close" id="close" aria-label="Salir">✕</button>
+    <button class="close" id="close" aria-label="Salir de la misión"><span data-il-icon="close"></span></button>
     <div class="progress"><i id="pfill"></i></div>
     <span class="hearts" aria-hidden="true"><svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor"><path d="M12 2c1 3-1 4.5-1 6.5A2.5 2.5 0 0 0 13.5 11c1.7 0 2.6-1.2 2.7-2.4C18 10 19 12.4 19 15a7 7 0 1 1-14 0c0-3.3 2-5.6 3.4-7.5C10.2 5.3 11.6 4 12 2Z"/></svg></span>
   </div>
@@ -78,30 +79,31 @@
   <div id="stage"></div>
 </div>
 
-<div class="nemo-react" id="nemoReact" aria-hidden="true">🦊</div>
+<div class="success-react" id="successReact" aria-hidden="true"><span data-il-icon="plane"></span></div>
 
 <div class="reward hidden" id="reward">
-  <div class="medal" aria-hidden="true">🦊</div>
+  <div class="medal" aria-hidden="true"><span data-il-icon="stamp"></span></div>
   <h1>¡Misión completada!</h1>
-  <p id="rwMsg">Has mantenido tu racha un día más 🔥</p>
+  <p id="rwMsg">Has mantenido tu constancia un día más.</p>
   <div class="reward-stats">
     <div class="rw"><div class="v" id="rwScore">–</div><div class="l">Aciertos</div></div>
-    <div class="rw"><div class="v" id="rwStreak">🔥 –</div><div class="l">Racha</div></div>
+    <div class="rw"><div class="v"><span data-il-icon="flame" aria-hidden="true"></span> <span id="rwStreak">–</span></div><div class="l">Racha</div></div>
     <div class="rw"><div class="v">+20</div><div class="l">Gemas</div></div>
   </div>
   <div id="rwMedals"></div>
-  <a href="inicio.html" class="btn btn-primary" style="max-width:320px;text-decoration:none;display:block;">VOLVER AL MAPA</a>
+  <a href="inicio.html" class="btn btn-primary" style="max-width:320px;text-decoration:none;">Volver al inicio</a>
 </div>
 
+<script src="layout.js?v=20260809d"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="supabase-config.js?v=20260809b"></script>
-<script src="auth-utils.js?v=20260809b"></script>
-<script src="etapa.js?v=20260809b"></script>
-<script src="auth.js?v=20260809b"></script>
-<script src="contenido.js?v=20260809b"></script>
-<script src="motor/motivacion.js?v=20260809b"></script>
-<script src="motor/matriz.js?v=20260809b"></script>
-<script src="motor/engine.js?v=20260809b"></script>
+<script src="supabase-config.js?v=20260809d"></script>
+<script src="auth-utils.js?v=20260809d"></script>
+<script src="etapa.js?v=20260809d"></script>
+<script src="auth.js?v=20260809d"></script>
+<script src="contenido.js?v=20260809d"></script>
+<script src="motor/motivacion.js?v=20260809d"></script>
+<script src="motor/matriz.js?v=20260809d"></script>
+<script src="motor/engine.js?v=20260809d"></script>
 <script>
   const $ = (id) => document.getElementById(id);
 
@@ -111,7 +113,7 @@
   refreshOffline();
 
   function stateCard(ic, title, text) {
-    $("stage").innerHTML = '<div class="il-state"><div class="ic">' + ic + '</div><h2>' + title +
+    $("stage").innerHTML = '<div class="il-state"><div class="ic">' + ILIcon(ic) + '</div><h2>' + title +
       '</h2><p>' + text + '</p><a class="btn btn-ghost" href="inicio.html">Volver</a></div>';
   }
 
@@ -127,7 +129,7 @@
       const pl = await ILAuth.getPlacement();
       start(pl.cefr);
     } catch (e) {
-      stateCard("😕", "No hemos podido cargar la sesión", "Revisa tu conexión e inténtalo de nuevo.");
+      stateCard("warning", "No hemos podido cargar la sesión", "Revisa tu conexión e inténtalo de nuevo.");
     }
   })();
 
@@ -152,14 +154,14 @@
     if (u && u.tema) {
       tb.hidden = false;
       tb.style.setProperty("--tb-color", u.tema.color || "#5C6B7A");
-      tb.querySelector(".tb-ico").textContent = u.tema.icono || "";
+      tb.querySelector(".tb-ico").innerHTML = ILIcon("book");
       tb.querySelector(".tb-title").textContent = u.titulo || "";
     } else { tb.hidden = true; }
   }
 
-  // Reacción breve de Nemo al acertar (sobria; se atenúa/oculta con reduced-motion)
-  function nemoCheer() {
-    const n = $("nemoReact");
+  // Reacción breve de marca al acertar
+  function successCheer() {
+    const n = $("successReact");
     n.classList.remove("show"); void n.offsetWidth; n.classList.add("show");
   }
 
@@ -201,7 +203,7 @@
   function start(cefr) {
     const banda = document.body.dataset.stage || "p56";
     items = composeByLevel(banda, cefr);
-    if (!items.length) { stateCard("📭", "Contenido no disponible", "Todavía no hay ejercicios para tu nivel hoy. Vuelve pronto."); return; }
+    if (!items.length) { stateCard("book", "Contenido no disponible", "Todavía no hay ejercicios para tu nivel hoy. Vuelve pronto."); return; }
     show();
   }
   function setProgress() { $("pfill").style.width = Math.round(idx / items.length * 100) + "%"; }
@@ -212,7 +214,7 @@
     const ctrl = IL_ENGINE.render($("stage"), items[idx], {
       lastOne: idx === items.length - 1,
       onResult: (ev) => {
-        if (ev.correct) { correct++; curStreak++; if (curStreak > maxStreak) maxStreak = curStreak; nemoCheer(); }
+        if (ev.correct) { correct++; curStreak++; if (curStreak > maxStreak) maxStreak = curStreak; successCheer(); }
         else { curStreak = 0; }
       },
       onNext: () => { idx++; if (idx < items.length) show(); else finish(); }
@@ -227,11 +229,11 @@
     try {
       const r = await ILAuth.completeLesson(summary);
       if (r) {
-        $("rwStreak").textContent = "🔥 " + r.streak;
+        $("rwStreak").textContent = r.streak;
         if (r.newMedals && r.newMedals.length) {
           $("rwMedals").innerHTML = '<div class="new-medals"><div class="nm-title">¡Medalla' +
             (r.newMedals.length > 1 ? "s" : "") + ' nueva' + (r.newMedals.length > 1 ? "s" : "") + '!</div>' +
-            r.newMedals.map(m => '<span class="nm"><span class="nm-ico">' + m.icon + '</span>' + m.name + '</span>').join("") + '</div>';
+            r.newMedals.map(m => '<span class="nm"><span class="nm-ico">' + ILIcon("medal") + '</span>' + m.name + '</span>').join("") + '</div>';
         }
       }
     } catch (e) {}

@@ -9,37 +9,38 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="design-system.css?v=20260809b">
-<link rel="stylesheet" href="app.css?v=20260809b">
-<link rel="stylesheet" href="etapa.css?v=20260809b">
-<link rel="stylesheet" href="shell.css?v=20260809b">
+<link rel="stylesheet" href="design-system.css?v=20260809d">
+<link rel="stylesheet" href="app.css?v=20260809d">
+<link rel="stylesheet" href="etapa.css?v=20260809d">
+<link rel="stylesheet" href="shell.css?v=20260809d">
 <style>
   .pf-hd{display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:20px;padding:20px;box-shadow:var(--shadow-soft);}
-  .pf-av{width:72px;height:72px;border-radius:22px;background:linear-gradient(150deg,var(--coral),var(--coral-deep));display:grid;place-items:center;font-size:2.2rem;box-shadow:0 10px 20px -10px var(--coral);}
+  .pf-av{width:72px;height:72px;border-radius:var(--il-radius-lg);background:var(--il-primary);color:#fff;display:grid;place-items:center;box-shadow:var(--il-shadow-md);}
+  .pf-av svg{width:34px;height:34px}
   .pf-hd .nm{font-family:var(--font-display);font-weight:800;color:var(--navy);font-size:1.3rem;}
   .pf-hd .code{font-size:.82rem;color:var(--soft);margin-top:3px;}
   .pf-hd .code b{color:var(--jade-deep);font-family:var(--font-display);letter-spacing:.02em;}
   .pf-hd .lvl{display:inline-block;margin-top:8px;font-size:.74rem;font-weight:700;color:var(--jade-deep);background:var(--jade-tint);border-radius:100px;padding:4px 11px;}
   .card-soft h3.h{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);font-family:var(--font-display);margin-bottom:12px;}
   .acct-row{display:flex;flex-wrap:wrap;gap:10px;}
-  .nemo-cta{display:flex;align-items:center;gap:14px;background:var(--coral-tint);border:1px solid var(--coral);border-radius:16px;padding:16px;text-decoration:none;}
-  .nemo-cta .gi{display:grid;place-items:center;width:44px;height:44px;border-radius:12px;background:#fff;color:var(--coral-deep);flex:0 0 auto;}
-.nemo-cta .gi svg{width:22px;height:22px;}
+  .profile-reward{display:flex;align-items:center;gap:14px;background:var(--il-primary-soft);border:1px solid rgba(22,41,74,.15);border-radius:var(--il-radius-md);padding:16px;text-decoration:none;}
+  .profile-reward .gi{display:grid;place-items:center;width:44px;height:44px;border-radius:var(--il-radius-sm);background:var(--il-surface);color:var(--il-primary);flex:0 0 auto;}
+.profile-reward .gi svg{width:22px;height:22px;}
 .btn-ghost [data-il-icon]{display:inline-flex;vertical-align:-2px;margin-right:6px;}
 .btn-ghost [data-il-icon] svg{width:1em;height:1em;}
-  .nemo-cta b{color:var(--navy);font-family:var(--font-display);display:block;font-size:.98rem;}
-  .nemo-cta span{font-size:.83rem;color:var(--soft);}
-  .nemo-cta .go{margin-left:auto;color:var(--coral-deep);font-weight:800;font-size:1.2rem;transition:transform .15s ease;}
-  .nemo-cta:hover .go{transform:translateX(3px);}
-  .nemo-cta{transition:transform .15s ease,box-shadow .15s ease;}
-  .nemo-cta:hover{transform:translateY(-2px);box-shadow:0 14px 26px -16px var(--coral);}
+  .profile-reward b{color:var(--navy);font-family:var(--font-display);display:block;font-size:.98rem;}
+  .profile-reward span{font-size:.83rem;color:var(--soft);}
+  .profile-reward .go{margin-left:auto;color:var(--il-primary);font-weight:800;font-size:1.2rem;transition:transform .15s ease;}
+  .profile-reward:hover .go{transform:translateX(3px);}
+  .profile-reward{transition:transform .15s ease,box-shadow .15s ease;}
+  .profile-reward:hover{transform:translateY(-2px);box-shadow:var(--il-shadow-md);}
   /* Entradas suaves */
-  .pf-hd,.nemo-cta,.card-soft{animation:pfIn .34s cubic-bezier(.2,.7,.3,1) both;}
-  .nemo-cta{animation-delay:.05s;} .card-soft{animation-delay:.1s;}
+  .pf-hd,.profile-reward,.card-soft{animation:pfIn .34s cubic-bezier(.2,.7,.3,1) both;}
+  .profile-reward{animation-delay:.05s;} .card-soft{animation-delay:.1s;}
   @keyframes pfIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:none;}}
-  @media (prefers-reduced-motion:reduce){ .pf-hd,.nemo-cta,.card-soft{animation:none;} .nemo-cta:hover{transform:none;} }
+  @media (prefers-reduced-motion:reduce){ .pf-hd,.profile-reward,.card-soft{animation:none;} .profile-reward:hover{transform:none;} }
   /* Escritorio: ancho cómodo (no estirar) */
-  @media (min-width:960px){ .app-with-rail .app-shell{max-width:640px;} }
+  @media (min-width:1024px){ .app-with-rail .app-shell{max-width:680px;} }
 </style>
 </head>
 <body>
@@ -49,17 +50,17 @@
     <div class="shell-main">
   <div class="app-shell">
     <div class="pf-hd">
-      <div class="pf-av" id="pfAv">🦊</div>
+      <div class="pf-av" id="pfAv" aria-hidden="true"><span data-il-icon="plane"></span></div>
       <div>
         <div class="nm" id="pfName">Alumno</div>
         <div class="code">Tu código: <b id="pfCode">—</b></div>
-        <div class="lvl" id="pfLevel">Aprendiendo inglés con Nemo 🦊</div>
+        <div class="lvl" id="pfLevel">Tu nivel de inglés</div>
       </div>
     </div>
 
-    <a href="tienda.html" class="nemo-cta">
+    <a href="tienda.html" class="profile-reward">
       <span class="gi" data-il-icon="shirt"></span>
-      <span><b>Personalizar a Nemo</b><span>Gorros, colores y complementos con tus gemas</span></span>
+      <span><b>Personalizar tu perfil</b><span>Colores y complementos desbloqueables</span></span>
       <span class="go" aria-hidden="true">›</span>
     </a>
 
@@ -77,12 +78,12 @@
   <nav class="app-nav" data-il-nav="perfil"></nav>
 </div>
 
-<script src="layout.js?v=20260809b"></script>
+<script src="layout.js?v=20260809d"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="supabase-config.js?v=20260809b"></script>
-<script src="auth-utils.js?v=20260809b"></script>
-<script src="etapa.js?v=20260809b"></script>
-<script src="auth.js?v=20260809b"></script>
+<script src="supabase-config.js?v=20260809d"></script>
+<script src="auth-utils.js?v=20260809d"></script>
+<script src="etapa.js?v=20260809d"></script>
+<script src="auth.js?v=20260809d"></script>
 <script>
   const $ = (id) => document.getElementById(id);
   (async () => {

@@ -9,10 +9,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="design-system.css?v=20260809b">
-<link rel="stylesheet" href="app.css?v=20260809b">
-<link rel="stylesheet" href="etapa.css?v=20260809b">
-<link rel="stylesheet" href="shell.css?v=20260809b">
+<link rel="stylesheet" href="design-system.css?v=20260809d">
+<link rel="stylesheet" href="app.css?v=20260809d">
+<link rel="stylesheet" href="etapa.css?v=20260809d">
+<link rel="stylesheet" href="shell.css?v=20260809d">
 <style>
   /* Números tabulares en todo el panel: que las cifras no "bailen" */
   .app-shell{font-variant-numeric:tabular-nums;}
@@ -33,14 +33,15 @@
   .ladder{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:18px;}
   .ladder .step{position:relative;text-align:center;}
   .ladder .step .bar{height:8px;border-radius:100px;background:rgba(255,255,255,.16);overflow:hidden;}
-  .ladder .step .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--coral),#ffb59f);transition:width .6s cubic-bezier(.2,.7,.3,1);}
+  .ladder .step .bar i{display:block;height:100%;width:0;background:var(--il-success);transition:width var(--il-duration-slow) var(--il-ease);}
   .ladder .step.done .bar i{width:100%;}
   .ladder .step.current .bar i{width:100%;}
   .ladder .step .nm{font-size:.68rem;margin-top:7px;color:rgba(255,255,255,.6);font-weight:600;}
   .ladder .step.current .nm{color:#fff;font-weight:800;}
-  .ladder .step.current::after{content:"";position:absolute;top:-9px;left:50%;transform:translateX(-50%);width:7px;height:7px;border-radius:50%;background:var(--coral);box-shadow:0 0 0 3px rgba(255,107,74,.3);}
+  .ladder .step.current::after{content:"";position:absolute;top:-9px;left:50%;transform:translateX(-50%);width:7px;height:7px;border-radius:50%;background:var(--il-secondary);box-shadow:0 0 0 3px rgba(242,107,74,.28);}
   .lh-foot{margin-top:14px;font-size:.86rem;color:rgba(255,255,255,.82);line-height:1.4;}
-  .lh-cta{display:inline-block;margin-top:12px;background:var(--coral);color:#fff;text-decoration:none;font-family:var(--font-display);font-weight:800;font-size:.9rem;padding:11px 18px;border-radius:12px;box-shadow:0 10px 20px -10px var(--coral);}
+  .lh-cta{display:inline-flex;align-items:center;justify-content:center;min-height:var(--il-touch);margin-top:12px;background:var(--il-primary);color:#fff;text-decoration:none;font-family:var(--font-display);font-weight:800;font-size:.9rem;padding:11px 18px;border-radius:var(--il-radius-sm);box-shadow:var(--il-shadow-sm);}
+  .lh-cta:hover{background:var(--il-primary-hover);color:#fff}
 
   /* ---- Objetivo semanal ---- */
   .week{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-top:6px;}
@@ -48,14 +49,14 @@
   .week .d .dot{width:100%;aspect-ratio:1;max-width:40px;border-radius:12px;background:var(--surface-2);display:grid;place-items:center;color:var(--faint);}
   .week .d .dot [data-il-icon] svg{width:1.1em;height:1.1em;}
   .week .d.on .dot{background:var(--jade);color:#fff;box-shadow:0 8px 16px -8px var(--jade);}
-  .week .d.today .dot{outline:2px solid var(--coral);outline-offset:2px;}
+  .week .d.today .dot{outline:2px solid var(--il-primary);outline-offset:2px;}
   .week .d .lbl{font-size:.62rem;color:var(--faint);text-transform:uppercase;letter-spacing:.03em;}
   .week-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;}
   .week-head b{color:var(--jade-deep);font-family:var(--font-display);}
 
   /* ---- Racha ---- */
   .streak-card{display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:center;}
-  .streak-flame{width:60px;height:60px;border-radius:18px;background:var(--coral-tint);color:var(--coral-deep);display:grid;place-items:center;}
+  .streak-flame{width:60px;height:60px;border-radius:18px;background:var(--il-warning-soft);color:var(--il-warning);display:grid;place-items:center;}
   .streak-flame [data-il-icon] svg{width:30px;height:30px;}
   .streak-nums{display:flex;gap:22px;}
   .streak-nums .n .v{font-family:var(--font-display);font-weight:800;color:var(--navy);font-size:1.5rem;}
@@ -65,12 +66,12 @@
   .comodin svg{width:1.1em;height:1.1em;flex:0 0 auto;}
 
   /* ---- Mapa de actividad (heatmap) ---- */
-  .heat-wrap{overflow-x:auto;padding-bottom:4px;}
+  .heat-wrap{max-width:100%;overflow-x:auto;padding:0 1px 8px;overscroll-behavior-inline:contain;scrollbar-width:thin;}
   .heat{display:grid;grid-auto-flow:column;grid-template-rows:repeat(7,1fr);gap:4px;min-width:max-content;}
   .heat .c{width:15px;height:15px;border-radius:4px;background:var(--surface-2);}
   .heat .c.on{background:var(--jade);}
   .heat .c.on.soft{background:color-mix(in srgb,var(--jade) 45%,var(--surface-2));}
-  .heat .c.today{outline:2px solid var(--coral);outline-offset:1px;}
+  .heat .c.today{outline:2px solid var(--il-primary);outline-offset:1px;}
   .heat .c.empty{background:transparent;}
   .heat-legend{display:flex;align-items:center;gap:8px;margin-top:12px;font-size:.72rem;color:var(--faint);}
   .heat-legend .sw{width:12px;height:12px;border-radius:3px;}
@@ -112,7 +113,7 @@
   .stop.lock .state{color:var(--faint);}
   .stop.lock .node{background:var(--surface-2)!important;color:var(--faint);box-shadow:none;}
   .stop.lock .t{color:var(--soft);}
-  .stop .here{display:inline-flex;align-items:center;gap:5px;font-size:.66rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:#fff;background:var(--coral);padding:3px 9px 3px 7px;border-radius:100px;}
+  .stop .here{display:inline-flex;align-items:center;gap:5px;font-size:.66rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:#fff;background:var(--il-primary);padding:3px 9px 3px 7px;border-radius:100px;}
   .stop .here svg{width:12px;height:12px;}
   .stop.milestone .node{background:var(--navy);}
   .stop.goal .node{background:linear-gradient(135deg,var(--coral),var(--coral-deep));}
@@ -169,7 +170,7 @@
   @media (prefers-reduced-motion:reduce){ .card-soft,.level-hero,.ladder .step .bar i,.skill .track i{animation:none;transition:none;} }
 
   /* ---- Escritorio: rejilla editorial a 2 columnas con spans propios ---- */
-  @media (min-width:960px){
+  @media (min-width:1024px){
     .app-shell{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start;}
     .span-2{grid-column:1 / -1;}
   }
@@ -233,7 +234,7 @@
     <!-- Mapa de actividad (heatmap) -->
     <div class="card-soft span-2 g-d">
       <h3 class="h"><span data-il-icon="calendar"></span> Mapa de actividad · <b id="activeDays">0 días</b></h3>
-      <div class="heat-wrap">
+      <div class="heat-wrap" aria-hidden="true">
         <div class="heat-months" id="heatMonths"></div>
         <div class="heat" id="heat"></div>
       </div>
@@ -290,14 +291,14 @@
   <nav class="app-nav" data-il-nav="progreso"></nav>
 </div>
 
-<script src="layout.js?v=20260809b"></script>
+<script src="layout.js?v=20260809d"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="supabase-config.js?v=20260809b"></script>
-<script src="auth-utils.js?v=20260809b"></script>
-<script src="etapa.js?v=20260809b"></script>
-<script src="motor/motivacion.js?v=20260809b"></script>
-<script src="contenido.js?v=20260809b"></script>
-<script src="auth.js?v=20260809b"></script>
+<script src="supabase-config.js?v=20260809d"></script>
+<script src="auth-utils.js?v=20260809d"></script>
+<script src="etapa.js?v=20260809d"></script>
+<script src="motor/motivacion.js?v=20260809d"></script>
+<script src="contenido.js?v=20260809d"></script>
+<script src="auth.js?v=20260809d"></script>
 <script>
   const $ = (id) => document.getElementById(id);
   const ICO = (n) => (window.ILIcon ? window.ILIcon(n) : "");
@@ -367,7 +368,7 @@
       let here = "";
       if (!open && !hereShown) { here = '<span class="here">' + ICO("target") + ' Estás aquí</span>'; hereShown = true; }
       const color = (u.tema && u.tema.color) || "var(--jade)";
-      const icono = (u.tema && u.tema.icono) || "";
+      const icono = ICO("book");
       stops.push(
         '<div class="stop ' + (open ? "open" : "lock") + '">' +
           '<div class="node" style="background:' + color + '">' + (open ? icono : ICO("lock")) + '</div>' +
@@ -544,7 +545,7 @@
       $("medalsCount").textContent = got + " de " + medals.length;
       $("medalsGrid").innerHTML = medals.map((m, i) =>
         '<button type="button" class="medal ' + (m.earned ? "on" : "lock") + '" data-i="' + i + '" title="' + m.name + '" aria-label="' + m.name + '">' +
-        (m.earned ? m.icon : ICO("lock")) + '</button>'
+        (m.earned ? ICO("medal") : ICO("lock")) + '</button>'
       ).join("");
       const st = { streak: (pr && pr.streak) || 0, best: (pr && pr.best) || 0, lessons: (pr && pr.lessons) || 0 };
       function detail(m) {
@@ -557,7 +558,7 @@
             '<div class="md-prog">' + (m.earned ? "Conseguida" : (cur + " de " + mm.tar)) + '</div>';
         }
         $("medalDetail").innerHTML =
-          '<div class="md-hd"><span class="md-ico">' + (m.earned ? m.icon : ICO("lock")) + '</span>' +
+          '<div class="md-hd"><span class="md-ico">' + (m.earned ? ICO("medal") : ICO("lock")) + '</span>' +
           '<span class="md-nm">' + m.name + '</span>' +
           '<span class="md-tag ' + (m.earned ? "got" : "pend") + '">' + (m.earned ? "Conseguida" : "En progreso") + '</span></div>' +
           '<div>' + info.how + '</div>' + bar;

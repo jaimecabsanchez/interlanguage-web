@@ -49,4 +49,4 @@ python3 -m http.server 8752
 
 Sin rankings ni comparaciones con otros niños · sin castigos por perder la racha · sin mensajes de culpa ·
 sin exceso de monedas/animaciones · ESO debe sentirse maduro (no infantil) · respeta `prefers-reduced-motion` ·
-**no inventes datos reales** de un alumno (los datos de muestra solo en la cuenta demo). El personaje es **Nemo**, un zorro viajero. Más contexto en `docs/`.
+**no inventes datos reales** de un alumno (los datos de muestra solo en la cuenta demo). El avión de papel es el símbolo de avance; la arquitectura admite una mascota futura, pero todavía no hay una mascota consolidada. Más contexto en `docs/`.

@@ -18,7 +18,7 @@ App de práctica de inglés (alumnos de Primaria + ESO). HTML/CSS/JS plano + Sup
 - **Iconos por JS**: `ILIcon('nombre')` devuelve un `<svg>` **sin tamaño**. Al inyectarlo, dale tamaño con una regla directa `.contenedor svg{width:…}` (NO con `[data-il-icon] svg`, que no aplica a SVG crudos).
 - Tras inyectar HTML nuevo que contenga `data-il-icon`, llama a **`window.ILLayout.mount()`** para que se pinten los iconos.
 - **Cache-busting**: los `<script>`/`<link>` locales llevan `?v=YYYYMMDD`. **Si cambias un `.js` o `.css`, sube ese número** en las páginas que lo usan (si no, el navegador sirve la versión vieja).
-- **No emojis como iconografía de interfaz** (usa SVG de `layout.js`). Excepciones que SÍ son contenido: el zorro **Nemo** 🦊, los cosméticos de la tienda y los iconos de cada medalla.
+- **No emojis como iconografía de interfaz** (usa SVG de `layout.js`). Las excepciones son contenido editorial o cosméticos deliberados. El avión de papel es la identidad actual; no consolides una mascota hasta que Dirección de Producto la defina.
 
 ## Modo DEMO (para desarrollo local)
 

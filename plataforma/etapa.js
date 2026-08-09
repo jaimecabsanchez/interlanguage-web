@@ -29,9 +29,9 @@
 
   // Copys por banda (mismo significado, distinto tono/intensidad)
   const COPY = {
-    p12: { greet: (n) => "¡Hola, " + n + "! 👋", today: "¡Tu misión de hoy! 🎒", cta: "EMPEZAR", done: "¡Ya has jugado hoy! 🌟", sub: "Un ratito de inglés" },
-    p34: { greet: (n) => "¡Hola, " + n + "! 👋", today: "Tu misión de hoy", cta: "EMPEZAR MISIÓN", done: "¡Ya has practicado hoy! 🎉", sub: "Tu misión de hoy" },
-    p56: { greet: (n) => "¡Hola, " + n + "! 👋", today: "Tu misión de hoy", cta: "EMPEZAR MISIÓN", done: "¡Ya has practicado hoy! 🎉", sub: "Tu misión de hoy · 10 min" },
+    p12: { greet: (n) => "¡Hola, " + n + "!", today: "Tu misión de hoy", cta: "EMPEZAR", done: "¡Ya has practicado hoy!", sub: "Un ratito de inglés" },
+    p34: { greet: (n) => "¡Hola, " + n + "!", today: "Tu misión de hoy", cta: "EMPEZAR MISIÓN", done: "¡Ya has practicado hoy!", sub: "Tu misión de hoy" },
+    p56: { greet: (n) => "¡Hola, " + n + "!", today: "Tu misión de hoy", cta: "EMPEZAR MISIÓN", done: "¡Ya has practicado hoy!", sub: "Tu misión de hoy · 10 min" },
     eso: { greet: (n) => "Hola, " + n, today: "Tu sesión de hoy", cta: "EMPEZAR", done: "Sesión de hoy completada ✓", sub: "Sesión de hoy · ~10 min" }
   };
 

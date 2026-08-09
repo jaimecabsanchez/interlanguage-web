@@ -1,62 +1,44 @@
 /* ============================================================
-   Variaciones por etapa (un solo sistema visual)
-   Se aplican con body[data-stage="..."]. Cambian tono/tamaño,
-   nunca la estructura. + estados comunes (carga/vacío/error/offline).
+   Variaciones por etapa y estados transversales
+   La estructura no cambia: solo escala, densidad y tono visual.
    ============================================================ */
 
-/* --- 1.º–2.º (p12): lo más grande, redondo y juguetón --- */
-body[data-stage="p12"] .greet h1{ font-size:2.1rem; }
-body[data-stage="p12"] .cta-mission{ font-size:1.2rem; padding:22px; border-radius:22px; }
-body[data-stage="p12"] .card-soft{ border-radius:22px; }
+body[data-stage="p12"] .greet h1{font-size:clamp(1.8rem,7vw,2.15rem);}
+body[data-stage="p12"] .cta-mission{font-size:1.16rem;padding:20px;border-radius:var(--il-radius-lg);}
+body[data-stage="p12"] .card-soft{border-radius:var(--il-radius-lg);}
 
-/* --- 3.º–4.º (p34): grande y cálido --- */
-body[data-stage="p34"] .greet h1{ font-size:1.9rem; }
-body[data-stage="p34"] .cta-mission{ font-size:1.12rem; padding:20px; border-radius:20px; }
-body[data-stage="p34"] .card-soft{ border-radius:20px; }
+body[data-stage="p34"] .greet h1{font-size:clamp(1.65rem,6vw,1.95rem);}
+body[data-stage="p34"] .cta-mission{font-size:1.08rem;padding:18px;border-radius:var(--il-radius-lg);}
+body[data-stage="p34"] .card-soft{border-radius:var(--il-radius-lg);}
 
-/* --- 5.º–6.º (p56): por defecto, equilibrado (sin overrides) --- */
+body[data-stage="eso"] .greet h1{font-size:1.45rem;letter-spacing:-.01em;}
+body[data-stage="eso"] .cta-mission{font-size:.96rem;padding:14px 18px;border-radius:var(--il-radius-sm);text-transform:none;letter-spacing:0;}
+body[data-stage="eso"] .cta-mission small{opacity:.82;}
+body[data-stage="eso"] .card-soft{border-radius:var(--il-radius-sm);}
+body[data-stage="eso"] .pf-av{border-radius:var(--il-radius-md);}
 
-/* --- ESO: sobrio, menos "peluche", titulares contenidos --- */
-body[data-stage="eso"] .greet h1{ font-size:1.45rem; letter-spacing:-.01em; }
-body[data-stage="eso"] .cta-mission{ font-size:.98rem; padding:15px; border-radius:14px; text-transform:none; letter-spacing:0; }
-body[data-stage="eso"] .cta-mission small{ opacity:.85; }
-body[data-stage="eso"] .card-soft{ border-radius:14px; }
-body[data-stage="eso"] .pf-av{ border-radius:16px; }
+.il-offline{position:fixed;top:0;left:0;right:0;z-index:var(--il-z-toast);display:flex;align-items:center;justify-content:center;gap:var(--il-space-2);min-height:40px;padding:8px 12px;background:var(--il-primary);color:var(--il-on-primary);text-align:center;font-size:var(--il-fs-sm);font-weight:var(--il-weight-semibold);box-shadow:var(--il-shadow-sm);}
+.il-offline[hidden]{display:none;}
+.il-offline svg{width:18px;height:18px;}
 
-/* ============================================================
-   Estados comunes de UI (carga, vacío, error, offline, hecho)
-   ============================================================ */
-.il-offline{ position:fixed; top:0; left:0; right:0; z-index:100; background:var(--il-soft,#5C6B7A); color:#fff;
-  text-align:center; font-size:.85rem; padding:8px 12px; }
-.il-offline[hidden]{ display:none; }
+.il-state{max-width:480px;margin:var(--il-space-12) auto;text-align:center;padding:var(--il-space-6);color:var(--il-text-secondary);}
+.il-state .ic{font-size:inherit;margin:0 auto var(--il-space-3);}
+.il-state h2{font-family:var(--il-font-display);color:var(--il-primary);font-size:var(--il-fs-xl);margin:0 0 var(--il-space-2);}
+.il-state p{margin:0 0 var(--il-space-4);}
 
-.il-state{ max-width:420px; margin:60px auto; text-align:center; padding:24px; color:var(--il-soft,#5C6B7A); }
-.il-state .ic{ font-size:3rem; margin-bottom:10px; }
-.il-state h2{ font-family:'Plus Jakarta Sans',system-ui,sans-serif; color:var(--il-navy,#16294A); font-size:1.3rem; margin:0 0 6px; }
-.il-state p{ margin:0 0 16px; }
+.il-skeleton{max-width:var(--il-max-width-reading);margin:var(--il-space-6) auto;padding:0 var(--il-space-4);}
+.il-skeleton .bar{height:16px;border-radius:var(--il-radius-pill);background:var(--il-surface-secondary);margin:var(--il-space-3) 0;overflow:hidden;position:relative;}
+.il-skeleton .bar.big{height:48px;border-radius:var(--il-radius-md);}
+.il-skeleton .bar::after{content:"";position:absolute;inset:0;transform:translateX(-100%);background:linear-gradient(90deg,transparent,rgba(255,255,255,.72),transparent);animation:il-shimmer 1.25s infinite;}
+@keyframes il-shimmer{100%{transform:translateX(100%);}}
 
-/* Skeleton de carga */
-.il-skeleton{ max-width:520px; margin:24px auto; padding:0 18px; }
-.il-skeleton .bar{ height:16px; border-radius:8px; background:#eef1f4; margin:12px 0; overflow:hidden; position:relative; }
-.il-skeleton .bar.big{ height:44px; border-radius:16px; }
-.il-skeleton .bar::after{ content:""; position:absolute; inset:0; transform:translateX(-100%);
-  background:linear-gradient(90deg,transparent,rgba(255,255,255,.6),transparent); animation:il-shimmer 1.2s infinite; }
-@keyframes il-shimmer{ 100%{ transform:translateX(100%); } }
+.il-done{max-width:440px;margin:var(--il-space-7) auto;text-align:center;padding:var(--il-space-7);background:var(--il-success-soft);border:1px solid rgba(22,132,103,.22);border-radius:var(--il-radius-lg);}
+.il-done .ic{display:grid;place-items:center;width:56px;height:56px;margin:0 auto;border-radius:var(--il-radius-md);background:var(--il-success);color:var(--il-on-success);font-size:inherit;}
+.il-done .ic svg{width:28px;height:28px;}
+.il-done h2{font-family:var(--il-font-display);color:var(--il-primary);margin:var(--il-space-3) 0 var(--il-space-1);}
+.il-done p{color:var(--il-text-secondary);margin:0 0 var(--il-space-4);}
 
-/* Sesión ya completada hoy */
-.il-done{ max-width:420px; margin:30px auto; text-align:center; padding:26px; background:var(--il-jade-bg,#E7F1EC);
-  border:1px solid #bfe0d0; border-radius:20px; }
-.il-done .ic{ font-size:2.6rem; }
-.il-done h2{ font-family:'Plus Jakarta Sans'; color:var(--il-navy,#16294A); margin:8px 0 4px; }
-.il-done p{ color:var(--il-soft,#5C6B7A); margin:0 0 14px; }
-
-/* Foco visible por teclado (accesibilidad) en toda la app del alumno */
-.app-nav button:focus-visible,
-.cta-mission:focus-visible,
-.btn:focus-visible,
-a:focus-visible{ outline:3px solid var(--il-coral,#FF6B4A); outline-offset:2px; border-radius:10px; }
-
-@media (prefers-reduced-motion: reduce){
-  .il-skeleton .bar::after{ animation:none; }
-  .cta-mission, .node.now{ animation:none !important; }
+@media (prefers-reduced-motion:reduce){
+  .il-skeleton .bar::after{animation:none;}
+  .cta-mission,.node.now{animation:none!important;}
 }

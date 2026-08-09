@@ -1,58 +1,214 @@
 /* ============================================================
-   Interlanguage · SISTEMA DE DISEÑO · tokens canónicos
-   Fuente de verdad de color, tipografía, escala, espaciado,
-   radios, sombras y motion. Namespace --il-* (no pisa estilos
-   existentes; los componentes migran a estos tokens gradualmente).
-   Spec: docs/superpowers/specs/2026-07-31-sistema-diseno-final.md
+   Interlanguage HOME · sistema visual global
+   Fuente canónica de tokens. Mantiene alias históricos para que
+   la migración sea incremental y no altere la lógica existente.
    ============================================================ */
+
 :root{
-  /* Color · ÚNICA fuente de verdad. app.css y motor.css derivan de aquí. */
-  --il-navy:#16294A; --il-navy-2:#22304a;
-  --il-coral:#FF6B4A; --il-coral-ink:#E14F30; --il-coral-deep:#E14F30;
-  --il-jade:#1E9C74; --il-jade-deep:#157B5B; --il-jade-bg:#E7F1EC;
-  --il-red:#C0392B; --il-red-bg:#FDECEA;
-  --il-cream:#FBF8F1; --il-warm:#FBF8F1; --il-paper:#F6F9F8; --il-white:#FFFFFF; --il-card:#FFFFFF; --il-surface-2:#EEF2F6;
-  --il-ink:#1E2B3D; --il-soft:#5C6B7A; --il-faint:#8A97A6;
-  --il-line:#E4E8EE; --il-line-2:#D9DEE5;
-  --il-coral-tint:rgba(255,107,74,.12); --il-jade-tint:rgba(30,156,116,.12);
-  --il-shadow-soft:0 10px 26px -16px rgba(22,41,74,.3);
+  color-scheme:light;
+
+  /* Brand + color semántico */
+  --il-primary:#16294a;
+  --il-primary-hover:#0e1c34;
+  --il-primary-active:#091426;
+  --il-secondary:#f26b4a;
+  --il-secondary-hover:#df5738;
+  --il-success:#168467;
+  --il-error:#b43a3a;
+  --il-warning:#a86100;
+  --il-warning-ink:#754600;
+  --il-background:#f7f6f1;
+  --il-surface:#ffffff;
+  --il-surface-secondary:#eef3f4;
+  --il-text-primary:#17263b;
+  --il-text-secondary:#59697a;
+  --il-border:#dce3e8;
+  --il-border-strong:#b8c4ce;
+  --il-muted:#8795a5;
+
+  /* Tintas y colores de contenido */
+  --il-primary-soft:#eaf0f7;
+  --il-secondary-soft:#fff0eb;
+  --il-success-soft:#e7f4ef;
+  --il-error-soft:#fbecec;
+  --il-warning-soft:#fff4df;
+  --il-focus:#2f6fed;
+  --il-on-primary:#ffffff;
+  --il-on-secondary:#16294a;
+  --il-on-success:#ffffff;
+  --il-on-dark:#ffffff;
+  --il-error-hover:#922f2f;
+  --il-overlay:rgba(11,25,45,.56);
+
+  /* Alias de color compatibles con la plataforma actual */
+  --il-color-primary:var(--il-primary);
+  --il-color-primary-hover:var(--il-primary-hover);
+  --il-color-secondary:var(--il-secondary);
+  --il-color-success:var(--il-success);
+  --il-color-error:var(--il-error);
+  --il-color-warning:var(--il-warning);
+  --il-color-background:var(--il-background);
+  --il-color-surface:var(--il-surface);
+  --il-color-surface-secondary:var(--il-surface-secondary);
+  --il-color-text-primary:var(--il-text-primary);
+  --il-color-text-secondary:var(--il-text-secondary);
+  --il-color-border:var(--il-border);
+  --il-color-muted:var(--il-muted);
+  --il-navy:var(--il-primary);
+  --il-navy-2:#223b60;
+  --il-coral:var(--il-secondary);
+  --il-coral-ink:#c7492d;
+  --il-coral-deep:var(--il-coral-ink);
+  --il-jade:var(--il-success);
+  --il-jade-deep:#116b54;
+  --il-jade-bg:var(--il-success-soft);
+  --il-red:var(--il-error);
+  --il-red-bg:var(--il-error-soft);
+  --il-cream:var(--il-background);
+  --il-warm:var(--il-background);
+  --il-paper:var(--il-background);
+  --il-white:var(--il-surface);
+  --il-card:var(--il-surface);
+  --il-surface-2:var(--il-surface-secondary);
+  --il-ink:var(--il-text-primary);
+  --il-soft:var(--il-text-secondary);
+  --il-faint:var(--il-muted);
+  --il-line:var(--il-border);
+  --il-line-2:#cfd8df;
+  --il-coral-tint:var(--il-secondary-soft);
+  --il-jade-tint:var(--il-success-soft);
+
+  /* Espaciado · base 4px */
+  --il-space-0:0;
+  --il-space-1:4px;
+  --il-space-2:8px;
+  --il-space-3:12px;
+  --il-space-4:16px;
+  --il-space-5:20px;
+  --il-space-6:24px;
+  --il-space-7:32px;
+  --il-space-8:40px;
+  --il-space-9:48px;
+  --il-space-10:56px;
+  --il-space-12:64px;
+
+  /* Radios · jerarquía clara, no redondeado indiscriminado */
+  --il-radius-xs:8px;
+  --il-radius-sm:12px;
+  --il-radius-md:16px;
+  --il-radius-lg:20px;
+  --il-radius-xl:24px;
+  --il-radius-pill:999px;
+  --il-r-sm:var(--il-radius-xs);
+  --il-r-md:var(--il-radius-sm);
+  --il-r-lg:var(--il-radius-md);
+  --il-r-xl:var(--il-radius-lg);
+  --il-radius:var(--il-radius-md);
+
+  /* Elevación */
+  --il-shadow-xs:0 1px 2px rgba(22,41,74,.06);
+  --il-shadow-sm:0 4px 14px -8px rgba(22,41,74,.22);
+  --il-shadow-md:0 14px 34px -20px rgba(22,41,74,.34);
+  --il-shadow-lg:0 24px 56px -24px rgba(22,41,74,.42);
+  --il-shadow-focus:0 0 0 4px rgba(47,111,237,.22);
+  --il-shadow:var(--il-shadow-md);
+  --il-shadow-soft:var(--il-shadow-sm);
+  --il-e1:var(--il-shadow-xs);
+  --il-e2:var(--il-shadow-sm);
+  --il-e3:var(--il-shadow-lg);
+  --il-e-coral:0 12px 24px -14px rgba(199,73,45,.42);
 
   /* Tipografía */
-  --il-font-display:'Plus Jakarta Sans',system-ui,sans-serif;
-  --il-font-body:'Inter',system-ui,sans-serif;
+  --il-font-display:'Plus Jakarta Sans',system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --il-font-body:'Inter',system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --il-font-mono:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;
+  --il-weight-regular:400;
+  --il-weight-medium:500;
+  --il-weight-semibold:600;
+  --il-weight-bold:700;
+  --il-weight-extrabold:800;
+  --il-fs-xs:.75rem;
+  --il-fs-sm:.875rem;
+  --il-fs-base:1rem;
+  --il-fs-lg:1.125rem;
+  --il-fs-xl:clamp(1.2rem,1.05rem + .55vw,1.4rem);
+  --il-fs-2xl:clamp(1.45rem,1.18rem + 1vw,1.85rem);
+  --il-fs-3xl:clamp(1.8rem,1.4rem + 1.5vw,2.4rem);
+  --il-fs-question:clamp(1.2rem,1.05rem + .7vw,1.55rem);
+  --il-leading-tight:1.16;
+  --il-leading-heading:1.25;
+  --il-leading-body:1.55;
+  --il-tracking-tight:-.025em;
+  --il-tracking-label:.055em;
 
-  /* Escala de tamaños (rem) · la base escala por banda (ver data-stage) */
-  --il-fs-xs:.75rem; --il-fs-sm:.875rem; --il-fs-base:1rem; --il-fs-lg:1.125rem;
-  --il-fs-xl:1.3rem; --il-fs-2xl:1.6rem; --il-fs-3xl:2rem;
-
-  /* Espaciado (base 4px) */
-  --il-space-1:4px; --il-space-2:8px; --il-space-3:12px; --il-space-4:16px;
-  --il-space-5:20px; --il-space-6:24px; --il-space-7:32px; --il-space-8:40px;
-
-  /* Radios (22 Primaria baja → 14 ESO) y sombra */
-  --il-r-sm:10px; --il-r-md:14px; --il-r-lg:18px; --il-r-xl:22px;
-  --il-shadow:0 10px 24px -14px rgba(22,41,74,.28);
-
-  /* Sistema de ELEVACIÓN por niveles (coherente en toda la app) */
-  --il-e1:0 1px 2px rgba(22,41,74,.06), 0 2px 8px -4px rgba(22,41,74,.10);   /* tarjeta en reposo */
-  --il-e2:0 6px 16px -8px rgba(22,41,74,.18);                                 /* elemento elevado / hover */
-  --il-e3:0 18px 40px -18px rgba(22,41,74,.34);                               /* flotante / modal */
-  --il-e-coral:0 12px 24px -12px rgba(225,79,48,.45);                         /* CTA coral */
-
-  /* Anillo de foco accesible (teclado) */
-  --il-focus:0 0 0 3px rgba(255,107,74,.45);
-
-  /* Objetivos táctiles y motion */
+  /* Movimiento e interacción */
+  --il-duration-instant:80ms;
+  --il-duration-fast:140ms;
+  --il-duration-base:220ms;
+  --il-duration-slow:360ms;
+  --il-ease:cubic-bezier(.2,.7,.3,1);
+  --il-ease-out:cubic-bezier(0,0,.2,1);
+  --il-transition-fast:var(--il-duration-fast) var(--il-ease);
+  --il-transition-base:var(--il-duration-base) var(--il-ease);
+  --il-motion-fast:var(--il-duration-fast);
+  --il-motion:var(--il-duration-base);
   --il-touch:44px;
-  --il-motion-fast:120ms; --il-motion:200ms; --il-ease:cubic-bezier(.2,.7,.3,1);
+
+  /* Layout. Los breakpoints se documentan como tokens y se repiten
+     literalmente en @media porque CSS no admite var() en media queries. */
+  --il-breakpoint-xs:360px;
+  --il-breakpoint-sm:390px;
+  --il-breakpoint-md:768px;
+  --il-breakpoint-lg:1024px;
+  --il-breakpoint-xl:1366px;
+  --il-breakpoint-2xl:1600px;
+  --il-max-width-reading:680px;
+  --il-max-width-content:1080px;
+  --il-max-width-shell:1240px;
+  --il-max-width-wide:1440px;
+  --il-rail-width:216px;
+  --il-nav-height:68px;
+
+  /* Capas */
+  --il-z-base:0;
+  --il-z-sticky:20;
+  --il-z-nav:40;
+  --il-z-dropdown:100;
+  --il-z-overlay:400;
+  --il-z-modal:500;
+  --il-z-toast:700;
+  --il-z-tooltip:800;
+
+  --il-scale:1;
 }
 
-/* La escala tipográfica base cambia por banda (mismo sistema, distinta piel) */
-:root[data-stage="p12"], body[data-stage="p12"]{ --il-scale:1.08; --il-radius:var(--il-r-xl); }
-:root[data-stage="p34"], body[data-stage="p34"]{ --il-scale:1.04; --il-radius:var(--il-r-xl); }
-:root[data-stage="p56"], body[data-stage="p56"]{ --il-scale:1.00; --il-radius:var(--il-r-lg); }
-:root[data-stage="eso"], body[data-stage="eso"]{ --il-scale:.96;  --il-radius:var(--il-r-md); }
+:root[data-stage="p12"],body[data-stage="p12"]{
+  --il-scale:1.08;
+  --il-radius:var(--il-radius-lg);
+}
 
-@media (prefers-reduced-motion: reduce){
-  :root{ --il-motion-fast:0ms; --il-motion:0ms; }
+:root[data-stage="p34"],body[data-stage="p34"]{
+  --il-scale:1.04;
+  --il-radius:var(--il-radius-lg);
+}
+
+:root[data-stage="p56"],body[data-stage="p56"]{
+  --il-scale:1;
+  --il-radius:var(--il-radius-md);
+}
+
+:root[data-stage="eso"],body[data-stage="eso"]{
+  --il-scale:.97;
+  --il-radius:var(--il-radius-sm);
+}
+
+@media (prefers-reduced-motion:reduce){
+  :root{
+    --il-duration-instant:0ms;
+    --il-duration-fast:0ms;
+    --il-duration-base:0ms;
+    --il-duration-slow:0ms;
+    --il-motion-fast:0ms;
+    --il-motion:0ms;
+  }
 }

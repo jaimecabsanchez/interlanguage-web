@@ -9,8 +9,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="design-system.css?v=20260809b">
-<link rel="stylesheet" href="app.css?v=20260809b">
+<link rel="stylesheet" href="design-system.css?v=20260809d">
+<link rel="stylesheet" href="app.css?v=20260809d">
 <style>
   body{background:
     radial-gradient(120% 45% at 100% 0%, #FDECE4 0%, transparent 55%),
@@ -47,13 +47,13 @@
 <div class="admin-shell hidden" id="app">
   <div class="admin-head">
     <div>
-      <h1>Contenidos 📚</h1>
+      <h1><span data-il-icon="books" aria-hidden="true"></span> Contenidos</h1>
       <p class="who">Crea unidades y ejercicios. Aparecen en las misiones al instante.</p>
     </div>
-    <a class="btn btn-ghost" href="admin.html">← Volver al panel</a>
+    <a class="btn btn-ghost" href="admin.html"><span data-il-icon="arrowLeft" aria-hidden="true"></span> Volver al panel</a>
   </div>
 
-  <div class="note">💡 Los ejercicios se guardan en este navegador (modo de trabajo). Para producción vivirán en la base de datos. Tipos disponibles: elegir texto, imagen y completar (una respuesta correcta).</div>
+  <div class="note"><span data-il-icon="info" aria-hidden="true"></span> Los ejercicios se guardan en este navegador (modo de trabajo). Para producción vivirán en la base de datos. Tipos disponibles: elegir texto, imagen y completar (una respuesta correcta).</div>
 
   <div class="admin-grid">
     <!-- Unidades -->
@@ -110,10 +110,11 @@
   </div>
 </div>
 
+<script src="layout.js?v=20260809d"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="supabase-config.js?v=20260809b"></script>
-<script src="auth-utils.js?v=20260809b"></script>
-<script src="auth.js?v=20260809b"></script>
+<script src="supabase-config.js?v=20260809d"></script>
+<script src="auth-utils.js?v=20260809d"></script>
+<script src="auth.js?v=20260809d"></script>
 <script>
   const $ = (id) => document.getElementById(id);
   const KEY = "il_cms_content";
@@ -139,7 +140,7 @@
       '<span class="ic" style="background:' + (u.tema && u.tema.color || "#1E9C74") + '">' + (u.tema && u.tema.icono || "📘") + '</span>' +
       '<span class="nm">' + esc(u.titulo) + '</span>' +
       '<span class="ct">' + (u.ejercicios ? u.ejercicios.length : 0) + ' ej.</span>' +
-      '<button class="del" data-del="' + i + '" title="Eliminar unidad" aria-label="Eliminar unidad">🗑️</button></div>'
+      '<button class="del icon-button" data-del="' + i + '" title="Eliminar unidad" aria-label="Eliminar unidad">' + ILIcon("trash") + '</button></div>'
     ).join("");
     $("unitList").querySelectorAll(".u-item").forEach(el => el.onclick = (ev) => {
       if (ev.target.hasAttribute("data-del")) return;
@@ -162,7 +163,7 @@
     $("exList").innerHTML = u.ejercicios.length ? u.ejercicios.map((e, j) =>
       '<div class="ex-item"><span class="tg">' + esc(e.habilidad || "") + " · " + esc(e.nivel || "") + '</span>' +
       '<span class="q">' + esc(e.instruccion) + '</span>' +
-      '<button class="del" data-ex="' + j + '" aria-label="Eliminar ejercicio">🗑️</button></div>'
+      '<button class="del icon-button" data-ex="' + j + '" aria-label="Eliminar ejercicio">' + ILIcon("trash") + '</button></div>'
     ).join("") : '<p class="muted">Todavía sin ejercicios.</p>';
     $("exList").querySelectorAll("[data-ex]").forEach(b => b.onclick = () => {
       const j = parseInt(b.getAttribute("data-ex"), 10);
@@ -177,7 +178,7 @@
       '<input type="text" class="emoji" placeholder="🐱" maxlength="2" value="' + esc(emoji || "") + '">' +
       '<input type="text" placeholder="respuesta" value="' + esc(txt || "") + '">' +
       '<label class="ok"><input type="radio" name="correct">correcta</label>' +
-      '<button type="button" class="del" title="Quitar">✕</button>';
+      '<button type="button" class="del icon-button" title="Quitar" aria-label="Quitar opción">' + ILIcon("close") + '</button>';
     if (correct) wrap.querySelector('input[type=radio]').checked = true;
     wrap.querySelector(".del").onclick = () => { if ($("optRows").children.length > 2) wrap.remove(); };
     return wrap;

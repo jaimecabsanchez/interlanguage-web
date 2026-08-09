@@ -126,7 +126,8 @@
     const phrase = el("div", "eng-speak-phrase", ex.frase || "");
     phrase.setAttribute("lang", "en");   // pronunciación correcta del lector de pantalla
     card.appendChild(phrase);
-    const listen = el("button", "btn btn-ghost", "🔊 Escuchar");
+    const listen = el("button", "btn btn-ghost");
+    listen.innerHTML = (window.ILIcon ? window.ILIcon("speaker") : "") + "<span>Escuchar</span>";
     listen.type = "button";
     listen.addEventListener("click", () => speak(ex.frase));
     card.appendChild(listen);
@@ -225,7 +226,8 @@
     head.appendChild(ins);
     const audioText = ex.audio || (ex.tipo === "hablar" ? ex.frase : null);
     if (audioText) {
-      const a = el("button", "eng-audio", "🔊"); a.type = "button";
+      const a = el("button", "eng-audio"); a.type = "button";
+      a.innerHTML = window.ILIcon ? window.ILIcon("speaker") : "";
       a.setAttribute("aria-label", "Escuchar");
       a.addEventListener("click", () => speak(audioText));
       head.appendChild(a);
@@ -256,26 +258,26 @@
     let attempt = 0, hintUsed = false, done = false;
 
     // Ejercicio de hablar: el botón es "¡Hecho!"
-    if (impl.selfDone) checkBtn.textContent = "¡Hecho! 👏";
+    if (impl.selfDone) checkBtn.textContent = "Hecho";
 
     function finish(correct) {
       done = true;
       if (typeof opts.onResult === "function") {
         opts.onResult({ id: ex.id, type: ex.tipo, correct: correct, attempt_no: attempt, hint_used: hintUsed });
       }
-      checkBtn.textContent = opts.lastOne ? "Terminar" : "Siguiente →";
+      checkBtn.textContent = opts.lastOne ? "Terminar" : "Siguiente";
       checkBtn.disabled = false;
       checkBtn.onclick = () => { if (typeof opts.onNext === "function") opts.onNext(correct); };
     }
 
     checkBtn.addEventListener("click", function onCheck() {
       if (done) return;
-      if (impl.selfDone) { feedback.className = "eng-feedback ok"; feedback.textContent = "¡Muy bien! 🎉"; finish(true); return; }
-      if (!impl.answered()) { feedback.className = "eng-feedback warn show"; feedback.textContent = "Elige una respuesta 🙂"; return; }
+      if (impl.selfDone) { feedback.className = "eng-feedback ok show"; feedback.textContent = "Muy bien. Actividad completada."; finish(true); return; }
+      if (!impl.answered()) { feedback.className = "eng-feedback warn show"; feedback.textContent = "Elige una respuesta para continuar."; return; }
       attempt++;
       if (impl.correct()) {
         feedback.className = "eng-feedback ok show";
-        feedback.textContent = "✅ ¡Correcto!" + (attempt > 1 ? " ¡Lo conseguiste!" : "");
+        feedback.textContent = "Correcto." + (attempt > 1 ? " Lo conseguiste." : "");
         impl.solution();
         body.querySelectorAll("button, input").forEach(b => b.disabled = true);
         finish(true);

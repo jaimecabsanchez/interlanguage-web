@@ -9,14 +9,17 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="design-system.css?v=20260809b">
-<link rel="stylesheet" href="app.css?v=20260809b">
-<link rel="stylesheet" href="shell.css?v=20260809b">
+<link rel="stylesheet" href="design-system.css?v=20260809d">
+<link rel="stylesheet" href="app.css?v=20260809d">
+<link rel="stylesheet" href="etapa.css?v=20260809d">
+<link rel="stylesheet" href="shell.css?v=20260809d">
 <style>
   .shop-hd{display:flex;flex-direction:column;align-items:center;text-align:center;padding:10px 0 4px;}
   .shop-hd h1{font-size:1.4rem;color:var(--navy);}
   .bal{display:inline-flex;align-items:center;gap:6px;background:var(--jade-tint);color:var(--jade-deep);font-family:var(--font-display);font-weight:800;font-size:1.1rem;padding:8px 18px;border-radius:100px;margin-top:8px;}
   .avatar-preview{width:110px;height:110px;border-radius:30px;background:linear-gradient(150deg,var(--coral),var(--coral-deep));display:grid;place-items:center;font-size:3.6rem;margin:16px auto 4px;box-shadow:0 16px 30px -14px var(--coral);position:relative;}
+  .avatar-preview .avatar-base{display:grid;place-items:center;width:62px;height:62px;border-radius:20px;background:var(--il-surface);color:var(--il-primary)}
+  .avatar-preview .avatar-base svg{width:32px;height:32px}
   .avatar-preview .hat{position:absolute;top:-14px;font-size:2rem;}
   .avatar-preview .acc{position:absolute;bottom:10px;right:8px;font-size:1.6rem;}
   .equipped-note{text-align:center;color:var(--soft);font-size:.82rem;min-height:1.2em;margin-bottom:6px;}
@@ -29,9 +32,10 @@
   .item .price{display:inline-flex;align-items:center;gap:4px;color:var(--jade-deep);font-weight:800;font-size:.9rem;min-height:1.1em;}
   .item .price .gem-ico{display:inline-flex;line-height:0;}
   .item .price .gem-ico svg{width:1em;height:1em;}
-  .buy{margin-top:4px;width:100%;border:none;border-radius:12px;padding:10px;font-family:var(--font-display);font-weight:800;font-size:.86rem;background:var(--coral);color:#fff;box-shadow:0 8px 16px -8px var(--coral);}
+  .buy{margin-top:4px;width:100%;min-height:var(--il-touch);border:1px solid var(--il-primary);border-radius:var(--il-radius-sm);padding:10px;font-family:var(--font-display);font-weight:800;font-size:.86rem;background:var(--il-primary);color:#fff;box-shadow:var(--il-shadow-sm);}
+  .buy:hover:not(:disabled){background:var(--il-primary-hover);border-color:var(--il-primary-hover);transform:translateY(-1px)}
   .buy:disabled{background:var(--surface-2);color:var(--faint);box-shadow:none;}
-  .item.owned .buy{background:var(--jade-tint);color:var(--jade-deep);box-shadow:none;}
+  .item.owned .buy{background:var(--jade-tint);color:var(--jade-deep);border-color:rgba(22,132,103,.2);box-shadow:none;}
   .item.owned{border-color:var(--jade);}
   .toast{position:fixed;left:50%;bottom:80px;transform:translateX(-50%);background:var(--navy);color:#fff;padding:10px 18px;border-radius:100px;font-weight:700;font-size:.86rem;opacity:0;transition:opacity .2s ease;z-index:60;}
   .toast.show{opacity:1;}
@@ -51,8 +55,8 @@
     <div class="shop-hd">
       <h1>Tienda</h1>
       <span class="bal"><span data-il-icon="gem"></span> <span id="gems">240</span> gemas</span>
-      <div class="avatar-preview" id="avatar">🦊<span class="hat" id="hat"></span><span class="acc" id="acc"></span></div>
-      <div class="equipped-note" id="note">Gana gemas practicando y personaliza a tu zorro</div>
+      <div class="avatar-preview" id="avatar"><span class="avatar-base" data-il-icon="user"></span><span class="hat" id="hat"></span><span class="acc" id="acc"></span></div>
+      <div class="equipped-note" id="note">Gana gemas practicando y personaliza tu perfil</div>
     </div>
 
     <div class="cat"><span data-il-icon="shield"></span> Protege tu racha</div>
@@ -70,10 +74,10 @@
   <nav class="app-nav" data-il-nav="perfil"></nav>
 </div>
 
-<script src="layout.js?v=20260809b"></script>
+<script src="layout.js?v=20260809d"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="supabase-config.js?v=20260809b"></script>
-<script src="auth.js?v=20260809b"></script>
+<script src="supabase-config.js?v=20260809d"></script>
+<script src="auth.js?v=20260809d"></script>
 <script>
   const $ = (id) => document.getElementById(id);
   let gems = 0;

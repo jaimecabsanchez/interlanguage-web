@@ -8,14 +8,15 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../app.css">
-<link rel="stylesheet" href="motor.css">
+<link rel="stylesheet" href="../design-system.css?v=20260809d">
+<link rel="stylesheet" href="../app.css?v=20260809d">
+<link rel="stylesheet" href="motor.css?v=20260809d">
 <style>
-  body{font-family:Inter,system-ui,sans-serif;background:#fff;margin:0;color:#2B3646}
+  body{font-family:var(--il-font-body);background:var(--il-background);margin:0;color:var(--il-text-primary)}
   .demo-top{max-width:640px;margin:0 auto;padding:18px 16px 6px;display:flex;justify-content:space-between;align-items:center}
-  .demo-top .brand{font-family:'Plus Jakarta Sans';font-weight:800;color:#16294A}
-  .demo-prog{height:8px;background:#eef1f4;border-radius:999px;max-width:640px;margin:6px auto 18px;overflow:hidden}
-  .demo-prog i{display:block;height:100%;background:#FF6B4A;width:0;transition:width .2s}
+  .demo-top .brand{display:flex;align-items:center;gap:8px;font-family:var(--il-font-display);font-weight:800;color:var(--il-primary)}
+  .demo-prog{height:8px;background:var(--il-surface-secondary);border-radius:999px;max-width:640px;margin:6px auto 18px;overflow:hidden}
+  .demo-prog i{display:block;height:100%;background:var(--il-success);width:0;transition:width var(--il-transition-base)}
   #stage{padding:0 16px 40px}
   .demo-end{max-width:640px;margin:20px auto;text-align:center;padding:30px;border:2px solid #E4E8EE;border-radius:20px}
   .demo-end h2{font-family:'Plus Jakarta Sans';color:#16294A}
@@ -24,14 +25,15 @@
 </head>
 <body>
   <div class="demo-top">
-    <span class="brand">🦊 Prueba del motor</span>
+    <span class="brand"><span data-il-icon="plane"></span> Prueba del motor</span>
     <span id="counter" style="color:#8A97A6;font-size:.9rem"></span>
   </div>
   <div class="demo-prog"><i id="bar"></i></div>
   <div id="stage"></div>
 
-<script src="../contenido.js"></script>
-<script src="engine.js"></script>
+<script src="../layout.js?v=20260809d"></script>
+<script src="../contenido.js?v=20260809d"></script>
+<script src="engine.js?v=20260809d"></script>
 <script>
   const $ = (id) => document.getElementById(id);
   // Aplana todos los ejercicios de todas las unidades
@@ -53,7 +55,7 @@
   function end() {
     $("bar").style.width = "100%"; $("counter").textContent = "";
     $("stage").innerHTML = `<div class="demo-end">
-      <h2>¡Sesión completada! 🎉</h2>
+      <h2>Sesión completada</h2>
       <div class="demo-score">${correct} / ${items.length}</div>
       <p style="color:#8A97A6">Aciertos en esta ronda.</p>
       <button class="btn btn-primary" onclick="location.reload()">Repetir</button>

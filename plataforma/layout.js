@@ -42,7 +42,11 @@
 
   // --- Set de iconos propio (SVG), para retirar los emojis de la interfaz ---
   const ICONS = {
-    flame: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2c1 3-1 4.5-1 6.5A2.5 2.5 0 0 0 13.5 11c1.7 0 2.6-1.2 2.7-2.4C18 10 19 12.4 19 15a7 7 0 1 1-14 0c0-3.3 2-5.6 3.4-7.5C10.2 5.3 11.6 4 12 2Z"/></svg>',
+    plane: LOGO,
+    user: ICON.perfil,
+    play: '<svg viewBox="0 0 24 24" ' + S + ' aria-hidden="true"><path d="m9 6 9 6-9 6V6Z"/></svg>',
+    refresh: '<svg viewBox="0 0 24 24" ' + S + ' aria-hidden="true"><path d="M20 11a8 8 0 1 0-2.3 5.7M20 5v6h-6"/></svg>',
+    flame: '<svg viewBox="0 0 24 24" ' + S + ' aria-hidden="true"><path d="M12 3c1.2 3-1 4.4-1 6.4A2.6 2.6 0 0 0 13.6 12c1.8 0 2.8-1.3 2.8-2.7A7.4 7.4 0 1 1 7.1 8c1.7-2.2 4.1-3.8 4.9-5Z"/></svg>',
     gem: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="m6 3 12 0 3 5-9 13L3 8Z"/><path d="M3 8h18M9 3 6 8l6 13 6-13-3-5"/></svg>',
     shield: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 4.4-2.9 8-7 10-4.1-2-7-5.6-7-10V6l7-3Z"/></svg>',
     chart: ICON.progreso,
@@ -53,21 +57,35 @@
     buoy: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.4"/><path d="M12 3v5.6M12 15.4V21M3 12h5.6M15.4 12H21"/></svg>',
     // Tienda: categorías
     shirt: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3 4 6l2 3 1-.6V21h10V8.4l1 .6 2-3-5-3-3 2Z"/></svg>',
-    paw: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="6.5" cy="11" r="2"/><circle cx="10" cy="6.5" r="2"/><circle cx="14" cy="6.5" r="2"/><circle cx="17.5" cy="11" r="2"/><path d="M12 12c-2.4 0-4.5 1.6-4.5 3.7 0 1.6 1.4 2.3 3 2.3.7 0 1 .3 1.5.3s.8-.3 1.5-.3c1.6 0 3-.7 3-2.3C16.5 13.6 14.4 12 12 12Z"/></svg>',
+    paw: '<svg viewBox="0 0 24 24" ' + S + ' aria-hidden="true"><circle cx="6.5" cy="11" r="1.6"/><circle cx="10" cy="6.5" r="1.6"/><circle cx="14" cy="6.5" r="1.6"/><circle cx="17.5" cy="11" r="1.6"/><path d="M12 12c-2.4 0-4.5 1.6-4.5 3.7 0 1.6 1.4 2.3 3 2.3.7 0 1 .3 1.5.3s.8-.3 1.5-.3c1.6 0 3-.7 3-2.3 0-2.1-2.1-3.7-4.5-3.7Z"/></svg>',
     bolt: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8Z"/></svg>',
     // Dashboard
     calendar: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="5" width="16" height="16" rx="2"/><path d="M4 9h16M8 3v4M16 3v4"/></svg>',
     clock: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>',
     target: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.4"/></svg>',
     trophy: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4h10v4a5 5 0 0 1-10 0V4Z"/><path d="M7 6H4v1a3 3 0 0 0 3 3M17 6h3v1a3 3 0 0 1-3 3M9 20h6M10 20l.5-3h3l.5 3"/></svg>',
-    star: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m12 3 2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.9 6.8 19.1l1-5.8L3.5 9.2l5.9-.9L12 3Z"/></svg>',
+    star: '<svg viewBox="0 0 24 24" ' + S + ' aria-hidden="true"><path d="m12 3 2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.9 6.8 19.1l1-5.8L3.5 9.2l5.9-.9L12 3Z"/></svg>',
     check: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4.5 4.5L19 7"/></svg>',
     trend: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 16 5-5 4 3 8-9"/><path d="M16 5h4v4"/></svg>',
     book: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5a2 2 0 0 1 2-2h5v17H6a2 2 0 0 0-2 2V5Z"/><path d="M20 5a2 2 0 0 0-2-2h-5v17h5a2 2 0 0 1 2 2V5Z"/></svg>',
     ear: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 9a5 5 0 0 1 10 0c0 3-3 4-3 6a2.5 2.5 0 0 1-5 .3"/><path d="M9 9a3 3 0 0 1 5 0"/></svg>',
     pencil: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16v4Z"/><path d="m14 6 4 4"/></svg>',
     chat: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 5h14a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H9l-4 4V7a2 2 0 0 1 2-2Z"/></svg>',
-    flag: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 21V4M5 4h11l-2 4 2 4H5"/></svg>'
+    flag: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 21V4M5 4h11l-2 4 2 4H5"/></svg>',
+    eye: '<svg viewBox="0 0 24 24" ' + S + ' aria-hidden="true"><path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"/><circle cx="12" cy="12" r="2.5"/></svg>',
+    eyeOff: '<svg viewBox="0 0 24 24" ' + S + ' aria-hidden="true"><path d="m3 3 18 18"/><path d="M10.6 6.2A10.7 10.7 0 0 1 12 6c6 0 9.5 6 9.5 6a16 16 0 0 1-2.4 3.1M6.2 6.2C3.8 7.8 2.5 12 2.5 12s3.5 6 9.5 6a9.8 9.8 0 0 0 3-.5"/></svg>',
+    close: '<svg viewBox="0 0 24 24" ' + S + ' aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg>',
+    arrowLeft: '<svg viewBox="0 0 24 24" ' + S + ' aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>',
+    wifiOff: '<svg viewBox="0 0 24 24" ' + S + ' aria-hidden="true"><path d="m3 3 18 18M5.3 9.7A11 11 0 0 1 12 7.5c3.2 0 5.7 1.1 7.5 2.7M8.8 13.2A5 5 0 0 1 12 12c1 0 2 .3 2.8.8M12 18h.01"/></svg>',
+    link: '<svg viewBox="0 0 24 24" ' + S + ' aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.5.5l2-2a5 5 0 0 0-7-7l-1.1 1.1M14 11a5 5 0 0 0-7.5-.5l-2 2a5 5 0 0 0 7 7l1.1-1.1"/></svg>',
+    search: '<svg viewBox="0 0 24 24" ' + S + ' aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>',
+    flask: '<svg viewBox="0 0 24 24" ' + S + ' aria-hidden="true"><path d="M9 3h6M10 3v6l-5 9a2 2 0 0 0 1.8 3h10.4A2 2 0 0 0 19 18l-5-9V3"/><path d="M8 15h8"/></svg>',
+    books: '<svg viewBox="0 0 24 24" ' + S + ' aria-hidden="true"><path d="M4 4h5v16H4zM9 6h5v14H9zM15 5l4-1 3 15-5 1z"/></svg>',
+    info: '<svg viewBox="0 0 24 24" ' + S + ' aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7h.01"/></svg>',
+    warning: '<svg viewBox="0 0 24 24" ' + S + ' aria-hidden="true"><path d="M12 3 2.8 20h18.4L12 3Z"/><path d="M12 9v5M12 17h.01"/></svg>',
+    trash: '<svg viewBox="0 0 24 24" ' + S + ' aria-hidden="true"><path d="M4 7h16M9 7V4h6v3M7 7l1 13h8l1-13M10 11v5M14 11v5"/></svg>',
+    stamp: '<svg viewBox="0 0 24 24" ' + S + ' aria-hidden="true"><path d="M8 4a4 4 0 1 1 8 0c0 3 1 4 3 6H5c2-2 3-3 3-6ZM5 14h14v5H5zM7 22h10"/></svg>',
+    route: '<svg viewBox="0 0 24 24" ' + S + ' aria-hidden="true"><circle cx="6" cy="18" r="2"/><circle cx="18" cy="6" r="2"/><path d="M8 18h3a3 3 0 0 0 3-3V9a3 3 0 0 1 3-3"/></svg>'
   };
   function icon(name) { return ICONS[name] || ""; }
 
@@ -126,7 +144,7 @@
     opts = opts || {};
     if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     var n = opts.count || 26;
-    var colors = ["#FF6B4A", "#1E9C74", "#16294A", "#F4A73B"];
+    var colors = ["var(--il-secondary)", "var(--il-success)", "var(--il-primary)", "var(--il-warning)"];
     var wrap = document.createElement("div"); wrap.className = "il-confetti";
     for (var i = 0; i < n; i++) {
       var p = document.createElement("i");

@@ -9,10 +9,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="design-system.css?v=20260809b">
-<link rel="stylesheet" href="app.css?v=20260809b">
+<link rel="stylesheet" href="design-system.css?v=20260809d">
+<link rel="stylesheet" href="app.css?v=20260809d">
 <style>
-  .sec-tag{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;padding:3px 9px;border-radius:999px;background:var(--mint,#e7f1ec);color:var(--jade,#1e9c74)}
+  .sec-tag{display:inline-flex;align-items:center;white-space:nowrap;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;padding:3px 9px;border-radius:999px;background:var(--mint,#e7f1ec);color:var(--jade,#1e9c74)}
   .sec-tag.off{background:#fdecea;color:#c0392b}
   .sec-tag.soon{background:#f1eef8;color:#6c5ce7}
   .qr-wrap{display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap;margin-top:10px}
@@ -27,16 +27,16 @@
 </style>
 </head>
 <body>
-<div id="demoBanner" class="demo-banner hidden">🧪 <b>Modo demo</b> · las cuentas se guardan solo en este navegador</div>
+<div id="demoBanner" class="demo-banner hidden"><span data-il-icon="flask" aria-hidden="true"></span> <b>Modo demo</b> · las cuentas se guardan solo en este navegador</div>
 
 <div id="panel" class="admin-shell hidden">
   <div class="admin-head">
     <div>
-      <h1>🦊 Panel · Interlanguage</h1>
+      <h1><span data-il-icon="plane" aria-hidden="true"></span> Panel · Interlanguage</h1>
       <div class="who" id="who"></div>
     </div>
     <div style="display:flex;gap:10px;flex-wrap:wrap;">
-      <a class="btn btn-ghost" href="admin-contenido.html">📚 Contenidos</a>
+      <a class="btn btn-ghost" href="admin-contenido.html"><span data-il-icon="books" aria-hidden="true"></span> Contenidos</a>
       <button class="btn btn-ghost" id="logout">Salir</button>
     </div>
   </div>
@@ -74,7 +74,7 @@
       </div>
 
       <div id="mfaOn" class="hidden">
-        <p class="pdesc">✅ La verificación en dos pasos está <b>activa</b>. Al entrar te pediremos el código de la app.</p>
+        <p class="pdesc">La verificación en dos pasos está <b>activa</b>. Al entrar te pediremos el código de la app.</p>
         <button class="btn btn-ghost" id="mfaDisable">Desactivar</button>
       </div>
     </div>
@@ -99,7 +99,7 @@
       </form>
 
       <div class="cred-box hidden" id="credBox">
-        <h3>✅ Alumno creado — entrega estos datos a la familia</h3>
+        <h3>Alumno creado — entrega estos datos a la familia</h3>
         <div class="cred-row"><span class="k">Usuario</span><span class="v" id="credUser"></span><button class="copy-btn" data-copy="credUser">Copiar</button></div>
         <div class="cred-row"><span class="k">Contraseña</span><span class="v" id="credPass"></span><button class="copy-btn" data-copy="credPass">Copiar</button></div>
         <button class="btn btn-ghost btn-block" id="copyAll" style="margin-top:6px;font-size:.9rem;padding:11px;">Copiar mensaje para la familia</button>
@@ -112,7 +112,7 @@
       <p class="pdesc"><span id="count">0</span> cuentas.</p>
       <div class="field">
         <label for="search" class="sr-only">Buscar alumno</label>
-        <input type="search" id="search" placeholder="🔎 Buscar por nombre o usuario…" autocomplete="off">
+        <input type="search" id="search" placeholder="Buscar por nombre o usuario…" autocomplete="off">
       </div>
       <div class="table-wrap">
         <table class="students">
@@ -147,10 +147,11 @@
   </div>
 </div>
 
+<script src="layout.js?v=20260809d"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="supabase-config.js?v=20260809b"></script>
-<script src="auth-utils.js?v=20260809b"></script>
-<script src="auth.js?v=20260809b"></script>
+<script src="supabase-config.js?v=20260809d"></script>
+<script src="auth-utils.js?v=20260809d"></script>
+<script src="auth.js?v=20260809d"></script>
 <script>
   const $ = (id) => document.getElementById(id);
   const esc = (s) => String(s == null ? "" : s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
@@ -204,7 +205,7 @@
     $("mfaConfirm").disabled = false;
     if (!r.ok) { mfaError(r.error || "Código incorrecto."); return; }
     enrollFactorId = null; $("mfaCode").value = "";
-    const ok = $("mfaOk"); ok.textContent = "✅ Verificación en dos pasos activada."; ok.classList.add("show"); setTimeout(()=>ok.classList.remove("show"),4000);
+    const ok = $("mfaOk"); ok.textContent = "Verificación en dos pasos activada."; ok.classList.add("show"); setTimeout(()=>ok.classList.remove("show"),4000);
     refreshMFA();
   });
   $("mfaDisable").addEventListener("click", async () => {
@@ -289,11 +290,11 @@
     b.textContent = "¡Copiado!"; setTimeout(() => b.textContent = "Copiar", 1200);
   }));
   $("copyAll").addEventListener("click", () => {
-    const msg = "¡Hola! Ya tenéis acceso a la práctica de inglés de Interlanguage 🦊\n\n" +
+    const msg = "¡Hola! Ya tenéis acceso a la práctica de inglés de Interlanguage.\n\n" +
       "Entrad en: " + location.origin + "/plataforma/\n" +
       "Usuario: " + $("credUser").textContent + "\n" +
       "Contraseña: " + $("credPass").textContent + "\n\n" +
-      "En el primer acceso os pedirá crear vuestra propia contraseña. ¡A por la primera racha! 🔥";
+      "En el primer acceso os pedirá crear vuestra propia contraseña. Ya puede empezar su primera misión.";
     navigator.clipboard.writeText(msg);
     $("copyAll").textContent = "¡Mensaje copiado!"; setTimeout(() => $("copyAll").textContent = "Copiar mensaje para la familia", 1400);
   });

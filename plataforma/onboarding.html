@@ -9,9 +9,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="design-system.css?v=20260809b">
-<link rel="stylesheet" href="app.css?v=20260809b">
-<link rel="stylesheet" href="etapa.css?v=20260809b">
+<link rel="stylesheet" href="design-system.css?v=20260809d">
+<link rel="stylesheet" href="app.css?v=20260809d">
+<link rel="stylesheet" href="etapa.css?v=20260809d">
 <style>
   body{font-family:var(--il-font-body);background:
     radial-gradient(120% 45% at 100% 0%, #FDECE4 0%, transparent 55%),
@@ -20,16 +20,18 @@
   .ob{max-width:520px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;padding:0 20px}
   .ob-top{display:flex;justify-content:center;gap:8px;padding:26px 0 6px}
   .dot{width:9px;height:9px;border-radius:50%;background:var(--il-line-2);transition:background var(--il-motion),width var(--il-motion)}
-  .dot.on{background:var(--il-coral)}
+  .dot.on{background:var(--il-primary)}
   .dot.now{width:24px;border-radius:6px}
   .ob-main{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
-  /* Nemo con badge suave + pop de entrada en cada paso */
-  .ob-fox{width:136px;height:136px;margin:0 auto 16px;border-radius:50%;display:grid;place-items:center;font-size:4.6rem;line-height:1;
-    background:radial-gradient(circle at 50% 32%, #fff, var(--il-jade-bg));box-shadow:0 22px 44px -22px rgba(22,41,74,.32);
+  /* Símbolo de cada paso */
+  .ob-fox{width:120px;height:120px;margin:0 auto 16px;border-radius:var(--il-radius-xl);display:grid;place-items:center;color:#fff;line-height:1;
+    background:var(--il-primary);box-shadow:var(--il-shadow-md);
     animation:obPop .42s cubic-bezier(.2,1.25,.3,1) both}
+  .ob-fox svg{width:54px;height:54px}
   @keyframes obPop{from{opacity:0;transform:scale(.55)}to{opacity:1;transform:scale(1)}}
   @keyframes obUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
-  body[data-stage="eso"] .ob-fox{width:96px;height:96px;font-size:3rem;background:var(--il-jade-bg)}
+  body[data-stage="eso"] .ob-fox{width:88px;height:88px;border-radius:var(--il-radius-md)}
+  body[data-stage="eso"] .ob-fox svg{width:38px;height:38px}
   .ob-h{font-family:var(--il-font-display);font-weight:800;color:var(--il-navy);font-size:1.7rem;margin:6px 0 8px;animation:obUp .38s cubic-bezier(.2,.7,.3,1) .07s both}
   .ob-p{color:var(--il-soft);font-size:1.1rem;max-width:360px;margin:0 auto;animation:obUp .38s cubic-bezier(.2,.7,.3,1) .13s both}
   .colors{display:flex;gap:14px;justify-content:center;margin-top:24px;animation:obUp .38s cubic-bezier(.2,.7,.3,1) .19s both}
@@ -57,26 +59,27 @@
   </div>
 </div>
 
+<script src="layout.js?v=20260809d"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="supabase-config.js?v=20260809b"></script>
-<script src="auth-utils.js?v=20260809b"></script>
-<script src="etapa.js?v=20260809b"></script>
-<script src="auth.js?v=20260809b"></script>
+<script src="supabase-config.js?v=20260809d"></script>
+<script src="auth-utils.js?v=20260809d"></script>
+<script src="etapa.js?v=20260809d"></script>
+<script src="auth.js?v=20260809d"></script>
 <script>
   const $ = (id) => document.getElementById(id);
   let name = "campeón", stage = "p56", color = "#FF6B4A";
 
   const steps = () => ([
-    { fox:"🦊", h:"¡Hola, "+name+"! Soy Nemo", p:"Un zorro viajero. Vamos a aprender inglés juntos, un poquito cada día. Elige tu color:", colors:true },
-    { fox:"🎯", h:"Cada día, una misión corta", p:"Nada de exámenes. Solo unos minutos de juego para no olvidar el inglés." },
-    { fox:"💪", h:"Si fallas, no pasa nada", p:"Se explica y lo vuelves a intentar. ¡Aquí se aprende sin agobios!" }
+    { icon:"plane", h:"¡Hola, "+name+"!", p:"Tu avión de papel representa todo lo que vas avanzando. Elige tu color:", colors:true },
+    { icon:"target", h:"Cada día, una misión corta", p:"Solo unos minutos de práctica para mantener fresco tu inglés." },
+    { icon:"shield", h:"Los errores también enseñan", p:"Te explicaremos cada error y podrás volver a intentarlo sin agobios." }
   ]);
   let i = 0;
 
   function render() {
     const s = steps()[i];
     $("main").innerHTML =
-      '<div class="ob-fox" aria-hidden="true">'+s.fox+'</div>' +
+      '<div class="ob-fox" aria-hidden="true">'+ILIcon(s.icon)+'</div>' +
       '<h1 class="ob-h">'+s.h+'</h1>' +
       '<p class="ob-p">'+s.p+'</p>' +
       (s.colors ? '<div class="colors" role="group" aria-label="Elige tu color">' +

@@ -9,8 +9,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="design-system.css?v=20260809b">
-<link rel="stylesheet" href="app.css?v=20260809b">
+<link rel="stylesheet" href="design-system.css?v=20260809d">
+<link rel="stylesheet" href="app.css?v=20260809d">
 <style>
   body{background:
     radial-gradient(120% 55% at 100% 0%, #FDECE4 0%, transparent 55%),
@@ -22,12 +22,12 @@
 </style>
 </head>
 <body>
-<div id="demoBanner" class="demo-banner hidden">🧪 <b>Modo demo</b> · el cambio se guarda solo en este navegador</div>
+<div id="demoBanner" class="demo-banner hidden"><span data-il-icon="flask" aria-hidden="true"></span> <b>Modo demo</b> · el cambio se guarda solo en este navegador</div>
 
 <div class="auth-wrap">
   <form class="auth-card" id="pwForm">
     <div class="brand-mark">
-      <div class="brand-fox">🔒</div>
+      <div class="brand-fox" aria-hidden="true"><span data-il-icon="lock"></span></div>
       <div class="brand-name">Interlanguage <span>HOME</span></div>
     </div>
     <h1 id="title">Cambiar contraseña</h1>
@@ -40,7 +40,7 @@
       <label for="p1">Nueva contraseña</label>
       <div class="inp">
         <input type="password" id="p1" autocomplete="new-password" placeholder="mínimo 8 caracteres">
-        <button type="button" class="toggle-eye" id="eye" aria-label="Mostrar contraseña">👁️</button>
+        <button type="button" class="toggle-eye" id="eye" aria-label="Mostrar contraseña"><span data-il-icon="eye"></span></button>
       </div>
       <div class="pw-bars" id="bars"><i></i><i></i><i></i><i></i></div>
       <div class="hint">Usa al menos 8 caracteres. Mezcla letras y números.</div>
@@ -55,10 +55,11 @@
   </form>
 </div>
 
+<script src="layout.js?v=20260809d"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="supabase-config.js?v=20260809b"></script>
-<script src="auth-utils.js?v=20260809b"></script>
-<script src="auth.js?v=20260809b"></script>
+<script src="supabase-config.js?v=20260809d"></script>
+<script src="auth-utils.js?v=20260809d"></script>
+<script src="auth.js?v=20260809d"></script>
 <script>
   const $ = (id) => document.getElementById(id);
   if (ILAuth.isDemo()) $("demoBanner").classList.remove("hidden");
@@ -69,14 +70,17 @@
     if (!profile) { location.href = "index.html"; return; }
     forced = !!profile.must_change_password;
     if (forced) {
-      $("title").textContent = "¡Bienvenido! 👋";
+      $("title").textContent = "¡Te damos la bienvenida!";
       $("subtitle").textContent = "Antes de empezar, crea tu propia contraseña.";
       $("logout").parentElement.classList.add("hidden"); // en primer acceso, obligamos a cambiar
     }
   })();
 
   $("eye").addEventListener("click", () => {
-    const i = $("p1"); i.type = i.type === "password" ? "text" : "password";
+    const i = $("p1"), show = i.type === "password";
+    i.type = show ? "text" : "password";
+    $("eye").setAttribute("aria-label", show ? "Ocultar contraseña" : "Mostrar contraseña");
+    $("eye").innerHTML = ILIcon(show ? "eyeOff" : "eye");
   });
 
   function strength(p) {
@@ -101,7 +105,7 @@
     const btn = $("submitBtn"); btn.disabled = true; const old = btn.textContent; btn.textContent = "Guardando…";
     const res = await ILAuth.changePassword(p1);
     if (!res.ok) { msg.textContent = res.error; msg.classList.add("show"); btn.disabled = false; btn.textContent = old; return; }
-    ok.textContent = "✅ ¡Contraseña guardada! Entrando…"; ok.classList.add("show");
+    ok.textContent = "Contraseña guardada. Entrando…"; ok.classList.add("show");
     setTimeout(() => { location.href = profile.is_admin ? "admin.html" : "onboarding.html"; }, 900);
   });
 
