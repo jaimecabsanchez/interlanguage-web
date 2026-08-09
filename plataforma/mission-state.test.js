@@ -1,0 +1,59 @@
+const assert = require("assert");
+const createMissionStore = require("./mission-state.js");
+
+function memoryStorage() {
+  const data = new Map();
+  return {
+    getItem: key => data.has(key) ? data.get(key) : null,
+    setItem: (key, value) => data.set(key, String(value)),
+    removeItem: key => data.delete(key)
+  };
+}
+
+const storage = memoryStorage();
+const M = createMissionStore(storage);
+const meta = { date: "2026-08-09", unitId: "rutina", unitTitle: "My daily routine", itemIds: ["a", "b", "c"] };
+
+let state = M.ensure("lucia", meta);
+assert.equal(state.status, "not_started");
+assert.equal(state.total, 3);
+
+state = M.begin("lucia", meta, 1000);
+assert.equal(state.status, "in_progress");
+state = M.advance("lucia", { id: "a", correct: true, learnedExpressions: ["Have breakfast"] });
+assert.equal(state.currentIndex, 1);
+assert.equal(state.correctCount, 1);
+assert.equal(state.points, 10);
+
+state = M.advance("lucia", { id: "b", correct: false });
+assert.deepEqual(state.incorrectIds, ["b"]);
+assert.equal(state.currentCorrectStreak, 0);
+
+state = M.pause("lucia", 6000);
+assert.equal(state.elapsedMs, 5000);
+state = M.begin("lucia", meta, 9000);
+assert.equal(state.currentIndex, 2, "reanuda en el siguiente ejercicio");
+
+state = M.advance("lucia", { id: "c", correct: true, learnedExpressions: ["Go to school"] });
+state = M.complete("lucia", 11000);
+assert.equal(state.status, "completed");
+assert.equal(M.unitCompletionCount("lucia", "rutina"), 1);
+M.complete("lucia", 12000);
+assert.equal(M.unitCompletionCount("lucia", "rutina"), 1, "histórico deduplicado");
+
+state = M.resolveErrors("lucia", ["b"]);
+assert.deepEqual(state.incorrectIds, []);
+M.markCompletionRecorded("lucia");
+assert.equal(M.get("lucia", "2026-08-09").completionRecorded, true);
+
+const units = [{ ejercicios: [
+  { id: "x", habilidad: "vocabulary", nivel: "A1" },
+  { id: "y", habilidad: "grammar", nivel: "A1" },
+  { id: "z", habilidad: "vocabulary", nivel: "A1" }
+] }];
+const first = M.getOrCreateSession({ username: "ana", date: "2026-08-09", units, banda: "p56", cefr: "A1", limit: 2 });
+const second = M.getOrCreateSession({ username: "ana", date: "2026-08-09", units, banda: "p56", cefr: "A1", limit: 2 });
+assert.deepEqual(first.map(x => x.id), second.map(x => x.id), "sesión diaria estable");
+assert.equal(new Set(first.map(x => x.habilidad)).size, 2, "intercala habilidades");
+
+console.log("mission-state: 15 comprobaciones correctas");

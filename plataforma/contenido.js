@@ -40,19 +40,37 @@ window.IL_CONTENIDO = {
       ejercicios: [
         {
           id: "rd-1", tipo: "elegir_imagen", habilidad: "vocabulary", nivel: "A1", edad: [6,11],
-          etiqueta: "Vocabulario", instruccion: '¿Cuál es "desayunar"?',
-          audio: "Which one is have breakfast?",
+          etiqueta: "Vocabulario", instruccion: '¿Cómo se dice “desayunar” en inglés?',
+          instructions: {
+            p12: '¿Cómo se dice “desayunar” en inglés?',
+            p34: '¿Cómo se dice “desayunar” en inglés?',
+            p56: 'Which expression means “desayunar”?',
+            eso: 'Which expression means “to have breakfast”?'
+          },
+          audio: "Have breakfast",
           opciones: [
             { emoji: "🥣", texto: "have breakfast", correcta: true },
             { emoji: "🚿", texto: "take a shower" },
             { emoji: "🛏️", texto: "go to bed" },
             { emoji: "🎒", texto: "go to school" }
           ],
-          explicacion: "have breakfast = desayunar."
+          explicacion: "Usamos have breakfast para hablar de desayunar.",
+          feedback: {
+            correct: '“Have breakfast” significa “desayunar”.',
+            incorrect: "Piensa en la comida que hacemos al empezar el día.",
+            context: "I have breakfast at seven o’clock.",
+            learnedExpressions: ["Have breakfast"]
+          }
         },
         {
           id: "rd-2", tipo: "elegir_texto", habilidad: "reading", nivel: "A1", edad: [8,11],
-          etiqueta: "Comprensión", instruccion: '¿Qué significa "I wake up at 7"?',
+          etiqueta: "Comprensión", instruccion: '¿Qué significa “I wake up at seven”?',
+          feedback: {
+            correct: '“I wake up at seven” significa “Me levanto a las siete”.',
+            incorrect: "Busca la opción que habla del momento de despertarse.",
+            context: "I wake up at seven every weekday.",
+            learnedExpressions: ["Wake up"]
+          },
           opciones: [
             { texto: "Me levanto a las 7", correcta: true },
             { texto: "Ceno a las 7" },
@@ -74,7 +92,13 @@ window.IL_CONTENIDO = {
             { texto: "has" },
             { texto: "having" }
           ],
-          explicacion: 'Con "I" usamos "have": I have breakfast.'
+          explicacion: 'Con “I” usamos “have”: I have breakfast.',
+          feedback: {
+            correct: 'Con “I” usamos “have”.',
+            incorrect: "Fíjate en el sujeto: con I no añadimos -s.",
+            context: "I have breakfast every day.",
+            learnedExpressions: ["Have breakfast"]
+          }
         },
         {
           id: "rd-5", tipo: "hablar", habilidad: "speaking", nivel: "A1", edad: [7,11],
@@ -93,7 +117,7 @@ window.IL_CONTENIDO = {
       ejercicios: [
         {
           id: "lc-1", tipo: "elegir_imagen", habilidad: "vocabulary", nivel: "Pre-A1", edad: [6,9],
-          etiqueta: "Vocabulario", instruccion: '¿Cuál es "manzana"?',
+          etiqueta: "Vocabulario", instruccion: '¿Cómo se dice “manzana” en inglés?',
           audio: "Which one is an apple?",
           opciones: [
             { emoji: "🍎", texto: "apple", correcta: true },

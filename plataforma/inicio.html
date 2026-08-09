@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Mi inicio · Interlanguage HOME</title>
+<title>Inicio · Interlanguage HOME</title>
 <meta name="robots" content="noindex">
 <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -11,268 +11,118 @@
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="design-system.css?v=20260809d">
 <link rel="stylesheet" href="app.css?v=20260809d">
+<link rel="stylesheet" href="shell.css?v=20260809d">
 <link rel="stylesheet" href="etapa.css?v=20260809d">
 <style>
-  /* ===== Home del alumno · layout editorial y responsive ===== */
-  [hidden]{display:none !important;}
-  body{background:
-    radial-gradient(130% 55% at 100% 0%, var(--il-secondary-soft) 0%, transparent 55%),
-    radial-gradient(120% 55% at 0% 6%, var(--il-success-soft) 0%, transparent 52%),
-    var(--paper); background-attachment:fixed;}
+  body{background:radial-gradient(90% 55% at 100% 0%,var(--il-primary-soft),transparent 58%),var(--il-background)}
+  .demo-strip{max-width:560px;margin:0 auto;display:flex;align-items:center;justify-content:center;gap:var(--il-space-2);padding:5px 12px;border-radius:0 0 var(--il-radius-sm) var(--il-radius-sm);background:color-mix(in srgb,var(--il-surface) 78%,transparent);color:var(--il-text-secondary);font-size:var(--il-fs-xs)}
+  .demo-strip b{color:var(--il-primary)}.demo-close{width:var(--il-touch);height:var(--il-touch);display:grid;place-items:center;padding:0;border:0;border-radius:50%;background:transparent;color:var(--il-muted)}.demo-close svg{width:18px;height:18px}
+  .loading-short{width:48%}.loading-medium{width:76%}
+  .home{width:100%;max-width:var(--il-max-width-shell);margin:0 auto;padding:var(--il-space-3) var(--il-space-4) calc(92px + env(safe-area-inset-bottom))}
+  .rail{display:none}.home-content{min-width:0}.home-greeting{display:flex;align-items:center;gap:var(--il-space-3);padding:var(--il-space-3) 2px var(--il-space-5)}
+  .greeting-copy{flex:1;min-width:0}.home-greeting h1{font-size:var(--il-fs-2xl)}.home-greeting p{margin:4px 0 0;color:var(--il-text-secondary);font-size:var(--il-fs-sm)}
+  .student-stats{display:flex;align-items:center;gap:var(--il-space-2)}.student-pill{min-height:var(--il-touch);display:inline-flex;align-items:center;gap:7px;padding:8px 11px;border:1px solid var(--il-border);border-radius:var(--il-radius-pill);background:var(--il-surface);color:var(--il-text-secondary);font-family:var(--il-font-display);font-weight:var(--il-weight-bold);font-size:var(--il-fs-xs)}
+  .student-pill.streak{color:var(--il-warning-ink)}.student-pill svg{width:17px;height:17px}.profile-link{width:var(--il-touch);height:var(--il-touch);display:grid;place-items:center;border-radius:var(--il-radius-sm);background:var(--il-primary);color:var(--il-on-primary)}.profile-link:hover{color:var(--il-on-primary);background:var(--il-primary-hover)}.profile-link svg{width:22px;height:22px}
+  .home-grid{display:grid;gap:var(--il-space-4)}
 
-  .il-offline{}
-  .demo-strip{display:flex;align-items:center;gap:8px;justify-content:center;font-size:.72rem;color:var(--soft);
-    background:rgba(255,255,255,.55);border-radius:0 0 12px 12px;padding:5px 12px;max-width:560px;margin:0 auto;}
-  .demo-strip b{color:var(--navy);font-weight:700;} .demo-strip .x{margin-left:2px;display:grid;place-items:center;width:var(--il-touch);height:var(--il-touch);background:transparent;border:none;color:var(--faint);padding:0;border-radius:50%;}.demo-strip .x svg{width:18px;height:18px}
+  .daily-mission{position:relative;overflow:hidden;padding:clamp(22px,5vw,36px);border:1px solid var(--il-border);border-radius:var(--il-radius-xl);background:var(--il-surface);box-shadow:var(--il-shadow-md);animation:home-card-in var(--il-duration-base) var(--il-ease) both}
+  .daily-mission::before{content:"";position:absolute;top:0;left:0;right:0;height:5px;background:linear-gradient(90deg,var(--il-primary),var(--il-success),var(--il-secondary))}
+  .mission-eyebrow{display:flex;align-items:center;gap:var(--il-space-2);margin-bottom:var(--il-space-3);color:var(--il-secondary-hover);font-size:var(--il-fs-xs);font-weight:var(--il-weight-extrabold);letter-spacing:var(--il-tracking-label);text-transform:uppercase}.mission-eyebrow svg{width:18px;height:18px}
+  .daily-mission h2{max-width:18ch;font-size:clamp(1.55rem,1.25rem + 1.2vw,2.15rem)}.mission-outcome{max-width:58ch;margin:var(--il-space-2) 0 var(--il-space-5);color:var(--il-text-secondary)}
+  .mission-meta{display:flex;flex-wrap:wrap;gap:var(--il-space-2);margin-bottom:var(--il-space-4)}.meta-item{display:inline-flex;align-items:center;gap:6px;padding:7px 10px;border-radius:var(--il-radius-pill);background:var(--il-surface-secondary);color:var(--il-text-primary);font-size:var(--il-fs-sm);font-weight:var(--il-weight-bold)}.meta-item svg{width:17px;height:17px;color:var(--il-primary)}
+  .skill-list{display:flex;flex-wrap:wrap;gap:var(--il-space-2);margin-bottom:var(--il-space-6)}.skill-chip{padding:6px 10px;border:1px solid var(--il-border);border-radius:var(--il-radius-pill);background:var(--il-surface);font-size:var(--il-fs-xs);font-weight:var(--il-weight-bold);color:var(--il-text-secondary)}.skill-chip[data-skill="vocabulary"]{background:var(--il-secondary-soft);color:var(--il-coral-ink);border-color:transparent}.skill-chip[data-skill="grammar"]{background:var(--il-primary-soft);color:var(--il-primary);border-color:transparent}.skill-chip[data-skill="listening"]{background:var(--il-success-soft);color:var(--il-jade-deep);border-color:transparent}
+  .mission-route{position:relative;margin:0 0 var(--il-space-5);padding-top:29px}.mission-route__track{display:grid;grid-template-columns:repeat(var(--route-count),minmax(0,1fr));align-items:center}.route-step{position:relative;height:4px;background:var(--il-border)}.route-step::after{content:"";position:absolute;right:-7px;top:50%;width:14px;height:14px;border:3px solid var(--il-surface);border-radius:50%;background:var(--il-border-strong);box-shadow:0 0 0 1px var(--il-border);transform:translateY(-50%)}.route-step:first-child{border-radius:var(--il-radius-pill) 0 0 var(--il-radius-pill)}.route-step:last-child{border-radius:0 var(--il-radius-pill) var(--il-radius-pill) 0}.route-step.is-complete{background:var(--il-success)}.route-step.is-complete::after{background:var(--il-success)}.route-step.is-current::after{background:var(--il-primary);box-shadow:0 0 0 4px var(--il-primary-soft)}
+  .mission-plane{position:absolute;top:0;left:var(--mission-progress);width:26px;height:26px;color:var(--il-secondary);transform:translateX(-50%) rotate(-8deg);transition:left var(--il-duration-slow) var(--il-ease);filter:drop-shadow(var(--il-shadow-xs))}.mission-plane svg{width:26px;height:26px}.mission-progress-copy{display:flex;justify-content:space-between;gap:var(--il-space-3);margin-top:var(--il-space-3);color:var(--il-text-secondary);font-size:var(--il-fs-xs)}
+  .mission-cta{width:100%;min-height:52px;font-size:var(--il-fs-base)}.mission-cta.is-complete{background:var(--il-success);color:var(--il-on-success)}
+  .mission-context{display:flex;align-items:flex-start;gap:var(--il-space-3);margin:var(--il-space-5) 0 0;padding-top:var(--il-space-4);border-top:1px solid var(--il-border);color:var(--il-text-secondary);font-size:var(--il-fs-sm)}.mission-context__icon{width:36px;height:36px;display:grid;place-items:center;flex:0 0 auto;border-radius:var(--il-radius-sm);background:var(--il-primary-soft);color:var(--il-primary)}.mission-context__icon svg{width:19px;height:19px}.mission-context p{margin:0}.teacher-note{display:block;margin-top:3px;color:var(--il-primary);font-weight:var(--il-weight-bold)}
 
-  /* Contenedor: móvil = una columna; escritorio = rail + contenido */
-  .home{max-width:560px;margin:0 auto;padding:6px 18px calc(92px + env(safe-area-inset-bottom));}
-  .rail{display:none;}
+  .insights{display:grid;gap:var(--il-space-4)}.insight-card{padding:var(--il-space-5);border:1px solid var(--il-border);border-radius:var(--il-radius-lg);background:var(--il-surface);box-shadow:var(--il-shadow-xs)}
+  .insight-head{display:flex;align-items:flex-start;justify-content:space-between;gap:var(--il-space-3);margin-bottom:var(--il-space-4)}.insight-title{display:flex;align-items:center;gap:var(--il-space-2)}.insight-title__icon{width:38px;height:38px;display:grid;place-items:center;border-radius:var(--il-radius-sm);background:var(--il-success-soft);color:var(--il-success)}.insight-title__icon svg{width:20px;height:20px}.insight-card h2{font-size:var(--il-fs-base)}.insight-card .sub{margin:2px 0 0;color:var(--il-text-secondary);font-size:var(--il-fs-xs)}.week-count{font-family:var(--il-font-display);font-weight:var(--il-weight-extrabold);color:var(--il-primary);font-variant-numeric:tabular-nums;white-space:nowrap}
+  .week-days{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin-bottom:var(--il-space-4)}.week-day{text-align:center}.week-day__label{display:block;margin-bottom:6px;color:var(--il-muted);font-size:.68rem;font-weight:var(--il-weight-bold)}.week-day__dot{width:31px;height:31px;display:grid;place-items:center;margin:0 auto;border:2px solid var(--il-border);border-radius:50%;background:var(--il-surface);color:var(--il-muted);font-size:var(--il-fs-xs);font-weight:var(--il-weight-bold)}.week-day__dot svg{width:15px;height:15px}.week-day.is-completed .week-day__dot{border-color:var(--il-success);background:var(--il-success);color:var(--il-on-success)}.week-day.is-today .week-day__dot{border-color:var(--il-primary);background:var(--il-primary-soft);color:var(--il-primary);box-shadow:0 0 0 3px var(--il-primary-soft)}.week-day.is-pending .week-day__dot{border-style:dashed}.week-day.is-future{opacity:.56}
+  .week-progress{height:7px;overflow:hidden;margin-bottom:var(--il-space-3);border-radius:var(--il-radius-pill);background:var(--il-border)}.week-progress span{display:block;width:var(--week-progress);height:100%;border-radius:inherit;background:var(--il-success);transition:width var(--il-duration-slow) var(--il-ease)}.week-reward{display:flex;align-items:flex-start;gap:var(--il-space-2);margin:0;color:var(--il-text-secondary);font-size:var(--il-fs-sm)}.week-reward svg{width:18px;height:18px;flex:0 0 auto;color:var(--il-success)}
 
-  /* --- Barra lateral (escritorio) --- */
-  .rail .brand{display:flex;align-items:center;gap:9px;font-family:var(--font-display);font-weight:800;color:var(--navy);font-size:1.05rem;padding:6px 10px 18px;}
-  .rail .brand .logo{width:34px;height:34px;border-radius:11px;background:var(--il-primary);display:grid;place-items:center;}
-  .rail .brand .logo svg{width:19px;height:19px;color:#fff;}
-  .rail .brand span b{color:var(--coral-deep);}
-  .rail nav{display:flex;flex-direction:column;gap:4px;}
-  .rail a{display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:12px;color:var(--soft);text-decoration:none;font-weight:700;font-size:.94rem;transition:background .15s ease,color .15s ease;}
-  .rail a svg{width:22px;height:22px;}
-  .rail a:hover{background:rgba(22,41,74,.05);color:var(--navy);}
-  .rail a.is-active{background:var(--il-primary);color:#fff;}
+  .next-stamp{background:linear-gradient(150deg,var(--il-secondary-soft),var(--il-surface) 72%)}.next-stamp .insight-title__icon{background:var(--il-secondary);color:var(--il-on-dark)}.stamp-body{display:grid;grid-template-columns:78px minmax(0,1fr);align-items:center;gap:var(--il-space-4)}.stamp-mark{position:relative;width:76px;height:76px;display:grid;place-items:center;border:2px dashed var(--il-secondary);border-radius:50%;background:var(--il-surface);color:var(--il-secondary);transform:rotate(-4deg)}.stamp-mark::after{content:"";position:absolute;inset:6px;border:1px solid var(--il-secondary);border-radius:50%;opacity:.45}.stamp-mark svg{width:34px;height:34px}.stamp-copy h3{font-size:var(--il-fs-lg);margin-bottom:3px}.stamp-copy p{margin:0;color:var(--il-text-secondary);font-size:var(--il-fs-sm)}.stamp-bar{height:6px;overflow:hidden;margin-top:var(--il-space-3);border-radius:var(--il-radius-pill);background:var(--il-border)}.stamp-bar span{display:block;width:var(--stamp-progress);height:100%;background:var(--il-secondary);transition:width var(--il-duration-slow) var(--il-ease)}
+  .stamp-criterion{margin:var(--il-space-3) 0 0;color:var(--il-muted);font-size:var(--il-fs-xs)}
+  @keyframes home-card-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 
-  /* --- Contenido en rejilla por áreas --- */
-  .content{display:grid;gap:15px;grid-template-columns:1fr;
-    grid-template-areas:"head" "card" "action" "weekly" "next";}
-  .gs-head{grid-area:head;} .gs-card{grid-area:card;} .gs-action{grid-area:action;}
-  .gs-weekly{grid-area:weekly;} .gs-next{grid-area:next;} .gs-brand{grid-area:brand;display:none;}
-
-  /* 1 · Cabecera */
-  .home-head{display:flex;align-items:center;gap:12px;padding:10px 2px 4px;}
-  .home-head .who{flex:1;min-width:0;}
-  .home-head h1{font-size:1.45rem;line-height:1.1;}
-  .home-head .ctx{color:var(--soft);font-size:.92rem;margin:3px 0 0;}
-  .home-head .stats{display:flex;gap:7px;flex-shrink:0;}
-  .stat-pill{display:inline-flex;align-items:center;gap:5px;font-family:var(--font-display);font-weight:800;font-size:.85rem;
-    background:rgba(255,255,255,.85);border:1px solid var(--line);border-radius:100px;padding:6px 10px;}
-  .stat-pill.streak{color:var(--il-warning);} .stat-pill.gems{color:var(--navy);} .stat-pill svg{width:14px;height:14px;}
-  .avatar-link{width:44px;height:44px;flex-shrink:0;border-radius:14px;display:grid;place-items:center;
-    background:var(--il-primary);box-shadow:var(--il-shadow-sm);text-decoration:none;}
-  .avatar-link svg{width:23px;height:23px;color:#fff;}
-
-  /* Ilustración de marca abstracta (viaje/aprendizaje). No es el personaje definitivo. */
-  .brand-art{animation:floaty 5.5s ease-in-out infinite;}
-  @keyframes floaty{0%,100%{transform:translateY(0) rotate(-1deg);}50%{transform:translateY(-6px) rotate(1.5deg);}}
-  @media (prefers-reduced-motion:reduce){ .brand-art{animation:none;} }
-
-  /* 2 · Bloque principal del día */
-  .day-card{position:relative;background:#fff;border-radius:24px;padding:24px 22px;overflow:hidden;
-    box-shadow:0 16px 38px -22px rgba(22,41,74,.34);animation:cardIn .3s cubic-bezier(.2,.7,.3,1) both;}
-  .day-card .brand-art{position:absolute;top:16px;right:16px;width:84px;height:84px;}
-  .eyebrow{font-family:var(--font-display);font-weight:800;font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--coral-deep);margin-bottom:8px;}
-  .day-card h2{font-size:1.4rem;margin:0 0 4px;padding-right:88px;}
-  .day-desc{color:var(--soft);font-size:.9rem;margin:0 0 14px;padding-right:88px;}
-  .meta-line{color:var(--navy);font-weight:700;font-size:.95rem;margin:0 0 14px;}
-  .meta-line .sep{color:var(--faint);margin:0 7px;}
-  .chips{display:flex;flex-wrap:wrap;gap:7px;}
-  .chip{font-size:.74rem;font-weight:700;padding:5px 11px;border-radius:100px;}
-  .chip--voc{background:var(--coral-tint);color:var(--coral-deep);}
-  .chip--gram{background:rgba(22,41,74,.09);color:var(--navy);}
-  .chip--lis{background:var(--jade-tint);color:var(--jade-deep);}
-  .chip--read{background:rgba(244,167,59,.16);color:#B0700F;}
-  .chip--spk{background:rgba(142,124,195,.18);color:#5b4b92;}
-  .done-head{display:flex;align-items:center;gap:14px;margin-bottom:14px;padding-right:78px;}
-  .done-badge{width:52px;height:52px;flex-shrink:0;border-radius:50%;background:var(--jade);display:grid;place-items:center;
-    box-shadow:0 10px 18px -8px var(--jade);animation:pop .5s cubic-bezier(.2,1.2,.3,1) both;}
-  .done-badge svg{width:28px;height:28px;color:#fff;}
-  .done-head .t{font-family:var(--font-display);font-weight:800;color:var(--navy);font-size:1.25rem;}
-  .day-cta{display:flex;width:100%;min-height:52px;align-items:center;justify-content:center;gap:9px;background:var(--il-primary);color:#fff;border:none;
-    border-radius:16px;padding:16px;font-family:var(--font-display);font-weight:800;font-size:1.05rem;text-decoration:none;
-    box-shadow:var(--il-shadow-md);transition:transform var(--il-transition-fast),box-shadow var(--il-transition-fast),background var(--il-transition-fast);margin-top:16px;}
-  .day-cta:hover{transform:translateY(-2px);background:var(--il-primary-hover);} .day-cta:active{transform:translateY(0);}
-  .day-cta svg{width:20px;height:20px;}
-
-  /* 3 · Acción opcional (bloque ligero por color) */
-  .soft-row{display:flex;align-items:center;gap:13px;border-radius:18px;padding:15px 16px;background:var(--coral-tint);}
-  .soft-row .sr-ico{width:42px;height:42px;flex-shrink:0;border-radius:13px;display:grid;place-items:center;background:#fff;}
-  .soft-row .sr-ico svg{width:21px;height:21px;color:var(--coral-deep);}
-  .soft-row .sr-txt{flex:1;min-width:0;} .soft-row .sr-txt b{display:block;color:var(--navy);font-family:var(--font-display);font-size:1rem;}
-  .soft-row .sr-txt span{font-size:.78rem;color:var(--soft);}
-  .soft-row .sr-go{flex-shrink:0;min-height:var(--il-touch);border-radius:100px;padding:10px 16px;font-weight:800;font-size:.84rem;text-decoration:none;border:1px solid var(--il-border);background:var(--il-surface);color:var(--il-primary);transition:background var(--il-transition-fast),transform var(--il-transition-fast);}
-  .soft-row .sr-go:hover{background:var(--il-primary-soft);} .soft-row .sr-go:active{transform:scale(.97);}
-
-  /* 4 · Semana como RUTA de 5 paradas */
-  .week{background:linear-gradient(165deg,#E8F3EE,#F3FAF7);border-radius:20px;padding:18px 18px 16px;}
-  .week .wk-top{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:16px;}
-  .week .wk-top h3{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--jade-deep);font-family:var(--font-display);}
-  .week .wk-count{font-family:var(--font-display);font-weight:800;color:var(--navy);font-size:.9rem;}
-  .route{display:flex;align-items:center;position:relative;padding-top:28px;}
-  /* Avión de papel que "viaja" hasta tu posición de la semana */
-  .wk-plane{position:absolute;top:2px;width:24px;height:24px;transform:translateX(-50%);
-    left:0;transition:left .7s cubic-bezier(.2,.7,.3,1);pointer-events:none;filter:drop-shadow(0 4px 6px rgba(225,79,48,.35));}
-  .wk-plane svg{display:block;width:24px;height:24px;}
-  .wk-plane.arrived{animation:planeBob 2.4s ease-in-out infinite;}
-  @keyframes planeBob{0%,100%{transform:translateX(-50%) translateY(0);}50%{transform:translateX(-50%) translateY(-3px);}}
-  @media (prefers-reduced-motion:reduce){ .wk-plane{transition:none;} .wk-plane.arrived{animation:none;} }
-  .route .stop{width:34px;height:34px;flex-shrink:0;border-radius:50%;display:grid;place-items:center;background:#fff;
-    border:2px solid rgba(30,156,116,.28);color:rgba(30,156,116,.5);transition:transform .3s cubic-bezier(.2,1.4,.3,1);}
-  .route .stop svg{width:16px;height:16px;opacity:0;transition:opacity .3s ease;}
-  .route .stop.on{background:var(--jade);border-color:var(--jade);color:#fff;box-shadow:0 6px 12px -5px var(--jade);}
-  .route .stop.on svg{opacity:1;} .route .stop.pop{transform:scale(1.12);}
-  .route .link{flex:1;height:3px;border-radius:3px;background:rgba(30,156,116,.2);}
-  .route .link.on{background:var(--jade);}
-  .week .wk-msg{margin:14px 0 0;font-size:.9rem;font-weight:700;color:var(--jade-deep);}
-
-  /* 5 · Próxima misión (visual) */
-  .next-mission{position:relative;overflow:hidden;border-radius:20px;padding:18px;background:linear-gradient(150deg,#FFF3EC,#FDECE4);}
-  .nm-badge{width:48px;height:48px;border-radius:15px;display:grid;place-items:center;background:var(--nm-color,var(--coral));box-shadow:0 10px 18px -9px rgba(22,41,74,.3);margin-bottom:12px;}
-  .nm-badge svg{width:24px;height:24px;color:#fff;}
-  .next-mission .h{font-family:var(--font-display);font-weight:800;font-size:.68rem;text-transform:uppercase;letter-spacing:.06em;color:var(--coral-deep);}
-  .next-mission .title{font-family:var(--font-display);font-weight:800;color:var(--navy);font-size:1.15rem;margin:2px 0 3px;}
-  .next-mission .desc{color:var(--soft);font-size:.85rem;margin:0 0 12px;}
-  .next-mission .foot{display:flex;align-items:center;gap:8px;font-size:.8rem;color:var(--soft);}
-
-  /* Panel de marca (columna secundaria en escritorio) */
-  .brand-panel{background:linear-gradient(160deg,#EAF3EF,#F4FAF7);border-radius:20px;padding:22px;text-align:center;}
-  .brand-panel .brand-art{width:120px;height:120px;margin:0 auto 8px;}
-  .brand-panel p{color:var(--soft);font-size:.88rem;margin:0;}
-  body[data-stage="eso"] .brand-panel .brand-art{width:84px;height:84px;opacity:.7;}
-  body[data-stage="eso"] .day-card .brand-art{opacity:.6;}
-
-  /* Microinteracciones */
-  @keyframes cardIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:none;}}
-  @keyframes pop{0%{transform:scale(0);}70%{transform:scale(1.1);}100%{transform:scale(1);}}
-  @media (prefers-reduced-motion:reduce){ .day-card{animation:none;} .done-badge{animation:none;} .route .stop{transition:none;} }
-
-  /* Variantes por etapa */
-  body[data-stage="p12"] .day-card h2{font-size:1.55rem;} body[data-stage="p12"] .day-cta{font-size:1.15rem;padding:18px;}
-  body[data-stage="eso"] .eyebrow{color:var(--soft);} body[data-stage="eso"] .day-card{border-radius:16px;}
-
-  /* ===== TABLET ===== */
-  @media (min-width:768px) and (max-width:1023px){ .home{max-width:700px;} }
-
-  /* ===== ESCRITORIO ===== */
+  @media (min-width:768px){.home{padding-inline:var(--il-space-6)}.home-grid{gap:var(--il-space-5)}.daily-mission{padding:var(--il-space-7)}}
   @media (min-width:1024px){
-    .home{max-width:var(--il-max-width-shell);display:grid;grid-template-columns:var(--il-rail-width) minmax(0,1fr);gap:clamp(28px,4vw,52px);align-items:start;padding:28px 32px 48px;}
-    .rail{display:flex;flex-direction:column;position:sticky;top:26px;}
-    .app-nav{display:none;}                 /* fuera la nav inferior en escritorio (solo en la home) */
-    .avatar-link{display:none;}             /* el perfil ya está en el rail */
-    .content{grid-template-columns:1.6fr 1fr;gap:20px;
-      grid-template-areas:
-        "head   head"
-        "card   weekly"
-        "action weekly"
-        "next   brand";}
-    /* Pendiente: tarjeta hero a lo ancho + semana | marca debajo (sin huecos) */
-    .content.state-pending{grid-template-columns:1fr 1fr;
-      grid-template-areas:
-        "head   head"
-        "card   card"
-        "weekly brand";}
-    .gs-brand{display:block;}
-    .home-head{padding-top:2px;}
-    .day-card{padding:28px 26px;}
-    .day-card .brand-art{width:96px;height:96px;}
+    .home{display:grid;grid-template-columns:var(--il-rail-width) minmax(0,1fr);gap:clamp(28px,4vw,52px);align-items:start;padding:var(--il-space-7) var(--il-space-7) var(--il-space-9)}
+    .rail{display:flex;flex-direction:column;position:sticky;top:var(--il-space-6)}.app-nav{display:none}.profile-link{display:none}
+    .home-grid{grid-template-columns:minmax(0,2fr) minmax(280px,1fr);align-items:start}.insights{position:sticky;top:var(--il-space-6)}.home-greeting{padding-top:0}
   }
-  @media (min-width:1024px) and (prefers-reduced-motion:reduce){ .brand-art{animation:none;} }
+  @media (max-width:600px){.student-pill.level{display:none}.home-greeting{align-items:flex-start}.daily-mission h2{font-size:1.5rem}.stamp-body{grid-template-columns:64px minmax(0,1fr)}.stamp-mark{width:62px;height:62px}.stamp-mark svg{width:28px;height:28px}}
+  @media (max-width:390px){.home{padding-inline:var(--il-space-3)}.student-pill{padding-inline:9px}.profile-link{display:none}.daily-mission{padding:var(--il-space-5)}.insight-card{padding:var(--il-space-4)}.week-day__dot{width:29px;height:29px}.mission-progress-copy span:last-child{display:none}}
+  body[data-stage="eso"] .daily-mission,body[data-stage="eso"] .insight-card{border-radius:var(--il-radius-md)}
+  body[data-stage="eso"] .mission-eyebrow{color:var(--il-text-secondary)}
+  @media (prefers-reduced-motion:reduce){.daily-mission{animation:none}.mission-plane,.week-progress span,.stamp-bar span{transition:none}.stamp-mark{transform:none}}
 </style>
 </head>
 <body>
 <div class="il-offline" id="offline" hidden><span data-il-icon="wifiOff" aria-hidden="true"></span> Sin conexión.</div>
+<div class="demo-strip" id="demoStrip" hidden><span>Modo demo · <b>datos de ejemplo</b></span><button class="demo-close" id="demoClose" type="button" aria-label="Ocultar aviso de modo demo"><span data-il-icon="close"></span></button></div>
 
-<div class="demo-strip" id="demoStrip" hidden>
-  <span>Modo demo · <b>datos de ejemplo</b></span>
-  <button class="x" id="demoClose" aria-label="Ocultar aviso de modo demo"><span data-il-icon="close"></span></button>
-</div>
-
-<div id="loading" class="il-skeleton" aria-hidden="true">
-  <div class="bar" style="width:55%"></div><div class="bar big"></div><div class="bar" style="width:80%"></div><div class="bar" style="width:70%"></div>
-</div>
-
-<div id="errState" class="il-state" role="alert" hidden>
-  <div class="ic" aria-hidden="true" style="width:52px;height:52px;margin:0 auto 10px;border-radius:16px;display:grid;place-items:center;background:var(--surface-2,#EEF2F6);color:var(--soft,#5C6B7A)">
-    <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4l16 16"/><path d="M7.5 8A4.5 4.5 0 0 0 6 16.8h9"/><path d="M17.5 15.8A3.5 3.5 0 0 0 16 9.2a5 5 0 0 0-7.6-2.3"/></svg>
-  </div>
-  <h2>No hemos podido cargar tu inicio</h2>
-  <p>Revisa tu conexión e inténtalo otra vez.</p>
-  <button class="btn btn-primary" onclick="location.reload()">Reintentar</button>
-</div>
-
-<!-- SVG de marca reutilizable (avión de papel + estela + destello) -->
-<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ilBrand" viewBox="0 0 96 96">
-  <rect x="8" y="8" width="80" height="80" rx="24" fill="var(--jade-tint)"/>
-  <path d="M20 66 Q42 78 74 58" fill="none" stroke="var(--navy)" stroke-width="3" stroke-linecap="round" stroke-dasharray="0.5 7" opacity=".5"/>
-  <path d="M22 50 L74 24 L52 70 L46 54 Z" fill="var(--coral)"/>
-  <path d="M74 24 L46 54 L52 70 Z" fill="var(--coral-deep)"/>
-  <path d="M68 34 l3 -6 3 6 6 3 -6 3 -3 6 -3 -6 -6 -3 Z" fill="var(--jade)"/>
-</symbol></svg>
+<div id="loading" class="il-skeleton" aria-busy="true" aria-label="Cargando tu inicio"><div class="bar loading-short"></div><div class="bar big"></div><div class="bar loading-medium"></div></div>
+<div id="errorState" class="il-state" role="alert" hidden><div class="ic"><span data-il-icon="warning"></span></div><h2>No hemos podido cargar tu inicio</h2><p>Revisa tu conexión e inténtalo otra vez.</p><button class="btn btn-primary" type="button" onclick="location.reload()">Reintentar</button></div>
 
 <div id="app" class="hidden">
   <div class="home">
-    <!-- Barra lateral (escritorio) -->
     <aside class="rail" data-il-rail="inicio"></aside>
-
-    <div class="content">
-      <!-- 1 · Cabecera -->
-      <header class="home-head gs-head">
-        <div class="who"><h1 id="greet">¡Hola!</h1><p class="ctx" id="ctx"></p></div>
-        <div class="stats" aria-label="Tu racha y tus gemas">
-          <span class="stat-pill streak" title="Racha"><span data-il-icon="flame"></span><span id="streak">0</span></span>
-          <span class="stat-pill gems" title="Gemas"><span data-il-icon="gem"></span><span id="coins">0</span></span>
+    <main class="home-content">
+      <header class="home-greeting">
+        <div class="greeting-copy"><h1 id="greeting">Hola</h1><p id="greetingMessage">Tienes una misión breve preparada para hoy.</p></div>
+        <div class="student-stats">
+          <span class="student-pill streak" id="streakPill"><span data-il-icon="flame" aria-hidden="true"></span><span id="streak">0 días</span></span>
+          <span class="student-pill level"><span data-il-icon="route" aria-hidden="true"></span><span id="level">Explorer</span></span>
+          <a class="profile-link" href="perfil.html" aria-label="Ir a mi perfil"><span data-il-icon="user"></span></a>
         </div>
-        <a class="avatar-link" href="perfil.html" aria-label="Ir a mi perfil"><span data-il-icon="user"></span></a>
       </header>
 
-      <!-- 2 · Bloque principal · PENDIENTE -->
-      <section class="day-card gs-card" id="cardPending" hidden aria-labelledby="pendTitle">
-        <svg class="brand-art" aria-hidden="true"><use href="#ilBrand"/></svg>
-        <div class="eyebrow" id="pendEyebrow">Hoy practicas</div>
-        <h2 id="pendTitle">Tu sesión de hoy</h2>
-        <p class="day-desc" id="pendDesc" hidden></p>
-        <p class="meta-line" id="pendMeta"></p>
-        <div class="chips" id="pendChips"></div>
-        <a class="day-cta" href="leccion.html" id="pendCta"><span data-il-icon="play"></span><span>Empezar mi sesión</span></a>
-      </section>
+      <div class="home-grid">
+        <section class="daily-mission" aria-labelledby="missionTitle">
+          <div class="mission-eyebrow"><span data-il-icon="plane" aria-hidden="true"></span><span>Tu misión de hoy</span></div>
+          <h2 id="missionTitle">My daily routine</h2>
+          <p class="mission-outcome" id="missionOutcome">Aprenderás a hablar sobre lo que haces cada mañana.</p>
+          <div class="mission-meta">
+            <span class="meta-item"><span data-il-icon="target" aria-hidden="true"></span><span id="activityCount">6 actividades</span></span>
+            <span class="meta-item"><span data-il-icon="clock" aria-hidden="true"></span><span id="missionTime">~8 min</span></span>
+          </div>
+          <div class="skill-list" id="skillList" aria-label="Habilidades de la misión"></div>
+          <div class="mission-route" id="missionRoute" role="progressbar" aria-valuemin="0" aria-valuemax="6" aria-valuenow="0" aria-label="Progreso de la misión">
+            <span class="mission-plane" aria-hidden="true"><span data-il-icon="plane"></span></span>
+            <div class="mission-route__track" id="missionRouteTrack"></div>
+            <div class="mission-progress-copy"><span id="missionProgressText">0 de 6 completadas</span><span>Una actividad cada vez</span></div>
+          </div>
+          <a class="btn btn-primary mission-cta" id="missionCta" href="leccion.html"><span data-il-icon="play" aria-hidden="true"></span><span id="missionCtaText">Empezar misión</span></a>
+          <div class="mission-context">
+            <span class="mission-context__icon" aria-hidden="true"><span data-il-icon="book"></span></span>
+            <p>Basado en lo trabajado esta semana en clase.<span class="teacher-note" id="teacherNote" hidden>Repaso recomendado por tu teacher.</span></p>
+          </div>
+        </section>
 
-      <!-- 2 · Bloque principal · COMPLETADA -->
-      <section class="day-card gs-card" id="cardDone" hidden aria-labelledby="doneTitle">
-        <svg class="brand-art" aria-hidden="true"><use href="#ilBrand"/></svg>
-        <div class="done-head"><div class="done-badge"><span data-il-icon="check"></span></div><div class="t" id="doneTitle">¡Bien hecho!</div></div>
-        <p class="meta-line" id="doneMeta"></p>
-        <div class="chips" id="doneChips"></div>
-      </section>
+        <aside class="insights" aria-label="Tu progreso y próximos logros">
+          <section class="insight-card weekly-goal" aria-labelledby="weeklyTitle">
+            <div class="insight-head">
+              <div class="insight-title"><span class="insight-title__icon" aria-hidden="true"><span data-il-icon="calendar"></span></span><div><h2 id="weeklyTitle">Objetivo semanal</h2><p class="sub">Mantén un ritmo que te resulte cómodo</p></div></div>
+              <span class="week-count"><span id="weekNow">0</span> de <span id="weekGoal">5</span></span>
+            </div>
+            <div class="week-days" id="weekDays" aria-label="Actividad de lunes a domingo"></div>
+            <div class="week-progress" role="progressbar" id="weekProgress" aria-valuemin="0" aria-valuemax="5" aria-valuenow="0" aria-label="0 de 5 sesiones esta semana"><span></span></div>
+            <p class="week-reward" id="weekReward"><span data-il-icon="stamp" aria-hidden="true"></span><span>Completa 5 sesiones para conseguir el sello Weekly Explorer.</span></p>
+          </section>
 
-      <!-- 3 · Acción opcional -->
-      <section class="soft-row gs-action" id="nextAction" hidden aria-label="Actividad opcional">
-        <span class="sr-ico"><span data-il-icon="refresh"></span></span>
-        <span class="sr-txt"><b id="naTitle">Repasar</b><span id="naSub">Actividad opcional · unos 4 min</span></span>
-        <a class="sr-go" href="leccion.html">Empezar repaso</a>
-      </section>
-
-      <!-- 4 · Semana (ruta) -->
-      <section class="week gs-weekly" aria-labelledby="wkHead">
-        <div class="wk-top"><h3 id="wkHead">Esta semana</h3><span class="wk-count"><b id="wkNow">0</b> de <span id="wkGoal">5</span> sesiones</span></div>
-        <div class="route" id="route" role="progressbar" aria-valuemin="0" aria-valuemax="5" aria-valuenow="0" aria-label="Sesiones completadas esta semana"></div>
-        <p class="wk-msg" id="wkMsg"></p>
-      </section>
-
-      <!-- 5 · Próxima misión -->
-      <section class="next-mission gs-next" id="nextMission" hidden aria-label="Próxima misión">
-        <span class="nm-badge" id="nmBadge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4v16"/><path d="M4 5h11l-1.5 3L15 11H4"/></svg></span>
-        <div class="h">Próxima misión</div>
-        <div class="title" id="nmTitle"></div>
-        <p class="desc" id="nmDesc"></p>
-        <div class="foot"><span id="nmChip" class="chip chip--voc"></span><span id="nmTime"></span></div>
-      </section>
-
-      <!-- Panel de marca (escritorio) -->
-      <aside class="brand-panel gs-brand" aria-hidden="true">
-        <svg class="brand-art" aria-hidden="true"><use href="#ilBrand"/></svg>
-        <p id="brandLine">Cada día, un poco más cerca del inglés.</p>
-      </aside>
-    </div>
+          <section class="insight-card next-stamp" aria-labelledby="stampTitle">
+            <div class="insight-head"><div class="insight-title"><span class="insight-title__icon" aria-hidden="true"><span data-il-icon="stamp"></span></span><div><p class="ui-label">Próximo sello</p><h2 id="stampTitle">Morning Explorer</h2></div></div></div>
+            <div class="stamp-body">
+              <div class="stamp-mark" aria-hidden="true"><span data-il-icon="plane"></span></div>
+              <div class="stamp-copy"><h3 id="stampRemaining">Te faltan 5 sesiones</h3><p>Completa misiones sobre tu rutina diaria.</p><div class="stamp-bar" id="stampBar" role="progressbar" aria-valuemin="0" aria-valuemax="5" aria-valuenow="0" aria-label="Progreso hacia Morning Explorer"><span></span></div></div>
+            </div>
+            <p class="stamp-criterion">Los sellos reconocen lo que aprendes, no lo que gastas.</p>
+          </section>
+        </aside>
+      </div>
+    </main>
   </div>
-
-  <!-- Navegación inferior (móvil / tablet) -->
   <nav class="app-nav" data-il-nav="inicio"></nav>
 </div>
 
@@ -281,159 +131,113 @@
 <script src="supabase-config.js?v=20260809d"></script>
 <script src="auth-utils.js?v=20260809d"></script>
 <script src="etapa.js?v=20260809d"></script>
-<script src="contenido.js?v=20260809d"></script>
+<script src="contenido.js?v=20260809e"></script>
 <script src="auth.js?v=20260809d"></script>
+<script src="motor/matriz.js?v=20260809d"></script>
+<script src="mission-state.js?v=20260809e"></script>
 <script>
-  const $ = (id) => document.getElementById(id);
-  const today = () => new Date().toISOString().slice(0, 10);
+  const $ = id => document.getElementById(id);
+  const units = (window.IL_CONTENIDO && window.IL_CONTENIDO.unidades) || [];
+  const byId = {}, unitOf = {};
+  units.forEach(unit => (unit.ejercicios || []).forEach(exercise => { byId[exercise.id] = exercise; unitOf[exercise.id] = unit; }));
+  const skillLabels = { vocabulary: "Vocabulary", grammar: "Grammar", listening: "Listening", reading: "Reading", speaking: "Speaking" };
 
   function refreshOffline() { $("offline").hidden = navigator.onLine; }
-  window.addEventListener("online", () => { refreshOffline(); location.reload(); });
-  window.addEventListener("offline", refreshOffline);
-  refreshOffline();
-
+  addEventListener("online", () => { refreshOffline(); location.reload(); }); addEventListener("offline", refreshOffline); refreshOffline();
   if (ILAuth.isDemo() && sessionStorage.getItem("il_demo_strip_off") !== "1") $("demoStrip").hidden = false;
   $("demoClose").addEventListener("click", () => { $("demoStrip").hidden = true; sessionStorage.setItem("il_demo_strip_off", "1"); });
 
-  function showError() { $("loading").hidden = true; $("app").classList.add("hidden"); $("errState").hidden = false; }
+  function firstName(profile) { return (profile.full_name || "").trim().split(/\s+/)[0] || "explorer"; }
+  function titleFor(unit) { return unit && unit.id === "rutina-diaria" ? "My daily routine" : ((unit && unit.titulo) || "Tu misión de hoy"); }
+  function outcomeFor(unit) { return unit && unit.id === "rutina-diaria" ? "Aprenderás a hablar sobre lo que haces cada mañana." : ((unit && unit.descripcion) || "Practicarás inglés con actividades breves y variadas."); }
+  function estimateMinutes(total) { return Math.max(4, Math.round(total * 1.3)); }
+  function dayGap(last) { return last ? Math.round((Date.parse(ILMission.today()) - Date.parse(last)) / 86400000) : null; }
 
-  // Descripción real de la sesión (mismos ejercicios que hoy compone leccion.html; nada inventado)
-  const SESSION_IDS = ["rd-1", "rd-3", "rd-4", "lc-6", "lc-7", "rd-5"];
-  const SKILL_EN = { vocabulary: "Vocabulary", grammar: "Grammar", listening: "Listening", reading: "Reading", speaking: "Speaking" };
-  const SKILL_ES_SIMPLE = { vocabulary: "Palabras", grammar: "Gramática", listening: "Escuchar", reading: "Leer", speaking: "Hablar" };
-  const SKILL_ES = { vocabulary: "vocabulario", grammar: "gramática", listening: "listening", reading: "comprensión", speaking: "expresión oral" };
-  const SKILL_CLS = { vocabulary: "chip--voc", grammar: "chip--gram", listening: "chip--lis", reading: "chip--read", speaking: "chip--spk" };
-  const UNITS = (window.IL_CONTENIDO && window.IL_CONTENIDO.unidades) || [];
-  const byId = {}, unitOf = {};
-  UNITS.forEach(u => (u.ejercicios || []).forEach(e => { byId[e.id] = e; unitOf[e.id] = u; }));
-  const sessionItems = SESSION_IDS.map(id => byId[id]).filter(Boolean);
-  function sessionSkills() { const s = []; sessionItems.forEach(e => { if (s.indexOf(e.habilidad) === -1) s.push(e.habilidad); }); return s; }
-  function estMin(n) { return Math.max(4, Math.round(n * 1.5)); }
-  function primaryUnit() { return unitOf[SESSION_IDS[0]] || UNITS[0] || null; }
-  function nextUnit() { const cur = primaryUnit(); const i = UNITS.indexOf(cur); return UNITS[(i + 1) % Math.max(UNITS.length, 1)] || cur; }
-  // Nº real de palabras de vocabulario de la sesión (para "Repasar N palabras")
-  function reviewWordCount() {
-    let n = 0;
-    sessionItems.forEach(e => { if (e.habilidad === "vocabulary") { if (e.pares) n += e.pares.length; else if (e.opciones) n += 1; } });
-    return n;
+  function renderMissionRoute(total, completed, done) {
+    const track = $("missionRouteTrack"); track.innerHTML = ""; track.style.setProperty("--route-count", total);
+    const visibleCompleted = done ? total : Math.min(completed, total);
+    for (let i = 0; i < total; i++) {
+      const step = document.createElement("span");
+      step.className = "route-step" + (i < visibleCompleted ? " is-complete" : (i === visibleCompleted ? " is-current" : ""));
+      track.appendChild(step);
+    }
+    const pct = total ? Math.min(96, Math.max(4, (visibleCompleted + .5) / total * 100)) : 4;
+    $("missionRoute").style.setProperty("--mission-progress", pct + "%");
+    $("missionRoute").setAttribute("aria-valuemax", total); $("missionRoute").setAttribute("aria-valuenow", visibleCompleted);
+    $("missionRoute").setAttribute("aria-label", visibleCompleted + " de " + total + " actividades completadas");
+    $("missionProgressText").textContent = visibleCompleted + " de " + total + " completadas";
+  }
+
+  function renderWeek(week) {
+    const labels = ["L", "M", "X", "J", "V", "S", "D"];
+    const names = ["lunes", "martes", "miércoles", "jueves", "viernes", "sábado", "domingo"];
+    const todayIndex = (new Date().getDay() + 6) % 7;
+    const practiced = new Set(week.practiced || []);
+    const count = Math.min(week.count || 0, week.goal || 5); const goal = week.goal || 5;
+    $("weekNow").textContent = count; $("weekGoal").textContent = goal;
+    const days = $("weekDays"); days.innerHTML = "";
+    labels.forEach((label, index) => {
+      const completed = practiced.has(index);
+      const state = completed ? "completed" : (index === todayIndex ? "today" : (index < todayIndex ? "pending" : "future"));
+      const cell = document.createElement("div"); cell.className = "week-day is-" + state;
+      const short = document.createElement("span"); short.className = "week-day__label"; short.textContent = label;
+      const dot = document.createElement("span"); dot.className = "week-day__dot";
+      dot.setAttribute("aria-label", names[index] + ": " + ({ completed: "completado", today: "hoy", pending: "pendiente", future: "futuro" })[state]);
+      if (completed) dot.innerHTML = ILIcon("check"); else dot.textContent = index + 1;
+      cell.appendChild(short); cell.appendChild(dot); days.appendChild(cell);
+    });
+    const progress = Math.min(100, count / goal * 100);
+    $("weekProgress").style.setProperty("--week-progress", progress + "%"); $("weekProgress").setAttribute("aria-valuemax", goal); $("weekProgress").setAttribute("aria-valuenow", count); $("weekProgress").setAttribute("aria-label", count + " de " + goal + " sesiones esta semana");
+    if (count >= goal) $("weekReward").lastElementChild.textContent = "¡Has conseguido el sello Weekly Explorer!";
+  }
+
+  function renderStamp(username, unit) {
+    const target = 5; const current = Math.min(target, ILMission.unitCompletionCount(username, unit ? unit.id : "")); const remaining = Math.max(0, target - current);
+    $("stampRemaining").textContent = remaining === 0 ? "¡Sello conseguido!" : ("Te " + (remaining === 1 ? "falta 1 sesión" : "faltan " + remaining + " sesiones"));
+    $("stampBar").style.setProperty("--stamp-progress", (current / target * 100) + "%"); $("stampBar").setAttribute("aria-valuenow", current); $("stampBar").setAttribute("aria-label", current + " de " + target + " sesiones para Morning Explorer");
   }
 
   (async () => {
     try {
-      const p = await ILAuth.getProfile();
-      if (!p) { location.href = "index.html"; return; }
-      if (p.is_admin) { location.href = "admin.html"; return; }
-      if (p.must_change_password) { location.href = "cambiar-clave.html"; return; }
+      const profile = await ILAuth.getProfile();
+      if (!profile) { location.href = "index.html"; return; }
+      if (profile.is_admin) { location.href = "admin.html"; return; }
+      if (profile.must_change_password) { location.href = "cambiar-clave.html"; return; }
+      const stage = IL_ETAPA.apply(profile);
+      const [progress, week, placement] = await Promise.all([ILAuth.getProgress(), ILAuth.getWeekActivity(), ILAuth.getPlacement()]);
+      const username = profile.username || "";
+      const session = ILMission.getOrCreateSession({ username, units, banda: stage, cefr: placement.cefr, matrix: window.IL_MATRIZ, limit: 6 });
+      if (!session.length) throw new Error("No mission content");
+      const unit = unitOf[session[0].id] || units[0];
+      const meta = { date: ILMission.today(), unitId: unit ? unit.id : "", unitTitle: titleFor(unit), itemIds: session.map(item => item.id) };
+      const state = ILMission.ensure(username, meta);
+      const doneToday = state.status === "completed" || (progress && progress.last === ILMission.today());
+      const inProgress = state.status === "in_progress" && state.completedCount > 0 && !doneToday;
+      const gap = dayGap(progress && progress.last);
 
-      const stage = IL_ETAPA.apply(p);
-      const isEso = stage === "eso";
-      const simpleLabels = (stage === "p12" || stage === "p34");
-      const LBL = simpleLabels ? SKILL_ES_SIMPLE : SKILL_EN;
-      const chipHtml = (hab) => '<span class="chip ' + (SKILL_CLS[hab] || "chip--voc") + '">' + (LBL[hab] || hab) + '</span>';
-      const name = (p.full_name || "").split(" ")[0] || "campeón";
-      $("greet").textContent = isEso ? ("Hola, " + name) : ("¡Hola, " + name + "!");
+      $("greeting").textContent = (stage === "eso" ? "Hola, " : "¡Hola, ") + firstName(profile) + (stage === "eso" ? "" : "!");
+      $("greetingMessage").textContent = doneToday ? "Misión completada. Hoy ya has avanzado."
+        : (inProgress ? "Tu misión está en marcha. Continúa donde la dejaste."
+        : (gap != null && gap >= 3 ? "Qué bien verte de nuevo. Retomamos con una misión breve." : "Tienes una misión breve preparada para hoy."));
+      const streak = progress ? (progress.streak || 0) : 0; $("streak").textContent = streak + (streak === 1 ? " día" : " días");
+      $("level").textContent = profile.level || (placement && placement.cefr) || "Explorer";
+      $("missionTitle").textContent = titleFor(unit); $("missionOutcome").textContent = outcomeFor(unit);
+      $("activityCount").textContent = session.length + (session.length === 1 ? " actividad" : " actividades"); $("missionTime").textContent = "~" + estimateMinutes(session.length) + " min";
+      const skills = Array.from(new Set(session.map(item => item.habilidad).filter(Boolean))).slice(0, 4); $("skillList").innerHTML = "";
+      skills.forEach(skill => { const chip = document.createElement("span"); chip.className = "skill-chip"; chip.dataset.skill = skill; chip.textContent = skillLabels[skill] || skill; $("skillList").appendChild(chip); });
+      renderMissionRoute(session.length, state.completedCount || 0, doneToday);
 
-      const pr = await ILAuth.getProgress();
-      const streak = pr ? (pr.streak || 0) : 0, gems = pr ? (pr.gems || 0) : 0, last = pr ? (pr.last || "") : "";
-      $("streak").textContent = streak; $("coins").textContent = gems;
-
-      const hasContent = sessionItems.length > 0;
-      const doneToday = last === today();
-      const dayGap = last ? Math.round((Date.parse(today()) - Date.parse(last)) / 86400000) : null;
-      const skills = sessionSkills();
-      // Marca el estado para adaptar la rejilla de escritorio (evita huecos en "pendiente")
-      document.querySelector(".content").classList.add((hasContent && doneToday) ? "state-done" : "state-pending");
-
-      if (!hasContent) {
-        $("ctx").textContent = "Hoy sin misión nueva.";
-        $("cardPending").hidden = false;
-        $("pendEyebrow").textContent = "Práctica libre";
-        $("pendTitle").textContent = "Repasa a tu ritmo";
-        $("pendDesc").hidden = false; $("pendDesc").textContent = "Todavía no hay una misión nueva. Puedes repasar lo que quieras.";
-        $("pendMeta").hidden = true;
-        $("pendCta").querySelector("span").textContent = "Practicar";
-      } else if (doneToday) {
-        $("ctx").textContent = "Sesión de hoy completada.";
-        $("cardDone").hidden = false;
-        if (isEso) $("doneTitle").textContent = "Sesión completada";
-        $("doneMeta").innerHTML = sessionItems.length + " actividades <span class=\"sep\">·</span> ~" + estMin(sessionItems.length) + " min";
-        $("doneChips").innerHTML = skills.slice(0, 3).map(chipHtml).join("");
-        // Acción opcional concreta (nº real de palabras)
-        const words = reviewWordCount();
-        $("naTitle").textContent = words > 0 ? ("Repasar " + words + (words === 1 ? " palabra" : " palabras")) : ("Repasar " + (SKILL_ES[skills[0] || "vocabulary"]));
-        $("naSub").textContent = "Actividad opcional · unos 4 min";
-        $("nextAction").hidden = false;
-        // Próxima misión
-        const nu = nextUnit();
-        if (nu) {
-          $("nextMission").hidden = false;
-          $("nmTitle").textContent = nu.titulo;
-          $("nmDesc").textContent = nu.descripcion || "";
-          if (nu.tema && nu.tema.color) $("nmBadge").style.setProperty("--nm-color", nu.tema.color);
-          const nuSkills = (nu.ejercicios || []).map(e => e.habilidad);
-          const nuPrim = nuSkills.indexOf("vocabulary") !== -1 ? "vocabulary" : (nuSkills[0] || "vocabulary");
-          $("nmChip").className = "chip " + (SKILL_CLS[nuPrim] || "chip--voc");
-          $("nmChip").textContent = LBL[nuPrim] || "Vocabulary";
-          $("nmTime").textContent = "~10 min";
-        }
-        if (isEso) $("brandLine").textContent = "Constancia diaria, progreso real.";
-      } else {
-        if (!last) $("ctx").textContent = "¡Bienvenida! Vamos allá.";
-        else if (dayGap != null && dayGap >= 3) $("ctx").textContent = isEso ? "Cuánto tiempo. Retomamos con algo breve." : "¡Cuánto tiempo! Retomamos con algo breve.";
-        else $("ctx").textContent = "Lista para tu práctica.";
-        $("cardPending").hidden = false;
-        const u = primaryUnit();
-        $("pendEyebrow").textContent = "Hoy practicas";
-        $("pendTitle").textContent = u ? u.titulo : "Tu sesión de hoy";
-        $("pendMeta").innerHTML = sessionItems.length + " actividades <span class=\"sep\">·</span> ~" + estMin(sessionItems.length) + " min";
-        $("pendChips").innerHTML = skills.slice(0, 3).map(chipHtml).join("");
-        $("pendCta").querySelector("span").textContent = (!last || (dayGap != null && dayGap >= 3)) ? "Volver a practicar" : "Empezar mi sesión";
-      }
-
-      // 4 · Semana como ruta (real y coherente con "completada hoy"), mensaje positivo
-      try {
-        const w = await ILAuth.getWeekActivity();
-        const goal = w.goal || 5, count = Math.min(w.count || 0, goal);
-        $("wkGoal").textContent = goal; $("wkNow").textContent = count;
-        const route = $("route");
-        route.setAttribute("aria-valuemax", goal); route.setAttribute("aria-valuenow", count);
-        route.setAttribute("aria-label", count + " de " + goal + " sesiones esta semana");
-        const check = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4 10-11"/></svg>';
-        let html = "";
-        for (let k = 0; k < goal; k++) {
-          if (k > 0) html += '<span class="link" data-on="' + (k <= count - 1 && k < count ? "true" : (k < count ? "true" : "false")) + '"></span>';
-          html += '<span class="stop" data-on="' + (k < count) + '">' + check + '</span>';
-        }
-        route.innerHTML = html;
-        // Enlaces encendidos entre paradas completadas
-        route.querySelectorAll(".link").forEach((el, li) => { if (li + 1 < count) el.classList.add("on"); });
-        // Animación escalonada al cargar
-        requestAnimationFrame(() => route.querySelectorAll('.stop[data-on="true"]').forEach((el, k) =>
-          setTimeout(() => { el.classList.add("on", "pop"); setTimeout(() => el.classList.remove("pop"), 260); }, 90 * k)));
-        $("wkMsg").textContent = count <= 0 ? "¡Empieza tu semana!"
-          : (count >= goal ? "¡Meta de la semana conseguida!"
-          : (count === 1 ? "¡Primera sesión de la semana!" : "¡Buen ritmo esta semana!"));
-
-        // Avión de papel: viaja hasta tu parada actual (identidad de "recorrido")
-        const arrived = count >= goal;
-        const frontier = arrived ? goal - 1 : count;   // parada a la que llega tu avión
-        const plane = document.createElement("span");
-        plane.className = "wk-plane" + (arrived ? " arrived" : "");
-        plane.setAttribute("aria-hidden", "true");
-        plane.innerHTML = '<svg viewBox="0 0 24 24"><path d="M2 12 22 3 15 21 11 14 Z" fill="var(--coral)"/><path d="M22 3 11 14 15 21 Z" fill="var(--coral-deep)"/></svg>';
-        route.appendChild(plane);
-        const placePlane = () => {
-          const stops = route.querySelectorAll(".stop");
-          const target = stops[Math.min(frontier, stops.length - 1)];
-          if (target) plane.style.left = (target.offsetLeft + target.offsetWidth / 2) + "px";
-        };
-        requestAnimationFrame(() => { plane.style.left = "12px"; requestAnimationFrame(placePlane); });
-        window.addEventListener("resize", placePlane);
-      } catch (e) {}
-
-      $("loading").hidden = true;
-      $("app").classList.remove("hidden");
-    } catch (e) { showError(); }
+      const cta = $("missionCta"), ctaText = $("missionCtaText");
+      if (doneToday && (state.incorrectIds || []).length) { cta.href = "leccion.html?mode=errors"; ctaText.textContent = "Repasar errores"; cta.querySelector("[data-il-icon]").setAttribute("data-il-icon", "refresh"); }
+      else if (doneToday) { cta.removeAttribute("href"); cta.setAttribute("aria-disabled", "true"); cta.classList.add("is-complete"); ctaText.textContent = "Misión completada"; cta.querySelector("[data-il-icon]").setAttribute("data-il-icon", "check"); }
+      else if (inProgress) { ctaText.textContent = "Continuar · " + state.completedCount + " de " + session.length; }
+      else { ctaText.textContent = "Empezar misión"; }
+      ILLayout.mount();
+      renderWeek(week); renderStamp(username, unit);
+      $("loading").hidden = true; $("app").classList.remove("hidden");
+    } catch (error) {
+      $("loading").hidden = true; $("errorState").hidden = false;
+    }
   })();
 </script>
 </body>

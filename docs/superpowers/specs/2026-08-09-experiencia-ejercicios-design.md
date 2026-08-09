@@ -1,7 +1,7 @@
 # Rediseño de la experiencia de ejercicios
 
 Fecha: 2026-08-09  
-Estado: diseño funcional aprobado; pendiente de validación escrita  
+Estado: aprobado e implementado
 Alcance: motor de actividades, pantalla de misión, feedback, persistencia y final de misión
 
 ## Objetivo

@@ -1,7 +1,7 @@
 # Rediseño de la experiencia Inicio
 
 Fecha: 2026-08-09  
-Estado: dirección aprobada; pendiente de validación escrita  
+Estado: aprobado e implementado
 Alcance: `plataforma/inicio.html` y persistencia mínima compartida con `plataforma/leccion.html`
 
 ## Objetivo
