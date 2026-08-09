@@ -50,6 +50,9 @@
     $("weekMinutes").textContent = valueText(data.minutesWeek);
     const comparison = $("weekComparison"); comparison.classList.toggle("is-positive", data.weekComparison.tone === "positive"); comparison.lastElementChild.textContent = data.weekComparison.text;
     $("streakNow").textContent = data.streak; $("streakBest").textContent = data.bestStreak;
+    // Pluralización correcta (1 día / 2 días) en todos los modos
+    const nowStrong = $("streakNow").parentElement; if (nowStrong && nowStrong.lastChild) nowStrong.lastChild.textContent = data.streak === 1 ? " día" : " días";
+    const bestSmall = $("streakBest").parentElement; if (bestSmall && bestSmall.lastChild) bestSmall.lastChild.textContent = data.bestStreak === 1 ? " día" : " días";
     renderNextStamp(data.stamps.next);
   }
 
@@ -121,6 +124,56 @@
     if (typeof dialog.showModal === "function") dialog.showModal(); else dialog.setAttribute("open", "");
   }
 
+  // Primaria inicial: simplifica Progreso (los datos completos siguen en superior/ESO y en el panel de familias).
+  function applyYoung(data) {
+    const rename = (id, label) => { const tab = $(id); const span = tab && tab.querySelector("span:last-child"); if (span) span.textContent = label; };
+    rename("tab-week", "Mi semana"); rename("tab-learning", "Lo que sé"); rename("tab-stamps", "Mis sellos");
+
+    // MI SEMANA: recuento simple + una sola línea motivadora
+    const week = data.week; const count = Math.min(week.count, week.goal);
+    const weekTitle = $("weekTitle"); if (weekTitle) weekTitle.textContent = "Mi semana";
+    const strong = document.querySelector("#panel-week .section-heading--inverse strong");
+    if (strong) strong.textContent = count + " / " + week.goal + (count >= week.goal ? " ✓" : "");
+    const primary = document.querySelector(".week-primary");
+    if (primary && !$("weekYoungNote")) {
+      const note = document.createElement("p"); note.id = "weekYoungNote"; note.className = "week-young-note";
+      const rem = Math.max(0, week.goal - count);
+      note.textContent = rem === 0 ? "¡Semana completa!" : ("¡Solo " + (rem === 1 ? "falta 1" : "faltan " + rem) + "!");
+      primary.appendChild(note);
+    }
+
+    // RACHA: simple y bien pluralizada
+    const streakStrong = document.querySelector(".consistency-item strong");
+    if (streakStrong) streakStrong.textContent = data.streak + (data.streak === 1 ? " día seguido" : " días seguidos");
+
+    // PRÓXIMO SELLO: contador simple + tarjeta pulsable → detalle
+    const nextStamp = data.stamps.next; const aside = document.querySelector(".next-stamp");
+    if (aside && nextStamp && !$("nextStampCount")) {
+      const c = document.createElement("p"); c.id = "nextStampCount"; c.className = "next-stamp__count";
+      c.textContent = nextStamp.current + " / " + nextStamp.target;
+      aside.insertBefore(c, $("nextStampProgress"));
+    }
+    if (aside) {
+      aside.classList.add("is-tappable"); aside.setAttribute("role", "link"); aside.tabIndex = 0;
+      const go = () => activateTab("stamps", true);
+      aside.addEventListener("click", go);
+      aside.addEventListener("keydown", event => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); go(); } });
+    }
+
+    // LO QUE SÉ: resumen muy visual (palabras + frases) y frases con estado vacío positivo
+    const panelLearning = $("panel-learning");
+    if (panelLearning && !$("learningYoung")) {
+      const words = data.wordsLearned || 0; const phraseCount = (data.phrases || []).length;
+      const box = document.createElement("div"); box.id = "learningYoung"; box.className = "learning-young";
+      box.innerHTML =
+        '<div class="learning-young__stat"><strong>' + words + '</strong><span>palabras nuevas</span></div>' +
+        '<div class="learning-young__stat"><strong>' + phraseCount + '</strong><span>' + (phraseCount === 1 ? "frase que ya sé decir" : "frases que ya sé decir") + '</span></div>';
+      const layout = panelLearning.querySelector(".learning-layout"); panelLearning.insertBefore(box, layout);
+    }
+    const phrasesTitle = $("phrasesTitle"); if (phrasesTitle) phrasesTitle.textContent = "Frases que ya sé decir";
+    if (!(data.phrases || []).length) { const empty = document.querySelector("#phraseList .phrase-empty"); if (empty) empty.textContent = "¡Tu primera frase está muy cerca!"; }
+  }
+
   function activateTab(name, focus) {
     const tabs = Array.from(document.querySelectorAll("[role=tab]")); const target = tabs.find(tab => tab.dataset.tab === name) || tabs[0];
     tabs.forEach(tab => { const selected = tab === target; tab.setAttribute("aria-selected", String(selected)); tab.tabIndex = selected ? 0 : -1; $("panel-" + tab.dataset.tab).hidden = !selected; });
@@ -155,6 +208,7 @@
       ILProfileSettings.setActive(profile.username || "");
       IL_ETAPA.apply(profile); ageMode = IL_ETAPA.current().mode; snapshot = await ILProgressData.load(ILAuth, window.ILMission); if (!snapshot) throw new Error("No progress snapshot");
       renderHeader(snapshot); renderWeek(snapshot); renderLearning(snapshot); renderStamps(snapshot); setupTabs(); setupDialog();
+      if (ageMode === "primary-young") applyYoung(snapshot);
       if (snapshot.isDemo && sessionStorage.getItem("il_demo_strip_off") !== "1") $("demoStrip").hidden = false;
       $("demoClose").addEventListener("click", () => { $("demoStrip").hidden = true; sessionStorage.setItem("il_demo_strip_off", "1"); });
       if (window.ILLayout) window.ILLayout.mount(); $("loading").hidden = true; $("app").classList.remove("hidden");

@@ -328,3 +328,59 @@ body[data-age-mode="primary-young"] .eng-card{ justify-content:flex-start; }
   body[data-age-mode="primary-young"] .eng-audio.is-playing,
   body[data-age-mode="primary-young"] .eng-opt.is-correct{ animation:none; }
 }
+
+/* ============================================================
+   FASE 2 · PROGRESO · Primaria inicial: menos dashboard, más claro.
+   Los datos completos siguen en superior/ESO y en el panel familiar.
+   ============================================================ */
+/* Pestañas: sin sticky (scroll normal, no tapa contenido) */
+body[data-age-mode="primary-young"] .progress-tabs{ position:static; backdrop-filter:none; }
+
+/* MI SEMANA: tarjeta clara (menos superficie navy), texto oscuro */
+body[data-age-mode="primary-young"] .week-primary{
+  background:linear-gradient(150deg, var(--il-success-soft), var(--il-primary-soft));
+  color:var(--il-text-primary); box-shadow:var(--il-shadow-sm);
+}
+body[data-age-mode="primary-young"] .section-heading--inverse .ui-label{ color:var(--il-muted); }
+body[data-age-mode="primary-young"] .section-heading--inverse h2{ color:var(--il-text-primary); }
+body[data-age-mode="primary-young"] .section-heading--inverse strong{ color:var(--il-primary); font-size:var(--il-fs-2xl); }
+body[data-age-mode="primary-young"] .week-bar{ background:color-mix(in srgb, var(--il-primary) 12%, transparent); }
+body[data-age-mode="primary-young"] .week-day__label{ color:var(--il-text-secondary); }
+body[data-age-mode="primary-young"] .week-day__dot{ background:var(--il-surface); border-color:var(--il-border-strong); color:var(--il-text-secondary); }
+body[data-age-mode="primary-young"] .week-day.is-completed .week-day__dot{ background:var(--il-success); border-color:var(--il-success); color:var(--il-on-success); }
+body[data-age-mode="primary-young"] .week-support{ display:none; }         /* minutos/comparación → panel de familias */
+.week-young-note{ margin:var(--il-space-4) 0 0; color:var(--il-success); font-family:var(--il-font-display); font-weight:var(--il-weight-extrabold); font-size:var(--il-fs-lg); }
+
+/* RACHA: solo "🔥 N día(s) seguido(s)"; el resto se abre en detalle/familias */
+body[data-age-mode="primary-young"] .consistency-band{ grid-template-columns:1fr; }
+body[data-age-mode="primary-young"] .consistency-divider,
+body[data-age-mode="primary-young"] .consistency-band > .consistency-item:last-child{ display:none; }
+body[data-age-mode="primary-young"] .consistency-item p,
+body[data-age-mode="primary-young"] .consistency-item small{ display:none; }
+body[data-age-mode="primary-young"] .consistency-item strong{ font-size:var(--il-fs-lg); }
+
+/* PRÓXIMO SELLO: sello grande + nombre + contador + barra; nada más; pulsable → detalle */
+body[data-age-mode="primary-young"] .next-stamp__copy,
+body[data-age-mode="primary-young"] .next-stamp .text-action{ display:none; }
+body[data-age-mode="primary-young"] .passport-stamp{ width:100px; height:100px; margin:var(--il-space-4) 0; }
+body[data-age-mode="primary-young"] .passport-stamp svg{ width:44px; height:44px; }
+body[data-age-mode="primary-young"] .next-stamp.is-tappable{ cursor:pointer; transition:transform 120ms var(--il-ease), box-shadow var(--il-duration-base) var(--il-ease); }
+body[data-age-mode="primary-young"] .next-stamp.is-tappable:hover{ transform:translateY(-2px); box-shadow:var(--il-shadow-md); }
+.next-stamp__count{ margin:var(--il-space-2) 0 0; font-family:var(--il-font-display); font-weight:var(--il-weight-extrabold); color:var(--il-secondary-hover); font-size:var(--il-fs-2xl); font-variant-numeric:tabular-nums; }
+
+/* LO QUE SÉ: fuera métricas/analítica; resumen visual + frases */
+body[data-age-mode="primary-young"] .learning-intro,
+body[data-age-mode="primary-young"] .learning-metrics,
+body[data-age-mode="primary-young"] .skills-section,
+body[data-age-mode="primary-young"] .reinforce-panel{ display:none; }
+body[data-age-mode="primary-young"] .learning-layout{ grid-template-columns:1fr; margin-top:var(--il-space-4); }
+.learning-young{ display:grid; grid-template-columns:1fr 1fr; gap:var(--il-space-3); margin:var(--il-space-4) 0 var(--il-space-2); }
+.learning-young__stat{ padding:var(--il-space-5); border-radius:var(--il-radius-lg); background:var(--il-success-soft); text-align:center; }
+.learning-young__stat strong{ display:block; font-family:var(--il-font-display); font-size:var(--il-fs-3xl); color:var(--il-primary); font-variant-numeric:tabular-nums; }
+.learning-young__stat span{ display:block; margin-top:2px; color:var(--il-text-secondary); font-size:var(--il-fs-sm); font-weight:var(--il-weight-semibold); }
+@media (max-width:520px){ .learning-young{ grid-template-columns:1fr; } }
+
+/* MIS SELLOS: sellos gráficos, sin descripciones largas */
+body[data-age-mode="primary-young"] .stamp-card > p{ display:none; }
+body[data-age-mode="primary-young"] .stamp-card{ min-height:186px; }
+body[data-age-mode="primary-young"] .stamps-intro p:not(.ui-label){ display:none; }
