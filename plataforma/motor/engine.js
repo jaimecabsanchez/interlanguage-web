@@ -25,6 +25,18 @@
     return copy;
   };
   const icon = name => window.ILIcon ? window.ILIcon(name) : "";
+
+  // Ilustraciones propias para las opciones (sustituyen a los emojis del contenido).
+  // Clave = el emoji que trae el contenido. Colores de marca; se enmarcan en un círculo por CSS.
+  const ILLO = {
+    "🎒": '<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M12 21c0-7 5-11 12-11s12 4 12 11v15a4 4 0 0 1-4 4H16a4 4 0 0 1-4-4z" fill="var(--il-secondary)"/><path d="M12 27h24v6H12z" fill="var(--il-coral-ink)"/><rect x="20" y="29" width="8" height="8" rx="2" fill="#fff"/><path d="M17 21c0-4 3-7 7-7s7 3 7 7" fill="none" stroke="var(--il-primary)" stroke-width="2.6"/></svg>',
+    "✏️": '<svg viewBox="0 0 48 48" aria-hidden="true"><rect x="20" y="9" width="8" height="4" rx="2" fill="var(--il-secondary)"/><rect x="20" y="12" width="8" height="22" rx="1.5" fill="#F6B93B"/><path d="M20 34h8l-4 7z" fill="#EAD6A0"/><path d="M22.5 38h3l-1.5 3z" fill="var(--il-primary)"/></svg>',
+    "📘": '<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M11 13h11a4 4 0 0 1 2 .5V37a5 5 0 0 0-2-.5H11z" fill="var(--il-primary)"/><path d="M37 13H26a4 4 0 0 0-2 .5V37a5 5 0 0 1 2-.5h11z" fill="#24406b"/><path d="M24 15v22" stroke="#fff" stroke-width="1.4" opacity=".45"/></svg>',
+    "🪑": '<svg viewBox="0 0 48 48" aria-hidden="true"><rect x="16" y="11" width="5" height="16" rx="2" fill="var(--il-primary)"/><rect x="15" y="25" width="18" height="5" rx="2" fill="var(--il-secondary)"/><rect x="16" y="30" width="3" height="9" rx="1" fill="var(--il-primary)"/><rect x="29" y="30" width="3" height="9" rx="1" fill="var(--il-primary)"/></svg>',
+    "🍎": '<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 17c-6-4-14 0-14 9s6 14 14 14 14-5 14-14-8-13-14-9z" fill="var(--il-secondary)"/><path d="M24 17c0-4 3-7 6-7" fill="none" stroke="var(--il-success)" stroke-width="2.6" stroke-linecap="round"/></svg>',
+    "🥛": '<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M18 13h12l2 6v18a2 2 0 0 1-2 2H18a2 2 0 0 1-2-2V19z" fill="#fff" stroke="var(--il-border)" stroke-width="1.6"/><path d="M16.5 21h15v7h-15z" fill="var(--il-primary-soft)"/></svg>',
+    "🍞": '<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M12 23c0-6 5-9 12-9s12 3 12 9c2 0 3 1.5 3 3.5S38 30 36 30v6a2 2 0 0 1-2 2H14a2 2 0 0 1-2-2v-6c-2 0-3-1.5-3-3.5S10 23 12 23z" fill="#E4A96B"/></svg>'
+  };
   const disableAll = (host, disabled) => host.querySelectorAll("button,input,textarea,select")
     .forEach(control => { control.disabled = !!disabled; });
   const audioSettings = () => window.ILProfileSettings ? window.ILProfileSettings.getActive() : { sound: true, autoplayAudio: true, audioSpeed: 0.9 };
@@ -92,8 +104,10 @@
       button.type = "button";
       button.setAttribute("aria-pressed", "false");
       if (withImage && option.emoji) {
-        const visual = el("span", "eng-option-visual", option.emoji);
+        const visual = el("span", "eng-option-visual");
         visual.setAttribute("aria-hidden", "true");
+        if (ILLO[option.emoji]) { visual.classList.add("has-illo"); visual.innerHTML = ILLO[option.emoji]; }
+        else visual.textContent = option.emoji;
         button.appendChild(visual);
       }
       button.appendChild(el("span", "eng-opt-text", option.texto || ""));
@@ -411,7 +425,7 @@
     const audioText = exercise.tipo === "hablar" ? "" : (exercise.audio || "");
     if (audioText) {
       const audio = el("button", "eng-audio"); audio.type = "button";
-      audio.innerHTML = icon("speaker") + '<span class="eng-audio-label">Escuchar</span>';
+      audio.innerHTML = '<span class="eng-audio-waves" aria-hidden="true"><i></i><i></i><i></i></span>' + icon("speaker") + '<span class="eng-audio-label">Escuchar</span>';
       audio.setAttribute("aria-label", "Escuchar audio del ejercicio");
       audio.setAttribute("aria-pressed", "false");
       const exerciseAudio = audioSettings();
@@ -466,7 +480,8 @@
       template.reveal(result);
       template.setDisabled(true);
       action.disabled = false;
-      action.textContent = options.lastOne ? "Finalizar misión" : "Continuar";
+      if (options.lastOne) action.textContent = "Finalizar misión";
+      else action.innerHTML = 'Continuar <span aria-hidden="true">→</span>';
       action.onclick = () => {
         state = "continuing"; action.disabled = true;
         if (typeof options.onNext === "function") options.onNext(result);
@@ -494,17 +509,20 @@
         const successCopy = (exercise.feedback && exercise.feedback.correct) ||
           (result.correctLabel ? "La respuesta correcta es “" + result.correctLabel + "”." : "Has resuelto la actividad correctamente.");
         renderFeedback(feedback, "success", "¡Muy bien!", successCopy, result.context, 10);
+        if (typeof options.onFeedback === "function") options.onFeedback("success");
         resolve(true);
       } else if (attempts === 1) {
         state = "retry"; lastAnswer = signature(template.getAnswer());
         template.reveal({ ...result, final: false }); template.setDisabled(false);
         const hint = (exercise.feedback && exercise.feedback.incorrect) || "Revisa tu respuesta y prueba una vez más.";
         renderFeedback(feedback, "retry", "Casi.", hint, "", 0);
+        if (typeof options.onFeedback === "function") options.onFeedback("retry");
         action.textContent = "Comprobar de nuevo"; action.disabled = true;
         setTimeout(() => template.focus(), 0);
       } else {
         const solution = result.correctLabel ? "La respuesta correcta es “" + result.correctLabel + "”." : "Revisa la solución antes de continuar.";
         renderFeedback(feedback, "error", "Vamos a verlo.", solution + (result.explanation ? " " + result.explanation : ""), result.context, 0);
+        if (typeof options.onFeedback === "function") options.onFeedback("error");
         resolve(false);
       }
     });

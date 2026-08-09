@@ -127,3 +127,44 @@
   .eng-card,.eng-feedback.is-visible{animation:none}.eng-opt,.eng-audio{transition:none}
   .eng-input:focus{scroll-behavior:auto}
 }
+
+/* ============================================================
+   FASE 2 · Ejercicios más visuales (base; el modo young los amplía)
+   ============================================================ */
+
+/* Ondas del botón de audio (visibles al reproducir) */
+.eng-audio-waves{display:none;align-items:flex-end;gap:2px;height:16px}
+.eng-audio-waves i{width:3px;height:6px;border-radius:2px;background:currentColor;opacity:.75}
+.eng-audio.is-playing .eng-audio-waves{display:inline-flex}
+.eng-audio.is-playing .eng-audio-waves i{animation:eng-wave .9s var(--il-ease) infinite}
+.eng-audio.is-playing .eng-audio-waves i:nth-child(2){animation-delay:.15s}
+.eng-audio.is-playing .eng-audio-waves i:nth-child(3){animation-delay:.3s}
+@keyframes eng-wave{0%,100%{height:5px}50%{height:15px}}
+
+/* Ilustración propia en las opciones (sustituye al emoji) */
+.eng-option-visual.has-illo{width:62px;height:62px;display:grid;place-items:center;border-radius:50%;background:var(--il-success-soft)}
+.eng-option-visual.has-illo svg{width:40px;height:40px;display:block}
+
+/* Burbuja de Nemo · aparece en momentos concretos y desaparece */
+.nemo-bubble{position:fixed;left:50%;bottom:calc(120px + env(safe-area-inset-bottom));z-index:var(--il-z-overlay);
+  display:inline-flex;align-items:center;gap:var(--il-space-2);max-width:min(88vw,420px);
+  padding:9px 16px 9px 10px;border-radius:var(--il-radius-pill);background:var(--il-primary);color:var(--il-on-primary);
+  font-family:var(--il-font-display);font-weight:var(--il-weight-bold);box-shadow:var(--il-shadow-lg);
+  opacity:0;transform:translateX(-50%) translateY(10px);pointer-events:none;
+  transition:opacity var(--il-duration-base) var(--il-ease),transform var(--il-duration-base) var(--il-ease)}
+.nemo-bubble[hidden]{display:none}
+.nemo-bubble.is-visible{opacity:1;transform:translateX(-50%) translateY(0)}
+.nemo-bubble__art{width:30px;height:30px;flex:0 0 auto;display:grid;place-items:center;border-radius:50%;background:var(--il-secondary);color:var(--il-on-primary)}
+.nemo-bubble__art svg{width:17px;height:17px}
+.nemo-bubble[data-kind="success"]{background:var(--il-success)}
+.nemo-bubble[data-kind="retry"],.nemo-bubble[data-kind="error"]{background:var(--il-secondary)}
+
+/* Salto del avión al acertar (conserva su centrado translateX(-50%)) */
+.progress-plane.hop{animation:plane-hop .55s var(--il-ease)}
+@keyframes plane-hop{0%,100%{transform:translateX(-50%) rotate(-8deg)}40%{transform:translateX(-50%) translateY(-9px) rotate(-14deg)}}
+
+@media (prefers-reduced-motion:reduce){
+  .eng-audio.is-playing .eng-audio-waves i{animation:none}
+  .progress-plane.hop{animation:none}
+  .nemo-bubble{transition:opacity var(--il-duration-base) linear}
+}

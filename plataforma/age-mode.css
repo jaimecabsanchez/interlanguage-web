@@ -281,3 +281,50 @@ body[data-age-mode="primary-young"] .stamp-mark svg{ width:44px; height:44px; }
 body[data-age-mode="secondary"] .daily-mission::after{ display:none; }
 body[data-age-mode="secondary"] .home-greeting p{ color:var(--il-muted); font-size:var(--il-fs-sm); }
 body[data-age-mode="secondary"] .mission-context{ font-size:var(--il-fs-xs); }
+
+/* ============================================================
+   FASE 2 · EJERCICIOS · Primaria inicial: más visual, menos texto,
+   audio grande, error coral suave, recompensa inmediata.
+   ============================================================ */
+/* Barra superior sin duplicar el nombre de la unidad, contador simple */
+body[data-age-mode="primary-young"] .theme-line{ display:none; }
+body[data-age-mode="primary-young"] .lesson-step{ font-weight:var(--il-weight-extrabold); color:var(--il-primary); }
+
+/* Fuera la etiqueta redundante (p. ej. "ESCUCHA") */
+body[data-age-mode="primary-young"] .eng-label{ display:none; }
+
+/* Cabecera centrada: instrucción breve + botón de audio GRANDE y circular */
+body[data-age-mode="primary-young"] .eng-question-header{ flex-direction:column; align-items:center; text-align:center; gap:var(--il-space-4); }
+body[data-age-mode="primary-young"] .eng-instruction{ font-size:var(--il-fs-xl); flex:0 0 auto; }
+body[data-age-mode="primary-young"] .eng-audio{
+  width:92px; height:92px; min-width:92px; min-height:92px; padding:0; border-radius:50%;
+  flex-direction:column; gap:2px; background:var(--il-primary); color:var(--il-on-primary); border-color:var(--il-primary);
+  box-shadow:0 12px 24px -12px color-mix(in srgb, var(--il-primary) 55%, transparent);
+}
+body[data-age-mode="primary-young"] .eng-audio svg{ width:32px; height:32px; }
+body[data-age-mode="primary-young"] .eng-audio-label{ display:none; }
+body[data-age-mode="primary-young"] .eng-audio.is-playing{ animation:eng-audio-pulse 1.5s var(--il-ease) infinite; }
+@keyframes eng-audio-pulse{ 0%,100%{ box-shadow:0 12px 24px -12px color-mix(in srgb,var(--il-primary) 55%,transparent); } 50%{ box-shadow:0 0 0 12px color-mix(in srgb,var(--il-primary) 12%,transparent); } }
+
+/* Opciones con ilustración: más grandes y con presencia */
+body[data-age-mode="primary-young"] .eng-option-visual.has-illo{ width:78px; height:78px; }
+body[data-age-mode="primary-young"] .eng-option-visual.has-illo svg{ width:50px; height:50px; }
+
+/* Error SUAVE (coral), nunca rojo intenso */
+body[data-age-mode="primary-young"] .eng-opt.is-incorrect{ border-color:var(--il-secondary); background:var(--il-secondary-soft); color:var(--il-coral-ink); }
+body[data-age-mode="primary-young"] .eng-opt.is-incorrect .eng-state-icon{ background:var(--il-secondary); color:var(--il-on-primary); }
+body[data-age-mode="primary-young"] .eng-feedback.is-error,
+body[data-age-mode="primary-young"] .eng-feedback.is-retry{ background:var(--il-secondary-soft); border-color:color-mix(in srgb,var(--il-secondary) 30%,transparent); color:var(--il-coral-ink); }
+
+/* Recompensa inmediata: pequeño rebote al acertar */
+body[data-age-mode="primary-young"] .eng-opt.is-correct{ animation:eng-pop .45s var(--il-ease); }
+@keyframes eng-pop{ 0%{ transform:scale(1); } 40%{ transform:scale(1.05); } 100%{ transform:scale(1); } }
+
+/* Aprovechar el vertical: menos hueco tras las respuestas */
+body[data-age-mode="primary-young"] .eng-body{ padding-bottom:var(--il-space-4); }
+body[data-age-mode="primary-young"] .eng-card{ justify-content:flex-start; }
+
+@media (prefers-reduced-motion:reduce){
+  body[data-age-mode="primary-young"] .eng-audio.is-playing,
+  body[data-age-mode="primary-young"] .eng-opt.is-correct{ animation:none; }
+}

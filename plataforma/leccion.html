@@ -11,7 +11,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="design-system.css?v=20260809e">
 <link rel="stylesheet" href="app.css?v=20260809d">
-<link rel="stylesheet" href="motor/motor.css?v=20260809e">
+<link rel="stylesheet" href="motor/motor.css?v=20260810b">
 <link rel="stylesheet" href="etapa.css?v=20260809d">
 <style>
   body{background:linear-gradient(180deg,var(--il-primary-soft),var(--il-background) 26%);min-height:100dvh}
@@ -64,7 +64,7 @@
   @media (min-width:1024px){.lesson{max-width:820px;padding-inline:var(--il-space-6)}.lesson-header{padding-top:var(--il-space-5)}}
   @media (prefers-reduced-motion:reduce){.segment,.progress-plane{transition:none}.success-react.is-visible,.summary-card,.summary-seal::after{animation:none}.summary-seal::after{display:none}}
 </style>
-<link rel="stylesheet" href="age-mode.css?v=20260810c">
+<link rel="stylesheet" href="age-mode.css?v=20260810d">
 </head>
 <body class="lesson-page">
 <div class="il-offline" id="offline" hidden><span data-il-icon="wifiOff" aria-hidden="true"></span> Sin conexión.</div>
@@ -89,6 +89,7 @@
 </main>
 
 <div class="success-react" id="successReact" aria-hidden="true"><span data-il-icon="plane"></span></div>
+<div class="nemo-bubble" id="nemoBubble" role="status" aria-live="polite" hidden><span class="nemo-bubble__art" aria-hidden="true"><span data-il-icon="plane"></span></span><span id="nemoBubbleText"></span></div>
 
 <dialog class="exit-dialog" id="exitDialog" aria-labelledby="exitTitle" aria-describedby="exitDescription">
   <div class="exit-dialog__body">
@@ -135,7 +136,7 @@
 <script src="motor/matriz.js?v=20260809d"></script>
 <script src="mission-state.js?v=20260809f"></script>
 <script src="profile-settings.js?v=20260809a"></script>
-<script src="motor/engine.js?v=20260809f"></script>
+<script src="motor/engine.js?v=20260810a"></script>
 <script>
   const $ = id => document.getElementById(id);
   const params = new URLSearchParams(location.search);
@@ -174,7 +175,9 @@
   function updateHeader() {
     const total = items.length || 1;
     const current = Math.min(index + 1, total);
-    $("exerciseCount").textContent = ageExperience.copy.exercise + " " + current + " " + ageExperience.copy.countJoin + " " + total;
+    $("exerciseCount").textContent = (ageExperience.id === "primary-young")
+      ? (current + " / " + total)
+      : (ageExperience.copy.exercise + " " + current + " " + ageExperience.copy.countJoin + " " + total);
     const progress = $("segmentProgress");
     progress.setAttribute("aria-valuemax", total); progress.setAttribute("aria-valuenow", Math.min(index, total));
     progress.setAttribute("aria-label", index + " de " + total + " ejercicios completados");
@@ -194,14 +197,38 @@
   function cheer() {
     const node = $("successReact"); node.classList.remove("is-visible"); void node.offsetWidth; node.classList.add("is-visible");
   }
+  function planeHop() {
+    const plane = $("segmentProgress").querySelector(".progress-plane"); if (!plane) return;
+    plane.classList.remove("hop"); void plane.offsetWidth; plane.classList.add("hop");
+  }
+  // Nemo aparece SOLO en momentos concretos (Primaria inicial) y luego desaparece.
+  let nemoTimer = null;
+  const NEMO_LINES = {
+    intro: ["Escucha bien.", "¡Tú puedes!", "Vamos allá.", "A por ello."],
+    success: ["¡Genial!", "¡Muy bien!", "¡Lo tienes!"],
+    retry: ["Casi. Prueba esta pista.", "Casi. Fíjate bien."],
+    error: ["Ya casi. Mira la respuesta.", "No pasa nada. Seguimos."]
+  };
+  function nemo(kind) {
+    if (ageExperience.id !== "primary-young") return;
+    const set = NEMO_LINES[kind] || NEMO_LINES.intro;
+    const bubble = $("nemoBubble");
+    $("nemoBubbleText").textContent = set[Math.floor(Math.random() * set.length)];
+    bubble.dataset.kind = kind; bubble.hidden = false;
+    bubble.classList.remove("is-visible"); void bubble.offsetWidth; bubble.classList.add("is-visible");
+    clearTimeout(nemoTimer);
+    nemoTimer = setTimeout(() => { bubble.classList.remove("is-visible"); setTimeout(() => { bubble.hidden = true; }, 280); }, kind === "intro" ? 1700 : 2300);
+  }
 
   function showExercise() {
     pendingResult = null; updateHeader();
     if (currentController && currentController.destroy) currentController.destroy();
+    nemo("intro");
     currentController = IL_ENGINE.render($("stage"), items[index], {
       stage: stageName,
       lastOne: index === items.length - 1,
-      onResult: event => { pendingResult = event; if (event.correct) cheer(); },
+      onResult: event => { pendingResult = event; if (event.correct) { cheer(); planeHop(); } },
+      onFeedback: kind => nemo(kind),
       onNext: result => {
         const outcome = pendingResult || result || { id: items[index].id, correct: false, learnedExpressions: [] };
         if (reviewMode) {
