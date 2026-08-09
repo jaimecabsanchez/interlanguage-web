@@ -11,7 +11,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="design-system.css?v=20260809e">
 <link rel="stylesheet" href="app.css?v=20260809d">
-<link rel="stylesheet" href="motor/motor.css?v=20260810b">
+<link rel="stylesheet" href="motor/motor.css?v=20260810c">
+<link rel="stylesheet" href="il-visual.css?v=20260810a">
 <link rel="stylesheet" href="etapa.css?v=20260809d">
 <style>
   body{background:linear-gradient(180deg,var(--il-primary-soft),var(--il-background) 26%);min-height:100dvh}
@@ -89,7 +90,7 @@
 </main>
 
 <div class="success-react" id="successReact" aria-hidden="true"><span data-il-icon="plane"></span></div>
-<div class="nemo-bubble" id="nemoBubble" role="status" aria-live="polite" hidden><span class="nemo-bubble__art" aria-hidden="true"><span data-il-icon="plane"></span></span><span id="nemoBubbleText"></span></div>
+<div class="nemo-bubble" id="nemoBubble" role="status" aria-live="polite" hidden><span class="nemo-bubble__art" aria-hidden="true"></span><span id="nemoBubbleText"></span></div>
 
 <dialog class="exit-dialog" id="exitDialog" aria-labelledby="exitTitle" aria-describedby="exitDescription">
   <div class="exit-dialog__body">
@@ -126,6 +127,7 @@
 </section>
 
 <script src="layout.js?v=20260809d"></script>
+<script src="il-visual.js?v=20260810a"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-config.js?v=20260809d"></script>
 <script src="auth-utils.js?v=20260809d"></script>
@@ -209,10 +211,20 @@
     retry: ["Casi. Prueba esta pista.", "Casi. Fíjate bien."],
     error: ["Ya casi. Mira la respuesta.", "No pasa nada. Seguimos."]
   };
+  // Presencia de Nemo por etapa: inicial = todos los momentos;
+  // superior = ocasional (arranque y pistas/errores); ESO = sin Nemo.
+  function nemoAllowed(kind) {
+    const id = ageExperience.id;
+    if (id === "primary-young") return true;
+    if (id === "primary-upper") return kind === "intro" || kind === "retry" || kind === "error";
+    return false;
+  }
   function nemo(kind) {
-    if (ageExperience.id !== "primary-young") return;
+    if (!nemoAllowed(kind)) return;
     const set = NEMO_LINES[kind] || NEMO_LINES.intro;
     const bubble = $("nemoBubble");
+    const art = bubble.querySelector(".nemo-bubble__art");
+    if (art && window.ILVisual) art.innerHTML = ILVisual.nemo(kind);
     $("nemoBubbleText").textContent = set[Math.floor(Math.random() * set.length)];
     bubble.dataset.kind = kind; bubble.hidden = false;
     bubble.classList.remove("is-visible"); void bubble.offsetWidth; bubble.classList.add("is-visible");
@@ -269,6 +281,13 @@
     $("reviewErrors").textContent = isReview ? "Repasar de nuevo" : "Repasar errores";
     if (errors) $("reviewMessage").textContent = errors + (errors === 1 ? " ejercicio para repasar" : " ejercicios para repasar");
     $("missionSummary").classList.remove("hidden");
+    // El sello aparece como una estampación al completar la misión.
+    const seal = document.querySelector(".summary-seal");
+    if (seal && window.ILVisual) {
+      seal.innerHTML = ILVisual.stamp("first-flight", { locked: false });
+      const mark = seal.querySelector(".il-stamp");
+      if (mark && !ILVisual.reduceMotion()) { void mark.offsetWidth; mark.classList.add("is-stamping"); }
+    }
     $("missionSummary").focus();
   }
 

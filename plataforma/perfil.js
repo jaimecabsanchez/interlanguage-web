@@ -111,13 +111,9 @@
     if (mode === "primary-young") {
       $("profileEyebrow").textContent = "MI ESPACIO";
       $("profilePageSubtitle").textContent = "Tu avatar, tus logros y la forma en la que más te gusta aprender.";
-      $("nemoCopy").textContent = "Nemo te dará pistas sencillas y celebrará tus avances.";
-    } else if (mode === "primary-upper") {
-      $("nemoCopy").textContent = "Una ayuda discreta para orientarte cuando la necesites.";
-    } else {
+    } else if (mode !== "primary-upper") {
       $("profileEyebrow").textContent = "ACCOUNT & PREFERENCES";
       $("profilePageSubtitle").textContent = "Consulta tu nivel, personaliza la experiencia y gestiona tus preferencias.";
-      $("nemoGuide").setAttribute("aria-hidden", "true");
     }
   }
 
@@ -214,7 +210,7 @@
         const btn = document.createElement("button"); btn.type = "button";
         btn.className = "yp-seal" + (settings.featuredStamp === s.id ? " is-selected" : "");
         btn.setAttribute("aria-pressed", String(settings.featuredStamp === s.id));
-        btn.innerHTML = '<span class="yp-seal__mark">' + (window.ILIcon ? window.ILIcon(s.icon) : "") + '</span><span class="yp-seal__name">' + s.name + '</span>';
+        btn.innerHTML = '<span class="yp-seal__mark">' + (window.ILVisual ? window.ILVisual.stamp(s.id, { locked: false }) : (window.ILIcon ? window.ILIcon(s.icon) : "")) + '</span><span class="yp-seal__name">' + s.name + '</span>';
         btn.addEventListener("click", () => { persist({ featuredStamp: s.id }); clearHint(); drawSeals(); });
         sealRow.appendChild(btn);
       });

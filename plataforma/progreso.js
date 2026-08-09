@@ -67,6 +67,7 @@
   function renderNextStamp(stampData) {
     if (!stampData) { $("nextStampTitle").textContent = "Pasaporte completo"; $("nextStampCopy").textContent = remainingCopy(null); return; }
     $("nextStampTitle").textContent = stampData.name; $("nextStampCopy").textContent = remainingCopy(stampData);
+    const ps = document.querySelector(".passport-stamp"); if (ps && window.ILVisual) ps.innerHTML = ILVisual.stamp(stampData.id, { locked: false });
     const bar = $("nextStampProgress"); bar.style.setProperty("--il-stamp-progress", stampData.percent + "%"); bar.setAttribute("aria-valuemax", stampData.target); bar.setAttribute("aria-valuenow", stampData.current); bar.setAttribute("aria-label", "Progreso hacia " + stampData.name + ": " + stampData.current + " de " + stampData.target);
   }
 
@@ -108,7 +109,7 @@
     data.stamps.items.forEach(stampData => {
       const button = document.createElement("button"); button.type = "button"; button.className = "stamp-card" + (stampData.unlocked ? " is-unlocked" : " is-locked"); button.setAttribute("aria-label", stampData.name + ". " + progressCopy(stampData));
       const top = document.createElement("span"); top.className = "stamp-card__top";
-      const visual = document.createElement("span"); visual.className = "stamp-card__visual"; visual.innerHTML = icon(stampData.icon);
+      const visual = document.createElement("span"); visual.className = "stamp-card__visual"; visual.innerHTML = window.ILVisual ? ILVisual.stamp(stampData.id, { locked: !stampData.unlocked }) : icon(stampData.icon);
       const state = document.createElement("span"); state.className = "stamp-card__state"; state.innerHTML = icon(stampData.unlocked ? "check" : "lock"); state.appendChild(document.createTextNode(stampData.unlocked ? " Conseguido" : " En progreso")); top.append(visual, state);
       const title = document.createElement("h3"); title.textContent = stampData.name; const description = document.createElement("p"); description.textContent = stampData.description;
       const progress = document.createElement("span"); progress.className = "stamp-card__progress"; const fill = document.createElement("span"); progress.style.setProperty("--il-stamp-progress", (stampData.percent || 0) + "%"); progress.appendChild(fill);
@@ -119,7 +120,7 @@
 
   function openStamp(stampData) {
     const dialog = $("stampDialog"); $("stampDialogState").textContent = stampData.unlocked ? "Sello conseguido" : "Sello en progreso"; $("stampDialogTitle").textContent = stampData.name; $("stampDialogDescription").textContent = stampData.description; $("stampDialogRequirement").textContent = stampData.requirement; $("stampDialogProgressCopy").textContent = progressCopy(stampData);
-    const visual = $("stampDialogVisual"); visual.innerHTML = icon(stampData.icon); visual.classList.toggle("is-unlocked", stampData.unlocked);
+    const visual = $("stampDialogVisual"); visual.innerHTML = window.ILVisual ? ILVisual.stamp(stampData.id, { locked: !stampData.unlocked }) : icon(stampData.icon); visual.classList.toggle("is-unlocked", stampData.unlocked);
     const progress = $("stampDialogProgress"); progress.style.setProperty("--il-stamp-progress", (stampData.percent || 0) + "%"); progress.setAttribute("aria-valuemin", "0"); progress.setAttribute("aria-valuemax", stampData.target); if (stampData.current != null) progress.setAttribute("aria-valuenow", stampData.current); else progress.removeAttribute("aria-valuenow");
     if (typeof dialog.showModal === "function") dialog.showModal(); else dialog.setAttribute("open", "");
   }

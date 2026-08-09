@@ -13,6 +13,7 @@
 <link rel="stylesheet" href="app.css?v=20260809d">
 <link rel="stylesheet" href="shell.css?v=20260809d">
 <link rel="stylesheet" href="etapa.css?v=20260809d">
+<link rel="stylesheet" href="il-visual.css?v=20260810a">
 <style>
   body{background:radial-gradient(90% 55% at 100% 0%,var(--il-primary-soft),transparent 58%),var(--il-background)}
   .demo-strip{max-width:560px;margin:0 auto;display:flex;align-items:center;justify-content:center;gap:var(--il-space-2);padding:5px 12px;border-radius:0 0 var(--il-radius-sm) var(--il-radius-sm);background:color-mix(in srgb,var(--il-surface) 78%,transparent);color:var(--il-text-secondary);font-size:var(--il-fs-xs)}
@@ -33,6 +34,8 @@
   .skill-list{display:flex;flex-wrap:wrap;gap:var(--il-space-2);margin-bottom:var(--il-space-6)}.skill-chip{padding:6px 10px;border:1px solid var(--il-border);border-radius:var(--il-radius-pill);background:var(--il-surface);font-size:var(--il-fs-xs);font-weight:var(--il-weight-bold);color:var(--il-text-secondary)}.skill-chip[data-skill="vocabulary"]{background:var(--il-secondary-soft);color:var(--il-coral-ink);border-color:transparent}.skill-chip[data-skill="grammar"]{background:var(--il-primary-soft);color:var(--il-primary);border-color:transparent}.skill-chip[data-skill="listening"]{background:var(--il-success-soft);color:var(--il-jade-deep);border-color:transparent}
   .mission-route{position:relative;margin:0 0 var(--il-space-5);padding-top:29px}.mission-route__track{display:grid;grid-template-columns:repeat(var(--route-count),minmax(0,1fr));align-items:center}.route-step{position:relative;height:4px;background:var(--il-border)}.route-step::after{content:"";position:absolute;right:-7px;top:50%;width:14px;height:14px;border:3px solid var(--il-surface);border-radius:50%;background:var(--il-border-strong);box-shadow:0 0 0 1px var(--il-border);transform:translateY(-50%)}.route-step:first-child{border-radius:var(--il-radius-pill) 0 0 var(--il-radius-pill)}.route-step:last-child{border-radius:0 var(--il-radius-pill) var(--il-radius-pill) 0}.route-step.is-complete{background:var(--il-success)}.route-step.is-complete::after{background:var(--il-success)}.route-step.is-current::after{background:var(--il-primary);box-shadow:0 0 0 4px var(--il-primary-soft)}
   .mission-plane{position:absolute;top:0;left:var(--mission-progress);width:26px;height:26px;color:var(--il-secondary);transform:translateX(-50%) rotate(-8deg);transition:left var(--il-duration-slow) var(--il-ease);filter:drop-shadow(var(--il-shadow-xs))}.mission-plane svg{width:26px;height:26px}.mission-progress-copy{display:flex;justify-content:space-between;gap:var(--il-space-3);margin-top:var(--il-space-3);color:var(--il-text-secondary);font-size:var(--il-fs-xs)}
+  .mission-plane.takeoff{animation:mission-takeoff .34s var(--il-ease) forwards}
+  @keyframes mission-takeoff{to{left:100%;opacity:0;transform:translateX(-50%) translateY(-16px) rotate(-22deg)}}
   .mission-cta{width:100%;min-height:52px;font-size:var(--il-fs-base)}.mission-cta.is-complete{background:var(--il-success);color:var(--il-on-success)}
   .mission-context{display:flex;align-items:flex-start;gap:var(--il-space-3);margin:var(--il-space-5) 0 0;padding-top:var(--il-space-4);border-top:1px solid var(--il-border);color:var(--il-text-secondary);font-size:var(--il-fs-sm)}.mission-context__icon{width:36px;height:36px;display:grid;place-items:center;flex:0 0 auto;border-radius:var(--il-radius-sm);background:var(--il-primary-soft);color:var(--il-primary)}.mission-context__icon svg{width:19px;height:19px}.mission-context p{margin:0}.teacher-note{display:block;margin-top:3px;color:var(--il-primary);font-weight:var(--il-weight-bold)}
 
@@ -48,7 +51,7 @@
   .mission-illo svg{width:100%;height:100%;display:block}
   .skill-chip__icon{display:inline-flex;line-height:0}.skill-chip__icon svg{width:16px;height:16px}
   .mission-nemo{display:flex;align-items:center;gap:var(--il-space-2);margin:0 0 var(--il-space-3);color:var(--il-secondary-hover);font-family:var(--il-font-display);font-weight:var(--il-weight-bold);font-size:var(--il-fs-sm)}
-  .mission-nemo[hidden]{display:none}.mission-nemo__art{width:30px;height:30px;flex:0 0 auto;display:grid;place-items:center;border-radius:50%;background:var(--il-secondary-soft);color:var(--il-secondary)}.mission-nemo__art svg{width:17px;height:17px}
+  .mission-nemo[hidden]{display:none}.mission-nemo__art{width:38px;height:38px;flex:0 0 auto;display:grid;place-items:center;border-radius:50%;background:var(--il-primary-soft);overflow:hidden}.mission-nemo__art svg{width:34px;height:34px}
   .mission-review{display:inline-block;margin-top:var(--il-space-2);color:var(--il-secondary-hover);font-weight:var(--il-weight-bold);font-size:var(--il-fs-sm);text-decoration:none}.mission-review[hidden]{display:none}.mission-review:hover{text-decoration:underline}
   .week-note{margin:var(--il-space-2) 0 0;color:var(--il-success);font-family:var(--il-font-display);font-weight:var(--il-weight-extrabold);font-size:var(--il-fs-base)}.week-note[hidden]{display:none}
   .stamp-count{margin:2px 0 0;font-family:var(--il-font-display);font-weight:var(--il-weight-extrabold);color:var(--il-secondary-hover);font-size:var(--il-fs-2xl);font-variant-numeric:tabular-nums}.stamp-count[hidden]{display:none}
@@ -105,7 +108,7 @@
             <div class="mission-route__track" id="missionRouteTrack"></div>
             <div class="mission-progress-copy"><span id="missionProgressText">0 de 6 completadas</span><span id="missionPaceText">Una actividad cada vez</span></div>
           </div>
-          <p class="mission-nemo" id="missionNemo" hidden><span class="mission-nemo__art" aria-hidden="true"><span data-il-icon="plane"></span></span><span id="missionNemoText">¡Vamos!</span></p>
+          <p class="mission-nemo" id="missionNemo" hidden><span class="mission-nemo__art" aria-hidden="true"></span><span id="missionNemoText">¡Vamos!</span></p>
           <a class="btn btn-primary mission-cta" id="missionCta" href="leccion.html"><span data-il-icon="play" aria-hidden="true"></span><span id="missionCtaText">Empezar misión</span></a>
           <a class="mission-review" id="missionReview" href="leccion.html?mode=errors" hidden>Repasar</a>
           <div class="mission-context">
@@ -142,6 +145,7 @@
 </div>
 
 <script src="layout.js?v=20260809d"></script>
+<script src="il-visual.js?v=20260810a"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-config.js?v=20260809d"></script>
 <script src="auth-utils.js?v=20260809d"></script>
@@ -235,6 +239,7 @@
   }
 
   function renderStamp(username, unit) {
+    const mark = document.querySelector(".stamp-mark"); if (mark && window.ILVisual) mark.innerHTML = ILVisual.stamp("morning-explorer", { locked: false });
     const target = 5; const current = Math.min(target, ILMission.unitCompletionCount(username, unit ? unit.id : "")); const remaining = Math.max(0, target - current);
     $("stampRemaining").textContent = remaining === 0 ? "¡Sello conseguido!" : ("Te " + (remaining === 1 ? "falta 1 sesión" : "faltan " + remaining + " sesiones"));
     $("stampCount").textContent = current + "/" + target;
@@ -287,6 +292,21 @@
       else if (inProgress) { ctaText.textContent = experience.copy.continueCta + " · " + state.completedCount + " " + experience.copy.countJoin + " " + session.length; }
       else { ctaText.textContent = experience.copy.startCta; }
 
+      // El avión despega al empezar la misión (hilo del progreso). Sin movimiento si se pidió reducir animaciones.
+      if (!cta.dataset.takeoffBound) {
+        cta.dataset.takeoffBound = "1";
+        cta.addEventListener("click", e => {
+          const href = cta.getAttribute("href");
+          if (!href || cta.getAttribute("aria-disabled") === "true") return;
+          if (window.ILVisual && ILVisual.reduceMotion()) return;
+          const plane = document.querySelector(".mission-plane");
+          if (!plane) return;
+          e.preventDefault();
+          plane.classList.add("takeoff");
+          setTimeout(() => { location.href = href; }, 300);
+        });
+      }
+
       // ---- Primaria inicial: menos texto, más impacto (capa sobre el sistema de etapas) ----
       if (experience.id === "primary-young") {
         const name = firstName(profile);
@@ -302,7 +322,7 @@
         } else {
           ctaText.innerHTML = '¡Empezar! <span aria-hidden="true">→</span>';
         }
-        if (!doneToday) { $("missionNemoText").textContent = "¡Vamos, " + name + "!"; $("missionNemo").hidden = false; }
+        if (!doneToday) { const mn = $("missionNemo"), mnArt = mn.querySelector(".mission-nemo__art"); if (mnArt && window.ILVisual) mnArt.innerHTML = ILVisual.nemo("hi"); $("missionNemoText").textContent = "¡Vamos, " + name + "!"; mn.hidden = false; }
         $("weeklyTitle").textContent = "Mi semana";
         const rem = Math.max(0, (week.goal || 5) - Math.min(week.count || 0, week.goal || 5));
         $("weekNote").textContent = rem === 0 ? "¡Semana completa!" : ("¡Solo " + (rem === 1 ? "falta 1" : "faltan " + rem) + "!");

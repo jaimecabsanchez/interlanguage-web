@@ -154,8 +154,8 @@
   transition:opacity var(--il-duration-base) var(--il-ease),transform var(--il-duration-base) var(--il-ease)}
 .nemo-bubble[hidden]{display:none}
 .nemo-bubble.is-visible{opacity:1;transform:translateX(-50%) translateY(0)}
-.nemo-bubble__art{width:30px;height:30px;flex:0 0 auto;display:grid;place-items:center;border-radius:50%;background:var(--il-secondary);color:var(--il-on-primary)}
-.nemo-bubble__art svg{width:17px;height:17px}
+.nemo-bubble__art{width:40px;height:40px;flex:0 0 auto;display:grid;place-items:center;border-radius:50%;background:var(--il-primary-soft);overflow:hidden}
+.nemo-bubble__art svg{width:36px;height:36px}
 .nemo-bubble[data-kind="success"]{background:var(--il-success)}
 .nemo-bubble[data-kind="retry"],.nemo-bubble[data-kind="error"]{background:var(--il-secondary)}
 
