@@ -29,6 +29,7 @@ assert.equal(base.exerciseConfig("p12").sessionSize, 4);
 assert.equal(base.exerciseConfig("p34").instructionLanguage, "bilingual");
 assert.equal(base.exerciseConfig("p56").guideIntensity, "low");
 assert.equal(base.exerciseConfig("eso").visualSupport, "content-only");
+assert.deepEqual(base.DEMO_STAGES.map(item => item.band), ["p12", "p34", "p56", "eso"]);
 
 const body = { dataset: {}, appendChild() {} };
 const production = createStageSystem({
@@ -60,5 +61,15 @@ const demo = createStageSystem({
 });
 assert.equal(demo.apply({ age: 8 }, { demo: true }), "eso");
 assert.equal(demoBody.dataset.ageMode, "secondary");
+
+const fiveYearDemoBody = { dataset: {}, appendChild() {} };
+const fiveYearDemo = createStageSystem({
+  Date,
+  location: { search: "?ageMode=p12" },
+  sessionStorage: storage(),
+  document: { body: fiveYearDemoBody, getElementById: () => null, createElement: () => ({ setAttribute() {}, appendChild() {}, append() {}, addEventListener() {}, querySelector() { return null; } }) }
+});
+assert.equal(fiveYearDemo.apply({ age: 9 }, { demo: true }), "p12");
+assert.equal(fiveYearDemo.current().exercise.sessionSize, 4);
 
 console.log("etapa.test.js ok");

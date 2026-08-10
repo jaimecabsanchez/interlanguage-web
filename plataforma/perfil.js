@@ -4,6 +4,7 @@
   let username = "";
   let settings = null;
   let learning = null;
+  let gameProgress = { owned:[], hat:"", acc:"" };
   let saveTimer = null;
 
   function unlockedStamps() { return learning.stamps.items.filter(stamp => stamp.unlocked); }
@@ -52,6 +53,9 @@
 
   function renderPersonalization() {
     $("avatarVisual").dataset.avatarTheme = settings.avatarTheme;
+    if (window.ILWorldVisual) {
+      $("avatarVisual").innerHTML = ILWorldVisual.avatar(settings, gameProgress) + '<span class="avatar-plane" aria-hidden="true">' + (window.ILIcon ? ILIcon("plane") : "") + '</span>';
+    }
     document.querySelectorAll("[data-avatar-theme]").forEach(button => {
       if (button.id === "avatarVisual") return;
       button.setAttribute("aria-pressed", String(button.dataset.avatarTheme === settings.avatarTheme));
@@ -117,6 +121,8 @@
       if (learning && learning.isDemo) {
         $("learningDescription").textContent = "Estás aprendiendo a desenvolverte en planes, conversaciones y situaciones cotidianas.";
       }
+      $("profileWorldTitle").textContent = "Personalise";
+      $("profileWorldCopy").textContent = "Use your progress to unlock themes and shape your personal space.";
     }
   }
 
@@ -251,7 +257,8 @@
       settings = ILProfileSettings.setActive(username);
       IL_ETAPA.apply(profile);
       const ageMode = IL_ETAPA.current().mode;
-      learning = await ILProgressData.load(ILAuth, window.ILMission, { ageMode: ageMode });
+      const loaded = await Promise.all([ILProgressData.load(ILAuth, window.ILMission, { ageMode: ageMode }), ILAuth.getProgress()]);
+      learning = loaded[0]; gameProgress = loaded[1] || gameProgress;
       if (!learning) throw new Error("No profile data");
       renderIdentity(profile); renderHighlights(); renderPersonalization(); renderSettings(); renderExperience(ageMode); setupControls(); setupPrivacy();
       $("logout").addEventListener("click", async () => { ILProfileSettings.clearActive(); await ILAuth.signOut(); location.href = "index.html"; });

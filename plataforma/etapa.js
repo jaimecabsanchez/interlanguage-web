@@ -18,6 +18,12 @@
   const STORAGE_KEY = "il_demo_age_mode_v1";
   const MODE_FROM_BAND = { p12: "primary-young", p34: "primary-young", p56: "primary-upper", eso: "secondary" };
   const DEMO_BAND = { "primary-young": "p34", "primary-upper": "p56", secondary: "eso" };
+  const DEMO_STAGES = [
+    { band:"p12", label:"5–7 años" },
+    { band:"p34", label:"8–9 años" },
+    { band:"p56", label:"10–11 años" },
+    { band:"eso", label:"ESO" }
+  ];
   const MODE_ALIAS = {
     p12: "primary-young", p34: "primary-young", p56: "primary-upper", eso: "secondary",
     primaria_inicial: "primary-young", primaria_superior: "primary-upper", primaria: "primary-upper"
@@ -143,6 +149,11 @@
     const candidate = MODE_ALIAS[value] || value;
     return MODES.indexOf(candidate) !== -1 ? candidate : null;
   }
+  function normalBand(value) {
+    if (BANDS.indexOf(value) !== -1) return value;
+    const mode = normalMode(value);
+    return mode ? DEMO_BAND[mode] : null;
+  }
   function ageFor(profile) {
     if (profile && Number.isFinite(Number(profile.age))) return Number(profile.age);
     const birthYear = profile && Number(profile.birth_year);
@@ -169,14 +180,15 @@
     try { return storage && typeof storage[action] === "function" ? storage[action](key, value) : null; }
     catch (error) { return null; }
   }
-  function queryMode() {
+  function queryBand() {
     try {
       const params = new URLSearchParams((env.location && env.location.search) || "");
-      return normalMode(params.get("ageMode") || params.get("etapa"));
+      return normalBand(params.get("ageMode") || params.get("etapa"));
     } catch (error) { return null; }
   }
   function demoMode() {
-    return queryMode() || normalMode(safeStorage(env.sessionStorage, "getItem", STORAGE_KEY));
+    const selectedBand = queryBand() || normalBand(safeStorage(env.sessionStorage, "getItem", STORAGE_KEY));
+    return selectedBand ? MODE_FROM_BAND[selectedBand] : null;
   }
   function isDemo(options) {
     if (options && typeof options.demo === "boolean") return options.demo;
@@ -203,7 +215,7 @@
     if (!demo) { if (existing) existing.remove(); return null; }
     if (existing) {
       const select = existing.querySelector("select");
-      if (select) select.value = active.mode;
+      if (select) select.value = active.band;
       return existing;
     }
     const wrapper = document.createElement("div");
@@ -217,15 +229,15 @@
     const select = document.createElement("select");
     select.id = "ilAgeModeSelect";
     select.setAttribute("aria-label", "Probar interfaz por etapa");
-    MODES.forEach(mode => {
+    DEMO_STAGES.forEach(stage => {
       const option = document.createElement("option");
-      option.value = mode;
-      option.textContent = PROFILES[mode].label;
+      option.value = stage.band;
+      option.textContent = stage.label;
       select.appendChild(option);
     });
-    select.value = active.mode;
+    select.value = active.band;
     select.addEventListener("change", event => {
-      const next = normalMode(event.target.value) || "primary-upper";
+      const next = normalBand(event.target.value) || "p56";
       safeStorage(env.sessionStorage, "setItem", STORAGE_KEY, next);
       clearDemoMission(profile);
       if (env.location && env.location.href && typeof env.location.assign === "function") {
@@ -242,15 +254,15 @@
 
   function apply(profile, options) {
     const demo = demoToolsEnabled(options);
-    const requested = demo ? queryMode() : null;
-    const stored = demo ? normalMode(safeStorage(env.sessionStorage, "getItem", STORAGE_KEY)) : null;
+    const requested = demo ? queryBand() : null;
+    const stored = demo ? normalBand(safeStorage(env.sessionStorage, "getItem", STORAGE_KEY)) : null;
     if (requested && requested !== stored) {
       safeStorage(env.sessionStorage, "setItem", STORAGE_KEY, requested);
       clearDemoMission(profile);
     }
-    const override = demo ? (requested || stored || demoMode()) : null;
-    const mode = override || modeFor(profile);
-    const band = override ? DEMO_BAND[mode] : bandFor(profile);
+    const overrideBand = demo ? (requested || stored || normalBand(demoMode())) : null;
+    const band = overrideBand || bandFor(profile);
+    const mode = overrideBand ? MODE_FROM_BAND[band] : modeFor(profile);
     active = { mode, band, config: PROFILES[mode], exercise: BAND_EXPERIENCE[band] || BAND_EXPERIENCE.p56 };
     if (env.document && env.document.body) {
       env.document.body.dataset.ageMode = mode;
@@ -265,6 +277,7 @@
     MODES,
     STAGES: BANDS,
     PROFILES,
+    DEMO_STAGES,
     BAND_EXPERIENCE,
     apply,
     bandFor,

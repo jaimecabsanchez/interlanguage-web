@@ -23,13 +23,23 @@
     reduceMotion: false,
     textSize: "normal",
     avatarTheme: "navy",
+    avatarSkin: "tone-2",
+    avatarHair: "short",
+    avatarHairColor: "dark",
+    accessory: "hat",
+    background: "school",
     featuredStamp: ""
   });
   const VALID = {
     audioSpeed: [0.75, 0.9, 1],
     dailyGoal: [5, 8, 10, 15],
     textSize: ["normal", "large"],
-    avatarTheme: ["navy", "coral", "aqua"]
+    avatarTheme: ["navy", "coral", "aqua"],
+    avatarSkin: ["tone-1", "tone-2", "tone-3", "tone-4"],
+    avatarHair: ["short", "waves", "curls", "long"],
+    avatarHairColor: ["dark", "brown", "gold", "copper"],
+    accessory: ["hat", "headphones", "backpack"],
+    background: ["school", "city", "space"]
   };
 
   function usernameKey(username) {
@@ -55,6 +65,11 @@
       reduceMotion: typeof value.reduceMotion === "boolean" ? value.reduceMotion : DEFAULTS.reduceMotion,
       textSize: allowed(value.textSize, VALID.textSize, DEFAULTS.textSize),
       avatarTheme: allowed(value.avatarTheme, VALID.avatarTheme, DEFAULTS.avatarTheme),
+      avatarSkin: allowed(value.avatarSkin, VALID.avatarSkin, DEFAULTS.avatarSkin),
+      avatarHair: allowed(value.avatarHair, VALID.avatarHair, DEFAULTS.avatarHair),
+      avatarHairColor: allowed(value.avatarHairColor, VALID.avatarHairColor, DEFAULTS.avatarHairColor),
+      accessory: allowed(value.accessory, VALID.accessory, DEFAULTS.accessory),
+      background: allowed(value.background, VALID.background, DEFAULTS.background),
       featuredStamp: typeof value.featuredStamp === "string" ? value.featuredStamp.slice(0, 64) : ""
     };
   }

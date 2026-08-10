@@ -61,6 +61,8 @@
   .summary-seal svg{width:45px;height:45px}.summary-card h1{font-size:var(--il-fs-2xl);margin-bottom:var(--il-space-2)}.summary-lead{color:var(--il-text-secondary);margin-bottom:var(--il-space-5)}
   .summary-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--il-space-2);margin-bottom:var(--il-space-5)}
   .summary-stat{padding:14px 8px;border-radius:var(--il-radius-md);background:var(--il-surface-secondary)}.summary-stat strong{display:block;font-family:var(--il-font-display);font-size:var(--il-fs-xl);color:var(--il-primary);font-variant-numeric:tabular-nums}.summary-stat span{font-size:var(--il-fs-xs);color:var(--il-text-secondary)}
+  .summary-reward{display:grid;grid-template-columns:46px minmax(0,1fr) auto;align-items:center;gap:var(--il-space-3);margin-bottom:var(--il-space-5);padding:var(--il-space-4);border:1px solid color-mix(in srgb,var(--il-success) 28%,var(--il-border));border-radius:var(--il-radius-lg);background:var(--il-success-soft);text-align:left}
+  .summary-reward[hidden]{display:none}.summary-reward__icon{width:46px;height:46px;display:grid;place-items:center;border-radius:var(--il-radius-md);background:var(--il-success);color:var(--il-on-success)}.summary-reward__icon svg{width:24px;height:24px}.summary-reward b,.summary-reward small{display:block}.summary-reward b{font-family:var(--il-font-display);font-size:var(--il-fs-sm);color:var(--il-jade-deep)}.summary-reward small{margin-top:2px;color:var(--il-text-secondary);font-size:var(--il-fs-xs);line-height:1.4}.summary-reward__link{min-height:var(--il-touch);display:inline-flex;align-items:center;padding:var(--il-space-2) var(--il-space-3);border:1px solid var(--il-success);border-radius:var(--il-radius-sm);background:var(--il-surface);color:var(--il-jade-deep);font-size:var(--il-fs-xs);font-weight:var(--il-weight-bold);text-decoration:none}
   .learned{margin-bottom:var(--il-space-5);text-align:left}.learned h2{font-size:var(--il-fs-base);margin-bottom:var(--il-space-3)}.learned-list{display:flex;flex-wrap:wrap;gap:var(--il-space-2)}.learned-chip{padding:7px 11px;border-radius:var(--il-radius-pill);background:var(--il-primary-soft);color:var(--il-primary);font-size:var(--il-fs-sm);font-weight:var(--il-weight-bold)}
   .review-callout{display:flex;align-items:center;gap:var(--il-space-2);margin-bottom:var(--il-space-5);padding:12px 14px;border-radius:var(--il-radius-md);background:var(--il-warning-soft);color:var(--il-warning-ink);font-weight:var(--il-weight-bold);text-align:left}.review-callout svg{width:20px;height:20px;flex:0 0 auto}
   .summary-actions{display:flex;gap:var(--il-space-3)}.summary-actions .btn{flex:1}
@@ -69,6 +71,7 @@
 
   @media (max-width:520px){
     .lesson{padding-inline:var(--il-space-3)}.lesson-header__top{grid-template-columns:var(--il-touch) minmax(0,1fr)}.lesson-streak{display:none}
+    .summary-reward{grid-template-columns:42px minmax(0,1fr)}.summary-reward__link{grid-column:2;justify-content:center}
     #stage{padding-top:var(--il-space-3)}.summary-stats{gap:6px}.summary-stat{padding-inline:4px}.summary-actions{flex-direction:column}.summary-actions .btn-primary{order:-1}
   }
   @media (min-width:1024px){.lesson{max-width:820px;padding-inline:var(--il-space-6)}.lesson-header{padding-top:var(--il-space-5)}}
@@ -123,6 +126,11 @@
       <div class="summary-stat"><strong id="summaryTime">0 min</strong><span id="summaryTimeLabel">tiempo</span></div>
       <div class="summary-stat"><strong id="summaryLearned">0</strong><span id="summaryLearnedLabel">expresiones</span></div>
     </div>
+    <div class="summary-reward" id="summaryReward" hidden>
+      <span class="summary-reward__icon" aria-hidden="true"><span data-il-icon="route"></span></span>
+      <span><b id="summaryRewardTitle">+20 Puntos de ruta</b><small id="summaryRewardCopy">Tu próximo desbloqueo está más cerca.</small></span>
+      <a class="summary-reward__link" id="summaryWorldLink" href="tienda.html">Ver mi mundo</a>
+    </div>
     <div class="learned" id="learnedBlock" hidden>
       <h2 id="learnedTitle">Expresiones que has practicado</h2>
       <div class="learned-list" id="learnedList"></div>
@@ -140,14 +148,15 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-config.js?v=20260809d"></script>
 <script src="auth-utils.js?v=20260809d"></script>
-<script src="etapa.js?v=20260810b"></script>
+<script src="etapa.js?v=20260810c"></script>
 <script src="auth.js?v=20260809e"></script>
 <script src="contenido.js?v=20260809f"></script>
 <script src="motor/motivacion.js?v=20260809d"></script>
 <script src="motor/matriz.js?v=20260809d"></script>
 <script src="mission-state.js?v=20260810h"></script>
-<script src="profile-settings.js?v=20260809a"></script>
-<script src="motor/engine.js?v=20260810e"></script>
+<script src="profile-settings.js?v=20260810b"></script>
+<script src="world-data.js?v=20260810b"></script>
+<script src="motor/engine.js?v=20260810g"></script>
 <script>
   const $ = id => document.getElementById(id);
   const params = new URLSearchParams(location.search);
@@ -168,6 +177,8 @@
   let reviewCorrect = 0;
   let reviewResolved = [];
   let missionMeta = {};
+  let completionProgress = null;
+  let rewardGranted = false;
 
   function refreshOffline() { $("offline").hidden = navigator.onLine; }
   addEventListener("online", refreshOffline); addEventListener("offline", refreshOffline); refreshOffline();
@@ -308,6 +319,22 @@
     $("reviewErrors").textContent = ageExperience.id === "secondary"
       ? (isReview ? "Review again" : "Review mistakes")
       : (isReview ? "Repasar de nuevo" : "Repasar errores");
+    const reward = $("summaryReward");
+    reward.hidden = isReview || !completionProgress;
+    if (!reward.hidden) {
+      const points = ILWorldData.balance(completionProgress);
+      const next = ILWorldData.nextUnlock(completionProgress, stageName);
+      const nextName = next && ageExperience.id === "secondary" && next.nameEn ? next.nameEn : (next && next.name);
+      $("summaryRewardTitle").textContent = rewardGranted
+        ? (ageExperience.id === "secondary" ? "+20 Route points" : "+20 Puntos de ruta")
+        : (ageExperience.id === "secondary" ? points + " Route points available" : points + " Puntos de ruta disponibles");
+      $("summaryRewardCopy").textContent = next
+        ? (next.remaining === 0
+          ? (ageExperience.id === "secondary" ? nextName + " is ready to unlock." : nextName + " ya se puede desbloquear.")
+          : (ageExperience.id === "secondary" ? next.remaining + " points to unlock " + nextName + "." : "Te faltan " + next.remaining + " puntos para " + nextName + "."))
+        : (ageExperience.id === "secondary" ? "Your current collection is complete." : "Has completado la colección disponible.");
+      $("summaryWorldLink").textContent = ageExperience.id === "secondary" ? "Personalise" : "Ver mi mundo";
+    }
     if (errors) $("reviewMessage").textContent = ageExperience.id === "secondary"
       ? errors + (errors === 1 ? " exercise to review" : " exercises to review")
       : errors + (errors === 1 ? " ejercicio para repasar" : " ejercicios para repasar");
@@ -331,7 +358,7 @@
       const summary = { correct: state.correctCount, total: state.total, allCorrect: state.correctCount === state.total, maxCorrectStreak: state.maxCorrectStreak };
       try {
         const progress = await ILAuth.completeLesson(summary);
-        if (progress) { ILMission.markCompletionRecorded(username, missionMeta.date); $("headerStreak").textContent = progress.streak || 0; }
+        if (progress) { completionProgress = progress; rewardGranted = true; ILMission.markCompletionRecorded(username, missionMeta.date); $("headerStreak").textContent = progress.streak || 0; }
       } catch (error) {
         if (window.ILToast) ILToast("Misión guardada. Sincronizaremos tu progreso cuando sea posible.", { type: "info", duration: 3600 });
       }
@@ -360,6 +387,7 @@
       localizeLessonChrome();
       ILProfileSettings.setActive(username);
       const [placement, progress] = await Promise.all([ILAuth.getPlacement(), ILAuth.getProgress()]);
+      completionProgress = progress;
       $("headerStreak").textContent = progress ? (progress.streak || 0) : 0;
       dailyItems = ILMission.getOrCreateSession({ username, units, banda: stageName, cefr: placement.cefr, matrix: window.IL_MATRIZ, limit: exerciseExperience.sessionSize, unitIds: ageExperience.unitIds, skillPriority: ageExperience.skillPriority });
       if (!dailyItems.length) { errorState("Contenido no disponible", "Todavía no hay ejercicios preparados para tu nivel hoy."); return; }

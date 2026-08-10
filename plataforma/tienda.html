@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tienda · Interlanguage HOME</title>
+<title>Mi mundo · Interlanguage HOME</title>
 <meta name="robots" content="noindex">
 <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -13,138 +13,67 @@
 <link rel="stylesheet" href="app.css?v=20260809d">
 <link rel="stylesheet" href="etapa.css?v=20260809d">
 <link rel="stylesheet" href="shell.css?v=20260809d">
-<style>
-  .shop-hd{display:flex;flex-direction:column;align-items:center;text-align:center;padding:10px 0 4px;}
-  .shop-hd h1{font-size:1.4rem;color:var(--navy);}
-  .bal{display:inline-flex;align-items:center;gap:6px;background:var(--jade-tint);color:var(--jade-deep);font-family:var(--font-display);font-weight:800;font-size:1.1rem;padding:8px 18px;border-radius:100px;margin-top:8px;}
-  .avatar-preview{width:110px;height:110px;border-radius:30px;background:linear-gradient(150deg,var(--coral),var(--coral-deep));display:grid;place-items:center;font-size:3.6rem;margin:16px auto 4px;box-shadow:0 16px 30px -14px var(--coral);position:relative;}
-  .avatar-preview .avatar-base{display:grid;place-items:center;width:62px;height:62px;border-radius:20px;background:var(--il-surface);color:var(--il-primary)}
-  .avatar-preview .avatar-base svg{width:32px;height:32px}
-  .avatar-preview .hat{position:absolute;top:-14px;font-size:2rem;}
-  .avatar-preview .acc{position:absolute;bottom:10px;right:8px;font-size:1.6rem;}
-  .equipped-note{text-align:center;color:var(--soft);font-size:.82rem;min-height:1.2em;margin-bottom:6px;}
-  .cat{display:flex;align-items:center;gap:7px;font-family:var(--font-display);font-weight:800;font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--faint);margin:18px 2px 10px;}
-  .cat [data-il-icon] svg{width:1.15em;height:1.15em;}
-  .shop-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
-  .item{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px 14px;text-align:center;box-shadow:var(--shadow-soft);display:flex;flex-direction:column;align-items:center;gap:6px;}
-  .item .ico{font-size:2.4rem;line-height:1;}
-  .item .nm{font-family:var(--font-display);font-weight:700;color:var(--navy);font-size:.92rem;}
-  .item .price{display:inline-flex;align-items:center;gap:4px;color:var(--jade-deep);font-weight:800;font-size:.9rem;min-height:1.1em;}
-  .item .price .gem-ico{display:inline-flex;line-height:0;}
-  .item .price .gem-ico svg{width:1em;height:1em;}
-  .buy{margin-top:4px;width:100%;min-height:var(--il-touch);border:1px solid var(--il-primary);border-radius:var(--il-radius-sm);padding:10px;font-family:var(--font-display);font-weight:800;font-size:.86rem;background:var(--il-primary);color:#fff;box-shadow:var(--il-shadow-sm);}
-  .buy:hover:not(:disabled){background:var(--il-primary-hover);border-color:var(--il-primary-hover);transform:translateY(-1px)}
-  .buy:disabled{background:var(--surface-2);color:var(--faint);box-shadow:none;}
-  .item.owned .buy{background:var(--jade-tint);color:var(--jade-deep);border-color:rgba(22,132,103,.2);box-shadow:none;}
-  .item.owned{border-color:var(--jade);}
-  .toast{position:fixed;left:50%;bottom:80px;transform:translateX(-50%);background:var(--navy);color:#fff;padding:10px 18px;border-radius:100px;font-weight:700;font-size:.86rem;opacity:0;transition:opacity .2s ease;z-index:60;}
-  .toast.show{opacity:1;}
-</style>
+<link rel="stylesheet" href="world.css?v=20260810c">
 </head>
 <body>
+<div id="loading" class="il-state il-state--loading"><span class="il-spinner" aria-hidden="true"></span><p>Preparando tu espacio…</p></div>
+<div id="errorState" class="il-state" role="alert" hidden>
+  <div class="ic"><span data-il-icon="warning"></span></div><h2>No hemos podido cargar tu espacio</h2>
+  <p>Tu progreso está a salvo. Inténtalo de nuevo.</p><button class="btn btn-primary" type="button" onclick="location.reload()">Reintentar</button>
+</div>
+
 <div id="app" class="hidden app-with-rail">
   <div class="shell">
     <aside class="rail" data-il-rail="perfil"></aside>
     <div class="shell-main">
-  <div class="app-top">
-    <span class="chip-stat streak"><span data-il-icon="flame"></span> <span id="topStreak">0</span></span>
-    <span class="chip-stat coins"><span data-il-icon="gem"></span> <span id="topGems">240</span></span>
-  </div>
+      <main class="app-shell world-shell">
+        <header class="world-header">
+          <div><p class="ui-label" id="worldEyebrow">TU ESPACIO</p><h1 id="worldTitle">Mi mundo</h1><p id="worldSubtitle">Cada misión hace crecer un espacio que es solo tuyo.</p></div>
+          <div class="route-balance" id="routeBalance" aria-label="Puntos de ruta disponibles"><span data-il-icon="route" aria-hidden="true"></span><strong id="routePoints">0</strong><span id="routePointsLabel">Puntos de ruta</span></div>
+        </header>
 
-  <div class="app-shell">
-    <div class="shop-hd">
-      <h1>Tienda</h1>
-      <span class="bal"><span data-il-icon="gem"></span> <span id="gems">240</span> gemas</span>
-      <div class="avatar-preview" id="avatar"><span class="avatar-base" data-il-icon="user"></span><span class="hat" id="hat"></span><span class="acc" id="acc"></span></div>
-      <div class="equipped-note" id="note">Gana gemas practicando y personaliza tu perfil</div>
+        <section class="world-hero" aria-labelledby="worldOverviewTitle">
+          <div class="world-stage" id="worldStage"><div id="worldScene"></div><div class="world-avatar" id="worldAvatar"></div></div>
+          <div class="world-overview">
+            <p class="ui-label" id="nextLabel">PRÓXIMO DESBLOQUEO</p><h2 id="worldOverviewTitle">Flores del camino</h2>
+            <p id="nextDescription">Completa misiones para añadir nuevos detalles a tu espacio.</p>
+            <div class="next-progress" id="nextProgress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span></span></div>
+            <div class="next-copy"><span id="nextBalance">0 de 40 puntos</span><strong id="nextRemaining">Te faltan 40</strong></div>
+            <div class="world-owned" id="worldOwned">1 elemento en tu colección</div>
+          </div>
+        </section>
+
+        <section class="world-section" aria-labelledby="avatarEditorTitle">
+          <div class="world-section__head"><div><p class="ui-label" id="avatarEyebrow">TU PERSONAJE</p><h2 id="avatarEditorTitle">Crea un avatar que se parezca a ti</h2></div><a class="btn btn-ghost" id="backProfile" href="perfil.html">Volver al perfil</a></div>
+          <div class="avatar-editor">
+            <div class="avatar-editor__preview" id="avatarEditorPreview"></div>
+            <div class="avatar-fields">
+              <label class="avatar-field" for="avatarSkin"><span id="skinLabel">Tono de piel</span><select id="avatarSkin" data-avatar-setting="avatarSkin"><option value="tone-1">Claro</option><option value="tone-2">Medio claro</option><option value="tone-3">Medio oscuro</option><option value="tone-4">Oscuro</option></select></label>
+              <label class="avatar-field" for="avatarHair"><span id="hairLabel">Pelo</span><select id="avatarHair" data-avatar-setting="avatarHair"><option value="short">Corto</option><option value="waves">Ondulado</option><option value="curls">Rizado</option><option value="long">Largo</option></select></label>
+              <label class="avatar-field" for="avatarHairColor"><span id="hairColorLabel">Color de pelo</span><select id="avatarHairColor" data-avatar-setting="avatarHairColor"><option value="dark">Negro</option><option value="brown">Castaño</option><option value="gold">Rubio</option><option value="copper">Cobrizo</option></select></label>
+              <label class="avatar-field" for="avatarTheme"><span id="themeLabel">Color principal</span><select id="avatarTheme" data-avatar-setting="avatarTheme"><option value="navy">Azul ruta</option><option value="coral">Coral</option><option value="aqua">Verde agua</option></select></label>
+            </div>
+          </div>
+        </section>
+
+        <section class="world-section" aria-labelledby="catalogTitle">
+          <div class="world-section__head"><div><p class="ui-label" id="catalogEyebrow">HAZ CRECER TU MUNDO</p><h2 id="catalogTitle">Elige tu próximo objetivo</h2></div></div>
+          <div class="catalog-groups" id="catalogGroups"></div>
+        </section>
+      </main>
     </div>
-
-    <div class="cat"><span data-il-icon="shield"></span> Protege tu racha</div>
-    <div class="shop-grid" id="grid-extra"></div>
-    <div class="cat"><span data-il-icon="shirt"></span> Ropa y complementos</div>
-    <div class="shop-grid" id="grid-ropa"></div>
-    <div class="cat"><span data-il-icon="paw"></span> Mascotas</div>
-    <div class="shop-grid" id="grid-mascota"></div>
   </div>
-    </div><!-- /.shell-main -->
-  </div><!-- /.shell -->
-
-  <div class="toast" id="toast"></div>
-
   <nav class="app-nav" data-il-nav="perfil"></nav>
 </div>
 
 <script src="layout.js?v=20260809d"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-config.js?v=20260809d"></script>
-<script src="auth.js?v=20260809d"></script>
-<script>
-  const $ = (id) => document.getElementById(id);
-  let gems = 0;
-  let owned = [];
-
-  const items = [
-    { id:"shield", cat:"extra", ico:"🛡️", nm:"Escudo de racha", price:200, slot:null, desc:"protege tu racha un día" },
-    { id:"double", cat:"extra", ico:"⚡", nm:"XP doble (1 día)", price:150, slot:null },
-    { id:"hat",    cat:"ropa", ico:"🎩", nm:"Sombrero de mago", price:150, slot:"hat" },
-    { id:"glass",  cat:"ropa", ico:"🕶️", nm:"Gafas de sol", price:120, slot:"acc" },
-    { id:"cape",   cat:"ropa", ico:"🦸", nm:"Capa de héroe", price:300, slot:"hat" },
-    { id:"crown",  cat:"ropa", ico:"👑", nm:"Corona dorada", price:450, slot:"hat" },
-    { id:"cat",    cat:"mascota", ico:"🐱", nm:"Gatito", price:250, slot:"acc" },
-    { id:"dragon", cat:"mascota", ico:"🐲", nm:"Dragón bebé", price:500, slot:"acc" }
-  ];
-
-  function render() {
-    $("gems").textContent = gems; $("topGems").textContent = gems;
-    ["extra","ropa","mascota"].forEach(cat => {
-      $("grid-" + cat).innerHTML = items.filter(i => i.cat === cat).map(i => {
-        const has = owned.includes(i.id);
-        const can = gems >= i.price;
-        return `<div class="item ${has ? "owned" : ""}">
-          <div class="ico">${i.ico}</div>
-          <div class="nm">${i.nm}</div>
-          <div class="price">${has ? "" : '<span class="gem-ico" aria-hidden="true">' + ILIcon("gem") + "</span> " + i.price}</div>
-          <button class="buy" data-id="${i.id}" ${has || can ? "" : "disabled"}>
-            ${has ? (i.slot ? "Equipar" : "Comprado") : (can ? "Comprar" : "Sin gemas")}
-          </button></div>`;
-      }).join("");
-    });
-    document.querySelectorAll(".buy").forEach(b => b.onclick = () => act(b.dataset.id));
-  }
-
-  async function act(id) {
-    const it = items.find(x => x.id === id);
-    if (owned.includes(id)) { equip(it); return; }
-    const r = await ILAuth.buyItem(id, it.price);
-    if (!r.ok) { toast("Te faltan " + r.short + " gemas", "err"); return; }
-    gems = r.gems; owned = r.owned;
-    toast("¡" + it.nm + " comprado!", "ok");
-    if (window.ILConfetti) ILConfetti();
-    if (it.slot) equip(it); else render();
-  }
-
-  async function equip(it) {
-    if (it.slot === "hat") { $("hat").textContent = it.ico; await ILAuth.equipItem("hat", it.ico); }
-    if (it.slot === "acc") { $("acc").textContent = it.ico; await ILAuth.equipItem("acc", it.ico); }
-    if (it.slot) $("note").textContent = "¡" + it.nm + " equipado!";
-    render();
-  }
-
-  let tT;
-  function toast(msg, type) {
-    if (window.ILToast) { window.ILToast(msg, { type: type || "info" }); return; }
-    const t = $("toast"); t.textContent = msg; t.classList.add("show"); clearTimeout(tT); tT = setTimeout(() => t.classList.remove("show"), 1600);
-  }
-
-  (async () => {
-    const p = await ILAuth.getProfile();
-    if (!p) { location.href = "index.html"; return; }
-    if (p.is_admin) { location.href = "admin.html"; return; }
-    const pr = await ILAuth.getProgress();
-    if (pr) { gems = pr.gems; owned = pr.owned || []; $("topStreak").textContent = pr.streak || 0; if (pr.hat) $("hat").textContent = pr.hat; if (pr.acc) $("acc").textContent = pr.acc; }
-    $("app").classList.remove("hidden");
-    render();
-  })();
-</script>
+<script src="etapa.js?v=20260810c"></script>
+<script src="auth.js?v=20260809e"></script>
+<script src="profile-settings.js?v=20260810b"></script>
+<script src="world-data.js?v=20260810b"></script>
+<script src="world-visual.js?v=20260810b"></script>
+<script src="world-page.js?v=20260810d"></script>
 </body>
 </html>

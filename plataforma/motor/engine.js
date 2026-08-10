@@ -37,7 +37,23 @@
     "🍎": '<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 17c-6-4-14 0-14 9s6 14 14 14 14-5 14-14-8-13-14-9z" fill="var(--il-secondary)"/><path d="M24 17c0-4 3-7 6-7" fill="none" stroke="var(--il-success)" stroke-width="2.6" stroke-linecap="round"/></svg>',
     "🥛": '<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M18 13h12l2 6v18a2 2 0 0 1-2 2H18a2 2 0 0 1-2-2V19z" fill="#fff" stroke="var(--il-border)" stroke-width="1.6"/><path d="M16.5 21h15v7h-15z" fill="var(--il-primary-soft)"/></svg>',
     "🍞": '<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M12 23c0-6 5-9 12-9s12 3 12 9c2 0 3 1.5 3 3.5S38 30 36 30v6a2 2 0 0 1-2 2H14a2 2 0 0 1-2-2v-6c-2 0-3-1.5-3-3.5S10 23 12 23z" fill="#E4A96B"/></svg>'
+    ,"🥣": '<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M9 23h30c-1 11-6 16-15 16S10 34 9 23Z" fill="var(--il-secondary)"/><path d="M10 23c4-7 24-7 28 0" fill="var(--il-warning-soft)" stroke="var(--il-coral-ink)" stroke-width="2"/><path d="M31 10c-5 4 2 7-3 11" fill="none" stroke="var(--il-success)" stroke-width="2.5" stroke-linecap="round"/></svg>',
+    "🚿": '<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M13 18c0-8 5-12 12-12 6 0 10 4 10 10" fill="none" stroke="var(--il-primary)" stroke-width="4" stroke-linecap="round"/><path d="M29 16h12v7H29Z" fill="var(--il-primary)"/><g stroke="var(--il-focus)" stroke-width="2.5" stroke-linecap="round"><path d="M31 29v5M36 29v8M41 29v5"/></g></svg>',
+    "🛏️": '<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M8 13v27M40 23v17M8 34h32" stroke="var(--il-primary)" stroke-width="4" stroke-linecap="round"/><rect x="11" y="21" width="29" height="13" rx="3" fill="var(--il-primary-soft)"/><rect x="12" y="22" width="11" height="8" rx="3" fill="var(--il-surface)"/></svg>',
+    "🍌": '<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M12 15c3 18 14 25 28 17-6 10-17 13-25 7-8-6-10-15-7-24Z" fill="var(--il-warning)"/><path d="M9 15c0-3 2-5 5-5" fill="none" stroke="var(--il-avatar-hair-brown)" stroke-width="3"/></svg>',
+    "🥚": '<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 7c-8 0-14 15-14 23 0 7 6 11 14 11s14-4 14-11C38 22 32 7 24 7Z" fill="var(--il-surface)" stroke="var(--il-border-strong)" stroke-width="2"/><circle cx="24" cy="29" r="7" fill="var(--il-warning)"/></svg>',
+    "🧀": '<svg viewBox="0 0 48 48" aria-hidden="true"><path d="m9 21 27-11 5 10v18H9Z" fill="var(--il-warning)"/><path d="M9 21h32" stroke="var(--il-warning-ink)" stroke-width="2"/><g fill="var(--il-warning-ink)" opacity=".55"><circle cx="29" cy="28" r="3"/><circle cx="17" cy="34" r="2.5"/></g></svg>'
   };
+  const ILLO_LABEL = { "🎒":"school bag", "✏️":"pencil", "📘":"book", "🪑":"chair", "🍎":"apple", "🥛":"milk", "🍞":"bread", "🥣":"breakfast", "🚿":"shower", "🛏️":"bed", "🍌":"banana", "🥚":"egg", "🧀":"cheese" };
+  function semanticIllo(value) {
+    const key = norm(value);
+    if (/buenos dias|good morning/.test(key)) return '<svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="10" fill="var(--il-warning)"/><g stroke="var(--il-warning)" stroke-width="3" stroke-linecap="round"><path d="M24 5v6M24 37v6M5 24h6M37 24h6M11 11l4 4M33 33l4 4M37 11l-4 4M15 33l-4 4"/></g></svg>';
+    if (/buenas noches|good night/.test(key)) return '<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M31 7a17 17 0 1 0 10 26A19 19 0 0 1 31 7Z" fill="var(--il-primary)"/><circle cx="37" cy="11" r="3" fill="var(--il-warning)"/></svg>';
+    if (/hasta luego|see you/.test(key)) return '<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M9 11h21v28H9Z" fill="var(--il-primary-soft)" stroke="var(--il-primary)" stroke-width="3"/><path d="M23 25h17m-6-6 6 6-6 6" fill="none" stroke="var(--il-secondary)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    if (/hello|teacher|saludo/.test(key)) return '<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M7 9h34v25H20l-9 7 2-7H7Z" fill="var(--il-primary-soft)" stroke="var(--il-primary)" stroke-width="3"/><path d="M15 21h18" stroke="var(--il-secondary)" stroke-width="3" stroke-linecap="round"/></svg>';
+    if (/pencil|lapiz/.test(key)) return ILLO["✏️"];
+    return "";
+  }
   const disableAll = (host, disabled) => host.querySelectorAll("button,input,textarea,select")
     .forEach(control => { control.disabled = !!disabled; });
   const audioSettings = () => window.ILProfileSettings ? window.ILProfileSettings.getActive() : { sound: true, autoplayAudio: true, audioSpeed: 0.9 };
@@ -90,9 +106,12 @@
 
   function singleChoice(host, exercise, withImage, onChange) {
     const options = exercise.opciones || [];
+    const young = !!host.closest(".eng-card--p12");
+    const autoVisuals = options.map(option => semanticIllo(option.texto || ""));
+    const showVisuals = withImage || (young && autoVisuals.every(Boolean));
     let selected = -1;
     let disabled = false;
-    const wrap = el("div", "eng-options" + (withImage ? " has-image" : ""));
+    const wrap = el("div", "eng-options" + (showVisuals ? " has-image" : ""));
 
     function clearJudgement() {
       wrap.querySelectorAll(".eng-opt").forEach(option => {
@@ -104,11 +123,11 @@
       const button = el("button", "eng-opt");
       button.type = "button";
       button.setAttribute("aria-pressed", "false");
-      if (withImage && option.emoji) {
+      if (showVisuals) {
         const visual = el("span", "eng-option-visual");
         visual.setAttribute("aria-hidden", "true");
-        if (ILLO[option.emoji]) { visual.classList.add("has-illo"); visual.innerHTML = ILLO[option.emoji]; }
-        else visual.textContent = option.emoji;
+        const art = (option.emoji && ILLO[option.emoji]) || autoVisuals[index];
+        if (art) { visual.classList.add("has-illo"); visual.innerHTML = art; }
         button.appendChild(visual);
       }
       button.appendChild(el("span", "eng-opt-text", option.texto || ""));
@@ -262,6 +281,11 @@
     const bank = el("div", "eng-word-bank");
     host.appendChild(rows); host.appendChild(bank);
     const rightUsed = index => Object.keys(assignments).some(key => assignments[key] === index);
+    function visualLabel(parent, value) {
+      if (!ILLO[value]) { parent.textContent = value; return; }
+      const art = el("span", "eng-option-visual has-illo"); art.setAttribute("aria-hidden", "true"); art.innerHTML = ILLO[value];
+      const label = el("span", "sr-only", ILLO_LABEL[value] || "image"); parent.append(art, label);
+    }
 
     function redraw() {
       rows.innerHTML = ""; bank.innerHTML = "";
@@ -271,7 +295,8 @@
         row.type = "button"; row.disabled = disabled;
         row.setAttribute("aria-pressed", selectedLeft === leftIndex ? "true" : "false");
         row.appendChild(el("span", "eng-match-left", pair.a));
-        const slot = el("span", "eng-match-slot" + (assignments[leftIndex] != null ? " is-filled" : ""), assignments[leftIndex] != null ? pairs[assignments[leftIndex]].b : (secondaryMode() ? "Not matched" : "Sin pareja"));
+        const slot = el("span", "eng-match-slot" + (assignments[leftIndex] != null ? " is-filled" : ""));
+        if (assignments[leftIndex] != null) visualLabel(slot, pairs[assignments[leftIndex]].b); else slot.textContent = secondaryMode() ? "Not matched" : "Sin pareja";
         row.appendChild(slot);
         row.addEventListener("click", () => {
           if (disabled) return;
@@ -283,7 +308,8 @@
       });
       rights.forEach(right => {
         if (rightUsed(right.index)) return;
-        const button = el("button", "eng-word", right.label); button.type = "button"; button.disabled = disabled;
+        const button = el("button", "eng-word"); button.type = "button"; button.disabled = disabled; visualLabel(button, right.label);
+        button.setAttribute("aria-label", ILLO_LABEL[right.label] || right.label);
         button.addEventListener("click", () => {
           if (disabled || selectedLeft == null) return;
           assignments[selectedLeft] = right.index; selectedLeft = null; redraw(); onChange();
@@ -297,7 +323,7 @@
       getAnswer: () => ({ ...assignments }),
       evaluate: () => baseResult(exercise, {
         correct: pairs.every((pair, index) => assignments[index] === index),
-        correctLabel: pairs.map(pair => pair.a + " — " + pair.b).join(", "),
+        correctLabel: pairs.map(pair => pair.a + " — " + (ILLO_LABEL[pair.b] || pair.b)).join(", "),
         learnedExpressions: pairs.map(pair => pair.a)
       }),
       reveal: result => {
