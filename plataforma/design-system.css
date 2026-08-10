@@ -45,10 +45,22 @@
   --il-avatar-skin-2:#dca982;
   --il-avatar-skin-3:#a96f4f;
   --il-avatar-skin-4:#70452f;
+  --il-avatar-skin-5:#f2c7aa;
+  --il-avatar-skin-6:#c98d67;
+  --il-avatar-skin-7:#8d5a3e;
+  --il-avatar-skin-8:#523424;
   --il-avatar-hair-dark:#2b2628;
   --il-avatar-hair-brown:#67432f;
   --il-avatar-hair-gold:#c49243;
   --il-avatar-hair-copper:#a85135;
+  --il-avatar-hair-ash:#82756d;
+  --il-avatar-hair-red:#793b32;
+  --il-avatar-eye-brown:#5d3d2b;
+  --il-avatar-eye-hazel:#876c3c;
+  --il-avatar-eye-green:#47725f;
+  --il-avatar-eye-blue:#3f6f98;
+  --il-avatar-eye-grey:#64717c;
+  --il-avatar-feature:#4b3b3a;
   --il-avatar-halo:#fff8df;
 
   /* Alias de color compatibles con la plataforma actual */

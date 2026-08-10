@@ -12,7 +12,7 @@
 })(typeof globalThis !== "undefined" ? globalThis : this, function createProfileSettings(storage) {
   "use strict";
 
-  const VERSION = 1;
+  const VERSION = 2;
   const PREFIX = "il_profile_settings_v1_";
   const ACTIVE_KEY = "il_profile_settings_active_v1";
   const DEFAULTS = Object.freeze({
@@ -27,6 +27,15 @@
     avatarHair: "short",
     avatarHairColor: "dark",
     avatarExpression: "smile",
+    avatarFaceShape: "oval",
+    avatarFaceWidth: 2,
+    avatarEyeShape: "almond",
+    avatarEyeColor: "brown",
+    avatarEyeSize: 2,
+    avatarBrowShape: "soft",
+    avatarNoseShape: "soft",
+    avatarNoseLength: 2,
+    avatarMouthShape: "smile",
     avatarTop: "tee",
     avatarAccessory: "none",
     worldBackground: "day",
@@ -42,10 +51,19 @@
     dailyGoal: [5, 8, 10, 15],
     textSize: ["normal", "large"],
     avatarTheme: ["navy", "coral", "aqua"],
-    avatarSkin: ["tone-1", "tone-2", "tone-3", "tone-4"],
-    avatarHair: ["short", "waves", "curls", "long"],
-    avatarHairColor: ["dark", "brown", "gold", "copper"],
+    avatarSkin: ["tone-1", "tone-5", "tone-2", "tone-6", "tone-3", "tone-7", "tone-4", "tone-8"],
+    avatarHair: ["short", "waves", "curls", "long", "bob", "coils", "fade", "braids"],
+    avatarHairColor: ["dark", "brown", "gold", "copper", "ash", "red"],
     avatarExpression: ["smile", "calm", "bright"],
+    avatarFaceShape: ["oval", "round", "soft", "angular"],
+    avatarFaceWidth: [0, 1, 2, 3, 4],
+    avatarEyeShape: ["almond", "round", "soft", "bright"],
+    avatarEyeColor: ["brown", "hazel", "green", "blue", "grey"],
+    avatarEyeSize: [0, 1, 2, 3, 4],
+    avatarBrowShape: ["soft", "straight", "arched", "bold"],
+    avatarNoseShape: ["soft", "round", "button", "defined"],
+    avatarNoseLength: [0, 1, 2, 3, 4],
+    avatarMouthShape: ["smile", "soft", "wide", "calm"],
     avatarTop: ["tee", "hoodie", "sweater", "shirt", "school", "sport", "jacket"],
     avatarAccessory: ["none", "cap", "headphones", "glasses", "backpack", "scarf", "badge"],
     worldBackground: ["day", "sunset", "city", "night"],
@@ -90,6 +108,15 @@
       avatarHair: allowed(value.avatarHair, VALID.avatarHair, DEFAULTS.avatarHair),
       avatarHairColor: allowed(value.avatarHairColor, VALID.avatarHairColor, DEFAULTS.avatarHairColor),
       avatarExpression: allowed(value.avatarExpression, VALID.avatarExpression, DEFAULTS.avatarExpression),
+      avatarFaceShape: allowed(value.avatarFaceShape, VALID.avatarFaceShape, DEFAULTS.avatarFaceShape),
+      avatarFaceWidth: allowed(Number(value.avatarFaceWidth), VALID.avatarFaceWidth, DEFAULTS.avatarFaceWidth),
+      avatarEyeShape: allowed(value.avatarEyeShape, VALID.avatarEyeShape, DEFAULTS.avatarEyeShape),
+      avatarEyeColor: allowed(value.avatarEyeColor, VALID.avatarEyeColor, DEFAULTS.avatarEyeColor),
+      avatarEyeSize: allowed(Number(value.avatarEyeSize), VALID.avatarEyeSize, DEFAULTS.avatarEyeSize),
+      avatarBrowShape: allowed(value.avatarBrowShape, VALID.avatarBrowShape, DEFAULTS.avatarBrowShape),
+      avatarNoseShape: allowed(value.avatarNoseShape, VALID.avatarNoseShape, DEFAULTS.avatarNoseShape),
+      avatarNoseLength: allowed(Number(value.avatarNoseLength), VALID.avatarNoseLength, DEFAULTS.avatarNoseLength),
+      avatarMouthShape: allowed(value.avatarMouthShape, VALID.avatarMouthShape, value.avatarExpression === "calm" ? "calm" : value.avatarExpression === "bright" ? "wide" : DEFAULTS.avatarMouthShape),
       avatarTop: allowed(value.avatarTop, VALID.avatarTop, DEFAULTS.avatarTop),
       avatarAccessory: allowed(value.avatarAccessory, VALID.avatarAccessory, DEFAULTS.avatarAccessory),
       worldBackground: allowed(value.worldBackground, VALID.worldBackground, DEFAULTS.worldBackground),

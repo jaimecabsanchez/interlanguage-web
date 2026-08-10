@@ -9,8 +9,9 @@
 })(typeof globalThis !== "undefined" ? globalThis : this, function () {
   "use strict";
 
-  const skin = value => ({ "tone-1":"var(--il-avatar-skin-1)", "tone-2":"var(--il-avatar-skin-2)", "tone-3":"var(--il-avatar-skin-3)", "tone-4":"var(--il-avatar-skin-4)" }[value] || "var(--il-avatar-skin-2)");
-  const hair = value => ({ dark:"var(--il-avatar-hair-dark)", brown:"var(--il-avatar-hair-brown)", gold:"var(--il-avatar-hair-gold)", copper:"var(--il-avatar-hair-copper)" }[value] || "var(--il-avatar-hair-dark)");
+  const skin = value => ({ "tone-1":"var(--il-avatar-skin-1)", "tone-5":"var(--il-avatar-skin-5)", "tone-2":"var(--il-avatar-skin-2)", "tone-6":"var(--il-avatar-skin-6)", "tone-3":"var(--il-avatar-skin-3)", "tone-7":"var(--il-avatar-skin-7)", "tone-4":"var(--il-avatar-skin-4)", "tone-8":"var(--il-avatar-skin-8)" }[value] || "var(--il-avatar-skin-2)");
+  const hair = value => ({ dark:"var(--il-avatar-hair-dark)", brown:"var(--il-avatar-hair-brown)", gold:"var(--il-avatar-hair-gold)", copper:"var(--il-avatar-hair-copper)", ash:"var(--il-avatar-hair-ash)", red:"var(--il-avatar-hair-red)" }[value] || "var(--il-avatar-hair-dark)");
+  const eye = value => ({ brown:"var(--il-avatar-eye-brown)", hazel:"var(--il-avatar-eye-hazel)", green:"var(--il-avatar-eye-green)", blue:"var(--il-avatar-eye-blue)", grey:"var(--il-avatar-eye-grey)" }[value] || "var(--il-avatar-eye-brown)");
   const theme = value => ({ coral:"var(--il-secondary)", aqua:"var(--il-success)", navy:"var(--il-primary)" }[value] || "var(--il-primary)");
   const set = value => new Set(Array.isArray(value) ? value : []);
 
@@ -18,18 +19,63 @@
     if (style === "long") return '<path d="M49 63c0-34 17-51 42-51s42 18 42 51v73H49Z" fill="'+colour+'"/>';
     if (style === "waves") return '<path d="M50 63c0-33 17-51 41-51 25 0 42 18 42 53-11-4-15-18-25-16-12 3-17-9-28-3-12 7-20 9-30 7Z" fill="'+colour+'"/>';
     if (style === "curls") return '<g fill="'+colour+'"><circle cx="57" cy="45" r="17"/><circle cx="69" cy="27" r="18"/><circle cx="91" cy="22" r="19"/><circle cx="113" cy="29" r="18"/><circle cx="126" cy="49" r="17"/><circle cx="117" cy="68" r="17"/><circle cx="62" cy="68" r="17"/></g>';
+    if (style === "bob") return '<path d="M49 62c0-34 17-51 42-51s42 18 42 51v48l-15-10-8 14-19-9-19 9-8-14-15 10Z" fill="'+colour+'"/>';
+    if (style === "coils") return '<g fill="'+colour+'"><circle cx="52" cy="58" r="18"/><circle cx="55" cy="37" r="18"/><circle cx="70" cy="20" r="18"/><circle cx="91" cy="16" r="19"/><circle cx="112" cy="21" r="18"/><circle cx="127" cy="39" r="18"/><circle cx="130" cy="61" r="18"/><circle cx="117" cy="76" r="17"/><circle cx="65" cy="76" r="17"/></g>';
+    if (style === "fade") return '<path d="M53 59c1-30 16-46 38-46 21 0 36 14 39 42-18-7-31-17-39-29-7 13-20 24-38 33Z" fill="'+colour+'"/>';
+    if (style === "braids") return '<path d="M50 62c0-33 17-50 41-50s41 17 41 50c-13-4-22-13-28-25-12 13-29 21-54 25Z" fill="'+colour+'"/><g fill="none" stroke="'+colour+'" stroke-width="9" stroke-linecap="round"><path d="M58 58c-12 28-8 54-18 78"/><path d="M124 58c12 28 8 54 18 78"/></g><g fill="var(--il-secondary)"><circle cx="40" cy="137" r="5"/><circle cx="142" cy="137" r="5"/></g>';
     return '<path d="M49 63c0-34 17-51 42-51 24 0 41 17 42 49-13-4-20-18-29-18-13 12-31 18-55 20Z" fill="'+colour+'"/>';
   }
-  function face(expression, colour) {
-    const eyes = expression === "bright"
-      ? '<path class="avatar-eye" d="M75 65c3-4 7-4 10 0M99 65c3-4 7-4 10 0" fill="none" stroke="var(--il-text-primary)" stroke-width="3" stroke-linecap="round"/>'
-      : '<path class="avatar-eye" d="M79 64h1M103 64h1" stroke="var(--il-text-primary)" stroke-width="5" stroke-linecap="round"/>';
-    const mouth = expression === "calm"
-      ? '<path d="M85 80h12" stroke="var(--il-text-primary)" stroke-width="2.6" stroke-linecap="round"/>'
-      : expression === "bright"
-        ? '<path d="M82 78c6 9 14 9 20 0Z" fill="var(--il-surface)" stroke="var(--il-text-primary)" stroke-width="2" stroke-linejoin="round"/>'
-        : '<path d="M84 78c5 5 11 5 16 0" fill="none" stroke="var(--il-text-primary)" stroke-width="2.8" stroke-linecap="round"/>';
-    return '<circle cx="55" cy="67" r="8" fill="'+colour+'"/><circle cx="127" cy="67" r="8" fill="'+colour+'"/><circle cx="91" cy="64" r="38" fill="'+colour+'"/>'+eyes+mouth;
+  function hairFront(style, colour) {
+    if (style === "long" || style === "bob") return '<path d="M55 48c9-25 24-34 37-34 19 0 31 10 37 33-17-4-29-14-36-25-8 13-20 22-38 26Z" fill="'+colour+'"/>';
+    if (style === "waves") return '<path d="M53 49c6-25 22-36 39-36 18 0 33 10 38 34-11-8-20 2-29-6-8-7-16 8-27 3-8-4-14 3-21 5Z" fill="'+colour+'"/>';
+    if (style === "curls" || style === "coils") return '<g fill="'+colour+'"><circle cx="62" cy="34" r="14"/><circle cx="80" cy="23" r="15"/><circle cx="99" cy="22" r="15"/><circle cx="117" cy="34" r="14"/></g>';
+    if (style === "fade") return '<path d="M56 47c7-22 20-32 35-32 17 0 29 10 35 29-14-5-25-13-34-24-8 12-20 21-36 27Z" fill="'+colour+'"/>';
+    if (style === "braids") return '<path d="M53 49c6-25 21-36 38-36 19 0 33 11 39 35-16-4-28-14-37-27-8 13-22 23-40 28Z" fill="'+colour+'"/><g fill="none" stroke="var(--il-avatar-halo)" stroke-opacity=".45" stroke-width="2"><path d="M65 30h50M60 39h62M74 20l-12 26M91 15v31M108 20l12 25"/></g>';
+    return '<path d="M54 48c7-25 22-36 38-36 18 0 32 10 38 34-16-4-28-14-36-27-8 14-22 24-40 29Z" fill="'+colour+'"/>';
+  }
+  function faceBase(shape, colour, width) {
+    const scale = .9 + Math.max(0, Math.min(4, Number(width) || 0)) * .05;
+    const base = shape === "angular"
+      ? '<path d="M91 25c25 0 37 15 37 38 0 22-11 36-37 45-26-9-37-23-37-45 0-23 12-38 37-38Z" fill="'+colour+'"/>'
+      : '<ellipse cx="91" cy="65" rx="'+(shape === "round" ? 38 : 35)+'" ry="'+(shape === "round" ? 37 : shape === "soft" ? 39 : 41)+'" fill="'+colour+'"/>';
+    return '<g transform="translate(91 0) scale('+scale+' 1) translate(-91 0)"><ellipse cx="54" cy="67" rx="8" ry="10" fill="'+colour+'"/><ellipse cx="128" cy="67" rx="8" ry="10" fill="'+colour+'"/>'+base+'</g>';
+  }
+  function oneEye(x, shape, colour, size) {
+    const scale = .82 + Math.max(0, Math.min(4, Number(size) || 0)) * .09;
+    const white = shape === "round"
+      ? '<ellipse cx="0" cy="0" rx="8" ry="8" fill="var(--il-surface)" stroke="var(--il-avatar-feature)" stroke-width="1.4"/>'
+      : shape === "soft"
+        ? '<path d="M-9 1c4-7 14-7 18 0-4 5-14 5-18 0Z" fill="var(--il-surface)" stroke="var(--il-avatar-feature)" stroke-width="1.3"/>'
+        : shape === "bright"
+          ? '<path d="M-9 2c4-9 14-9 18 0-5 6-13 6-18 0Z" fill="var(--il-surface)" stroke="var(--il-avatar-feature)" stroke-width="1.5"/>'
+          : '<path d="M-10 1c5-6 15-6 20 0-5 5-15 5-20 0Z" fill="var(--il-surface)" stroke="var(--il-avatar-feature)" stroke-width="1.3"/>';
+    return '<g class="avatar-eye" transform="translate('+x+' 64) scale('+scale+')">'+white+'<circle cx="0" cy="1" r="4.2" fill="'+colour+'"/><circle cx="0" cy="1" r="2.2" fill="var(--il-text-primary)"/><circle cx="-1.4" cy="-.8" r="1" fill="var(--il-surface)"/></g>';
+  }
+  function brows(shape) {
+    if (shape === "straight") return '<path d="M70 51h18M96 51h18" fill="none" stroke="var(--il-avatar-feature)" stroke-width="3" stroke-linecap="round"/>';
+    if (shape === "arched") return '<path d="M70 53c5-8 13-8 18-2M96 51c5-6 13-6 18 2" fill="none" stroke="var(--il-avatar-feature)" stroke-width="3" stroke-linecap="round"/>';
+    if (shape === "bold") return '<path d="M69 53c6-5 13-6 20-2M95 51c7-4 14-3 20 2" fill="none" stroke="var(--il-avatar-feature)" stroke-width="5" stroke-linecap="round"/>';
+    return '<path d="M70 53c6-5 12-5 18-2M96 51c6-3 12-3 18 2" fill="none" stroke="var(--il-avatar-feature)" stroke-width="2.5" stroke-linecap="round"/>';
+  }
+  function nose(shape, length) {
+    const end = 71 + Math.max(0, Math.min(4, Number(length) || 0)) * 1.5;
+    if (shape === "round") return '<path d="M91 67c-4 7-3 11 2 12 4 0 6-2 6-5" fill="none" stroke="var(--il-avatar-feature)" stroke-opacity=".55" stroke-width="2" stroke-linecap="round"/>';
+    if (shape === "button") return '<path d="M87 '+end+'c3 3 6 3 9 0" fill="none" stroke="var(--il-avatar-feature)" stroke-opacity=".55" stroke-width="2" stroke-linecap="round"/>';
+    if (shape === "defined") return '<path d="M92 65c-1 6-3 10-5 '+(end+1)+' 4 4 9 4 12 0" fill="none" stroke="var(--il-avatar-feature)" stroke-opacity=".58" stroke-width="2" stroke-linecap="round"/>';
+    return '<path d="M92 66c-2 5-3 9-1 '+end+' 2 1 4 1 6 0" fill="none" stroke="var(--il-avatar-feature)" stroke-opacity=".5" stroke-width="1.8" stroke-linecap="round"/>';
+  }
+  function mouth(shape) {
+    if (shape === "calm") return '<path d="M84 86h14" fill="none" stroke="var(--il-avatar-feature)" stroke-width="2.6" stroke-linecap="round"/>';
+    if (shape === "soft") return '<path d="M85 85c4 3 9 3 13 0" fill="none" stroke="var(--il-avatar-feature)" stroke-width="2.4" stroke-linecap="round"/>';
+    if (shape === "wide") return '<path d="M80 83c7 9 16 9 23 0Z" fill="var(--il-surface)" stroke="var(--il-avatar-feature)" stroke-width="2" stroke-linejoin="round"/>';
+    return '<path d="M83 83c5 6 12 6 17 0" fill="none" stroke="var(--il-avatar-feature)" stroke-width="2.8" stroke-linecap="round"/>';
+  }
+  function face(settings, colour) {
+    const mouthShape = settings.avatarMouthShape || (settings.avatarExpression === "calm" ? "calm" : settings.avatarExpression === "bright" ? "wide" : "smile");
+    return faceBase(settings.avatarFaceShape || "oval", colour, settings.avatarFaceWidth == null ? 2 : settings.avatarFaceWidth)
+      +oneEye(79, settings.avatarEyeShape || "almond", eye(settings.avatarEyeColor), settings.avatarEyeSize == null ? 2 : settings.avatarEyeSize)
+      +oneEye(103, settings.avatarEyeShape || "almond", eye(settings.avatarEyeColor), settings.avatarEyeSize == null ? 2 : settings.avatarEyeSize)
+      +brows(settings.avatarBrowShape || "soft")+nose(settings.avatarNoseShape || "soft", settings.avatarNoseLength == null ? 2 : settings.avatarNoseLength)+mouth(mouthShape);
   }
   function clothing(top, colour) {
     const base = '<path d="M50 128c8-23 23-34 41-34s33 11 41 34l8 68H42Z" fill="'+colour+'"/>';
@@ -56,9 +102,9 @@
   function avatar(settings, progress, options) {
     settings = settings || {}; options = options || {};
     const skinTone = skin(settings.avatarSkin); const hairTone = hair(settings.avatarHairColor); const bodyTone = theme(settings.avatarTheme);
-    const top = settings.avatarTop || "tee"; const acc = settings.avatarAccessory || "none"; const expression = settings.avatarExpression || "smile";
-    return '<svg class="il-student-avatar'+(options.compact ? ' is-compact' : '')+'" viewBox="0 0 180 260" aria-hidden="true">'
-      +'<g class="avatar-idle">'+backpack(acc)+hairBack(settings.avatarHair || "short", hairTone)+face(expression, skinTone)
+    const top = settings.avatarTop || "tee"; const acc = settings.avatarAccessory || "none"; const style = settings.avatarHair || "short";
+    return '<svg class="il-student-avatar'+(options.compact ? ' is-compact' : '')+(options.portrait ? ' is-portrait' : '')+'" viewBox="'+(options.portrait ? '34 0 114 118' : '0 0 180 260')+'" aria-hidden="true">'
+      +'<g class="avatar-idle">'+backpack(acc)+hairBack(style, hairTone)+face(settings, skinTone)+hairFront(style, hairTone)
       +'<path d="M80 92v15c0 8 22 8 22 0V92" fill="'+skinTone+'"/>'+clothing(top, bodyTone)
       +'<path d="M51 128c-15 16-20 42-18 68M131 128c15 16 20 42 18 68" fill="none" stroke="'+skinTone+'" stroke-width="16" stroke-linecap="round"/>'
       +'<path d="M61 194v44M121 194v44" stroke="var(--il-primary)" stroke-width="21" stroke-linecap="round"/><path d="M45 244h34M104 244h34" stroke="var(--il-text-primary)" stroke-width="17" stroke-linecap="round"/>'

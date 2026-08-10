@@ -9,11 +9,11 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="design-system.css?v=20260810f">
+<link rel="stylesheet" href="design-system.css?v=20260810g">
 <link rel="stylesheet" href="app.css?v=20260809d">
 <link rel="stylesheet" href="etapa.css?v=20260809d">
 <link rel="stylesheet" href="shell.css?v=20260809d">
-<link rel="stylesheet" href="world.css?v=20260810e">
+<link rel="stylesheet" href="world.css?v=20260810f">
 </head>
 <body>
 <div id="loading" class="il-state il-state--loading"><span class="il-spinner" aria-hidden="true"></span><p>Preparando tu mundo…</p></div>
@@ -29,25 +29,29 @@
           <span class="world-level-badge" id="worldLevelBadge"><span data-il-icon="route" aria-hidden="true"></span><span>Jardín nivel 1</span></span>
         </header>
 
-        <section class="world-hero" aria-labelledby="worldOverviewTitle">
-          <div class="world-stage" id="worldStage"><div id="worldScene"></div><div class="world-avatar" id="worldAvatar"></div><div class="world-companion" id="worldCompanion" hidden></div></div>
-          <div class="world-overview">
-            <p class="ui-label" id="growthLabel">TU MUNDO CRECE CONTIGO</p><h2 id="worldOverviewTitle">Jardín nivel 1</h2><p id="growthCopy">Cada misión ayuda a que tu árbol y tu espacio evolucionen.</p>
-            <div class="next-progress" id="levelProgress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span></span></div><p class="level-progress-copy" id="levelProgressCopy">Completa 5 misiones para llegar al nivel 2.</p>
-            <div class="next-unlock"><span class="next-unlock__visual" id="nextUnlockVisual" aria-hidden="true"></span><span><small id="nextUnlockLabel">PRÓXIMO DESBLOQUEO</small><b id="nextUnlockName">Sudadera Explorer</b><span id="nextUnlockRule">Completa 3 misiones</span></span></div>
-          </div>
-        </section>
+        <div class="world-workbench">
+          <aside class="preview-pane" aria-label="Vista previa en tiempo real">
+            <div class="preview-toolbar"><span id="previewLabel">VISTA PREVIA</span><span class="editor-status" id="editorStatus" role="status" aria-live="polite">Guardado</span></div>
+            <div class="world-stage is-avatar-editor" id="worldStage"><div id="worldScene"></div><div class="world-avatar" id="worldAvatar"></div><div class="world-companion" id="worldCompanion" hidden></div></div>
+            <div class="world-overview">
+              <div><p class="ui-label" id="growthLabel">TU MUNDO CRECE CONTIGO</p><h2 id="worldOverviewTitle">Jardín nivel 1</h2><p id="growthCopy">Cada misión ayuda a que tu árbol y tu espacio evolucionen.</p></div>
+              <div><div class="next-progress" id="levelProgress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span></span></div><p class="level-progress-copy" id="levelProgressCopy">Completa 5 misiones para llegar al nivel 2.</p></div>
+              <div class="next-unlock"><span class="next-unlock__visual" id="nextUnlockVisual" aria-hidden="true"></span><span><small id="nextUnlockLabel">PRÓXIMO DESBLOQUEO</small><b id="nextUnlockName">Sudadera Explorer</b><span id="nextUnlockRule">Completa 3 misiones</span></span></div>
+            </div>
+          </aside>
 
-        <section class="customise" aria-labelledby="customiseTitle">
-          <div class="customise__head"><div><p class="ui-label" id="customiseEyebrow">HAZLO TUYO</p><h2 id="customiseTitle">Personalizar</h2></div><p id="customiseHint">Elige una opción y verás el cambio al instante.</p></div>
-          <div class="world-tabs" role="tablist" aria-label="Opciones de personalización">
-            <button id="tab-avatar" type="button" role="tab" aria-selected="true" aria-controls="catalogPanel" data-world-tab="avatar"><span data-il-icon="user"></span><span>Avatar</span></button>
-            <button id="tab-clothing" type="button" role="tab" aria-selected="false" aria-controls="catalogPanel" data-world-tab="clothing" tabindex="-1"><span data-il-icon="shirt"></span><span>Ropa</span></button>
-            <button id="tab-accessory" type="button" role="tab" aria-selected="false" aria-controls="catalogPanel" data-world-tab="accessory" tabindex="-1"><span data-il-icon="star"></span><span>Accesorios</span></button>
-            <button id="tab-world" type="button" role="tab" aria-selected="false" aria-controls="catalogPanel" data-world-tab="world" tabindex="-1"><span data-il-icon="flag"></span><span>Mundo</span></button>
-          </div>
-          <div class="catalog-panel" id="catalogPanel" role="tabpanel" aria-labelledby="tab-avatar" tabindex="0"><div id="catalogSections"></div></div>
-        </section>
+          <section class="customise" aria-labelledby="customiseTitle">
+            <div class="customise__head"><div><p class="ui-label" id="customiseEyebrow">HAZLO TUYO</p><h2 id="customiseTitle">Personalizar</h2></div><p id="customiseHint">Elige una parte y prueba los cambios al instante.</p></div>
+            <div class="world-tabs" role="tablist" aria-label="Opciones de personalización">
+              <button id="tab-avatar" type="button" role="tab" aria-selected="true" aria-controls="catalogPanel" data-world-tab="avatar"><span data-il-icon="user"></span><span>Avatar</span></button>
+              <button id="tab-clothing" type="button" role="tab" aria-selected="false" aria-controls="catalogPanel" data-world-tab="clothing" tabindex="-1"><span data-il-icon="shirt"></span><span>Ropa</span></button>
+              <button id="tab-accessory" type="button" role="tab" aria-selected="false" aria-controls="catalogPanel" data-world-tab="accessory" tabindex="-1"><span data-il-icon="star"></span><span>Accesorios</span></button>
+              <button id="tab-world" type="button" role="tab" aria-selected="false" aria-controls="catalogPanel" data-world-tab="world" tabindex="-1"><span data-il-icon="flag"></span><span>Mundo</span></button>
+            </div>
+            <div class="avatar-tools" id="avatarTools"><div class="feature-nav" id="featureNav" role="tablist" aria-label="Partes del avatar"></div><div class="quick-actions"><button class="btn btn-secondary" id="randomiseAvatar" type="button"><span data-il-icon="refresh"></span><span>Sorpréndeme</span></button><button class="text-action" id="resetAvatar" type="button">Restablecer</button></div></div>
+            <div class="catalog-panel" id="catalogPanel" role="tabpanel" aria-labelledby="tab-avatar" tabindex="0"><div id="catalogSections"></div></div>
+          </section>
+        </div>
       </main>
     </div>
   </div>
@@ -67,10 +71,10 @@
 <script src="auth.js?v=20260809e"></script>
 <script src="motor/motivacion.js?v=20260809d"></script>
 <script src="mission-state.js?v=20260810h"></script>
-<script src="profile-settings.js?v=20260810c"></script>
+<script src="profile-settings.js?v=20260810d"></script>
 <script src="progress-data.js?v=20260810b"></script>
-<script src="world-data.js?v=20260810c"></script>
-<script src="world-visual.js?v=20260810d"></script>
-<script src="world-page.js?v=20260810e"></script>
+<script src="world-data.js?v=20260810d"></script>
+<script src="world-visual.js?v=20260810e"></script>
+<script src="world-page.js?v=20260810f"></script>
 </body>
 </html>
