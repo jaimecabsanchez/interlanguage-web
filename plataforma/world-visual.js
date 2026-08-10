@@ -129,8 +129,19 @@
   }
   function garden(settings, progress, options) {
     options = options || {}; const items = set(options.activeItems || settings.activeWorldItems); const level = options.level || 1;
+    let posts = "";
+    for (let x = 250; x <= 470; x += 26) posts += '<path d="M'+x+' 296v-30h12v30Z"/><path d="M'+x+' 266l6-8 6 8Z"/>';
+    const fence = '<g fill="var(--il-surface)" stroke="var(--il-border-strong)" stroke-width="2">'+posts+'</g><g stroke="var(--il-border-strong)" stroke-width="4" fill="none"><path d="M244 275h236M244 287h236"/></g>';
     return '<svg class="il-world-scene" viewBox="0 0 760 360" role="img" aria-label="Tu mundo de aprendizaje">'+sky(settings.worldBackground, false)
-      +'<path d="M0 246c130-35 235 18 360-8 126-27 250-9 400 33v89H0Z" fill="var(--il-success-soft)"/><path d="M80 283c125-50 211-17 307-5s180-23 291-2" fill="none" stroke="var(--il-border-strong)" stroke-width="14" stroke-linecap="round"/>'+tree(level)
+      +'<g fill="var(--il-surface)" opacity=".9"><ellipse cx="150" cy="64" rx="42" ry="19"/><ellipse cx="114" cy="74" rx="27" ry="13"/><ellipse cx="188" cy="75" rx="26" ry="13"/><ellipse cx="474" cy="50" rx="35" ry="16"/><ellipse cx="512" cy="58" rx="23" ry="11"/></g>'
+      +'<path d="M0 246c130-35 235 18 360-8 126-27 250-9 400 33v89H0Z" fill="var(--il-success-soft)"/>'
+      +'<path d="M0 300c120-26 210 8 330-4 120-12 250-6 430 14v50H0Z" fill="color-mix(in srgb,var(--il-success) 24%,var(--il-surface))"/>'
+      +fence
+      +'<g fill="var(--il-success)"><circle cx="70" cy="300" r="30"/><circle cx="104" cy="293" r="23"/><circle cx="40" cy="305" r="19"/><circle cx="706" cy="300" r="28"/><circle cx="678" cy="296" r="21"/><circle cx="732" cy="307" r="17"/></g>'
+      +'<g fill="var(--il-jade-deep)" opacity=".45"><circle cx="86" cy="307" r="12"/><circle cx="690" cy="307" r="11"/></g>'
+      +'<g fill="var(--il-warning)"><circle cx="56" cy="291" r="5"/><circle cx="94" cy="284" r="5"/><circle cx="700" cy="290" r="5"/><circle cx="724" cy="300" r="5"/></g><g fill="var(--il-secondary)"><circle cx="74" cy="298" r="4"/><circle cx="714" cy="294" r="4"/></g>'
+      +'<g stroke="var(--il-success)" stroke-width="3" stroke-linecap="round" opacity=".85"><path d="M182 322v-12M190 323v-15M198 322v-12"/><path d="M556 320v-12M564 321v-15M572 320v-12"/></g>'
+      +'<path d="M80 283c125-50 211-17 307-5s180-23 291-2" fill="none" stroke="var(--il-border-strong)" stroke-width="12" stroke-linecap="round" opacity=".45"/>'+tree(level)
       +(items.has("world-flowers")?'<g fill="var(--il-secondary)"><circle cx="280" cy="286" r="9"/><circle cx="314" cy="300" r="8"/><circle cx="348" cy="282" r="9"/></g><g stroke="var(--il-success)" stroke-width="4"><path d="M280 295v20M314 308v14M348 291v22"/></g>':'')
       +(items.has("world-bench")?'<g transform="translate(425 225)" stroke="var(--il-primary)" stroke-width="8" stroke-linecap="round"><path d="M0 28h105M7 50h91M17 50l-8 38M87 50l8 38"/></g>':'')
       +(items.has("world-toy-plane")?'<path d="m345 240 43-19-15 36-9-15Z" fill="var(--il-secondary)"/>':'')
