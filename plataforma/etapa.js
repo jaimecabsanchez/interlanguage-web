@@ -37,20 +37,20 @@
       themes: ["school life", "everyday situations"],
       copy: {
         greeting: name => "¡Hola, " + name + "!",
-        ready: "Hoy tienes una misión corta y divertida.",
-        active: "¡Muy bien! Sigue desde donde lo dejaste.",
-        complete: "¡Misión lista! Hoy tu inglés ha avanzado.",
-        comeback: "¡Qué alegría verte! Empezamos con algo sencillo.",
+        ready: "Tu misión de hoy está lista.",
+        active: "Sigue desde donde lo dejaste.",
+        complete: "¡Misión lista!",
+        comeback: "¡Qué bien verte! Empezamos con algo sencillo.",
         missionEyebrow: "TU MISIÓN DE HOY",
         startCta: "Empezar",
         continueCta: "Seguir",
-        reviewCta: "Practicar otra vez",
-        completedCta: "¡Misión lista!",
+        reviewCta: "Repasar",
+        completedCta: "¡Hecho!",
         exercise: "Actividad",
         countJoin: "de",
         pace: "Una actividad cada vez",
         summaryTitle: "¡Misión completada!",
-        summaryLead: "¡Buen trabajo! Has aprendido un poco más de inglés."
+        summaryLead: "¡Buen trabajo!"
       }
     },
     "primary-upper": {
@@ -66,10 +66,10 @@
       themes: ["school life", "friends", "everyday situations"],
       copy: {
         greeting: name => "¡Hola, " + name + "!",
-        ready: "Tienes una misión breve preparada para hoy.",
+        ready: "Tu misión de hoy está preparada.",
         active: "Tu misión está en marcha. Continúa donde la dejaste.",
-        complete: "Misión completada. Hoy ya has avanzado.",
-        comeback: "Qué bien verte de nuevo. Retomamos con una misión breve.",
+        complete: "Misión completada. Hoy has avanzado.",
+        comeback: "Qué bien verte. Retomamos con una misión breve.",
         missionEyebrow: "TU MISIÓN DE HOY",
         startCta: "Empezar misión",
         continueCta: "Continuar",
@@ -79,7 +79,7 @@
         countJoin: "de",
         pace: "Una actividad cada vez",
         summaryTitle: "¡Misión completada!",
-        summaryLead: "Has completado tu misión de hoy y ya sabes un poco más."
+        summaryLead: "Has avanzado un poco más en tu inglés."
       }
     },
     secondary: {

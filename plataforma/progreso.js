@@ -168,10 +168,10 @@
       const box = document.createElement("div"); box.id = "learningYoung"; box.className = "learning-young";
       box.innerHTML =
         '<div class="learning-young__stat"><strong>' + words + '</strong><span>palabras nuevas</span></div>' +
-        '<div class="learning-young__stat"><strong>' + phraseCount + '</strong><span>' + (phraseCount === 1 ? "frase que ya sé decir" : "frases que ya sé decir") + '</span></div>';
+        '<div class="learning-young__stat"><strong>' + phraseCount + '</strong><span>' + (phraseCount === 1 ? "frase" : "frases") + '</span></div>';
       const layout = panelLearning.querySelector(".learning-layout"); panelLearning.insertBefore(box, layout);
     }
-    const phrasesTitle = $("phrasesTitle"); if (phrasesTitle) phrasesTitle.textContent = "Frases que ya sé decir";
+    const phrasesTitle = $("phrasesTitle"); if (phrasesTitle) phrasesTitle.textContent = "Ya sé decir";
     if (!(data.phrases || []).length) { const empty = document.querySelector("#phraseList .phrase-empty"); if (empty) empty.textContent = "¡Tu primera frase está muy cerca!"; }
   }
 

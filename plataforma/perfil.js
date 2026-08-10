@@ -110,7 +110,7 @@
   function renderExperience(mode) {
     if (mode === "primary-young") {
       $("profileEyebrow").textContent = "MI ESPACIO";
-      $("profilePageSubtitle").textContent = "Tu avatar, tus logros y la forma en la que más te gusta aprender.";
+      $("profilePageSubtitle").textContent = "Tu avatar y tus cosas.";
     } else if (mode !== "primary-upper") {
       $("profileEyebrow").textContent = "ACCOUNT & PREFERENCES";
       $("profilePageSubtitle").textContent = "Consulta tu nivel, personaliza la experiencia y gestiona tus preferencias.";

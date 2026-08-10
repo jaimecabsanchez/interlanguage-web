@@ -365,7 +365,7 @@
   TEMPLATES.hablar = (host, exercise, onChange) => {
     const card = el("div", "eng-speaking");
     const phrase = el("p", "eng-speaking-phrase", exercise.frase || ""); phrase.lang = "en";
-    const note = el("p", "eng-speaking-note", "Escucha y repite a tu ritmo. En esta fase no evaluamos tu pronunciación.");
+    const note = el("p", "eng-speaking-note", "Escucha y repite a tu ritmo.");
     const listen = el("button", "btn btn-ghost"); listen.type = "button";
     listen.innerHTML = icon("speaker") + "<span>Escuchar</span>";
     const speakingAudio = audioSettings();
