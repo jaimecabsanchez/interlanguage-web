@@ -106,13 +106,6 @@
 
   function avatar(settings, progress, options) {
     settings = settings || {}; options = options || {};
-    // Avatar ilustrado (láminas propias). Si hay un "look" elegido, se usa la
-    // ilustración; el muñeco vectorial queda como respaldo si no hay lámina.
-    const look = settings.avatarLook;
-    if (!options.ignoreLook && typeof look === "string" && /^look-0[1-9]$/.test(look)) {
-      return '<img class="il-avatar-look'+(options.compact ? ' is-compact' : '')+(options.portrait ? ' is-portrait' : '')
-        +'" src="assets/avatar/'+look+'.png" alt="" draggable="false" loading="lazy">';
-    }
     const skinTone = skin(settings.avatarSkin); const hairTone = hair(settings.avatarHairColor); const bodyTone = theme(settings.avatarTheme);
     const top = settings.avatarTop || "tee"; const acc = settings.avatarAccessory || "none"; const style = settings.avatarHair || "short";
     const defs = '<defs>'
@@ -213,7 +206,7 @@
     if (item.category === "world") return objectThumb(item.visual);
     const settings = Object.assign({ avatarTheme:"navy", avatarSkin:"tone-2", avatarHair:"short", avatarHairColor:"dark", avatarExpression:"smile", avatarTop:"tee", avatarAccessory:"none" }, currentSettings || {});
     if (item.settingKey) settings[item.settingKey] = item.settingValue;
-    return avatar(settings, progress, { compact:true, ignoreLook:true });
+    return avatar(settings, progress, { compact:true });
   }
 
   return { avatar, companion, garden, personalSpace, scene, item };
