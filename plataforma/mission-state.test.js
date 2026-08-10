@@ -18,32 +18,37 @@ let state = M.ensure("lucia", meta);
 assert.equal(state.status, "not_started");
 assert.equal(state.total, 3);
 
+const alternate = { date: meta.date, unitId: "planes", unitTitle: "Plans", itemIds: ["p1", "p2"] };
+state = M.ensure("lucia", alternate);
+assert.equal(state.unitId, "planes", "una sesión vacía cambia con el selector de etapa demo");
+state = M.ensure("lucia", meta);
+
 state = M.begin("lucia", meta, 1000);
 assert.equal(state.status, "in_progress");
-state = M.advance("lucia", { id: "a", correct: true, learnedExpressions: ["Have breakfast"] });
+state = M.advance("lucia", { id: "a", correct: true, learnedExpressions: ["Have breakfast"] }, meta.date);
 assert.equal(state.currentIndex, 1);
 assert.equal(state.correctCount, 1);
 assert.equal(state.points, 10);
 
-state = M.advance("lucia", { id: "b", correct: false });
+state = M.advance("lucia", { id: "b", correct: false }, meta.date);
 assert.deepEqual(state.incorrectIds, ["b"]);
 assert.equal(state.currentCorrectStreak, 0);
 
-state = M.pause("lucia", 6000);
+state = M.pause("lucia", 6000, meta.date);
 assert.equal(state.elapsedMs, 5000);
 state = M.begin("lucia", meta, 9000);
 assert.equal(state.currentIndex, 2, "reanuda en el siguiente ejercicio");
 
-state = M.advance("lucia", { id: "c", correct: true, learnedExpressions: ["Go to school"] });
-state = M.complete("lucia", 11000);
+state = M.advance("lucia", { id: "c", correct: true, learnedExpressions: ["Go to school"] }, meta.date);
+state = M.complete("lucia", 11000, meta.date);
 assert.equal(state.status, "completed");
 assert.equal(M.unitCompletionCount("lucia", "rutina"), 1);
-M.complete("lucia", 12000);
+M.complete("lucia", 12000, meta.date);
 assert.equal(M.unitCompletionCount("lucia", "rutina"), 1, "histórico deduplicado");
 
-state = M.resolveErrors("lucia", ["b"]);
+state = M.resolveErrors("lucia", ["b"], meta.date);
 assert.deepEqual(state.incorrectIds, []);
-M.markCompletionRecorded("lucia");
+M.markCompletionRecorded("lucia", meta.date);
 assert.equal(M.get("lucia", "2026-08-09").completionRecorded, true);
 
 const units = [{ ejercicios: [
@@ -64,4 +69,4 @@ const scoped = M.getOrCreateSession({ username: "marta", date: "2026-08-10", uni
 assert.deepEqual(new Set(scoped.map(item => item.id)), new Set(["t1", "t2"]), "la sesión respeta la unidad del perfil");
 assert.equal(scoped[0].habilidad, "grammar", "la prioridad resuelve candidatos equivalentes");
 
-console.log("mission-state: 17 comprobaciones correctas");
+console.log("mission-state: 18 comprobaciones correctas");

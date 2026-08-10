@@ -64,7 +64,9 @@ body[data-age-mode="primary-young"] .learning-metrics{grid-template-columns:repe
 body[data-age-mode="primary-young"] .learning-metric{min-height:142px}
 body[data-age-mode="primary-young"] .skills-section{padding-right:0;padding-bottom:var(--il-space-7);border-right:0;border-bottom:1px solid var(--il-border)}
 body[data-age-mode="primary-young"] .progress-tab{font-size:var(--il-fs-sm)}
-body[data-age-mode="primary-young"] .week-day__dot{min-width:42px;min-height:42px}
+/* Los días son indicadores, no controles. Un diámetro compacto evita que la
+   semana fuerce el ancho de las tarjetas en tablet y escritorio estrecho. */
+body[data-age-mode="primary-young"] .week-day__dot{width:32px;height:32px;min-width:32px;min-height:32px}
 
 body[data-age-mode="primary-young"] .profile-columns{grid-template-columns:1fr;max-width:780px;margin-inline:auto}
 body[data-age-mode="primary-young"] .profile-hero{grid-template-columns:auto minmax(0,1fr);padding:var(--il-space-8)}
@@ -151,7 +153,9 @@ body[data-age-mode="secondary"] .avatar-visual>svg{width:42px;height:42px}
 body[data-age-mode="secondary"] .avatar-plane{width:34px;height:34px}
 body[data-age-mode="secondary"] .profile-section{padding:var(--il-space-5);border-radius:var(--il-radius-md)}
 body[data-age-mode="secondary"] .nemo-guide{display:none}
-body[data-age-mode="secondary"] .personalization-library{grid-template-columns:repeat(2,minmax(0,1fr))}
+/* La sección ya ocupa media columna del perfil. Una lista única preserva
+   anchura útil para nombre, descripción y estado en ESO. */
+body[data-age-mode="secondary"] .personalization-library{grid-template-columns:1fr}
 body[data-age-mode="secondary"] .setting-row{min-height:64px}
 
 @media (max-width:900px){
@@ -161,6 +165,7 @@ body[data-age-mode="secondary"] .setting-row{min-height:64px}
 }
 
 @media (max-width:600px){
+  .home-grid>*{min-width:0}
   .age-mode-switcher{top:auto;right:8px;bottom:calc(var(--il-nav-height) + 10px + env(safe-area-inset-bottom));padding-left:8px}
   .age-mode-switcher label{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
   .age-mode-switcher select{max-width:152px}

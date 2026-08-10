@@ -18,7 +18,7 @@
   }
 
   function renderHeader(data) {
-    $("studentName").textContent = firstName(data.profile);
+    $("studentName").textContent = firstName(data.profile) + (ageMode === "primary-young" ? "!" : "");
     $("studentLevel").textContent = (data.placement && data.placement.placed ? data.placement.label : data.profile.level) || "Nivel por descubrir";
     $("studentSessions").textContent = data.lessons;
     if (ageMode === "primary-young") {
@@ -207,7 +207,7 @@
       if (profile.is_admin) { location.href = "admin.html"; return; }
       if (profile.must_change_password) { location.href = "cambiar-clave.html"; return; }
       ILProfileSettings.setActive(profile.username || "");
-      IL_ETAPA.apply(profile); ageMode = IL_ETAPA.current().mode; snapshot = await ILProgressData.load(ILAuth, window.ILMission); if (!snapshot) throw new Error("No progress snapshot");
+      IL_ETAPA.apply(profile); ageMode = IL_ETAPA.current().mode; snapshot = await ILProgressData.load(ILAuth, window.ILMission, { ageMode: ageMode }); if (!snapshot) throw new Error("No progress snapshot");
       renderHeader(snapshot); renderWeek(snapshot); renderLearning(snapshot); renderStamps(snapshot); setupTabs(); setupDialog();
       if (ageMode === "primary-young") applyYoung(snapshot);
       if (snapshot.isDemo && sessionStorage.getItem("il_demo_strip_off") !== "1") $("demoStrip").hidden = false;

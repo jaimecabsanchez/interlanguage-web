@@ -89,7 +89,8 @@
     const date = meta.date || isoDay();
     let state = get(username, date);
     const ids = uniq(meta.itemIds);
-    if (!state || (ids.length && state.itemIds.join("|") !== ids.join("|") && state.status === "not_started")) {
+    const sessionChanged = state && ids.length && state.itemIds.join("|") !== ids.join("|");
+    if (!state || (sessionChanged && state.completedCount === 0)) {
       state = blank({ ...meta, date: date, itemIds: ids });
     } else {
       if (meta.unitId) state.unitId = meta.unitId;
@@ -109,8 +110,8 @@
     return save(username, state);
   }
 
-  function pause(username, now) {
-    const state = get(username);
+  function pause(username, now, date) {
+    const state = get(username, date);
     if (!state) return null;
     const stamp = Number(now) || Date.now();
     if (state.activeStartedAt) state.elapsedMs += Math.max(0, stamp - state.activeStartedAt);
@@ -118,16 +119,16 @@
     return save(username, state);
   }
 
-  function elapsed(username, now) {
-    const state = get(username);
+  function elapsed(username, now, date) {
+    const state = get(username, date);
     if (!state) return 0;
     const stamp = Number(now) || Date.now();
     return Math.max(0, state.elapsedMs + (state.activeStartedAt ? stamp - state.activeStartedAt : 0));
   }
 
-  function advance(username, result) {
+  function advance(username, result, date) {
     result = result || {};
-    const state = get(username);
+    const state = get(username, date || result.date);
     if (!state || state.status === "completed") return state;
     const itemId = result.id || state.itemIds[state.currentIndex];
     const correct = !!result.correct;
@@ -158,8 +159,8 @@
     }
   }
 
-  function complete(username, now) {
-    let state = pause(username, now) || get(username);
+  function complete(username, now, date) {
+    let state = pause(username, now, date) || get(username, date);
     if (!state) return null;
     state.status = "completed";
     state.currentIndex = state.total;
@@ -170,8 +171,8 @@
     return state;
   }
 
-  function markCompletionRecorded(username) {
-    const state = get(username);
+  function markCompletionRecorded(username, date) {
+    const state = get(username, date);
     if (!state) return null;
     state.completionRecorded = true;
     return save(username, state);
@@ -181,8 +182,8 @@
   function unitCompletionCount(username, unitId) {
     return history(username).filter(entry => entry.unitId === unitId).length;
   }
-  function resolveErrors(username, ids) {
-    const state = get(username);
+  function resolveErrors(username, ids, date) {
+    const state = get(username, date);
     if (!state) return null;
     const resolved = new Set(ids || []);
     state.incorrectIds = state.incorrectIds.filter(id => !resolved.has(id));

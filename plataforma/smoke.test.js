@@ -32,7 +32,9 @@ ok("Migración 0001 presente", m1.length > 0);
 ok("0001 activa RLS", /enable row level security/i.test(m1));
 
 // 5) Cabeceras de seguridad base
-const headers = read("_headers") || "";
+// Cloudflare Pages publica `web-publica` como raíz; las cabeceras deben
+// comprobarse allí, no en la raíz interna del repositorio.
+const headers = read("web-publica/_headers") || read("_headers") || "";
 ["Strict-Transport-Security", "X-Content-Type-Options", "X-Frame-Options"].forEach(h =>
   ok("_headers incluye " + h, headers.includes(h)));
 

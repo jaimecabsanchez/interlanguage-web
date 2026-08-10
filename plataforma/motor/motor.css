@@ -104,7 +104,6 @@
 .eng-feedback-icon svg{width:16px;height:16px;color:var(--il-surface)}
 .eng-feedback-message{margin:var(--il-space-2) 0 0;color:inherit}
 .eng-feedback-context{margin:var(--il-space-2) 0 0;padding-left:var(--il-space-3);border-left:3px solid currentColor;font-weight:var(--il-weight-semibold)}
-.eng-feedback-points{display:inline-flex;margin-top:var(--il-space-3);padding:5px 9px;border-radius:var(--il-radius-pill);background:var(--il-surface);font-weight:var(--il-weight-extrabold);font-size:var(--il-fs-sm)}
 
 @keyframes eng-card-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 @keyframes eng-feedback-in{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}

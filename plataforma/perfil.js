@@ -114,6 +114,9 @@
     } else if (mode !== "primary-upper") {
       $("profileEyebrow").textContent = "ACCOUNT & PREFERENCES";
       $("profilePageSubtitle").textContent = "Consulta tu nivel, personaliza la experiencia y gestiona tus preferencias.";
+      if (learning && learning.isDemo) {
+        $("learningDescription").textContent = "Estás aprendiendo a desenvolverte en planes, conversaciones y situaciones cotidianas.";
+      }
     }
   }
 
@@ -248,7 +251,7 @@
       settings = ILProfileSettings.setActive(username);
       IL_ETAPA.apply(profile);
       const ageMode = IL_ETAPA.current().mode;
-      learning = await ILProgressData.load(ILAuth, window.ILMission);
+      learning = await ILProgressData.load(ILAuth, window.ILMission, { ageMode: ageMode });
       if (!learning) throw new Error("No profile data");
       renderIdentity(profile); renderHighlights(); renderPersonalization(); renderSettings(); renderExperience(ageMode); setupControls(); setupPrivacy();
       $("logout").addEventListener("click", async () => { ILProfileSettings.clearActive(); await ILAuth.signOut(); location.href = "index.html"; });

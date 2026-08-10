@@ -25,6 +25,7 @@
     return copy;
   };
   const icon = name => window.ILIcon ? window.ILIcon(name) : "";
+  const secondaryMode = () => document.body && document.body.dataset.ageMode === "secondary";
 
   // Ilustraciones propias para las opciones (sustituyen a los emojis del contenido).
   // Clave = el emoji que trae el contenido. Colores de marca; se enmarcan en un círculo por CSS.
@@ -129,7 +130,9 @@
     function addState(node, type) {
       const state = el("span", "eng-state-icon");
       state.innerHTML = icon(type === "correct" ? "check" : "close");
-      state.setAttribute("aria-label", type === "correct" ? "Respuesta correcta" : "Respuesta incorrecta");
+      state.setAttribute("aria-label", secondaryMode()
+        ? (type === "correct" ? "Correct answer" : "Incorrect answer")
+        : (type === "correct" ? "Respuesta correcta" : "Respuesta incorrecta"));
       node.appendChild(state);
     }
     return {
@@ -170,7 +173,7 @@
     if (exercise.opciones && exercise.opciones.length) return singleChoice(host, exercise, false, onChange);
     const input = el("input", "eng-input");
     input.type = "text"; input.autocomplete = "off"; input.autocapitalize = "none";
-    input.setAttribute("aria-label", "Escribe tu respuesta");
+    input.setAttribute("aria-label", secondaryMode() ? "Type your answer" : "Escribe tu respuesta");
     input.addEventListener("input", () => { input.classList.remove("is-correct", "is-incorrect"); onChange(); });
     input.addEventListener("focus", () => setTimeout(() => input.scrollIntoView({ block: "center", behavior: "smooth" }), 120));
     host.appendChild(input);
@@ -190,7 +193,7 @@
         if (!result.correct && result.final) {
           const solution = el("p", "eng-solution");
           solution.innerHTML = icon("check") + "<span></span>";
-          solution.lastChild.textContent = "Respuesta correcta: " + result.correctLabel;
+          solution.lastChild.textContent = (secondaryMode() ? "Correct answer: " : "Respuesta correcta: ") + result.correctLabel;
           host.appendChild(solution);
         }
       },
@@ -205,7 +208,7 @@
     const pool = shuffle((exercise.palabras || []).map((word, index) => ({ word, index })));
     let disabled = false;
     const line = el("div", "eng-order-line");
-    line.setAttribute("aria-label", "Frase que estás formando");
+    line.setAttribute("aria-label", secondaryMode() ? "Sentence you are building" : "Frase que estás formando");
     const bank = el("div", "eng-word-bank");
     host.appendChild(line); host.appendChild(bank);
 
@@ -215,11 +218,11 @@
       answer.forEach((poolIndex, position) => {
         const chip = el("button", "eng-word is-placed", pool[poolIndex].word);
         chip.type = "button"; chip.disabled = disabled;
-        chip.setAttribute("aria-label", "Quitar " + pool[poolIndex].word);
+        chip.setAttribute("aria-label", (secondaryMode() ? "Remove " : "Quitar ") + pool[poolIndex].word);
         chip.addEventListener("click", () => { if (!disabled) { answer.splice(position, 1); redraw(); onChange(); } });
         line.appendChild(chip);
       });
-      if (!answer.length) line.appendChild(el("span", "eng-order-empty", "Selecciona las palabras en orden"));
+      if (!answer.length) line.appendChild(el("span", "eng-order-empty", secondaryMode() ? "Choose the words in order" : "Selecciona las palabras en orden"));
       pool.forEach((entry, poolIndex) => {
         if (answer.includes(poolIndex)) return;
         const chip = el("button", "eng-word", entry.word); chip.type = "button"; chip.disabled = disabled;
@@ -241,7 +244,7 @@
       }),
       reveal: result => {
         line.classList.add(result.correct ? "is-correct" : "is-incorrect");
-        if (!result.correct && result.final) host.appendChild(el("p", "eng-solution", "Respuesta correcta: " + result.correctLabel));
+        if (!result.correct && result.final) host.appendChild(el("p", "eng-solution", (secondaryMode() ? "Correct answer: " : "Respuesta correcta: ") + result.correctLabel));
       },
       setDisabled: value => { disabled = !!value; disableAll(host, disabled); },
       focus: () => { const target = host.querySelector("button"); if (target) target.focus(); },
@@ -268,7 +271,7 @@
         row.type = "button"; row.disabled = disabled;
         row.setAttribute("aria-pressed", selectedLeft === leftIndex ? "true" : "false");
         row.appendChild(el("span", "eng-match-left", pair.a));
-        const slot = el("span", "eng-match-slot" + (assignments[leftIndex] != null ? " is-filled" : ""), assignments[leftIndex] != null ? pairs[assignments[leftIndex]].b : "Sin pareja");
+        const slot = el("span", "eng-match-slot" + (assignments[leftIndex] != null ? " is-filled" : ""), assignments[leftIndex] != null ? pairs[assignments[leftIndex]].b : (secondaryMode() ? "Not matched" : "Sin pareja"));
         row.appendChild(slot);
         row.addEventListener("click", () => {
           if (disabled) return;
@@ -363,19 +366,20 @@
   };
 
   TEMPLATES.hablar = (host, exercise, onChange) => {
+    const secondary = secondaryMode();
     const card = el("div", "eng-speaking");
     const phrase = el("p", "eng-speaking-phrase", exercise.frase || ""); phrase.lang = "en";
-    const note = el("p", "eng-speaking-note", "Escucha y repite a tu ritmo.");
+    const note = el("p", "eng-speaking-note", secondary ? "Listen and repeat at your own pace." : "Escucha y repite a tu ritmo.");
     const listen = el("button", "btn btn-ghost"); listen.type = "button";
-    listen.innerHTML = icon("speaker") + "<span>Escuchar</span>";
+    listen.innerHTML = icon("speaker") + "<span>" + (secondary ? "Listen" : "Escuchar") + "</span>";
     const speakingAudio = audioSettings();
-    if (!speakingAudio.sound) { listen.disabled = true; listen.title = "Activa el sonido en Perfil para escuchar esta frase."; listen.setAttribute("aria-label", "Audio desactivado. Actívalo en Perfil."); }
+    if (!speakingAudio.sound) { listen.disabled = true; listen.title = secondary ? "Enable sound in Profile to play this phrase." : "Activa el sonido en Perfil para escuchar esta frase."; listen.setAttribute("aria-label", secondary ? "Audio disabled. Enable it in Profile." : "Audio desactivado. Actívalo en Perfil."); }
     const setListenText = text => { const label = listen.querySelector("span"); if (label) label.textContent = text; };
     listen.addEventListener("click", () => speak(exercise.frase, {
-      onStart: () => { setListenText("Reproduciendo…"); listen.setAttribute("aria-pressed", "true"); },
-      onEnd: () => { setListenText("Repetir"); listen.setAttribute("aria-pressed", "false"); onChange(); },
-      onDisabled: () => { setListenText("Audio desactivado"); },
-      onError: () => { setListenText("Reintentar audio"); onChange(); }
+      onStart: () => { setListenText(secondary ? "Playing…" : "Reproduciendo…"); listen.setAttribute("aria-pressed", "true"); },
+      onEnd: () => { setListenText(secondary ? "Replay" : "Repetir"); listen.setAttribute("aria-pressed", "false"); onChange(); },
+      onDisabled: () => { setListenText(secondary ? "Audio disabled" : "Audio desactivado"); },
+      onError: () => { setListenText(secondary ? "Try audio again" : "Reintentar audio"); onChange(); }
     }));
     card.appendChild(phrase); card.appendChild(note); card.appendChild(listen); host.appendChild(card);
     return {
@@ -389,7 +393,7 @@
     };
   };
 
-  function renderFeedback(panel, type, title, message, context, points) {
+  function renderFeedback(panel, type, title, message, context) {
     panel.className = "eng-feedback is-visible is-" + type;
     panel.innerHTML = "";
     const heading = el("div", "eng-feedback-title");
@@ -400,11 +404,11 @@
     panel.appendChild(heading);
     if (message) panel.appendChild(el("p", "eng-feedback-message", message));
     if (context) { const example = el("p", "eng-feedback-context", context); example.lang = "en"; panel.appendChild(example); }
-    if (points) panel.appendChild(el("span", "eng-feedback-points", "+" + points + " puntos"));
   }
 
   function render(container, exercise, options) {
     options = options || {};
+    const secondary = options.stage === "eso";
     container.innerHTML = "";
     const templateFactory = TEMPLATES[exercise.tipo];
     if (!templateFactory) {
@@ -425,19 +429,24 @@
     const audioText = exercise.tipo === "hablar" ? "" : (exercise.audio || "");
     if (audioText) {
       const audio = el("button", "eng-audio"); audio.type = "button";
-      audio.innerHTML = '<span class="eng-audio-waves" aria-hidden="true"><i></i><i></i><i></i></span>' + icon("speaker") + '<span class="eng-audio-label">Escuchar</span>';
-      audio.setAttribute("aria-label", "Escuchar audio del ejercicio");
+      audio.innerHTML = '<span class="eng-audio-waves" aria-hidden="true"><i></i><i></i><i></i></span>' + icon("speaker") + '<span class="eng-audio-label">' + (secondary ? "Listen" : "Escuchar") + '</span>';
+      audio.setAttribute("aria-label", secondary ? "Listen to the exercise audio" : "Escuchar audio del ejercicio");
       audio.setAttribute("aria-pressed", "false");
       const exerciseAudio = audioSettings();
-      if (!exerciseAudio.sound) { audio.disabled = true; audio.title = "Activa el sonido en Perfil para escuchar este audio."; audio.setAttribute("aria-label", "Audio desactivado. Actívalo en Perfil."); audio.querySelector(".eng-audio-label").textContent = "Audio desactivado"; }
+      if (!exerciseAudio.sound) {
+        audio.disabled = true;
+        audio.title = secondary ? "Enable sound in Profile to play this audio." : "Activa el sonido en Perfil para escuchar este audio.";
+        audio.setAttribute("aria-label", secondary ? "Audio disabled. Enable it in Profile." : "Audio desactivado. Actívalo en Perfil.");
+        audio.querySelector(".eng-audio-label").textContent = secondary ? "Audio disabled" : "Audio desactivado";
+      }
       audio.addEventListener("click", () => speak(audioText, {
         onStart: () => {
           audio.classList.add("is-playing"); audio.setAttribute("aria-pressed", "true");
-          audio.querySelector(".eng-audio-label").textContent = "Reproduciendo…";
+          audio.querySelector(".eng-audio-label").textContent = secondary ? "Playing…" : "Reproduciendo…";
         },
         onEnd: () => {
           audio.classList.remove("is-playing"); audio.setAttribute("aria-pressed", "false");
-          audio.querySelector(".eng-audio-label").textContent = "Repetir";
+          audio.querySelector(".eng-audio-label").textContent = secondary ? "Replay" : "Repetir";
         },
         onDisabled: () => {
           audio.classList.remove("is-playing"); audio.setAttribute("aria-pressed", "false");
@@ -445,7 +454,7 @@
         },
         onError: () => {
           audio.classList.remove("is-playing"); audio.setAttribute("aria-pressed", "false");
-          audio.querySelector(".eng-audio-label").textContent = "Reintentar";
+          audio.querySelector(".eng-audio-label").textContent = secondary ? "Try again" : "Reintentar";
           if (root.isConnected && window.ILToast) window.ILToast("No hemos podido reproducir el audio.", { type: "err" });
         }
       }));
@@ -458,7 +467,7 @@
     const footer = el("div", "eng-footer");
     const feedback = el("div", "eng-feedback");
     feedback.setAttribute("role", "status"); feedback.setAttribute("aria-live", "polite");
-    const action = el("button", "btn btn-primary btn-block", "Comprobar"); action.type = "button"; action.disabled = true;
+    const action = el("button", "btn btn-primary btn-block", secondary ? "Check" : "Comprobar"); action.type = "button"; action.disabled = true;
     footer.appendChild(feedback); footer.appendChild(action); root.appendChild(footer); container.appendChild(root);
 
     let state = "ready";
@@ -480,8 +489,8 @@
       template.reveal(result);
       template.setDisabled(true);
       action.disabled = false;
-      if (options.lastOne) action.textContent = "Finalizar misión";
-      else action.innerHTML = 'Continuar <span aria-hidden="true">→</span>';
+      if (options.lastOne) action.textContent = secondary ? "Finish session" : "Finalizar misión";
+      else action.innerHTML = (secondary ? "Continue" : "Continuar") + ' <span aria-hidden="true">→</span>';
       action.onclick = () => {
         state = "continuing"; action.disabled = true;
         if (typeof options.onNext === "function") options.onNext(result);
@@ -507,21 +516,25 @@
       result = template.evaluate();
       if (result.correct) {
         const successCopy = (exercise.feedback && exercise.feedback.correct) ||
-          (result.correctLabel ? "La respuesta correcta es “" + result.correctLabel + "”." : "Has resuelto la actividad correctamente.");
-        renderFeedback(feedback, "success", "¡Muy bien!", successCopy, result.context, 10);
+          (result.correctLabel
+            ? (secondary ? "The correct answer is “" : "La respuesta correcta es “") + result.correctLabel + "”."
+            : (secondary ? "You solved the activity correctly." : "Has resuelto la actividad correctamente."));
+        renderFeedback(feedback, "success", secondary ? "Great work!" : "¡Muy bien!", successCopy, result.context);
         if (typeof options.onFeedback === "function") options.onFeedback("success");
         resolve(true);
       } else if (attempts === 1) {
         state = "retry"; lastAnswer = signature(template.getAnswer());
         template.reveal({ ...result, final: false }); template.setDisabled(false);
-        const hint = (exercise.feedback && exercise.feedback.incorrect) || "Revisa tu respuesta y prueba una vez más.";
-        renderFeedback(feedback, "retry", "Casi.", hint, "", 0);
+        const hint = (exercise.feedback && exercise.feedback.incorrect) || (secondary ? "Check your answer and try once more." : "Revisa tu respuesta y prueba una vez más.");
+        renderFeedback(feedback, "retry", secondary ? "Almost." : "Casi.", hint, "");
         if (typeof options.onFeedback === "function") options.onFeedback("retry");
-        action.textContent = "Comprobar de nuevo"; action.disabled = true;
+        action.textContent = secondary ? "Check again" : "Comprobar de nuevo"; action.disabled = true;
         setTimeout(() => template.focus(), 0);
       } else {
-        const solution = result.correctLabel ? "La respuesta correcta es “" + result.correctLabel + "”." : "Revisa la solución antes de continuar.";
-        renderFeedback(feedback, "error", "Vamos a verlo.", solution + (result.explanation ? " " + result.explanation : ""), result.context, 0);
+        const solution = result.correctLabel
+          ? (secondary ? "The correct answer is “" : "La respuesta correcta es “") + result.correctLabel + "”."
+          : (secondary ? "Review the solution before you continue." : "Revisa la solución antes de continuar.");
+        renderFeedback(feedback, "error", secondary ? "Let’s review it." : "Vamos a verlo.", solution + (result.explanation ? " " + result.explanation : ""), result.context);
         if (typeof options.onFeedback === "function") options.onFeedback("error");
         resolve(false);
       }

@@ -18,6 +18,7 @@ assert.equal(demo.accuracy, 77);
 assert.equal(demo.expressionsMastered, 12);
 assert.equal(demo.familyEvidence.exercisesWeek, 31);
 assert.equal(demo.week.count, 4, "la semana demo procede de la fuente central");
+assert.equal(Math.max(...demo.week.practiced) <= 3, true, "la semana demo nunca completa días posteriores a hoy");
 assert.equal(demo.skills.length, 6);
 assert.equal(demo.skills.find(s => s.id === "writing").percent, null);
 assert.equal(demo.phrases[0], "I get up at seven.");
@@ -44,7 +45,20 @@ assert.equal(real.wordsLearned, null, "no inventa palabras en cuentas reales");
 assert.equal(real.skills.every(s => s.percent === null), true);
 assert.equal(real.profileSummary.levelProgress, null, "no inventa progreso de nivel en cuentas reales");
 assert.equal(real.comeback, true);
+const secondary = P.buildSnapshot({
+  isDemo: false,
+  ageMode: "secondary",
+  profile: { username: "leo" },
+  progress: { lessons: 2 },
+  week: { goal: 5, count: 1, practiced: [0] },
+  focusMissions: 2,
+  now: "2026-08-06T12:00:00Z"
+});
+assert.equal(secondary.stamps.items.some(s => s.id === "morning-explorer"), false, "ESO no recibe un logro infantil de rutinas matinales");
+assert.equal(secondary.stamps.items.find(s => s.id === "weekend-planner").percent, 40);
 assert.equal(P.detectComeback(["2026-08-01", "2026-08-02"]), false);
 assert.equal(P.countWeek(["2026-08-03", "2026-08-04"], 0, "2026-08-06T12:00:00Z"), 2);
+const mondayDemo = P.normalizeWeek({ username: "lucia" }, null, true, "2026-08-10T12:00:00Z");
+assert.deepEqual(mondayDemo, { goal: 5, count: 1, practiced: [0] }, "el lunes no inventa actividad futura");
 
-console.log("progress-data: 22 comprobaciones correctas");
+console.log("progress-data: 26 comprobaciones correctas");

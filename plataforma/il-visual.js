@@ -86,6 +86,10 @@
       '<path d="M18 45H54" ' + P + '/>' +
       '<path d="M27 45a9 9 0 0 1 18 0Z" fill="var(--il-primary)"/>' +
       '<path d="M36 27v-4M25.5 30.5l-2.6-2.6M46.5 30.5l2.6-2.6" ' + P + '/>',
+    "weekend-planner":
+      '<rect x="22" y="26" width="28" height="22" rx="4" ' + P + '/>' +
+      '<path d="M22 33h28M29 23v6M43 23v6M28 39h8M28 43h13" ' + P + '/>' +
+      '<path d="m43 37 5-2.2-2 5-1-2Z" fill="var(--il-primary)"/>',
     "word-collector":
       '<path d="M24 27h24a3 3 0 0 1 3 3v11a3 3 0 0 1-3 3H36l-6 5v-5h-6a3 3 0 0 1-3-3V30a3 3 0 0 1 3-3Z" ' + P + '/>' +
       '<path d="M30 34h13M30 38h9" ' + P + '/>',

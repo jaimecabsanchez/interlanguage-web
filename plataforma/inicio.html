@@ -62,7 +62,7 @@
   @media (min-width:1024px){
     .home{display:grid;grid-template-columns:var(--il-rail-width) minmax(0,1fr);gap:clamp(28px,4vw,52px);align-items:start;padding:var(--il-space-7) var(--il-space-7) var(--il-space-9)}
     .rail{display:flex;flex-direction:column;position:sticky;top:var(--il-space-6)}.app-nav{display:none}.profile-link{display:none}
-    .home-grid{grid-template-columns:minmax(0,2fr) minmax(280px,1fr);align-items:start}.insights{position:sticky;top:var(--il-space-6)}.home-greeting{padding-top:0}
+    .home-grid{grid-template-columns:minmax(0,2fr) minmax(296px,1fr);align-items:start}.insights{position:sticky;top:var(--il-space-6)}.home-greeting{padding-top:0}
   }
   @media (max-width:600px){.student-pill.level{display:none}.home-greeting{align-items:flex-start}.daily-mission h2{font-size:1.5rem}.stamp-body{grid-template-columns:64px minmax(0,1fr)}.stamp-mark{width:62px;height:62px}.stamp-mark svg{width:28px;height:28px}}
   @media (max-width:390px){.home{padding-inline:var(--il-space-3)}.student-pill{padding-inline:9px}.profile-link{display:none}.daily-mission{padding:var(--il-space-5)}.insight-card{padding:var(--il-space-4)}.week-day__dot{width:29px;height:29px}.mission-progress-copy span:last-child{display:none}}
@@ -70,7 +70,7 @@
   body[data-stage="eso"] .mission-eyebrow{color:var(--il-text-secondary)}
   @media (prefers-reduced-motion:reduce){.daily-mission{animation:none}.mission-plane,.week-progress span,.stamp-bar span{transition:none}.stamp-mark{transform:none}}
 </style>
-<link rel="stylesheet" href="age-mode.css?v=20260810g">
+<link rel="stylesheet" href="age-mode.css?v=20260810i">
 </head>
 <body>
 <div class="il-offline" id="offline" hidden><span data-il-icon="wifiOff" aria-hidden="true"></span> Sin conexión.</div>
@@ -113,7 +113,7 @@
           <a class="mission-review" id="missionReview" href="leccion.html?mode=errors" hidden>Repasar</a>
           <div class="mission-context">
             <span class="mission-context__icon" aria-hidden="true"><span data-il-icon="book"></span></span>
-            <p>Basado en lo trabajado esta semana en clase.<span class="teacher-note" id="teacherNote" hidden>Repaso recomendado por tu teacher.</span></p>
+            <p id="missionContextCopy">Basado en lo trabajado esta semana en clase.<span class="teacher-note" id="teacherNote" hidden>Repaso recomendado por tu teacher.</span></p>
           </div>
         </section>
 
@@ -130,12 +130,12 @@
           </section>
 
           <section class="insight-card next-stamp" id="stampCard" aria-labelledby="stampTitle">
-            <div class="insight-head"><div class="insight-title"><span class="insight-title__icon" aria-hidden="true"><span data-il-icon="stamp"></span></span><div><p class="ui-label">Próximo sello</p><h2 id="stampTitle">Morning Explorer</h2></div></div></div>
+            <div class="insight-head"><div class="insight-title"><span class="insight-title__icon" aria-hidden="true"><span data-il-icon="stamp"></span></span><div><p class="ui-label" id="stampEyebrow">Próximo sello</p><h2 id="stampTitle">Morning Explorer</h2></div></div></div>
             <div class="stamp-body">
               <div class="stamp-mark" aria-hidden="true"><span data-il-icon="plane"></span></div>
-              <div class="stamp-copy"><h3 id="stampRemaining">Te faltan 5 sesiones</h3><p class="stamp-count" id="stampCount" hidden></p><p>Completa misiones sobre tu rutina diaria.</p><div class="stamp-bar" id="stampBar" role="progressbar" aria-valuemin="0" aria-valuemax="5" aria-valuenow="0" aria-label="Progreso hacia Morning Explorer"><span></span></div></div>
+              <div class="stamp-copy"><h3 id="stampRemaining">Te faltan 5 sesiones</h3><p class="stamp-count" id="stampCount" hidden></p><p id="stampDescription">Completa misiones sobre tu rutina diaria.</p><div class="stamp-bar" id="stampBar" role="progressbar" aria-valuemin="0" aria-valuemax="5" aria-valuenow="0" aria-label="Progreso hacia Morning Explorer"><span></span></div></div>
             </div>
-            <p class="stamp-criterion">Los sellos reconocen lo que aprendes.</p>
+            <p class="stamp-criterion" id="stampCriterion">Los sellos reconocen lo que aprendes.</p>
           </section>
         </aside>
       </div>
@@ -145,7 +145,7 @@
 </div>
 
 <script src="layout.js?v=20260809d"></script>
-<script src="il-visual.js?v=20260810a"></script>
+<script src="il-visual.js?v=20260810b"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-config.js?v=20260809d"></script>
 <script src="auth-utils.js?v=20260809d"></script>
@@ -153,8 +153,8 @@
 <script src="contenido.js?v=20260809f"></script>
 <script src="auth.js?v=20260809e"></script>
 <script src="motor/matriz.js?v=20260809d"></script>
-<script src="mission-state.js?v=20260809f"></script>
-<script src="progress-data.js?v=20260809f"></script>
+<script src="mission-state.js?v=20260810h"></script>
+<script src="progress-data.js?v=20260810b"></script>
 <script src="profile-settings.js?v=20260809a"></script>
 <script>
   const $ = id => document.getElementById(id);
@@ -215,7 +215,7 @@
     $("missionPaceText").textContent = experience.copy.pace;
   }
 
-  function renderWeek(week) {
+  function renderWeek(week, experience) {
     const labels = ["L", "M", "X", "J", "V", "S", "D"];
     const names = ["lunes", "martes", "miércoles", "jueves", "viernes", "sábado", "domingo"];
     const todayIndex = (new Date().getDay() + 6) % 7;
@@ -235,15 +235,30 @@
     });
     const progress = Math.min(100, count / goal * 100);
     $("weekProgress").style.setProperty("--week-progress", progress + "%"); $("weekProgress").setAttribute("aria-valuemax", goal); $("weekProgress").setAttribute("aria-valuenow", count); $("weekProgress").setAttribute("aria-label", count + " de " + goal + " sesiones esta semana");
-    if (count >= goal) $("weekReward").lastElementChild.textContent = "¡Has conseguido el sello Weekly Explorer!";
+    if (count >= goal) $("weekReward").lastElementChild.textContent = experience.id === "secondary"
+      ? "Weekly Explorer achieved."
+      : "¡Has conseguido el sello Weekly Explorer!";
   }
 
-  function renderStamp(username, unit) {
-    const mark = document.querySelector(".stamp-mark"); if (mark && window.ILVisual) mark.innerHTML = ILVisual.stamp("morning-explorer", { locked: false });
+  function renderStamp(username, unit, experience) {
+    const isSecondary = experience.id === "secondary";
+    const stampId = isSecondary ? "weekend-planner" : "morning-explorer";
+    const stampTitle = isSecondary ? "Weekend Planner" : "Morning Explorer";
+    const mark = document.querySelector(".stamp-mark"); if (mark && window.ILVisual) mark.innerHTML = ILVisual.stamp(stampId, { locked: false });
     const target = 5; const current = Math.min(target, ILMission.unitCompletionCount(username, unit ? unit.id : "")); const remaining = Math.max(0, target - current);
-    $("stampRemaining").textContent = remaining === 0 ? "¡Sello conseguido!" : ("Te " + (remaining === 1 ? "falta 1 sesión" : "faltan " + remaining + " sesiones"));
+    $("stampEyebrow").textContent = isSecondary ? "Next achievement" : "Próximo sello";
+    $("stampTitle").textContent = stampTitle;
+    $("stampDescription").textContent = isSecondary
+      ? "Complete sessions about real-life plans and conversations."
+      : "Completa misiones sobre tu rutina diaria.";
+    $("stampCriterion").textContent = isSecondary
+      ? "Achievements recognise English you can use."
+      : "Los sellos reconocen lo que aprendes.";
+    $("stampRemaining").textContent = isSecondary
+      ? (remaining === 0 ? "Achievement unlocked" : (remaining + (remaining === 1 ? " session to go" : " sessions to go")))
+      : (remaining === 0 ? "¡Sello conseguido!" : ("Te " + (remaining === 1 ? "falta 1 sesión" : "faltan " + remaining + " sesiones")));
     $("stampCount").textContent = current + "/" + target;
-    $("stampBar").style.setProperty("--stamp-progress", (current / target * 100) + "%"); $("stampBar").setAttribute("aria-valuenow", current); $("stampBar").setAttribute("aria-label", current + " de " + target + " sesiones para Morning Explorer");
+    $("stampBar").style.setProperty("--stamp-progress", (current / target * 100) + "%"); $("stampBar").setAttribute("aria-valuenow", current); $("stampBar").setAttribute("aria-label", isSecondary ? (current + " of " + target + " sessions towards " + stampTitle) : (current + " de " + target + " sesiones para " + stampTitle));
   }
 
   (async () => {
@@ -275,6 +290,12 @@
       $("level").textContent = (placement && placement.placed ? placement.label : profile.level) || "Explorer";
       $("missionEyebrowText").textContent = experience.copy.missionEyebrow;
       $("missionTitle").textContent = titleFor(unit); $("missionOutcome").textContent = outcomeFor(unit);
+      if (experience.id === "secondary") {
+        $("missionOutcome").textContent = "Practise how to suggest plans, respond and organise a day out with friends.";
+        $("missionContextCopy").childNodes[0].nodeValue = "Based on this week’s classwork.";
+        $("weeklyTitle").textContent = "Weekly goal";
+        $("weekReward").lastElementChild.textContent = "Complete 5 sessions to unlock Weekly Explorer.";
+      }
       const exerciseLabel = experience.copy.exercise.toLowerCase();
       $("activityCount").textContent = session.length + " " + exerciseLabel + (session.length === 1 ? "" : (exerciseLabel === "actividad" ? "es" : "s")); $("missionTime").textContent = experience.sessionLabel;
       const skills = Array.from(new Set(session.map(item => item.habilidad).filter(Boolean))).slice(0, 4); $("skillList").innerHTML = "";
@@ -336,7 +357,7 @@
       }
 
       ILLayout.mount();
-      renderWeek(week); renderStamp(username, unit);
+      renderWeek(week, experience); renderStamp(username, unit, experience);
       $("loading").hidden = true; $("app").classList.remove("hidden");
     } catch (error) {
       $("loading").hidden = true; $("errorState").hidden = false;
