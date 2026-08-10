@@ -44,3 +44,16 @@ body[data-stage="eso"] .preview-pane,body[data-stage="eso"] .customise,body[data
 @media(prefers-reduced-motion:reduce){.next-progress span,.world-stage>div:first-child,.world-avatar,.world-companion,.trait-choice,.compact-option{transition:none}.world-stage .avatar-idle,.world-stage .avatar-eye,.world-stage .world-tree,.unlock-dialog__glow{animation:none}}
 html[data-il-reduce-motion="true"] .world-stage .avatar-idle,html[data-il-reduce-motion="true"] .world-stage .avatar-eye,html[data-il-reduce-motion="true"] .world-stage .world-tree,html[data-il-reduce-motion="true"] .unlock-dialog__glow{animation:none}
 @media(max-width:760px){.catalog-panel{scroll-margin-top:345px}}
+
+/* ===== Avatar ilustrado (láminas PNG) + selector "Elige tu explorador" ===== */
+.il-avatar-look{display:block;width:100%;height:100%;object-fit:contain;object-position:center bottom}
+.world-tabs.is-looks{grid-template-columns:repeat(2,1fr)}
+.world-tabs.is-looks [data-world-tab="clothing"],.world-tabs.is-looks [data-world-tab="accessory"]{display:none}
+.feature-nav:empty{display:none;margin:0;padding:0}
+.look-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--il-space-2);margin-top:var(--il-space-3)}
+.look-choice{position:relative;padding:5px;border:2px solid var(--il-border);border-radius:var(--il-radius-md);background:linear-gradient(160deg,var(--il-primary-soft),var(--il-success-soft));cursor:pointer;transition:border-color var(--il-transition-fast),transform var(--il-transition-fast),box-shadow var(--il-transition-fast)}
+.look-choice:hover{border-color:var(--il-border-strong);transform:translateY(-2px);box-shadow:var(--il-shadow-sm)}
+.look-choice.is-selected{border-color:var(--il-success);box-shadow:0 0 0 3px color-mix(in srgb,var(--il-success) 20%,transparent)}
+.look-choice__visual{display:block;aspect-ratio:3/4;overflow:hidden;border-radius:var(--il-radius-sm)}
+.look-choice__visual img{width:100%;height:100%;object-fit:contain;object-position:center bottom;display:block}
+body[data-stage="eso"] .look-choice{background:var(--il-surface-secondary)}
