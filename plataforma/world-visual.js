@@ -38,7 +38,12 @@
     const base = shape === "angular"
       ? '<path d="M91 25c25 0 37 15 37 38 0 22-11 36-37 45-26-9-37-23-37-45 0-23 12-38 37-38Z" fill="'+colour+'"/>'
       : '<ellipse cx="91" cy="65" rx="'+(shape === "round" ? 38 : 35)+'" ry="'+(shape === "round" ? 37 : shape === "soft" ? 39 : 41)+'" fill="'+colour+'"/>';
-    return '<g transform="translate(91 0) scale('+scale+' 1) translate(-91 0)"><ellipse cx="54" cy="67" rx="8" ry="10" fill="'+colour+'"/><ellipse cx="128" cy="67" rx="8" ry="10" fill="'+colour+'"/>'+base+'</g>';
+    // Volumen 2.5D: luz suave arriba-izquierda, sombra en el borde derecho y mejillas.
+    const shade = '<ellipse cx="79" cy="54" rx="26" ry="24" fill="url(#ilFaceLight)"/>'
+      +'<path d="M120 43c11 15 11 44 0 61" fill="var(--il-primary)" opacity=".05"/>'
+      +'<ellipse cx="72" cy="77" rx="7.5" ry="5" fill="var(--il-secondary)" opacity=".24"/>'
+      +'<ellipse cx="110" cy="77" rx="7.5" ry="5" fill="var(--il-secondary)" opacity=".24"/>';
+    return '<g transform="translate(91 0) scale('+scale+' 1) translate(-91 0)"><ellipse cx="54" cy="67" rx="8" ry="10" fill="'+colour+'"/><ellipse cx="128" cy="67" rx="8" ry="10" fill="'+colour+'"/>'+base+shade+'</g>';
   }
   function oneEye(x, shape, colour, size) {
     const scale = .82 + Math.max(0, Math.min(4, Number(size) || 0)) * .09;
@@ -103,11 +108,22 @@
     settings = settings || {}; options = options || {};
     const skinTone = skin(settings.avatarSkin); const hairTone = hair(settings.avatarHairColor); const bodyTone = theme(settings.avatarTheme);
     const top = settings.avatarTop || "tee"; const acc = settings.avatarAccessory || "none"; const style = settings.avatarHair || "short";
-    return '<svg class="il-student-avatar'+(options.compact ? ' is-compact' : '')+(options.portrait ? ' is-portrait' : '')+'" viewBox="'+(options.portrait ? '34 0 114 118' : '0 0 180 260')+'" aria-hidden="true">'
+    const defs = '<defs>'
+      +'<radialGradient id="ilFaceLight" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="var(--il-surface)" stop-opacity=".42"/><stop offset="1" stop-color="var(--il-surface)" stop-opacity="0"/></radialGradient>'
+      +'<linearGradient id="ilBodyShade" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--il-surface)" stop-opacity=".28"/><stop offset=".5" stop-color="var(--il-surface)" stop-opacity="0"/><stop offset="1" stop-color="var(--il-primary)" stop-opacity=".2"/></linearGradient>'
+      +'<linearGradient id="ilLegShade" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="var(--il-surface)" stop-opacity=".16"/><stop offset="1" stop-color="var(--il-primary)" stop-opacity=".18"/></linearGradient>'
+      +'</defs>';
+    return '<svg class="il-student-avatar'+(options.compact ? ' is-compact' : '')+(options.portrait ? ' is-portrait' : '')+'" viewBox="'+(options.portrait ? '34 0 114 118' : '0 0 180 260')+'" aria-hidden="true">'+defs
       +'<g class="avatar-idle">'+backpack(acc)+hairBack(style, hairTone)+face(settings, skinTone)+hairFront(style, hairTone)
-      +'<path d="M80 92v15c0 8 22 8 22 0V92" fill="'+skinTone+'"/>'+clothing(top, bodyTone)
+      +'<path d="M67 27c9-9 27-12 42-5" fill="none" stroke="var(--il-surface)" stroke-width="4" stroke-linecap="round" opacity=".16"/>'
+      +'<path d="M80 92v15c0 8 22 8 22 0V92" fill="'+skinTone+'"/><path d="M80 100c6 6 16 6 22 0v6c0 8-22 8-22 0Z" fill="var(--il-primary)" opacity=".08"/>'
+      +clothing(top, bodyTone)
+      +'<path d="M50 128c8-23 23-34 41-34s33 11 41 34l8 68H42Z" fill="url(#ilBodyShade)"/>'
       +'<path d="M51 128c-15 16-20 42-18 68M131 128c15 16 20 42 18 68" fill="none" stroke="'+skinTone+'" stroke-width="16" stroke-linecap="round"/>'
-      +'<path d="M61 194v44M121 194v44" stroke="var(--il-primary)" stroke-width="21" stroke-linecap="round"/><path d="M45 244h34M104 244h34" stroke="var(--il-text-primary)" stroke-width="17" stroke-linecap="round"/>'
+      +'<circle cx="33" cy="196" r="9" fill="'+skinTone+'"/><circle cx="149" cy="196" r="9" fill="'+skinTone+'"/>'
+      +'<path d="M61 194v44M121 194v44" stroke="var(--il-primary)" stroke-width="21" stroke-linecap="round"/><path d="M61 196v40M121 196v40" stroke="url(#ilLegShade)" stroke-width="21" stroke-linecap="round"/>'
+      +'<path d="M52 240h18c9 0 15 4 15 9 0 3-2 5-6 5H52ZM110 240h18c9 0 15 4 15 9 0 3-2 5-6 5h-27Z" fill="'+bodyTone+'"/>'
+      +'<path d="M49 252h37M104 252h37" stroke="var(--il-surface)" stroke-width="5" stroke-linecap="round"/>'
       +accessory(acc, hairTone)+'</g></svg>';
   }
 
