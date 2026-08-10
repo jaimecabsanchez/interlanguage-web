@@ -100,7 +100,7 @@
         complete: "Misión completada. Hoy has avanzado.",
         comeback: "Qué bien verte. Retomamos con una misión breve.",
         missionEyebrow: "TU MISIÓN DE HOY",
-        startCta: "Empezar misión",
+        startCta: "Empezar",
         continueCta: "Continuar",
         reviewCta: "Repasar errores",
         completedCta: "Misión completada",

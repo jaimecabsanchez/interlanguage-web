@@ -37,11 +37,10 @@ body[data-age-mode="primary-young"] .daily-mission::after{
 body[data-age-mode="primary-young"] .daily-mission>*{position:relative;z-index:1}
 body[data-age-mode="primary-young"] .daily-mission h2{font-size:clamp(1.9rem,1.5rem + 1.5vw,2.55rem)}
 body[data-age-mode="primary-young"] .mission-outcome{max-width:46ch;font-size:var(--il-fs-base)}
-body[data-age-mode="primary-young"] .mission-cta{min-height:60px;font-size:var(--il-fs-lg)}
-body[data-age-mode="primary-young"] .mission-plane{width:34px;height:34px;top:-4px}
+body[data-age-mode="primary-young"] .mission-cta{min-height:62px;font-size:var(--il-fs-lg)}
+body[data-age-mode="primary-young"] .mission-plane{width:34px;height:34px}
 body[data-age-mode="primary-young"] .mission-plane svg{width:34px;height:34px}
-body[data-age-mode="primary-young"] .route-step::after{width:18px;height:18px;right:-9px}
-body[data-age-mode="primary-young"] .meta-item,body[data-age-mode="primary-young"] .skill-chip{padding:9px 12px}
+body[data-age-mode="primary-young"] .route-node{width:26px;height:26px}
 body[data-age-mode="primary-young"] .insight-card{box-shadow:none}
 body[data-age-mode="primary-young"] .stamp-criterion{display:none}
 
@@ -247,13 +246,8 @@ body[data-age-mode="primary-young"] .week-progress{ height:11px; }
 body[data-age-mode="primary-young"] .mission-route__track .route-step{ height:6px; }
 body[data-age-mode="primary-young"] .week-day__dot{ font-size:var(--il-fs-sm); border-width:2.5px; }
 
-/* — BOTÓN principal ligeramente más expresivo (sin estridencias) — */
-body[data-age-mode="primary-young"] .mission-cta{
-  border-radius:var(--il-radius-xl);
-  box-shadow:0 14px 26px -12px color-mix(in srgb, var(--il-secondary) 60%, transparent);
-}
-body[data-age-mode="primary-young"] .mission-cta:hover{ transform:translateY(-2px); }
-body[data-age-mode="primary-young"] .mission-cta:active{ transform:translateY(0) scale(.98); }
+/* — BOTÓN principal: hereda el botón coral físico de la base (solo redondeo mayor) — */
+body[data-age-mode="primary-young"] .mission-cta{ border-radius:var(--il-radius-xl); }
 
 /* — MOVIMIENTO sutil: el avión "flota" despacio (solo young, respeta reduced-motion) — */
 @media (prefers-reduced-motion:no-preference){
@@ -277,13 +271,18 @@ body[data-age-mode="primary-young"] .mission-cta:not(.is-complete){ background:v
 body[data-age-mode="primary-young"] .mission-cta:not(.is-complete):hover{ background:var(--il-secondary-hover); }
 body[data-age-mode="primary-young"] .mission-nemo{ font-size:var(--il-fs-base); }
 body[data-age-mode="primary-young"] .week-note{ font-size:var(--il-fs-lg); }
-/*   Sello más grande y protagonista, con contador simple — */
-body[data-age-mode="primary-young"] .stamp-body{ grid-template-columns:96px minmax(0,1fr); }
-body[data-age-mode="primary-young"] .stamp-mark{ width:92px; height:92px; }
-body[data-age-mode="primary-young"] .stamp-mark svg{ width:44px; height:44px; }
+/*   Sello grande y protagonista (hereda el sello centrado de la base) — */
+body[data-age-mode="primary-young"] .stamp-mark{ width:120px; height:120px; }
 
-/* — ESO: un punto más sobrio y directo (refuerza el contraste entre etapas) — */
-body[data-age-mode="secondary"] .daily-mission::after{ display:none; }
+/* — ESO: más sobrio y directo (refuerza el contraste entre etapas) — */
+body[data-age-mode="secondary"] .daily-mission{ background:var(--il-surface); }
+body[data-age-mode="secondary"] .daily-mission::before{ background:linear-gradient(90deg,var(--il-primary),var(--il-success)); }
+body[data-age-mode="secondary"] .mission-eyebrow{ background:var(--il-surface-secondary); color:var(--il-text-secondary); }
+body[data-age-mode="secondary"] .mission-illo{ display:none; }
+body[data-age-mode="secondary"] .weekly-goal,
+body[data-age-mode="secondary"] .next-stamp{ background:var(--il-surface); }
+body[data-age-mode="secondary"] .mission-cta{ background:var(--il-primary); color:var(--il-on-primary); box-shadow:0 8px 0 -4px color-mix(in srgb,var(--il-primary) 60%,#000 22%),0 14px 22px -14px color-mix(in srgb,var(--il-primary) 60%,transparent); }
+body[data-age-mode="secondary"] .mission-cta:hover{ background:var(--il-primary-hover); }
 body[data-age-mode="secondary"] .home-greeting p{ color:var(--il-muted); font-size:var(--il-fs-sm); }
 body[data-age-mode="secondary"] .mission-context{ font-size:var(--il-fs-xs); }
 
