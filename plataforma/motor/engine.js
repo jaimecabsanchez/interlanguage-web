@@ -406,9 +406,22 @@
     if (context) { const example = el("p", "eng-feedback-context", context); example.lang = "en"; panel.appendChild(example); }
   }
 
+  function interfaceCopy(band) {
+    const copies = {
+      p12: { check: "Comprobar", checkAgain: "Probar otra vez", next: "Siguiente", finish: "¡Terminar!", listen: "Escuchar", playing: "Escuchando…", replay: "Otra vez", retryAudio: "Reintentar", success: "¡Genial!", retry: "Casi. Prueba otra vez.", error: "Vamos a aprenderlo.", support: "Escucha · Mira · Elige" },
+      p34: { check: "Check", checkAgain: "Try again", next: "Next", finish: "Finish", listen: "Listen", playing: "Playing…", replay: "Replay", retryAudio: "Try again", success: "Great!", retry: "Almost! Try once more.", error: "Let’s learn it.", support: "Listen · Think · Choose" },
+      p56: { check: "Comprobar", checkAgain: "Comprobar de nuevo", next: "Continuar", finish: "Finalizar misión", listen: "Listen", playing: "Reproduciendo…", replay: "Repetir", retryAudio: "Reintentar", success: "¡Muy bien!", retry: "Casi.", error: "Vamos a verlo.", support: "Think · Answer · Learn" },
+      eso: { check: "Check", checkAgain: "Check again", next: "Continue", finish: "Finish session", listen: "Listen", playing: "Playing…", replay: "Replay", retryAudio: "Try again", success: "Great work!", retry: "Almost.", error: "Let’s review it.", support: "Read · Respond · Improve" }
+    };
+    return copies[band] || copies.p56;
+  }
+
   function render(container, exercise, options) {
     options = options || {};
-    const secondary = options.stage === "eso";
+    const band = options.stage || "p56";
+    const secondary = band === "eso";
+    const experience = options.experience || {};
+    const ui = interfaceCopy(band);
     container.innerHTML = "";
     const templateFactory = TEMPLATES[exercise.tipo];
     if (!templateFactory) {
@@ -419,18 +432,21 @@
       return { focus: () => unavailable.focus(), destroy: () => {} };
     }
 
-    const root = el("article", "eng-card");
+    const root = el("article", "eng-card eng-card--" + band);
+    root.dataset.exerciseBand = band;
+    root.style.setProperty("--eng-touch-size", (experience.touchSize || 48) + "px");
     root.setAttribute("aria-labelledby", "exerciseInstruction");
     if (exercise.etiqueta) root.appendChild(el("div", "eng-label", exercise.etiqueta));
 
     const header = el("div", "eng-question-header");
+    if (band === "p12" || band === "p34") header.appendChild(el("p", "eng-age-support", ui.support));
     const instruction = el("h1", "eng-instruction", instructionFor(exercise, options.stage));
     instruction.id = "exerciseInstruction"; header.appendChild(instruction);
     const audioText = exercise.tipo === "hablar" ? "" : (exercise.audio || "");
     if (audioText) {
       const audio = el("button", "eng-audio"); audio.type = "button";
-      audio.innerHTML = '<span class="eng-audio-waves" aria-hidden="true"><i></i><i></i><i></i></span>' + icon("speaker") + '<span class="eng-audio-label">' + (secondary ? "Listen" : "Escuchar") + '</span>';
-      audio.setAttribute("aria-label", secondary ? "Listen to the exercise audio" : "Escuchar audio del ejercicio");
+      audio.innerHTML = '<span class="eng-audio-waves" aria-hidden="true"><i></i><i></i><i></i></span>' + icon("speaker") + '<span class="eng-audio-label">' + ui.listen + '</span>';
+      audio.setAttribute("aria-label", secondary ? "Listen to the exercise audio" : ui.listen + " audio del ejercicio");
       audio.setAttribute("aria-pressed", "false");
       const exerciseAudio = audioSettings();
       if (!exerciseAudio.sound) {
@@ -442,11 +458,11 @@
       audio.addEventListener("click", () => speak(audioText, {
         onStart: () => {
           audio.classList.add("is-playing"); audio.setAttribute("aria-pressed", "true");
-          audio.querySelector(".eng-audio-label").textContent = secondary ? "Playing…" : "Reproduciendo…";
+          audio.querySelector(".eng-audio-label").textContent = ui.playing;
         },
         onEnd: () => {
           audio.classList.remove("is-playing"); audio.setAttribute("aria-pressed", "false");
-          audio.querySelector(".eng-audio-label").textContent = secondary ? "Replay" : "Repetir";
+          audio.querySelector(".eng-audio-label").textContent = ui.replay;
         },
         onDisabled: () => {
           audio.classList.remove("is-playing"); audio.setAttribute("aria-pressed", "false");
@@ -454,7 +470,7 @@
         },
         onError: () => {
           audio.classList.remove("is-playing"); audio.setAttribute("aria-pressed", "false");
-          audio.querySelector(".eng-audio-label").textContent = secondary ? "Try again" : "Reintentar";
+          audio.querySelector(".eng-audio-label").textContent = ui.retryAudio;
           if (root.isConnected && window.ILToast) window.ILToast("No hemos podido reproducir el audio.", { type: "err" });
         }
       }));
@@ -467,7 +483,7 @@
     const footer = el("div", "eng-footer");
     const feedback = el("div", "eng-feedback");
     feedback.setAttribute("role", "status"); feedback.setAttribute("aria-live", "polite");
-    const action = el("button", "btn btn-primary btn-block", secondary ? "Check" : "Comprobar"); action.type = "button"; action.disabled = true;
+    const action = el("button", "btn btn-primary btn-block", ui.check); action.type = "button"; action.disabled = true;
     footer.appendChild(feedback); footer.appendChild(action); root.appendChild(footer); container.appendChild(root);
 
     let state = "ready";
@@ -489,8 +505,8 @@
       template.reveal(result);
       template.setDisabled(true);
       action.disabled = false;
-      if (options.lastOne) action.textContent = secondary ? "Finish session" : "Finalizar misión";
-      else action.innerHTML = (secondary ? "Continue" : "Continuar") + ' <span aria-hidden="true">→</span>';
+      if (options.lastOne) action.textContent = ui.finish;
+      else action.innerHTML = ui.next + ' <span aria-hidden="true">→</span>';
       action.onclick = () => {
         state = "continuing"; action.disabled = true;
         if (typeof options.onNext === "function") options.onNext(result);
@@ -519,22 +535,22 @@
           (result.correctLabel
             ? (secondary ? "The correct answer is “" : "La respuesta correcta es “") + result.correctLabel + "”."
             : (secondary ? "You solved the activity correctly." : "Has resuelto la actividad correctamente."));
-        renderFeedback(feedback, "success", secondary ? "Great work!" : "¡Muy bien!", successCopy, result.context);
+        renderFeedback(feedback, "success", ui.success, successCopy, result.context);
         if (typeof options.onFeedback === "function") options.onFeedback("success");
         resolve(true);
       } else if (attempts === 1) {
         state = "retry"; lastAnswer = signature(template.getAnswer());
         template.reveal({ ...result, final: false }); template.setDisabled(false);
         const hint = (exercise.feedback && exercise.feedback.incorrect) || (secondary ? "Check your answer and try once more." : "Revisa tu respuesta y prueba una vez más.");
-        renderFeedback(feedback, "retry", secondary ? "Almost." : "Casi.", hint, "");
+        renderFeedback(feedback, "retry", ui.retry, hint, "");
         if (typeof options.onFeedback === "function") options.onFeedback("retry");
-        action.textContent = secondary ? "Check again" : "Comprobar de nuevo"; action.disabled = true;
+        action.textContent = ui.checkAgain; action.disabled = true;
         setTimeout(() => template.focus(), 0);
       } else {
         const solution = result.correctLabel
           ? (secondary ? "The correct answer is “" : "La respuesta correcta es “") + result.correctLabel + "”."
           : (secondary ? "Review the solution before you continue." : "Revisa la solución antes de continuar.");
-        renderFeedback(feedback, "error", secondary ? "Let’s review it." : "Vamos a verlo.", solution + (result.explanation ? " " + result.explanation : ""), result.context);
+        renderFeedback(feedback, "error", ui.error, solution + (result.explanation ? " " + result.explanation : ""), result.context);
         if (typeof options.onFeedback === "function") options.onFeedback("error");
         resolve(false);
       }

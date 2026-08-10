@@ -24,6 +24,11 @@ assert.equal(base.bandFor({ age_mode: "secondary" }), "eso");
 assert.equal(base.config("primary-young").exerciseLimit, 5);
 assert.equal(base.config("primary-upper").exerciseLimit, 6);
 assert.equal(base.config("secondary").exerciseLimit, 7);
+assert.equal(base.exerciseConfig("p12").touchSize, 56);
+assert.equal(base.exerciseConfig("p12").sessionSize, 4);
+assert.equal(base.exerciseConfig("p34").instructionLanguage, "bilingual");
+assert.equal(base.exerciseConfig("p56").guideIntensity, "low");
+assert.equal(base.exerciseConfig("eso").visualSupport, "content-only");
 
 const body = { dataset: {}, appendChild() {} };
 const production = createStageSystem({

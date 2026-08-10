@@ -149,7 +149,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-config.js?v=20260809d"></script>
 <script src="auth-utils.js?v=20260809d"></script>
-<script src="etapa.js?v=20260810a"></script>
+<script src="etapa.js?v=20260810b"></script>
 <script src="contenido.js?v=20260809f"></script>
 <script src="auth.js?v=20260809e"></script>
 <script src="motor/matriz.js?v=20260809d"></script>
@@ -270,10 +270,11 @@
       ILProfileSettings.setActive(profile.username || "");
       const stage = IL_ETAPA.apply(profile);
       const experience = IL_ETAPA.current().config;
+      const exerciseExperience = IL_ETAPA.current().exercise;
       const [progress, rawWeek, placement] = await Promise.all([ILAuth.getProgress(), ILAuth.getWeekActivity(), ILAuth.getPlacement()]);
       const week = ILProgressData.normalizeWeek(profile, rawWeek, ILAuth.isDemo());
       const username = profile.username || "";
-      const session = ILMission.getOrCreateSession({ username, units, banda: stage, cefr: placement.cefr, matrix: window.IL_MATRIZ, limit: experience.exerciseLimit, unitIds: experience.unitIds, skillPriority: experience.skillPriority });
+      const session = ILMission.getOrCreateSession({ username, units, banda: stage, cefr: placement.cefr, matrix: window.IL_MATRIZ, limit: exerciseExperience.sessionSize, unitIds: experience.unitIds, skillPriority: experience.skillPriority });
       if (!session.length) throw new Error("No mission content");
       const unit = unitOf[session[0].id] || units[0];
       const meta = { date: ILMission.today(), unitId: unit ? unit.id : "", unitTitle: titleFor(unit), itemIds: session.map(item => item.id) };

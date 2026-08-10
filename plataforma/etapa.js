@@ -23,6 +23,29 @@
     primaria_inicial: "primary-young", primaria_superior: "primary-upper", primaria: "primary-upper"
   };
 
+  const BAND_EXPERIENCE = Object.freeze({
+    p12: Object.freeze({
+      band: "p12", ageLabel: "5–7", instructionLanguage: "spanish", visualSupport: "required",
+      guideIntensity: "high", celebrationIntensity: "high", touchSize: 56, maxVisibleOptions: 3,
+      sessionSize: 4, hintLabel: "Una pista", listenLabel: "Escuchar"
+    }),
+    p34: Object.freeze({
+      band: "p34", ageLabel: "8–9", instructionLanguage: "bilingual", visualSupport: "preferred",
+      guideIntensity: "medium", celebrationIntensity: "medium", touchSize: 52, maxVisibleOptions: 4,
+      sessionSize: 5, hintLabel: "Pista", listenLabel: "Listen"
+    }),
+    p56: Object.freeze({
+      band: "p56", ageLabel: "10–11", instructionLanguage: "mixed", visualSupport: "optional",
+      guideIntensity: "low", celebrationIntensity: "balanced", touchSize: 48, maxVisibleOptions: 4,
+      sessionSize: 6, hintLabel: "Ver pista", listenLabel: "Listen"
+    }),
+    eso: Object.freeze({
+      band: "eso", ageLabel: "12+", instructionLanguage: "english", visualSupport: "content-only",
+      guideIntensity: "none", celebrationIntensity: "minimal", touchSize: 44, maxVisibleOptions: 5,
+      sessionSize: 7, hintLabel: "Show hint", listenLabel: "Listen"
+    })
+  });
+
   const PROFILES = {
     "primary-young": {
       id: "primary-young",
@@ -113,7 +136,7 @@
     }
   };
 
-  let active = { mode: "primary-upper", band: "p56", config: PROFILES["primary-upper"] };
+  let active = { mode: "primary-upper", band: "p56", config: PROFILES["primary-upper"], exercise: BAND_EXPERIENCE.p56 };
 
   function year() { return (env.Date || Date).now ? new (env.Date || Date)().getFullYear() : new Date().getFullYear(); }
   function normalMode(value) {
@@ -228,7 +251,7 @@
     const override = demo ? (requested || stored || demoMode()) : null;
     const mode = override || modeFor(profile);
     const band = override ? DEMO_BAND[mode] : bandFor(profile);
-    active = { mode, band, config: PROFILES[mode] };
+    active = { mode, band, config: PROFILES[mode], exercise: BAND_EXPERIENCE[band] || BAND_EXPERIENCE.p56 };
     if (env.document && env.document.body) {
       env.document.body.dataset.ageMode = mode;
       env.document.body.dataset.stage = band;
@@ -242,10 +265,12 @@
     MODES,
     STAGES: BANDS,
     PROFILES,
+    BAND_EXPERIENCE,
     apply,
     bandFor,
     modeFor,
     config,
+    exerciseConfig(band) { return BAND_EXPERIENCE[band] || BAND_EXPERIENCE.p56; },
     current() { return active; },
     copy(value) { return config(value).copy; },
     mountDemoSelector,

@@ -13,6 +13,7 @@
   font-weight:var(--il-weight-extrabold);letter-spacing:var(--il-tracking-label);text-transform:uppercase;
 }
 .eng-question-header{display:flex;align-items:flex-start;gap:var(--il-space-3);margin-bottom:var(--il-space-5)}
+.eng-age-support{width:100%;margin:0;color:var(--il-text-secondary);font-family:var(--il-font-display);font-size:var(--il-fs-xs);font-weight:var(--il-weight-extrabold);letter-spacing:var(--il-tracking-label);text-transform:uppercase}
 .eng-instruction{flex:1;font-size:var(--il-fs-question);line-height:var(--il-leading-heading);letter-spacing:var(--il-tracking-tight)}
 .eng-audio{
   flex:0 0 auto;min-width:var(--il-touch);min-height:var(--il-touch);display:inline-flex;align-items:center;justify-content:center;
@@ -30,7 +31,7 @@
 .eng-options{display:grid;gap:var(--il-space-3)}
 .eng-options.has-image{grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--il-space-3)}
 .eng-opt{
-  position:relative;width:100%;min-height:58px;display:flex;align-items:center;gap:var(--il-space-3);
+  position:relative;width:100%;min-height:max(58px,var(--eng-touch-size,48px));display:flex;align-items:center;gap:var(--il-space-3);
   padding:14px 52px 14px 16px;border:2px solid var(--il-border-strong);border-radius:var(--il-radius-md);
   background:var(--il-surface);color:var(--il-text-primary);font-size:var(--il-fs-base);font-weight:var(--il-weight-semibold);
   text-align:left;transition:transform var(--il-transition-fast),border-color var(--il-transition-fast),background-color var(--il-transition-fast),box-shadow var(--il-transition-fast);
@@ -105,6 +106,35 @@
 .eng-feedback-message{margin:var(--il-space-2) 0 0;color:inherit}
 .eng-feedback-context{margin:var(--il-space-2) 0 0;padding-left:var(--il-space-3);border-left:3px solid currentColor;font-weight:var(--il-weight-semibold)}
 
+/* 5–7: ritmo visual, mucho audio y una decisión cada vez. */
+.eng-card--p12{max-width:680px;padding-top:var(--il-space-3)}
+.eng-card--p12 .eng-label{padding:8px 12px;background:var(--il-success-soft);color:var(--il-jade-deep)}
+.eng-card--p12 .eng-question-header{flex-wrap:wrap;margin-bottom:var(--il-space-4)}
+.eng-card--p12 .eng-instruction{flex-basis:100%;font-size:clamp(1.65rem,1.35rem + 1.4vw,2.2rem)}
+.eng-card--p12 .eng-audio{width:100%;min-height:60px;border-width:2px;background:var(--il-primary-soft);font-size:var(--il-fs-base)}
+.eng-card--p12 .eng-options.has-image{grid-template-columns:repeat(3,minmax(0,1fr))}
+.eng-card--p12 .eng-options.has-image .eng-opt{min-height:154px;padding:14px 30px;border-radius:var(--il-radius-lg);font-size:var(--il-fs-lg)}
+.eng-card--p12 .eng-option-visual.has-illo{width:78px;height:78px}
+.eng-card--p12 .eng-option-visual.has-illo svg{width:52px;height:52px}
+.eng-card--p12 .eng-feedback{padding:var(--il-space-4);border-width:2px}
+.eng-card--p12 .eng-feedback-title{font-size:var(--il-fs-xl)}
+.eng-card--p12 .eng-footer .btn{min-height:58px;font-size:var(--il-fs-lg)}
+
+/* 8–9: bilingüe y todavía visual, con algo más de densidad. */
+.eng-card--p34{max-width:720px}
+.eng-card--p34 .eng-question-header{flex-wrap:wrap}
+.eng-card--p34 .eng-instruction{font-size:clamp(1.45rem,1.2rem + 1vw,1.9rem)}
+.eng-card--p34 .eng-audio{min-height:52px;background:var(--il-primary-soft)}
+.eng-card--p34 .eng-opt{border-radius:var(--il-radius-lg)}
+.eng-card--p34 .eng-options.has-image .eng-opt{min-height:142px}
+
+/* 10–11: reto claro; ESO: herramienta sobria y compacta. */
+.eng-card--p56 .eng-age-support{color:var(--il-primary)}
+.eng-card--eso{max-width:760px;padding-top:var(--il-space-4)}
+.eng-card--eso .eng-label{border-radius:var(--il-radius-xs);background:var(--il-surface-secondary);color:var(--il-text-secondary)}
+.eng-card--eso .eng-opt,.eng-card--eso .eng-match-row{border-radius:var(--il-radius-sm)}
+.eng-card--eso .eng-feedback{border-radius:var(--il-radius-sm)}
+
 @keyframes eng-card-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 @keyframes eng-feedback-in{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
 
@@ -118,9 +148,16 @@
   .eng-audio-label{display:inline}.eng-options.has-image{gap:var(--il-space-2)}
   .eng-options.has-image .eng-opt{min-height:112px;padding:12px 38px}
   .eng-option-visual{font-size:2.2rem}.eng-match-slot{min-width:82px}
+  .eng-card--p12 .eng-question-header{gap:var(--il-space-2)}
+  .eng-card--p12 .eng-options.has-image{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .eng-card--p12 .eng-options.has-image .eng-opt{min-height:132px;padding:10px 8px;font-size:var(--il-fs-sm)}
+  .eng-card--p12 .eng-option-visual.has-illo{width:64px;height:64px}
+  .eng-card--p12 .eng-option-visual.has-illo svg{width:44px;height:44px}
 }
 @media (max-width:360px){
   .eng-options.has-image{grid-template-columns:1fr}.eng-options.has-image .eng-opt{min-height:76px;flex-direction:row;text-align:left}
+  .eng-card--p12 .eng-options.has-image{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .eng-card--p12 .eng-options.has-image .eng-opt{min-height:124px;flex-direction:column;text-align:center}
 }
 @media (prefers-reduced-motion:reduce){
   .eng-card,.eng-feedback.is-visible{animation:none}.eng-opt,.eng-audio{transition:none}

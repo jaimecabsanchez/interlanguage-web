@@ -11,7 +11,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="design-system.css?v=20260809e">
 <link rel="stylesheet" href="app.css?v=20260809d">
-<link rel="stylesheet" href="motor/motor.css?v=20260810c">
+<link rel="stylesheet" href="motor/motor.css?v=20260810d">
 <link rel="stylesheet" href="il-visual.css?v=20260810a">
 <link rel="stylesheet" href="etapa.css?v=20260809d">
 <style>
@@ -32,6 +32,15 @@
   .segment.is-complete{background:var(--il-success)}.segment.is-current{background:var(--il-primary);transform:scaleY(1.25)}
   .progress-plane{position:absolute;top:-7px;left:var(--plane-progress);width:24px;height:24px;color:var(--il-secondary);transform:translateX(-50%) rotate(-8deg);filter:drop-shadow(var(--il-shadow-xs));transition:left var(--il-duration-slow) var(--il-ease)}
   .progress-plane svg{width:24px;height:24px}
+  body[data-stage="p12"]{background:radial-gradient(90% 45% at 100% 0%,var(--il-warning-soft),transparent 60%),var(--il-background)}
+  body[data-stage="p12"] .lesson{max-width:760px}
+  body[data-stage="p12"] .lesson-header{border-bottom:0}
+  body[data-stage="p12"] .lesson-step{font-size:var(--il-fs-sm);font-weight:var(--il-weight-bold);color:var(--il-primary)}
+  body[data-stage="p12"] .segment-track{height:10px;gap:8px}
+  body[data-stage="p12"] .segment{height:10px}
+  body[data-stage="p34"] .lesson-step{font-weight:var(--il-weight-bold);color:var(--il-primary)}
+  body[data-stage="eso"]{background:var(--il-background)}
+  body[data-stage="eso"] .lesson-header{border-color:var(--il-border-strong)}
   #stage{flex:1;display:flex;padding:var(--il-space-4) 0 0}
   .theme-line{display:flex;align-items:center;gap:var(--il-space-2);padding:var(--il-space-3) 0 0;color:var(--il-text-secondary);font-size:var(--il-fs-sm);font-weight:var(--il-weight-semibold)}
   .theme-line svg{width:18px;height:18px}.theme-line[hidden]{display:none}
@@ -131,14 +140,14 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-config.js?v=20260809d"></script>
 <script src="auth-utils.js?v=20260809d"></script>
-<script src="etapa.js?v=20260810a"></script>
+<script src="etapa.js?v=20260810b"></script>
 <script src="auth.js?v=20260809e"></script>
 <script src="contenido.js?v=20260809f"></script>
 <script src="motor/motivacion.js?v=20260809d"></script>
 <script src="motor/matriz.js?v=20260809d"></script>
 <script src="mission-state.js?v=20260810h"></script>
 <script src="profile-settings.js?v=20260809a"></script>
-<script src="motor/engine.js?v=20260810d"></script>
+<script src="motor/engine.js?v=20260810e"></script>
 <script>
   const $ = id => document.getElementById(id);
   const params = new URLSearchParams(location.search);
@@ -150,6 +159,7 @@
   let username = "";
   let stageName = "p56";
   let ageExperience = IL_ETAPA.config("primary-upper");
+  let exerciseExperience = IL_ETAPA.exerciseConfig("p56");
   let items = [];
   let dailyItems = [];
   let index = 0;
@@ -216,9 +226,10 @@
   // Presencia de Nemo por etapa: inicial = todos los momentos;
   // superior = ocasional (arranque y pistas/errores); ESO = sin Nemo.
   function nemoAllowed(kind) {
-    const id = ageExperience.id;
-    if (id === "primary-young") return true;
-    if (id === "primary-upper") return kind === "intro" || kind === "retry" || kind === "error";
+    const intensity = exerciseExperience.guideIntensity;
+    if (intensity === "high") return true;
+    if (intensity === "medium") return kind === "intro" || kind === "retry" || kind === "success";
+    if (intensity === "low") return kind === "retry" || kind === "error";
     return false;
   }
   function nemo(kind) {
@@ -240,6 +251,7 @@
     nemo("intro");
     currentController = IL_ENGINE.render($("stage"), items[index], {
       stage: stageName,
+      experience: exerciseExperience,
       lastOne: index === items.length - 1,
       onResult: event => { pendingResult = event; if (event.correct) { cheer(); planeHop(); } },
       onFeedback: kind => nemo(kind),
@@ -344,12 +356,12 @@
       if (!profile) { location.href = "index.html"; return; }
       if (profile.is_admin) { location.href = "admin.html"; return; }
       if (profile.must_change_password) { location.href = "cambiar-clave.html"; return; }
-      username = profile.username || ""; stageName = IL_ETAPA.apply(profile); ageExperience = IL_ETAPA.current().config;
+      username = profile.username || ""; stageName = IL_ETAPA.apply(profile); ageExperience = IL_ETAPA.current().config; exerciseExperience = IL_ETAPA.current().exercise;
       localizeLessonChrome();
       ILProfileSettings.setActive(username);
       const [placement, progress] = await Promise.all([ILAuth.getPlacement(), ILAuth.getProgress()]);
       $("headerStreak").textContent = progress ? (progress.streak || 0) : 0;
-      dailyItems = ILMission.getOrCreateSession({ username, units, banda: stageName, cefr: placement.cefr, matrix: window.IL_MATRIZ, limit: ageExperience.exerciseLimit, unitIds: ageExperience.unitIds, skillPriority: ageExperience.skillPriority });
+      dailyItems = ILMission.getOrCreateSession({ username, units, banda: stageName, cefr: placement.cefr, matrix: window.IL_MATRIZ, limit: exerciseExperience.sessionSize, unitIds: ageExperience.unitIds, skillPriority: ageExperience.skillPriority });
       if (!dailyItems.length) { errorState("Contenido no disponible", "Todavía no hay ejercicios preparados para tu nivel hoy."); return; }
       const primaryUnit = unitOf[dailyItems[0].id] || units[0];
       missionMeta = { date: ILMission.today(), unitId: primaryUnit ? primaryUnit.id : "", unitTitle: missionTitle(primaryUnit), itemIds: dailyItems.map(item => item.id) };
