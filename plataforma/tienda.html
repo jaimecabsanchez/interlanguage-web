@@ -9,18 +9,15 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="design-system.css?v=20260809e">
+<link rel="stylesheet" href="design-system.css?v=20260810f">
 <link rel="stylesheet" href="app.css?v=20260809d">
 <link rel="stylesheet" href="etapa.css?v=20260809d">
 <link rel="stylesheet" href="shell.css?v=20260809d">
-<link rel="stylesheet" href="world.css?v=20260810c">
+<link rel="stylesheet" href="world.css?v=20260810e">
 </head>
 <body>
-<div id="loading" class="il-state il-state--loading"><span class="il-spinner" aria-hidden="true"></span><p>Preparando tu espacio…</p></div>
-<div id="errorState" class="il-state" role="alert" hidden>
-  <div class="ic"><span data-il-icon="warning"></span></div><h2>No hemos podido cargar tu espacio</h2>
-  <p>Tu progreso está a salvo. Inténtalo de nuevo.</p><button class="btn btn-primary" type="button" onclick="location.reload()">Reintentar</button>
-</div>
+<div id="loading" class="il-state il-state--loading"><span class="il-spinner" aria-hidden="true"></span><p>Preparando tu mundo…</p></div>
+<div id="errorState" class="il-state" role="alert" hidden><div class="ic"><span data-il-icon="warning"></span></div><h2>No hemos podido cargar tu mundo</h2><p>Tu progreso y tus elecciones están a salvo.</p><button class="btn btn-primary" type="button" onclick="location.reload()">Reintentar</button></div>
 
 <div id="app" class="hidden app-with-rail">
   <div class="shell">
@@ -28,37 +25,28 @@
     <div class="shell-main">
       <main class="app-shell world-shell">
         <header class="world-header">
-          <div><p class="ui-label" id="worldEyebrow">TU ESPACIO</p><h1 id="worldTitle">Mi mundo</h1><p id="worldSubtitle">Cada misión hace crecer un espacio que es solo tuyo.</p></div>
-          <div class="route-balance" id="routeBalance" aria-label="Puntos de ruta disponibles"><span data-il-icon="route" aria-hidden="true"></span><strong id="routePoints">0</strong><span id="routePointsLabel">Puntos de ruta</span></div>
+          <div><a class="back-link" id="backProfile" href="perfil.html"><span data-il-icon="arrowLeft" aria-hidden="true"></span><span>Perfil</span></a><p class="ui-label" id="worldEyebrow">TU ESPACIO PERSONAL</p><h1 id="worldTitle">Mi mundo</h1><p id="worldSubtitle">Cuanto más practicas, más crece tu mundo.</p></div>
+          <span class="world-level-badge" id="worldLevelBadge"><span data-il-icon="route" aria-hidden="true"></span><span>Jardín nivel 1</span></span>
         </header>
 
         <section class="world-hero" aria-labelledby="worldOverviewTitle">
-          <div class="world-stage" id="worldStage"><div id="worldScene"></div><div class="world-avatar" id="worldAvatar"></div></div>
+          <div class="world-stage" id="worldStage"><div id="worldScene"></div><div class="world-avatar" id="worldAvatar"></div><div class="world-companion" id="worldCompanion" hidden></div></div>
           <div class="world-overview">
-            <p class="ui-label" id="nextLabel">PRÓXIMO DESBLOQUEO</p><h2 id="worldOverviewTitle">Flores del camino</h2>
-            <p id="nextDescription">Completa misiones para añadir nuevos detalles a tu espacio.</p>
-            <div class="next-progress" id="nextProgress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span></span></div>
-            <div class="next-copy"><span id="nextBalance">0 de 40 puntos</span><strong id="nextRemaining">Te faltan 40</strong></div>
-            <div class="world-owned" id="worldOwned">1 elemento en tu colección</div>
+            <p class="ui-label" id="growthLabel">TU MUNDO CRECE CONTIGO</p><h2 id="worldOverviewTitle">Jardín nivel 1</h2><p id="growthCopy">Cada misión ayuda a que tu árbol y tu espacio evolucionen.</p>
+            <div class="next-progress" id="levelProgress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span></span></div><p class="level-progress-copy" id="levelProgressCopy">Completa 5 misiones para llegar al nivel 2.</p>
+            <div class="next-unlock"><span class="next-unlock__visual" id="nextUnlockVisual" aria-hidden="true"></span><span><small id="nextUnlockLabel">PRÓXIMO DESBLOQUEO</small><b id="nextUnlockName">Sudadera Explorer</b><span id="nextUnlockRule">Completa 3 misiones</span></span></div>
           </div>
         </section>
 
-        <section class="world-section" aria-labelledby="avatarEditorTitle">
-          <div class="world-section__head"><div><p class="ui-label" id="avatarEyebrow">TU PERSONAJE</p><h2 id="avatarEditorTitle">Crea un avatar que se parezca a ti</h2></div><a class="btn btn-ghost" id="backProfile" href="perfil.html">Volver al perfil</a></div>
-          <div class="avatar-editor">
-            <div class="avatar-editor__preview" id="avatarEditorPreview"></div>
-            <div class="avatar-fields">
-              <label class="avatar-field" for="avatarSkin"><span id="skinLabel">Tono de piel</span><select id="avatarSkin" data-avatar-setting="avatarSkin"><option value="tone-1">Claro</option><option value="tone-2">Medio claro</option><option value="tone-3">Medio oscuro</option><option value="tone-4">Oscuro</option></select></label>
-              <label class="avatar-field" for="avatarHair"><span id="hairLabel">Pelo</span><select id="avatarHair" data-avatar-setting="avatarHair"><option value="short">Corto</option><option value="waves">Ondulado</option><option value="curls">Rizado</option><option value="long">Largo</option></select></label>
-              <label class="avatar-field" for="avatarHairColor"><span id="hairColorLabel">Color de pelo</span><select id="avatarHairColor" data-avatar-setting="avatarHairColor"><option value="dark">Negro</option><option value="brown">Castaño</option><option value="gold">Rubio</option><option value="copper">Cobrizo</option></select></label>
-              <label class="avatar-field" for="avatarTheme"><span id="themeLabel">Color principal</span><select id="avatarTheme" data-avatar-setting="avatarTheme"><option value="navy">Azul ruta</option><option value="coral">Coral</option><option value="aqua">Verde agua</option></select></label>
-            </div>
+        <section class="customise" aria-labelledby="customiseTitle">
+          <div class="customise__head"><div><p class="ui-label" id="customiseEyebrow">HAZLO TUYO</p><h2 id="customiseTitle">Personalizar</h2></div><p id="customiseHint">Elige una opción y verás el cambio al instante.</p></div>
+          <div class="world-tabs" role="tablist" aria-label="Opciones de personalización">
+            <button id="tab-avatar" type="button" role="tab" aria-selected="true" aria-controls="catalogPanel" data-world-tab="avatar"><span data-il-icon="user"></span><span>Avatar</span></button>
+            <button id="tab-clothing" type="button" role="tab" aria-selected="false" aria-controls="catalogPanel" data-world-tab="clothing" tabindex="-1"><span data-il-icon="shirt"></span><span>Ropa</span></button>
+            <button id="tab-accessory" type="button" role="tab" aria-selected="false" aria-controls="catalogPanel" data-world-tab="accessory" tabindex="-1"><span data-il-icon="star"></span><span>Accesorios</span></button>
+            <button id="tab-world" type="button" role="tab" aria-selected="false" aria-controls="catalogPanel" data-world-tab="world" tabindex="-1"><span data-il-icon="flag"></span><span>Mundo</span></button>
           </div>
-        </section>
-
-        <section class="world-section" aria-labelledby="catalogTitle">
-          <div class="world-section__head"><div><p class="ui-label" id="catalogEyebrow">HAZ CRECER TU MUNDO</p><h2 id="catalogTitle">Elige tu próximo objetivo</h2></div></div>
-          <div class="catalog-groups" id="catalogGroups"></div>
+          <div class="catalog-panel" id="catalogPanel" role="tabpanel" aria-labelledby="tab-avatar" tabindex="0"><div id="catalogSections"></div></div>
         </section>
       </main>
     </div>
@@ -66,14 +54,23 @@
   <nav class="app-nav" data-il-nav="perfil"></nav>
 </div>
 
+<dialog class="unlock-dialog" id="unlockDialog" aria-labelledby="unlockTitle">
+  <div class="unlock-dialog__glow" aria-hidden="true"></div><p class="ui-label" id="unlockEyebrow">¡HAS DESBLOQUEADO ALGO!</p><div class="unlock-dialog__visual" id="unlockVisual"></div><h2 id="unlockTitle">Explorer Hoodie</h2><p id="unlockCopy">Tu constancia ha abierto una nueva opción.</p><div class="unlock-dialog__actions"><button class="btn btn-primary" id="unlockTry" type="button">Probar ahora</button><button class="btn btn-ghost" id="unlockContinue" type="button">Seguir</button></div>
+</dialog>
+
 <script src="layout.js?v=20260809d"></script>
+<script src="il-visual.js?v=20260810b"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-config.js?v=20260809d"></script>
+<script src="auth-utils.js?v=20260809d"></script>
 <script src="etapa.js?v=20260810c"></script>
 <script src="auth.js?v=20260809e"></script>
-<script src="profile-settings.js?v=20260810b"></script>
-<script src="world-data.js?v=20260810b"></script>
-<script src="world-visual.js?v=20260810b"></script>
-<script src="world-page.js?v=20260810d"></script>
+<script src="motor/motivacion.js?v=20260809d"></script>
+<script src="mission-state.js?v=20260810h"></script>
+<script src="profile-settings.js?v=20260810c"></script>
+<script src="progress-data.js?v=20260810b"></script>
+<script src="world-data.js?v=20260810c"></script>
+<script src="world-visual.js?v=20260810d"></script>
+<script src="world-page.js?v=20260810e"></script>
 </body>
 </html>

@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="design-system.css?v=20260809e">
+<link rel="stylesheet" href="design-system.css?v=20260810f">
 <link rel="stylesheet" href="app.css?v=20260809d">
 <link rel="stylesheet" href="motor/motor.css?v=20260810d">
 <link rel="stylesheet" href="il-visual.css?v=20260810a">
@@ -128,7 +128,7 @@
     </div>
     <div class="summary-reward" id="summaryReward" hidden>
       <span class="summary-reward__icon" aria-hidden="true"><span data-il-icon="route"></span></span>
-      <span><b id="summaryRewardTitle">+20 Puntos de ruta</b><small id="summaryRewardCopy">Tu próximo desbloqueo está más cerca.</small></span>
+      <span><b id="summaryRewardTitle">Tu mundo ha avanzado</b><small id="summaryRewardCopy">Tu próximo desbloqueo está más cerca.</small></span>
       <a class="summary-reward__link" id="summaryWorldLink" href="tienda.html">Ver mi mundo</a>
     </div>
     <div class="learned" id="learnedBlock" hidden>
@@ -154,8 +154,8 @@
 <script src="motor/motivacion.js?v=20260809d"></script>
 <script src="motor/matriz.js?v=20260809d"></script>
 <script src="mission-state.js?v=20260810h"></script>
-<script src="profile-settings.js?v=20260810b"></script>
-<script src="world-data.js?v=20260810b"></script>
+<script src="profile-settings.js?v=20260810c"></script>
+<script src="world-data.js?v=20260810c"></script>
 <script src="motor/engine.js?v=20260810g"></script>
 <script>
   const $ = id => document.getElementById(id);
@@ -178,7 +178,6 @@
   let reviewResolved = [];
   let missionMeta = {};
   let completionProgress = null;
-  let rewardGranted = false;
 
   function refreshOffline() { $("offline").hidden = navigator.onLine; }
   addEventListener("online", refreshOffline); addEventListener("offline", refreshOffline); refreshOffline();
@@ -322,16 +321,11 @@
     const reward = $("summaryReward");
     reward.hidden = isReview || !completionProgress;
     if (!reward.hidden) {
-      const points = ILWorldData.balance(completionProgress);
       const next = ILWorldData.nextUnlock(completionProgress, stageName);
       const nextName = next && ageExperience.id === "secondary" && next.nameEn ? next.nameEn : (next && next.name);
-      $("summaryRewardTitle").textContent = rewardGranted
-        ? (ageExperience.id === "secondary" ? "+20 Route points" : "+20 Puntos de ruta")
-        : (ageExperience.id === "secondary" ? points + " Route points available" : points + " Puntos de ruta disponibles");
+      $("summaryRewardTitle").textContent = ageExperience.id === "secondary" ? "Your space has progressed" : "Tu mundo ha avanzado";
       $("summaryRewardCopy").textContent = next
-        ? (next.remaining === 0
-          ? (ageExperience.id === "secondary" ? nextName + " is ready to unlock." : nextName + " ya se puede desbloquear.")
-          : (ageExperience.id === "secondary" ? next.remaining + " points to unlock " + nextName + "." : "Te faltan " + next.remaining + " puntos para " + nextName + "."))
+        ? next.requirement + ": " + nextName + "."
         : (ageExperience.id === "secondary" ? "Your current collection is complete." : "Has completado la colección disponible.");
       $("summaryWorldLink").textContent = ageExperience.id === "secondary" ? "Personalise" : "Ver mi mundo";
     }
@@ -358,7 +352,7 @@
       const summary = { correct: state.correctCount, total: state.total, allCorrect: state.correctCount === state.total, maxCorrectStreak: state.maxCorrectStreak };
       try {
         const progress = await ILAuth.completeLesson(summary);
-        if (progress) { completionProgress = progress; rewardGranted = true; ILMission.markCompletionRecorded(username, missionMeta.date); $("headerStreak").textContent = progress.streak || 0; }
+        if (progress) { completionProgress = progress; ILMission.markCompletionRecorded(username, missionMeta.date); $("headerStreak").textContent = progress.streak || 0; }
       } catch (error) {
         if (window.ILToast) ILToast("Misión guardada. Sincronizaremos tu progreso cuando sea posible.", { type: "info", duration: 3600 });
       }

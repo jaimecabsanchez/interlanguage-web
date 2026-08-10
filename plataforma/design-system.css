@@ -40,6 +40,17 @@
   --il-error-hover:#922f2f;
   --il-overlay:rgba(11,25,45,.56);
 
+  /* Avatar modular · paleta inclusiva y compartida */
+  --il-avatar-skin-1:#f7d8c4;
+  --il-avatar-skin-2:#dca982;
+  --il-avatar-skin-3:#a96f4f;
+  --il-avatar-skin-4:#70452f;
+  --il-avatar-hair-dark:#2b2628;
+  --il-avatar-hair-brown:#67432f;
+  --il-avatar-hair-gold:#c49243;
+  --il-avatar-hair-copper:#a85135;
+  --il-avatar-halo:#fff8df;
+
   /* Alias de color compatibles con la plataforma actual */
   --il-color-primary:var(--il-primary);
   --il-color-primary-hover:var(--il-primary-hover);
@@ -117,6 +128,7 @@
   --il-e2:var(--il-shadow-sm);
   --il-e3:var(--il-shadow-lg);
   --il-e-coral:0 12px 24px -14px rgba(199,73,45,.42);
+  --il-shadow-avatar:0 16px 13px rgba(22,41,74,.2);
 
   /* Tipografía */
   --il-font-display:'Plus Jakarta Sans',system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;

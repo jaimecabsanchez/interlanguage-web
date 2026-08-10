@@ -9,177 +9,55 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="design-system.css?v=20260809e">
+<link rel="stylesheet" href="design-system.css?v=20260810f">
 <link rel="stylesheet" href="app.css?v=20260809d">
 <link rel="stylesheet" href="etapa.css?v=20260809d">
 <link rel="stylesheet" href="shell.css?v=20260809d">
-<link rel="stylesheet" href="perfil.css?v=20260810a">
 <link rel="stylesheet" href="il-visual.css?v=20260810a">
+<link rel="stylesheet" href="world.css?v=20260810e">
+<link rel="stylesheet" href="perfil.css?v=20260810c">
 <link rel="stylesheet" href="age-mode.css?v=20260810i">
-<link rel="stylesheet" href="world.css?v=20260810c">
 </head>
 <body>
-<div id="loading" class="il-state il-state--loading"><span class="il-spinner" aria-hidden="true"></span><p>Preparando tu perfil…</p></div>
-<div id="errorState" class="il-state" role="alert" hidden>
-  <div class="ic"><span data-il-icon="warning"></span></div>
-  <h2>No hemos podido cargar tu perfil</h2>
-  <p>Inténtalo de nuevo en unos segundos.</p>
-  <button class="btn btn-primary" type="button" onclick="location.reload()">Reintentar</button>
-</div>
+<div id="loading" class="il-skeleton" aria-busy="true" aria-label="Cargando tu perfil"><div class="bar loading-short"></div><div class="bar big"></div><div class="bar loading-medium"></div></div>
+<div id="errorState" class="il-state" role="alert" hidden><div class="ic"><span data-il-icon="warning"></span></div><h2>No hemos podido cargar tu perfil</h2><p>Tu información está a salvo. Inténtalo de nuevo.</p><button class="btn btn-primary" type="button" onclick="location.reload()">Reintentar</button></div>
 
 <div id="app" class="hidden app-with-rail">
   <div class="shell">
     <aside class="rail" data-il-rail="perfil"></aside>
     <div class="shell-main">
-      <main class="app-shell profile-shell">
-        <header class="profile-page-header">
-          <div><p class="ui-label" id="profileEyebrow">Mi espacio</p><h1 id="profilePageTitle">Perfil</h1><p id="profilePageSubtitle">Tu recorrido, tus preferencias y la forma en la que practicas mejor.</p></div>
-        </header>
+      <main class="app-shell profile-home">
+        <header class="profile-home__header"><p class="ui-label" id="profileEyebrow">MI ESPACIO</p><h1 id="profileTitle">Mi perfil</h1></header>
 
-        <section class="profile-hero" aria-labelledby="profileName">
-          <div class="avatar-wrap">
-            <div class="avatar-visual" id="avatarVisual" data-avatar-theme="navy" aria-label="Avatar de Lucía">
-              <span data-il-icon="user" aria-hidden="true"></span>
-              <span class="avatar-plane" aria-hidden="true"><span data-il-icon="plane"></span></span>
+        <div class="profile-home__grid">
+          <section class="identity-card" aria-labelledby="profileName">
+            <div class="identity-card__scene" aria-hidden="true"><span class="identity-shape identity-shape--one"></span><span class="identity-shape identity-shape--two"></span><div class="identity-avatar" id="profileAvatar"></div></div>
+            <div class="identity-card__copy">
+              <p class="ui-label" id="identityLabel">ESTE SOY YO</p>
+              <h2 id="profileName">Lucía</h2>
+              <div class="identity-level"><strong id="productLevel">Explorer 2</strong><span id="approxLevel" hidden>A1</span></div>
+              <div class="identity-progress-copy"><span id="levelProgressText">65% para Explorer 3</span></div>
+              <div class="identity-progress" id="levelProgress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="65"><span></span><i aria-hidden="true"><span data-il-icon="plane"></span></i></div>
             </div>
-            <span class="avatar-caption">Mi avatar</span>
-          </div>
+          </section>
 
-          <div class="profile-identity">
-            <p class="ui-label profile-hero__label">Tu nivel</p>
-            <h2 id="profileName">Lucía G.</h2>
-            <div class="level-line"><strong id="productLevel">Explorer 2</strong><span id="approxLevel">Nivel aproximado: A1</span></div>
-            <p class="learning-description" id="learningDescription">Estás aprendiendo a hablar sobre rutinas y actividades cotidianas.</p>
+          <section class="profile-stamps" aria-labelledby="stampsTitle">
+            <div class="compact-heading"><div><p class="ui-label" id="stampsEyebrow">LO QUE HE CONSEGUIDO</p><h2 id="stampsTitle">Mis sellos</h2></div><a href="progreso.html" id="allStampsLink">Ver todos</a></div>
+            <div class="profile-stamps__row" id="profileStamps"></div>
+          </section>
 
-            <div class="level-progress-block">
-              <div class="level-progress-copy"><span>Progreso</span><strong id="levelProgressCopy">65% hasta Explorer 3</strong></div>
-              <div class="level-progress" id="levelProgress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="65" aria-label="65% hasta Explorer 3">
-                <span class="level-progress__fill"></span><span class="level-progress__plane" aria-hidden="true"><span data-il-icon="plane"></span></span>
-              </div>
-            </div>
-          </div>
+          <a class="world-entry" href="tienda.html" aria-labelledby="worldEntryTitle">
+            <div class="world-entry__preview"><div id="profileWorldScene"></div><div class="world-entry__avatar" id="profileWorldAvatar"></div><span class="world-level-pill" id="worldLevelPill">Nivel 1</span></div>
+            <div class="world-entry__copy"><p class="ui-label" id="worldEntryEyebrow">MI MUNDO</p><h2 id="worldEntryTitle">Mira cómo está creciendo</h2><p id="worldEntryCopy">Personaliza tu avatar y haz crecer tu espacio.</p><span class="world-entry__cta"><span id="worldEntryCta">Entrar</span><span aria-hidden="true">→</span></span></div>
+          </a>
 
-          <div class="profile-highlights">
-            <div class="highlight-item"><span class="highlight-icon"><span data-il-icon="target" aria-hidden="true"></span></span><div><small>Objetivo diario</small><strong><span id="dailyGoalDisplay">8</span> minutos</strong></div></div>
-            <div class="highlight-item"><span class="highlight-icon highlight-icon--stamp"><span data-il-icon="stamp" aria-hidden="true"></span></span><div><small>Sello destacado</small><strong id="featuredStampName">Weekly Explorer</strong></div></div>
-          </div>
-        </section>
-
-        <div class="profile-columns">
-          <div class="profile-column">
-            <section class="profile-section personalize-section" aria-labelledby="personalizeTitle">
-              <div class="section-heading">
-                <div><p class="ui-label">Personalizar</p><h2 id="personalizeTitle">Hazlo tuyo</h2></div>
-                <span class="unlock-count"><span data-il-icon="stamp" aria-hidden="true"></span><span id="unlockedCount">0 elementos</span></span>
-              </div>
-
-              <fieldset class="avatar-options">
-                <legend>Estilo del avatar</legend>
-                <div class="avatar-swatches" id="avatarSwatches">
-                  <button type="button" class="avatar-swatch is-navy" data-avatar-theme="navy" aria-pressed="true"><span aria-hidden="true"></span><b>Ruta</b></button>
-                  <button type="button" class="avatar-swatch is-coral" data-avatar-theme="coral" aria-pressed="false"><span aria-hidden="true"></span><b>Energía</b></button>
-                  <button type="button" class="avatar-swatch is-aqua" data-avatar-theme="aqua" aria-pressed="false"><span aria-hidden="true"></span><b>Calma</b></button>
-                </div>
-              </fieldset>
-
-              <label class="field-control" for="featuredStamp">
-                <span><b>Sello destacado</b><small>Elige uno de los sellos que ya has conseguido.</small></span>
-                <select id="featuredStamp" aria-describedby="featuredStampHelp"></select>
-              </label>
-              <span class="sr-only" id="featuredStampHelp">Solo aparecen sellos desbloqueados.</span>
-
-              <a class="profile-world-entry" id="profileWorldEntry" href="tienda.html">
-                <span class="profile-world-entry__icon" aria-hidden="true"><span data-il-icon="route"></span></span>
-                <span><b id="profileWorldTitle">Mi mundo</b><small id="profileWorldCopy">Haz crecer tu jardín, crea tu avatar y elige un compañero.</small></span>
-                <span aria-hidden="true">→</span>
-              </a>
-
-              <div class="personalization-library" aria-label="Opciones de personalización">
-                <div class="library-item is-ready"><span data-il-icon="user" aria-hidden="true"></span><div><b>Avatar</b><small>3 estilos disponibles</small></div><span class="state-tag">Disponible</span></div>
-                <div class="library-item is-ready"><span data-il-icon="stamp" aria-hidden="true"></span><div><b>Insignias</b><small id="badgeLibraryCount">Sellos conseguidos</small></div><span class="state-tag">Disponible</span></div>
-                <div class="library-item"><span data-il-icon="shirt" aria-hidden="true"></span><div><b>Complementos</b><small>Preparado para futuros desbloqueos</small></div><span class="state-tag">Próximamente</span></div>
-                <div class="library-item"><span data-il-icon="flag" aria-hidden="true"></span><div><b>Fondos</b><small>Nuevos escenarios de tu recorrido</small></div><span class="state-tag">Próximamente</span></div>
-              </div>
-
-            </section>
-          </div>
-
-          <div class="profile-column">
-            <section class="profile-section settings-section" aria-labelledby="settingsTitle">
-              <div class="section-heading"><div><p class="ui-label">Ajustes</p><h2 id="settingsTitle">Tu forma de practicar</h2></div><span class="save-status" id="saveStatus" role="status" aria-live="polite"></span></div>
-
-              <div class="settings-group" aria-label="Audio">
-                <label class="setting-row" for="settingSound">
-                  <span class="setting-icon"><span data-il-icon="speaker" aria-hidden="true"></span></span>
-                  <span class="setting-copy"><b>Sonido</b><small>Permite escuchar audios y pronunciación.</small></span>
-                  <span class="switch-control"><input id="settingSound" data-setting="sound" type="checkbox"><span class="switch-track" aria-hidden="true"></span><span class="switch-state">Activado</span></span>
-                </label>
-                <label class="setting-row" for="settingAutoplay">
-                  <span class="setting-icon"><span data-il-icon="play" aria-hidden="true"></span></span>
-                  <span class="setting-copy"><b>Reproducir audio automáticamente</b><small>Solo cuando el ejercicio lo recomiende.</small></span>
-                  <span class="switch-control"><input id="settingAutoplay" data-setting="autoplayAudio" type="checkbox"><span class="switch-track" aria-hidden="true"></span><span class="switch-state">Activado</span></span>
-                </label>
-                <label class="setting-row setting-row--select" for="settingSpeed">
-                  <span class="setting-icon"><span data-il-icon="ear" aria-hidden="true"></span></span>
-                  <span class="setting-copy"><b>Velocidad del audio</b><small>Ajusta el ritmo de la pronunciación.</small></span>
-                  <select id="settingSpeed" data-setting="audioSpeed"><option value="0.75">Más despacio</option><option value="0.9">Normal</option><option value="1">Natural</option></select>
-                </label>
-              </div>
-
-              <div class="settings-group" aria-label="Experiencia">
-                <label class="setting-row setting-row--select" for="settingGoal">
-                  <span class="setting-icon"><span data-il-icon="target" aria-hidden="true"></span></span>
-                  <span class="setting-copy"><b>Objetivo diario</b><small>Una referencia amable, nunca una obligación.</small></span>
-                  <select id="settingGoal" data-setting="dailyGoal"><option value="5">5 min</option><option value="8">8 min</option><option value="10">10 min</option><option value="15">15 min</option></select>
-                </label>
-                <label class="setting-row" for="settingMotion">
-                  <span class="setting-icon"><span data-il-icon="refresh" aria-hidden="true"></span></span>
-                  <span class="setting-copy"><b>Reducir animaciones</b><small>Minimiza movimientos y transiciones.</small></span>
-                  <span class="switch-control"><input id="settingMotion" data-setting="reduceMotion" type="checkbox"><span class="switch-track" aria-hidden="true"></span><span class="switch-state">Desactivado</span></span>
-                </label>
-                <label class="setting-row setting-row--select" for="settingText">
-                  <span class="setting-icon"><span data-il-icon="books" aria-hidden="true"></span></span>
-                  <span class="setting-copy"><b>Tamaño de texto</b><small>Haz que toda la plataforma sea más cómoda de leer.</small></span>
-                  <select id="settingText" data-setting="textSize"><option value="normal">Normal</option><option value="large">Grande</option></select>
-                </label>
-                <div class="setting-row is-disabled" aria-disabled="true">
-                  <span class="setting-icon"><span data-il-icon="calendar" aria-hidden="true"></span></span>
-                  <span class="setting-copy"><b>Recordatorios</b><small>Disponible cuando activemos los avisos para familias.</small></span>
-                  <span class="state-tag">Próximamente</span>
-                </div>
-                <a class="setting-row setting-row--link" href="mailto:info@interlanguagestudies.es?subject=Ayuda%20con%20Interlanguage%20HOME">
-                  <span class="setting-icon"><span data-il-icon="info" aria-hidden="true"></span></span>
-                  <span class="setting-copy"><b>Ayuda</b><small>Escríbenos si necesitas apoyo con la plataforma.</small></span><span aria-hidden="true">→</span>
-                </a>
-              </div>
-            </section>
-
-            <section class="profile-section account-section" aria-labelledby="accountTitle">
-              <div class="section-heading"><div><p class="ui-label">Cuenta</p><h2 id="accountTitle">Acceso y privacidad</h2></div></div>
-              <div class="username-row"><span>Nombre de usuario</span><strong id="username">—</strong></div>
-              <div class="account-actions">
-                <a href="familias.html"><span data-il-icon="shield" aria-hidden="true"></span><span>Panel para familias</span><span aria-hidden="true">→</span></a>
-                <a href="cambiar-clave.html"><span data-il-icon="lock" aria-hidden="true"></span><span>Cambiar contraseña</span><span aria-hidden="true">→</span></a>
-                <button type="button" id="privacyButton"><span data-il-icon="shield" aria-hidden="true"></span><span>Privacidad</span><span aria-hidden="true">→</span></button>
-                <button type="button" class="logout-action" id="logout"><span data-il-icon="arrowLeft" aria-hidden="true"></span><span>Cerrar sesión</span></button>
-              </div>
-            </section>
-          </div>
+          <a class="settings-entry" href="ajustes.html"><span class="settings-entry__icon" aria-hidden="true"><span data-il-icon="target"></span></span><span><b id="settingsEntryTitle">Ajustes</b><small id="settingsEntryCopy">Sonido, accesibilidad y cuenta</small></span><span aria-hidden="true">→</span></a>
         </div>
       </main>
     </div>
   </div>
   <nav class="app-nav" data-il-nav="perfil"></nav>
 </div>
-
-<dialog class="privacy-dialog" id="privacyDialog" aria-labelledby="privacyTitle">
-  <button type="button" class="dialog-close" id="privacyClose" aria-label="Cerrar información de privacidad"><span data-il-icon="close"></span></button>
-  <span class="privacy-icon" aria-hidden="true"><span data-il-icon="shield"></span></span>
-  <p class="ui-label">Privacidad</p>
-  <h2 id="privacyTitle">Tu aprendizaje es privado</h2>
-  <p>No mostramos rankings públicos ni comparamos tu progreso con el de otros alumnos. Tu familia y el equipo educativo gestionan los datos necesarios para tu aprendizaje.</p>
-  <p class="privacy-note">Para una consulta sobre tus datos, escribe a <a href="mailto:info@interlanguagestudies.es">info@interlanguagestudies.es</a>.</p>
-</dialog>
 
 <script src="layout.js?v=20260809d"></script>
 <script src="il-visual.js?v=20260810b"></script>
@@ -188,11 +66,12 @@
 <script src="auth-utils.js?v=20260809d"></script>
 <script src="etapa.js?v=20260810c"></script>
 <script src="auth.js?v=20260809e"></script>
+<script src="motor/motivacion.js?v=20260809d"></script>
 <script src="mission-state.js?v=20260810h"></script>
-<script src="profile-settings.js?v=20260810b"></script>
-<script src="world-data.js?v=20260810b"></script>
-<script src="world-visual.js?v=20260810b"></script>
+<script src="profile-settings.js?v=20260810c"></script>
 <script src="progress-data.js?v=20260810b"></script>
-<script src="perfil.js?v=20260810f"></script>
+<script src="world-data.js?v=20260810c"></script>
+<script src="world-visual.js?v=20260810d"></script>
+<script src="perfil.js?v=20260810h"></script>
 </body>
 </html>
