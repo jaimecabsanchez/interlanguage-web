@@ -24,7 +24,8 @@ Dos agentes editan este repo. Para no pisaros:
 
 - **Sincroniza antes de empezar** (`git pull --rebase`) y **haz commits pequeños y frecuentes**, cada uno con una sola intención y un mensaje claro.
 - **No dejes el árbol roto**: corre los tests y comprueba en el navegador antes de commitear.
-- **Trabajad en zonas distintas** cuando sea posible (p. ej. uno en `web-publica/`, otro en `plataforma/`) para reducir conflictos.
+- **Ambos agentes (Codex y Claude) pueden trabajar en las dos zonas** (`web-publica/` y `plataforma/`); ninguna es exclusiva de un agente.
+- **Nunca editéis el MISMO archivo a la vez.** El mayor riesgo es `web-publica/index.html` (un único archivo grande): si los dos lo tocáis en paralelo, el merge es doloroso. Antes de empezar en él, `git pull --rebase`, commitea pequeño y frecuente, y si el otro ya está dentro, espera o trabaja en otro archivo/sección.
 - **`AGENTS.md` es la fuente única de reglas.** Si estableces una convención nueva, escríbela aquí en el mismo commit.
 - Si cambias un `.js`/`.css`, **sube el `?v=`** en las páginas afectadas (si no, el otro verá versiones viejas por caché).
 - Ante un conflicto de merge, **no borres el trabajo del otro**: integra ambos cambios.
