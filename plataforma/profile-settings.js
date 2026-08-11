@@ -12,7 +12,7 @@
 })(typeof globalThis !== "undefined" ? globalThis : this, function createProfileSettings(storage) {
   "use strict";
 
-  const VERSION = 3;
+  const VERSION = 4;
   const PREFIX = "il_profile_settings_v1_";
   const ACTIVE_KEY = "il_profile_settings_active_v1";
   const DEFAULTS = Object.freeze({
@@ -24,9 +24,10 @@
     textSize: "normal",
     avatarTheme: "navy",
     avatarBase: "masculine",
+    avatarCustomised: false,
     avatarSkin: "tone-2",
     avatarHair: "short",
-    avatarHairColor: "dark",
+    avatarHairColor: "brown",
     avatarExpression: "smile",
     avatarFaceShape: "oval",
     avatarFaceWidth: 2,
@@ -108,6 +109,7 @@
       textSize: allowed(value.textSize, VALID.textSize, DEFAULTS.textSize),
       avatarTheme: allowed(value.avatarTheme, VALID.avatarTheme, DEFAULTS.avatarTheme),
       avatarBase: allowed(value.avatarBase, VALID.avatarBase, DEFAULTS.avatarBase),
+      avatarCustomised: typeof value.avatarCustomised === "boolean" ? value.avatarCustomised : DEFAULTS.avatarCustomised,
       avatarSkin: allowed(value.avatarSkin, VALID.avatarSkin, DEFAULTS.avatarSkin),
       avatarHair: allowed(value.avatarHair, VALID.avatarHair, DEFAULTS.avatarHair),
       avatarHairColor: allowed(value.avatarHairColor, VALID.avatarHairColor, DEFAULTS.avatarHairColor),

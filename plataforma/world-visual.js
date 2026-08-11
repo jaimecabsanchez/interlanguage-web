@@ -105,8 +105,39 @@
     return value === "backpack" ? '<path d="M25 133c0-25 12-40 32-40h9v86H35c-7 0-10-4-10-11Z" fill="var(--il-secondary)"/><path d="M29 132h32" stroke="var(--il-coral-ink)" stroke-width="7"/>' : "";
   }
 
+  function layerClass(options) {
+    return (options.compact ? " is-compact" : "") + (options.portrait ? " is-portrait" : "");
+  }
+  function illustratedAvatar(settings, options) {
+    const base = settings.avatarBase === "feminine" ? "feminine" : "masculine";
+    const master = base === "feminine" ? "look-05" : "look-01";
+    const classes = layerClass(options);
+    if (!settings.avatarCustomised) return '<img class="il-student-avatar il-avatar-master avatar-base--'+base+classes+'" src="assets/avatar/'+master+'.png" alt="" draggable="false" decoding="async">';
+
+    const prefix = "assets/avatar/layers/" + base + "/";
+    const hairAsset = base === "feminine" ? "hair-ponytail-brown.png" : "hair-short-brown.png";
+    const faceWidth = [.88,.94,1,1.06,1.12][Math.max(0, Math.min(4, Number(settings.avatarFaceWidth) || 0))];
+    const eyeSize = [.82,.91,1,1.1,1.2][Math.max(0, Math.min(4, Number(settings.avatarEyeSize) || 0))];
+    const noseLength = [.84,.92,1,1.08,1.16][Math.max(0, Math.min(4, Number(settings.avatarNoseLength) || 0))];
+    const eyeShapeY = ({ almond:.86, round:1, soft:.76, bright:1.12 }[settings.avatarEyeShape] || .86);
+    const browShapeY = ({ soft:1, straight:.7, arched:1.16, bold:1.24 }[settings.avatarBrowShape] || 1);
+    const mouthShapeX = ({ smile:1, soft:.86, wide:1.18, calm:.72 }[settings.avatarMouthShape] || 1);
+    const mouthShapeY = settings.avatarMouthShape === "wide" ? 1.12 : settings.avatarMouthShape === "calm" ? .72 : 1;
+    const hairStyle = ({ short:[1,1], waves:[1.04,1.03], curls:[1.08,.96], long:[1.04,1.13], bob:[1.02,1.05], coils:[1.1,1], fade:[.9,.84], braids:[1.04,1.14] }[settings.avatarHair] || [1,1]);
+    const skinFilter = ({ "tone-1":"brightness(1.2) saturate(.72)", "tone-5":"brightness(1.12) saturate(.82)", "tone-2":"none", "tone-6":"brightness(.93) saturate(1.02)", "tone-3":"brightness(.82) saturate(1.08)", "tone-7":"brightness(.72) saturate(1.08)", "tone-4":"brightness(.62) saturate(1.04)", "tone-8":"brightness(.52) saturate(.96)" }[settings.avatarSkin] || "none");
+    const hairFilter = ({ dark:"brightness(.52) saturate(.72)", brown:"none", red:"sepia(.34) saturate(1.4) hue-rotate(325deg)", copper:"sepia(.4) saturate(1.5) hue-rotate(342deg) brightness(1.08)", gold:"sepia(.65) saturate(1.45) hue-rotate(355deg) brightness(1.34)", ash:"saturate(.32) brightness(1.18)" }[settings.avatarHairColor] || "none");
+    const eyeFilter = ({ brown:"none", hazel:"sepia(.3) saturate(1.35) brightness(1.16)", green:"hue-rotate(72deg) saturate(1.35)", blue:"hue-rotate(165deg) saturate(1.4) brightness(1.12)", grey:"saturate(.18) brightness(1.22)" }[settings.avatarEyeColor] || "none");
+    const topFilter = ({ tee:"none", hoodie:"hue-rotate(305deg) saturate(1.35)", sweater:"hue-rotate(170deg) saturate(.85)", shirt:"saturate(.15) brightness(1.35)", school:"hue-rotate(115deg) brightness(.72)", sport:"hue-rotate(40deg) saturate(1.35)", jacket:"hue-rotate(120deg) brightness(.65)" }[settings.avatarTop] || "none");
+    const vars = "--avatar-face-width:"+faceWidth+";--avatar-eye-size:"+eyeSize+";--avatar-eye-shape:"+eyeShapeY+";--avatar-brow-shape:"+browShapeY+";--avatar-nose-length:"+noseLength+";--avatar-mouth-width:"+mouthShapeX+";--avatar-mouth-height:"+mouthShapeY+";--avatar-hair-width:"+hairStyle[0]+";--avatar-hair-height:"+hairStyle[1]+";--avatar-skin-filter:"+skinFilter+";--avatar-hair-filter:"+hairFilter+";--avatar-eye-filter:"+eyeFilter+";--avatar-outfit-filter:"+topFilter;
+    const img = (name, kind) => '<img class="il-avatar-layer il-avatar-layer--'+kind+'" src="'+prefix+name+'" alt="" draggable="false" decoding="async">';
+    return '<span class="il-student-avatar il-avatar-stack avatar-base--'+base+classes+'" style="'+vars+'">'
+      +img("base.png", "base")+img("outfit-green.png", "outfit")+img(hairAsset, "hair")
+      +img("brows-default.png", "brows")+img("eyes-default.png", "eyes")+img("nose-default.png", "nose")+img("mouth-default.png", "mouth")+'</span>';
+  }
+
   function avatar(settings, progress, options) {
     settings = settings || {}; options = options || {};
+    if (!options.vectorFallback) return illustratedAvatar(settings, options);
     const skinTone = skin(settings.avatarSkin); const hairTone = hair(settings.avatarHairColor); const bodyTone = theme(settings.avatarTheme);
     const top = settings.avatarTop || "tee"; const acc = settings.avatarAccessory || "none"; const style = settings.avatarHair || "short";
     const avatarBase = settings.avatarBase === "feminine" ? "feminine" : "masculine"; const feminine = avatarBase === "feminine";
@@ -210,7 +241,8 @@
     if (!item) return "";
     if (/^pet-/.test(item.id)) return item.id === "pet-none" ? objectThumb("plant") : companion(item.id);
     if (item.category === "world") return objectThumb(item.visual);
-    const settings = Object.assign({ avatarTheme:"navy", avatarBase:"masculine", avatarSkin:"tone-2", avatarHair:"short", avatarHairColor:"dark", avatarExpression:"smile", avatarTop:"tee", avatarAccessory:"none" }, currentSettings || {});
+    const settings = Object.assign({ avatarTheme:"navy", avatarBase:"masculine", avatarSkin:"tone-2", avatarHair:"short", avatarHairColor:"brown", avatarExpression:"smile", avatarTop:"tee", avatarAccessory:"none" }, currentSettings || {});
+    settings.avatarCustomised = true;
     if (item.settingKey) settings[item.settingKey] = item.settingValue;
     return avatar(settings, progress, { compact:true });
   }

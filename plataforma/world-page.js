@@ -98,8 +98,8 @@
   }
 
   function previewRange(key, value, output) {
-    settings = ILProfileSettings.sanitize(Object.assign({}, settings, { [key]:value })); renderScene(false); if (output) output.textContent = rangeName(RANGES[key], value);
-    $("editorStatus").textContent = text("Guardando…", "Saving…"); clearTimeout(saveTimer); saveTimer = setTimeout(() => persist({ [key]:value }, { animate:false }), 180);
+    settings = ILProfileSettings.sanitize(Object.assign({}, settings, { avatarCustomised:true, [key]:value })); renderScene(false); if (output) output.textContent = rangeName(RANGES[key], value);
+    $("editorStatus").textContent = text("Guardando…", "Saving…"); clearTimeout(saveTimer); saveTimer = setTimeout(() => persist({ avatarCustomised:true, [key]:value }, { animate:false }), 180);
   }
 
   function rangeName(config, value) { const index = config.values.indexOf(value); return (secondary() ? config.namesEn : config.names)[Math.max(0, index)]; }
@@ -122,8 +122,9 @@
     const baseChoice = key === "avatarBase"; if (baseChoice) { group.classList.add("is-base"); choices.classList.add("is-base"); }
     OPTIONS[key].forEach(option => {
       const value = option[0]; const selected = settings[key] === value; const button = document.createElement("button"); button.type = "button"; button.className = "trait-choice" + (selected ? " is-selected" : ""); button.setAttribute("aria-pressed", String(selected)); button.setAttribute("aria-label", secondary() ? option[2] : option[1]);
-      const visual = document.createElement("span"); visual.className = "trait-choice__visual"; visual.innerHTML = ILWorldVisual.avatar(Object.assign({}, settings, { [key]:value }), progress, baseChoice ? { compact:true } : { portrait:true }); const label = document.createElement("span"); label.textContent = secondary() ? option[2] : option[1]; button.append(visual, label);
-      button.addEventListener("click", () => { persist({ [key]:value }); renderEditor(); }); choices.appendChild(button);
+      const previewSettings = Object.assign({}, settings, { [key]:value, avatarCustomised:!baseChoice });
+      const visual = document.createElement("span"); visual.className = "trait-choice__visual"; visual.innerHTML = ILWorldVisual.avatar(previewSettings, progress, baseChoice ? { compact:true } : { portrait:true }); const label = document.createElement("span"); label.textContent = secondary() ? option[2] : option[1]; button.append(visual, label);
+      button.addEventListener("click", () => { persist(baseChoice ? { avatarBase:value, avatarCustomised:false } : { avatarCustomised:true, [key]:value }); renderEditor(); }); choices.appendChild(button);
     });
     group.append(legend, choices); return group;
   }
@@ -155,7 +156,7 @@
   function applyCatalogItem(item) {
     const status = ILWorldData.unlockStatus(item, ctx()); if (!status.unlocked) { showSaved(status.requirement); return; }
     if (item.toggle === "world") { const values = new Set(settings.activeWorldItems || []); if (values.has(item.id)) values.delete(item.id); else { if (values.size >= 8) values.delete(Array.from(values)[0]); values.add(item.id); } persist({ activeWorldItems:Array.from(values) }, { message:values.has(item.id) ? text("Añadido al paisaje", "Added to your space") : text("Quitado del paisaje", "Removed from your space") }); }
-    else if (item.settingKey) persist({ [item.settingKey]:item.settingValue });
+    else if (item.settingKey) persist({ avatarCustomised:true, [item.settingKey]:item.settingValue });
     renderEditor();
   }
 
@@ -181,13 +182,13 @@
   function setupTabs() { document.querySelectorAll("[data-world-tab]").forEach(button => { button.addEventListener("click", () => selectTab(button.dataset.worldTab, false, true)); button.addEventListener("keydown", event => { if (event.key !== "ArrowRight" && event.key !== "ArrowLeft") return; event.preventDefault(); const index = TABS.indexOf(activeTab); selectTab(TABS[(index + (event.key === "ArrowRight" ? 1 : -1) + TABS.length) % TABS.length], true, true); }); }); }
 
   function randomiseAvatar() {
-    const patch = { avatarBase:random(OPTIONS.avatarBase)[0], avatarFaceShape:random(OPTIONS.avatarFaceShape)[0], avatarFaceWidth:random(RANGES.avatarFaceWidth.values), avatarSkin:random(RANGES.avatarSkin.values), avatarHair:random(OPTIONS.avatarHair)[0], avatarHairColor:random(RANGES.avatarHairColor.values), avatarEyeShape:random(OPTIONS.avatarEyeShape)[0], avatarEyeColor:random(RANGES.avatarEyeColor.values), avatarEyeSize:random(RANGES.avatarEyeSize.values), avatarBrowShape:random(OPTIONS.avatarBrowShape)[0], avatarNoseShape:random(OPTIONS.avatarNoseShape)[0], avatarNoseLength:random(RANGES.avatarNoseLength.values), avatarMouthShape:random(OPTIONS.avatarMouthShape)[0] };
+    const patch = { avatarCustomised:true, avatarBase:random(OPTIONS.avatarBase)[0], avatarFaceShape:random(OPTIONS.avatarFaceShape)[0], avatarFaceWidth:random(RANGES.avatarFaceWidth.values), avatarSkin:random(RANGES.avatarSkin.values), avatarHair:random(OPTIONS.avatarHair)[0], avatarHairColor:random(RANGES.avatarHairColor.values), avatarEyeShape:random(OPTIONS.avatarEyeShape)[0], avatarEyeColor:random(RANGES.avatarEyeColor.values), avatarEyeSize:random(RANGES.avatarEyeSize.values), avatarBrowShape:random(OPTIONS.avatarBrowShape)[0], avatarNoseShape:random(OPTIONS.avatarNoseShape)[0], avatarNoseLength:random(RANGES.avatarNoseLength.values), avatarMouthShape:random(OPTIONS.avatarMouthShape)[0] };
     persist(patch, { message:text("¡Nueva combinación!", "New combination") }); renderEditor();
   }
 
   function resetAvatar() {
     const button = $("resetAvatar"); if (!resetArmed) { resetArmed = true; button.textContent = text("Confirmar restablecer", "Confirm reset"); button.classList.add("is-armed"); clearTimeout(resetTimer); resetTimer = setTimeout(() => { resetArmed = false; button.textContent = text("Restablecer", "Reset"); button.classList.remove("is-armed"); }, 3200); return; }
-    resetArmed = false; clearTimeout(resetTimer); button.textContent = text("Restablecer", "Reset"); button.classList.remove("is-armed"); const defaults = ILProfileSettings.DEFAULTS; persist({ avatarBase:defaults.avatarBase, avatarTheme:defaults.avatarTheme, avatarSkin:defaults.avatarSkin, avatarHair:defaults.avatarHair, avatarHairColor:defaults.avatarHairColor, avatarExpression:defaults.avatarExpression, avatarFaceShape:defaults.avatarFaceShape, avatarFaceWidth:defaults.avatarFaceWidth, avatarEyeShape:defaults.avatarEyeShape, avatarEyeColor:defaults.avatarEyeColor, avatarEyeSize:defaults.avatarEyeSize, avatarBrowShape:defaults.avatarBrowShape, avatarNoseShape:defaults.avatarNoseShape, avatarNoseLength:defaults.avatarNoseLength, avatarMouthShape:defaults.avatarMouthShape, avatarTop:defaults.avatarTop, avatarAccessory:defaults.avatarAccessory }, { message:text("Avatar restablecido", "Avatar reset") }); renderEditor();
+    resetArmed = false; clearTimeout(resetTimer); button.textContent = text("Restablecer", "Reset"); button.classList.remove("is-armed"); const defaults = ILProfileSettings.DEFAULTS; persist({ avatarCustomised:false, avatarBase:defaults.avatarBase, avatarTheme:defaults.avatarTheme, avatarSkin:defaults.avatarSkin, avatarHair:defaults.avatarHair, avatarHairColor:defaults.avatarHairColor, avatarExpression:defaults.avatarExpression, avatarFaceShape:defaults.avatarFaceShape, avatarFaceWidth:defaults.avatarFaceWidth, avatarEyeShape:defaults.avatarEyeShape, avatarEyeColor:defaults.avatarEyeColor, avatarEyeSize:defaults.avatarEyeSize, avatarBrowShape:defaults.avatarBrowShape, avatarNoseShape:defaults.avatarNoseShape, avatarNoseLength:defaults.avatarNoseLength, avatarMouthShape:defaults.avatarMouthShape, avatarTop:defaults.avatarTop, avatarAccessory:defaults.avatarAccessory }, { message:text("Avatar restablecido", "Avatar reset") }); renderEditor();
   }
 
   function applyReveal() { if (!revealItem) return; applyCatalogItem(revealItem); $("unlockDialog").close(); }
