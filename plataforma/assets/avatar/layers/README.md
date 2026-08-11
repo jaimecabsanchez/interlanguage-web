@@ -10,9 +10,9 @@ Orden de composición:
 2. `outfit-green.png`: conjunto verde y azul predeterminado.
 3. `hair-*.png`: peinado ilustrado.
 4. `brows-default.png`, `eyes-default.png`, `nose-default.png` y
-   `mouth-default.png`: rasgos ya separados sobre el mismo lienzo para que
-   cada control los transforme de forma independiente. `face-default.png` se
-   conserva como lámina fuente de esos cuatro recortes.
+   `mouth-default.png`: rasgos separados que comparten una única transformación
+   facial. No se escalan de forma independiente porque eso rompe las
+   proporciones del personaje. `face-default.png` se conserva como fuente.
 
 Las variantes futuras deben mantener el mismo lienzo y posición. No se debe
 reescalar una capa individual al exportarla.
