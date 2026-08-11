@@ -15,13 +15,19 @@ assert.notEqual(feminine, avatar, "las bases producen geometrías distintas");
 assert.ok(V.avatar(Object.assign({}, base, { avatarLook:"look-01" }), {}).includes("il-student-avatar"), "mantiene compatibilidad con las preferencias antiguas");
 
 const layered = V.avatar(Object.assign({}, base, { avatarCustomised:true, avatarEyeSize:4, avatarHairColor:"gold" }), {});
-assert.ok(layered.includes("look-01.png"), "una preferencia antigua sigue mostrando la lámina masculina exacta");
+assert.ok(layered.includes("il-avatar-rig"), "activa el rig gradual al modificar un rasgo");
 assert.ok(!layered.includes("il-avatar-stack"), "no vuelve a usar el compositor que deformaba el avatar");
-assert.ok(!layered.includes("layers/"), "no carga capas reconstruidas");
+assert.ok(layered.includes("assets/avatar/rig/masculine/head-base.png"), "usa las capas compatibles con la lámina masculina");
+assert.ok(layered.includes("scale(1.16 1.16)"), "aplica el tamaño de ojos dentro de un rango seguro");
 
-const varied = V.avatar(Object.assign({}, base, { avatarCustomised:true, avatarSkin:"tone-8", avatarHair:"braids", avatarHairColor:"red", avatarEyeColor:"green", avatarFaceShape:"angular", avatarNoseShape:"defined", avatarMouthShape:"wide" }), {});
-assert.ok(varied.includes("look-01.png"), "ignora rasgos incompatibles y conserva la ilustración aprobada");
-assert.ok(!varied.includes("filter:"), "no altera visualmente la lámina maestra");
+const varied = V.avatar(Object.assign({}, base, { avatarCustomised:true, avatarSkin:"tone-8", avatarHair:"curls", avatarHairColor:"red", avatarEyeColor:"green", avatarFaceWidth:4, avatarNoseWidth:4, avatarMouthWidth:4 }), {});
+assert.ok(varied.includes("hair-curly.png"), "permite cambiar el peinado sin cambiar el lenguaje visual");
+assert.ok(varied.includes("hair-original.png") === false, "muestra una sola variante de pelo");
+assert.ok(varied.includes("filter:"), "aplica color solo a las capas correspondientes");
+
+const feminineRig = V.avatar(Object.assign({}, base, { avatarBase:"feminine", avatarCustomised:true }), {});
+assert.ok(feminineRig.includes("assets/avatar/rig/feminine/head-base.png"), "el rig femenino usa su propia geometría compatible");
+assert.ok(!feminineRig.includes("look-01.png"), "no mezcla las bases masculina y femenina");
 
 const portrait = V.avatar(Object.assign({}, base, { avatarCustomised:true }), {}, { portrait:true });
 assert.ok(portrait.includes("is-portrait"), "genera previsualización de rostro");

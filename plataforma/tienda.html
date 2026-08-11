@@ -13,7 +13,7 @@
 <link rel="stylesheet" href="app.css?v=20260809d">
 <link rel="stylesheet" href="etapa.css?v=20260809d">
 <link rel="stylesheet" href="shell.css?v=20260809d">
-<link rel="stylesheet" href="world.css?v=20260811f">
+<link rel="stylesheet" href="world.css?v=20260811g">
 </head>
 <body>
 <div id="loading" class="il-state il-state--loading"><span class="il-spinner" aria-hidden="true"></span><p>Preparando tu mundo…</p></div>
@@ -41,10 +41,14 @@
           </aside>
 
           <section class="customise" aria-labelledby="customiseTitle">
-            <div class="customise__head"><div><p class="ui-label" id="customiseEyebrow">TU ESPACIO PERSONAL</p><h2 id="customiseTitle">Tu perfil</h2></div><p id="customiseHint">Tu avatar se asigna desde tu perfil de alumno. Puedes personalizar tu mundo.</p></div>
+            <div class="customise__head"><div><p class="ui-label" id="customiseEyebrow">HAZLO TUYO</p><h2 id="customiseTitle">Personalizar</h2></div><p id="customiseHint">Ajusta cada rasgo poco a poco y comprueba los cambios al instante.</p></div>
             <div class="world-tabs" role="tablist" aria-label="Opciones de personalización">
               <button id="tab-avatar" type="button" role="tab" aria-selected="true" aria-controls="catalogPanel" data-world-tab="avatar"><span data-il-icon="user"></span><span>Avatar</span></button>
               <button id="tab-world" type="button" role="tab" aria-selected="false" aria-controls="catalogPanel" data-world-tab="world" tabindex="-1"><span data-il-icon="flag"></span><span>Mundo</span></button>
+            </div>
+            <div class="avatar-tools" id="avatarTools">
+              <div class="feature-nav" id="featureNav" role="tablist" aria-label="Parte del avatar"></div>
+              <div class="quick-actions"><button class="btn btn-secondary" id="randomAvatar" type="button"><span data-il-icon="refresh" aria-hidden="true"></span><span>Sorpréndeme</span></button><button class="text-action" id="resetAvatar" type="button">Restablecer</button></div>
             </div>
             <div class="catalog-panel" id="catalogPanel" role="tabpanel" aria-labelledby="tab-avatar" tabindex="0"><div id="catalogSections"></div></div>
           </section>
@@ -68,10 +72,11 @@
 <script src="auth.js?v=20260811f"></script>
 <script src="motor/motivacion.js?v=20260809d"></script>
 <script src="mission-state.js?v=20260810h"></script>
-<script src="profile-settings.js?v=20260811f"></script>
+<script src="profile-settings.js?v=20260811g"></script>
 <script src="progress-data.js?v=20260810b"></script>
 <script src="world-data.js?v=20260810d"></script>
-<script src="world-visual.js?v=20260811f"></script>
-<script src="world-page.js?v=20260811f"></script>
+<script src="avatar-rig.js?v=20260811a"></script>
+<script src="world-visual.js?v=20260811g"></script>
+<script src="world-page.js?v=20260811g"></script>
 </body>
 </html>

@@ -4,9 +4,9 @@
    ============================================================ */
 (function (root, factory) {
   "use strict";
-  if (typeof module === "object" && module.exports) module.exports = factory();
-  else root.ILWorldVisual = factory();
-})(typeof globalThis !== "undefined" ? globalThis : this, function () {
+  if (typeof module === "object" && module.exports) module.exports = factory(require("./avatar-rig.js"));
+  else root.ILWorldVisual = factory(root.ILAvatarRig);
+})(typeof globalThis !== "undefined" ? globalThis : this, function (AvatarRig) {
   "use strict";
 
   const skin = value => ({ "tone-1":"var(--il-avatar-skin-1)", "tone-5":"var(--il-avatar-skin-5)", "tone-2":"var(--il-avatar-skin-2)", "tone-6":"var(--il-avatar-skin-6)", "tone-3":"var(--il-avatar-skin-3)", "tone-7":"var(--il-avatar-skin-7)", "tone-4":"var(--il-avatar-skin-4)", "tone-8":"var(--il-avatar-skin-8)" }[value] || "var(--il-avatar-skin-2)");
@@ -111,6 +111,7 @@
   function illustratedAvatar(settings, options) {
     const base = settings.avatarBase === "feminine" ? "feminine" : "masculine";
     const master = base === "feminine" ? "look-05" : "look-01";
+    if (settings.avatarCustomised && AvatarRig && typeof AvatarRig.render === "function") return AvatarRig.render(settings, options);
     const classes = layerClass(options);
     return '<img class="il-student-avatar il-avatar-master avatar-base--'+base+classes+'" src="assets/avatar/'+master+'.png" alt="" draggable="false" decoding="async">';
   }

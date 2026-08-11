@@ -12,7 +12,7 @@
 })(typeof globalThis !== "undefined" ? globalThis : this, function createProfileSettings(storage) {
   "use strict";
 
-  const VERSION = 4;
+  const VERSION = 5;
   const PREFIX = "il_profile_settings_v1_";
   const ACTIVE_KEY = "il_profile_settings_active_v1";
   const DEFAULTS = Object.freeze({
@@ -25,8 +25,9 @@
     avatarTheme: "navy",
     avatarBase: "masculine",
     avatarCustomised: false,
+    avatarRigVersion: 1,
     avatarSkin: "tone-2",
-    avatarHair: "short",
+    avatarHair: "original",
     avatarHairColor: "brown",
     avatarExpression: "smile",
     avatarFaceShape: "oval",
@@ -40,6 +41,24 @@
     avatarMouthShape: "smile",
     avatarTop: "tee",
     avatarAccessory: "none",
+    avatarFaceLength: 2,
+    avatarCheekVolume: 2,
+    avatarJawWidth: 2,
+    avatarHairLength: 2,
+    avatarHairVolume: 2,
+    avatarEyeSpacing: 2,
+    avatarEyeHeight: 2,
+    avatarBrowThickness: 2,
+    avatarBrowArch: 2,
+    avatarBrowSpacing: 2,
+    avatarNoseWidth: 2,
+    avatarNoseHeight: 2,
+    avatarMouthWidth: 2,
+    avatarMouthCurve: 2,
+    avatarMouthHeight: 2,
+    avatarOutfitColor: "green",
+    avatarAccessorySize: 2,
+    avatarAccessoryHeight: 2,
     avatarLook: "look-01",
     worldBackground: "day",
     worldCompanion: "none",
@@ -49,6 +68,7 @@
     background: "school",
     featuredStamp: ""
   });
+  const SLIDER = [0, 1, 2, 3, 4];
   const VALID = {
     audioSpeed: [0.75, 0.9, 1],
     dailyGoal: [5, 8, 10, 15],
@@ -56,7 +76,7 @@
     avatarTheme: ["navy", "coral", "aqua"],
     avatarBase: ["masculine", "feminine"],
     avatarSkin: ["tone-1", "tone-5", "tone-2", "tone-6", "tone-3", "tone-7", "tone-4", "tone-8"],
-    avatarHair: ["short", "waves", "curls", "long", "bob", "coils", "fade", "braids"],
+    avatarHair: ["original", "short", "waves", "curls", "long", "bob", "coils", "fade", "braids"],
     avatarHairColor: ["dark", "brown", "gold", "copper", "ash", "red"],
     avatarExpression: ["smile", "calm", "bright"],
     avatarFaceShape: ["oval", "round", "soft", "angular"],
@@ -70,6 +90,24 @@
     avatarMouthShape: ["smile", "soft", "wide", "calm"],
     avatarTop: ["tee", "hoodie", "sweater", "shirt", "school", "sport", "jacket"],
     avatarAccessory: ["none", "cap", "headphones", "glasses", "backpack", "scarf", "badge"],
+    avatarFaceLength: SLIDER,
+    avatarCheekVolume: SLIDER,
+    avatarJawWidth: SLIDER,
+    avatarHairLength: SLIDER,
+    avatarHairVolume: SLIDER,
+    avatarEyeSpacing: SLIDER,
+    avatarEyeHeight: SLIDER,
+    avatarBrowThickness: SLIDER,
+    avatarBrowArch: SLIDER,
+    avatarBrowSpacing: SLIDER,
+    avatarNoseWidth: SLIDER,
+    avatarNoseHeight: SLIDER,
+    avatarMouthWidth: SLIDER,
+    avatarMouthCurve: SLIDER,
+    avatarMouthHeight: SLIDER,
+    avatarOutfitColor: ["green", "coral", "navy", "aqua"],
+    avatarAccessorySize: SLIDER,
+    avatarAccessoryHeight: SLIDER,
     worldBackground: ["day", "sunset", "city", "night"],
     worldCompanion: ["none", "pet-nube", "pet-brisa", "pet-menta"],
     activeWorldItems: ["world-flowers", "world-bench", "world-toy-plane", "world-ball", "world-pond", "world-bicycle", "world-lanterns", "world-greenhouse", "world-travel-board", "world-tech-desk", "world-music-poster", "world-plant"],
@@ -110,6 +148,7 @@
       avatarTheme: allowed(value.avatarTheme, VALID.avatarTheme, DEFAULTS.avatarTheme),
       avatarBase: allowed(value.avatarBase, VALID.avatarBase, DEFAULTS.avatarBase),
       avatarCustomised: typeof value.avatarCustomised === "boolean" ? value.avatarCustomised : DEFAULTS.avatarCustomised,
+      avatarRigVersion: Number(value.avatarRigVersion) === 1 ? 1 : DEFAULTS.avatarRigVersion,
       avatarSkin: allowed(value.avatarSkin, VALID.avatarSkin, DEFAULTS.avatarSkin),
       avatarHair: allowed(value.avatarHair, VALID.avatarHair, DEFAULTS.avatarHair),
       avatarHairColor: allowed(value.avatarHairColor, VALID.avatarHairColor, DEFAULTS.avatarHairColor),
@@ -125,6 +164,24 @@
       avatarMouthShape: allowed(value.avatarMouthShape, VALID.avatarMouthShape, value.avatarExpression === "calm" ? "calm" : value.avatarExpression === "bright" ? "wide" : DEFAULTS.avatarMouthShape),
       avatarTop: allowed(value.avatarTop, VALID.avatarTop, DEFAULTS.avatarTop),
       avatarAccessory: allowed(value.avatarAccessory, VALID.avatarAccessory, DEFAULTS.avatarAccessory),
+      avatarFaceLength: allowed(Number(value.avatarFaceLength), VALID.avatarFaceLength, DEFAULTS.avatarFaceLength),
+      avatarCheekVolume: allowed(Number(value.avatarCheekVolume), VALID.avatarCheekVolume, DEFAULTS.avatarCheekVolume),
+      avatarJawWidth: allowed(Number(value.avatarJawWidth), VALID.avatarJawWidth, DEFAULTS.avatarJawWidth),
+      avatarHairLength: allowed(Number(value.avatarHairLength), VALID.avatarHairLength, DEFAULTS.avatarHairLength),
+      avatarHairVolume: allowed(Number(value.avatarHairVolume), VALID.avatarHairVolume, DEFAULTS.avatarHairVolume),
+      avatarEyeSpacing: allowed(Number(value.avatarEyeSpacing), VALID.avatarEyeSpacing, DEFAULTS.avatarEyeSpacing),
+      avatarEyeHeight: allowed(Number(value.avatarEyeHeight), VALID.avatarEyeHeight, DEFAULTS.avatarEyeHeight),
+      avatarBrowThickness: allowed(Number(value.avatarBrowThickness), VALID.avatarBrowThickness, DEFAULTS.avatarBrowThickness),
+      avatarBrowArch: allowed(Number(value.avatarBrowArch), VALID.avatarBrowArch, DEFAULTS.avatarBrowArch),
+      avatarBrowSpacing: allowed(Number(value.avatarBrowSpacing), VALID.avatarBrowSpacing, DEFAULTS.avatarBrowSpacing),
+      avatarNoseWidth: allowed(Number(value.avatarNoseWidth), VALID.avatarNoseWidth, DEFAULTS.avatarNoseWidth),
+      avatarNoseHeight: allowed(Number(value.avatarNoseHeight), VALID.avatarNoseHeight, DEFAULTS.avatarNoseHeight),
+      avatarMouthWidth: allowed(Number(value.avatarMouthWidth), VALID.avatarMouthWidth, DEFAULTS.avatarMouthWidth),
+      avatarMouthCurve: allowed(Number(value.avatarMouthCurve), VALID.avatarMouthCurve, DEFAULTS.avatarMouthCurve),
+      avatarMouthHeight: allowed(Number(value.avatarMouthHeight), VALID.avatarMouthHeight, DEFAULTS.avatarMouthHeight),
+      avatarOutfitColor: allowed(value.avatarOutfitColor, VALID.avatarOutfitColor, DEFAULTS.avatarOutfitColor),
+      avatarAccessorySize: allowed(Number(value.avatarAccessorySize), VALID.avatarAccessorySize, DEFAULTS.avatarAccessorySize),
+      avatarAccessoryHeight: allowed(Number(value.avatarAccessoryHeight), VALID.avatarAccessoryHeight, DEFAULTS.avatarAccessoryHeight),
       avatarLook: /^look-0[1-9]$/.test(value.avatarLook) ? value.avatarLook : (value.avatarLook === "" ? "" : DEFAULTS.avatarLook),
       worldBackground: allowed(value.worldBackground, VALID.worldBackground, DEFAULTS.worldBackground),
       worldCompanion: allowed(value.worldCompanion, VALID.worldCompanion, DEFAULTS.worldCompanion),
@@ -144,6 +201,7 @@
   function load(username) {
     const stored = read(usernameKey(username), null);
     const settings = sanitize(stored || {});
+    if (stored && Number(stored.version || 0) < VERSION) { settings.avatarCustomised = false; settings.avatarHair = "original"; }
     if (!stored) { const legacy = legacyTheme(); if (legacy) settings.avatarTheme = legacy; }
     return settings;
   }
@@ -156,7 +214,8 @@
     if (typeof settings === "string") { sex = settings; settings = null; }
     let next = sanitize(settings || load(username));
     if (sex === "female" || sex === "male") {
-      next = sanitize(Object.assign({}, next, { avatarBase:avatarBaseForSex(sex, next.avatarBase), avatarCustomised:false }));
+      const assignedBase = avatarBaseForSex(sex, next.avatarBase);
+      next = sanitize(Object.assign({}, next, { avatarBase:assignedBase, avatarCustomised:assignedBase === next.avatarBase ? next.avatarCustomised : false }));
       write(usernameKey(username), next);
     }
     const active = { username: String(username || ""), settings: next };
