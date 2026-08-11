@@ -2,9 +2,9 @@
   "use strict";
 
   const $ = id => document.getElementById(id);
-  const TABS = ["avatar", "world"];
-  const LOOKS = ["look-01", "look-02", "look-03", "look-04", "look-05", "look-06", "look-07", "look-08", "look-09"];
+  const TABS = ["avatar", "clothing", "accessory", "world"];
   const FEATURES = [
+    { id:"base", label:"Base", labelEn:"Base" },
     { id:"face", label:"Rostro", labelEn:"Face" },
     { id:"skin", label:"Piel", labelEn:"Skin" },
     { id:"hair", label:"Pelo", labelEn:"Hair" },
@@ -14,6 +14,7 @@
     { id:"mouth", label:"Boca", labelEn:"Mouth" }
   ];
   const OPTIONS = {
+    avatarBase:[["masculine","Masculino","Masculine"],["feminine","Femenino","Feminine"]],
     avatarFaceShape:[["oval","Ovalado","Oval"],["round","Redondo","Round"],["soft","Suave","Soft"],["angular","Angular","Angular"]],
     avatarHair:[["short","Corto","Short"],["waves","Ondulado","Wavy"],["curls","Rizado","Curly"],["long","Largo","Long"],["bob","Bob","Bob"],["coils","Bucles","Coils"],["fade","Degradado","Fade"],["braids","Trenzas","Braids"]],
     avatarEyeShape:[["almond","Almendrados","Almond"],["round","Redondos","Round"],["soft","Suaves","Soft"],["bright","Abiertos","Bright"]],
@@ -36,7 +37,7 @@
   let settings = null;
   let stampIds = [];
   let activeTab = "avatar";
-  let activeFeature = "face";
+  let activeFeature = "base";
   let revealItem = null;
   let saveTimer = null;
   let resetTimer = null;
@@ -118,9 +119,10 @@
 
   function choiceGroup(key, heading) {
     const group = document.createElement("fieldset"); group.className = "trait-group"; const legend = document.createElement("legend"); legend.textContent = heading; const choices = document.createElement("div"); choices.className = "trait-choices";
+    const baseChoice = key === "avatarBase"; if (baseChoice) { group.classList.add("is-base"); choices.classList.add("is-base"); }
     OPTIONS[key].forEach(option => {
       const value = option[0]; const selected = settings[key] === value; const button = document.createElement("button"); button.type = "button"; button.className = "trait-choice" + (selected ? " is-selected" : ""); button.setAttribute("aria-pressed", String(selected)); button.setAttribute("aria-label", secondary() ? option[2] : option[1]);
-      const visual = document.createElement("span"); visual.className = "trait-choice__visual"; visual.innerHTML = ILWorldVisual.avatar(Object.assign({}, settings, { [key]:value }), progress, { portrait:true }); const label = document.createElement("span"); label.textContent = secondary() ? option[2] : option[1]; button.append(visual, label);
+      const visual = document.createElement("span"); visual.className = "trait-choice__visual"; visual.innerHTML = ILWorldVisual.avatar(Object.assign({}, settings, { [key]:value }), progress, baseChoice ? { compact:true } : { portrait:true }); const label = document.createElement("span"); label.textContent = secondary() ? option[2] : option[1]; button.append(visual, label);
       button.addEventListener("click", () => { persist({ [key]:value }); renderEditor(); }); choices.appendChild(button);
     });
     group.append(legend, choices); return group;
@@ -132,6 +134,7 @@
 
   function renderAvatarFeature() {
     const host = $("catalogSections"); host.replaceChildren(); const panel = document.createElement("section"); panel.className = "feature-editor";
+    if (activeFeature === "base") { panel.append(featureIntro(text("Elige tu base", "Choose your base"), text("Elige masculino o femenino. Después podrás combinar todos los rasgos, peinados y estilos.", "Choose masculine or feminine. You can then combine every feature, hairstyle and style.")), choiceGroup("avatarBase", text("Base del avatar", "Avatar base"))); }
     if (activeFeature === "face") { panel.append(featureIntro(text("Rostro", "Face"), text("Elige la forma y ajusta sus proporciones.", "Choose a shape and adjust its proportions.")), choiceGroup("avatarFaceShape", text("Forma", "Shape")), rangeControl("avatarFaceWidth")); }
     if (activeFeature === "skin") { panel.append(featureIntro(text("Piel", "Skin"), text("Desliza para encontrar tu tono.", "Move along the scale to choose your tone.")), rangeControl("avatarSkin")); }
     if (activeFeature === "hair") { panel.append(featureIntro(text("Pelo", "Hair"), text("Combina corte, textura y color.", "Combine hairstyle, texture and colour.")), choiceGroup("avatarHair", text("Corte y textura", "Style and texture")), rangeControl("avatarHairColor")); }
@@ -147,7 +150,7 @@
   }
 
   function revealEditorStart() { if (!matchMedia("(max-width:760px)").matches) return; requestAnimationFrame(() => $("catalogPanel").scrollIntoView({ behavior:ILVisual.reduceMotion() ? "auto" : "smooth", block:"start" })); }
-  function selectFeature(feature, focus, move) { activeFeature = FEATURES.some(item => item.id === feature) ? feature : "face"; renderFeatureNav(); renderAvatarFeature(); if (focus) $("featureNav").querySelector('[aria-selected="true"]').focus(); if (move) revealEditorStart(); }
+  function selectFeature(feature, focus, move) { activeFeature = FEATURES.some(item => item.id === feature) ? feature : "base"; renderFeatureNav(); renderAvatarFeature(); if (focus) $("featureNav").querySelector('[aria-selected="true"]').focus(); if (move) revealEditorStart(); }
 
   function applyCatalogItem(item) {
     const status = ILWorldData.unlockStatus(item, ctx()); if (!status.unlocked) { showSaved(status.requirement); return; }
@@ -168,26 +171,7 @@
     const host = $("catalogSections"); host.replaceChildren(); ILWorldData.sections(band, activeTab).forEach(section => { const wrap = document.createElement("section"); wrap.className = "compact-section"; const heading = document.createElement("div"); heading.className = "compact-section__head"; const title = document.createElement("h3"); title.textContent = sectionName(section); const copy = document.createElement("p"); copy.textContent = activeTab === "world" ? text("Los cambios aparecen al momento en la vista previa.", "Changes appear instantly in the preview.") : text("Elige una opción para probarla.", "Choose an option to try it."); heading.append(title, copy); const grid = document.createElement("div"); grid.className = "compact-options"; ILWorldData.catalogFor(band, activeTab).filter(item => item.section === section).forEach(item => grid.appendChild(compactOption(item))); wrap.append(heading, grid); host.appendChild(wrap); });
   }
 
-  function renderLookPicker() {
-    $("featureNav").replaceChildren();
-    const host = $("catalogSections"); host.replaceChildren();
-    const panel = document.createElement("section"); panel.className = "feature-editor";
-    panel.appendChild(featureIntro(text("Elige tu explorador", "Choose your explorer"), text("Toca un personaje para que sea tu avatar.", "Tap a character to make it your avatar.")));
-    const grid = document.createElement("div"); grid.className = "look-grid";
-    LOOKS.forEach((id, index) => {
-      const selected = (settings.avatarLook || "") === id;
-      const button = document.createElement("button"); button.type = "button"; button.className = "look-choice" + (selected ? " is-selected" : "");
-      button.setAttribute("aria-pressed", String(selected)); button.setAttribute("aria-label", text("Explorador ", "Explorer ") + (index + 1));
-      const visual = document.createElement("span"); visual.className = "look-choice__visual";
-      visual.innerHTML = '<img src="assets/avatar/' + id + '.png" alt="" loading="lazy" draggable="false">';
-      button.appendChild(visual);
-      button.addEventListener("click", () => { persist({ avatarLook: id }, { message: text("Avatar actualizado", "Avatar updated") }); renderEditor(); });
-      grid.appendChild(button);
-    });
-    panel.appendChild(grid); host.appendChild(panel);
-  }
-
-  function renderEditor() { if (activeTab === "avatar") renderLookPicker(); else renderDataCatalog(); }
+  function renderEditor() { if (activeTab === "avatar") { renderFeatureNav(); renderAvatarFeature(); } else renderDataCatalog(); }
 
   function selectTab(tab, focus, move) {
     activeTab = TABS.includes(tab) ? tab : "avatar"; document.querySelectorAll("[data-world-tab]").forEach(button => { const current = button.dataset.worldTab === activeTab; button.setAttribute("aria-selected", String(current)); button.tabIndex = current ? 0 : -1; if (current && focus) button.focus(); });
@@ -197,13 +181,13 @@
   function setupTabs() { document.querySelectorAll("[data-world-tab]").forEach(button => { button.addEventListener("click", () => selectTab(button.dataset.worldTab, false, true)); button.addEventListener("keydown", event => { if (event.key !== "ArrowRight" && event.key !== "ArrowLeft") return; event.preventDefault(); const index = TABS.indexOf(activeTab); selectTab(TABS[(index + (event.key === "ArrowRight" ? 1 : -1) + TABS.length) % TABS.length], true, true); }); }); }
 
   function randomiseAvatar() {
-    let next = random(LOOKS); if (next === settings.avatarLook) next = LOOKS[(LOOKS.indexOf(next) + 1) % LOOKS.length];
-    persist({ avatarLook: next }, { message:text("¡Nuevo explorador!", "New explorer") }); renderEditor();
+    const patch = { avatarBase:random(OPTIONS.avatarBase)[0], avatarFaceShape:random(OPTIONS.avatarFaceShape)[0], avatarFaceWidth:random(RANGES.avatarFaceWidth.values), avatarSkin:random(RANGES.avatarSkin.values), avatarHair:random(OPTIONS.avatarHair)[0], avatarHairColor:random(RANGES.avatarHairColor.values), avatarEyeShape:random(OPTIONS.avatarEyeShape)[0], avatarEyeColor:random(RANGES.avatarEyeColor.values), avatarEyeSize:random(RANGES.avatarEyeSize.values), avatarBrowShape:random(OPTIONS.avatarBrowShape)[0], avatarNoseShape:random(OPTIONS.avatarNoseShape)[0], avatarNoseLength:random(RANGES.avatarNoseLength.values), avatarMouthShape:random(OPTIONS.avatarMouthShape)[0] };
+    persist(patch, { message:text("¡Nueva combinación!", "New combination") }); renderEditor();
   }
 
   function resetAvatar() {
     const button = $("resetAvatar"); if (!resetArmed) { resetArmed = true; button.textContent = text("Confirmar restablecer", "Confirm reset"); button.classList.add("is-armed"); clearTimeout(resetTimer); resetTimer = setTimeout(() => { resetArmed = false; button.textContent = text("Restablecer", "Reset"); button.classList.remove("is-armed"); }, 3200); return; }
-    resetArmed = false; clearTimeout(resetTimer); button.textContent = text("Restablecer", "Reset"); button.classList.remove("is-armed"); persist({ avatarLook: ILProfileSettings.DEFAULTS.avatarLook }, { message:text("Avatar restablecido", "Avatar reset") }); renderEditor();
+    resetArmed = false; clearTimeout(resetTimer); button.textContent = text("Restablecer", "Reset"); button.classList.remove("is-armed"); const defaults = ILProfileSettings.DEFAULTS; persist({ avatarBase:defaults.avatarBase, avatarTheme:defaults.avatarTheme, avatarSkin:defaults.avatarSkin, avatarHair:defaults.avatarHair, avatarHairColor:defaults.avatarHairColor, avatarExpression:defaults.avatarExpression, avatarFaceShape:defaults.avatarFaceShape, avatarFaceWidth:defaults.avatarFaceWidth, avatarEyeShape:defaults.avatarEyeShape, avatarEyeColor:defaults.avatarEyeColor, avatarEyeSize:defaults.avatarEyeSize, avatarBrowShape:defaults.avatarBrowShape, avatarNoseShape:defaults.avatarNoseShape, avatarNoseLength:defaults.avatarNoseLength, avatarMouthShape:defaults.avatarMouthShape, avatarTop:defaults.avatarTop, avatarAccessory:defaults.avatarAccessory }, { message:text("Avatar restablecido", "Avatar reset") }); renderEditor();
   }
 
   function applyReveal() { if (!revealItem) return; applyCatalogItem(revealItem); $("unlockDialog").close(); }
@@ -216,7 +200,6 @@
       const profile = await ILAuth.getProfile(); if (!profile) { location.href = "index.html"; return; } if (profile.is_admin) { location.href = "admin.html"; return; }
       username = profile.username || ""; IL_ETAPA.apply(profile); band = IL_ETAPA.current().band; settings = ILProfileSettings.setActive(username);
       const loaded = await Promise.all([ILAuth.getProgress(), ILProgressData.load(ILAuth, window.ILMission, { ageMode:IL_ETAPA.current().mode }), ILAuth.listMedals()]); progress = loaded[0] || {}; stampIds = stampList(loaded[1], loaded[2]);
-      const tabsWrap = document.querySelector(".world-tabs"); if (tabsWrap) tabsWrap.classList.add("is-looks");
       localise(); setupTabs(); setupDialog(); $("randomiseAvatar").addEventListener("click", randomiseAvatar); $("resetAvatar").addEventListener("click", resetAvatar); renderOverview(); selectTab("avatar"); ILLayout.mount(); $("loading").hidden = true; $("app").classList.remove("hidden"); setTimeout(revealNewUnlock, 280);
     } catch (error) { console.error("No se pudo cargar Mi Mundo", error); $("loading").hidden = true; $("errorState").hidden = false; }
   })();

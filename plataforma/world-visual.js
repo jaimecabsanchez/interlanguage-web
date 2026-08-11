@@ -33,8 +33,9 @@
     if (style === "braids") return '<path d="M53 49c6-25 21-36 38-36 19 0 33 11 39 35-16-4-28-14-37-27-8 13-22 23-40 28Z" fill="'+colour+'"/><g fill="none" stroke="var(--il-avatar-halo)" stroke-opacity=".45" stroke-width="2"><path d="M65 30h50M60 39h62M74 20l-12 26M91 15v31M108 20l12 25"/></g>';
     return '<path d="M54 48c7-25 22-36 38-36 18 0 32 10 38 34-16-4-28-14-36-27-8 14-22 24-40 29Z" fill="'+colour+'"/>';
   }
-  function faceBase(shape, colour, width) {
-    const scale = .9 + Math.max(0, Math.min(4, Number(width) || 0)) * .05;
+  function faceBase(shape, colour, width, avatarBase) {
+    const baseScale = avatarBase === "feminine" ? .96 : 1.04;
+    const scale = (.9 + Math.max(0, Math.min(4, Number(width) || 0)) * .05) * baseScale;
     const base = shape === "angular"
       ? '<path d="M91 25c25 0 37 15 37 38 0 22-11 36-37 45-26-9-37-23-37-45 0-23 12-38 37-38Z" fill="'+colour+'"/>'
       : '<ellipse cx="91" cy="65" rx="'+(shape === "round" ? 38 : 35)+'" ry="'+(shape === "round" ? 37 : shape === "soft" ? 39 : 41)+'" fill="'+colour+'"/>';
@@ -43,7 +44,7 @@
       +'<path d="M120 43c11 15 11 44 0 61" fill="var(--il-primary)" opacity=".05"/>'
       +'<ellipse cx="72" cy="77" rx="7.5" ry="5" fill="var(--il-secondary)" opacity=".24"/>'
       +'<ellipse cx="110" cy="77" rx="7.5" ry="5" fill="var(--il-secondary)" opacity=".24"/>';
-    return '<g transform="translate(91 0) scale('+scale+' 1) translate(-91 0)"><ellipse cx="54" cy="67" rx="8" ry="10" fill="'+colour+'"/><ellipse cx="128" cy="67" rx="8" ry="10" fill="'+colour+'"/>'+base+shade+'</g>';
+    return '<g class="avatar-face avatar-face--'+(avatarBase === "feminine" ? "feminine" : "masculine")+'" transform="translate(91 0) scale('+scale+' 1) translate(-91 0)"><ellipse cx="54" cy="67" rx="8" ry="10" fill="'+colour+'"/><ellipse cx="128" cy="67" rx="8" ry="10" fill="'+colour+'"/>'+base+shade+'</g>';
   }
   function oneEye(x, shape, colour, size) {
     const scale = .82 + Math.max(0, Math.min(4, Number(size) || 0)) * .09;
@@ -77,7 +78,7 @@
   }
   function face(settings, colour) {
     const mouthShape = settings.avatarMouthShape || (settings.avatarExpression === "calm" ? "calm" : settings.avatarExpression === "bright" ? "wide" : "smile");
-    return faceBase(settings.avatarFaceShape || "oval", colour, settings.avatarFaceWidth == null ? 2 : settings.avatarFaceWidth)
+    return faceBase(settings.avatarFaceShape || "oval", colour, settings.avatarFaceWidth == null ? 2 : settings.avatarFaceWidth, settings.avatarBase)
       +oneEye(79, settings.avatarEyeShape || "almond", eye(settings.avatarEyeColor), settings.avatarEyeSize == null ? 2 : settings.avatarEyeSize)
       +oneEye(103, settings.avatarEyeShape || "almond", eye(settings.avatarEyeColor), settings.avatarEyeSize == null ? 2 : settings.avatarEyeSize)
       +brows(settings.avatarBrowShape || "soft")+nose(settings.avatarNoseShape || "soft", settings.avatarNoseLength == null ? 2 : settings.avatarNoseLength)+mouth(mouthShape);
@@ -106,28 +107,26 @@
 
   function avatar(settings, progress, options) {
     settings = settings || {}; options = options || {};
-    // Avatar ilustrado (láminas propias). Si hay un "look" elegido, se usa la
-    // ilustración; el muñeco vectorial queda como respaldo si no hay lámina.
-    const look = settings.avatarLook;
-    if (!options.ignoreLook && typeof look === "string" && /^look-0[1-9]$/.test(look)) {
-      return '<img class="il-avatar-look'+(options.compact ? ' is-compact' : '')+(options.portrait ? ' is-portrait' : '')
-        +'" src="assets/avatar/'+look+'.png" alt="" draggable="false" loading="lazy">';
-    }
     const skinTone = skin(settings.avatarSkin); const hairTone = hair(settings.avatarHairColor); const bodyTone = theme(settings.avatarTheme);
     const top = settings.avatarTop || "tee"; const acc = settings.avatarAccessory || "none"; const style = settings.avatarHair || "short";
+    const avatarBase = settings.avatarBase === "feminine" ? "feminine" : "masculine"; const feminine = avatarBase === "feminine";
+    const neck = feminine
+      ? '<path d="M82 92v15c0 8 18 8 18 0V92" fill="'+skinTone+'"/><path d="M82 100c5 6 13 6 18 0v6c0 8-18 8-18 0Z" fill="var(--il-primary)" opacity=".08"/>'
+      : '<path d="M79 92v15c0 8 24 8 24 0V92" fill="'+skinTone+'"/><path d="M79 100c7 6 17 6 24 0v6c0 8-24 8-24 0Z" fill="var(--il-primary)" opacity=".08"/>';
+    const bodyScale = feminine ? .93 : 1.04;
     const defs = '<defs>'
       +'<radialGradient id="ilFaceLight" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="var(--il-surface)" stop-opacity=".42"/><stop offset="1" stop-color="var(--il-surface)" stop-opacity="0"/></radialGradient>'
       +'<linearGradient id="ilBodyShade" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--il-surface)" stop-opacity=".28"/><stop offset=".5" stop-color="var(--il-surface)" stop-opacity="0"/><stop offset="1" stop-color="var(--il-primary)" stop-opacity=".2"/></linearGradient>'
       +'<linearGradient id="ilLegShade" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="var(--il-surface)" stop-opacity=".16"/><stop offset="1" stop-color="var(--il-primary)" stop-opacity=".18"/></linearGradient>'
       +'</defs>';
-    return '<svg class="il-student-avatar'+(options.compact ? ' is-compact' : '')+(options.portrait ? ' is-portrait' : '')+'" viewBox="'+(options.portrait ? '34 0 114 118' : '0 0 180 260')+'" aria-hidden="true">'+defs
+    return '<svg class="il-student-avatar avatar-base--'+avatarBase+(options.compact ? ' is-compact' : '')+(options.portrait ? ' is-portrait' : '')+'" viewBox="'+(options.portrait ? '34 0 114 118' : '0 0 180 260')+'" aria-hidden="true">'+defs
       +'<g class="avatar-idle">'+backpack(acc)+hairBack(style, hairTone)+face(settings, skinTone)+hairFront(style, hairTone)
       +'<path d="M67 27c9-9 27-12 42-5" fill="none" stroke="var(--il-surface)" stroke-width="4" stroke-linecap="round" opacity=".16"/>'
-      +'<path d="M80 92v15c0 8 22 8 22 0V92" fill="'+skinTone+'"/><path d="M80 100c6 6 16 6 22 0v6c0 8-22 8-22 0Z" fill="var(--il-primary)" opacity=".08"/>'
+      +'<g class="avatar-body avatar-body--'+avatarBase+'" transform="translate(91 0) scale('+bodyScale+' 1) translate(-91 0)">'+neck
       +clothing(top, bodyTone)
       +'<path d="M50 128c8-23 23-34 41-34s33 11 41 34l8 68H42Z" fill="url(#ilBodyShade)"/>'
       +'<path d="M51 128c-15 16-20 42-18 68M131 128c15 16 20 42 18 68" fill="none" stroke="'+skinTone+'" stroke-width="16" stroke-linecap="round"/>'
-      +'<circle cx="33" cy="196" r="9" fill="'+skinTone+'"/><circle cx="149" cy="196" r="9" fill="'+skinTone+'"/>'
+      +'<circle cx="33" cy="196" r="9" fill="'+skinTone+'"/><circle cx="149" cy="196" r="9" fill="'+skinTone+'"/></g>'
       +'<path d="M61 194v44M121 194v44" stroke="var(--il-primary)" stroke-width="21" stroke-linecap="round"/><path d="M61 196v40M121 196v40" stroke="url(#ilLegShade)" stroke-width="21" stroke-linecap="round"/>'
       +'<path d="M52 240h18c9 0 15 4 15 9 0 3-2 5-6 5H52ZM110 240h18c9 0 15 4 15 9 0 3-2 5-6 5h-27Z" fill="'+bodyTone+'"/>'
       +'<path d="M49 252h37M104 252h37" stroke="var(--il-surface)" stroke-width="5" stroke-linecap="round"/>'
@@ -211,9 +210,9 @@
     if (!item) return "";
     if (/^pet-/.test(item.id)) return item.id === "pet-none" ? objectThumb("plant") : companion(item.id);
     if (item.category === "world") return objectThumb(item.visual);
-    const settings = Object.assign({ avatarTheme:"navy", avatarSkin:"tone-2", avatarHair:"short", avatarHairColor:"dark", avatarExpression:"smile", avatarTop:"tee", avatarAccessory:"none" }, currentSettings || {});
+    const settings = Object.assign({ avatarTheme:"navy", avatarBase:"masculine", avatarSkin:"tone-2", avatarHair:"short", avatarHairColor:"dark", avatarExpression:"smile", avatarTop:"tee", avatarAccessory:"none" }, currentSettings || {});
     if (item.settingKey) settings[item.settingKey] = item.settingValue;
-    return avatar(settings, progress, { compact:true, ignoreLook:true });
+    return avatar(settings, progress, { compact:true });
   }
 
   return { avatar, companion, garden, personalSpace, scene, item };

@@ -12,7 +12,7 @@
 })(typeof globalThis !== "undefined" ? globalThis : this, function createProfileSettings(storage) {
   "use strict";
 
-  const VERSION = 2;
+  const VERSION = 3;
   const PREFIX = "il_profile_settings_v1_";
   const ACTIVE_KEY = "il_profile_settings_active_v1";
   const DEFAULTS = Object.freeze({
@@ -23,6 +23,7 @@
     reduceMotion: false,
     textSize: "normal",
     avatarTheme: "navy",
+    avatarBase: "masculine",
     avatarSkin: "tone-2",
     avatarHair: "short",
     avatarHairColor: "dark",
@@ -52,6 +53,7 @@
     dailyGoal: [5, 8, 10, 15],
     textSize: ["normal", "large"],
     avatarTheme: ["navy", "coral", "aqua"],
+    avatarBase: ["masculine", "feminine"],
     avatarSkin: ["tone-1", "tone-5", "tone-2", "tone-6", "tone-3", "tone-7", "tone-4", "tone-8"],
     avatarHair: ["short", "waves", "curls", "long", "bob", "coils", "fade", "braids"],
     avatarHairColor: ["dark", "brown", "gold", "copper", "ash", "red"],
@@ -105,6 +107,7 @@
       reduceMotion: typeof value.reduceMotion === "boolean" ? value.reduceMotion : DEFAULTS.reduceMotion,
       textSize: allowed(value.textSize, VALID.textSize, DEFAULTS.textSize),
       avatarTheme: allowed(value.avatarTheme, VALID.avatarTheme, DEFAULTS.avatarTheme),
+      avatarBase: allowed(value.avatarBase, VALID.avatarBase, DEFAULTS.avatarBase),
       avatarSkin: allowed(value.avatarSkin, VALID.avatarSkin, DEFAULTS.avatarSkin),
       avatarHair: allowed(value.avatarHair, VALID.avatarHair, DEFAULTS.avatarHair),
       avatarHairColor: allowed(value.avatarHairColor, VALID.avatarHairColor, DEFAULTS.avatarHairColor),
