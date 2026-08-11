@@ -16,7 +16,7 @@
     $("logout").addEventListener("click", async () => { ILProfileSettings.clearActive(); await ILAuth.signOut(); location.href = "index.html"; });
   }
   (async function init() {
-    try { const profile = await ILAuth.getProfile(); if (!profile) { location.href = "index.html"; return; } if (profile.is_admin) { location.href = "admin.html"; return; } username = profile.username || ""; IL_ETAPA.apply(profile); band = IL_ETAPA.current().band; settings = ILProfileSettings.setActive(username); $("username").textContent = username || "—"; localise(); render(); setup(); ILLayout.mount(); $("loading").hidden = true; $("app").classList.remove("hidden"); }
+    try { const profile = await ILAuth.getProfile(); if (!profile) { location.href = "index.html"; return; } if (profile.is_admin) { location.href = "admin.html"; return; } username = profile.username || ""; IL_ETAPA.apply(profile); band = IL_ETAPA.current().band; settings = ILProfileSettings.setActive(username, profile.sex); $("username").textContent = username || "—"; localise(); render(); setup(); ILLayout.mount(); $("loading").hidden = true; $("app").classList.remove("hidden"); }
     catch (error) { console.error("No se pudieron cargar Ajustes", error); $("loading").hidden = true; $("errorState").hidden = false; }
   })();
 })();

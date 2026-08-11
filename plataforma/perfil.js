@@ -15,7 +15,7 @@
       document.documentElement.lang = "en"; document.title = "Profile · Interlanguage HOME";
       $("profileEyebrow").textContent = "PERSONAL SPACE"; $("profileTitle").textContent = "Profile"; $("identityLabel").textContent = "YOUR PROFILE";
       $("stampsEyebrow").textContent = "ACHIEVEMENTS"; $("stampsTitle").textContent = "Your stamps"; $("allStampsLink").textContent = "View all";
-      $("worldEntryEyebrow").textContent = "YOUR SPACE"; $("worldEntryTitle").textContent = "Make it yours"; $("worldEntryCopy").textContent = "Personalise your avatar and shape your study space."; $("worldEntryCta").textContent = "Open";
+      $("worldEntryEyebrow").textContent = "YOUR SPACE"; $("worldEntryTitle").textContent = "Make it yours"; $("worldEntryCopy").textContent = "Your avatar is assigned. Grow and shape your study space."; $("worldEntryCta").textContent = "Open";
       $("settingsEntryTitle").textContent = "Settings"; $("settingsEntryCopy").textContent = "Audio, accessibility and account";
     }
   }
@@ -47,7 +47,7 @@
       if (!profile) { location.href = "index.html"; return; }
       if (profile.is_admin) { location.href = "admin.html"; return; }
       if (profile.must_change_password) { location.href = "cambiar-clave.html"; return; }
-      const username = profile.username || ""; const settings = ILProfileSettings.setActive(username);
+      const username = profile.username || ""; const settings = ILProfileSettings.setActive(username, profile.sex);
       IL_ETAPA.apply(profile); band = IL_ETAPA.current().band; stageCopy();
       const [learning, progress, medals] = await Promise.all([
         ILProgressData.load(ILAuth, window.ILMission, { ageMode:IL_ETAPA.current().mode }), ILAuth.getProgress(), ILAuth.listMedals()

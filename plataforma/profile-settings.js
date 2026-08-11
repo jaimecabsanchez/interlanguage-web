@@ -147,8 +147,19 @@
     if (!stored) { const legacy = legacyTheme(); if (legacy) settings.avatarTheme = legacy; }
     return settings;
   }
-  function setActive(username, settings) {
-    const active = { username: String(username || ""), settings: sanitize(settings || load(username)) };
+  function avatarBaseForSex(sex, fallback) {
+    if (sex === "female") return "feminine";
+    if (sex === "male") return "masculine";
+    return allowed(fallback, VALID.avatarBase, DEFAULTS.avatarBase);
+  }
+  function setActive(username, settings, sex) {
+    if (typeof settings === "string") { sex = settings; settings = null; }
+    let next = sanitize(settings || load(username));
+    if (sex === "female" || sex === "male") {
+      next = sanitize(Object.assign({}, next, { avatarBase:avatarBaseForSex(sex, next.avatarBase), avatarCustomised:false }));
+      write(usernameKey(username), next);
+    }
+    const active = { username: String(username || ""), settings: next };
     write(ACTIVE_KEY, active); apply(active.settings); return active.settings;
   }
   function save(username, patch) {
@@ -171,5 +182,5 @@
     return settings;
   }
 
-  return { VERSION, DEFAULTS, VALID, load, save, setActive, getActive, clearActive, apply, sanitize, _keys: { usernameKey, ACTIVE_KEY } };
+  return { VERSION, DEFAULTS, VALID, load, save, setActive, getActive, clearActive, apply, sanitize, avatarBaseForSex, _keys: { usernameKey, ACTIVE_KEY } };
 });

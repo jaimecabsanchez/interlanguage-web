@@ -12,24 +12,20 @@ const feminine = V.avatar(Object.assign({}, base, { avatarBase:"feminine" }), {}
 assert.ok(feminine.includes("avatar-base--feminine"), "renderiza la base femenina");
 assert.ok(feminine.includes("look-05.png"), "usa el avatar femenino aprobado");
 assert.notEqual(feminine, avatar, "las bases producen geometrías distintas");
-assert.ok(V.avatar(Object.assign({}, base, { avatarLook:"look-01" }), {}).includes("il-student-avatar"), "migra las láminas antiguas al editor modular");
+assert.ok(V.avatar(Object.assign({}, base, { avatarLook:"look-01" }), {}).includes("il-student-avatar"), "mantiene compatibilidad con las preferencias antiguas");
 
 const layered = V.avatar(Object.assign({}, base, { avatarCustomised:true, avatarEyeSize:4, avatarHairColor:"gold" }), {});
-assert.ok(layered.includes("il-avatar-stack"), "activa el compositor después de editar");
-assert.ok(layered.includes("layers/masculine/base.png"), "compone la base ilustrada");
-assert.ok(layered.includes("brows-default.png"), "separa las cejas de la lámina facial");
-assert.ok(layered.includes("eyes-default.png"), "separa los ojos de la lámina facial");
-assert.ok(layered.includes("mouth-default.png"), "separa la boca de la lámina facial");
-assert.ok(layered.includes("--avatar-eye-size:1.2"), "convierte el control gradual en geometría de capa");
+assert.ok(layered.includes("look-01.png"), "una preferencia antigua sigue mostrando la lámina masculina exacta");
+assert.ok(!layered.includes("il-avatar-stack"), "no vuelve a usar el compositor que deformaba el avatar");
+assert.ok(!layered.includes("layers/"), "no carga capas reconstruidas");
 
 const varied = V.avatar(Object.assign({}, base, { avatarCustomised:true, avatarSkin:"tone-8", avatarHair:"braids", avatarHairColor:"red", avatarEyeColor:"green", avatarFaceShape:"angular", avatarNoseShape:"defined", avatarMouthShape:"wide" }), {});
-assert.ok(varied.includes("brightness(.52)"), "admite ocho tonos de piel");
-assert.ok(varied.includes("hue-rotate(325deg)"), "admite la paleta ampliada de pelo");
-assert.ok(varied.includes("hue-rotate(72deg)"), "admite colores de ojos");
+assert.ok(varied.includes("look-01.png"), "ignora rasgos incompatibles y conserva la ilustración aprobada");
+assert.ok(!varied.includes("filter:"), "no altera visualmente la lámina maestra");
 
 const portrait = V.avatar(Object.assign({}, base, { avatarCustomised:true }), {}, { portrait:true });
 assert.ok(portrait.includes("is-portrait"), "genera previsualización de rostro");
 assert.ok(V.scene(base, {}, "p12", { level:1 }).includes("Tu mundo de aprendizaje"), "mantiene el jardín infantil");
 assert.ok(V.scene(base, {}, "eso", { level:1 }).includes("Your personal space"), "mantiene el espacio de ESO");
 
-console.log("world-visual: 21 comprobaciones correctas");
+console.log("world-visual: avatar maestro comprobado");

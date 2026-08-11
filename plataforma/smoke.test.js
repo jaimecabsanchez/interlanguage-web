@@ -30,6 +30,9 @@ ok("Migración 0001 presente", m1.length > 0);
 ["users", "students", "activities", "answer_keys", "mastery"].forEach(t =>
   ok("0001 crea tabla public." + t, m1.includes("create table public." + t)));
 ok("0001 activa RLS", /enable row level security/i.test(m1));
+const m6 = read("supabase/migrations/0006_students_sex.sql") || "";
+ok("Migración 0006 añade el sexo del alumno", /add column if not exists sex text/i.test(m6));
+ok("0006 limita el sexo a masculino o femenino", /sex in \('male', 'female'\)/i.test(m6));
 
 // 5) Cabeceras de seguridad base
 // Cloudflare Pages publica `web-publica` como raíz; las cabeceras deben

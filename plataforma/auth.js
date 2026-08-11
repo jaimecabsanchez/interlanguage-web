@@ -40,16 +40,24 @@
     : (u) => String(u).trim().toLowerCase() + "@" + DOMAIN;
   const toLoginEmail = U.toLoginEmail ? (id) => U.toLoginEmail(id, DOMAIN)
     : (id) => looksLikeEmail(id) ? String(id).trim().toLowerCase() : usernameToEmail(id);
+  const validSex = value => value === "male" || value === "female";
 
   /* ---------------- MODO DEMO (localStorage) ---------------- */
   const DEMO_DB = "il_demo_db_v2", DEMO_SESSION = "il_demo_session_v2";
   function seed() {
     return [
       { username: "admin", password: "admin1234", full_name: "Equipo Interlanguage", level: "", stage: "", parent_email: "", is_admin: true, must_change_password: false, created_at: "2026-07-01" },
-      { username: "lucia", password: "home1234", full_name: "Lucía G.", level: "Explorer · A1", stage: "Explorers", parent_email: "familia.g@email.com", is_admin: false, must_change_password: false, created_at: "2026-07-20" }
+      { username: "lucia", password: "home1234", full_name: "Lucía G.", level: "Explorer · A1", stage: "Explorers", sex: "female", parent_email: "familia.g@email.com", is_admin: false, must_change_password: false, created_at: "2026-07-20" }
     ];
   }
-  function demoLoad() { try { return JSON.parse(localStorage.getItem(DEMO_DB)) || seed(); } catch (e) { return seed(); } }
+  function demoLoad() {
+    try {
+      const db = JSON.parse(localStorage.getItem(DEMO_DB)) || seed();
+      const lucia = db.find(account => account.username === "lucia");
+      if (lucia && !validSex(lucia.sex)) { lucia.sex = "female"; localStorage.setItem(DEMO_DB, JSON.stringify(db)); }
+      return db;
+    } catch (e) { return seed(); }
+  }
   function demoSave(db) { localStorage.setItem(DEMO_DB, JSON.stringify(db)); }
   function demoSession() { return localStorage.getItem(DEMO_SESSION); }
   function pub(acc) { if (!acc) return null; const { password, ...rest } = acc; return { ...rest, id: rest.username, is_student: !rest.is_admin }; }
@@ -59,6 +67,7 @@
     for (let i = 0; i < 3; i++) p += n[Math.floor(Math.random() * n.length)];
     return p;
   };
+  const randUsername = U.generateUsername || (() => "student-" + Math.floor(100000 + Math.random() * 900000));
 
   /* ---------------- API ---------------- */
   const API = {
@@ -175,18 +184,19 @@
         full_name: (urow && urow.display_name) || "",
         must_change_password: urow ? !!urow.must_change_password : false,
         is_admin, is_teacher, is_student,
-        student_id: null, level: ""
+        student_id: null, level: "", sex: null
       };
 
       // Si es alumno, traemos su ficha para el nombre de pila y su id de alumno
       if (is_student || (!is_admin && !is_teacher)) {
-        const { data: st } = await sb.from("students").select("id, first_name, birth_year, level_id, course_ref").eq("user_id", user.id).maybeSingle();
+        const { data: st } = await sb.from("students").select("id, first_name, birth_year, level_id, course_ref, sex").eq("user_id", user.id).maybeSingle();
         if (st) {
           profile.student_id = st.id;
           profile.first_name = st.first_name || "";
           profile.full_name = st.first_name || profile.full_name;
           profile.birth_year = st.birth_year || null;
           profile.course_ref = st.course_ref || "";
+          profile.sex = validSex(st.sex) ? st.sex : null;
           profile.is_student = true;
         }
       }
@@ -222,26 +232,29 @@
       // Une la ficha de alumno con su cuenta para mostrar el código de acceso
       const { data, error } = await sb
         .from("students")
-        .select("id, first_name, level_id, created_at, users:users!students_user_id_fkey(username, status), enrollments(status)")
+        .select("id, first_name, sex, level_id, created_at, users:users!students_user_id_fkey(username, status), enrollments(status)")
         .order("created_at", { ascending: false });
       if (error) return [];
       return (data || []).map(s => ({
         id: s.id,
         full_name: s.first_name || "",
         username: s.users ? s.users.username : "",
+        sex: validSex(s.sex) ? s.sex : null,
         created_at: s.created_at,
         active: !((s.enrollments || []).length) || (s.enrollments || []).some(e => e.status === "active")
       }));
     },
 
     async createStudent(payload) {
+      if (!validSex(payload.sex)) return { ok: false, error: "Selecciona masculino o femenino." };
       if (DEMO) {
-        const username = String(payload.username || "").trim().toLowerCase().replace(/\s+/g, "");
-        if (!payload.full_name || !username) return { ok: false, error: "Faltan el nombre y el usuario." };
         const db = demoLoad();
-        if (db.find(a => a.username === username)) return { ok: false, error: "Ese usuario ya existe." };
+        let username = String(payload.username || "").trim().toLowerCase().replace(/\s+/g, "");
+        if (!payload.full_name) return { ok: false, error: "Falta el nombre del alumno." };
+        if (!username) { for (let i = 0; i < 8 && !username; i++) { const candidate = randUsername(); if (!db.find(a => a.username === candidate)) username = candidate; } }
+        if (!username || db.find(a => a.username === username)) return { ok: false, error: "No se pudo generar un usuario único." };
         const password = randPass();
-        db.push({ username, password, full_name: payload.full_name, level: payload.level || "", stage: payload.stage || "", parent_email: payload.parent_email || "", is_admin: false, must_change_password: true, created_at: new Date().toISOString().slice(0, 10) });
+        db.push({ username, password, full_name: payload.full_name, level: payload.level || "", stage: payload.stage || "", sex:payload.sex, parent_email: payload.parent_email || "", is_admin: false, must_change_password: true, created_at: new Date().toISOString().slice(0, 10) });
         demoSave(db);
         return { ok: true, username, password };
       }
@@ -279,6 +292,21 @@
       if (error) return { ok: false, error: error.message };
       await this._audit("student.update", "students", studentId);
       return { ok: true };
+    },
+
+    async updateStudentProfile(studentId, payload) {
+      const name = String(payload && payload.full_name || "").trim();
+      const sex = payload && payload.sex;
+      if (!name) return { ok: false, error: "El nombre no puede estar vacío." };
+      if (!validSex(sex)) return { ok: false, error: "Selecciona masculino o femenino." };
+      if (DEMO) {
+        const db = demoLoad(); const account = db.find(item => item.username === studentId);
+        if (!account) return { ok: false, error: "No existe ese alumno." };
+        account.full_name = name; account.sex = sex; demoSave(db); return { ok: true };
+      }
+      const { data, error } = await sb.functions.invoke("admin-create-student", { body:{ action:"update", student_id:studentId, first_name:name, sex } });
+      if (error || (data && data.error)) return { ok:false, error:(data && data.error) || (error && error.message) || "No se pudo actualizar el alumno." };
+      return { ok:true };
     },
 
     // Activar / desactivar el acceso del alumno (matrícula)

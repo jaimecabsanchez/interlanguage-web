@@ -201,11 +201,11 @@
 <script src="auth-utils.js?v=20260809d"></script>
 <script src="etapa.js?v=20260810d"></script>
 <script src="contenido.js?v=20260809f"></script>
-<script src="auth.js?v=20260809e"></script>
+<script src="auth.js?v=20260811f"></script>
 <script src="motor/matriz.js?v=20260809d"></script>
 <script src="mission-state.js?v=20260810h"></script>
 <script src="progress-data.js?v=20260810b"></script>
-<script src="profile-settings.js?v=20260811d"></script>
+<script src="profile-settings.js?v=20260811f"></script>
 <script>
   const $ = id => document.getElementById(id);
   const units = (window.IL_CONTENIDO && window.IL_CONTENIDO.unidades) || [];
@@ -332,7 +332,7 @@
       if (!profile) { location.href = "index.html"; return; }
       if (profile.is_admin) { location.href = "admin.html"; return; }
       if (profile.must_change_password) { location.href = "cambiar-clave.html"; return; }
-      ILProfileSettings.setActive(profile.username || "");
+      ILProfileSettings.setActive(profile.username || "", profile.sex);
       const stage = IL_ETAPA.apply(profile);
       const experience = IL_ETAPA.current().config;
       const exerciseExperience = IL_ETAPA.current().exercise;

@@ -37,6 +37,9 @@ function generatePassword(): string {
   const p = (set: string, n: number) => Array.from({ length: n }, () => set[Math.floor(Math.random() * set.length)]).join("");
   return p(letters, 5) + p(digits, 3);
 }
+function validSex(value: unknown): value is "male" | "female" {
+  return value === "male" || value === "female";
+}
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: cors });
@@ -70,6 +73,7 @@ Deno.serve(async (req) => {
   if (action === "create") {
     const first_name = String(payload.full_name || payload.first_name || "").trim();
     if (!first_name) return json({ error: "Falta el nombre del alumno" }, 400);
+    if (!validSex(payload.sex)) return json({ error: "Selecciona masculino o femenino" }, 400);
 
     // Genera un código único (reintenta si choca)
     let username = "";
@@ -92,7 +96,7 @@ Deno.serve(async (req) => {
 
     // La fila public.users la crea el trigger handle_new_user. Ahora el resto:
     const { data: student, error: eStudent } = await admin.from("students")
-      .insert({ user_id: uid, first_name, birth_year: payload.birth_year ?? null, level_id: payload.level_id ?? null })
+      .insert({ user_id: uid, first_name, sex: payload.sex, birth_year: payload.birth_year ?? null, level_id: payload.level_id ?? null })
       .select("id").single();
     if (eStudent || !student) return json({ error: "Cuenta creada pero falló la ficha de alumno: " + (eStudent?.message || "") }, 500);
     const sid = student.id;
@@ -111,6 +115,18 @@ Deno.serve(async (req) => {
 
     await audit("student.create", "students", sid, { username });
     return json({ username, password });
+  }
+
+  // -------- ACTUALIZAR FICHA DEL ALUMNO --------
+  if (action === "update") {
+    const student_id = String(payload.student_id || "").trim();
+    const first_name = String(payload.first_name || payload.full_name || "").trim();
+    if (!student_id || !first_name) return json({ error: "Faltan los datos del alumno" }, 400);
+    if (!validSex(payload.sex)) return json({ error: "Selecciona masculino o femenino" }, 400);
+    const { error } = await admin.from("students").update({ first_name, sex:payload.sex }).eq("id", student_id);
+    if (error) return json({ error: error.message }, 400);
+    await audit("student.update", "students", student_id, { sex:payload.sex });
+    return json({ ok:true });
   }
 
   // -------- RESTABLECER CONTRASEÑA --------

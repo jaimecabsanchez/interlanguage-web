@@ -24,6 +24,10 @@
   .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
   #search{width:100%;padding:12px 14px;border:1.5px solid var(--line-2,#d9dee5);border-radius:12px;font-size:1rem;font-family:inherit}
   .grp-sel{padding:8px 10px;border:1.5px solid var(--line-2,#d9dee5);border-radius:10px;font-family:inherit}
+  .field select{width:100%;min-height:46px;padding:10px 12px;border:1.5px solid var(--il-border);border-radius:var(--il-radius-sm);background:var(--il-surface);color:var(--il-text-primary);font:inherit}
+  .admin-edit-dialog{width:min(440px,calc(100% - 32px));padding:24px;border:1px solid var(--il-border);border-radius:var(--il-radius-lg);background:var(--il-surface);color:var(--il-text-primary);box-shadow:var(--il-shadow-lg)}
+  .admin-edit-dialog::backdrop{background:var(--il-overlay)}
+  .admin-edit-dialog h2{margin:0 0 8px}.admin-edit-dialog__actions{display:flex;justify-content:flex-end;gap:8px;margin-top:20px}
 </style>
 </head>
 <body>
@@ -95,6 +99,15 @@
           <label for="parent_email">Email de la familia (opcional)</label>
           <input type="text" id="parent_email" placeholder="para informes" autocomplete="off">
         </div>
+        <div class="field">
+          <label for="student_sex">Sexo del alumno</label>
+          <select id="student_sex" required>
+            <option value="">Selecciona una opción</option>
+            <option value="male">Masculino</option>
+            <option value="female">Femenino</option>
+          </select>
+          <div class="hint">Determina automáticamente el avatar inicial del alumno.</div>
+        </div>
         <button type="submit" class="btn btn-primary btn-block" id="createBtn">Crear alumno y generar acceso</button>
       </form>
 
@@ -116,7 +129,7 @@
       </div>
       <div class="table-wrap">
         <table class="students">
-          <thead><tr><th>Alumno</th><th>Usuario</th><th>Acceso</th><th></th></tr></thead>
+          <thead><tr><th>Alumno</th><th>Sexo</th><th>Usuario</th><th>Acceso</th><th></th></tr></thead>
           <tbody id="rows"></tbody>
         </table>
       </div>
@@ -147,11 +160,22 @@
   </div>
 </div>
 
+<dialog class="admin-edit-dialog" id="editStudentDialog" aria-labelledby="editStudentTitle">
+  <form id="editStudentForm">
+    <h2 id="editStudentTitle">Editar alumno</h2>
+    <p class="pdesc">El sexo asigna automáticamente la base del avatar.</p>
+    <div class="msg error" id="editStudentMsg"></div>
+    <div class="field"><label for="editStudentName">Nombre del alumno</label><input id="editStudentName" type="text" autocomplete="off" required></div>
+    <div class="field"><label for="editStudentSex">Sexo del alumno</label><select id="editStudentSex" required><option value="">Selecciona una opción</option><option value="male">Masculino</option><option value="female">Femenino</option></select></div>
+    <div class="admin-edit-dialog__actions"><button class="btn btn-ghost" id="cancelStudentEdit" type="button">Cancelar</button><button class="btn btn-primary" id="saveStudentEdit" type="submit">Guardar</button></div>
+  </form>
+</dialog>
+
 <script src="layout.js?v=20260809d"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-config.js?v=20260809d"></script>
 <script src="auth-utils.js?v=20260809d"></script>
-<script src="auth.js?v=20260809d"></script>
+<script src="auth.js?v=20260811f"></script>
 <script>
   const $ = (id) => document.getElementById(id);
   const esc = (s) => String(s == null ? "" : s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
@@ -215,6 +239,7 @@
 
   /* -------- Alumnos: alta, lista, búsqueda, editar, acceso, reset -------- */
   let allStudents = [];
+  let editingStudentId = "";
   async function renderList() {
     allStudents = await ILAuth.listStudents();
     $("count").textContent = allStudents.length;
@@ -226,6 +251,7 @@
     $("rows").innerHTML = list.map(s => `
       <tr>
         <td><strong>${esc(s.full_name || "—")}</strong></td>
+        <td>${s.sex === "female" ? '<span class="sec-tag">Femenino</span>' : s.sex === "male" ? '<span class="sec-tag">Masculino</span>' : '<span class="sec-tag soon">Pendiente</span>'}</td>
         <td class="mono">${esc(s.username)}</td>
         <td>${s.active ? '<span class="sec-tag">Activo</span>' : '<span class="sec-tag off">Inactivo</span>'}</td>
         <td style="white-space:nowrap">
@@ -233,7 +259,7 @@
           <button class="link-btn" data-access="${esc(s.id)}" data-active="${s.active ? 1 : 0}">${s.active ? "Desactivar" : "Activar"}</button> ·
           <button class="link-btn" data-reset="${esc(s.username)}">Clave</button>
         </td>
-      </tr>`).join("") || `<tr><td colspan="4" class="muted" style="padding:16px">Sin resultados.</td></tr>`;
+      </tr>`).join("") || `<tr><td colspan="5" class="muted" style="padding:16px">Sin resultados.</td></tr>`;
     $("rows").querySelectorAll("[data-reset]").forEach(b => b.onclick = () => doReset(b.getAttribute("data-reset")));
     $("rows").querySelectorAll("[data-edit]").forEach(b => b.onclick = () => doEdit(b.getAttribute("data-edit")));
     $("rows").querySelectorAll("[data-access]").forEach(b => b.onclick = () => doAccess(b.getAttribute("data-access"), b.getAttribute("data-active") === "1"));
@@ -242,12 +268,15 @@
 
   async function doEdit(id) {
     const s = allStudents.find(x => x.id === id); if (!s) return;
-    const name = prompt("Nombre del alumno:", s.full_name || "");
-    if (name === null) return;
-    const res = await ILAuth.updateStudentName(id, name);
-    if (!res.ok) { alert(res.error); return; }
-    renderList();
+    editingStudentId = id; $("editStudentName").value = s.full_name || ""; $("editStudentSex").value = s.sex || ""; $("editStudentMsg").classList.remove("show"); $("editStudentDialog").showModal(); $("editStudentName").focus();
   }
+  $("cancelStudentEdit").addEventListener("click", () => $("editStudentDialog").close());
+  $("editStudentForm").addEventListener("submit", async event => {
+    event.preventDefault(); const message = $("editStudentMsg"); message.classList.remove("show"); const button = $("saveStudentEdit"); button.disabled = true;
+    const res = await ILAuth.updateStudentProfile(editingStudentId, { full_name:$("editStudentName").value.trim(), sex:$("editStudentSex").value });
+    button.disabled = false; if (!res.ok) { message.textContent = res.error; message.classList.add("show"); return; }
+    $("editStudentDialog").close(); await renderList();
+  });
   async function doAccess(id, isActive) {
     const verb = isActive ? "DESACTIVAR" : "ACTIVAR";
     if (!confirm("¿" + verb + " el acceso de este alumno?")) return;   // confirmación en acción sensible
@@ -269,6 +298,7 @@
     const btn = $("createBtn"); btn.disabled = true; const old = btn.textContent; btn.textContent = "Creando…";
     const res = await ILAuth.createStudent({
       full_name: $("first_name").value.trim(),
+      sex: $("student_sex").value,
       parent_email: $("parent_email").value.trim()
     });
     btn.disabled = false; btn.textContent = old;

@@ -2,7 +2,7 @@
   "use strict";
 
   const $ = id => document.getElementById(id);
-  const TABS = ["avatar", "clothing", "accessory", "world"];
+  const TABS = ["avatar", "world"];
   const FEATURES = [
     { id:"base", label:"Base", labelEn:"Base" },
     { id:"face", label:"Rostro", labelEn:"Face" },
@@ -59,10 +59,9 @@
     document.documentElement.lang = "en"; document.title = "My space · Interlanguage HOME";
     $("backProfile").lastElementChild.textContent = "Profile"; $("worldEyebrow").textContent = "PERSONAL SPACE"; $("worldTitle").textContent = "My space"; $("worldSubtitle").textContent = "The more you practise, the more your space evolves.";
     $("growthLabel").textContent = "YOUR SPACE EVOLVES WITH YOU"; $("growthCopy").textContent = "Each completed session moves your personal space forward."; $("nextUnlockLabel").textContent = "NEXT UNLOCK";
-    $("customiseEyebrow").textContent = "MAKE IT YOURS"; $("customiseTitle").textContent = "Personalise"; $("customiseHint").textContent = "Choose one feature and see every change instantly."; $("previewLabel").textContent = "LIVE PREVIEW";
+    $("customiseEyebrow").textContent = "YOUR PERSONAL SPACE"; $("customiseTitle").textContent = "Your profile"; $("customiseHint").textContent = "Your avatar is assigned from your student profile. You can personalise your space."; $("previewLabel").textContent = "LIVE PREVIEW";
     $("unlockEyebrow").textContent = "NEW UNLOCK"; $("unlockCopy").textContent = "Your progress has opened a new option."; $("unlockTry").textContent = "Try it now"; $("unlockContinue").textContent = "Continue";
-    $("randomiseAvatar").lastElementChild.textContent = "Surprise me"; $("resetAvatar").textContent = "Reset";
-    const labels = ["Avatar", "Clothing", "Accessories", "Space"]; document.querySelectorAll("[data-world-tab]").forEach((button,index) => button.lastElementChild.textContent = labels[index]);
+    const labels = { avatar:"Avatar", world:"Space" }; document.querySelectorAll("[data-world-tab]").forEach(button => { button.lastElementChild.textContent = labels[button.dataset.worldTab]; });
   }
 
   function levelLabel(level) { return secondary() ? "Space level " + level : (band === "p56" ? "Base nivel " + level : "Jardín nivel " + level); }
@@ -80,7 +79,7 @@
   }
 
   function renderOverview() {
-    const meta = ILWorldData.levelMeta(progress); const next = ILWorldData.nextUnlock(progress, band, stampIds); const label = levelLabel(meta.level);
+    const meta = ILWorldData.levelMeta(progress); const context = ctx(); const next = ILWorldData.catalogFor(band, "world").map(item => ({ item, status:ILWorldData.unlockStatus(item, context) })).filter(entry => !entry.status.unlocked).sort((a,b) => b.status.percent - a.status.percent || a.status.remaining - b.status.remaining).map(entry => Object.assign({}, entry.item, entry.status))[0] || null; const label = levelLabel(meta.level);
     $("worldLevelBadge").lastElementChild.textContent = label; $("worldOverviewTitle").textContent = label; $("levelProgress").style.setProperty("--world-progress", meta.percent + "%"); $("levelProgress").setAttribute("aria-valuenow", String(meta.percent));
     $("levelProgressCopy").textContent = meta.level >= 5 ? text("Tu mundo ha alcanzado su nivel máximo actual.", "Your space has reached its current maximum level.") : text("Completa " + meta.remaining + (meta.remaining === 1 ? " misión más" : " misiones más") + " para llegar al nivel " + (meta.level + 1) + ".", "Complete " + meta.remaining + (meta.remaining === 1 ? " more session" : " more sessions") + " to reach level " + (meta.level + 1) + ".");
     if (!next) { $("nextUnlockName").textContent = text("Colección completada", "Collection complete"); $("nextUnlockRule").textContent = text("Habrá nuevas opciones en próximas etapas.", "More options will arrive in future stages."); $("nextUnlockVisual").innerHTML = ILIcon("check"); return; }
@@ -156,7 +155,7 @@
   function applyCatalogItem(item) {
     const status = ILWorldData.unlockStatus(item, ctx()); if (!status.unlocked) { showSaved(status.requirement); return; }
     if (item.toggle === "world") { const values = new Set(settings.activeWorldItems || []); if (values.has(item.id)) values.delete(item.id); else { if (values.size >= 8) values.delete(Array.from(values)[0]); values.add(item.id); } persist({ activeWorldItems:Array.from(values) }, { message:values.has(item.id) ? text("Añadido al paisaje", "Added to your space") : text("Quitado del paisaje", "Removed from your space") }); }
-    else if (item.settingKey) persist({ avatarCustomised:true, [item.settingKey]:item.settingValue });
+    else if (item.settingKey) persist({ [item.settingKey]:item.settingValue });
     renderEditor();
   }
 
@@ -172,11 +171,21 @@
     const host = $("catalogSections"); host.replaceChildren(); ILWorldData.sections(band, activeTab).forEach(section => { const wrap = document.createElement("section"); wrap.className = "compact-section"; const heading = document.createElement("div"); heading.className = "compact-section__head"; const title = document.createElement("h3"); title.textContent = sectionName(section); const copy = document.createElement("p"); copy.textContent = activeTab === "world" ? text("Los cambios aparecen al momento en la vista previa.", "Changes appear instantly in the preview.") : text("Elige una opción para probarla.", "Choose an option to try it."); heading.append(title, copy); const grid = document.createElement("div"); grid.className = "compact-options"; ILWorldData.catalogFor(band, activeTab).filter(item => item.section === section).forEach(item => grid.appendChild(compactOption(item))); wrap.append(heading, grid); host.appendChild(wrap); });
   }
 
-  function renderEditor() { if (activeTab === "avatar") { renderFeatureNav(); renderAvatarFeature(); } else renderDataCatalog(); }
+  function renderAssignedAvatar() {
+    const host = $("catalogSections"); host.replaceChildren();
+    const panel = document.createElement("section"); panel.className = "assigned-avatar-panel";
+    const icon = document.createElement("span"); icon.className = "assigned-avatar-panel__icon"; icon.innerHTML = ILIcon("check"); icon.setAttribute("aria-hidden", "true");
+    const content = document.createElement("div"); const eyebrow = document.createElement("p"); eyebrow.className = "ui-label"; eyebrow.textContent = text("AVATAR ASIGNADO", "ASSIGNED AVATAR");
+    const title = document.createElement("h3"); title.textContent = text("Tu avatar ya está preparado", "Your avatar is ready");
+    const copy = document.createElement("p"); copy.textContent = text("Se asigna automáticamente desde tu perfil de alumno. Si necesitas cambiarlo, debe hacerlo un administrador.", "It is assigned automatically from your student profile. An administrator can change it if needed.");
+    content.append(eyebrow, title, copy); panel.append(icon, content); host.appendChild(panel);
+  }
+
+  function renderEditor() { if (activeTab === "avatar") renderAssignedAvatar(); else renderDataCatalog(); }
 
   function selectTab(tab, focus, move) {
     activeTab = TABS.includes(tab) ? tab : "avatar"; document.querySelectorAll("[data-world-tab]").forEach(button => { const current = button.dataset.worldTab === activeTab; button.setAttribute("aria-selected", String(current)); button.tabIndex = current ? 0 : -1; if (current && focus) button.focus(); });
-    $("avatarTools").hidden = activeTab !== "avatar"; $("catalogPanel").setAttribute("aria-labelledby", "tab-" + activeTab); $("previewLabel").textContent = activeTab === "world" ? text("TU PAISAJE · CAMBIOS EN DIRECTO", "YOUR SPACE · LIVE CHANGES") : text("TU AVATAR · CAMBIOS EN DIRECTO", "YOUR AVATAR · LIVE CHANGES"); renderScene(false); renderEditor(); if (move) revealEditorStart();
+    $("catalogPanel").setAttribute("aria-labelledby", "tab-" + activeTab); $("previewLabel").textContent = activeTab === "world" ? text("TU PAISAJE · CAMBIOS EN DIRECTO", "YOUR SPACE · LIVE CHANGES") : text("TU AVATAR ASIGNADO", "YOUR ASSIGNED AVATAR"); renderScene(false); renderEditor(); if (move) revealEditorStart();
   }
 
   function setupTabs() { document.querySelectorAll("[data-world-tab]").forEach(button => { button.addEventListener("click", () => selectTab(button.dataset.worldTab, false, true)); button.addEventListener("keydown", event => { if (event.key !== "ArrowRight" && event.key !== "ArrowLeft") return; event.preventDefault(); const index = TABS.indexOf(activeTab); selectTab(TABS[(index + (event.key === "ArrowRight" ? 1 : -1) + TABS.length) % TABS.length], true, true); }); }); }
@@ -192,16 +201,16 @@
   }
 
   function applyReveal() { if (!revealItem) return; applyCatalogItem(revealItem); $("unlockDialog").close(); }
-  function revealNewUnlock() { const unlocked = ILWorldData.unlockedItems(progress, stampIds, band).filter(item => item.unlock.type !== "always"); const seen = new Set(settings.seenUnlocks || []); const fresh = unlocked.filter(item => !seen.has(item.id)).sort((a,b) => (b.unlock.value || 0) - (a.unlock.value || 0)); if (!fresh.length) return; revealItem = fresh[0]; settings = ILProfileSettings.save(username, { seenUnlocks:Array.from(new Set((settings.seenUnlocks || []).concat(unlocked.map(item => item.id)))) }); $("unlockTitle").textContent = itemName(revealItem); $("unlockVisual").innerHTML = ILWorldVisual.item(revealItem, settings, progress); $("unlockDialog").showModal(); requestAnimationFrame(() => $("unlockTry").focus()); }
+  function revealNewUnlock() { const context = ctx(); const unlocked = ILWorldData.catalogFor(band, "world").filter(item => item.unlock.type !== "always" && ILWorldData.unlockStatus(item, context).unlocked); const seen = new Set(settings.seenUnlocks || []); const fresh = unlocked.filter(item => !seen.has(item.id)).sort((a,b) => (b.unlock.value || 0) - (a.unlock.value || 0)); if (!fresh.length) return; revealItem = fresh[0]; settings = ILProfileSettings.save(username, { seenUnlocks:Array.from(new Set((settings.seenUnlocks || []).concat(unlocked.map(item => item.id)))) }); $("unlockTitle").textContent = itemName(revealItem); $("unlockVisual").innerHTML = ILWorldVisual.item(revealItem, settings, progress); $("unlockDialog").showModal(); requestAnimationFrame(() => $("unlockTry").focus()); }
   function setupDialog() { $("unlockTry").addEventListener("click", applyReveal); $("unlockContinue").addEventListener("click", () => $("unlockDialog").close()); $("unlockDialog").addEventListener("cancel", event => { event.preventDefault(); $("unlockDialog").close(); }); }
   function stampList(learning, medals) { const stamps = learning && learning.stamps && learning.stamps.items || []; return Array.from(new Set(stamps.filter(item => item.unlocked).map(item => item.id).concat((medals || []).filter(item => item.earned).map(item => item.id)))); }
 
   (async function init() {
     try {
       const profile = await ILAuth.getProfile(); if (!profile) { location.href = "index.html"; return; } if (profile.is_admin) { location.href = "admin.html"; return; }
-      username = profile.username || ""; IL_ETAPA.apply(profile); band = IL_ETAPA.current().band; settings = ILProfileSettings.setActive(username);
+      username = profile.username || ""; IL_ETAPA.apply(profile); band = IL_ETAPA.current().band; settings = ILProfileSettings.setActive(username, profile.sex);
       const loaded = await Promise.all([ILAuth.getProgress(), ILProgressData.load(ILAuth, window.ILMission, { ageMode:IL_ETAPA.current().mode }), ILAuth.listMedals()]); progress = loaded[0] || {}; stampIds = stampList(loaded[1], loaded[2]);
-      localise(); setupTabs(); setupDialog(); $("randomiseAvatar").addEventListener("click", randomiseAvatar); $("resetAvatar").addEventListener("click", resetAvatar); renderOverview(); selectTab("avatar"); ILLayout.mount(); $("loading").hidden = true; $("app").classList.remove("hidden"); setTimeout(revealNewUnlock, 280);
+      localise(); setupTabs(); setupDialog(); renderOverview(); selectTab("avatar"); ILLayout.mount(); $("loading").hidden = true; $("app").classList.remove("hidden"); setTimeout(revealNewUnlock, 280);
     } catch (error) { console.error("No se pudo cargar Mi Mundo", error); $("loading").hidden = true; $("errorState").hidden = false; }
   })();
 })();

@@ -206,7 +206,7 @@
       if (!profile) { location.href = "index.html"; return; }
       if (profile.is_admin) { location.href = "admin.html"; return; }
       if (profile.must_change_password) { location.href = "cambiar-clave.html"; return; }
-      ILProfileSettings.setActive(profile.username || "");
+      ILProfileSettings.setActive(profile.username || "", profile.sex);
       IL_ETAPA.apply(profile); ageMode = IL_ETAPA.current().mode; snapshot = await ILProgressData.load(ILAuth, window.ILMission, { ageMode: ageMode }); if (!snapshot) throw new Error("No progress snapshot");
       renderHeader(snapshot); renderWeek(snapshot); renderLearning(snapshot); renderStamps(snapshot); setupTabs(); setupDialog();
       if (ageMode === "primary-young") applyYoung(snapshot);

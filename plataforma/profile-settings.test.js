@@ -73,6 +73,12 @@ assert.deepEqual(S.load("lucia"), settings, "persiste por alumno");
 assert.equal(S.load("ana").sound, true, "otro alumno conserva defaults");
 assert.equal(S.getActive().dailyGoal, 15, "mantiene preferencias activas para el motor");
 assert.equal(S.sanitize({ avatarExpression:"bright" }).avatarMouthShape, "wide", "migra expresiones antiguas");
+let assigned = S.setActive("lucia", "male");
+assert.equal(assigned.avatarBase, "masculine", "el sexo masculino asigna la lámina masculina");
+assert.equal(assigned.avatarCustomised, false, "la asignación administrativa descarta capas antiguas");
+assigned = S.setActive("lucia", "female");
+assert.equal(assigned.avatarBase, "feminine", "el sexo femenino asigna la lámina femenina");
+assert.equal(S.avatarBaseForSex(null, "feminine"), "feminine", "un registro antiguo conserva su base guardada");
 
 const clean = S.sanitize({ audioSpeed: 4, dailyGoal: 99, textSize: "huge", avatarTheme: "fox", avatarBase:"robot", avatarSkin:"blue", avatarHair:"none", avatarHairColor:"pink", avatarExpression:"angry", avatarFaceShape:"triangle", avatarFaceWidth:8, avatarEyeShape:"laser", avatarEyeColor:"purple", avatarEyeSize:-2, avatarBrowShape:"none", avatarNoseShape:"huge", avatarNoseLength:9, avatarMouthShape:"angry", avatarTop:"cape", avatarAccessory:"crown", worldBackground:"moon", worldCompanion:"dragon", activeWorldItems:["world-pond","bad"], seenUnlocks:["good-id","<bad>"], accessory:"crown", background:"moon", featuredStamp: 20 });
 assert.equal(clean.audioSpeed, 0.9);
@@ -110,4 +116,4 @@ assert.equal(fakeDoc.documentElement.dataset.ilReduceMotion, "false");
 S.clearActive();
 assert.equal(S.getActive().dailyGoal, 8);
 
-console.log("profile-settings: 79 comprobaciones correctas");
+console.log("profile-settings: asignación administrativa comprobada");
