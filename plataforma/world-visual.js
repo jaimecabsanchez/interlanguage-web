@@ -111,7 +111,7 @@
   function illustratedAvatar(settings, options) {
     const base = settings.avatarBase === "feminine" ? "feminine" : "masculine";
     const master = base === "feminine" ? "look-05" : "look-01";
-    if (settings.avatarCustomised && AvatarRig && typeof AvatarRig.render === "function") return AvatarRig.render(settings, options);
+    if (AvatarRig && typeof AvatarRig.render === "function") return AvatarRig.render(settings, options);
     const classes = layerClass(options);
     return '<img class="il-student-avatar il-avatar-master avatar-base--'+base+classes+'" src="assets/avatar/'+master+'.png" alt="" draggable="false" decoding="async">';
   }

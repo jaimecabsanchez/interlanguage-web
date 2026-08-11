@@ -4,49 +4,16 @@
   const $ = id => document.getElementById(id);
   const TABS = ["avatar", "world"];
   const FEATURES = [
-    { id:"face", label:"Rostro", labelEn:"Face" },
     { id:"skin", label:"Piel", labelEn:"Skin" },
     { id:"hair", label:"Pelo", labelEn:"Hair" },
     { id:"eyes", label:"Ojos", labelEn:"Eyes" },
-    { id:"brows", label:"Cejas", labelEn:"Brows" },
-    { id:"nose", label:"Nariz", labelEn:"Nose" },
-    { id:"mouth", label:"Boca", labelEn:"Mouth" },
-    { id:"clothing", label:"Ropa", labelEn:"Clothing" },
-    { id:"accessory", label:"Accesorios", labelEn:"Accessories" }
+    { id:"clothing", label:"Ropa", labelEn:"Clothing" }
   ];
-  const OPTIONS = {
-    avatarHair:[["original","Original","Original"],["curls","Rizado","Curly"]],
-    avatarTop:[["tee","Camiseta","T-shirt"],["hoodie","Sudadera","Hoodie"]],
-    avatarAccessory:[["none","Sin accesorio","No accessory"],["glasses","Gafas redondas","Round glasses"]]
-  };
-  const FIVE_STEPS = [0,1,2,3,4];
-  const FIVE_NAMES = ["Muy bajo","Bajo","Medio","Alto","Muy alto"];
-  const FIVE_NAMES_EN = ["Very low","Low","Medium","High","Very high"];
   const RANGES = {
     avatarSkin:{ label:"Tono de piel", labelEn:"Skin tone", values:["tone-1","tone-5","tone-2","tone-6","tone-3","tone-7","tone-4","tone-8"], names:["Claro 1","Claro 2","Medio 1","Medio 2","Oscuro 1","Oscuro 2","Profundo 1","Profundo 2"], namesEn:["Light 1","Light 2","Medium 1","Medium 2","Dark 1","Dark 2","Deep 1","Deep 2"], colours:["var(--il-avatar-skin-1)","var(--il-avatar-skin-5)","var(--il-avatar-skin-2)","var(--il-avatar-skin-6)","var(--il-avatar-skin-3)","var(--il-avatar-skin-7)","var(--il-avatar-skin-4)","var(--il-avatar-skin-8)"] },
     avatarHairColor:{ label:"Color de pelo", labelEn:"Hair colour", values:["dark","brown","red","copper","gold","ash"], names:["Negro","Castaño","Caoba","Cobrizo","Rubio","Ceniza"], namesEn:["Black","Brown","Auburn","Copper","Blonde","Ash"], colours:["var(--il-avatar-hair-dark)","var(--il-avatar-hair-brown)","var(--il-avatar-hair-red)","var(--il-avatar-hair-copper)","var(--il-avatar-hair-gold)","var(--il-avatar-hair-ash)"] },
     avatarEyeColor:{ label:"Color de ojos", labelEn:"Eye colour", values:["brown","hazel","green","blue","grey"], names:["Marrón","Avellana","Verde","Azul","Gris"], namesEn:["Brown","Hazel","Green","Blue","Grey"], colours:["var(--il-avatar-eye-brown)","var(--il-avatar-eye-hazel)","var(--il-avatar-eye-green)","var(--il-avatar-eye-blue)","var(--il-avatar-eye-grey)"] },
-    avatarOutfitColor:{ label:"Color de la ropa", labelEn:"Clothing colour", values:["green","aqua","coral","navy"], names:["Verde","Aguamarina","Coral","Azul marino"], namesEn:["Green","Aqua","Coral","Navy"], colours:["#16936f","#2ca6a4","#f3684b","#17345f"] },
-    avatarFaceWidth:{ label:"Anchura", labelEn:"Width", values:FIVE_STEPS, names:["Muy estrecho","Estrecho","Medio","Ancho","Muy ancho"], namesEn:["Very narrow","Narrow","Medium","Wide","Very wide"] },
-    avatarFaceLength:{ label:"Longitud", labelEn:"Length", values:FIVE_STEPS, names:["Muy corto","Corto","Medio","Largo","Muy largo"], namesEn:["Very short","Short","Medium","Long","Very long"] },
-    avatarCheekVolume:{ label:"Volumen de mejillas", labelEn:"Cheek volume", values:FIVE_STEPS, names:FIVE_NAMES, namesEn:FIVE_NAMES_EN },
-    avatarJawWidth:{ label:"Anchura de mandíbula", labelEn:"Jaw width", values:FIVE_STEPS, names:["Muy fina","Fina","Media","Ancha","Muy ancha"], namesEn:["Very slim","Slim","Medium","Wide","Very wide"] },
-    avatarHairLength:{ label:"Longitud", labelEn:"Length", values:FIVE_STEPS, names:["Muy corto","Corto","Medio","Largo","Muy largo"], namesEn:["Very short","Short","Medium","Long","Very long"] },
-    avatarHairVolume:{ label:"Volumen", labelEn:"Volume", values:FIVE_STEPS, names:FIVE_NAMES, namesEn:FIVE_NAMES_EN },
-    avatarEyeSize:{ label:"Tamaño", labelEn:"Size", values:FIVE_STEPS, names:["Muy pequeños","Pequeños","Medios","Grandes","Muy grandes"], namesEn:["Very small","Small","Medium","Large","Very large"] },
-    avatarEyeSpacing:{ label:"Separación", labelEn:"Spacing", values:FIVE_STEPS, names:["Muy juntos","Juntos","Media","Separados","Muy separados"], namesEn:["Very close","Close","Medium","Apart","Far apart"] },
-    avatarEyeHeight:{ label:"Altura", labelEn:"Height", values:FIVE_STEPS, names:["Muy baja","Baja","Media","Alta","Muy alta"], namesEn:["Very low","Low","Medium","High","Very high"] },
-    avatarBrowThickness:{ label:"Grosor", labelEn:"Thickness", values:FIVE_STEPS, names:["Muy finas","Finas","Medias","Gruesas","Muy gruesas"], namesEn:["Very thin","Thin","Medium","Thick","Very thick"] },
-    avatarBrowArch:{ label:"Arco", labelEn:"Arch", values:FIVE_STEPS, names:["Descendente","Suave","Natural","Arqueado","Muy arqueado"], namesEn:["Downward","Soft","Natural","Arched","Very arched"] },
-    avatarBrowSpacing:{ label:"Separación", labelEn:"Spacing", values:FIVE_STEPS, names:["Muy juntas","Juntas","Media","Separadas","Muy separadas"], namesEn:["Very close","Close","Medium","Apart","Far apart"] },
-    avatarNoseWidth:{ label:"Anchura", labelEn:"Width", values:FIVE_STEPS, names:["Muy fina","Fina","Media","Ancha","Muy ancha"], namesEn:["Very slim","Slim","Medium","Wide","Very wide"] },
-    avatarNoseLength:{ label:"Longitud", labelEn:"Length", values:FIVE_STEPS, names:["Muy corta","Corta","Media","Larga","Muy larga"], namesEn:["Very short","Short","Medium","Long","Very long"] },
-    avatarNoseHeight:{ label:"Altura", labelEn:"Height", values:FIVE_STEPS, names:["Muy baja","Baja","Media","Alta","Muy alta"], namesEn:["Very low","Low","Medium","High","Very high"] },
-    avatarMouthWidth:{ label:"Anchura", labelEn:"Width", values:FIVE_STEPS, names:["Muy estrecha","Estrecha","Media","Ancha","Muy ancha"], namesEn:["Very narrow","Narrow","Medium","Wide","Very wide"] },
-    avatarMouthCurve:{ label:"Curvatura", labelEn:"Curve", values:FIVE_STEPS, names:["Serena","Suave","Natural","Sonriente","Muy sonriente"], namesEn:["Calm","Soft","Natural","Smiling","Very smiling"] },
-    avatarMouthHeight:{ label:"Altura", labelEn:"Height", values:FIVE_STEPS, names:["Muy baja","Baja","Media","Alta","Muy alta"], namesEn:["Very low","Low","Medium","High","Very high"] },
-    avatarAccessorySize:{ label:"Tamaño", labelEn:"Size", values:FIVE_STEPS, names:["Muy pequeño","Pequeño","Medio","Grande","Muy grande"], namesEn:["Very small","Small","Medium","Large","Very large"] },
-    avatarAccessoryHeight:{ label:"Altura", labelEn:"Height", values:FIVE_STEPS, names:["Muy baja","Baja","Media","Alta","Muy alta"], namesEn:["Very low","Low","Medium","High","Very high"] }
+    avatarOutfitColor:{ label:"Color de la camiseta", labelEn:"T-shirt colour", values:["green","aqua","coral","navy"], names:["Verde","Aguamarina","Coral","Azul marino"], namesEn:["Green","Aqua","Coral","Navy"], colours:["#16936f","#2ca6a4","#f3684b","#17345f"] }
   };
 
   let username = "";
@@ -55,7 +22,7 @@
   let settings = null;
   let stampIds = [];
   let activeTab = "avatar";
-  let activeFeature = "face";
+  let activeFeature = "skin";
   let revealItem = null;
   let saveTimer = null;
   let resetTimer = null;
@@ -77,7 +44,7 @@
     document.documentElement.lang = "en"; document.title = "My space · Interlanguage HOME";
     $("backProfile").lastElementChild.textContent = "Profile"; $("worldEyebrow").textContent = "PERSONAL SPACE"; $("worldTitle").textContent = "My space"; $("worldSubtitle").textContent = "The more you practise, the more your space evolves.";
     $("growthLabel").textContent = "YOUR SPACE EVOLVES WITH YOU"; $("growthCopy").textContent = "Each completed session moves your personal space forward."; $("nextUnlockLabel").textContent = "NEXT UNLOCK";
-    $("customiseEyebrow").textContent = "MAKE IT YOURS"; $("customiseTitle").textContent = "Customise"; $("customiseHint").textContent = "Adjust each feature gradually and see every change instantly."; $("previewLabel").textContent = "LIVE PREVIEW"; $("randomAvatar").lastElementChild.textContent = "Surprise me"; $("resetAvatar").textContent = "Reset";
+    $("customiseEyebrow").textContent = "MAKE IT YOURS"; $("customiseTitle").textContent = "Customise"; $("customiseHint").textContent = "Change colours by area without altering the rest of the avatar."; $("previewLabel").textContent = "LIVE PREVIEW"; $("randomAvatar").lastElementChild.textContent = "Surprise me"; $("resetAvatar").textContent = "Reset";
     $("unlockEyebrow").textContent = "NEW UNLOCK"; $("unlockCopy").textContent = "Your progress has opened a new option."; $("unlockTry").textContent = "Try it now"; $("unlockContinue").textContent = "Continue";
     const labels = { avatar:"Avatar", world:"Space" }; document.querySelectorAll("[data-world-tab]").forEach(button => { button.lastElementChild.textContent = labels[button.dataset.worldTab]; });
   }
@@ -115,8 +82,8 @@
   }
 
   function previewRange(key, value, output) {
-    settings = ILProfileSettings.sanitize(Object.assign({}, settings, { avatarCustomised:true, avatarRigVersion:1, [key]:value })); renderScene(false); if (output) output.textContent = rangeName(RANGES[key], value);
-    $("editorStatus").textContent = text("Guardando…", "Saving…"); clearTimeout(saveTimer); saveTimer = setTimeout(() => persist({ avatarCustomised:true, avatarRigVersion:1, [key]:value }, { animate:false }), 180);
+    settings = ILProfileSettings.sanitize(Object.assign({}, settings, { avatarCustomised:true, avatarRigVersion:2, [key]:value })); renderScene(false); if (output) output.textContent = rangeName(RANGES[key], value);
+    $("editorStatus").textContent = text("Guardando…", "Saving…"); clearTimeout(saveTimer); saveTimer = setTimeout(() => persist({ avatarCustomised:true, avatarRigVersion:2, [key]:value }, { animate:false }), 180);
   }
 
   function rangeName(config, value) { const index = config.values.indexOf(value); return (secondary() ? config.namesEn : config.names)[Math.max(0, index)]; }
@@ -130,19 +97,8 @@
     const input = document.createElement("input"); input.id = id; input.type = "range"; input.min = "0"; input.max = String(config.values.length - 1); input.step = "1"; input.value = String(index); input.setAttribute("aria-valuetext", rangeName(config, current));
     const marks = document.createElement("div"); marks.className = "trait-marks"; config.values.forEach(() => marks.appendChild(document.createElement("i")));
     input.addEventListener("input", () => { const value = config.values[Number(input.value)]; input.setAttribute("aria-valuetext", rangeName(config, value)); previewRange(key, value, output); });
-    input.addEventListener("change", () => persist({ avatarCustomised:true, avatarRigVersion:1, [key]:config.values[Number(input.value)] }, { animate:false }));
+    input.addEventListener("change", () => persist({ avatarCustomised:true, avatarRigVersion:2, [key]:config.values[Number(input.value)] }, { animate:false }));
     rail.append(input, marks); wrap.append(head, rail); return wrap;
-  }
-
-  function choiceGroup(key, heading) {
-    const group = document.createElement("fieldset"); group.className = "trait-group"; const legend = document.createElement("legend"); legend.textContent = heading; const choices = document.createElement("div"); choices.className = "trait-choices";
-    OPTIONS[key].forEach(option => {
-      const value = option[0]; const selected = settings[key] === value; const button = document.createElement("button"); button.type = "button"; button.className = "trait-choice" + (selected ? " is-selected" : ""); button.setAttribute("aria-pressed", String(selected)); button.setAttribute("aria-label", secondary() ? option[2] : option[1]);
-      const previewSettings = Object.assign({}, settings, { [key]:value, avatarCustomised:true, avatarRigVersion:1 });
-      const visual = document.createElement("span"); visual.className = "trait-choice__visual"; visual.innerHTML = ILWorldVisual.avatar(previewSettings, progress, key === "avatarTop" ? { compact:true } : { portrait:true }); const label = document.createElement("span"); label.textContent = secondary() ? option[2] : option[1]; button.append(visual, label);
-      button.addEventListener("click", () => { persist({ avatarCustomised:true, avatarRigVersion:1, [key]:value }); renderEditor(); }); choices.appendChild(button);
-    });
-    group.append(legend, choices); return group;
   }
 
   function featureIntro(title, copy) {
@@ -151,15 +107,10 @@
 
   function renderAvatarFeature() {
     const host = $("catalogSections"); host.replaceChildren(); const panel = document.createElement("section"); panel.className = "feature-editor";
-    if (activeFeature === "face") { panel.append(featureIntro(text("Rostro", "Face"), text("Ajusta poco a poco sus proporciones sin cambiar el estilo del avatar.", "Fine-tune its proportions without changing the avatar style.")), rangeControl("avatarFaceWidth"), rangeControl("avatarFaceLength"), rangeControl("avatarCheekVolume"), rangeControl("avatarJawWidth")); }
-    if (activeFeature === "skin") { panel.append(featureIntro(text("Piel", "Skin"), text("Desliza para encontrar tu tono.", "Move along the scale to choose your tone.")), rangeControl("avatarSkin")); }
-    if (activeFeature === "hair") { panel.append(featureIntro(text("Pelo", "Hair"), text("Conserva el acabado ilustrado y ajusta corte, longitud, volumen y color.", "Keep the illustrated finish and adjust style, length, volume and colour.")), choiceGroup("avatarHair", text("Peinado", "Hairstyle")), rangeControl("avatarHairLength"), rangeControl("avatarHairVolume"), rangeControl("avatarHairColor")); }
-    if (activeFeature === "eyes") { panel.append(featureIntro(text("Ojos", "Eyes"), text("Ajusta el tamaño, la separación, la altura y el color.", "Adjust size, spacing, height and colour.")), rangeControl("avatarEyeSize"), rangeControl("avatarEyeSpacing"), rangeControl("avatarEyeHeight"), rangeControl("avatarEyeColor")); }
-    if (activeFeature === "brows") { panel.append(featureIntro(text("Cejas", "Brows"), text("Cambia gradualmente el grosor, el arco y la separación.", "Gradually adjust thickness, arch and spacing.")), rangeControl("avatarBrowThickness"), rangeControl("avatarBrowArch"), rangeControl("avatarBrowSpacing")); }
-    if (activeFeature === "nose") { panel.append(featureIntro(text("Nariz", "Nose"), text("Ajusta la anchura, la longitud y la altura.", "Adjust width, length and height.")), rangeControl("avatarNoseWidth"), rangeControl("avatarNoseLength"), rangeControl("avatarNoseHeight")); }
-    if (activeFeature === "mouth") { panel.append(featureIntro(text("Boca", "Mouth"), text("Ajusta su anchura, curvatura y altura.", "Adjust width, curve and height.")), rangeControl("avatarMouthWidth"), rangeControl("avatarMouthCurve"), rangeControl("avatarMouthHeight")); }
-    if (activeFeature === "clothing") { panel.append(featureIntro(text("Ropa", "Clothing"), text("Elige una prenda y adapta el color manteniendo el mismo acabado.", "Choose an outfit and adjust its colour while keeping the same finish.")), choiceGroup("avatarTop", text("Prenda", "Outfit")), rangeControl("avatarOutfitColor")); }
-    if (activeFeature === "accessory") { panel.append(featureIntro(text("Accesorios", "Accessories"), text("Añade unas gafas y ajusta suavemente su encaje.", "Add glasses and gently adjust their fit.")), choiceGroup("avatarAccessory", text("Accesorio", "Accessory")), rangeControl("avatarAccessorySize"), rangeControl("avatarAccessoryHeight")); }
+    if (activeFeature === "skin") { panel.append(featureIntro(text("Piel", "Skin"), text("Cambia únicamente el tono de la piel. El resto del avatar permanece intacto.", "Change only the skin tone. The rest of the avatar remains untouched.")), rangeControl("avatarSkin")); }
+    if (activeFeature === "hair") { panel.append(featureIntro(text("Pelo", "Hair"), text("Cambia únicamente el color del pelo, conservando exactamente su forma y su estilo.", "Change only the hair colour while keeping its exact shape and style.")), rangeControl("avatarHairColor")); }
+    if (activeFeature === "eyes") { panel.append(featureIntro(text("Ojos", "Eyes"), text("Cambia únicamente el color del iris, sin modificar el tamaño ni la expresión.", "Change only the iris colour without altering size or expression.")), rangeControl("avatarEyeColor")); }
+    if (activeFeature === "clothing") { panel.append(featureIntro(text("Ropa", "Clothing"), text("Cambia únicamente el color de la camiseta. El cuerpo y la ropa conservan su forma original.", "Change only the T-shirt colour. The body and clothing keep their original shape.")), rangeControl("avatarOutfitColor")); }
     host.appendChild(panel);
   }
 
@@ -168,7 +119,7 @@
   }
 
   function revealEditorStart() { if (!matchMedia("(max-width:760px)").matches) return; requestAnimationFrame(() => $("catalogPanel").scrollIntoView({ behavior:ILVisual.reduceMotion() ? "auto" : "smooth", block:"start" })); }
-  function selectFeature(feature, focus, move) { activeFeature = FEATURES.some(item => item.id === feature) ? feature : "face"; renderFeatureNav(); renderAvatarFeature(); if (focus) $("featureNav").querySelector('[aria-selected="true"]').focus(); if (move) revealEditorStart(); }
+  function selectFeature(feature, focus, move) { activeFeature = FEATURES.some(item => item.id === feature) ? feature : "skin"; renderFeatureNav(); renderAvatarFeature(); if (focus) $("featureNav").querySelector('[aria-selected="true"]').focus(); if (move) revealEditorStart(); }
 
   function applyCatalogItem(item) {
     const status = ILWorldData.unlockStatus(item, ctx()); if (!status.unlocked) { showSaved(status.requirement); return; }
@@ -199,14 +150,14 @@
   function setupTabs() { document.querySelectorAll("[data-world-tab]").forEach(button => { button.addEventListener("click", () => selectTab(button.dataset.worldTab, false, true)); button.addEventListener("keydown", event => { if (event.key !== "ArrowRight" && event.key !== "ArrowLeft") return; event.preventDefault(); const index = TABS.indexOf(activeTab); selectTab(TABS[(index + (event.key === "ArrowRight" ? 1 : -1) + TABS.length) % TABS.length], true, true); }); }); }
 
   function randomiseAvatar() {
-    const patch = { avatarCustomised:true, avatarRigVersion:1, avatarHair:random(OPTIONS.avatarHair)[0], avatarTop:random(OPTIONS.avatarTop)[0], avatarAccessory:random(OPTIONS.avatarAccessory)[0] };
+    const patch = { avatarCustomised:true, avatarRigVersion:2 };
     Object.keys(RANGES).forEach(key => { patch[key] = random(RANGES[key].values); });
     persist(patch, { message:text("¡Nueva combinación!", "New combination") }); renderEditor();
   }
 
   function resetAvatar() {
     const button = $("resetAvatar"); if (!resetArmed) { resetArmed = true; button.textContent = text("Confirmar restablecer", "Confirm reset"); button.classList.add("is-armed"); clearTimeout(resetTimer); resetTimer = setTimeout(() => { resetArmed = false; button.textContent = text("Restablecer", "Reset"); button.classList.remove("is-armed"); }, 3200); return; }
-    resetArmed = false; clearTimeout(resetTimer); button.textContent = text("Restablecer", "Reset"); button.classList.remove("is-armed"); const defaults = ILProfileSettings.DEFAULTS; const patch = { avatarCustomised:false, avatarRigVersion:1, avatarSkin:defaults.avatarSkin, avatarHair:"original", avatarHairColor:defaults.avatarHairColor, avatarTop:defaults.avatarTop, avatarOutfitColor:defaults.avatarOutfitColor, avatarAccessory:defaults.avatarAccessory };
+    resetArmed = false; clearTimeout(resetTimer); button.textContent = text("Restablecer", "Reset"); button.classList.remove("is-armed"); const defaults = ILProfileSettings.DEFAULTS; const patch = { avatarCustomised:false, avatarRigVersion:2, avatarSkin:defaults.avatarSkin, avatarHair:"original", avatarHairColor:defaults.avatarHairColor, avatarEyeColor:defaults.avatarEyeColor, avatarTop:defaults.avatarTop, avatarOutfitColor:defaults.avatarOutfitColor, avatarAccessory:defaults.avatarAccessory };
     ILAvatarRig.RANGE_KEYS.forEach(key => { patch[key] = defaults[key]; }); persist(patch, { message:text("Avatar original restaurado", "Original avatar restored") }); renderEditor();
   }
 

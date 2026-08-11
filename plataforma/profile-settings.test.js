@@ -36,7 +36,7 @@ assert.equal(settings.avatarNoseLength, 2);
 assert.equal(settings.avatarMouthShape, "smile");
 assert.equal(settings.avatarTop, "tee");
 assert.equal(settings.avatarAccessory, "none");
-assert.equal(settings.avatarRigVersion, 1);
+assert.equal(settings.avatarRigVersion, 2);
 assert.equal(settings.avatarFaceLength, 2);
 assert.equal(settings.avatarCheekVolume, 2);
 assert.equal(settings.avatarJawWidth, 2);
@@ -83,6 +83,31 @@ assert.deepEqual(S.load("lucia"), settings, "persiste por alumno");
 assert.equal(S.load("ana").sound, true, "otro alumno conserva defaults");
 assert.equal(S.getActive().dailyGoal, 15, "mantiene preferencias activas para el motor");
 assert.equal(S.sanitize({ avatarExpression:"bright" }).avatarMouthShape, "wide", "migra expresiones antiguas");
+
+const legacyStorage = memoryStorage();
+legacyStorage.setItem("il_profile_settings_v1_legacy", JSON.stringify({
+  version:5,
+  avatarBase:"feminine",
+  avatarCustomised:true,
+  avatarRigVersion:1,
+  avatarSkin:"tone-7",
+  avatarHair:"curls",
+  avatarHairColor:"gold",
+  avatarEyeColor:"blue",
+  avatarEyeSize:4,
+  avatarTop:"hoodie",
+  avatarOutfitColor:"coral",
+  avatarAccessory:"glasses"
+}));
+const legacy = createProfileSettings(legacyStorage).load("legacy");
+assert.equal(legacy.avatarRigVersion, 2, "migra al compositor local");
+assert.equal(legacy.avatarCustomised, true, "conserva una personalización de color válida");
+assert.equal(legacy.avatarHairColor, "gold", "conserva el color del pelo");
+assert.equal(legacy.avatarEyeColor, "blue", "conserva el color del iris");
+assert.equal(legacy.avatarHair, "original", "descarta peinados incompatibles");
+assert.equal(legacy.avatarTop, "tee", "descarta prendas incompatibles");
+assert.equal(legacy.avatarAccessory, "none", "descarta accesorios incompatibles");
+assert.equal(legacy.avatarEyeSize, 2, "neutraliza geometría heredada");
 let assigned = S.setActive("lucia", "male");
 assert.equal(assigned.avatarBase, "masculine", "el sexo masculino asigna la lámina masculina");
 assert.equal(assigned.avatarCustomised, false, "la asignación administrativa descarta capas antiguas");

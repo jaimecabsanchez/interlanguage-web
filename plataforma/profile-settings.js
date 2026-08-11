@@ -12,7 +12,7 @@
 })(typeof globalThis !== "undefined" ? globalThis : this, function createProfileSettings(storage) {
   "use strict";
 
-  const VERSION = 5;
+  const VERSION = 6;
   const PREFIX = "il_profile_settings_v1_";
   const ACTIVE_KEY = "il_profile_settings_active_v1";
   const DEFAULTS = Object.freeze({
@@ -25,7 +25,7 @@
     avatarTheme: "navy",
     avatarBase: "masculine",
     avatarCustomised: false,
-    avatarRigVersion: 1,
+    avatarRigVersion: 2,
     avatarSkin: "tone-2",
     avatarHair: "original",
     avatarHairColor: "brown",
@@ -148,7 +148,7 @@
       avatarTheme: allowed(value.avatarTheme, VALID.avatarTheme, DEFAULTS.avatarTheme),
       avatarBase: allowed(value.avatarBase, VALID.avatarBase, DEFAULTS.avatarBase),
       avatarCustomised: typeof value.avatarCustomised === "boolean" ? value.avatarCustomised : DEFAULTS.avatarCustomised,
-      avatarRigVersion: Number(value.avatarRigVersion) === 1 ? 1 : DEFAULTS.avatarRigVersion,
+      avatarRigVersion: Number(value.avatarRigVersion) === 2 ? 2 : DEFAULTS.avatarRigVersion,
       avatarSkin: allowed(value.avatarSkin, VALID.avatarSkin, DEFAULTS.avatarSkin),
       avatarHair: allowed(value.avatarHair, VALID.avatarHair, DEFAULTS.avatarHair),
       avatarHairColor: allowed(value.avatarHairColor, VALID.avatarHairColor, DEFAULTS.avatarHairColor),
@@ -201,7 +201,23 @@
   function load(username) {
     const stored = read(usernameKey(username), null);
     const settings = sanitize(stored || {});
-    if (stored && Number(stored.version || 0) < VERSION) { settings.avatarCustomised = false; settings.avatarHair = "original"; }
+    if (stored && Number(stored.version || 0) < VERSION) {
+      settings.avatarCustomised = settings.avatarSkin !== DEFAULTS.avatarSkin
+        || settings.avatarHairColor !== DEFAULTS.avatarHairColor
+        || settings.avatarEyeColor !== DEFAULTS.avatarEyeColor
+        || settings.avatarOutfitColor !== DEFAULTS.avatarOutfitColor;
+      settings.avatarRigVersion = 2;
+      settings.avatarHair = "original";
+      settings.avatarTop = DEFAULTS.avatarTop;
+      settings.avatarAccessory = DEFAULTS.avatarAccessory;
+      [
+        "avatarFaceWidth", "avatarFaceLength", "avatarCheekVolume", "avatarJawWidth",
+        "avatarHairLength", "avatarHairVolume", "avatarEyeSize", "avatarEyeSpacing",
+        "avatarEyeHeight", "avatarBrowThickness", "avatarBrowArch", "avatarBrowSpacing",
+        "avatarNoseWidth", "avatarNoseLength", "avatarNoseHeight", "avatarMouthWidth",
+        "avatarMouthCurve", "avatarMouthHeight", "avatarAccessorySize", "avatarAccessoryHeight"
+      ].forEach(key => { settings[key] = DEFAULTS[key]; });
+    }
     if (!stored) { const legacy = legacyTheme(); if (legacy) settings.avatarTheme = legacy; }
     return settings;
   }
