@@ -14,53 +14,58 @@
 <link rel="stylesheet" href="etapa.css?v=20260809d">
 <style>
   body{background:
-    radial-gradient(120% 45% at 100% 0%, #FDECE4 0%, transparent 55%),
-    radial-gradient(120% 45% at 0% 4%, #EAF3EE 0%, transparent 50%),
-    #FBF9F5;}
+    radial-gradient(120% 45% at 100% 0%,var(--il-secondary-soft) 0%,transparent 55%),
+    radial-gradient(120% 45% at 0% 4%,var(--il-success-soft) 0%,transparent 50%),
+    var(--il-background);}
   .q{animation:qIn .32s cubic-bezier(.2,.7,.3,1) both;}
   @keyframes qIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
   @media (prefers-reduced-motion:reduce){ .q{animation:none;} }
   .tn{max-width:560px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;padding:0 18px calc(24px + env(safe-area-inset-bottom));}
   .tn-top{display:flex;align-items:center;gap:12px;padding:20px 2px 8px;}
-  .tn-top .lbl{font-size:.78rem;color:var(--faint);font-weight:600;white-space:nowrap;}
-  .tn-bar{flex:1;height:10px;border-radius:8px;background:var(--surface-2);overflow:hidden;}
+  .tn-top .lbl{font-size:.78rem;color:var(--il-muted);font-weight:600;white-space:nowrap;}
+  .tn-bar{flex:1;height:10px;border-radius:8px;background:var(--il-surface-secondary);overflow:hidden;}
   .tn-bar i{display:block;height:100%;width:0;border-radius:8px;background:var(--il-success);transition:width var(--il-duration-slow) var(--il-ease);}
-  .tn-main{flex:1;display:flex;flex-direction:column;justify-content:center;padding:8px 0 16px;}
-  .eyebrow{font-family:var(--font-display);font-weight:800;font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--coral-deep);margin-bottom:10px;}
-  .q{font-family:var(--font-display);font-weight:800;color:var(--navy);font-size:1.4rem;line-height:1.2;margin:0 0 20px;}
-  .q .en{background:var(--surface-2);border-radius:8px;padding:2px 8px;}
+  .tn-main{flex:1;display:flex;flex-direction:column;justify-content:flex-start;padding:clamp(68px,14vh,118px) 0 28px;}
+  .eyebrow{font-family:var(--il-font-display);font-weight:800;font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--il-coral-ink);margin-bottom:10px;}
+  .q{font-family:var(--il-font-display);font-weight:800;color:var(--il-text-primary);font-size:1.4rem;line-height:1.2;margin:0 0 20px;}
+  .q .en{background:var(--il-surface-secondary);border-radius:8px;padding:2px 8px;}
   .opts{display:flex;flex-direction:column;gap:10px;border:none;padding:0;margin:0;}
-  .opt{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:#fff;border:1.5px solid var(--line-2);
-    border-radius:14px;padding:15px 16px;font-size:1.05rem;color:var(--ink);font-family:inherit;font-weight:600;
+  .opt{display:flex;align-items:center;gap:12px;width:100%;min-height:52px;text-align:left;background:var(--il-surface);border:1.5px solid var(--il-border-strong);
+    border-radius:14px;padding:15px 16px;font-size:1.05rem;color:var(--il-text-primary);font-family:inherit;font-weight:600;
     transition:border-color .15s ease,background .15s ease,transform .1s ease;}
   .opt:hover{border-color:var(--il-primary);}
   .opt[aria-pressed="true"]{border-color:var(--il-primary);background:var(--il-primary-soft);color:var(--navy);box-shadow:0 0 0 1px var(--il-primary);}
-  .opt .mk{width:22px;height:22px;flex-shrink:0;border-radius:50%;border:2px solid var(--line-2);display:grid;place-items:center;}
+  .opt .mk{width:22px;height:22px;flex-shrink:0;border-radius:50%;border:2px solid var(--il-border-strong);display:grid;place-items:center;}
   .opt[aria-pressed="true"] .mk{border-color:var(--il-primary);background:var(--il-primary);}
-  .opt[aria-pressed="true"] .mk::after{content:"";width:8px;height:8px;border-radius:50%;background:#fff;}
-  .tn-foot{padding-top:8px;}
+  .opt[aria-pressed="true"] .mk::after{content:"";width:8px;height:8px;border-radius:50%;background:var(--il-on-primary);}
+  .tn-foot{padding-top:8px;padding-bottom:max(0px,env(safe-area-inset-bottom));background:linear-gradient(180deg,transparent,var(--il-background) 24%);}
   .tn-foot .btn{width:100%;}
   /* Resultado */
   .result{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:20px 0;}
   .result .badge{width:96px;height:96px;border-radius:28px;display:grid;place-items:center;margin-bottom:16px;
     background:linear-gradient(150deg,var(--jade),var(--jade-deep));box-shadow:0 16px 30px -14px var(--jade);animation:pop .5s cubic-bezier(.2,1.2,.3,1) both;}
-  .result .badge svg{width:46px;height:46px;color:#fff;}
+  .result .badge svg{width:46px;height:46px;color:var(--il-on-success);}
   .result h1{font-size:1.6rem;margin:0 0 6px;}
   .result .lvl{font-family:var(--font-display);font-weight:800;color:var(--jade-deep);font-size:1.15rem;margin-bottom:10px;}
   .result p{color:var(--soft);max-width:400px;margin:0 auto 26px;}
   @keyframes pop{0%{transform:scale(0);}70%{transform:scale(1.1);}100%{transform:scale(1);}}
   @media (prefers-reduced-motion:reduce){ .result .badge{animation:none;} .tn-bar i{transition:none;} }
-  body[data-stage="eso"] .q{font-size:1.25rem;}
+  body[data-stage="p12"] .opt{min-height:56px;font-size:var(--il-fs-lg)}body[data-stage="p12"] .q{font-size:1.55rem}
+  body[data-stage="p34"] .opt{min-height:52px}
+  body[data-stage="p56"] .opt{min-height:48px}
+  body[data-stage="eso"] .q{font-size:1.25rem;}body[data-stage="eso"] .opt{min-height:44px;border-radius:var(--il-radius-sm)}
+  @media (min-width:768px) and (min-height:720px){.tn-main{justify-content:center;padding-top:var(--il-space-8)}}
+  @media (max-height:700px){.tn-main{justify-content:flex-start;padding-top:var(--il-space-6)}.q{margin-bottom:var(--il-space-4)}.opts{gap:var(--il-space-2)}}
 </style>
 </head>
 <body>
 <div class="tn">
   <div class="tn-top" id="topBar">
     <span class="lbl" id="progLbl">Pregunta 1 de 8</span>
-    <div class="tn-bar"><i id="progFill"></i></div>
+    <div class="tn-bar" id="progress" role="progressbar" aria-label="Progreso del punto de partida" aria-valuemin="1" aria-valuemax="8" aria-valuenow="1"><i id="progFill"></i></div>
   </div>
 
-  <div class="tn-main" id="main"></div>
+  <div class="tn-main" id="main" aria-live="polite"></div>
 
   <div class="tn-foot" id="foot">
     <button class="btn btn-primary" id="next" disabled>Siguiente</button>
@@ -90,15 +95,18 @@
   ];
 
   let i = 0;
+  let stage = "p56";
   const answers = new Array(QUESTIONS.length).fill(null);
 
   function render() {
     const item = QUESTIONS[i];
     $("progLbl").textContent = "Pregunta " + (i + 1) + " de " + QUESTIONS.length;
-    $("progFill").style.width = Math.round((i) / QUESTIONS.length * 100) + "%";
+    $("progFill").style.width = Math.round((i + 1) / QUESTIONS.length * 100) + "%";
+    $("progress").setAttribute("aria-valuenow", String(i + 1));
+    const eyebrow = stage === "eso" ? "FIND YOUR STARTING POINT" : (stage === "p12" ? "VAMOS PASO A PASO" : "ENCONTRAMOS TU PUNTO DE PARTIDA");
     $("main").innerHTML =
-      '<div class="eyebrow">Nos vamos conociendo</div>' +
-      '<h2 class="q">' + item.q + '</h2>' +
+      '<div class="eyebrow">' + eyebrow + '</div>' +
+      '<h1 class="q">' + item.q + '</h1>' +
       '<div class="opts" role="group" aria-label="Elige una respuesta">' +
       item.o.map((t, idx) =>
         '<button class="opt" type="button" data-idx="' + idx + '" aria-pressed="' + (answers[i] === idx) + '">' +
@@ -110,7 +118,7 @@
       $("next").disabled = false;
     }));
     $("next").disabled = answers[i] === null;
-    $("next").textContent = (i === QUESTIONS.length - 1) ? "Ver mi nivel" : "Siguiente";
+    $("next").textContent = (i === QUESTIONS.length - 1) ? "Ver mi punto de partida" : "Siguiente pregunta";
   }
 
   // Puntuación transparente: nº de aciertos → punto de partida CEFR.
@@ -134,12 +142,12 @@
     $("main").innerHTML =
       '<div class="result">' +
       '<div class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4 10-11"/></svg></div>' +
-      '<h1>¡Ya te conocemos un poco!</h1>' +
+      '<h1>' + (stage === "eso" ? "Your starting point is ready" : "¡Ya tenemos tu punto de partida!") + '</h1>' +
       '<div class="lvl">Tu punto de partida: ' + label + '</div>' +
       '<p>' + (noContentYet
         ? "¡Vas muy bien! De momento practicarás con lo más avanzado disponible; pronto añadiremos retos de tu nivel."
         : "Adaptaremos las misiones a tu nivel. Podrás subir a tu ritmo, sin prisa.") + '</p>' +
-      '<a class="btn btn-primary" style="max-width:320px;text-decoration:none" href="inicio.html">Empezar</a>' +
+      '<a class="btn btn-primary" style="max-width:320px;text-decoration:none" href="inicio.html">' + (stage === "eso" ? "Start first mission" : "Empezar mi primera misión") + '</a>' +
       '</div>';
   }
 
@@ -154,7 +162,7 @@
     if (!p) { location.href = "index.html"; return; }
     if (p.is_admin) { location.href = "admin.html"; return; }
     if (p.must_change_password) { location.href = "cambiar-clave.html"; return; }
-    IL_ETAPA.apply(p);
+    stage = IL_ETAPA.apply(p);
     // Si ya tiene nivel colocado, no repetimos el test.
     const pl = await ILAuth.getPlacement();
     if (pl.placed) { location.href = "inicio.html"; return; }

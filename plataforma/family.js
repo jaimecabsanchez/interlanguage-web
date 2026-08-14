@@ -41,6 +41,25 @@
     $("constancyMessage").textContent = model.consistency.message || "";
   }
 
+  function renderPhrases(model) {
+    const section = $("phrasesSection"); if (!section) return;
+    const phrases = (model.phrases || []).slice(0, 3);
+    // La evidencia más persuasiva: si aún no domina frases, la banda se oculta (nunca inventa).
+    if (!phrases.length) { section.hidden = true; return; }
+    section.hidden = false;
+    const list = $("phraseList"); list.replaceChildren();
+    phrases.forEach(text => {
+      const card = document.createElement("div"); card.className = "phrase-card";
+      const mark = document.createElement("span"); mark.className = "phrase-quote"; mark.setAttribute("aria-hidden", "true"); mark.textContent = "“";
+      const body = document.createElement("span"); body.className = "phrase-text"; body.textContent = text;
+      card.append(mark, body); list.appendChild(card);
+    });
+    const more = $("phrasesMore");
+    const total = model.expressionsTotal == null ? phrases.length : model.expressionsTotal;
+    if (total > phrases.length) { more.textContent = "y " + (total - phrases.length) + " expresiones más que ya reconoce."; more.hidden = false; }
+    else { more.hidden = true; }
+  }
+
   function renderContents(model) {
     const list = $("contentList"); list.replaceChildren();
     if (!model.contents.length) { list.appendChild(emptyNode("Los contenidos trabajados aparecerán cuando haya suficientes actividades registradas.")); return; }
@@ -63,13 +82,6 @@
       item.append(copy, track); list.appendChild(item);
     });
     $("strengthMessage").textContent = model.strengthMessage || "";
-  }
-
-  function renderReinforce(model) {
-    if (!model.reinforce) {
-      $("reinforceSkill").textContent = "Aún por descubrir"; $("reinforceCopy").textContent = "Algunas sesiones más nos permitirán recomendar un foco concreto."; $("reinforceLink").hidden = true; return;
-    }
-    $("reinforceSkill").textContent = model.reinforce.skill; $("reinforceCopy").textContent = model.reinforce.description; $("reinforceLink").href = model.reinforce.href; $("reinforceLink").hidden = false;
   }
 
   function renderEvolution(model) {
@@ -107,7 +119,7 @@
     $("familyTitle").textContent = model.title; $("previewPill").hidden = !isDemo; renderMetrics(model);
     $("headlineCopy").textContent = model.headline || model.lowDataMessage; $("familyHeadline").classList.toggle("is-low-data", !model.sufficientEvidence);
     $("lowData").hidden = model.sufficientEvidence; $("lowDataCopy").textContent = model.lowDataMessage || "";
-    renderSessionChart(model); renderContents(model); renderStrengths(model); renderReinforce(model); renderEvolution(model); renderRecommendation(model); renderClassConnection(model);
+    renderPhrases(model); renderSessionChart(model); renderContents(model); renderStrengths(model); renderEvolution(model); renderRecommendation(model); renderClassConnection(model);
   }
 
   addEventListener("online", refreshOffline); addEventListener("offline", refreshOffline); refreshOffline();

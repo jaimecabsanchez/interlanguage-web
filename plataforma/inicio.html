@@ -119,6 +119,12 @@
   @media (max-width:390px){.home{padding-inline:var(--il-space-3)}.student-pill{padding-inline:9px}.profile-link{display:none}.daily-mission{padding:var(--il-space-5)}.insight-card{padding:var(--il-space-4)}.week-day__dot{width:29px;height:29px}.mission-illo{width:78px;height:78px}}
   body[data-stage="eso"] .daily-mission,body[data-stage="eso"] .insight-card{border-radius:var(--il-radius-md)}
   @media (prefers-reduced-motion:reduce){.daily-mission{animation:none}.mission-plane,.mission-route__track::after,.stamp-mark{transition:none}.mission-plane.arrive,.week-day.is-completed .week-day__dot{animation:none}}
+  .reco-card__main{display:flex;gap:var(--il-space-3);align-items:flex-start;margin:var(--il-space-2) 0 var(--il-space-3)}
+  .reco-card__icon{flex:none;width:40px;height:40px;display:grid;place-items:center;border-radius:var(--il-radius-md);background:var(--il-secondary-soft);color:var(--il-secondary)}
+  .reco-card__icon svg{width:22px;height:22px}
+  .reco-card__title{font-family:var(--il-font-display);font-size:var(--il-fs-md);font-weight:var(--il-weight-extrabold);color:var(--il-text-primary);line-height:1.2}
+  .reco-card__copy{margin-top:2px;font-size:var(--il-fs-sm);color:var(--il-text-secondary)}
+  .reco-card__cta{width:100%}
 </style>
 <link rel="stylesheet" href="age-mode.css?v=20260810j">
 </head>
@@ -187,6 +193,15 @@
             <h3 class="stamp-name" id="stampTitle">Morning Explorer</h3>
             <p class="stamp-count" id="stampCount">0/5</p>
           </section>
+
+          <section class="insight-card reco-card" id="recoCard" hidden aria-labelledby="recoTitle">
+            <div class="insight-head"><p class="ui-label" id="recoEyebrow">PARA TI</p></div>
+            <div class="reco-card__main">
+              <span class="reco-card__icon" id="recoIcon" aria-hidden="true"></span>
+              <div><h3 class="reco-card__title" id="recoTitle">Refuerza tu listening</h3><p class="reco-card__copy" id="recoCopy"></p></div>
+            </div>
+            <a class="btn btn-primary reco-card__cta" id="recoCta" href="leccion.html">Practicar</a>
+          </section>
         </aside>
       </div>
     </main>
@@ -203,7 +218,9 @@
 <script src="contenido.js?v=20260809f"></script>
 <script src="auth.js?v=20260811f"></script>
 <script src="motor/matriz.js?v=20260809d"></script>
-<script src="mission-state.js?v=20260810h"></script>
+<script src="mission-state.js?v=20260813a"></script>
+<script src="motor/pedagogia.js?v=20260813a"></script>
+<script src="mastery-store.js?v=20260813a"></script>
 <script src="progress-data.js?v=20260810b"></script>
 <script src="profile-settings.js?v=20260812a"></script>
 <script>
@@ -326,6 +343,41 @@
     }
   }
 
+  // Una única recomendación honesta (brief §4): la habilidad más floja según datos REALES.
+  // Solo primaria superior y ESO; en los pequeños el inicio se mantiene a una sola decisión.
+  // Si no hay datos suficientes, la tarjeta no aparece (nada inventado).
+  function renderReco(skillData, experience, username) {
+    const card = $("recoCard");
+    if (!card) return;
+    if (experience.id === "primary-young") { card.hidden = true; return; }
+    const en = experience.id === "secondary";
+    // 1) Repaso espaciado con dato REAL: ejercicios cuyo dominio vence hoy (tiene prioridad).
+    const due = window.ILMastery ? ILMastery.dueCount(username) : 0;
+    if (due > 0) {
+      $("recoIcon").innerHTML = ILIcon("refresh");
+      $("recoEyebrow").textContent = en ? "FOR YOU" : "PARA TI";
+      $("recoTitle").textContent = en ? ("Review " + due + (due === 1 ? " item" : " items")) : ("Repasa " + due + (due === 1 ? " cosa" : " cosas"));
+      $("recoCopy").textContent = en ? "A short round to lock them in." : "Un repaso corto para afianzarlas.";
+      $("recoCta").textContent = en ? "Review now" : "Repasar";
+      $("recoCta").href = "leccion.html?mode=review";
+      card.hidden = false;
+      return;
+    }
+    // 2) Sin repaso pendiente: la habilidad más floja (dato real de getSkillBreakdown).
+    if (!skillData || !skillData.hasData) { card.hidden = true; return; }
+    const skills = (skillData.skills || []).filter(s => s.pct > 0);
+    if (!skills.length) { card.hidden = true; return; }
+    const weakest = skills.slice().sort((a, b) => a.pct - b.pct)[0];
+    const label = (weakest.label || "").toLowerCase();
+    $("recoIcon").innerHTML = ILIcon(weakest.icon || "star");
+    $("recoEyebrow").textContent = en ? "FOR YOU" : "PARA TI";
+    $("recoTitle").textContent = (en ? "Focus on " : "Refuerza tu ") + label;
+    $("recoCopy").textContent = en ? "This is where practice pays off most right now." : "Es lo que más suma practicar ahora.";
+    $("recoCta").textContent = (en ? "Practise " : "Practicar ") + label;
+    $("recoCta").href = "leccion.html";
+    card.hidden = false;
+  }
+
   (async () => {
     try {
       const profile = await ILAuth.getProfile();
@@ -336,7 +388,7 @@
       const stage = IL_ETAPA.apply(profile);
       const experience = IL_ETAPA.current().config;
       const exerciseExperience = IL_ETAPA.current().exercise;
-      const [progress, rawWeek, placement] = await Promise.all([ILAuth.getProgress(), ILAuth.getWeekActivity(), ILAuth.getPlacement()]);
+      const [progress, rawWeek, placement, skillData] = await Promise.all([ILAuth.getProgress(), ILAuth.getWeekActivity(), ILAuth.getPlacement(), ILAuth.getSkillBreakdown().catch(() => ({ hasData: false, skills: [] }))]);
       const week = ILProgressData.normalizeWeek(profile, rawWeek, ILAuth.isDemo());
       const username = profile.username || "";
       const session = ILMission.getOrCreateSession({ username, units, banda: stage, cefr: placement.cefr, matrix: window.IL_MATRIZ, limit: exerciseExperience.sessionSize, unitIds: experience.unitIds, skillPriority: experience.skillPriority });
@@ -415,7 +467,7 @@
       }
 
       ILLayout.mount();
-      renderWeek(week, experience); renderStamp(username, unit, experience);
+      renderWeek(week, experience); renderStamp(username, unit, experience); renderReco(skillData, experience, username);
       $("loading").hidden = true; $("app").classList.remove("hidden");
     } catch (error) {
       $("loading").hidden = true; $("errorState").hidden = false;

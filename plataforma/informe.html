@@ -14,21 +14,38 @@
 <link rel="stylesheet" href="etapa.css?v=20260809d">
 <style>
   body{font-family:var(--il-font-body);background:var(--il-background);color:var(--il-text-primary);margin:0}
-  .wrap{max-width:600px;margin:0 auto;padding:24px 18px 50px}
+  .wrap{max-width:640px;margin:0 auto;padding:24px 18px 50px}
   .brand{display:flex;align-items:center;gap:10px;margin-bottom:6px}
-  .brand .fox{display:grid;place-items:center;width:36px;height:36px;border-radius:var(--il-radius-sm);background:var(--il-primary);color:#fff}.brand .fox svg{width:19px;height:19px}.brand b{font-family:var(--il-font-display);color:var(--il-primary)}
+  .brand .fox{display:grid;place-items:center;width:36px;height:36px;border-radius:var(--il-radius-sm);background:var(--il-primary);color:var(--il-on-primary)}.brand .fox svg{width:19px;height:19px}.brand b{font-family:var(--il-font-display);color:var(--il-primary)}
   h1{font-family:var(--il-font-display);color:var(--il-primary);font-size:1.5rem;margin:10px 0 2px}
   .sub{color:var(--il-text-secondary);margin:0 0 18px}
-  .cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px}
-  .card{background:#fff;border:1px solid #E4E8EE;border-radius:18px;padding:18px;text-align:center}
-  .card .v{font-family:'Plus Jakarta Sans';font-weight:800;font-size:1.9rem;color:#16294A}
-  .card .l{font-size:.78rem;color:#8A97A6;text-transform:uppercase;letter-spacing:.04em;margin-top:4px}
-  .sec{background:#fff;border:1px solid #E4E8EE;border-radius:18px;padding:18px;margin-bottom:14px}
-  .sec h2{font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:#8A97A6;font-family:'Plus Jakarta Sans';margin:0 0 12px}
+  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
+  .card{background:var(--il-surface);border:1px solid var(--il-border);border-radius:var(--il-radius-lg);padding:18px 10px;text-align:center}
+  .card .v{display:flex;align-items:center;justify-content:center;gap:5px;font-family:var(--il-font-display);font-weight:800;font-size:1.8rem;color:var(--il-text-primary)}.card .v svg{width:22px;height:22px}
+  .card .l{font-size:.72rem;color:var(--il-muted);text-transform:uppercase;letter-spacing:.04em;margin-top:4px}
+  .sec{background:var(--il-surface);border:1px solid var(--il-border);border-radius:var(--il-radius-lg);padding:18px;margin-bottom:14px}
+  .sec h2{font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:var(--il-muted);font-family:var(--il-font-display);margin:0 0 12px}
   .medals{display:flex;flex-wrap:wrap;gap:8px}
-  .medal{display:inline-flex;align-items:center;gap:6px;background:#FFF7E6;border:1px solid #FFE2A8;border-radius:999px;padding:7px 13px;font-size:.9rem;font-weight:600;color:#7a5a10}
-  .note{font-size:.85rem;color:#8A97A6;text-align:center;margin-top:8px}
-  .preview{background:#EAF2FB;border:1px solid #c7ddf5;color:#1c5488;border-radius:12px;padding:10px 14px;font-size:.85rem;text-align:center;margin-bottom:16px}
+  .medal{display:inline-flex;align-items:center;gap:6px;background:var(--il-warning-soft);border:1px solid color-mix(in srgb,var(--il-warning) 28%,var(--il-border));border-radius:999px;padding:7px 13px;font-size:.9rem;font-weight:600;color:var(--il-warning-ink)}.medal svg{width:16px;height:16px}.medal-more{align-self:center;color:var(--il-text-secondary);font-size:var(--il-fs-sm);font-weight:var(--il-weight-semibold)}
+  .note{display:block;max-width:52ch;margin:18px auto 0;font-size:.85rem;line-height:1.6;color:var(--il-muted);text-align:center}
+  .preview{background:var(--il-primary-soft);border:1px solid color-mix(in srgb,var(--il-primary) 22%,var(--il-border));color:var(--il-primary);border-radius:12px;padding:10px 14px;font-size:.85rem;text-align:center;margin-bottom:16px}
+  /* Lo que ya sabe decir — el corazón del informe para la familia */
+  .say-sec{background:linear-gradient(180deg,var(--il-primary-soft),var(--il-surface));border:1px solid color-mix(in srgb,var(--il-primary) 18%,var(--il-border));border-radius:var(--il-radius-lg);padding:18px 18px 20px;margin-bottom:16px}
+  .say-sec .eyebrow{display:inline-flex;align-items:center;gap:7px;font-family:'Plus Jakarta Sans';font-weight:800;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--il-primary);margin:0 0 12px}
+  .say-sec .eyebrow svg{width:15px;height:15px}
+  .say{display:flex;gap:11px;align-items:center;background:var(--il-surface);border:1px solid var(--il-border);border-radius:12px;padding:12px 14px;margin-top:9px}
+  .say:first-of-type{margin-top:0}
+  .say .qm{font-family:Georgia,'Times New Roman',serif;font-size:1.7rem;line-height:.7;color:var(--il-primary);flex:0 0 auto}
+  .say .tx{font-family:var(--il-font-display);font-weight:700;color:var(--il-text-primary);font-size:1.05rem}
+  .say-more{display:flex;align-items:center;gap:6px;font-size:.86rem;color:var(--il-text-secondary);margin:13px 2px 0}
+  .say-more svg{width:15px;height:15px;color:var(--il-primary);flex:0 0 auto}
+  .citem{padding:11px 0;border-top:1px solid var(--il-border)}
+  .citem:first-child{border-top:0;padding-top:0}
+  .citem .ct{font-family:var(--il-font-display);font-weight:700;color:var(--il-text-primary);font-size:.98rem}
+  .cchips{margin-top:6px;display:flex;flex-wrap:wrap;gap:6px}
+  .chip{font-size:.72rem;font-weight:600;color:var(--il-primary);background:var(--il-primary-soft);border:1px solid color-mix(in srgb,var(--il-primary) 18%,var(--il-border));border-radius:999px;padding:3px 10px}
+  @media (max-width:420px){.wrap{padding-inline:14px}.cards{gap:7px}.card{padding:15px 5px}.card .v{font-size:1.55rem}.card .l{font-size:.64rem}.say .tx{font-size:.98rem}}
+  @media print{body{background:var(--il-surface)}.wrap{max-width:none;padding:0}.preview,.il-offline{display:none!important}.card,.sec,.say-sec{break-inside:avoid;box-shadow:none}.note{color:var(--il-text-secondary)}}
 </style>
 </head>
 <body>
@@ -47,13 +64,23 @@
   <div id="report" hidden>
     <div id="previewNote" class="preview" hidden>Vista previa · así verá la familia el informe de <b id="pvName"></b>.</div>
     <h1 id="title">Informe de práctica</h1>
-    <p class="sub" id="subtitle">Constancia y logros · sin notas ni comparaciones</p>
+    <p class="sub" id="subtitle">Lo que ya sabe decir y su constancia · sin notas ni comparaciones</p>
+
+    <div class="say-sec" id="saySec" hidden>
+      <p class="eyebrow"><span data-il-icon="chat" aria-hidden="true"></span> Lo que ya sabe decir</p>
+      <div id="sayList"></div>
+      <p class="say-more" id="sayMore" hidden><span data-il-icon="star" aria-hidden="true"></span><span id="sayMoreTxt"></span></p>
+    </div>
 
     <div class="cards">
       <div class="card"><div class="v" id="days">0</div><div class="l">Días de práctica</div></div>
       <div class="card"><div class="v"><span data-il-icon="flame" aria-hidden="true"></span> <span id="streak">0</span></div><div class="l">Racha actual</div></div>
-      <div class="card"><div class="v" id="best">0</div><div class="l">Mejor racha</div></div>
       <div class="card"><div class="v" id="lessons">0</div><div class="l">Lecciones</div></div>
+    </div>
+
+    <div class="sec" id="contentsSec" hidden>
+      <h2>Qué ha practicado</h2>
+      <div id="contentList"></div>
     </div>
 
     <div class="sec">
@@ -72,10 +99,40 @@
 <script src="auth-utils.js?v=20260809d"></script>
 <script src="motor/motivacion.js?v=20260809d"></script>
 <script src="auth.js?v=20260811f"></script>
+<script src="progress-data.js?v=20260810b"></script>
 <script>
   const $ = (id) => document.getElementById(id);
   function refreshOffline(){ $("offline").hidden = navigator.onLine; }
   window.addEventListener("online", refreshOffline); window.addEventListener("offline", refreshOffline); refreshOffline();
+
+  const escHtml = (s) => String(s).replace(/[&<>"]/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;" }[c]));
+
+  // "Lo que ya sabe decir" + "Qué ha practicado": reutiliza el snapshot de progreso.
+  // Nunca inventa: en cuentas reales sin evidencia, las secciones quedan ocultas.
+  function renderLearning(snap){
+    if (!snap) return;
+    const phrases = (snap.phrases || []).slice(0, 4);
+    if (phrases.length){
+      $("sayList").innerHTML = phrases.map(p =>
+        '<div class="say"><span class="qm" aria-hidden="true">“</span><span class="tx">' + escHtml(p) + '</span></div>').join("");
+      const total = Number(snap.expressionsMastered) || phrases.length;
+      if (total > phrases.length){
+        $("sayMoreTxt").textContent = "y " + (total - phrases.length) + " expresiones más que ya reconoce";
+        $("sayMore").hidden = false;
+      }
+      $("saySec").hidden = false;
+    }
+    const contents = (snap.familyEvidence && snap.familyEvidence.contents) || [];
+    if (contents.length){
+      $("contentList").innerHTML = contents.map(c =>
+        '<div class="citem"><div class="ct">' + escHtml(c.title) + '</div>' +
+        ((c.skills && c.skills.length)
+          ? '<div class="cchips">' + c.skills.map(s => '<span class="chip">' + escHtml(s) + '</span>').join("") + '</div>'
+          : '') +
+        '</div>').join("");
+      $("contentsSec").hidden = false;
+    }
+  }
 
   (async () => {
     try {
@@ -90,11 +147,17 @@
       $("title").textContent = "Informe de " + rep.first_name;
       $("days").textContent = rep.days;
       $("streak").textContent = rep.streak;
-      $("best").textContent = rep.best;
       $("lessons").textContent = rep.lessons;
-      $("medals").innerHTML = rep.medals.length
-        ? rep.medals.map(m => '<span class="medal"><span aria-hidden="true">' + ILIcon("medal") + '</span>' + m.name + '</span>').join("")
+      const visibleMedals = rep.medals.slice(-2).reverse();
+      $("medals").innerHTML = visibleMedals.length
+        ? visibleMedals.map(m => '<span class="medal"><span aria-hidden="true">' + ILIcon("medal") + '</span>' + escHtml(m.name) + '</span>').join("") +
+          (rep.medals.length > visibleMedals.length ? '<span class="medal-more">+' + (rep.medals.length - visibleMedals.length) + ' hitos anteriores</span>' : '')
         : '<span class="note">Aún no hay medallas — ¡las primeras están al caer!</span>';
+
+      // Contenido de valor para la familia (best-effort: si falla, el informe base se muestra igual).
+      try {
+        if (window.ILProgressData) renderLearning(await ILProgressData.load(ILAuth, window.ILMission || null));
+      } catch (e) {}
 
       $("loading").hidden = true; $("report").hidden = false;
     } catch (e) {

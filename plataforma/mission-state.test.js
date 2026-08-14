@@ -69,4 +69,11 @@ const scoped = M.getOrCreateSession({ username: "marta", date: "2026-08-10", uni
 assert.deepEqual(new Set(scoped.map(item => item.id)), new Set(["t1", "t2"]), "la sesión respeta la unidad del perfil");
 assert.equal(scoped[0].habilidad, "grammar", "la prioridad resuelve candidatos equivalentes");
 
-console.log("mission-state: 18 comprobaciones correctas");
+const gentleUnits = [{ ejercicios: [
+  { id: "hard", habilidad: "grammar", nivel: "A1", tipo: "completar" },
+  { id: "gentle", habilidad: "vocabulary", nivel: "A1", tipo: "elegir_imagen" }
+] }];
+const gentle = M.getOrCreateSession({ username: "leo", date: "2026-08-11", units: gentleUnits, banda: "p56", cefr: "A1", limit: 2, skillPriority: ["grammar", "vocabulary"] });
+assert.equal(gentle[0].id, "gentle", "la sesión empieza con una victoria temprana cuando está disponible");
+
+console.log("mission-state: 19 comprobaciones correctas");

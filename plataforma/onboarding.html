@@ -14,17 +14,17 @@
 <link rel="stylesheet" href="etapa.css?v=20260809d">
 <style>
   body{font-family:var(--il-font-body);background:
-    radial-gradient(120% 45% at 100% 0%, #FDECE4 0%, transparent 55%),
-    radial-gradient(120% 45% at 0% 4%, #E7F2ED 0%, transparent 52%),
-    var(--il-cream);}
+    radial-gradient(120% 45% at 100% 0%,var(--il-secondary-soft) 0%,transparent 55%),
+    radial-gradient(120% 45% at 0% 4%,var(--il-success-soft) 0%,transparent 52%),
+    var(--il-background);}
   .ob{max-width:520px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;padding:0 20px}
   .ob-top{display:flex;justify-content:center;gap:8px;padding:26px 0 6px}
   .dot{width:9px;height:9px;border-radius:50%;background:var(--il-line-2);transition:background var(--il-motion),width var(--il-motion)}
   .dot.on{background:var(--il-primary)}
   .dot.now{width:24px;border-radius:6px}
-  .ob-main{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+  .ob-main{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding-block:var(--il-space-6)}
   /* Símbolo de cada paso */
-  .ob-fox{width:120px;height:120px;margin:0 auto 16px;border-radius:var(--il-radius-xl);display:grid;place-items:center;color:#fff;line-height:1;
+  .ob-fox{width:120px;height:120px;margin:0 auto 16px;border-radius:var(--il-radius-xl);display:grid;place-items:center;color:var(--il-on-primary);line-height:1;
     background:var(--il-primary);box-shadow:var(--il-shadow-md);
     animation:obPop .42s cubic-bezier(.2,1.25,.3,1) both}
   .ob-fox svg{width:54px;height:54px}
@@ -34,24 +34,28 @@
   body[data-stage="eso"] .ob-fox svg{width:38px;height:38px}
   .ob-h{font-family:var(--il-font-display);font-weight:800;color:var(--il-navy);font-size:1.7rem;margin:6px 0 8px;animation:obUp .38s cubic-bezier(.2,.7,.3,1) .07s both}
   .ob-p{color:var(--il-soft);font-size:1.1rem;max-width:360px;margin:0 auto;animation:obUp .38s cubic-bezier(.2,.7,.3,1) .13s both}
-  .colors{display:flex;gap:14px;justify-content:center;margin-top:24px;animation:obUp .38s cubic-bezier(.2,.7,.3,1) .19s both}
-  .swatch{width:52px;height:52px;border-radius:50%;border:3px solid transparent;cursor:pointer;transition:transform .15s ease,box-shadow .15s ease}
-  .swatch:hover{transform:scale(1.06)}
-  .swatch[aria-pressed="true"]{border-color:var(--il-navy);transform:scale(1.1);box-shadow:0 10px 20px -10px rgba(22,41,74,.4)}
+  .ob-preview{width:min(100%,380px);display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:var(--il-space-3);margin-top:var(--il-space-6);padding:var(--il-space-4);border:1px solid var(--il-border);border-radius:var(--il-radius-lg);background:var(--il-surface);box-shadow:var(--il-shadow-sm);text-align:left;animation:obUp .38s cubic-bezier(.2,.7,.3,1) .19s both}
+  .ob-preview__icon{width:46px;height:46px;display:grid;place-items:center;border-radius:var(--il-radius-md);background:var(--il-secondary-soft);color:var(--il-secondary)}.ob-preview__icon svg{width:24px;height:24px}
+  .ob-preview strong,.ob-preview small{display:block}.ob-preview strong{font-family:var(--il-font-display);font-size:var(--il-fs-sm);color:var(--il-text-primary)}.ob-preview small{margin-top:2px;color:var(--il-text-secondary);font-size:var(--il-fs-xs)}
+  .ob-preview__time{color:var(--il-primary);font-family:var(--il-font-display);font-size:var(--il-fs-sm);font-weight:var(--il-weight-extrabold);white-space:nowrap}
   .ob-actions{padding:16px 0 28px;display:flex;gap:10px;align-items:center}
   .ob-actions .btn{flex:1;transition:transform .15s ease,box-shadow .15s ease,background .15s ease}
   .ob-actions .btn:active{transform:scale(.98)}
   .ob-skip{background:none;border:none;color:var(--il-faint);font-family:inherit;font-size:.9rem;cursor:pointer}
-  @media (prefers-reduced-motion: reduce){ .ob-fox,.ob-h,.ob-p,.colors{animation:none} .swatch[aria-pressed="true"]{transform:none} }
+  body[data-stage="p12"] .ob-actions .btn{min-height:56px;font-size:var(--il-fs-lg)}
+  body[data-stage="p34"] .ob-actions .btn{min-height:52px}
+  body[data-stage="p56"] .ob-actions .btn{min-height:48px}
+  @media (max-height:700px){.ob-main{justify-content:flex-start;padding-top:var(--il-space-6)}.ob-fox{width:88px;height:88px}.ob-fox svg{width:40px;height:40px}.ob-preview{margin-top:var(--il-space-4)}}
+  @media (prefers-reduced-motion: reduce){ .ob-fox,.ob-h,.ob-p,.ob-preview{animation:none} }
 </style>
 </head>
 <body>
 <div class="ob">
-  <div class="ob-top">
-    <span class="dot on" data-d="0"></span><span class="dot" data-d="1"></span><span class="dot" data-d="2"></span>
+  <div class="ob-top" role="progressbar" aria-label="Progreso de bienvenida" aria-valuemin="1" aria-valuemax="3" aria-valuenow="1" id="onboardingProgress">
+    <span class="dot on" data-d="0" aria-hidden="true"></span><span class="dot" data-d="1" aria-hidden="true"></span><span class="dot" data-d="2" aria-hidden="true"></span>
   </div>
 
-  <div class="ob-main" id="main"></div>
+  <div class="ob-main" id="main" aria-live="polite"></div>
 
   <div class="ob-actions">
     <button class="ob-skip" id="skip" hidden>Saltar</button>
@@ -67,32 +71,49 @@
 <script src="auth.js?v=20260811f"></script>
 <script>
   const $ = (id) => document.getElementById(id);
-  let name = "campeón", stage = "p56", color = "#FF6B4A";
+  let name = "explorador", stage = "p56";
 
-  const steps = () => ([
-    { icon:"plane", h:"¡Hola, "+name+"!", p:"Tu avión de papel representa todo lo que vas avanzando. Elige tu color:", colors:true },
-    { icon:"target", h:"Cada día, una misión corta", p:"Solo unos minutos de práctica para mantener fresco tu inglés." },
-    { icon:"shield", h:"Los errores también enseñan", p:"Te explicaremos cada error y podrás volver a intentarlo sin agobios." }
-  ]);
+  const COPY = {
+    p12: [
+      { icon:"plane", h:n=>"¡Hola, "+n+"!", p:"Tu aventura de inglés empieza aquí." },
+      { icon:"target", h:()=>"Una misión cada día", p:"Escucha, mira y juega durante unos minutos.", preview:"Tu primera misión", meta:"4 retos", time:"5 min" },
+      { icon:"shield", h:()=>"Puedes probar otra vez", p:"Si algo cuesta, te ayudaremos paso a paso." }
+    ],
+    p34: [
+      { icon:"plane", h:n=>"¡Hola, "+n+"!", p:"Tu avión de papel marcará todo lo que avanzas." },
+      { icon:"target", h:()=>"Cada día, una misión corta", p:"Practica un poco y sigue haciendo crecer tu inglés.", preview:"Tu primera misión", meta:"5 actividades", time:"7 min" },
+      { icon:"shield", h:()=>"Los errores también enseñan", p:"Recibirás una pista y podrás volver a intentarlo." }
+    ],
+    p56: [
+      { icon:"plane", h:n=>"Hola, "+n, p:"Tu ruta mostrará lo que aprendes y lo que ya dominas." },
+      { icon:"target", h:()=>"Una misión breve al día", p:"Unos minutos para avanzar sin que se haga pesado.", preview:"Misión de inicio", meta:"6 actividades", time:"8 min" },
+      { icon:"shield", h:()=>"Aprender incluye equivocarse", p:"Te daremos contexto, pistas y otra oportunidad." }
+    ],
+    eso: [
+      { icon:"plane", h:n=>"Hola, "+n, p:"Aquí tendrás una ruta clara para practicar a tu nivel." },
+      { icon:"target", h:()=>"Práctica breve y enfocada", p:"Sesiones diseñadas para avanzar sin perder tiempo.", preview:"Starting mission", meta:"7 activities", time:"10 min" },
+      { icon:"shield", h:()=>"Feedback que sirve", p:"Cada error se convierte en una explicación y un nuevo intento." }
+    ]
+  };
+  const steps = () => COPY[stage] || COPY.p56;
   let i = 0;
+
+  function escHtml(value) {
+    return String(value == null ? "" : value).replace(/[&<>'"]/g, char => ({
+      "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;"
+    })[char]);
+  }
 
   function render() {
     const s = steps()[i];
     $("main").innerHTML =
       '<div class="ob-fox" aria-hidden="true">'+ILIcon(s.icon)+'</div>' +
-      '<h1 class="ob-h">'+s.h+'</h1>' +
-      '<p class="ob-p">'+s.p+'</p>' +
-      (s.colors ? '<div class="colors" role="group" aria-label="Elige tu color">' +
-        ['#FF6B4A','#1E9C74','#16294A','#8E7CC3'].map(c =>
-          '<button class="swatch" style="background:'+c+'" data-c="'+c+'" aria-label="Color" aria-pressed="'+(c===color)+'"></button>').join('') +
-        '</div>' : '');
-    $("main").querySelectorAll('.swatch').forEach(b => b.onclick = () => {
-      color = b.getAttribute('data-c');
-      try { localStorage.setItem('il_avatar_color', color); } catch(e){}
-      $("main").querySelectorAll('.swatch').forEach(x => x.setAttribute('aria-pressed', x===b));
-    });
+      '<h1 class="ob-h">'+escHtml(s.h(name))+'</h1>' +
+      '<p class="ob-p">'+escHtml(s.p)+'</p>' +
+      (s.preview ? '<div class="ob-preview"><span class="ob-preview__icon" aria-hidden="true">'+ILIcon("books")+'</span><span><strong>'+escHtml(s.preview)+'</strong><small>'+escHtml(s.meta)+'</small></span><span class="ob-preview__time">'+escHtml(s.time)+'</span></div>' : '');
     document.querySelectorAll('.dot').forEach((d,di)=>{ d.classList.toggle('on', di<=i); d.classList.toggle('now', di===i); });
-    $("next").textContent = i === steps().length-1 ? "¡Empezar!" : "Siguiente";
+    $("onboardingProgress").setAttribute("aria-valuenow", String(i + 1));
+    $("next").textContent = i === steps().length-1 ? (stage === "eso" ? "Find my starting point" : "Descubrir mi punto de partida") : "Siguiente";
     $("skip").hidden = (stage !== "eso") || i === steps().length-1;
   }
 

@@ -11,7 +11,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="design-system.css?v=20260810g">
 <link rel="stylesheet" href="app.css?v=20260809d">
-<link rel="stylesheet" href="family.css?v=20260809b">
+<link rel="stylesheet" href="family.css?v=20260814a">
 </head>
 <body class="family-page">
 <a class="skip-link" href="#familyMain">Saltar al contenido</a>
@@ -25,8 +25,7 @@
   <nav class="family-nav" aria-label="Secciones del panel familiar">
     <a href="#resumen">Resumen</a>
     <a href="#aprendizaje">Aprendizaje</a>
-    <a href="#evolucion">Evolución</a>
-    <a href="#clase">Clase</a>
+    <a href="#siguiente">Siguiente paso</a>
   </nav>
   <a class="student-area-link" href="inicio.html" aria-label="Volver a la zona del alumno"><span data-il-icon="arrowLeft" aria-hidden="true"></span><span>Zona alumno</span></a>
 </header>
@@ -71,6 +70,25 @@
       </div>
     </section>
 
+    <section class="family-section phrases-section" id="phrasesSection" aria-labelledby="phrasesTitle" hidden>
+      <div class="family-section__heading">
+        <div><p class="family-kicker">Lo que ya sabe decir</p><h2 id="phrasesTitle">Frases que ya usa en inglés</h2></div>
+        <span class="section-icon" aria-hidden="true"><span data-il-icon="chat"></span></span>
+      </div>
+      <div class="phrase-list" id="phraseList"></div>
+      <p class="interpretation" id="phrasesMore" hidden></p>
+    </section>
+
+    <section class="family-section recommendation-section recommendation-section--priority" id="siguiente" aria-labelledby="recommendationTitle">
+      <div class="family-section__heading">
+        <div><p class="family-kicker">Siguiente paso recomendado</p><h2 id="recommendationTitle">Qué conviene hacer ahora</h2></div>
+        <span class="section-icon" aria-hidden="true"><span data-il-icon="target"></span></span>
+      </div>
+      <h3 id="recommendationName"></h3>
+      <p id="recommendationCopy"></p>
+      <a class="btn btn-primary" id="recommendationAction" href="leccion.html">Practicar listening</a>
+    </section>
+
     <section class="low-data" id="lowData" role="status" hidden>
       <span aria-hidden="true"><span data-il-icon="info"></span></span>
       <div><h2>Estamos reuniendo evidencia</h2><p id="lowDataCopy"></p></div>
@@ -103,16 +121,6 @@
         <p class="interpretation" id="strengthMessage"></p>
       </section>
 
-      <section class="family-section reinforce-section" aria-labelledby="reinforceTitle">
-        <div class="family-section__heading">
-          <div><p class="family-kicker">Para reforzar</p><h2 id="reinforceTitle">Próximo foco</h2></div>
-          <span class="section-icon" aria-hidden="true"><span data-il-icon="ear"></span></span>
-        </div>
-        <strong class="focus-skill" id="reinforceSkill">Listening</strong>
-        <p id="reinforceCopy"></p>
-        <a class="text-link" id="reinforceLink" href="leccion.html">Ver práctica recomendada <span aria-hidden="true">→</span></a>
-      </section>
-
       <section class="family-section evolution-section" id="evolucion" aria-labelledby="evolutionTitle">
         <div class="family-section__heading">
           <div><p class="family-kicker">Evolución</p><h2 id="evolutionTitle">Minutos y precisión</h2></div>
@@ -120,16 +128,6 @@
         </div>
         <div class="evolution-chart" id="evolutionChart" role="img" aria-label="Evolución semanal de minutos y precisión"></div>
         <p class="interpretation" id="evolutionMessage"></p>
-      </section>
-
-      <section class="family-section recommendation-section" aria-labelledby="recommendationTitle">
-        <div class="family-section__heading">
-          <div><p class="family-kicker">Próxima recomendación</p><h2 id="recommendationTitle">Siguiente paso útil</h2></div>
-          <span class="section-icon" aria-hidden="true"><span data-il-icon="target"></span></span>
-        </div>
-        <h3 id="recommendationName"></h3>
-        <p id="recommendationCopy"></p>
-        <a class="btn btn-primary" id="recommendationAction" href="leccion.html">Practicar listening</a>
       </section>
 
       <section class="family-section class-section" id="clase" aria-labelledby="classTitle">
@@ -155,9 +153,9 @@
 <script src="supabase-config.js?v=20260809d"></script>
 <script src="auth-utils.js?v=20260809d"></script>
 <script src="auth.js?v=20260811f"></script>
-<script src="mission-state.js?v=20260810h"></script>
+<script src="mission-state.js?v=20260813a"></script>
 <script src="progress-data.js?v=20260810b"></script>
-<script src="family-data.js?v=20260809a"></script>
-<script src="family.js?v=20260809b"></script>
+<script src="family-data.js?v=20260814a"></script>
+<script src="family.js?v=20260814a"></script>
 </body>
 </html>

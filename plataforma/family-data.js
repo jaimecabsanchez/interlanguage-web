@@ -41,19 +41,22 @@
     return "La precisión ha variado esta semana; conviene observar algunas sesiones más antes de sacar conclusiones.";
   }
 
-  function sparseModel(snapshot, name) {
+  function sparseModel(snapshot, name, forcedNewState) {
     const week = snapshot.week || {};
+    const phrases = forcedNewState ? [] : (snapshot.phrases || []).slice();
     return {
       name,
       title: "Progreso de " + name,
       sufficientEvidence: false,
       lowDataMessage: name + " acaba de empezar. Necesitamos algunas sesiones más para mostrar una evolución fiable.",
+      phrases,
+      expressionsTotal: forcedNewState ? null : number(snapshot.expressionsMastered),
       metrics: [
-        metric("days", "días de práctica", week.count, "", "calendar"),
+        metric("days", "días de práctica", forcedNewState ? 0 : week.count, "", "calendar"),
         metric("exercises", "ejercicios", null, "", "target"),
-        metric("expressions", "expresiones nuevas", snapshot.expressionsMastered || null, "", "chat"),
-        metric("accuracy", "de precisión", snapshot.accuracy, "%", "trend"),
-        metric("minutes", "minutos", snapshot.minutesWeek, "", "clock")
+        metric("expressions", "expresiones nuevas", forcedNewState ? null : (snapshot.expressionsMastered || null), "", "chat"),
+        metric("accuracy", "de precisión", forcedNewState ? null : snapshot.accuracy, "%", "trend"),
+        metric("minutes", "minutos", forcedNewState ? null : snapshot.minutesWeek, "", "clock")
       ],
       consistency: { history: [], message: null },
       contents: [], strengths: [], reinforce: null, evolution: { history: [], message: null }, recommendation: null, classConnection: null
@@ -66,7 +69,7 @@
     const name = firstName(snapshot.profile);
     const evidence = snapshot.familyEvidence;
     const enough = !options.forceSparse && number(snapshot.lessons) >= MIN_LESSONS && evidence && Array.isArray(evidence.weeklyHistory) && evidence.weeklyHistory.length >= MIN_TREND_POINTS;
-    if (!enough) return sparseModel(snapshot, name);
+    if (!enough) return sparseModel(snapshot, name, !!options.forceSparse);
 
     const history = evidence.weeklyHistory.map((item, index, list) => Object.assign({}, item, {
       sessions: index === list.length - 1 ? number(snapshot.week && snapshot.week.count) : number(item.sessions),
@@ -89,6 +92,8 @@
       title: "Progreso de " + name,
       sufficientEvidence: true,
       lowDataMessage: "",
+      phrases: (snapshot.phrases || []).slice(),
+      expressionsTotal: number(snapshot.expressionsMastered),
       metrics: [
         metric("days", "días de práctica", snapshot.week && snapshot.week.count, "", "calendar"),
         metric("exercises", "ejercicios", evidence.exercisesWeek, "", "target"),

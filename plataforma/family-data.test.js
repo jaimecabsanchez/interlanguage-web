@@ -39,5 +39,7 @@ assert.equal(sparse.consistency.history.length, 0);
 
 const forced = Family.build(Object.assign({}, full, { profile: { full_name: "Lucía" }, lessons: 24 }), { forceSparse: true });
 assert.equal(forced.sufficientEvidence, false);
+assert.deepEqual(forced.phrases, [], "la vista de alumno nuevo no hereda frases del demo");
+assert.equal(forced.metrics.find(item => item.id === "days").value, 0, "la vista de alumno nuevo no hereda actividad del demo");
 
-console.log("family-data: 11 comprobaciones correctas");
+console.log("family-data: 13 comprobaciones correctas");

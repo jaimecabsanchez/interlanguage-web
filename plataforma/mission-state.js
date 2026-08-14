@@ -244,6 +244,14 @@
       const entry = rest.splice(index, 1)[0];
       picked.push(entry.ex); lastSkill = entry.ex.habilidad;
     }
+    // Victoria temprana: abrir con un ejercicio de alta probabilidad de acierto
+    // (elección simple con imagen/texto). Solo reordena la sesión ya elegida;
+    // no cambia qué ejercicios entran, ni el nivel, ni el número.
+    const GENTLE_FIRST = ["elegir_imagen", "elegir_texto"];
+    if (picked.length > 1 && GENTLE_FIRST.indexOf(picked[0].tipo) === -1) {
+      const gentleIndex = picked.findIndex(ex => GENTLE_FIRST.indexOf(ex.tipo) !== -1);
+      if (gentleIndex > 0) picked.unshift(picked.splice(gentleIndex, 1)[0]);
+    }
     write(sessionKey(options.username), { date: date, context: context, ids: picked.map(ex => ex.id) });
     return picked;
   }
