@@ -11,7 +11,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="design-system.css?v=20260810g">
 <link rel="stylesheet" href="app.css?v=20260809d">
-<link rel="stylesheet" href="motor/motor.css?v=20260814b">
+<link rel="stylesheet" href="motor/motor.css?v=20260814e">
 <link rel="stylesheet" href="il-visual.css?v=20260810a">
 <link rel="stylesheet" href="etapa.css?v=20260809d">
 <style>
@@ -181,7 +181,8 @@
 <script src="profile-settings.js?v=20260812a"></script>
 <script src="world-data.js?v=20260810d"></script>
 <script src="motor/visual-assets.js?v=20260814b"></script>
-<script src="motor/engine.js?v=20260814d"></script>
+<script src="motor/adaptacion.js?v=20260814a"></script>
+<script src="motor/engine.js?v=20260814e"></script>
 <script>
   const $ = id => document.getElementById(id);
   const params = new URLSearchParams(location.search);
@@ -207,6 +208,7 @@
   let bonusPool = [];
   let missionMeta = {};
   let completionProgress = null;
+  let adaptiveState = IL_ADAPTACION.create();
 
   function refreshOffline() { $("offline").hidden = navigator.onLine; }
   addEventListener("online", refreshOffline); addEventListener("offline", refreshOffline); refreshOffline();
@@ -289,11 +291,17 @@
     pendingResult = null; updateHeader();
     if (currentController && currentController.destroy) currentController.destroy();
     nemo("intro");
+    const guided = !!adaptiveState.guided;
     currentController = IL_ENGINE.render($("stage"), items[index], {
       stage: stageName,
       experience: exerciseExperience,
+      guided: guided,
       lastOne: index === items.length - 1,
-      onResult: event => { pendingResult = event; if (event.correct) { cheer(); planeHop(); } },
+      onResult: event => {
+        pendingResult = event;
+        adaptiveState = IL_ADAPTACION.record(adaptiveState, event);
+        if (event.correct) { cheer(); planeHop(); }
+      },
       onFeedback: kind => nemo(kind),
       onNext: result => {
         const outcome = pendingResult || result || { id: items[index].id, correct: false, learnedExpressions: [] };
@@ -490,6 +498,7 @@
       }
       $("missionName").textContent = (reviewMode ? (ageExperience.id === "secondary" ? "Review · " : "Repaso · ") : "") + missionMeta.unitTitle;
       const state = ILMission.ensure(username, missionMeta);
+      adaptiveState = IL_ADAPTACION.create({ guided: reviewMode || (state.incorrectIds || []).length > 0 });
       if (reviewMode) {
         items = (state.incorrectIds || []).map(id => byId[id]).filter(Boolean);
         if (!items.length) { location.href = "inicio.html"; return; }

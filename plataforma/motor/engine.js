@@ -458,10 +458,10 @@
 
   function interfaceCopy(band) {
     const copies = {
-      p12: { check: "Comprobar", checkAgain: "Probar otra vez", next: "Siguiente", finish: "¡Terminar!", listen: "Escuchar", playing: "Escuchando…", replay: "Otra vez", retryAudio: "Reintentar", success: "¡Genial!", retry: "Casi. Prueba otra vez.", error: "Vamos a aprenderlo.", support: "Escucha · Mira · Elige" },
-      p34: { check: "Check", checkAgain: "Try again", next: "Next", finish: "Finish", listen: "Listen", playing: "Playing…", replay: "Replay", retryAudio: "Try again", success: "Great!", retry: "Almost! Try once more.", error: "Let’s learn it.", support: "Listen · Think · Choose" },
-      p56: { check: "Comprobar", checkAgain: "Comprobar de nuevo", next: "Continuar", finish: "Finalizar misión", listen: "Listen", playing: "Reproduciendo…", replay: "Repetir", retryAudio: "Reintentar", success: "¡Muy bien!", retry: "Casi.", error: "Vamos a verlo.", support: "Think · Answer · Learn" },
-      eso: { check: "Check", checkAgain: "Check again", next: "Continue", finish: "Finish session", listen: "Listen", playing: "Playing…", replay: "Replay", retryAudio: "Try again", success: "Great work!", retry: "Almost.", error: "Let’s review it.", support: "Read · Respond · Improve" }
+      p12: { check: "Comprobar", checkAgain: "Probar otra vez", next: "Siguiente", finish: "¡Terminar!", listen: "Escuchar", playing: "Escuchando…", replay: "Otra vez", retryAudio: "Reintentar", success: "¡Genial!", retry: "Casi. Prueba otra vez.", error: "Vamos a aprenderlo.", guide: "Vamos paso a paso", support: "Escucha · Mira · Elige" },
+      p34: { check: "Check", checkAgain: "Try again", next: "Next", finish: "Finish", listen: "Listen", playing: "Playing…", replay: "Replay", retryAudio: "Try again", success: "Great!", retry: "Almost! Try once more.", error: "Let’s learn it.", guide: "Una pista para empezar", support: "Listen · Think · Choose" },
+      p56: { check: "Comprobar", checkAgain: "Comprobar de nuevo", next: "Continuar", finish: "Finalizar misión", listen: "Listen", playing: "Reproduciendo…", replay: "Repetir", retryAudio: "Reintentar", success: "¡Muy bien!", retry: "Casi.", error: "Vamos a verlo.", guide: "Pista rápida", support: "Think · Answer · Learn" },
+      eso: { check: "Check", checkAgain: "Check again", next: "Continue", finish: "Finish session", listen: "Listen", playing: "Playing…", replay: "Replay", retryAudio: "Try again", success: "Great work!", retry: "Almost.", error: "Let’s review it.", guide: "Quick tip", support: "Read · Respond · Improve" }
     };
     return copies[band] || copies.p56;
   }
@@ -472,6 +472,8 @@
     const secondary = band === "eso";
     const experience = options.experience || {};
     const ui = interfaceCopy(band);
+    const guided = !!options.guided;
+    if (guided && window.IL_ADAPTACION) exercise = window.IL_ADAPTACION.simplify(exercise, true);
     container.innerHTML = "";
     const visualCoverage = visuals() && visuals().validateExercise(exercise);
     if (visualCoverage && !visualCoverage.valid) {
@@ -498,6 +500,7 @@
     root.dataset.exerciseType = exercise.tipo || "unknown";
     root.dataset.exerciseSkill = exercise.habilidad || "vocabulary";
     root.dataset.hasAudio = exercise.audio ? "true" : "false";
+    root.dataset.guided = guided ? "true" : "false";
     root.style.setProperty("--eng-touch-size", (experience.touchSize || 48) + "px");
     root.setAttribute("aria-labelledby", "exerciseInstruction");
     root.appendChild(exerciseContext(exercise, band));
@@ -542,6 +545,19 @@
     }
     root.appendChild(header);
 
+    if (guided) {
+      const guidance = el("aside", "eng-guidance");
+      guidance.setAttribute("aria-label", ui.guide);
+      const guidanceIcon = el("span", "eng-guidance__icon");
+      guidanceIcon.setAttribute("aria-hidden", "true"); guidanceIcon.innerHTML = icon("info");
+      const guidanceCopy = el("span", "eng-guidance__copy");
+      guidanceCopy.appendChild(el("strong", "", ui.guide));
+      guidanceCopy.appendChild(el("span", "", window.IL_ADAPTACION
+        ? window.IL_ADAPTACION.hint(exercise, band)
+        : (secondary ? "Focus on the key clue before you answer." : "Fíjate en la pista principal antes de responder.")));
+      guidance.append(guidanceIcon, guidanceCopy); root.appendChild(guidance);
+    }
+
     const body = el("div", "eng-body"); root.appendChild(body);
     const footer = el("div", "eng-footer");
     const feedback = el("div", "eng-feedback");
@@ -585,7 +601,8 @@
           points: correct ? 10 : 0,
           selectedLabel: result.selectedLabel,
           correctLabel: result.correctLabel,
-          learnedExpressions: result.learnedExpressions || []
+          learnedExpressions: result.learnedExpressions || [],
+          guided: guided
         });
       }
     }
