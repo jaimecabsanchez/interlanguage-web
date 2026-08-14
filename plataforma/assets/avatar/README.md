@@ -1,6 +1,6 @@
 # Láminas del avatar ilustrado (DALL·E)
 
-Aquí van los PNG del avatar. Reglas:
+Aquí van las fuentes PNG del avatar y sus versiones WebP optimizadas. Reglas:
 
 - PNG con **fondo transparente**.
 - Vertical, ~**1024 × 1536**, personaje **centrado**, entero, de pie, de frente.
@@ -8,7 +8,8 @@ Aquí van los PNG del avatar. Reglas:
 - Nombres exactos (los usa la app):
 
 ```
-look-01.png   look-02.png   look-03.png   ...      → personajes completos para elegir
+look-01.png   look-02.png   look-03.png   ...      → fuentes de personajes completos
+look-01.webp  look-05.webp                         → láminas usadas por la app
 ```
 
 Opcional (si haces variantes del MISMO personaje):
@@ -18,4 +19,5 @@ hair-short-brown.png   hair-curly-dark.png       ...
 acc-glasses.png        acc-headphones.png        ...
 ```
 
-Cuando dejes aquí las primeras imágenes, avísame y las conecto a la app.
+La app carga WebP para los dos másteres activos y para las máscaras de `deltas/`.
+Los PNG se conservan como fuente de edición y para futuras variantes.

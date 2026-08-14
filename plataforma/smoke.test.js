@@ -13,8 +13,10 @@ const exists = (rel) => fs.existsSync(path.join(ROOT, rel));
 // 1) Estructura de carpetas clave
 ["plataforma", "plataforma/motor", "supabase/migrations", "supabase/functions", ".github/workflows"]
   .forEach(d => ok("Existe carpeta " + d, exists(d)));
+["look-01", "look-05"].forEach(master =>
+  ok("Existe máster optimizado de avatar " + master, exists("plataforma/assets/avatar/" + master + ".webp")));
 ["feminine", "masculine"].forEach(base => ["hair", "iris", "skin", "outfit"].forEach(region =>
-  ok("Existe delta de avatar " + base + "/" + region, exists("plataforma/assets/avatar/deltas/" + base + "/" + region + ".png"))));
+  ok("Existe delta optimizado de avatar " + base + "/" + region, exists("plataforma/assets/avatar/deltas/" + base + "/" + region + ".webp"))));
 
 // 2) Ejemplos de entorno y que .env real NO está en git-ignore-able en claro
 ok(".env.example presente", exists(".env.example"));

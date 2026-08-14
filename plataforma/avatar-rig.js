@@ -62,7 +62,7 @@
       + (options.portrait ? " is-portrait" : "");
   }
   function delta(base, name, filterValue) {
-    return '<img class="avatar-delta__layer avatar-delta__layer--'+name+'" src="'+ASSET_ROOT+base+'/'+name+'.png" alt="" draggable="false" decoding="async" style="filter:'+filterValue+'">';
+    return '<img class="avatar-delta__layer avatar-delta__layer--'+name+'" src="'+ASSET_ROOT+base+'/'+name+'.webp" alt="" draggable="false" decoding="async" style="filter:'+filterValue+'">';
   }
   function layersFor(settings) {
     if (settings.avatarCustomised === false) return [];
@@ -80,7 +80,7 @@
     const master = base === "feminine" ? "look-05" : "look-01";
     const layers = layersFor(settings);
     let html = '<span class="'+classes(base, options)+'" role="img" aria-label="Avatar personalizado">';
-    html += '<img class="avatar-delta__master" src="assets/avatar/'+master+'.png" alt="" draggable="false" decoding="async">';
+    html += '<img class="avatar-delta__master" src="assets/avatar/'+master+'.webp" alt="" draggable="false" decoding="async">';
     layers.forEach(layer => { html += delta(base, layer[0], layer[1]); });
     html += '</span>';
     return html;
