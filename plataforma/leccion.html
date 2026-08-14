@@ -376,11 +376,20 @@
       streakEl.hidden = false;
       const nextStreak = streakCount + 1;
       const dayWord = streakCount === 1 ? "día" : "días";
-      $("summaryStreakCopy").innerHTML = ageExperience.id === "secondary"
-        ? "<b>" + streakCount + "-day streak</b> · Come back tomorrow to reach " + nextStreak + "."
-        : ageExperience.id === "primary-young"
-          ? "<b>" + streakCount + " " + dayWord + " seguidos</b> · ¡Vuelve mañana para llegar a " + nextStreak + "!"
-          : "<b>Racha de " + streakCount + " " + dayWord + "</b> · Vuelve mañana para llegar a " + nextStreak + ".";
+      const saved = !!completionProgress.streakSaved;
+      const streakIcon = streakEl.querySelector(".summary-streak__flame");
+      if (streakIcon) streakIcon.innerHTML = ILIcon(saved ? "buoy" : "flame");
+      $("summaryStreakCopy").innerHTML = saved
+        ? (ageExperience.id === "secondary"
+          ? "<b>Your flex day kept your streak</b> · You’re now at " + streakCount + " days."
+          : ageExperience.id === "primary-young"
+            ? "<b>¡Tu racha sigue!</b> · Tu día flexible cuidó tu racha de " + streakCount + " " + dayWord + "."
+            : "<b>Tu día flexible cuidó tu racha</b> · Sigues con " + streakCount + " " + dayWord + ".")
+        : (ageExperience.id === "secondary"
+          ? "<b>" + streakCount + "-day streak</b> · Come back tomorrow to reach " + nextStreak + "."
+          : ageExperience.id === "primary-young"
+            ? "<b>" + streakCount + " " + dayWord + " seguidos</b> · ¡Vuelve mañana para llegar a " + nextStreak + "!"
+            : "<b>Racha de " + streakCount + " " + dayWord + "</b> · Vuelve mañana para llegar a " + nextStreak + ".");
     }
     const reward = $("summaryReward");
     reward.hidden = isReview || !completionProgress;
@@ -438,9 +447,12 @@
     const state = ILMission.complete(username, undefined, missionMeta.date);
     if (!state.completionRecorded) {
       const summary = { correct: state.correctCount, total: state.total, allCorrect: state.correctCount === state.total, maxCorrectStreak: state.maxCorrectStreak };
+      const streakPreview = window.IL_MOTIVACION && completionProgress
+        ? window.IL_MOTIVACION.nextStreak({ current: completionProgress.streak, last_practice_date: completionProgress.last, freezes_available: completionProgress.freezes }, missionMeta.date)
+        : null;
       try {
         const progress = await ILAuth.completeLesson(summary);
-        if (progress) { completionProgress = progress; ILMission.markCompletionRecorded(username, missionMeta.date); $("headerStreak").textContent = progress.streak || 0; }
+        if (progress) { progress.streakSaved = !!(streakPreview && streakPreview.usedFreeze); completionProgress = progress; ILMission.markCompletionRecorded(username, missionMeta.date); $("headerStreak").textContent = progress.streak || 0; }
       } catch (error) {
         if (window.ILToast) ILToast("Misión guardada. Sincronizaremos tu progreso cuando sea posible.", { type: "info", duration: 3600 });
       }
