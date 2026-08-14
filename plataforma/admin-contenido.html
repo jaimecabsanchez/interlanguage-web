@@ -22,7 +22,7 @@
   .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
   .opt-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
   .opt-row input[type=text]{flex:1;}
-  .opt-row .emoji{width:56px;text-align:center;}
+  .opt-row .visual{width:160px;flex:0 0 160px;}
   .opt-row .ok{display:flex;align-items:center;gap:5px;font-size:.78rem;color:var(--soft);white-space:nowrap;}
   .opt-row .del{background:none;border:none;color:var(--faint);font-size:1.1rem;cursor:pointer;}
   .u-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--line);border-radius:12px;margin-bottom:8px;background:#fff;cursor:pointer;}
@@ -53,7 +53,7 @@
     <a class="btn btn-ghost" href="admin.html"><span data-il-icon="arrowLeft" aria-hidden="true"></span> Volver al panel</a>
   </div>
 
-  <div class="note"><span data-il-icon="info" aria-hidden="true"></span> Los ejercicios se guardan en este navegador (modo de trabajo). Para producción vivirán en la base de datos. Tipos disponibles: elegir texto, imagen y completar (una respuesta correcta).</div>
+  <div class="note"><span data-il-icon="info" aria-hidden="true"></span> Los ejercicios se guardan en este navegador (modo de trabajo). Las actividades visuales solo permiten ilustraciones homologadas del banco editorial.</div>
 
   <div class="admin-grid">
     <!-- Unidades -->
@@ -83,7 +83,7 @@
             <div class="fld"><label for="exType">Tipo</label>
               <select id="exType">
                 <option value="elegir_texto">Elegir (texto)</option>
-                <option value="elegir_imagen">Elegir (imagen + emoji)</option>
+                <option value="elegir_imagen">Elegir (ilustración)</option>
                 <option value="completar">Completar hueco</option>
               </select></div>
             <div class="fld"><label for="exSkill">Habilidad</label>
@@ -115,6 +115,7 @@
 <script src="supabase-config.js?v=20260809d"></script>
 <script src="auth-utils.js?v=20260809d"></script>
 <script src="auth.js?v=20260811f"></script>
+<script src="motor/visual-assets.js?v=20260814b"></script>
 <script>
   const $ = (id) => document.getElementById(id);
   const KEY = "il_cms_content";
@@ -172,10 +173,15 @@
   }
 
   // Filas de opciones (2–4, una correcta)
-  function optRow(txt, emoji, correct) {
+  function visualOptions(selected) {
+    const options = Object.entries(ILExerciseVisuals.all).map(([key, asset]) =>
+      '<option value="' + esc(key) + '"' + (selected === key ? " selected" : "") + '>' + esc(asset.label) + '</option>');
+    return '<option value="">Selecciona ilustración</option>' + options.join("");
+  }
+  function optRow(txt, visual, correct) {
     const wrap = document.createElement("div"); wrap.className = "opt-row";
     wrap.innerHTML =
-      '<input type="text" class="emoji" placeholder="🐱" maxlength="2" value="' + esc(emoji || "") + '">' +
+      '<select class="visual" aria-label="Ilustración de la opción">' + visualOptions(visual || "") + '</select>' +
       '<input type="text" placeholder="respuesta" value="' + esc(txt || "") + '">' +
       '<label class="ok"><input type="radio" name="correct">correcta</label>' +
       '<button type="button" class="del icon-button" title="Quitar" aria-label="Quitar opción">' + ILIcon("close") + '</button>';
@@ -183,11 +189,11 @@
     wrap.querySelector(".del").onclick = () => { if ($("optRows").children.length > 2) wrap.remove(); };
     return wrap;
   }
-  function resetOpts() { $("optRows").innerHTML = ""; $("optRows").appendChild(optRow("", "", true)); $("optRows").appendChild(optRow("", "", false)); $("optRows").appendChild(optRow("", "", false)); toggleEmoji(); }
-  function toggleEmoji() { const on = $("exType").value === "elegir_imagen"; $("optRows").querySelectorAll(".emoji").forEach(e => e.style.display = on ? "" : "none"); }
+  function resetOpts() { $("optRows").innerHTML = ""; $("optRows").appendChild(optRow("", "", true)); $("optRows").appendChild(optRow("", "", false)); $("optRows").appendChild(optRow("", "", false)); toggleVisual(); }
+  function toggleVisual() { const on = $("exType").value === "elegir_imagen"; $("optRows").querySelectorAll(".visual").forEach(e => e.style.display = on ? "" : "none"); }
 
-  $("addOpt").onclick = () => { if ($("optRows").children.length < 4) { $("optRows").appendChild(optRow("", "", false)); toggleEmoji(); } };
-  $("exType").onchange = toggleEmoji;
+  $("addOpt").onclick = () => { if ($("optRows").children.length < 4) { $("optRows").appendChild(optRow("", "", false)); toggleVisual(); } };
+  $("exType").onchange = toggleVisual;
 
   $("unitForm").onsubmit = (e) => {
     e.preventDefault();
@@ -201,16 +207,17 @@
     if (sel < 0) return;
     const rows = [...$("optRows").querySelectorAll(".opt-row")];
     const opts = rows.map(r => {
-      const inputs = r.querySelectorAll('input[type=text]');
-      return { emoji: inputs[0].value.trim(), texto: inputs[1].value.trim(), correcta: r.querySelector('input[type=radio]').checked };
+      const input = r.querySelector('input[type=text]');
+      return { visual: r.querySelector(".visual").value, texto: input.value.trim(), correcta: r.querySelector('input[type=radio]').checked };
     }).filter(o => o.texto);
     if (opts.length < 2) { alert("Añade al menos 2 opciones con texto."); return; }
     if (!opts.some(o => o.correcta)) { alert("Marca cuál es la opción correcta."); return; }
     const type = $("exType").value;
+    if (type === "elegir_imagen" && opts.some(o => !o.visual)) { alert("Selecciona una ilustración homologada para cada opción."); return; }
     const ex = {
       id: uid("cms"), tipo: type, habilidad: $("exSkill").value, nivel: $("exLevel").value, edad: [6, 14],
       etiqueta: $("exTag").value.trim() || "Ejercicio", instruccion: $("exIns").value.trim(),
-      opciones: opts.map(o => { const oo = { texto: o.texto }; if (type === "elegir_imagen" && o.emoji) oo.emoji = o.emoji; if (o.correcta) oo.correcta = true; return oo; })
+      opciones: opts.map(o => { const oo = { texto: o.texto }; if (type === "elegir_imagen") oo.visual = o.visual; if (o.correcta) oo.correcta = true; return oo; })
     };
     const expl = $("exExpl").value.trim(); if (expl) ex.explicacion = expl;
     content[sel].ejercicios.push(ex);

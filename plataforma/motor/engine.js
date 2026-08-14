@@ -26,33 +26,19 @@
   };
   const icon = name => window.ILIcon ? window.ILIcon(name) : "";
   const secondaryMode = () => document.body && document.body.dataset.ageMode === "secondary";
-
-  // Ilustraciones propias para las opciones (sustituyen a los emojis del contenido).
-  // Clave = el emoji que trae el contenido. Colores de marca; se enmarcan en un círculo por CSS.
-  const ILLO = {
-    "🎒": '<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M12 21c0-7 5-11 12-11s12 4 12 11v15a4 4 0 0 1-4 4H16a4 4 0 0 1-4-4z" fill="var(--il-secondary)"/><path d="M12 27h24v6H12z" fill="var(--il-coral-ink)"/><rect x="20" y="29" width="8" height="8" rx="2" fill="#fff"/><path d="M17 21c0-4 3-7 7-7s7 3 7 7" fill="none" stroke="var(--il-primary)" stroke-width="2.6"/></svg>',
-    "✏️": '<svg viewBox="0 0 48 48" aria-hidden="true"><rect x="20" y="9" width="8" height="4" rx="2" fill="var(--il-secondary)"/><rect x="20" y="12" width="8" height="22" rx="1.5" fill="#F6B93B"/><path d="M20 34h8l-4 7z" fill="#EAD6A0"/><path d="M22.5 38h3l-1.5 3z" fill="var(--il-primary)"/></svg>',
-    "📘": '<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M11 13h11a4 4 0 0 1 2 .5V37a5 5 0 0 0-2-.5H11z" fill="var(--il-primary)"/><path d="M37 13H26a4 4 0 0 0-2 .5V37a5 5 0 0 1 2-.5h11z" fill="#24406b"/><path d="M24 15v22" stroke="#fff" stroke-width="1.4" opacity=".45"/></svg>',
-    "🪑": '<svg viewBox="0 0 48 48" aria-hidden="true"><rect x="16" y="11" width="5" height="16" rx="2" fill="var(--il-primary)"/><rect x="15" y="25" width="18" height="5" rx="2" fill="var(--il-secondary)"/><rect x="16" y="30" width="3" height="9" rx="1" fill="var(--il-primary)"/><rect x="29" y="30" width="3" height="9" rx="1" fill="var(--il-primary)"/></svg>',
-    "🍎": '<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 17c-6-4-14 0-14 9s6 14 14 14 14-5 14-14-8-13-14-9z" fill="var(--il-secondary)"/><path d="M24 17c0-4 3-7 6-7" fill="none" stroke="var(--il-success)" stroke-width="2.6" stroke-linecap="round"/></svg>',
-    "🥛": '<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M18 13h12l2 6v18a2 2 0 0 1-2 2H18a2 2 0 0 1-2-2V19z" fill="#fff" stroke="var(--il-border)" stroke-width="1.6"/><path d="M16.5 21h15v7h-15z" fill="var(--il-primary-soft)"/></svg>',
-    "🍞": '<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M12 23c0-6 5-9 12-9s12 3 12 9c2 0 3 1.5 3 3.5S38 30 36 30v6a2 2 0 0 1-2 2H14a2 2 0 0 1-2-2v-6c-2 0-3-1.5-3-3.5S10 23 12 23z" fill="#E4A96B"/></svg>'
-    ,"🥣": '<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M9 23h30c-1 11-6 16-15 16S10 34 9 23Z" fill="var(--il-secondary)"/><path d="M10 23c4-7 24-7 28 0" fill="var(--il-warning-soft)" stroke="var(--il-coral-ink)" stroke-width="2"/><path d="M31 10c-5 4 2 7-3 11" fill="none" stroke="var(--il-success)" stroke-width="2.5" stroke-linecap="round"/></svg>',
-    "🚿": '<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M13 18c0-8 5-12 12-12 6 0 10 4 10 10" fill="none" stroke="var(--il-primary)" stroke-width="4" stroke-linecap="round"/><path d="M29 16h12v7H29Z" fill="var(--il-primary)"/><g stroke="var(--il-focus)" stroke-width="2.5" stroke-linecap="round"><path d="M31 29v5M36 29v8M41 29v5"/></g></svg>',
-    "🛏️": '<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M8 13v27M40 23v17M8 34h32" stroke="var(--il-primary)" stroke-width="4" stroke-linecap="round"/><rect x="11" y="21" width="29" height="13" rx="3" fill="var(--il-primary-soft)"/><rect x="12" y="22" width="11" height="8" rx="3" fill="var(--il-surface)"/></svg>',
-    "🍌": '<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M12 15c3 18 14 25 28 17-6 10-17 13-25 7-8-6-10-15-7-24Z" fill="var(--il-warning)"/><path d="M9 15c0-3 2-5 5-5" fill="none" stroke="var(--il-avatar-hair-brown)" stroke-width="3"/></svg>',
-    "🥚": '<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 7c-8 0-14 15-14 23 0 7 6 11 14 11s14-4 14-11C38 22 32 7 24 7Z" fill="var(--il-surface)" stroke="var(--il-border-strong)" stroke-width="2"/><circle cx="24" cy="29" r="7" fill="var(--il-warning)"/></svg>',
-    "🧀": '<svg viewBox="0 0 48 48" aria-hidden="true"><path d="m9 21 27-11 5 10v18H9Z" fill="var(--il-warning)"/><path d="M9 21h32" stroke="var(--il-warning-ink)" stroke-width="2"/><g fill="var(--il-warning-ink)" opacity=".55"><circle cx="29" cy="28" r="3"/><circle cx="17" cy="34" r="2.5"/></g></svg>'
+  const SKILL_META = {
+    listening: { icon: "ear", es: "Listening", en: "Listening" },
+    vocabulary: { icon: "book", es: "Vocabulary", en: "Vocabulary" },
+    grammar: { icon: "pencil", es: "Grammar", en: "Grammar" },
+    reading: { icon: "book", es: "Reading", en: "Reading" },
+    writing: { icon: "pencil", es: "Writing", en: "Writing" },
+    speaking: { icon: "chat", es: "Speaking", en: "Speaking" }
   };
-  const ILLO_LABEL = { "🎒":"school bag", "✏️":"pencil", "📘":"book", "🪑":"chair", "🍎":"apple", "🥛":"milk", "🍞":"bread", "🥣":"breakfast", "🚿":"shower", "🛏️":"bed", "🍌":"banana", "🥚":"egg", "🧀":"cheese" };
-  function semanticIllo(value) {
-    const key = norm(value);
-    if (/buenos dias|good morning/.test(key)) return '<svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="10" fill="var(--il-warning)"/><g stroke="var(--il-warning)" stroke-width="3" stroke-linecap="round"><path d="M24 5v6M24 37v6M5 24h6M37 24h6M11 11l4 4M33 33l4 4M37 11l-4 4M15 33l-4 4"/></g></svg>';
-    if (/buenas noches|good night/.test(key)) return '<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M31 7a17 17 0 1 0 10 26A19 19 0 0 1 31 7Z" fill="var(--il-primary)"/><circle cx="37" cy="11" r="3" fill="var(--il-warning)"/></svg>';
-    if (/hasta luego|see you/.test(key)) return '<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M9 11h21v28H9Z" fill="var(--il-primary-soft)" stroke="var(--il-primary)" stroke-width="3"/><path d="M23 25h17m-6-6 6 6-6 6" fill="none" stroke="var(--il-secondary)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-    if (/hello|teacher|saludo/.test(key)) return '<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M7 9h34v25H20l-9 7 2-7H7Z" fill="var(--il-primary-soft)" stroke="var(--il-primary)" stroke-width="3"/><path d="M15 21h18" stroke="var(--il-secondary)" stroke-width="3" stroke-linecap="round"/></svg>';
-    if (/pencil|lapiz/.test(key)) return ILLO["✏️"];
-    return "";
+
+  const visuals = () => window.ILExerciseVisuals;
+  function illustrationFor(option) {
+    const bank = visuals();
+    return bank ? bank.imageHTML(option, "lazy") : "";
   }
   const disableAll = (host, disabled) => host.querySelectorAll("button,input,textarea,select")
     .forEach(control => { control.disabled = !!disabled; });
@@ -61,6 +47,29 @@
   function instructionFor(exercise, stage) {
     const variants = exercise.instructions || {};
     return variants[stage] || exercise.instruccion || "Completa la actividad.";
+  }
+
+  function supportFor(exercise, band) {
+    const english = band !== "p12";
+    const type = exercise.tipo || "";
+    if (type === "emparejar") return english ? "LOOK · MATCH" : "MIRA · RELACIONA";
+    if (type === "ordenar") return english ? "THINK · ORDER" : "PIENSA · ORDENA";
+    if (type === "hablar") return english ? "LISTEN · SPEAK" : "ESCUCHA · HABLA";
+    if (exercise.audio) return english ? "LISTEN · CHOOSE" : "ESCUCHA · ELIGE";
+    return english ? "LOOK · CHOOSE" : "MIRA · ELIGE";
+  }
+
+  function exerciseContext(exercise, band) {
+    const context = el("div", "eng-context");
+    const skill = SKILL_META[exercise.habilidad] || SKILL_META.vocabulary;
+    const task = el("span", "eng-task-mode");
+    task.innerHTML = icon(skill.icon) + "<span></span>";
+    task.lastChild.textContent = supportFor(exercise, band);
+    const label = el("span", "eng-label");
+    label.innerHTML = icon(skill.icon) + "<span></span>";
+    label.lastChild.textContent = exercise.etiqueta || (band === "p12" ? skill.es : skill.en);
+    context.append(task, label);
+    return context;
   }
 
   function speak(text, callbacks) {
@@ -106,9 +115,10 @@
 
   function singleChoice(host, exercise, withImage, onChange) {
     const options = exercise.opciones || [];
-    const young = !!host.closest(".eng-card--p12");
-    const autoVisuals = options.map(option => semanticIllo(option.texto || ""));
-    const showVisuals = withImage || (young && autoVisuals.every(Boolean));
+    const card = host.closest(".eng-card");
+    const supportive = !!(card && (card.classList.contains("eng-card--p12") || card.classList.contains("eng-card--p34")));
+    const autoVisuals = options.map(illustrationFor);
+    const showVisuals = withImage || (supportive && autoVisuals.length > 0 && autoVisuals.every(Boolean));
     let selected = -1;
     let disabled = false;
     const wrap = el("div", "eng-options" + (showVisuals ? " has-image" : ""));
@@ -122,12 +132,17 @@
     options.forEach((option, index) => {
       const button = el("button", "eng-opt");
       button.type = "button";
+      button.dataset.optionIndex = String(index + 1);
       button.setAttribute("aria-pressed", "false");
       if (showVisuals) {
         const visual = el("span", "eng-option-visual");
         visual.setAttribute("aria-hidden", "true");
-        const art = (option.emoji && ILLO[option.emoji]) || autoVisuals[index];
-        if (art) { visual.classList.add("has-illo"); visual.innerHTML = art; }
+        const art = autoVisuals[index];
+        if (art) {
+          visual.classList.add("has-illo");
+          visual.classList.add("has-scene");
+          visual.innerHTML = art;
+        }
         button.appendChild(visual);
       }
       button.appendChild(el("span", "eng-opt-text", option.texto || ""));
@@ -180,7 +195,11 @@
         }
       },
       setDisabled: value => { disabled = !!value; disableAll(wrap, disabled); },
-      focus: () => { const target = wrap.querySelector("button"); if (target) target.focus(); },
+      focus: () => {
+        const buttons = wrap.querySelectorAll("button");
+        const target = selected >= 0 ? buttons[selected] : buttons[0];
+        if (target) target.focus();
+      },
       destroy: () => {}
     };
   }
@@ -282,9 +301,13 @@
     host.appendChild(rows); host.appendChild(bank);
     const rightUsed = index => Object.keys(assignments).some(key => assignments[key] === index);
     function visualLabel(parent, value) {
-      if (!ILLO[value]) { parent.textContent = value; return; }
-      const art = el("span", "eng-option-visual has-illo"); art.setAttribute("aria-hidden", "true"); art.innerHTML = ILLO[value];
-      const label = el("span", "sr-only", ILLO_LABEL[value] || "image"); parent.append(art, label);
+      const illustration = illustrationFor({ emoji: value, visual: value, texto: value });
+      if (!illustration) { parent.textContent = value; return; }
+      const art = el("span", "eng-option-visual has-illo");
+      art.classList.add("has-scene");
+      art.setAttribute("aria-hidden", "true"); art.innerHTML = illustration;
+      const asset = visuals() && visuals().get({ texto: value, visual: value, emoji: value });
+      const label = el("span", "sr-only", asset ? asset.label : String(value)); parent.append(art, label);
     }
 
     function redraw() {
@@ -309,7 +332,8 @@
       rights.forEach(right => {
         if (rightUsed(right.index)) return;
         const button = el("button", "eng-word"); button.type = "button"; button.disabled = disabled; visualLabel(button, right.label);
-        button.setAttribute("aria-label", ILLO_LABEL[right.label] || right.label);
+        const asset = visuals() && visuals().get({ texto: right.label, visual: right.label, emoji: right.label });
+        button.setAttribute("aria-label", asset ? asset.label : right.label);
         button.addEventListener("click", () => {
           if (disabled || selectedLeft == null) return;
           assignments[selectedLeft] = right.index; selectedLeft = null; redraw(); onChange();
@@ -449,6 +473,17 @@
     const experience = options.experience || {};
     const ui = interfaceCopy(band);
     container.innerHTML = "";
+    const visualCoverage = visuals() && visuals().validateExercise(exercise);
+    if (visualCoverage && !visualCoverage.valid) {
+      const unavailable = el("div", "il-state");
+      unavailable.appendChild(el("h2", "", secondary ? "Illustration unavailable" : "Ilustración pendiente"));
+      unavailable.appendChild(el("p", "", secondary
+        ? "This visual activity is not ready yet. Choose another activity."
+        : "Esta actividad visual todavía no tiene todas sus ilustraciones preparadas."));
+      container.appendChild(unavailable);
+      if (window.console && console.warn) console.warn("[Interlanguage] Cobertura visual incompleta", exercise.id, visualCoverage.missing);
+      return { focus: () => unavailable.focus(), destroy: () => {} };
+    }
     const templateFactory = TEMPLATES[exercise.tipo];
     if (!templateFactory) {
       const unavailable = el("div", "il-state");
@@ -460,12 +495,14 @@
 
     const root = el("article", "eng-card eng-card--" + band);
     root.dataset.exerciseBand = band;
+    root.dataset.exerciseType = exercise.tipo || "unknown";
+    root.dataset.exerciseSkill = exercise.habilidad || "vocabulary";
+    root.dataset.hasAudio = exercise.audio ? "true" : "false";
     root.style.setProperty("--eng-touch-size", (experience.touchSize || 48) + "px");
     root.setAttribute("aria-labelledby", "exerciseInstruction");
-    if (exercise.etiqueta) root.appendChild(el("div", "eng-label", exercise.etiqueta));
+    root.appendChild(exerciseContext(exercise, band));
 
     const header = el("div", "eng-question-header");
-    if (band === "p12" || band === "p34") header.appendChild(el("p", "eng-age-support", ui.support));
     const instruction = el("h1", "eng-instruction", instructionFor(exercise, options.stage));
     instruction.id = "exerciseInstruction"; header.appendChild(instruction);
     const audioText = exercise.tipo === "hablar" ? "" : (exercise.audio || "");
@@ -508,6 +545,7 @@
     const body = el("div", "eng-body"); root.appendChild(body);
     const footer = el("div", "eng-footer");
     const feedback = el("div", "eng-feedback");
+    feedback.id = "exerciseFeedback";
     feedback.setAttribute("role", "status"); feedback.setAttribute("aria-live", "polite");
     const action = el("button", "btn btn-primary btn-block", ui.check); action.type = "button"; action.disabled = true;
     footer.appendChild(feedback); footer.appendChild(action); root.appendChild(footer); container.appendChild(root);
@@ -589,11 +627,16 @@
 
     if (template.isAnswered()) { state = "selected"; action.disabled = false; }
     return {
-      focus: () => template.focus(),
+      focus: () => {
+        if (band === "p12") {
+          instruction.tabIndex = -1;
+          instruction.focus({ preventScroll: true });
+        } else template.focus();
+      },
       destroy: () => { template.destroy(); if (window.speechSynthesis) window.speechSynthesis.cancel(); },
       getState: () => state
     };
   }
 
-  window.IL_ENGINE = { render, speak, instructionFor, _templates: TEMPLATES, _norm: norm };
+  window.IL_ENGINE = { render, speak, instructionFor, visualFor: illustrationFor, _templates: TEMPLATES, _norm: norm };
 })();

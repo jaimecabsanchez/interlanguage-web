@@ -10,7 +10,7 @@
    - Cada EJERCICIO tiene un "tipo" que decide cómo se muestra.
 
    TIPOS DE EJERCICIO disponibles en el MVP:
-     • "elegir_imagen"   → pregunta + opciones con dibujo (emoji), una correcta
+     • "elegir_imagen"   → pregunta + opciones con ilustración, una correcta
      • "elegir_texto"    → pregunta + opciones de texto, una correcta
      • "ordenar"         → ordenar palabras para formar una frase
      • "completar"       → completar el hueco eligiendo la palabra correcta
@@ -42,9 +42,9 @@ window.IL_CONTENIDO = {
           id: "pv-1", tipo: "elegir_imagen", habilidad: "listening", nivel: "Pre-A1", edad: [6,9],
           etiqueta: "Escucha", instruccion: "Escucha y elige el libro.", audio: "Book",
           opciones: [
-            { emoji: "📘", texto: "book", correcta: true },
-            { emoji: "✏️", texto: "pencil" },
-            { emoji: "🎒", texto: "school bag" }
+            { visual: "book", texto: "book", correcta: true },
+            { visual: "pencil", texto: "pencil" },
+            { visual: "school-bag", texto: "school bag" }
           ],
           feedback: { correct: '“Book” significa “libro”.', incorrect: "Escucha otra vez y busca el libro.", context: "This is my book.", learnedExpressions: ["My book"] }
         },
@@ -52,9 +52,9 @@ window.IL_CONTENIDO = {
           id: "pv-2", tipo: "elegir_imagen", habilidad: "vocabulary", nivel: "Pre-A1", edad: [6,9],
           etiqueta: "Palabras", instruccion: "¿Cómo se dice “lápiz” en inglés?", audio: "Pencil",
           opciones: [
-            { emoji: "✏️", texto: "pencil", correcta: true },
-            { emoji: "📘", texto: "book" },
-            { emoji: "🪑", texto: "chair" }
+            { visual: "pencil", texto: "pencil", correcta: true },
+            { visual: "book", texto: "book" },
+            { visual: "chair", texto: "chair" }
           ],
           feedback: { correct: '“Pencil” significa “lápiz”.', incorrect: "Busca el objeto que usamos para escribir.", context: "I have a pencil.", learnedExpressions: ["A pencil"] }
         },
@@ -69,12 +69,12 @@ window.IL_CONTENIDO = {
           feedback: { correct: '“Good morning” significa “Buenos días”.', incorrect: "Es el saludo que usamos por la mañana.", context: "Good morning, teacher!", learnedExpressions: ["Good morning"] }
         },
         {
-          id: "pv-4", tipo: "emparejar", habilidad: "vocabulary", nivel: "Pre-A1", edad: [6,9],
+          id: "pv-4", tipo: "emparejar", presentacion: "visual", habilidad: "vocabulary", nivel: "Pre-A1", edad: [6,9],
           etiqueta: "Relaciona", instruccion: "Une cada palabra con su dibujo.",
           pares: [
-            { a: "book", b: "📘" },
-            { a: "pencil", b: "✏️" },
-            { a: "school bag", b: "🎒" }
+            { a: "book", b: "book" },
+            { a: "pencil", b: "pencil" },
+            { a: "school bag", b: "school-bag" }
           ]
         },
         {
@@ -108,10 +108,10 @@ window.IL_CONTENIDO = {
           },
           audio: "Have breakfast",
           opciones: [
-            { emoji: "🥣", texto: "have breakfast", correcta: true },
-            { emoji: "🚿", texto: "take a shower" },
-            { emoji: "🛏️", texto: "go to bed" },
-            { emoji: "🎒", texto: "go to school" }
+            { visual: "have-breakfast", texto: "have breakfast", correcta: true },
+            { visual: "take-a-shower", texto: "take a shower" },
+            { visual: "go-to-bed", texto: "go to bed" },
+            { visual: "go-to-school", texto: "go to school" }
           ],
           explicacion: "Usamos have breakfast para hablar de desayunar.",
           feedback: {
@@ -190,10 +190,10 @@ window.IL_CONTENIDO = {
           etiqueta: "Vocabulario", instruccion: '¿Cómo se dice “manzana” en inglés?',
           audio: "Which one is an apple?",
           opciones: [
-            { emoji: "🍎", texto: "apple", correcta: true },
-            { emoji: "🍌", texto: "banana" },
-            { emoji: "🥛", texto: "milk" },
-            { emoji: "🍞", texto: "bread" }
+            { visual: "apple", texto: "apple", correcta: true },
+            { visual: "banana", texto: "banana" },
+            { visual: "milk", texto: "milk" },
+            { visual: "bread", texto: "bread" }
           ]
         },
         {
@@ -201,10 +201,10 @@ window.IL_CONTENIDO = {
           etiqueta: "Escucha y elige", instruccion: "Escucha y elige: banana",
           audio: "Banana",
           opciones: [
-            { emoji: "🍌", texto: "banana", correcta: true },
-            { emoji: "🍎", texto: "apple" },
-            { emoji: "🧀", texto: "cheese" },
-            { emoji: "🥚", texto: "egg" }
+            { visual: "banana", texto: "banana", correcta: true },
+            { visual: "apple", texto: "apple" },
+            { visual: "cheese", texto: "cheese" },
+            { visual: "egg", texto: "egg" }
           ]
         },
         {
@@ -229,13 +229,13 @@ window.IL_CONTENIDO = {
           frase: "I like apples and bananas."
         },
         {
-          id: "lc-6", tipo: "emparejar", habilidad: "vocabulary", nivel: "Pre-A1", edad: [6,10],
+          id: "lc-6", tipo: "emparejar", presentacion: "visual", habilidad: "vocabulary", nivel: "Pre-A1", edad: [6,10],
           etiqueta: "Relaciona", instruccion: "Une cada palabra con su dibujo",
           pares: [
-            { a: "apple", b: "🍎" },
-            { a: "banana", b: "🍌" },
-            { a: "milk", b: "🥛" },
-            { a: "bread", b: "🍞" }
+            { a: "apple", b: "apple" },
+            { a: "banana", b: "banana" },
+            { a: "milk", b: "milk" },
+            { a: "bread", b: "bread" }
           ]
         },
         {
