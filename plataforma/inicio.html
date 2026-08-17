@@ -266,13 +266,14 @@
       + '<path d="M60 66V52M60 66l-9 6" stroke="var(--il-primary)" stroke-width="3.6" stroke-linecap="round"/>'
       + '<circle cx="60" cy="66" r="3.1" fill="var(--il-primary)"/></svg>',
     school: '<svg viewBox="0 0 120 120" role="img" aria-hidden="true">'
-      + '<circle cx="60" cy="60" r="54" fill="var(--il-success-soft)"/>'
-      + '<path d="M40 54c0-12 9-20 20-20s20 8 20 20v32a8 8 0 0 1-8 8H48a8 8 0 0 1-8-8z" fill="var(--il-secondary)"/>'
-      + '<path d="M40 68h40v9H40z" fill="var(--il-coral-ink)" opacity=".9"/>'
-      + '<rect x="52" y="71" width="16" height="15" rx="3" fill="#fff" opacity=".92"/>'
-      + '<path d="M49 54c0-8 5-13 11-13s11 5 11 13" fill="none" stroke="var(--il-primary)" stroke-width="4" stroke-linecap="round"/>'
-      + '<rect x="70" y="26" width="6" height="24" rx="3" fill="#F6B93B"/><path d="M70 26l3-6 3 6z" fill="var(--il-primary)"/>'
-      + '<circle cx="60" cy="78" r="3.4" fill="#F6B93B"/></svg>',
+      + '<circle cx="60" cy="60" r="54" fill="var(--il-primary-soft)"/>'
+      + '<path d="M49 40a11 11 0 0 1 22 0" fill="none" stroke="var(--il-primary)" stroke-width="5" stroke-linecap="round"/>'
+      + '<rect x="34" y="42" width="52" height="48" rx="16" fill="var(--il-secondary)"/>'
+      + '<path d="M40 90c1-9 1-18 0-24M80 90c-1-9-1-18 0-24" fill="none" stroke="var(--il-coral-ink)" stroke-width="4" stroke-linecap="round" opacity=".55"/>'
+      + '<rect x="46" y="64" width="28" height="24" rx="8" fill="#fff" opacity=".95"/>'
+      + '<path d="M50 71h20" stroke="var(--il-coral-ink)" stroke-width="2.8" stroke-linecap="round"/>'
+      + '<circle cx="70" cy="71" r="2.4" fill="var(--il-coral-ink)"/>'
+      + '<path d="m60 50 2.1 4.3 4.7.7-3.4 3.3.8 4.7L60 65.5l-4.2 2.2.8-4.7-3.4-3.3 4.7-.7z" fill="#F6B93B"/></svg>',
     journey: '<svg viewBox="0 0 120 120" role="img" aria-hidden="true">'
       + '<circle cx="60" cy="60" r="54" fill="var(--il-primary-soft)"/>'
       + '<path d="M26 82c18 8 50 6 70-26" fill="none" stroke="var(--il-primary)" stroke-width="3" stroke-linecap="round" stroke-dasharray="1 8" opacity=".55"/>'
@@ -445,10 +446,9 @@
       $("missionTitle").textContent = titleFor(unit); $("missionOutcome").textContent = outcomeFor(unit);
       // Ilustración protagonista integrada (no en ESO, que va sobrio).
       // Ilustración solo en primaria superior (el reloj queda bien); en pequeños y ESO la tarjeta va limpia (como el mockup).
-      // Ilustración temática: en 10-11 (reloj SVG, queda bien). En 8-9 y 5-7 el mockup usa
-      // una ilustración 3D (mochila) que va como PNG; hasta tenerla, la ranura queda vacía
-      // (evitamos el SVG que parecía un candado). ESO va sobrio, sin ilustración.
-      $("missionIllo").innerHTML = experience.id === "primary-upper" ? illoFor(unit) : "";
+      // Ilustración temática en todas las bandas salvo ESO (sobrio). Los pequeños son lo más
+      // visual: mochila/reloj en SVG (se puede sustituir por un PNG 3D si se genera).
+      $("missionIllo").innerHTML = experience.id === "secondary" ? "" : illoFor(unit);
       if (experience.id === "secondary") {
         $("missionContextCopy").childNodes[0].nodeValue = "Based on this week’s classwork.";
         $("weeklyTitle").textContent = "This week";
