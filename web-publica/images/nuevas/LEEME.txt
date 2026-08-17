@@ -1,0 +1,12 @@
+CARPETA PARA SUBIR FOTOS NUEVAS
+================================
+Deja aquí las fotos ORIGINALES en buena calidad (JPG o PNG).
+NO hace falta que las optimices ni las redimensiones: de eso me encargo yo
+(genero WebP/AVIF y los tamaños automáticamente).
+
+Para cada foto, dime en el chat qué es (ej: "grupo de mayores en un campus
+en Irlanda", "campamento de verano en el extranjero"). Con eso la coloco
+en el sitio correcto del carrusel.
+
+Ideal para el hero: horizontales o verticales de buena resolución
+(a partir de ~1200px de lado largo), con PERSONAS (alumnos, no solo paisajes).

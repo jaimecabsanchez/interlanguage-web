@@ -24,6 +24,7 @@
   --il-text-secondary:#59697a;
   --il-border:#dce3e8;
   --il-border-strong:#b8c4ce;
+  --il-border-soft:#e7edf1;
   --il-muted:#8795a5;
 
   /* Tintas y colores de contenido */
@@ -129,18 +130,18 @@
   --il-radius:var(--il-radius-md);
 
   /* Elevación */
-  --il-shadow-xs:0 1px 2px rgba(22,41,74,.06);
-  --il-shadow-sm:0 4px 14px -8px rgba(22,41,74,.22);
-  --il-shadow-md:0 14px 34px -20px rgba(22,41,74,.34);
-  --il-shadow-lg:0 24px 56px -24px rgba(22,41,74,.42);
+  --il-shadow-xs:0 1px 2px rgba(22,41,74,.05);
+  --il-shadow-sm:0 1px 2px rgba(22,41,74,.04),0 6px 16px -8px rgba(22,41,74,.16);
+  --il-shadow-md:0 2px 6px -2px rgba(22,41,74,.06),0 16px 34px -14px rgba(22,41,74,.20);
+  --il-shadow-lg:0 6px 14px -4px rgba(22,41,74,.08),0 30px 60px -18px rgba(22,41,74,.26);
   --il-shadow-focus:0 0 0 4px rgba(47,111,237,.22);
   --il-shadow:var(--il-shadow-md);
   --il-shadow-soft:var(--il-shadow-sm);
   --il-e1:var(--il-shadow-xs);
   --il-e2:var(--il-shadow-sm);
   --il-e3:var(--il-shadow-lg);
-  --il-e-coral:0 12px 24px -14px rgba(199,73,45,.42);
-  --il-shadow-avatar:0 16px 13px rgba(22,41,74,.2);
+  --il-e-coral:0 2px 6px -2px rgba(199,73,45,.20),0 14px 26px -12px rgba(199,73,45,.40);
+  --il-shadow-avatar:0 18px 30px -18px rgba(22,41,74,.26);
 
   /* Tipografía */
   --il-font-display:'Plus Jakarta Sans',system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
@@ -190,7 +191,7 @@
   --il-max-width-content:1080px;
   --il-max-width-shell:1240px;
   --il-max-width-wide:1440px;
-  --il-rail-width:216px;
+  --il-rail-width:240px;
   --il-nav-height:68px;
 
   /* Capas */

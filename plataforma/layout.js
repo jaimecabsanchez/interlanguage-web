@@ -30,7 +30,14 @@
       '<nav>' + TABS.map(function (t) {
         return '<a class="' + (t.k === active ? "is-active" : "") + '" href="' + t.href + '"' +
           (t.k === active ? ' aria-current="page"' : "") + ">" + ICON[t.k] + "<span>" + t.label + "</span></a>";
-      }).join("") + "</nav>";
+      }).join("") + "</nav>" +
+      '<div class="rail-foot">' +
+        '<a class="rail-user" href="perfil.html" aria-label="Mi perfil">' +
+          '<span class="rail-user__av" aria-hidden="true" data-il-rail-initial>·</span>' +
+          '<span class="rail-user__meta"><b data-il-rail-name>Mi perfil</b><small data-il-rail-level></small></span>' +
+        "</a>" +
+        '<a class="rail-settings" href="ajustes.html">' + ICONS.settings + "<span>Ajustes</span></a>" +
+      "</div>";
   }
   function navHTML(active) {
     return TABS.map(function (t) {
@@ -85,7 +92,8 @@
     warning: '<svg viewBox="0 0 24 24" ' + S + ' aria-hidden="true"><path d="M12 3 2.8 20h18.4L12 3Z"/><path d="M12 9v5M12 17h.01"/></svg>',
     trash: '<svg viewBox="0 0 24 24" ' + S + ' aria-hidden="true"><path d="M4 7h16M9 7V4h6v3M7 7l1 13h8l1-13M10 11v5M14 11v5"/></svg>',
     stamp: '<svg viewBox="0 0 24 24" ' + S + ' aria-hidden="true"><path d="M8 4a4 4 0 1 1 8 0c0 3 1 4 3 6H5c2-2 3-3 3-6ZM5 14h14v5H5zM7 22h10"/></svg>',
-    route: '<svg viewBox="0 0 24 24" ' + S + ' aria-hidden="true"><circle cx="6" cy="18" r="2"/><circle cx="18" cy="6" r="2"/><path d="M8 18h3a3 3 0 0 0 3-3V9a3 3 0 0 1 3-3"/></svg>'
+    route: '<svg viewBox="0 0 24 24" ' + S + ' aria-hidden="true"><circle cx="6" cy="18" r="2"/><circle cx="18" cy="6" r="2"/><path d="M8 18h3a3 3 0 0 0 3-3V9a3 3 0 0 1 3-3"/></svg>',
+    settings: '<svg viewBox="0 0 24 24" ' + S + ' aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 13a7.8 7.8 0 0 0 0-2l2-1.5-2-3.5-2.4 1a7.6 7.6 0 0 0-1.7-1L14 3h-4l-.3 2.5a7.6 7.6 0 0 0-1.7 1l-2.4-1-2 3.5 2 1.5a7.8 7.8 0 0 0 0 2l-2 1.5 2 3.5 2.4-1a7.6 7.6 0 0 0 1.7 1L10 21h4l.3-2.5a7.6 7.6 0 0 0 1.7-1l2.4 1 2-3.5-2-1.5Z"/></svg>'
   };
   function icon(name) { return ICONS[name] || ""; }
 
@@ -105,6 +113,30 @@
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", mount);
   else mount();
+
+  // Tarjeta de alumno en la barra: rellena inicial + nombre + nivel (si hay perfil).
+  function setUser(info) {
+    info = info || {};
+    var name = (info.name || "").toString().trim();
+    var initial = document.querySelector("[data-il-rail-initial]");
+    var nameEl = document.querySelector("[data-il-rail-name]");
+    var levelEl = document.querySelector("[data-il-rail-level]");
+    if (initial) initial.textContent = (name.charAt(0) || "·").toUpperCase();
+    if (nameEl) nameEl.textContent = name || "Mi perfil";
+    if (levelEl) levelEl.textContent = info.level || "";
+  }
+  function hydrateUser() {
+    if (!window.ILAuth || typeof window.ILAuth.getProfile !== "function") return;
+    try {
+      Promise.resolve(window.ILAuth.getProfile()).then(function (p) {
+        if (!p) return;
+        var n = (p.full_name || "").trim().split(/\s+/)[0] || p.username || "";
+        setUser({ name: n, level: p.level || "" });
+      }).catch(function () {});
+    } catch (e) {}
+  }
+  if (document.readyState === "complete") hydrateUser();
+  else window.addEventListener("load", hydrateUser);
 
   /* ---------- PWA: manifest + tema + icono de app (sin tocar cada <head>) ---------- */
   function ensurePWA() {
@@ -159,7 +191,7 @@
     setTimeout(function () { wrap.remove(); }, 3400);
   }
 
-  window.ILLayout = { railHTML: railHTML, navHTML: navHTML, mount: mount, icon: icon };
+  window.ILLayout = { railHTML: railHTML, navHTML: navHTML, mount: mount, icon: icon, setUser: setUser };
   window.ILIcon = icon;
   window.ILToast = ILToast;
   window.ILConfetti = ILConfetti;

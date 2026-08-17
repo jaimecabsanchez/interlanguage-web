@@ -9,13 +9,23 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="design-system.css?v=20260810g">
+<link rel="stylesheet" href="design-system.css?v=20260816b">
 <link rel="stylesheet" href="app.css?v=20260809d">
 <link rel="stylesheet" href="etapa.css?v=20260809d">
-<link rel="stylesheet" href="shell.css?v=20260809d">
+<link rel="stylesheet" href="shell.css?v=20260816c">
 <link rel="stylesheet" href="progreso.css?v=20260809c">
 <link rel="stylesheet" href="il-visual.css?v=20260810a">
 <link rel="stylesheet" href="age-mode.css?v=20260810j">
+<style>
+  .stamp-grid.is-achievements{display:block}
+  .ach-family{margin-bottom:var(--il-space-6)}
+  .ach-family:last-child{margin-bottom:0}
+  .ach-family__title{margin:0 0 var(--il-space-3);font-family:var(--il-font-display);font-size:var(--il-fs-xs);font-weight:var(--il-weight-extrabold);text-transform:uppercase;letter-spacing:var(--il-tracking-label);color:var(--il-text-secondary)}
+  .ach-family__grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(158px,1fr));gap:var(--il-space-3)}
+  .ach-card.rarity-rare{border-color:color-mix(in srgb,var(--il-secondary) 42%,var(--il-border))}
+  .ach-card.rarity-epic{border-color:color-mix(in srgb,var(--il-warning) 50%,var(--il-border))}
+  .ach-card .stamp-card__count{white-space:nowrap}
+</style>
 </head>
 <body>
 <div id="loading" class="il-state il-state--loading"><span class="il-spinner" aria-hidden="true"></span><p>Preparando tu progreso…</p></div>
@@ -150,8 +160,8 @@
   <p class="dialog-progress-copy" id="stampDialogProgressCopy"></p>
 </dialog>
 
-<script src="layout.js?v=20260809d"></script>
-<script src="il-visual.js?v=20260810b"></script>
+<script src="layout.js?v=20260816c"></script>
+<script src="il-visual.js?v=20260816a"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-config.js?v=20260809d"></script>
 <script src="auth-utils.js?v=20260809d"></script>
@@ -160,6 +170,8 @@
 <script src="mission-state.js?v=20260813a"></script>
 <script src="profile-settings.js?v=20260812a"></script>
 <script src="progress-data.js?v=20260810b"></script>
-<script src="progreso.js?v=20260811f"></script>
+<script src="motor/achievements.js?v=20260816a"></script>
+<script src="achievement-store.js?v=20260816a"></script>
+<script src="progreso.js?v=20260816c"></script>
 </body>
 </html>

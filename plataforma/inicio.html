@@ -9,9 +9,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="design-system.css?v=20260810g">
+<link rel="stylesheet" href="design-system.css?v=20260816b">
 <link rel="stylesheet" href="app.css?v=20260809d">
-<link rel="stylesheet" href="shell.css?v=20260809d">
+<link rel="stylesheet" href="shell.css?v=20260816c">
 <link rel="stylesheet" href="etapa.css?v=20260809d">
 <link rel="stylesheet" href="il-visual.css?v=20260810a">
 <style>
@@ -40,8 +40,8 @@
   .daily-mission h2{max-width:16ch;font-size:clamp(1.7rem,1.3rem + 1.6vw,2.35rem);line-height:1.08}
   .mission-outcome{display:none}
   .mission-meta{display:flex;align-items:center;gap:8px;margin:var(--il-space-3) 0 var(--il-space-4);color:var(--il-text-secondary);font-size:var(--il-fs-sm);font-weight:var(--il-weight-semibold)}
-  .mission-meta .meta-item{display:inline-flex;align-items:center;gap:5px}.mission-meta svg{width:16px;height:16px;color:var(--il-secondary)}
-  .mission-meta .meta-sep{color:var(--il-border-strong)}
+  .mission-meta .meta-item{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:var(--il-radius-pill);background:var(--il-surface-secondary)}.mission-meta svg{width:16px;height:16px;color:var(--il-secondary)}
+  .mission-meta .meta-sep{display:none}
   /* Ilustración protagonista integrada */
   .mission-illo{flex:0 0 auto;width:clamp(96px,26vw,132px);height:clamp(96px,26vw,132px);filter:drop-shadow(0 10px 18px color-mix(in srgb,var(--il-secondary) 16%,transparent))}
   .mission-illo svg{width:100%;height:100%;display:block}
@@ -54,14 +54,19 @@
   .skill-chip__icon{display:inline-flex;line-height:0}.skill-chip__icon svg{width:20px;height:20px}.skill-chip__label{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 
   /* ===== Ruta: mini-recorrido con el avión como hilo ===== */
-  .mission-route{position:relative;margin:0 0 var(--il-space-5);padding-top:34px}
+  .mission-route{--rn:34px;position:relative;margin:0 0 var(--il-space-5);padding-top:38px}
   .mission-route__track{position:relative;display:flex;align-items:center;justify-content:space-between}
-  .mission-route__track::before{content:"";position:absolute;left:11px;right:11px;top:50%;height:3px;transform:translateY(-50%);border-radius:99px;background:repeating-linear-gradient(90deg,var(--il-border-strong) 0 4px,transparent 4px 10px)}
-  .mission-route__track::after{content:"";position:absolute;left:11px;top:50%;width:calc((100% - 22px) * var(--route-fill,0));height:3px;transform:translateY(-50%);border-radius:99px;background:var(--il-success);transition:width var(--il-duration-slow) var(--il-ease)}
-  .route-node{position:relative;z-index:1;width:22px;height:22px;display:grid;place-items:center;border-radius:50%;background:var(--il-surface);border:2px solid var(--il-border-strong);color:var(--il-muted);box-shadow:0 0 0 4px var(--il-surface)}
-  .route-node svg{width:12px;height:12px}
+  .mission-route__track::before{content:"";position:absolute;left:calc(var(--rn)/2);right:calc(var(--rn)/2);top:50%;height:4px;transform:translateY(-50%);border-radius:99px;background:repeating-linear-gradient(90deg,var(--il-border-strong) 0 7px,transparent 7px 14px)}
+  .mission-route__track::after{content:"";position:absolute;left:calc(var(--rn)/2);top:50%;width:calc((100% - var(--rn)) * var(--route-fill,0));height:4px;transform:translateY(-50%);border-radius:99px;background:var(--il-success);transition:width var(--il-duration-slow) var(--il-ease)}
+  .route-node{position:relative;z-index:1;width:var(--rn);height:var(--rn);display:grid;place-items:center;border-radius:50%;background:var(--il-surface);border:2.5px solid var(--il-border-strong);color:var(--il-muted);font-family:var(--il-font-display);font-weight:var(--il-weight-extrabold);font-size:var(--il-fs-sm);font-variant-numeric:tabular-nums;box-shadow:0 0 0 4px var(--il-surface)}
+  .route-node svg{width:calc(var(--rn) * .5);height:calc(var(--rn) * .5)}
   .route-node.is-complete{background:var(--il-success);border-color:var(--il-success);color:var(--il-on-success)}
-  .route-node.is-current{border-color:var(--il-secondary);background:var(--il-secondary-soft);box-shadow:0 0 0 4px var(--il-surface),0 0 0 7px color-mix(in srgb,var(--il-secondary) 22%,transparent)}
+  .route-node.is-current{border-color:var(--il-secondary);background:var(--il-surface);color:var(--il-secondary);box-shadow:0 0 0 4px var(--il-surface),0 0 0 7px color-mix(in srgb,var(--il-secondary) 22%,transparent)}
+  body[data-stage="p12"] .mission-route{--rn:56px;padding-top:44px}
+  body[data-stage="p34"] .mission-route{--rn:48px;padding-top:42px}
+  body[data-stage="eso"] .mission-route{--rn:26px}
+  /* Gana a age-mode.css (que fija 26px en young) para que el tamaño lo mande --rn. */
+  body[data-age-mode="primary-young"] .mission-route .route-node{width:var(--rn);height:var(--rn);font-size:var(--il-fs-lg)}
   .mission-plane{position:absolute;top:2px;left:var(--mission-progress,4%);width:30px;height:30px;color:var(--il-secondary);transform:translateX(-50%) rotate(-6deg);transition:left var(--il-duration-slow) var(--il-ease);filter:drop-shadow(var(--il-shadow-xs));z-index:2}.mission-plane svg{width:30px;height:30px}
   .mission-plane.arrive{animation:mission-arrive .6s var(--il-ease) both}
   .mission-plane.takeoff{animation:mission-takeoff .34s var(--il-ease) forwards}
@@ -77,9 +82,15 @@
   .mission-cta:hover{background:var(--il-secondary-hover);transform:translateY(-2px);box-shadow:0 12px 0 -4px var(--il-coral-ink),0 20px 30px -14px color-mix(in srgb,var(--il-secondary) 72%,transparent)}
   .mission-cta:active{transform:translateY(3px);box-shadow:0 6px 0 -4px var(--il-coral-ink),0 10px 18px -14px color-mix(in srgb,var(--il-secondary) 60%,transparent)}
   .mission-cta.is-complete{background:var(--il-success);color:var(--il-on-success);box-shadow:0 10px 0 -4px var(--il-jade-deep,var(--il-success)),0 16px 26px -14px color-mix(in srgb,var(--il-success) 60%,transparent)}
+  .mission-cta{position:relative}
+  .cta-spark{display:none;position:absolute;right:16px;top:50%;transform:translateY(-50%);width:30px;height:30px;color:#fff;pointer-events:none}.cta-spark svg{width:100%;height:100%}
+  body[data-age-mode="primary-young"] .cta-spark,body[data-age-mode="primary-upper"] .cta-spark{display:block}
   /* Nemo integrado (una sola vez) + enlace de repaso */
-  .mission-nemo{display:flex;align-items:center;gap:var(--il-space-2);margin:0 0 var(--il-space-4);color:var(--il-secondary-hover);font-family:var(--il-font-display);font-weight:var(--il-weight-bold);font-size:var(--il-fs-sm)}
-  .mission-nemo[hidden]{display:none}.mission-nemo__art{width:40px;height:40px;flex:0 0 auto;display:grid;place-items:center;border-radius:50%;background:var(--il-primary-soft);overflow:hidden}.mission-nemo__art svg{width:36px;height:36px}
+  .mission-nemo{display:flex;align-items:center;gap:var(--il-space-3);margin:0 0 var(--il-space-4);padding:12px 14px;border:1px solid var(--il-border-soft,var(--il-border));border-radius:var(--il-radius-md);background:var(--il-surface-secondary)}
+  .mission-nemo[hidden]{display:none}.mission-nemo__art{width:44px;height:44px;flex:0 0 auto;display:grid;place-items:center;border-radius:50%;background:var(--il-surface);overflow:hidden}.mission-nemo__art svg{width:38px;height:38px}
+  .mission-nemo__body{display:flex;flex-direction:column;min-width:0;line-height:1.25}
+  .mission-nemo__body b{font-family:var(--il-font-display);font-weight:var(--il-weight-extrabold);color:var(--il-text-primary);font-size:var(--il-fs-base)}
+  .mission-nemo__body small{color:var(--il-text-secondary);font-size:var(--il-fs-sm);font-weight:var(--il-weight-medium)}
   .mission-review{display:inline-block;margin-top:var(--il-space-3);color:var(--il-secondary-hover);font-weight:var(--il-weight-bold);font-size:var(--il-fs-sm);text-decoration:none}.mission-review[hidden]{display:none}.mission-review:hover{text-decoration:underline}
   .mission-context{display:none;align-items:flex-start;gap:var(--il-space-3);margin:var(--il-space-5) 0 0;padding-top:var(--il-space-4);border-top:1px solid var(--il-border);color:var(--il-text-secondary);font-size:var(--il-fs-sm)}.mission-context__icon{width:36px;height:36px;display:grid;place-items:center;flex:0 0 auto;border-radius:var(--il-radius-sm);background:var(--il-primary-soft);color:var(--il-primary)}.mission-context__icon svg{width:19px;height:19px}.mission-context p{margin:0}.teacher-note{display:block;margin-top:3px;color:var(--il-primary);font-weight:var(--il-weight-bold)}
 
@@ -99,9 +110,10 @@
   /* Próximo sello = recompensa visual */
   .next-stamp{background:linear-gradient(155deg,var(--il-secondary-soft),var(--il-surface) 70%);text-align:center;cursor:pointer;transition:transform 120ms var(--il-ease),box-shadow var(--il-duration-base) var(--il-ease)}
   .next-stamp:hover{transform:translateY(-3px);box-shadow:var(--il-shadow-md)}
-  .next-stamp .insight-head{justify-content:center;margin-bottom:var(--il-space-3)}.next-stamp .insight-title__icon{display:none}
+  .next-stamp .insight-head{justify-content:flex-start;margin-bottom:var(--il-space-3)}.next-stamp .insight-title__icon{display:grid;background:var(--il-warning-soft);color:var(--il-warning)}
   .next-stamp .ui-label{color:var(--il-coral-ink)}
   .stamp-mark{position:relative;width:112px;height:112px;margin:0 auto var(--il-space-2);display:grid;place-items:center;transition:transform var(--il-duration-base) var(--il-ease)}.stamp-mark svg{width:100%;height:100%}
+  .next-stamp .stamp-mark::before{content:"";position:absolute;inset:-9px;border-radius:50%;background:conic-gradient(var(--il-secondary) calc(var(--stamp-fill,0)*360deg),var(--il-border) 0);-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 5px),#000 calc(100% - 5px));mask:radial-gradient(farthest-side,transparent calc(100% - 5px),#000 calc(100% - 5px))}
   .next-stamp:hover .stamp-mark{transform:scale(1.04) rotate(-2deg)}
   .stamp-name{margin:0;font-family:var(--il-font-display);font-weight:var(--il-weight-extrabold);font-size:var(--il-fs-lg);color:var(--il-text-primary)}
   .stamp-count{margin:2px 0 0;font-family:var(--il-font-display);font-weight:var(--il-weight-extrabold);color:var(--il-secondary-hover);font-size:var(--il-fs-2xl);font-variant-numeric:tabular-nums}
@@ -152,7 +164,7 @@
         <section class="daily-mission" aria-labelledby="missionTitle">
           <div class="mission-top">
             <div class="mission-head">
-              <div class="mission-eyebrow"><span data-il-icon="plane" aria-hidden="true"></span><span id="missionEyebrowText">Tu misión de hoy</span></div>
+              <div class="mission-eyebrow"><span data-il-icon="star" aria-hidden="true"></span><span id="missionEyebrowText">Tu misión de hoy</span></div>
               <h2 id="missionTitle">My daily routine</h2>
               <p class="mission-outcome" id="missionOutcome"></p>
               <p class="mission-meta">
@@ -168,8 +180,8 @@
             <span class="mission-plane" aria-hidden="true"><span data-il-icon="plane"></span></span>
             <div class="mission-route__track" id="missionRouteTrack"></div>
           </div>
-          <p class="mission-nemo" id="missionNemo" hidden><span class="mission-nemo__art" aria-hidden="true"></span><span id="missionNemoText">¡Vamos!</span></p>
-          <a class="btn mission-cta" id="missionCta" href="leccion.html"><span data-il-icon="play" aria-hidden="true"></span><span id="missionCtaText">Empezar</span></a>
+          <div class="mission-nemo" id="missionNemo" hidden><span class="mission-nemo__art" aria-hidden="true"></span><span class="mission-nemo__body"><b id="missionNemoText">¡Vamos!</b><small id="missionNemoSub">Estás a un paso de lograrlo.</small></span></div>
+          <a class="btn mission-cta" id="missionCta" href="leccion.html"><span data-il-icon="play" aria-hidden="true"></span><span id="missionCtaText">Empezar</span><span class="cta-spark" aria-hidden="true"><svg viewBox="0 0 40 40" fill="currentColor"><path d="M26 4c1 5 2 6 7 7-5 1-6 2-7 7-1-5-2-6-7-7 5-1 6-2 7-7z"/><path d="M12 18c.7 3.5 1.4 4.2 5 5-3.6.8-4.3 1.5-5 5-.7-3.5-1.4-4.2-5-5 3.6-.8 4.3-1.5 5-5z" opacity=".8"/></svg></span></a>
           <a class="mission-review" id="missionReview" href="leccion.html?mode=errors" hidden>Repasar</a>
           <div class="mission-context">
             <span class="mission-context__icon" aria-hidden="true"><span data-il-icon="book"></span></span>
@@ -188,7 +200,7 @@
           </section>
 
           <section class="insight-card next-stamp" id="stampCard" aria-labelledby="stampTitle" role="link" tabindex="0" aria-label="Ver mis sellos">
-            <div class="insight-head"><p class="ui-label" id="stampEyebrow">Próximo sello</p></div>
+            <div class="insight-head"><div class="insight-title"><span class="insight-title__icon" aria-hidden="true"><span data-il-icon="medal"></span></span><p class="ui-label" id="stampEyebrow">Próximo sello</p></div></div>
             <div class="stamp-mark" aria-hidden="true"></div>
             <h3 class="stamp-name" id="stampTitle">Morning Explorer</h3>
             <p class="stamp-count" id="stampCount">0/5</p>
@@ -209,13 +221,16 @@
   <nav class="app-nav" data-il-nav="inicio"></nav>
 </div>
 
-<script src="layout.js?v=20260809d"></script>
-<script src="il-visual.js?v=20260810b"></script>
+<script src="layout.js?v=20260816c"></script>
+<script src="il-visual.js?v=20260816a"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-config.js?v=20260809d"></script>
 <script src="auth-utils.js?v=20260809d"></script>
 <script src="etapa.js?v=20260810d"></script>
-<script src="contenido.js?v=20260814a"></script>
+<script src="content/schema.js?v=20260817a"></script>
+<script src="content/loader.js?v=20260817a"></script>
+<script src="content/manifest.js?v=20260817a"></script>
+<script src="contenido.js?v=20260817a"></script>
 <script src="auth.js?v=20260811f"></script>
 <script src="motor/matriz.js?v=20260809d"></script>
 <script src="mission-state.js?v=20260813a"></script>
@@ -225,9 +240,8 @@
 <script src="profile-settings.js?v=20260812a"></script>
 <script>
   const $ = id => document.getElementById(id);
-  const units = (window.IL_CONTENIDO && window.IL_CONTENIDO.unidades) || [];
+  let units = [];
   const byId = {}, unitOf = {};
-  units.forEach(unit => (unit.ejercicios || []).forEach(exercise => { byId[exercise.id] = exercise; unitOf[exercise.id] = unit; }));
   const skillLabels = { vocabulary: "Vocabulary", grammar: "Grammar", listening: "Listening", reading: "Reading", writing: "Writing", speaking: "Speaking" };
   const skillIcon = { listening: "ear", vocabulary: "books", speaking: "speaker", grammar: "pencil", reading: "book", writing: "flag" };
 
@@ -284,12 +298,13 @@
       const node = document.createElement("span");
       node.className = "route-node" + (i < visibleCompleted ? " is-complete" : (i === visibleCompleted ? " is-current" : ""));
       if (i < visibleCompleted) node.innerHTML = ILIcon("check");
+      else node.textContent = String(i + 1);   // número del paso, como en la ruta de referencia
       track.appendChild(node);
     }
-    // Avión sobre el nodo actual; relleno de la línea hasta ahí.
-    const anchor = total > 1 ? visibleCompleted / (total - 1) : 0;
-    $("missionRoute").style.setProperty("--mission-progress", "calc(11px + (100% - 22px) * " + Math.min(1, anchor) + ")");
-    $("missionRouteTrack").style.setProperty("--route-fill", total ? Math.min(1, visibleCompleted / total) : 0);
+    // Avión sobre el nodo actual; la línea verde llega hasta ese nodo.
+    const anchor = total > 1 ? Math.min(1, visibleCompleted / (total - 1)) : 0;
+    $("missionRoute").style.setProperty("--mission-progress", "calc(var(--rn) / 2 + (100% - var(--rn)) * " + anchor + ")");
+    $("missionRouteTrack").style.setProperty("--route-fill", anchor);
     $("missionRoute").setAttribute("aria-valuemax", total); $("missionRoute").setAttribute("aria-valuenow", visibleCompleted);
     const isSecondary = experience.id === "secondary";
     $("missionRoute").setAttribute("aria-label", isSecondary ? (visibleCompleted + " of " + total + " exercises complete") : (visibleCompleted + " de " + total + " actividades completadas"));
@@ -332,6 +347,7 @@
     $("stampEyebrow").textContent = isSecondary ? "Next achievement" : "Próximo sello";
     $("stampTitle").textContent = stampTitle;
     $("stampCount").textContent = current + " / " + target;
+    if (mark) mark.style.setProperty("--stamp-fill", (target ? current / target : 0).toFixed(3));
     // La tarjeta lleva al pasaporte (el detalle del sello vive allí).
     const card = $("stampCard");
     card.setAttribute("aria-label", (isSecondary ? "See your stamps" : "Ver mis sellos") + " · " + stampTitle + " " + current + "/" + target);
@@ -380,6 +396,9 @@
 
   (async () => {
     try {
+      await ILContent.ready;
+      units = (window.IL_CONTENIDO && window.IL_CONTENIDO.unidades) || [];
+      units.forEach(unit => (unit.ejercicios || []).forEach(exercise => { byId[exercise.id] = exercise; unitOf[exercise.id] = unit; }));
       const profile = await ILAuth.getProfile();
       if (!profile) { location.href = "index.html"; return; }
       if (profile.is_admin) { location.href = "admin.html"; return; }
@@ -405,11 +424,23 @@
         : (inProgress ? experience.copy.active
         : (gap != null && gap >= 3 ? experience.copy.comeback : experience.copy.ready));
       const streak = progress ? (progress.streak || 0) : 0; $("streak").textContent = streak + (streak === 1 ? " día" : " días");
-      $("level").textContent = (placement && placement.placed ? placement.label : profile.level) || "Explorer";
+      // Nivel: en pequeños, "Nivel N" (derivado del CEFR) con estrella, como el mockup; mayores mantienen Explorer/CEFR.
+      if (experience.id === "primary-young") {
+        const order = (window.ILAuth && ILAuth.CEFR_ORDER) || ["Pre-A1", "A1", "A2", "B1"];
+        let cefr = (placement && placement.cefr) || "";
+        if (!cefr && profile.level) { const m = /(Pre-A1|A1|A2|B1)/.exec(profile.level); if (m) cefr = m[1]; }
+        const idx = order.indexOf(cefr);
+        $("level").textContent = "Nivel " + (idx >= 0 ? idx + 1 : 1);
+        const lvlIcon = document.querySelector(".student-pill.level [data-il-icon]");
+        if (lvlIcon) { lvlIcon.setAttribute("data-il-icon", "star"); lvlIcon.innerHTML = ILIcon("star"); }
+      } else {
+        $("level").textContent = (placement && placement.placed ? placement.label : profile.level) || "Explorer";
+      }
       $("missionEyebrowText").textContent = experience.copy.missionEyebrow;
       $("missionTitle").textContent = titleFor(unit); $("missionOutcome").textContent = outcomeFor(unit);
       // Ilustración protagonista integrada (no en ESO, que va sobrio).
-      $("missionIllo").innerHTML = experience.id === "secondary" ? "" : illoFor(unit);
+      // Ilustración solo en primaria superior (el reloj queda bien); en pequeños y ESO la tarjeta va limpia (como el mockup).
+      $("missionIllo").innerHTML = experience.id === "primary-upper" ? illoFor(unit) : "";
       if (experience.id === "secondary") {
         $("missionContextCopy").childNodes[0].nodeValue = "Based on this week’s classwork.";
         $("weeklyTitle").textContent = "This week";
@@ -463,7 +494,7 @@
           ctaText.innerHTML = '¡Empezar! <span aria-hidden="true">→</span>';
         }
         // Nemo saluda una sola vez, integrado en la tarjeta (no flotante).
-        if (!doneToday) { const mn = $("missionNemo"), mnArt = mn.querySelector(".mission-nemo__art"); if (mnArt && window.ILVisual) mnArt.innerHTML = ILVisual.nemo("hi"); $("missionNemoText").textContent = "¡Vamos, " + name + "!"; mn.hidden = false; }
+        if (!doneToday) { const mn = $("missionNemo"), mnArt = mn.querySelector(".mission-nemo__art"); if (mnArt && window.ILVisual) mnArt.innerHTML = ILVisual.nemo("hi"); $("missionNemoText").textContent = "¡Vamos, " + name + "!"; const nsub = $("missionNemoSub"); if (nsub) nsub.textContent = inProgress ? "Estás a un paso de lograrlo." : "¡Hoy aprendes algo nuevo!"; mn.hidden = false; }
       }
 
       ILLayout.mount();

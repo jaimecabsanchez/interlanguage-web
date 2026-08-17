@@ -100,6 +100,28 @@
       '<path d="M46 36a10 10 0 1 1-3-7.1" fill="none" stroke="var(--il-primary)" stroke-width="2.4" stroke-linecap="round"/>' +
       '<path d="M45 22v7h-7" ' + P + '/>' +
       '<path d="M31 36 41 32 37.5 42 35.5 37.5Z" fill="var(--il-primary)"/>',
+    "streak-spark":
+      '<path d="M37 20c2.5 5-1.5 7.5-1.5 11a4.5 4.5 0 0 0 9 0c0-.8-.3-1.7-.8-2.5A12 12 0 1 1 30 39c0-5.5 4.5-8.5 7-19Z" fill="var(--il-primary)"/>',
+    "missions-10":
+      '<path d="M28 21v30" ' + P + '/><path d="M28 24h17l-3.5 5 3.5 5H28" fill="var(--il-primary)"/>',
+    "missions-50":
+      '<path d="M29 23h14v6a7 7 0 0 1-14 0zM34 36h4M33 36l-1 7h8l-1-7M30 46h12" ' + P + '/>' +
+      '<path d="M25 24a3 3 0 0 0 3 4M47 24a3 3 0 0 1-3 4" ' + P + '/>',
+    "speaking-star":
+      '<path d="M22 27h28a3 3 0 0 1 3 3v9a3 3 0 0 1-3 3H35l-6 5v-5h-7a3 3 0 0 1-3-3v-9a3 3 0 0 1 3-3Z" ' + P + '/>' +
+      '<path d="m36 30 1.6 3.3 3.6.5-2.6 2.5.6 3.6L36 42l-3.2 1.4.6-3.6-2.6-2.5 3.6-.5L36 30Z" fill="var(--il-primary)"/>',
+    "grammar-builder":
+      '<rect x="24" y="35" width="11" height="11" rx="2" ' + P + '/><rect x="37" y="35" width="11" height="11" rx="2" ' + P + '/>' +
+      '<rect x="30.5" y="23" width="11" height="11" rx="2" fill="var(--il-primary)"/>',
+    "reading-explorer":
+      '<path d="M36 29c-4-2.6-9-2.6-13-1.6v17c4-1 9-1 13 1.6 4-2.6 9-2.6 13-1.6v-17c-4-1-9-1-13 1.6Z" ' + P + '/><path d="M36 29v17" ' + P + '/>',
+    "perfect-round":
+      '<circle cx="36" cy="36" r="13" ' + P + '/><circle cx="36" cy="36" r="6.5" ' + P + '/>' +
+      '<path d="m31.5 36 3 3 6-6.5" fill="none" stroke="var(--il-primary)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>',
+    sharp:
+      '<path d="M39 20 26 39h8l-2 13 13-21h-8l2-11Z" fill="var(--il-primary)"/>',
+    "record-streak":
+      '<path d="M22 45l8-8 5 5 13-14" ' + P + '/><path d="M43 28h7v7" ' + P + '/>',
     _default:
       '<path d="m36 24 3.7 7.5 8.3 1.2-6 5.9 1.4 8.2L36 50.9 28.6 46.8l1.4-8.2-6-5.9 8.3-1.2L36 24Z" fill="var(--il-primary)"/>'
   };

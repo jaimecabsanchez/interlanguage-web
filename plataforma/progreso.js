@@ -5,6 +5,7 @@
   const DAY_NAMES = ["lunes", "martes", "miércoles", "jueves", "viernes", "sábado", "domingo"];
   let snapshot = null;
   let ageMode = "primary-upper";
+  let currentUser = "";
 
   function icon(name) { return window.ILIcon ? window.ILIcon(name) : ""; }
   function firstName(profile) { return String(profile.full_name || "").trim().split(/\s+/)[0] || "paso a paso"; }
@@ -103,7 +104,64 @@
     if (stampData.unlocked) return "Conseguido";
     return stampData.current + " de " + stampData.target;
   }
+  // Contexto para el catálogo unificado de achievements, derivado del snapshot
+  // (sin tocar almacenamiento): reutiliza las métricas ya calculadas de los sellos.
+  function achievementCtx(data) {
+    const items = (data.stamps && data.stamps.items) || [];
+    const find = id => items.filter(x => x.id === id)[0];
+    const focus = find("morning-explorer") || find("weekend-planner");
+    const listening = find("listening-star");
+    const comebackItem = find("comeback");
+    return {
+      lessons: data.lessons || 0, streak: data.streak || 0, prevBest: data.bestStreak || 0,
+      weekCount: (data.week && data.week.count) || 0, weekGoal: (data.week && data.week.goal) || 5,
+      wordsLearned: data.wordsLearned || 0,
+      focusMissions: focus ? (focus.current || 0) : 0,
+      skillCorrect: { listening: listening ? (listening.current || 0) : 0 },
+      mastery: {},
+      comeback: !!(comebackItem && comebackItem.unlocked),
+      earned: (window.ILAchievements ? window.ILAchievements.earned(currentUser) : [])
+    };
+  }
+  const ACH_FAMILY_LABEL = { constancia: "Constancia", learning: "Aprendizaje", skills: "Habilidades", mastery: "Dominio", special: "Especiales" };
+
+  // Colección unificada de logros, agrupada por familia (§1-2). Solo lectura.
   function renderStamps(data) {
+    const A = window.IL_ACHIEVEMENTS;
+    const grid = $("stampGrid");
+    if (!A) return renderStampsLegacy(data);
+    grid.classList.add("is-achievements"); grid.replaceChildren();
+    const band = (window.IL_ETAPA && IL_ETAPA.current() && IL_ETAPA.current().band) || "p56";
+    const ctx = achievementCtx(data);
+    const list = A.availableFor(band);
+    let unlocked = 0; const doneNow = [];
+    A.FAMILIES.forEach(fam => {
+      const inFam = list.filter(i => i.family === fam);
+      if (!inFam.length) return;
+      const section = document.createElement("div"); section.className = "ach-family";
+      const heading = document.createElement("p"); heading.className = "ach-family__title"; heading.textContent = ACH_FAMILY_LABEL[fam] || fam; section.appendChild(heading);
+      const row = document.createElement("div"); row.className = "ach-family__grid";
+      inFam.forEach(item => {
+        const p = A.progressOf(item.id, ctx); const done = p.done; if (done) { unlocked++; doneNow.push(item.id); }
+        const card = document.createElement("div"); card.className = "stamp-card ach-card rarity-" + item.rarity + (done ? " is-unlocked" : " is-locked");
+        const top = document.createElement("span"); top.className = "stamp-card__top";
+        const visual = document.createElement("span"); visual.className = "stamp-card__visual"; visual.innerHTML = window.ILVisual ? ILVisual.stamp(item.visual, { locked: !done }) : icon("stamp");
+        const state = document.createElement("span"); state.className = "stamp-card__state"; state.innerHTML = icon(done ? "check" : "lock"); state.appendChild(document.createTextNode(done ? " Conseguido" : " En progreso")); top.append(visual, state);
+        const title = document.createElement("h3"); title.textContent = A.displayName(item, band);
+        const desc = document.createElement("p"); desc.textContent = item.description;
+        const bar = document.createElement("span"); bar.className = "stamp-card__progress"; bar.style.setProperty("--il-stamp-progress", (p.percent || 0) + "%"); bar.appendChild(document.createElement("span"));
+        const count = document.createElement("span"); count.className = "stamp-card__count"; count.textContent = done ? "Conseguido" : (item.momentary ? "Especial" : (p.current + " / " + p.target));
+        card.append(top, title, desc, bar, count); row.appendChild(card);
+      });
+      section.appendChild(row); grid.appendChild(section);
+    });
+    $("stampsUnlocked").textContent = unlocked;
+    // Persiste como conseguidos todos los logros cuyo criterio REAL ya se cumple
+    // (cierra el hueco: los de habilidad/vocabulario no se ganaban en el fin de misión).
+    if (window.ILAchievements && currentUser && doneNow.length) window.ILAchievements.add(currentUser, doneNow);
+  }
+
+  function renderStampsLegacy(data) {
     $("stampsUnlocked").textContent = data.stamps.unlocked;
     const grid = $("stampGrid"); grid.replaceChildren();
     data.stamps.items.forEach(stampData => {
@@ -207,6 +265,7 @@
       if (profile.is_admin) { location.href = "admin.html"; return; }
       if (profile.must_change_password) { location.href = "cambiar-clave.html"; return; }
       ILProfileSettings.setActive(profile.username || "", profile.sex);
+      currentUser = profile.username || "";
       IL_ETAPA.apply(profile); ageMode = IL_ETAPA.current().mode; snapshot = await ILProgressData.load(ILAuth, window.ILMission, { ageMode: ageMode }); if (!snapshot) throw new Error("No progress snapshot");
       renderHeader(snapshot); renderWeek(snapshot); renderLearning(snapshot); renderStamps(snapshot); setupTabs(); setupDialog();
       if (ageMode === "primary-young") applyYoung(snapshot);

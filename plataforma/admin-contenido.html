@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="design-system.css?v=20260810g">
+<link rel="stylesheet" href="design-system.css?v=20260816b">
 <link rel="stylesheet" href="app.css?v=20260809d">
 <style>
   body{background:
@@ -110,12 +110,13 @@
   </div>
 </div>
 
-<script src="layout.js?v=20260809d"></script>
+<script src="layout.js?v=20260816c"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-config.js?v=20260809d"></script>
 <script src="auth-utils.js?v=20260809d"></script>
 <script src="auth.js?v=20260811f"></script>
 <script src="motor/visual-assets.js?v=20260814b"></script>
+<script src="content/schema.js?v=20260817a"></script>
 <script>
   const $ = (id) => document.getElementById(id);
   const KEY = "il_cms_content";
@@ -125,7 +126,26 @@
   let uColor = COLORS[0];
 
   function load() { try { content = JSON.parse(localStorage.getItem(KEY) || "[]"); } catch (e) { content = []; } if (!Array.isArray(content)) content = []; }
-  function save() { localStorage.setItem(KEY, JSON.stringify(content)); }
+  function validateLocalContent() {
+    const stages = ["p12", "p34", "p56", "eso"], objectives = [], exercises = [];
+    const units = content.map(unit => {
+      const copy = Object.assign({}, unit), objectiveId = "cms-" + unit.id + "-objective";
+      copy.stage = stages; copy.objective_ids = [objectiveId]; delete copy.ejercicios;
+      objectives.push({ id:objectiveId,unit_id:unit.id,stage:stages,cefr:unit.nivel||"A1",skill:"vocabulary",difficulty:2,literacy_load:"medium" });
+      (unit.ejercicios || []).forEach(exercise => exercises.push(Object.assign({}, exercise, { unit_id:unit.id,objective_id:objectiveId,stage:stages,variant_group:objectiveId })));
+      return copy;
+    });
+    return ILContentSchema.validatePack({ id:"cms-local-content",version:1,stages,topic:"cms",units,objectives,exercises });
+  }
+  function save() {
+    const validation = validateLocalContent();
+    if (!validation.valid) {
+      const first = validation.errors[0];
+      alert("No se puede guardar: " + first.message + " (" + first.path + ")");
+      return false;
+    }
+    localStorage.setItem(KEY, JSON.stringify(content)); return true;
+  }
   const uid = (p) => p + "-" + Date.now().toString(36) + Math.floor(Math.random() * 1e3);
   const esc = (s) => String(s == null ? "" : s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 

@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="design-system.css?v=20260810g">
+<link rel="stylesheet" href="design-system.css?v=20260816b">
 <link rel="stylesheet" href="app.css?v=20260809d">
 <link rel="stylesheet" href="motor/motor.css?v=20260814e">
 <link rel="stylesheet" href="il-visual.css?v=20260810a">
@@ -70,6 +70,21 @@
   .summary-seal svg{width:45px;height:45px}.summary-card h1{font-size:var(--il-fs-2xl);margin-bottom:var(--il-space-2)}.summary-lead{color:var(--il-text-secondary);margin-bottom:var(--il-space-5)}
   .summary-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--il-space-2);margin-bottom:var(--il-space-5)}
   .summary-stat{padding:14px 8px;border-radius:var(--il-radius-md);background:var(--il-surface-secondary)}.summary-stat strong{display:block;font-family:var(--il-font-display);font-size:var(--il-fs-xl);color:var(--il-primary);font-variant-numeric:tabular-nums}.summary-stat span{font-size:var(--il-fs-xs);color:var(--il-text-secondary)}
+  .summary-newstamp{margin:0 0 var(--il-space-5);padding:var(--il-space-4);border:1px dashed color-mix(in srgb,var(--il-secondary) 40%,var(--il-border));border-radius:var(--il-radius-lg);background:var(--il-secondary-soft)}
+  .summary-newstamp[hidden]{display:none}
+  .summary-newstamp__eyebrow{display:block;margin-bottom:var(--il-space-3);font-family:var(--il-font-display);font-size:var(--il-fs-xs);font-weight:var(--il-weight-extrabold);text-transform:uppercase;letter-spacing:var(--il-tracking-label);color:var(--il-coral-ink)}
+  .summary-newstamp__list{display:flex;gap:var(--il-space-4);justify-content:center;flex-wrap:wrap}
+  .summary-newstamp__item{display:flex;flex-direction:column;align-items:center;gap:6px;width:92px}
+  .summary-newstamp__stamp{width:72px;height:72px}.summary-newstamp__stamp svg{width:100%;height:100%}
+  .summary-newstamp__name{font-family:var(--il-font-display);font-weight:var(--il-weight-bold);font-size:var(--il-fs-xs);color:var(--il-text-primary);text-align:center;line-height:1.2}
+  .reward-dialog{width:min(92vw,420px);padding:0;border:0;border-radius:var(--il-radius-xl);background:var(--il-surface);color:var(--il-text-primary);box-shadow:var(--il-shadow-lg);text-align:center}
+  .reward-dialog::backdrop{background:var(--il-overlay);backdrop-filter:blur(3px)}
+  .reward-dialog__body{padding:var(--il-space-6)}
+  .reward-dialog__visual{width:96px;height:96px;margin:0 auto var(--il-space-3)}.reward-dialog__visual svg{width:100%;height:100%}
+  .reward-dialog .ui-label{color:var(--il-coral-ink)}
+  .reward-dialog h2{font-size:var(--il-fs-xl);margin:var(--il-space-1) 0 var(--il-space-2)}
+  .reward-dialog p{color:var(--il-text-secondary);font-size:var(--il-fs-sm)}
+  .reward-dialog__actions{display:flex;flex-direction:column;gap:var(--il-space-2);margin-top:var(--il-space-5)}
   .summary-reward{display:grid;grid-template-columns:46px minmax(0,1fr) auto;align-items:center;gap:var(--il-space-3);margin-bottom:var(--il-space-5);padding:var(--il-space-4);border:1px solid color-mix(in srgb,var(--il-success) 28%,var(--il-border));border-radius:var(--il-radius-lg);background:var(--il-success-soft);text-align:left}
   .summary-reward[hidden]{display:none}.summary-reward__icon{width:46px;height:46px;display:grid;place-items:center;border-radius:var(--il-radius-md);background:var(--il-success);color:var(--il-on-success)}.summary-reward__icon svg{width:24px;height:24px}.summary-reward b,.summary-reward small{display:block}.summary-reward b{font-family:var(--il-font-display);font-size:var(--il-fs-sm);color:var(--il-jade-deep)}.summary-reward small{margin-top:2px;color:var(--il-text-secondary);font-size:var(--il-fs-xs);line-height:1.4}.summary-reward__link{min-height:var(--il-touch);display:inline-flex;align-items:center;padding:var(--il-space-2) var(--il-space-3);border:1px solid var(--il-success);border-radius:var(--il-radius-sm);background:var(--il-surface);color:var(--il-jade-deep);font-size:var(--il-fs-xs);font-weight:var(--il-weight-bold);text-decoration:none}
   .learned{margin-bottom:var(--il-space-5);text-align:left}.learned h2{font-size:var(--il-fs-base);margin-bottom:var(--il-space-3)}.learned-list{display:flex;flex-wrap:wrap;gap:var(--il-space-2)}.learned-chip{padding:7px 11px;border-radius:var(--il-radius-pill);background:var(--il-primary-soft);color:var(--il-primary);font-size:var(--il-fs-sm);font-weight:var(--il-weight-bold)}
@@ -143,6 +158,10 @@
       <div class="summary-stat"><strong id="summaryTime">0 min</strong><span id="summaryTimeLabel">tiempo</span></div>
       <div class="summary-stat"><strong id="summaryLearned">0</strong><span id="summaryLearnedLabel">expresiones</span></div>
     </div>
+    <div class="summary-newstamp" id="summaryNewStamp" hidden>
+      <span class="summary-newstamp__eyebrow" id="summaryNewStampEyebrow">¡Nuevo sello!</span>
+      <div class="summary-newstamp__list" id="summaryNewStampList"></div>
+    </div>
     <div class="summary-streak" id="summaryStreak" hidden>
       <span class="summary-streak__flame" aria-hidden="true"><span data-il-icon="flame"></span></span>
       <p id="summaryStreakCopy"></p>
@@ -165,19 +184,37 @@
   </div>
 </section>
 
-<script src="layout.js?v=20260809d"></script>
-<script src="il-visual.js?v=20260810b"></script>
+<dialog class="reward-dialog" id="rewardDialog" aria-labelledby="rewardName">
+  <div class="reward-dialog__body">
+    <div class="reward-dialog__visual" id="rewardVisual" aria-hidden="true"></div>
+    <p class="ui-label" id="rewardEyebrow">¡Nueva recompensa!</p>
+    <h2 id="rewardName">Recompensa</h2>
+    <p id="rewardReason"></p>
+    <div class="reward-dialog__actions">
+      <a class="btn btn-primary" id="rewardTry" href="tienda.html">Probar ahora</a>
+      <button class="btn btn-ghost" id="rewardContinue" type="button">Seguir</button>
+    </div>
+  </div>
+</dialog>
+
+<script src="layout.js?v=20260816c"></script>
+<script src="il-visual.js?v=20260816a"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-config.js?v=20260809d"></script>
 <script src="auth-utils.js?v=20260809d"></script>
 <script src="etapa.js?v=20260810d"></script>
 <script src="auth.js?v=20260811f"></script>
-<script src="contenido.js?v=20260814a"></script>
+<script src="content/schema.js?v=20260817a"></script>
+<script src="content/loader.js?v=20260817a"></script>
+<script src="content/manifest.js?v=20260817a"></script>
+<script src="contenido.js?v=20260817a"></script>
 <script src="motor/motivacion.js?v=20260809d"></script>
 <script src="motor/matriz.js?v=20260809d"></script>
 <script src="mission-state.js?v=20260813a"></script>
 <script src="motor/pedagogia.js?v=20260813a"></script>
 <script src="mastery-store.js?v=20260813a"></script>
+<script src="motor/achievements.js?v=20260816a"></script>
+<script src="achievement-store.js?v=20260816a"></script>
 <script src="profile-settings.js?v=20260812a"></script>
 <script src="world-data.js?v=20260810d"></script>
 <script src="motor/visual-assets.js?v=20260814b"></script>
@@ -189,9 +226,8 @@
   const reviewMode = params.get("mode") === "errors";
   const bonusMode = params.get("mode") === "bonus";
   const reviewDueMode = params.get("mode") === "review";
-  const units = (window.IL_CONTENIDO && window.IL_CONTENIDO.unidades) || [];
+  let units = [];
   const byId = {}, unitOf = {};
-  units.forEach(unit => (unit.ejercicios || []).forEach(exercise => { byId[exercise.id] = exercise; unitOf[exercise.id] = unit; }));
 
   let username = "";
   let stageName = "p56";
@@ -208,6 +244,7 @@
   let bonusPool = [];
   let missionMeta = {};
   let completionProgress = null;
+  let newAchievements = [];
   let adaptiveState = IL_ADAPTACION.create();
 
   function refreshOffline() { $("offline").hidden = navigator.onLine; }
@@ -405,12 +442,45 @@
     if (errors) $("reviewMessage").textContent = ageExperience.id === "secondary"
       ? errors + (errors === 1 ? " exercise to review" : " exercises to review")
       : errors + (errors === 1 ? " ejercicio para repasar" : " ejercicios para repasar");
+    // §5 paso 3 · revela sello(s) nuevo(s), solo si pasó algo importante (celebración rara = más impacto).
+    const newStampEl = $("summaryNewStamp");
+    if (newStampEl && !isReview && newAchievements && newAchievements.length && window.IL_ACHIEVEMENTS) {
+      const listEl = $("summaryNewStampList"); listEl.innerHTML = "";
+      newAchievements.slice(0, 3).forEach(id => {
+        const it = IL_ACHIEVEMENTS.byId[id]; if (!it) return;
+        const cell = document.createElement("div"); cell.className = "summary-newstamp__item";
+        const st = document.createElement("span"); st.className = "summary-newstamp__stamp"; st.innerHTML = window.ILVisual ? ILVisual.stamp(it.visual, { locked: false }) : "";
+        const nm = document.createElement("span"); nm.className = "summary-newstamp__name"; nm.textContent = IL_ACHIEVEMENTS.displayName(it, stageName);
+        cell.append(st, nm); listEl.appendChild(cell);
+      });
+      $("summaryNewStampEyebrow").textContent = ageExperience.id === "secondary" ? (newAchievements.length > 1 ? "New achievements" : "New achievement") : (newAchievements.length > 1 ? "¡Nuevos sellos!" : "¡Nuevo sello!");
+      newStampEl.hidden = false;
+      if (window.ILVisual && ILVisual.reveal) ILVisual.reveal(newStampEl);
+    } else if (newStampEl) { newStampEl.hidden = true; }
     $("missionSummary").classList.remove("hidden");
     // El avión representa el avance. Los sellos solo se estampan cuando
     // existe un desbloqueo real, no al terminar cualquier misión.
     const seal = document.querySelector(".summary-seal");
     if (seal) seal.innerHTML = ILIcon("plane");
     $("missionSummary").focus();
+    // §6 · modal de recompensa si un logro nuevo desbloquea un cosmético.
+    if (!isReview && newAchievements && newAchievements.length && window.IL_ACHIEVEMENTS && window.ILWorldData) {
+      const rewardAch = newAchievements.map(id => IL_ACHIEVEMENTS.byId[id]).filter(x => x && x.reward)[0];
+      const rewardItem = rewardAch ? (ILWorldData.CATALOG || []).filter(i => i.id === rewardAch.reward)[0] : null;
+      if (rewardItem) setTimeout(() => showRewardModal(rewardItem, rewardAch), 650);
+    }
+  }
+
+  function showRewardModal(item, ach) {
+    const sec = ageExperience.id === "secondary";
+    const dialog = $("rewardDialog"); if (!dialog) return;
+    $("rewardVisual").innerHTML = window.ILVisual ? ILVisual.stamp(ach.visual, { locked: false }) : "";
+    $("rewardEyebrow").textContent = sec ? "New item unlocked" : "¡Nueva recompensa!";
+    $("rewardName").textContent = (sec && item.nameEn ? item.nameEn : item.name);
+    $("rewardReason").textContent = sec ? ("Unlocked with " + ach.name + ".") : ("Lo has desbloqueado con " + IL_ACHIEVEMENTS.displayName(ach, stageName) + ".");
+    $("rewardTry").textContent = sec ? "Equip" : "Probar ahora";
+    $("rewardContinue").textContent = sec ? "Continue" : "Seguir";
+    if (typeof dialog.showModal === "function") dialog.showModal(); else dialog.setAttribute("open", "");
   }
 
   function renderExtraSummary() {
@@ -430,6 +500,7 @@
     const stats = document.querySelector(".summary-stats"); if (stats) stats.hidden = true;
     $("summaryStreak").hidden = true; $("summaryReward").hidden = true;
     $("learnedBlock").hidden = true; $("reviewCallout").hidden = true;
+    const nsx = $("summaryNewStamp"); if (nsx) nsx.hidden = true;
     $("reviewErrors").hidden = true; $("oneMore").hidden = true;
     if (sec) $("summaryHome").textContent = "Back to home";
     const seal = document.querySelector(".summary-seal"); if (seal) seal.innerHTML = ILIcon("plane");
@@ -453,6 +524,22 @@
       try {
         const progress = await ILAuth.completeLesson(summary);
         if (progress) { progress.streakSaved = !!(streakPreview && streakPreview.usedFreeze); completionProgress = progress; ILMission.markCompletionRecorded(username, missionMeta.date); $("headerStreak").textContent = progress.streak || 0; }
+        // Fase 3 · logros conseguidos en esta misión (se persisten; migración en la primera lectura).
+        try {
+          if (progress && window.IL_ACHIEVEMENTS && window.ILAchievements) {
+            let week = null; try { week = await ILAuth.getWeekActivity(); } catch (e) {}
+            const gained = IL_ACHIEVEMENTS.evaluate({
+              band: stageName,
+              lessons: progress.lessons || 0,
+              streak: progress.streak || 0,
+              weekCount: week ? (week.count || 0) : 0,
+              weekGoal: week ? (week.goal || 5) : 5,
+              session: { total: state.total, allCorrect: state.correctCount === state.total, maxCorrectStreak: state.maxCorrectStreak },
+              earned: ILAchievements.earned(username)
+            });
+            if (gained.length) newAchievements = ILAchievements.add(username, gained);
+          }
+        } catch (e) {}
       } catch (error) {
         if (window.ILToast) ILToast("Misión guardada. Sincronizaremos tu progreso cuando sea posible.", { type: "info", duration: 3600 });
       }
@@ -469,10 +556,20 @@
   $("saveAndExit").addEventListener("click", () => { $("exitDialog").close("exit"); location.href = "inicio.html"; });
   $("exitDialog").addEventListener("cancel", event => { event.preventDefault(); $("exitDialog").close("continue"); });
   $("exitDialog").addEventListener("close", () => { if ($("exitDialog").returnValue !== "exit") { resumeTimer(); $("closeMission").focus(); } });
+  (function () {
+    const rd = $("rewardDialog"); if (!rd) return;
+    const close = () => { if (rd.close) rd.close(); else rd.removeAttribute("open"); };
+    $("rewardContinue").addEventListener("click", close);
+    rd.addEventListener("click", e => { if (e.target === rd) close(); });
+    rd.addEventListener("cancel", e => { e.preventDefault(); close(); });
+  })();
   addEventListener("beforeunload", () => { if (!reviewMode && !bonusMode && !reviewDueMode && username && missionMeta) ILMission.pause(username, undefined, missionMeta.date); });
 
   (async () => {
     try {
+      await ILContent.ready;
+      units = (window.IL_CONTENIDO && window.IL_CONTENIDO.unidades) || [];
+      units.forEach(unit => (unit.ejercicios || []).forEach(exercise => { byId[exercise.id] = exercise; unitOf[exercise.id] = unit; }));
       const profile = await ILAuth.getProfile();
       if (!profile) { location.href = "index.html"; return; }
       if (profile.is_admin) { location.href = "admin.html"; return; }
