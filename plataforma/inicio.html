@@ -52,6 +52,11 @@
   .skill-chip[data-skill="grammar"],.skill-chip[data-skill="writing"]{background:var(--il-primary-soft);color:var(--il-primary)}
   .skill-chip[data-skill="listening"],.skill-chip[data-skill="speaking"]{background:var(--il-success-soft);color:var(--il-jade-deep,var(--il-success))}
   .skill-chip__icon{display:inline-flex;line-height:0}.skill-chip__icon svg{width:20px;height:20px}.skill-chip__label{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+  /* Habilidades graduadas por edad (según los mockups por banda) */
+  body[data-stage="p12"] .skill-list{display:none}
+  body[data-stage="p34"] .skill-list .skill-chip{width:auto;height:auto;display:inline-flex;align-items:center;gap:7px;padding:7px 13px;border-radius:var(--il-radius-pill)}
+  body[data-stage="p34"] .skill-list .skill-chip__label{display:inline;position:static;width:auto;height:auto;clip:auto;overflow:visible;font-family:var(--il-font-display);font-weight:var(--il-weight-bold);font-size:var(--il-fs-xs)}
+  body[data-stage="eso"] .skill-chip{background:var(--il-surface-secondary);color:var(--il-muted)}
 
   /* ===== Ruta: mini-recorrido con el avión como hilo ===== */
   .mission-route{--rn:34px;position:relative;margin:0 0 var(--il-space-5);padding-top:38px}
@@ -440,6 +445,9 @@
       $("missionTitle").textContent = titleFor(unit); $("missionOutcome").textContent = outcomeFor(unit);
       // Ilustración protagonista integrada (no en ESO, que va sobrio).
       // Ilustración solo en primaria superior (el reloj queda bien); en pequeños y ESO la tarjeta va limpia (como el mockup).
+      // Ilustración temática: en 10-11 (reloj SVG, queda bien). En 8-9 y 5-7 el mockup usa
+      // una ilustración 3D (mochila) que va como PNG; hasta tenerla, la ranura queda vacía
+      // (evitamos el SVG que parecía un candado). ESO va sobrio, sin ilustración.
       $("missionIllo").innerHTML = experience.id === "primary-upper" ? illoFor(unit) : "";
       if (experience.id === "secondary") {
         $("missionContextCopy").childNodes[0].nodeValue = "Based on this week’s classwork.";
