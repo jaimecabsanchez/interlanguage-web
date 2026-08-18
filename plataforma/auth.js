@@ -19,12 +19,16 @@
   try {
     const host = location.hostname || "";
     const isLocal = host === "localhost" || host === "127.0.0.1" || host === "" || host.endsWith(".local");
-    if (isLocal) {
-      const qs = new URLSearchParams(location.search);
-      if (qs.get("demo") === "0") localStorage.setItem("il_force_demo", "0");
-      else if (qs.get("demo") === "1") localStorage.removeItem("il_force_demo");
-      forceDemo = localStorage.getItem("il_force_demo") !== "0";   // demo por defecto en local
-    }
+    const qs = new URLSearchParams(location.search);
+    // ?demo=1 / ?demo=0 fuerza o desactiva el modo demo en CUALQUIER dominio (enlaces de
+    // preview para ver/enseñar la app con "lucia"); queda recordado en el navegador.
+    // En LOCAL el demo está activado por defecto. Sin marca en un dominio real → producción (Supabase).
+    if (qs.get("demo") === "1") localStorage.setItem("il_force_demo", "1");
+    else if (qs.get("demo") === "0") localStorage.setItem("il_force_demo", "0");
+    const stored = localStorage.getItem("il_force_demo");
+    if (stored === "1") forceDemo = true;
+    else if (stored === "0") forceDemo = false;
+    else forceDemo = isLocal;
   } catch (e) {}
   const DEMO = noKeys || forceDemo;
 
