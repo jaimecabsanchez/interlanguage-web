@@ -219,7 +219,7 @@
 <script src="world-data.js?v=20260810d"></script>
 <script src="motor/visual-assets.js?v=20260814b"></script>
 <script src="motor/adaptacion.js?v=20260814a"></script>
-<script src="motor/engine.js?v=20260814e"></script>
+<script src="motor/engine.js?v=20260818a"></script>
 <script>
   const $ = id => document.getElementById(id);
   const params = new URLSearchParams(location.search);
@@ -341,19 +341,24 @@
       },
       onFeedback: kind => nemo(kind),
       onNext: result => {
-        const outcome = pendingResult || result || { id: items[index].id, correct: false, learnedExpressions: [] };
-        const currentEx = items[index];
-        // Repaso espaciado: cada intento (de cualquier modo) actualiza el dominio del ejercicio.
-        if (window.ILMastery && currentEx) ILMastery.recordByType(username, outcome.id || currentEx.id, currentEx.tipo, outcome.correct, missionMeta && missionMeta.date);
-        if (reviewMode) {
-          if (outcome.correct) { reviewCorrect += 1; reviewResolved.push(outcome.id); }
-        } else if (bonusMode || reviewDueMode) {
-          if (outcome.correct) bonusCorrect += 1;
-        } else {
-          ILMission.advance(username, outcome, missionMeta.date);
-        }
+        try {
+          const currentEx = items[index];
+          const outcome = pendingResult || result || { id: currentEx && currentEx.id, correct: false, learnedExpressions: [] };
+          // Repaso espaciado: cada intento (de cualquier modo) actualiza el dominio del ejercicio.
+          if (window.ILMastery && currentEx) ILMastery.recordByType(username, outcome.id || currentEx.id, currentEx.tipo, outcome.correct, missionMeta && missionMeta.date);
+          if (reviewMode) {
+            if (outcome.correct) { reviewCorrect += 1; reviewResolved.push(outcome.id); }
+          } else if (bonusMode || reviewDueMode) {
+            if (outcome.correct) bonusCorrect += 1;
+          } else {
+            ILMission.advance(username, outcome, missionMeta.date);
+          }
+        } catch (err) { if (window.console) console.error("[Interlanguage] Error al registrar el ejercicio", err); }
         index += 1;
-        if (index < items.length) showExercise(); else finishMission();
+        if (index < items.length) {
+          try { showExercise(); }
+          catch (err) { if (window.console) console.error("[Interlanguage] Error al mostrar el ejercicio", err); finishMission(); }
+        } else finishMission();
       }
     });
     currentController.focus();
@@ -508,6 +513,7 @@
   }
 
   async function finishMission() {
+   try {
     if (currentController && currentController.destroy) currentController.destroy();
     if (bonusMode || reviewDueMode) { renderExtraSummary(); return; }
     if (reviewMode) {
@@ -545,6 +551,15 @@
       }
     }
     renderSummary(ILMission.get(username, missionMeta.date) || state, false);
+   } catch (err) {
+    if (window.console) console.error("[Interlanguage] No se pudo cerrar la misión", err);
+    const host = $("missionSummary"); const sec = ageExperience.id === "secondary";
+    if (host) {
+      host.classList.remove("hidden");
+      host.innerHTML = '<div class="il-state"><div class="ic">' + ILIcon("plane") + '</div><h2>' + (sec ? "Session complete" : "¡Misión completada!") + '</h2><p>' + (sec ? "Your progress is saved." : "Tu progreso está guardado.") + '</p><a class="btn btn-primary" href="inicio.html">' + (sec ? "Back to home" : "Volver al inicio") + '</a></div>';
+      if (host.focus) host.focus();
+    } else location.href = "inicio.html";
+   }
   }
 
   function resumeTimer() { if (!reviewMode && !bonusMode && !reviewDueMode) ILMission.begin(username, missionMeta); }

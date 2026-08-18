@@ -309,6 +309,11 @@
       const asset = visuals() && visuals().get({ texto: value, visual: value, emoji: value });
       const label = el("span", "sr-only", asset ? asset.label : String(value)); parent.append(art, label);
     }
+    // Etiqueta legible de una opción (usa el catálogo visual si existe; nunca lanza).
+    function matchLabel(value) {
+      const asset = visuals() && visuals().get({ texto: value, visual: value, emoji: value });
+      return asset && asset.label ? asset.label : String(value);
+    }
 
     function redraw() {
       rows.innerHTML = ""; bank.innerHTML = "";
@@ -347,7 +352,7 @@
       getAnswer: () => ({ ...assignments }),
       evaluate: () => baseResult(exercise, {
         correct: pairs.every((pair, index) => assignments[index] === index),
-        correctLabel: pairs.map(pair => pair.a + " — " + (ILLO_LABEL[pair.b] || pair.b)).join(", "),
+        correctLabel: pairs.map(pair => pair.a + " — " + matchLabel(pair.b)).join(", "),
         learnedExpressions: pairs.map(pair => pair.a)
       }),
       reveal: result => {
@@ -475,6 +480,18 @@
     const guided = !!options.guided;
     if (guided && window.IL_ADAPTACION) exercise = window.IL_ADAPTACION.simplify(exercise, true);
     container.innerHTML = "";
+    // Un ejercicio que no se puede montar nunca debe ser un punto muerto:
+    // ofrecemos un botón para continuar y no bloquear la misión.
+    function skipController(unavailable) {
+      const foot = el("div", "eng-footer");
+      const skip = el("button", "btn btn-primary btn-block", secondary ? "Continue" : "Continuar");
+      skip.type = "button";
+      skip.addEventListener("click", () => {
+        if (typeof options.onNext === "function") options.onNext({ id: exercise && exercise.id, correct: false, learnedExpressions: [], skipped: true });
+      });
+      foot.appendChild(skip); container.appendChild(foot);
+      return { focus: () => skip.focus(), destroy: () => {} };
+    }
     const visualCoverage = visuals() && visuals().validateExercise(exercise);
     if (visualCoverage && !visualCoverage.valid) {
       const unavailable = el("div", "il-state");
@@ -484,7 +501,7 @@
         : "Esta actividad visual todavía no tiene todas sus ilustraciones preparadas."));
       container.appendChild(unavailable);
       if (window.console && console.warn) console.warn("[Interlanguage] Cobertura visual incompleta", exercise.id, visualCoverage.missing);
-      return { focus: () => unavailable.focus(), destroy: () => {} };
+      return skipController(unavailable);
     }
     const templateFactory = TEMPLATES[exercise.tipo];
     if (!templateFactory) {
@@ -492,7 +509,7 @@
       unavailable.appendChild(el("h2", "", "Actividad no disponible"));
       unavailable.appendChild(el("p", "", "Este tipo de ejercicio todavía no está preparado."));
       container.appendChild(unavailable);
-      return { focus: () => unavailable.focus(), destroy: () => {} };
+      return skipController(unavailable);
     }
 
     const root = el("article", "eng-card eng-card--" + band);
@@ -607,9 +624,23 @@
       }
     }
 
+    // Red de seguridad: si evaluar/revelar una respuesta falla, el alumno NUNCA
+    // se queda bloqueado — resolvemos el ejercicio para poder continuar.
+    function failSafeAdvance(err) {
+      if (window.console && console.error) console.error("[Interlanguage] Fallo al evaluar el ejercicio", exercise && exercise.id, err);
+      if (!result) result = { correct: false, learnedExpressions: [] };
+      result.final = true;
+      try { template.setDisabled(true); } catch (e) {}
+      try { renderFeedback(feedback, "error", ui.error, secondary ? "Let’s keep going." : "Seguimos.", ""); } catch (e) {}
+      state = "resolved"; action.disabled = false;
+      if (options.lastOne) action.textContent = ui.finish;
+      else action.innerHTML = ui.next + ' <span aria-hidden="true">→</span>';
+      action.onclick = () => { state = "continuing"; action.disabled = true; if (typeof options.onNext === "function") options.onNext(result); };
+    }
     action.addEventListener("click", () => {
       if (state === "resolved" || state === "continuing" || action.disabled) return;
       state = "checking"; action.disabled = true; attempts += 1;
+      try {
       result = template.evaluate();
       if (result.correct) {
         const successCopy = (exercise.feedback && exercise.feedback.correct) ||
@@ -635,6 +666,7 @@
         if (typeof options.onFeedback === "function") options.onFeedback("error");
         resolve(false);
       }
+      } catch (err) { failSafeAdvance(err); }
     });
 
     root.addEventListener("keydown", event => {
