@@ -33,6 +33,24 @@
     }
   }
 
+  // Escena decorativa por edad detrás del héroe de la semana (solo tokens --il-*).
+  function weekScene(band) {
+    if (band === "p12") return '<svg viewBox="0 0 600 260" preserveAspectRatio="xMidYMax slice" aria-hidden="true">'
+      + '<g transform="translate(556 150)"><g stroke="var(--il-warning)" stroke-width="5" stroke-linecap="round" opacity=".34"><path d="M0-30v-11M30 0h11M21 21l8 8M21-21l8-8M-21 21l-8 8"/></g><circle r="22" fill="var(--il-warning-soft)"/><circle r="15" fill="color-mix(in srgb,var(--il-warning) 32%,var(--il-surface))"/></g>'
+      + '<g fill="var(--il-surface)" opacity=".85"><g transform="translate(452 96)"><circle cx="-16" cy="4" r="12"/><circle cx="2" cy="-4" r="16"/><circle cx="20" cy="4" r="12"/><rect x="-18" y="2" width="40" height="12" rx="6"/></g></g>'
+      + '<path d="M0 260v-40c70-18 130 10 210-2s150-22 210-6c60 10 120 6 180-8v56Z" fill="color-mix(in srgb,var(--il-success) 20%,var(--il-surface))" opacity=".6"/>'
+      + '<path d="M0 260v-22c90-14 150 8 250-2s180-14 350 4v20Z" fill="color-mix(in srgb,var(--il-success) 30%,var(--il-surface))" opacity=".55"/>'
+      + '<g stroke="var(--il-success)" stroke-width="4" stroke-linecap="round" opacity=".45"><path d="M120 244v-16M128 245v-20M136 244v-16M470 246v-14M478 247v-18M486 246v-14"/></g></svg>';
+    if (band === "p34") return '<svg viewBox="0 0 600 260" preserveAspectRatio="xMidYMax slice" aria-hidden="true">'
+      + '<g fill="var(--il-surface)" opacity=".8"><g transform="translate(150 70)"><circle cx="-16" cy="4" r="10"/><circle cx="2" cy="-5" r="14"/><circle cx="20" cy="4" r="10"/><rect x="-18" y="2" width="38" height="11" rx="5"/></g></g>'
+      + '<path d="M330 260 470 120l50 60 30-26 120 106Z" fill="color-mix(in srgb,var(--il-success) 24%,var(--il-surface))" opacity=".55"/>'
+      + '<path d="M470 120l28 34-28 15-20-15Z" fill="var(--il-surface)" opacity=".8"/>'
+      + '<path d="M470 120V92" stroke="var(--il-primary)" stroke-width="4" stroke-linecap="round"/><path d="M470 92l24 7-24 9Z" fill="var(--il-secondary)"/>'
+      + '<path d="M0 260v-26c90-14 150 8 250-2s180-12 350 6v22Z" fill="color-mix(in srgb,var(--il-success) 22%,var(--il-surface))" opacity=".5"/></svg>';
+    // 10-11 / ESO: lineas concentricas sutiles en la esquina, sobre el navy (sobrio).
+    const s = "color-mix(in srgb,var(--il-on-dark) 12%,transparent)";
+    return '<svg viewBox="0 0 600 260" preserveAspectRatio="xMaxYMax slice" aria-hidden="true"><g fill="none" stroke="' + s + '" stroke-width="2"><circle cx="558" cy="262" r="66"/><circle cx="558" cy="262" r="116"/><circle cx="558" cy="262" r="166"/></g></svg>';
+  }
   function renderWeek(data) {
     const week = data.week; const count = Math.min(week.count, week.goal); const today = (new Date().getDay() + 6) % 7; const done = new Set(week.practiced);
     $("weekCount").textContent = count; $("weekGoal").textContent = week.goal;
@@ -55,6 +73,8 @@
     const nowStrong = $("streakNow").parentElement; if (nowStrong && nowStrong.lastChild) nowStrong.lastChild.textContent = data.streak === 1 ? " día" : " días";
     const bestSmall = $("streakBest").parentElement; if (bestSmall && bestSmall.lastChild) bestSmall.lastChild.textContent = data.bestStreak === 1 ? " día" : " días";
     renderNextStamp(data.stamps.next);
+    const wband = (window.IL_ETAPA && IL_ETAPA.current() && IL_ETAPA.current().band) || "p56";
+    const scene = $("weekScene"); if (scene) scene.innerHTML = weekScene(wband);
   }
 
   function remainingCopy(stampData) {
