@@ -25,7 +25,11 @@
 .eng-audio:active{transform:scale(.97)}
 .eng-audio.is-playing{background:var(--il-primary);border-color:var(--il-primary);color:var(--il-on-primary)}
 .eng-audio svg{width:21px;height:21px}.eng-audio-label{font-size:var(--il-fs-sm)}
-.eng-body{flex:1;min-height:0;padding-bottom:var(--il-space-5)}
+/* El cuerpo centra su contenido en el espacio disponible: sin huecos muertos
+   cuando el ejercicio es corto; cuando es alto, el centrado no recorta. */
+.eng-body{flex:1;min-height:0;padding-bottom:var(--il-space-5);display:flex;flex-direction:column;justify-content:center}
+/* La lectura se lee de arriba a abajo: los ejercicios con pasaje no se centran. */
+.eng-body:has(.eng-stimulus){justify-content:flex-start}
 .eng-context{display:flex;align-items:center;flex-wrap:wrap;gap:var(--il-space-2);margin-bottom:var(--il-space-4)}
 .eng-task-mode,.eng-context .eng-label{display:inline-flex;align-items:center;gap:7px;margin:0}
 .eng-task-mode{color:var(--il-primary);font-family:var(--il-font-display);font-size:var(--il-fs-xs);font-weight:var(--il-weight-extrabold);letter-spacing:var(--il-tracking-label)}
@@ -83,6 +87,10 @@
 .eng-match-slot.is-filled{border-style:solid;border-color:var(--il-primary);background:var(--il-primary-soft);color:var(--il-primary);font-weight:var(--il-weight-bold)}
 .eng-match.is-correct .eng-match-row{border-color:var(--il-success);background:var(--il-success-soft)}
 .eng-match.is-incorrect .eng-match-row{border-color:var(--il-error)}
+/* Las piezas a emparejar: centradas y agrupadas en una bandeja, para que se
+   lean como "lo que tienes que colocar" y no como una fila suelta. */
+.eng-match + .eng-word-bank{justify-content:center;padding:var(--il-space-3);border-radius:var(--il-radius-lg);background:var(--il-surface-secondary)}
+.eng-card--p12 .eng-match + .eng-word-bank,.eng-card--p34 .eng-match + .eng-word-bank{gap:var(--il-space-3)}
 
 /* Comprensión */
 .eng-stimulus{margin-bottom:var(--il-space-5);padding:var(--il-space-4);border-left:4px solid var(--il-primary);border-radius:var(--il-radius-sm);background:var(--il-surface-secondary);color:var(--il-text-primary);font-size:var(--il-fs-lg);line-height:var(--il-leading-body)}
