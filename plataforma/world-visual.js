@@ -178,7 +178,7 @@
       +'<circle cx="0" cy="-2" r="3.4" fill="var(--il-warning-soft)"/></g>';
   }
   function butterfly(x, y, colour) {
-    return '<g class="world-flit" transform="translate('+x+' '+y+')"><path d="M0 0c-11-9-21-5-18 4 2 6 12 4 18 1Z" fill="'+colour+'"/><path d="M0 0c11-9 21-5 18 4-2 6-12 4-18 1Z" fill="'+colour+'" opacity=".82"/><path d="M0-4v8" stroke="var(--il-primary)" stroke-width="2" stroke-linecap="round"/></g>';
+    return '<g transform="translate('+x+' '+y+')"><g class="world-flit"><path d="M0 0c-11-9-21-5-18 4 2 6 12 4 18 1Z" fill="'+colour+'"/><path d="M0 0c11-9 21-5 18 4-2 6-12 4-18 1Z" fill="'+colour+'" opacity=".82"/><path d="M0-4v8" stroke="var(--il-primary)" stroke-width="2" stroke-linecap="round"/></g></g>';
   }
   function tree(level) {
     const scale = [.74,.86,.96,1.06,1.16][Math.max(1, Math.min(5, level)) - 1];
@@ -226,12 +226,13 @@
       +(customSky ? sky(bg, false) : daySky) + ground + path + scenery + explorer
       +(items.has("world-flowers")?flower(250,296,"var(--il-secondary)",1)+flower(276,306,"var(--il-warning)",.9)+flower(228,308,"var(--il-focus)",.85)+flower(300,290,"var(--il-secondary)",.8):'')
       +(items.has("world-bench")?'<g transform="translate(556 244)">'+groundShadow(40,74,54,9)+'<path d="M8 30v40M72 30v40" stroke="var(--il-coral-ink)" stroke-width="7" stroke-linecap="round"/><rect x="-2" y="22" width="84" height="11" rx="5" fill="'+BROWN+'"/><rect x="-2" y="0" width="84" height="8" rx="4" fill="'+BROWN+'"/><path d="M6 6v18M74 6v18" stroke="'+BROWN+'" stroke-width="5" stroke-linecap="round"/></g>':'')
-      +(items.has("world-toy-plane")?'<g class="world-flit" transform="translate(520 96)"><path d="m0 0 52-16-16 34-12-14Z" fill="var(--il-secondary)"/><path d="m52-16-28 20 8 14Z" fill="var(--il-coral-ink)"/><path d="M-40 8q20-10 40-8" fill="none" stroke="var(--il-surface)" stroke-width="3" stroke-linecap="round" stroke-dasharray="2 8" opacity=".8"/></g>':'')
+      +(items.has("world-toy-plane")?'<g transform="translate(520 96)"><g class="world-flit"><path d="m0 0 52-16-16 34-12-14Z" fill="var(--il-secondary)"/><path d="m52-16-28 20 8 14Z" fill="var(--il-coral-ink)"/><path d="M-40 8q20-10 40-8" fill="none" stroke="var(--il-surface)" stroke-width="3" stroke-linecap="round" stroke-dasharray="2 8" opacity=".8"/></g></g>':'')
       +(items.has("world-ball")?'<g transform="translate(300 330)">'+groundShadow(0,16,18,6)+'<circle r="17" fill="var(--il-surface)" stroke="var(--il-border-strong)" stroke-width="2"/><path d="M-17 0a17 17 0 0 1 34 0Z" fill="var(--il-secondary)"/><path d="M0-17v34M-17 0h34" stroke="var(--il-surface)" stroke-width="2.4"/></g>':'')
       +(items.has("world-pond")?'<g transform="translate(612 322)"><ellipse rx="88" ry="27" fill="color-mix(in srgb,var(--il-focus) 18%,var(--il-surface))"/><ellipse cx="0" cy="-4" rx="72" ry="19" fill="color-mix(in srgb,var(--il-focus) 30%,var(--il-surface))"/><path d="M-42-6h30M-24 6h34" stroke="var(--il-surface)" stroke-width="3" stroke-linecap="round" opacity=".65"/><g transform="translate(26 -3)"><ellipse rx="15" ry="9" fill="var(--il-success)"/><circle cx="-3" cy="-2" r="3.4" fill="var(--il-secondary)"/></g></g>':'')
       +(items.has("world-bicycle")?'<g transform="translate(470 262)" fill="none" stroke="var(--il-primary)" stroke-width="6" stroke-linecap="round"><circle cx="22" cy="46" r="19"/><circle cx="92" cy="46" r="19"/><path d="m22 46 26-40 21 40M48 6h18M40 46h40l8-24"/></g>':'')
       +(items.has("world-lanterns")?'<path d="M118 150q260-58 526 6" fill="none" stroke="var(--il-primary)" stroke-width="2.5" opacity=".5"/><g fill="var(--il-warning)" stroke="var(--il-warning-ink)" stroke-width="1.5"><circle cx="230" cy="150" r="8"/><circle cx="360" cy="140" r="8"/><circle cx="500" cy="145" r="8"/><circle cx="620" cy="158" r="8"/></g>':'')
       +(items.has("world-greenhouse")?'<g transform="translate(628 150)">'+groundShadow(52,116,60,10)+'<path d="m0 66 52-52 52 52v52H0Z" fill="color-mix(in srgb,var(--il-focus) 8%,var(--il-surface))" stroke="var(--il-success)" stroke-width="5" stroke-linejoin="round"/><path d="M52 14v104M0 66h104M26 40l26 26M78 40 52 66" stroke="var(--il-success)" stroke-width="3" opacity=".55"/></g>':'')
+      +(settings.worldCompanion && settings.worldCompanion !== "none" ? '<ellipse cx="266" cy="342" rx="34" ry="8" fill="var(--il-jade-deep)" opacity=".12"/>'+companion(settings.worldCompanion).replace('<svg class="il-companion"', '<svg class="world-pet" x="228" y="276" width="78" height="78"') : '')
       +'</svg>';
   }
   function personalSpace(settings, progress, options) {
