@@ -27,18 +27,6 @@
   .greeting-copy{flex:1;min-width:0}.home-greeting h1{font-size:var(--il-fs-2xl)}.home-greeting p{margin:4px 0 0;color:var(--il-text-secondary);font-size:var(--il-fs-sm)}
   .student-stats{display:flex;align-items:center;gap:var(--il-space-2)}.student-pill{min-height:var(--il-touch);display:inline-flex;align-items:center;gap:7px;padding:8px 11px;border:1px solid var(--il-border);border-radius:var(--il-radius-pill);background:var(--il-surface);color:var(--il-text-secondary);font-family:var(--il-font-display);font-weight:var(--il-weight-bold);font-size:var(--il-fs-xs)}
   .student-pill.streak{color:var(--il-warning-ink)}.student-pill svg{width:17px;height:17px}.profile-link{width:var(--il-touch);height:var(--il-touch);display:grid;place-items:center;border-radius:var(--il-radius-sm);background:var(--il-primary);color:var(--il-on-primary)}.profile-link:hover{color:var(--il-on-primary);background:var(--il-primary-hover)}.profile-link svg{width:22px;height:22px}
-  /* Avatar del alumno en el saludo: identidad cálida, lo primero que ve el niño. */
-  .il-avatar-delta{position:relative;display:block;width:100%;height:100%;overflow:visible}
-  .avatar-delta__master,.avatar-delta__layer{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center bottom;pointer-events:none}
-  .avatar-delta__master{z-index:1}.avatar-delta__layer{z-index:2}
-  .greeting-avatar{flex:0 0 auto;position:relative;width:78px;height:92px;overflow:hidden;border-radius:22px;background:linear-gradient(162deg,var(--il-secondary-soft),var(--il-success-soft));box-shadow:var(--il-shadow-sm)}
-  .greeting-avatar::after{content:"";position:absolute;left:0;right:0;bottom:0;height:26px;background:linear-gradient(to top,color-mix(in srgb,var(--il-success) 22%,var(--il-surface)),transparent)}
-  .greeting-avatar .il-student-avatar{position:absolute;inset:0;width:100%;height:100%;z-index:1}
-  /* Figura completa anclada abajo (robusto). El master femenino se dibuja mas pequeno: se escala como en el mundo. */
-  .greeting-avatar .avatar-delta__master,.greeting-avatar .avatar-delta__layer{object-fit:contain;object-position:center bottom}
-  .greeting-avatar .il-student-avatar.avatar-base--feminine{transform:scale(1.42);transform-origin:50% 100%}
-  body[data-stage="p12"] .greeting-avatar,body[data-stage="p34"] .greeting-avatar{width:98px;height:116px;border-radius:26px}
-  body[data-stage="eso"] .greeting-avatar{width:58px;height:66px;border-radius:16px;background:var(--il-surface-secondary)}
   .home-grid{display:grid;gap:var(--il-space-4)}
 
   /* ===== Tarjeta de misión: una misión que apetece empezar (no un panel) ===== */
@@ -177,7 +165,6 @@
     <aside class="rail" data-il-rail="inicio"></aside>
     <main class="home-content">
       <header class="home-greeting">
-        <div class="greeting-avatar" id="greetingAvatar" aria-hidden="true"></div>
         <div class="greeting-copy"><h1 id="greeting">Hola</h1><p id="greetingMessage">Tienes una misión breve preparada para hoy.</p></div>
         <div class="student-stats">
           <span class="student-pill streak" id="streakPill"><span data-il-icon="flame" aria-hidden="true"></span><span id="streak">0 días</span></span>
@@ -265,8 +252,6 @@
 <script src="mastery-store.js?v=20260813a"></script>
 <script src="progress-data.js?v=20260810b"></script>
 <script src="profile-settings.js?v=20260812a"></script>
-<script src="avatar-rig.js?v=20260814a"></script>
-<script src="world-visual.js?v=20260818d"></script>
 <script>
   const $ = id => document.getElementById(id);
   let units = [];
@@ -438,7 +423,7 @@
       if (!profile) { location.href = "index.html"; return; }
       if (profile.is_admin) { location.href = "admin.html"; return; }
       if (profile.must_change_password) { location.href = "cambiar-clave.html"; return; }
-      const avatarSettings = ILProfileSettings.setActive(profile.username || "", profile.sex);
+      ILProfileSettings.setActive(profile.username || "", profile.sex);
       const stage = IL_ETAPA.apply(profile);
       const experience = IL_ETAPA.current().config;
       const exerciseExperience = IL_ETAPA.current().exercise;
@@ -455,9 +440,6 @@
       const gap = dayGap(progress && progress.last);
 
       $("greeting").textContent = experience.copy.greeting(firstName(profile));
-      // El avatar real del alumno recibe en Inicio (reutiliza el del perfil/mundo).
-      if (window.ILWorldVisual) { try { $("greetingAvatar").innerHTML = ILWorldVisual.avatar(avatarSettings, progress); } catch (e) { $("greetingAvatar").style.display = "none"; } }
-      else { $("greetingAvatar").style.display = "none"; }
       $("greetingMessage").textContent = doneToday ? experience.copy.complete
         : (inProgress ? experience.copy.active
         : (gap != null && gap >= 3 ? experience.copy.comeback : experience.copy.ready));
