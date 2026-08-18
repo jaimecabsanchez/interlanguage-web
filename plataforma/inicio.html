@@ -45,7 +45,11 @@
   .daily-mission{position:relative;overflow:hidden;padding:clamp(22px,5vw,34px);border:1px solid var(--il-border-soft,var(--il-border));border-radius:var(--il-radius-xl);
     background:linear-gradient(158deg,var(--il-warning-soft) 0%,var(--il-surface) 46%);
     box-shadow:var(--il-shadow-md);animation:home-card-in var(--il-duration-base) var(--il-ease) both}
-  .daily-mission::before{content:"";position:absolute;top:0;left:0;right:0;height:5px;background:linear-gradient(90deg,var(--il-secondary),var(--il-warning),var(--il-success))}
+  .daily-mission::before{content:"";position:absolute;top:0;left:0;right:0;height:5px;background:linear-gradient(90deg,var(--il-secondary),var(--il-warning),var(--il-success));z-index:2}
+  /* Atmósfera sutil: luz cálida arriba + franja de suelo (jardín) abajo. Detrás del contenido. */
+  .daily-mission::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:0;background:radial-gradient(240px 240px at 100% -6%,color-mix(in srgb,var(--il-secondary) 13%,transparent),transparent 62%),radial-gradient(150% 70px at 50% 100%,color-mix(in srgb,var(--il-success) 13%,transparent),transparent 72%)}
+  .daily-mission>*{position:relative;z-index:1}
+  body[data-stage="eso"] .daily-mission::after{background:radial-gradient(220px 220px at 100% -6%,color-mix(in srgb,var(--il-primary) 7%,transparent),transparent 60%)}
   .mission-top{display:flex;align-items:flex-start;justify-content:space-between;gap:var(--il-space-4)}
   .mission-head{min-width:0;flex:1}
   .mission-eyebrow{display:inline-flex;align-items:center;gap:7px;margin-bottom:var(--il-space-2);padding:4px 10px 4px 8px;border-radius:var(--il-radius-pill);background:var(--il-secondary-soft);color:var(--il-coral-ink);font-size:var(--il-fs-xs);font-weight:var(--il-weight-extrabold);letter-spacing:var(--il-tracking-label);text-transform:uppercase}.mission-eyebrow svg{width:15px;height:15px}
@@ -121,6 +125,9 @@
   .week-day.is-pending .week-day__dot{border-style:dashed}.week-day.is-future{opacity:.5}
   .week-progress{display:none}
   .week-reward{display:none}
+  .week-bar{height:8px;margin-bottom:var(--il-space-3);border-radius:var(--il-radius-pill);background:var(--il-border);overflow:hidden}
+  .week-bar>span{display:block;height:100%;width:var(--week-fill,0%);border-radius:inherit;background:linear-gradient(90deg,var(--il-success),color-mix(in srgb,var(--il-success) 55%,var(--il-secondary)));transition:width var(--il-duration-slow) var(--il-ease)}
+  body[data-stage="eso"] .week-bar>span{background:var(--il-success)}
   .week-note{margin:var(--il-space-1) 0 0;color:var(--il-success);font-family:var(--il-font-display);font-weight:var(--il-weight-extrabold);font-size:var(--il-fs-base)}.week-note[hidden]{display:none}
   @keyframes day-pop{0%{transform:scale(.4);opacity:0}60%{transform:scale(1.12)}100%{transform:scale(1);opacity:1}}
 
@@ -129,7 +136,8 @@
   .next-stamp:hover{transform:translateY(-3px);box-shadow:var(--il-shadow-md)}
   .next-stamp .insight-head{justify-content:flex-start;margin-bottom:var(--il-space-3)}.next-stamp .insight-title__icon{display:grid;background:var(--il-warning-soft);color:var(--il-warning)}
   .next-stamp .ui-label{color:var(--il-coral-ink)}
-  .stamp-mark{position:relative;width:112px;height:112px;margin:0 auto var(--il-space-2);display:grid;place-items:center;transition:transform var(--il-duration-base) var(--il-ease)}.stamp-mark svg{width:100%;height:100%}
+  .stamp-mark{position:relative;width:112px;height:112px;margin:0 auto var(--il-space-2);display:grid;place-items:center;transition:transform var(--il-duration-base) var(--il-ease)}.stamp-mark svg{width:100%;height:100%;filter:drop-shadow(0 3px 7px color-mix(in srgb,var(--il-secondary) 20%,transparent))}
+  body[data-stage="eso"] .stamp-mark svg{filter:none}
   .next-stamp .stamp-mark::before{content:"";position:absolute;inset:-9px;border-radius:50%;background:conic-gradient(var(--il-secondary) calc(var(--stamp-fill,0)*360deg),var(--il-border) 0);-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 5px),#000 calc(100% - 5px));mask:radial-gradient(farthest-side,transparent calc(100% - 5px),#000 calc(100% - 5px))}
   .next-stamp:hover .stamp-mark{transform:scale(1.04) rotate(-2deg)}
   .stamp-name{margin:0;font-family:var(--il-font-display);font-weight:var(--il-weight-extrabold);font-size:var(--il-fs-lg);color:var(--il-text-primary)}
@@ -214,6 +222,7 @@
               <span class="week-count"><span id="weekNow">0</span> / <span id="weekGoal">5</span></span>
             </div>
             <div class="week-days" id="weekDays" aria-label="Actividad de lunes a domingo"></div>
+            <div class="week-bar" aria-hidden="true"><span></span></div>
             <p class="week-note" id="weekNote">¡A por la siguiente!</p>
           </section>
 
@@ -266,34 +275,37 @@
   const skillIcon = { listening: "ear", vocabulary: "books", speaking: "speaker", grammar: "pencil", reading: "book", writing: "flag" };
 
   // Ilustración protagonista (SVG propio, colores de marca). Una composición limpia por tema.
+  // Ilustraciones protagonistas premium (vectorial, volumen y luz suave, coherentes con los mundos).
+  const GOLD = "#F6B93B";
   const ILLOS = {
-    // Rutina diaria: despertador + sol de la mañana (cálido, moderno, premium)
+    // Rutina: despertador con profundidad + sol de la mañana suave.
     routine: '<svg viewBox="0 0 120 120" role="img" aria-hidden="true">'
       + '<circle cx="60" cy="60" r="54" fill="var(--il-warning-soft)"/>'
-      + '<g class="illo-sun"><circle cx="90" cy="34" r="10.5" fill="#F6B93B"/>'
-      + '<path d="M90 15v-5M104 20l3.5-3.5M107 34h5M76 20l-3.5-3.5" stroke="#F6B93B" stroke-width="3" stroke-linecap="round"/></g>'
-      + '<path d="M45 92l-6 9M75 92l6 9" stroke="var(--il-primary)" stroke-width="5" stroke-linecap="round"/>'
-      + '<g class="illo-bells"><path d="M40 39a10 10 0 0 1 16 0z" fill="var(--il-primary)"/>'
-      + '<path d="M64 39a10 10 0 0 1 16 0z" fill="var(--il-primary)"/>'
-      + '<path d="M60 29v7" stroke="var(--il-primary)" stroke-width="4" stroke-linecap="round"/></g>'
-      + '<circle cx="60" cy="66" r="28" fill="var(--il-secondary)"/>'
-      + '<circle cx="60" cy="66" r="21" fill="#fff"/>'
-      + '<path d="M60 66V52M60 66l-9 6" stroke="var(--il-primary)" stroke-width="3.6" stroke-linecap="round"/>'
-      + '<circle cx="60" cy="66" r="3.1" fill="var(--il-primary)"/></svg>',
+      + '<g transform="translate(93 33)"><g stroke="'+GOLD+'" stroke-width="3" stroke-linecap="round" opacity=".55"><path d="M0-15v-6M0 15v6M15 0h6M-15 0h-6M11 11l4 4M-11-11l-4-4M11-11l4-4M-11 11l-4 4"/></g><circle r="11" fill="'+GOLD+'"/><circle r="7" fill="color-mix(in srgb,'+GOLD+' 55%,var(--il-surface))"/></g>'
+      + '<ellipse cx="60" cy="99" rx="31" ry="6" fill="var(--il-warning-ink)" opacity=".1"/>'
+      + '<path d="M40 41a11 11 0 0 1 18 0zM62 41a11 11 0 0 1 18 0z" fill="var(--il-primary)"/><path d="M60 31v6" stroke="var(--il-primary)" stroke-width="4" stroke-linecap="round"/>'
+      + '<path d="M43 95l-6 9M77 95l6 9" stroke="var(--il-primary)" stroke-width="5" stroke-linecap="round"/>'
+      + '<circle cx="60" cy="67" r="29" fill="var(--il-primary)"/><circle cx="60" cy="67" r="23" fill="var(--il-surface)"/>'
+      + '<circle cx="51" cy="58" r="8" fill="var(--il-primary)" opacity=".07"/>'
+      + '<g fill="var(--il-primary)" opacity=".35"><circle cx="60" cy="49" r="1.7"/><circle cx="78" cy="67" r="1.7"/><circle cx="60" cy="85" r="1.7"/><circle cx="42" cy="67" r="1.7"/></g>'
+      + '<path d="M60 67V53M60 67l10 6" stroke="var(--il-secondary)" stroke-width="4" stroke-linecap="round"/><circle cx="60" cy="67" r="3.2" fill="var(--il-primary)"/></svg>',
+    // Colegio: mochila con volumen, bolsillo y estrella.
     school: '<svg viewBox="0 0 120 120" role="img" aria-hidden="true">'
       + '<circle cx="60" cy="60" r="54" fill="var(--il-primary-soft)"/>'
-      + '<path d="M49 40a11 11 0 0 1 22 0" fill="none" stroke="var(--il-primary)" stroke-width="5" stroke-linecap="round"/>'
-      + '<rect x="34" y="42" width="52" height="48" rx="16" fill="var(--il-secondary)"/>'
-      + '<path d="M40 90c1-9 1-18 0-24M80 90c-1-9-1-18 0-24" fill="none" stroke="var(--il-coral-ink)" stroke-width="4" stroke-linecap="round" opacity=".55"/>'
-      + '<rect x="46" y="64" width="28" height="24" rx="8" fill="#fff" opacity=".95"/>'
-      + '<path d="M50 71h20" stroke="var(--il-coral-ink)" stroke-width="2.8" stroke-linecap="round"/>'
-      + '<circle cx="70" cy="71" r="2.4" fill="var(--il-coral-ink)"/>'
-      + '<path d="m60 50 2.1 4.3 4.7.7-3.4 3.3.8 4.7L60 65.5l-4.2 2.2.8-4.7-3.4-3.3 4.7-.7z" fill="#F6B93B"/></svg>',
+      + '<ellipse cx="60" cy="99" rx="30" ry="6" fill="var(--il-primary)" opacity=".1"/>'
+      + '<path d="M46 41a14 14 0 0 1 28 0" fill="none" stroke="var(--il-coral-ink)" stroke-width="5" stroke-linecap="round"/>'
+      + '<rect x="32" y="43" width="56" height="52" rx="18" fill="var(--il-secondary)"/>'
+      + '<path d="M39 51c8-5 34-5 42 0" fill="none" stroke="color-mix(in srgb,var(--il-secondary) 55%,var(--il-surface))" stroke-width="5" stroke-linecap="round" opacity=".7"/>'
+      + '<path d="M34 64c9 6 43 6 52 0" fill="none" stroke="var(--il-coral-ink)" stroke-width="3" opacity=".4"/>'
+      + '<rect x="45" y="67" width="30" height="25" rx="9" fill="var(--il-surface)"/><path d="M60 71v17" stroke="var(--il-coral-ink)" stroke-width="2.6" stroke-linecap="round" opacity=".5"/><circle cx="60" cy="67.5" r="3" fill="var(--il-coral-ink)"/>'
+      + '<path d="m60 48 2.4 5 5.4.8-4 3.8.9 5.4L60 66l-4.6 2.4.9-5.4-4-3.8 5.4-.8z" fill="'+GOLD+'"/></svg>',
+    // Planes/finde: avión de papel con profundidad sobre una nube y camino punteado.
     journey: '<svg viewBox="0 0 120 120" role="img" aria-hidden="true">'
-      + '<circle cx="60" cy="60" r="54" fill="var(--il-primary-soft)"/>'
-      + '<path d="M26 82c18 8 50 6 70-26" fill="none" stroke="var(--il-primary)" stroke-width="3" stroke-linecap="round" stroke-dasharray="1 8" opacity=".55"/>'
-      + '<path d="M30 66 92 38 66 92 56 70 Z" fill="var(--il-secondary)"/><path d="M92 38 56 70 66 92 Z" fill="var(--il-coral-ink)"/>'
-      + '<path d="M78 40l3-6 3 6 6 3-6 3-3 6-3-6-6-3z" fill="#F6B93B"/></svg>'
+      + '<circle cx="60" cy="60" r="54" fill="var(--il-success-soft)"/>'
+      + '<g fill="var(--il-surface)"><circle cx="41" cy="45" r="9"/><circle cx="53" cy="40" r="11"/><circle cx="64" cy="46" r="8"/><rect x="41" y="43" width="24" height="10" rx="5"/></g>'
+      + '<path d="M30 88c16 8 44 6 60-30" fill="none" stroke="var(--il-success)" stroke-width="3" stroke-linecap="round" stroke-dasharray="1 9" opacity=".5"/>'
+      + '<path d="M32 70 94 40 70 94 58 72Z" fill="var(--il-secondary)"/><path d="M94 40 58 72 70 94Z" fill="var(--il-coral-ink)"/><path d="M32 70 58 72 94 40Z" fill="color-mix(in srgb,var(--il-secondary) 58%,var(--il-surface))"/>'
+      + '<path d="m84 34 2.2-5 2.2 5 5 2.2-5 2.2-2.2 5-2.2-5-5-2.2z" fill="'+GOLD+'"/></svg>'
   };
   function illoFor(unit) {
     const key = ((unit && unit.id) || "") + " " + ((unit && unit.titulo) || "");
@@ -341,6 +353,8 @@
     const practiced = new Set(week.practiced || []);
     const count = Math.min(week.count || 0, week.goal || 5); const goal = week.goal || 5;
     $("weekNow").textContent = count; $("weekGoal").textContent = goal;
+    const weekBar = document.querySelector(".weekly-goal .week-bar");
+    if (weekBar) weekBar.style.setProperty("--week-fill", (goal ? Math.round(count / goal * 100) : 0) + "%");
     const days = $("weekDays"); days.innerHTML = "";
     labels.forEach((label, index) => {
       const completed = practiced.has(index);
