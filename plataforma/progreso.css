@@ -32,3 +32,7 @@
 .week-scene{position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none;border-radius:inherit}
 .week-scene svg{position:absolute;inset:0;width:100%;height:100%;display:block}
 .week-primary>*:not(.week-scene){position:relative;z-index:1}
+/* La medalla (ILVisual.stamp) ya trae su aro: quitamos el borde punteado del contenedor. */
+.passport-stamp,.stamp-card__visual,.dialog-stamp{border:0;transform:none}
+.passport-stamp::after,.stamp-card__visual::after,.dialog-stamp::after{display:none}
+.passport-stamp,.dialog-stamp{filter:drop-shadow(0 4px 10px color-mix(in srgb,var(--il-warning) 22%,transparent))}

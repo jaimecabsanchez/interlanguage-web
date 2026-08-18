@@ -137,11 +137,15 @@
         '<rect x="4.5" y="8.5" width="9" height="7" rx="1.6" fill="none" stroke="var(--il-text-secondary)" stroke-width="1.8"/>' +
         '<path d="M6.2 8.5V6.8a2.8 2.8 0 0 1 5.6 0v1.7" fill="none" stroke="var(--il-text-secondary)" stroke-width="1.8"/></g>'
       : "";
+    let beads = "";
+    for (let i = 0; i < 20; i++) { const a = i / 20 * Math.PI * 2; beads += '<circle cx="' + (36 + Math.cos(a) * 32.6).toFixed(1) + '" cy="' + (36 + Math.sin(a) * 32.6).toFixed(1) + '" r="1.5"/>'; }
     return (
       '<svg class="' + cls + '" viewBox="0 0 72 72" role="img" aria-hidden="true">' +
-      '<circle cx="36" cy="36" r="31" class="il-stamp__ring" fill="none" stroke-width="2" stroke-dasharray="3 4.5" opacity=".5"/>' +
-      '<circle cx="36" cy="36" r="26.5" class="il-stamp__disc"/>' +
-      '<circle cx="36" cy="36" r="27" class="il-stamp__edge" fill="none" stroke-width="1.4" opacity=".55"/>' +
+      '<circle cx="36" cy="36" r="33.5" class="il-stamp__rim"/>' +
+      '<g class="il-stamp__beads">' + beads + '</g>' +
+      '<circle cx="36" cy="36" r="27.5" class="il-stamp__disc"/>' +
+      '<circle cx="36" cy="36" r="27.5" class="il-stamp__edge" fill="none" stroke-width="1.6"/>' +
+      '<ellipse class="il-stamp__shine" cx="29" cy="24" rx="15" ry="7.5" transform="rotate(-26 29 24)"/>' +
       '<g class="il-stamp__motif">' + motif + "</g>" +
       lockBadge +
       "</svg>"

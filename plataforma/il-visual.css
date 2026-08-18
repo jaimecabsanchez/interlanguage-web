@@ -9,11 +9,17 @@
 
 /* ---------- Sellos ---------- */
 .il-stamp{display:block;width:100%;height:100%}
-.il-stamp__ring,.il-stamp__edge{stroke:var(--il-primary)}
+/* Sello = medalla coleccionable: aro dorado con perlado, disco crema, brillo. */
+.il-stamp__rim{fill:color-mix(in srgb,var(--il-warning) 46%,var(--il-surface))}
+.il-stamp__beads circle{fill:color-mix(in srgb,var(--il-warning) 74%,var(--il-surface))}
 .il-stamp__disc{fill:var(--il-warning-soft)}
+.il-stamp__edge{stroke:color-mix(in srgb,var(--il-warning) 58%,var(--il-surface))}
+.il-stamp__shine{fill:var(--il-surface);opacity:.5}
+.il-stamp--locked .il-stamp__rim{fill:var(--il-surface-secondary)}
+.il-stamp--locked .il-stamp__beads circle{fill:var(--il-border-strong)}
 .il-stamp--locked .il-stamp__disc{fill:var(--il-surface-secondary)}
-.il-stamp--locked .il-stamp__ring,
 .il-stamp--locked .il-stamp__edge{stroke:var(--il-border-strong)}
+.il-stamp--locked .il-stamp__shine{opacity:.25}
 .il-stamp--locked .il-stamp__motif *{fill:var(--il-text-tertiary,var(--il-text-secondary));stroke:var(--il-text-tertiary,var(--il-text-secondary));opacity:.9}
 .il-stamp--locked .il-stamp__motif{opacity:.45}
 
