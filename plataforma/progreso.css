@@ -36,3 +36,9 @@
 .passport-stamp,.stamp-card__visual,.dialog-stamp{border:0;transform:none}
 .passport-stamp::after,.stamp-card__visual::after,.dialog-stamp::after{display:none}
 .passport-stamp,.dialog-stamp{filter:drop-shadow(0 4px 10px color-mix(in srgb,var(--il-warning) 22%,transparent))}
+/* Metricas de aprendizaje (10-11/ESO): de rejilla con bordes a tarjetas premium. */
+.learning-metrics{border-block:0;background:transparent;gap:var(--il-space-3)}
+.learning-metrics .learning-metric{border:1px solid var(--il-border);border-radius:var(--il-radius-lg);background:var(--il-surface);box-shadow:var(--il-shadow-xs)}
+.learning-metrics .learning-metric strong{font-size:var(--il-fs-2xl)}
+.learning-metric__icon{background:var(--il-success-soft);color:var(--il-success)}
+body[data-age-mode="secondary"] .learning-metrics .learning-metric{border-radius:var(--il-radius-md);box-shadow:none}
