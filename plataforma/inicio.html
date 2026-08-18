@@ -34,11 +34,11 @@
   .greeting-avatar{flex:0 0 auto;position:relative;width:78px;height:92px;overflow:hidden;border-radius:22px;background:linear-gradient(162deg,var(--il-secondary-soft),var(--il-success-soft));box-shadow:var(--il-shadow-sm)}
   .greeting-avatar::after{content:"";position:absolute;left:0;right:0;bottom:0;height:26px;background:linear-gradient(to top,color-mix(in srgb,var(--il-success) 22%,var(--il-surface)),transparent)}
   .greeting-avatar .il-student-avatar{position:absolute;inset:0;width:100%;height:100%;z-index:1}
-  .greeting-avatar .avatar-delta__master,.greeting-avatar .avatar-delta__layer{object-position:center 118%}
-  body[data-stage="p12"] .greeting-avatar,body[data-stage="p34"] .greeting-avatar{width:96px;height:112px;border-radius:26px}
-  body[data-stage="eso"] .greeting-avatar{width:58px;height:58px;border-radius:50%;background:var(--il-surface-secondary)}
-  body[data-stage="eso"] .greeting-avatar::after{display:none}
-  body[data-stage="eso"] .greeting-avatar .avatar-delta__master,body[data-stage="eso"] .greeting-avatar .avatar-delta__layer{object-position:center 135%}
+  /* Figura completa anclada abajo (robusto). El master femenino se dibuja mas pequeno: se escala como en el mundo. */
+  .greeting-avatar .avatar-delta__master,.greeting-avatar .avatar-delta__layer{object-fit:contain;object-position:center bottom}
+  .greeting-avatar .il-student-avatar.avatar-base--feminine{transform:scale(1.42);transform-origin:50% 100%}
+  body[data-stage="p12"] .greeting-avatar,body[data-stage="p34"] .greeting-avatar{width:98px;height:116px;border-radius:26px}
+  body[data-stage="eso"] .greeting-avatar{width:58px;height:66px;border-radius:16px;background:var(--il-surface-secondary)}
   .home-grid{display:grid;gap:var(--il-space-4)}
 
   /* ===== Tarjeta de misión: una misión que apetece empezar (no un panel) ===== */
