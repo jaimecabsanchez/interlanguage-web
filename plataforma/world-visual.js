@@ -204,10 +204,26 @@
       + flower(300, 300, "var(--il-secondary)", 1) + flower(322, 314, "var(--il-warning)", .85) + flower(66, 250, "var(--il-focus)", .8)
       + tuft(196, 320) + tuft(548, 322) + tuft(690, 264)
       + butterfly(470, 150, "var(--il-secondary)") + butterfly(250, 120, "var(--il-warning)");
+    // 8-9 "Explorer Garden": mismos componentes base + props de exploración/aprendizaje
+    // (pizarra ABC, pila de libros, mochila) para diferenciarlo del jardín más sencillo de 5-7.
+    const explorer = options.band === "p34" ? (
+      '<g transform="translate(210 172)">'+groundShadow(30,116,42,9)
+        +'<path d="M6 108 22 22M54 108 38 22M15 70h30" stroke="'+BROWN+'" stroke-width="5" stroke-linecap="round"/>'
+        +'<rect x="-4" y="8" width="68" height="52" rx="4" fill="var(--il-jade-deep)"/>'
+        +'<g stroke="var(--il-surface)" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M6 46l7-24 7 24M8 38h10"/><path d="M30 22v24M30 22c9 0 9 10 0 10M30 32c10 0 10 12 0 12"/><path d="M58 27c-10-4-17 2-17 9s7 13 17 9"/></g>'
+        +'<path d="M-6 54h14" stroke="var(--il-warning-soft)" stroke-width="3" stroke-linecap="round"/></g>'
+      +'<g transform="translate(150 320)">'+groundShadow(18,10,28,6)
+        +'<rect x="-2" y="-4" width="44" height="10" rx="2" fill="var(--il-focus)"/><rect x="0" y="-13" width="40" height="10" rx="2" fill="var(--il-secondary)"/><rect x="3" y="-22" width="34" height="10" rx="2" fill="var(--il-warning)"/></g>'
+      +'<g transform="translate(452 300)">'+groundShadow(16,36,22,6)
+        +'<path d="M2 4c0-9 6-14 15-14s15 5 15 14v20c0 4-2 6-6 6H8c-4 0-6-2-6-6Z" fill="var(--il-secondary)"/>'
+        +'<path d="M6-8c3-6 20-6 22 0" fill="none" stroke="var(--il-coral-ink)" stroke-width="4" stroke-linecap="round"/>'
+        +'<rect x="9" y="12" width="15" height="14" rx="3" fill="var(--il-surface)" opacity=".9"/><path d="M17 2v9" stroke="var(--il-coral-ink)" stroke-width="2.4"/>'
+        +'<path d="M6 30l-3 8M28 30l3 8" stroke="var(--il-coral-ink)" stroke-width="3" stroke-linecap="round"/></g>'
+    ) : "";
     return '<svg class="il-world-scene" viewBox="0 0 760 360" role="img" aria-label="Tu jardín de aprendizaje">'
       +'<defs><linearGradient id="ilSkyDay" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="color-mix(in srgb,var(--il-focus) 14%,var(--il-surface))"/><stop offset="1" stop-color="color-mix(in srgb,var(--il-focus) 4%,var(--il-surface))"/></linearGradient>'
       +'<linearGradient id="ilGrass" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--il-success-soft)"/><stop offset="1" stop-color="color-mix(in srgb,var(--il-success) 22%,var(--il-surface))"/></linearGradient></defs>'
-      +(customSky ? sky(bg, false) : daySky) + ground + path + scenery
+      +(customSky ? sky(bg, false) : daySky) + ground + path + scenery + explorer
       +(items.has("world-flowers")?flower(250,296,"var(--il-secondary)",1)+flower(276,306,"var(--il-warning)",.9)+flower(228,308,"var(--il-focus)",.85)+flower(300,290,"var(--il-secondary)",.8):'')
       +(items.has("world-bench")?'<g transform="translate(556 244)">'+groundShadow(40,74,54,9)+'<path d="M8 30v40M72 30v40" stroke="var(--il-coral-ink)" stroke-width="7" stroke-linecap="round"/><rect x="-2" y="22" width="84" height="11" rx="5" fill="'+BROWN+'"/><rect x="-2" y="0" width="84" height="8" rx="4" fill="'+BROWN+'"/><path d="M6 6v18M74 6v18" stroke="'+BROWN+'" stroke-width="5" stroke-linecap="round"/></g>':'')
       +(items.has("world-toy-plane")?'<g class="world-flit" transform="translate(520 96)"><path d="m0 0 52-16-16 34-12-14Z" fill="var(--il-secondary)"/><path d="m52-16-28 20 8 14Z" fill="var(--il-coral-ink)"/><path d="M-40 8q20-10 40-8" fill="none" stroke="var(--il-surface)" stroke-width="3" stroke-linecap="round" stroke-dasharray="2 8" opacity=".8"/></g>':'')
@@ -263,7 +279,7 @@
       +(items.has("world-music-poster")?'<g transform="translate(648 54)"><rect width="92" height="104" rx="8" fill="var(--il-secondary-soft)"/><path d="M54 26v42c0 11-19 15-24 5-4-10 11-17 24-11M54 34l22-6v31" fill="none" stroke="var(--il-secondary)" stroke-width="6" stroke-linecap="round"/></g>':'')
       +(items.has("world-tech-desk")?'<g transform="translate(320 214)"><rect width="70" height="44" rx="6" fill="'+NAVY_DEEP+'"/><rect x="6" y="6" width="58" height="28" rx="2" fill="'+screen+'"/><path d="M35 44v10M22 54h26" stroke="'+NAVY+'" stroke-width="5" stroke-linecap="round"/></g>':'')+'</svg>';
   }
-  function scene(settings, progress, band, options) { return band === "p12" || band === "p34" ? garden(settings, progress, options) : personalSpace(settings, progress, Object.assign({}, options, { band })); }
+  function scene(settings, progress, band, options) { return band === "p12" || band === "p34" ? garden(settings, progress, Object.assign({}, options, { band })) : personalSpace(settings, progress, Object.assign({}, options, { band })); }
 
   function objectThumb(visual) {
     const pieces = {
