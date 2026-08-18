@@ -15,6 +15,23 @@
 .il-stamp__disc{fill:var(--il-warning-soft)}
 .il-stamp__edge{stroke:color-mix(in srgb,var(--il-warning) 58%,var(--il-surface))}
 .il-stamp__shine{fill:var(--il-surface);opacity:.5}
+/* Color por familia (el motivo sigue navy sobre disco claro). gold = base. */
+.il-stamp--blue .il-stamp__rim{fill:color-mix(in srgb,var(--il-focus) 40%,var(--il-surface))}
+.il-stamp--blue .il-stamp__beads circle{fill:color-mix(in srgb,var(--il-focus) 60%,var(--il-surface))}
+.il-stamp--blue .il-stamp__disc{fill:color-mix(in srgb,var(--il-focus) 12%,var(--il-surface))}
+.il-stamp--blue .il-stamp__edge{stroke:color-mix(in srgb,var(--il-focus) 48%,var(--il-surface))}
+.il-stamp--coral .il-stamp__rim{fill:color-mix(in srgb,var(--il-secondary) 42%,var(--il-surface))}
+.il-stamp--coral .il-stamp__beads circle{fill:color-mix(in srgb,var(--il-secondary) 62%,var(--il-surface))}
+.il-stamp--coral .il-stamp__disc{fill:var(--il-secondary-soft)}
+.il-stamp--coral .il-stamp__edge{stroke:color-mix(in srgb,var(--il-secondary) 52%,var(--il-surface))}
+.il-stamp--navy .il-stamp__rim{fill:color-mix(in srgb,var(--il-primary) 42%,var(--il-surface))}
+.il-stamp--navy .il-stamp__beads circle{fill:color-mix(in srgb,var(--il-primary) 60%,var(--il-surface))}
+.il-stamp--navy .il-stamp__disc{fill:var(--il-primary-soft)}
+.il-stamp--navy .il-stamp__edge{stroke:color-mix(in srgb,var(--il-primary) 50%,var(--il-surface))}
+.il-stamp--green .il-stamp__rim{fill:color-mix(in srgb,var(--il-success) 42%,var(--il-surface))}
+.il-stamp--green .il-stamp__beads circle{fill:color-mix(in srgb,var(--il-success) 62%,var(--il-surface))}
+.il-stamp--green .il-stamp__disc{fill:var(--il-success-soft)}
+.il-stamp--green .il-stamp__edge{stroke:color-mix(in srgb,var(--il-success) 50%,var(--il-surface))}
 .il-stamp--locked .il-stamp__rim{fill:var(--il-surface-secondary)}
 .il-stamp--locked .il-stamp__beads circle{fill:var(--il-border-strong)}
 .il-stamp--locked .il-stamp__disc{fill:var(--il-surface-secondary)}

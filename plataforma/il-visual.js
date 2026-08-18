@@ -126,11 +126,24 @@
       '<path d="m36 24 3.7 7.5 8.3 1.2-6 5.9 1.4 8.2L36 50.9 28.6 46.8l1.4-8.2-6-5.9 8.3-1.2L36 24Z" fill="var(--il-primary)"/>'
   };
 
+  // Tono de la medalla por familia/tema (variedad legible; el motivo sigue navy).
+  function stampTone(id) {
+    id = String(id || "");
+    if (/listen/.test(id)) return "blue";
+    if (/speak/.test(id)) return "coral";
+    if (/grammar|sharp/.test(id)) return "navy";
+    if (/read/.test(id)) return "green";
+    if (/word|vocab|collector/.test(id)) return "green";
+    if (/perfect|round|pleno/.test(id)) return "coral";
+    if (/streak|racha|record|comeback/.test(id)) return "gold";
+    if (/mission|explorer|planner|morning|weekly|flight|ten|fifty|journey/.test(id)) return "blue";
+    return "gold";
+  }
   function stamp(id, opts) {
     opts = opts || {};
     const locked = !!opts.locked;
     const motif = STAMP_MOTIF[id] || STAMP_MOTIF._default;
-    const cls = "il-stamp" + (locked ? " il-stamp--locked" : "");
+    const cls = "il-stamp il-stamp--" + (opts.tone || stampTone(id)) + (locked ? " il-stamp--locked" : "");
     const lockBadge = locked
       ? '<g class="il-stamp__lock" transform="translate(48,48)">' +
         '<circle cx="9" cy="9" r="10" fill="var(--il-surface)"/>' +
