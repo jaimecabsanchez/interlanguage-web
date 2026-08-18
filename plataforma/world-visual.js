@@ -157,33 +157,66 @@
     if (background === "city") return '<path d="M0 0h760v360H0Z" fill="var(--il-surface-secondary)"/><g fill="var(--il-primary-soft)"><rect x="20" y="80" width="90" height="210"/><rect x="120" y="35" width="105" height="255"/><rect x="236" y="110" width="80" height="180"/></g>';
     return '<path d="M0 0h760v360H0Z" fill="'+(secondary ? 'var(--il-surface-secondary)' : 'var(--il-primary-soft)')+'"/><circle cx="645" cy="70" r="34" fill="var(--il-warning-soft)"/>';
   }
+  // --- Piezas vectoriales reutilizables del jardín (formas limpias, paleta de tokens) ---
+  const GREEN_HI = "color-mix(in srgb,var(--il-success) 45%,var(--il-surface))";
+  const BROWN = "var(--il-avatar-hair-brown)";
+  function groundShadow(cx, cy, rx, ry) { return '<ellipse cx="'+cx+'" cy="'+cy+'" rx="'+rx+'" ry="'+ry+'" fill="var(--il-jade-deep)" opacity=".12"/>'; }
+  function cloud(x, y, s) {
+    return '<g transform="translate('+x+' '+y+') scale('+(s||1)+')" fill="var(--il-surface)"><circle cx="-20" cy="4" r="15"/><circle cx="2" cy="-6" r="21"/><circle cx="26" cy="4" r="16"/><rect x="-22" y="1" width="52" height="16" rx="8"/></g>';
+  }
+  function bush(x, y, s) {
+    return '<g transform="translate('+x+' '+y+') scale('+(s||1)+')">'+groundShadow(2, 12, 44, 10)
+      +'<circle cx="-22" cy="-2" r="22" fill="var(--il-success)"/><circle cx="26" cy="-2" r="19" fill="var(--il-jade-deep)"/><circle cx="4" cy="-14" r="25" fill="var(--il-success)"/>'
+      +'<circle cx="-6" cy="-16" r="11" fill="'+GREEN_HI+'" opacity=".7"/></g>';
+  }
+  function tuft(x, y) { return '<g transform="translate('+x+' '+y+')" stroke="var(--il-success)" stroke-width="3" stroke-linecap="round"><path d="M0 0v-12M7 1v-15M14 0v-11"/></g>'; }
+  function flower(x, y, colour, s) {
+    return '<g transform="translate('+x+' '+y+') scale('+(s||1)+')">'
+      +'<path d="M0 0v22" stroke="var(--il-success)" stroke-width="3.2" stroke-linecap="round"/>'
+      +'<path d="M0 10c-8-3-12 2-12 2M0 14c8-3 12 2 12 2" fill="none" stroke="var(--il-success)" stroke-width="2.6" stroke-linecap="round"/>'
+      +'<g fill="'+colour+'"><circle cx="0" cy="-8" r="5.4"/><circle cx="-5.6" cy="-1" r="5.4"/><circle cx="5.6" cy="-1" r="5.4"/><circle cx="0" cy="4" r="5.4"/></g>'
+      +'<circle cx="0" cy="-2" r="3.4" fill="var(--il-warning-soft)"/></g>';
+  }
+  function butterfly(x, y, colour) {
+    return '<g class="world-flit" transform="translate('+x+' '+y+')"><path d="M0 0c-11-9-21-5-18 4 2 6 12 4 18 1Z" fill="'+colour+'"/><path d="M0 0c11-9 21-5 18 4-2 6-12 4-18 1Z" fill="'+colour+'" opacity=".82"/><path d="M0-4v8" stroke="var(--il-primary)" stroke-width="2" stroke-linecap="round"/></g>';
+  }
   function tree(level) {
-    const scale = [.66,.78,.9,1,1.12][Math.max(1, Math.min(5, level)) - 1];
-    return '<g class="world-tree" transform="translate(112 82) scale('+scale+')"><path d="M76 186V83" stroke="var(--il-avatar-hair-brown)" stroke-width="20" stroke-linecap="round"/><circle cx="43" cy="73" r="42" fill="var(--il-success)"/><circle cx="91" cy="53" r="48" fill="var(--il-success)"/><circle cx="119" cy="93" r="38" fill="var(--il-jade-deep)"/></g>';
+    const scale = [.74,.86,.96,1.06,1.16][Math.max(1, Math.min(5, level)) - 1];
+    return '<g class="world-tree" transform="translate(150 298) scale('+scale+')">'+groundShadow(2, 6, 66, 15)
+      +'<path d="M-9 6V-92q0-7 9-7t9 7V6Z" fill="'+BROWN+'"/><path d="M0-88v78" stroke="var(--il-coral-ink)" stroke-width="3" stroke-linecap="round" opacity=".2"/>'
+      +'<circle cx="-34" cy="-104" r="40" fill="var(--il-success)"/><circle cx="34" cy="-116" r="44" fill="var(--il-success)"/><circle cx="46" cy="-82" r="32" fill="var(--il-jade-deep)"/><circle cx="-40" cy="-78" r="29" fill="var(--il-jade-deep)"/><circle cx="0" cy="-124" r="40" fill="var(--il-success)"/>'
+      +'<circle cx="-10" cy="-120" r="20" fill="'+GREEN_HI+'" opacity=".7"/>'
+      +'<g fill="var(--il-secondary)"><circle cx="-28" cy="-88" r="4"/><circle cx="26" cy="-102" r="4"/><circle cx="6" cy="-70" r="4"/></g></g>';
   }
   function garden(settings, progress, options) {
     options = options || {}; const items = set(options.activeItems || settings.activeWorldItems); const level = options.level || 1;
-    let posts = "";
-    for (let x = 250; x <= 470; x += 26) posts += '<path d="M'+x+' 296v-30h12v30Z"/><path d="M'+x+' 266l6-8 6 8Z"/>';
-    const fence = '<g fill="var(--il-surface)" stroke="var(--il-border-strong)" stroke-width="2">'+posts+'</g><g stroke="var(--il-border-strong)" stroke-width="4" fill="none"><path d="M244 275h236M244 287h236"/></g>';
-    return '<svg class="il-world-scene" viewBox="0 0 760 360" role="img" aria-label="Tu mundo de aprendizaje">'+sky(settings.worldBackground, false)
-      +'<g fill="var(--il-surface)" opacity=".9"><ellipse cx="150" cy="64" rx="42" ry="19"/><ellipse cx="114" cy="74" rx="27" ry="13"/><ellipse cx="188" cy="75" rx="26" ry="13"/><ellipse cx="474" cy="50" rx="35" ry="16"/><ellipse cx="512" cy="58" rx="23" ry="11"/></g>'
-      +'<path d="M0 246c130-35 235 18 360-8 126-27 250-9 400 33v89H0Z" fill="var(--il-success-soft)"/>'
-      +'<path d="M0 300c120-26 210 8 330-4 120-12 250-6 430 14v50H0Z" fill="color-mix(in srgb,var(--il-success) 24%,var(--il-surface))"/>'
-      +fence
-      +'<g fill="var(--il-success)"><circle cx="70" cy="300" r="30"/><circle cx="104" cy="293" r="23"/><circle cx="40" cy="305" r="19"/><circle cx="706" cy="300" r="28"/><circle cx="678" cy="296" r="21"/><circle cx="732" cy="307" r="17"/></g>'
-      +'<g fill="var(--il-jade-deep)" opacity=".45"><circle cx="86" cy="307" r="12"/><circle cx="690" cy="307" r="11"/></g>'
-      +'<g fill="var(--il-warning)"><circle cx="56" cy="291" r="5"/><circle cx="94" cy="284" r="5"/><circle cx="700" cy="290" r="5"/><circle cx="724" cy="300" r="5"/></g><g fill="var(--il-secondary)"><circle cx="74" cy="298" r="4"/><circle cx="714" cy="294" r="4"/></g>'
-      +'<g stroke="var(--il-success)" stroke-width="3" stroke-linecap="round" opacity=".85"><path d="M182 322v-12M190 323v-15M198 322v-12"/><path d="M556 320v-12M564 321v-15M572 320v-12"/></g>'
-      +'<path d="M80 283c125-50 211-17 307-5s180-23 291-2" fill="none" stroke="var(--il-border-strong)" stroke-width="12" stroke-linecap="round" opacity=".45"/>'+tree(level)
-      +(items.has("world-flowers")?'<g fill="var(--il-secondary)"><circle cx="280" cy="286" r="9"/><circle cx="314" cy="300" r="8"/><circle cx="348" cy="282" r="9"/></g><g stroke="var(--il-success)" stroke-width="4"><path d="M280 295v20M314 308v14M348 291v22"/></g>':'')
-      +(items.has("world-bench")?'<g transform="translate(425 225)" stroke="var(--il-primary)" stroke-width="8" stroke-linecap="round"><path d="M0 28h105M7 50h91M17 50l-8 38M87 50l8 38"/></g>':'')
-      +(items.has("world-toy-plane")?'<path d="m345 240 43-19-15 36-9-15Z" fill="var(--il-secondary)"/>':'')
-      +(items.has("world-ball")?'<circle cx="415" cy="310" r="17" fill="var(--il-warning)"/><path d="M402 306h26M415 293v34" stroke="var(--il-surface)" stroke-width="3"/>':'')
-      +(items.has("world-pond")?'<ellipse cx="610" cy="310" rx="84" ry="24" fill="var(--il-primary-soft)" stroke="var(--il-focus)" stroke-width="4"/>':'')
-      +(items.has("world-bicycle")?'<g transform="translate(535 220)" fill="none" stroke="var(--il-primary)" stroke-width="6"><circle cx="22" cy="62" r="20"/><circle cx="92" cy="62" r="20"/><path d="m22 62 27-42 21 42H22l20-30h40l10 30M45 19h17"/></g>':'')
-      +(items.has("world-lanterns")?'<g stroke="var(--il-primary)" stroke-width="4"><path d="M395 174v105M683 174v104"/></g><g fill="var(--il-warning)"><circle cx="395" cy="180" r="12"/><circle cx="683" cy="180" r="12"/></g>':'')
-      +(items.has("world-greenhouse")?'<g transform="translate(586 105)" fill="var(--il-surface)" fill-opacity=".72" stroke="var(--il-success)" stroke-width="5"><path d="m0 61 52-50 52 50v101H0Z"/><path d="M52 11v151M0 61h104"/></g>':'')+'</svg>';
+    const bg = settings.worldBackground; const customSky = bg && bg !== "day";
+    const daySky = '<rect width="760" height="360" fill="url(#ilSkyDay)"/>'
+      +'<g transform="translate(650 66)"><g stroke="var(--il-warning)" stroke-width="4" stroke-linecap="round" opacity=".5"><path d="M0-52v-16M0 52v16M52 0h16M-52 0h-16M37 37l11 11M-37-37l-11-11M37-37l11-11M-37 37l-11 11"/></g><circle r="34" fill="var(--il-warning-soft)"/><circle r="24" fill="color-mix(in srgb,var(--il-warning) 22%,var(--il-surface))"/></g>';
+    // Colinas con profundidad + camino con piedras (clearing central para el avatar).
+    const ground = '<path d="M0 236c150-40 250 16 390-10 130-24 250-8 370 26v108H0Z" fill="color-mix(in srgb,var(--il-success) 16%,var(--il-surface))"/>'
+      +'<path d="M0 274c140-30 240 12 360-6 130-18 260-6 400 20v72H0Z" fill="url(#ilGrass)"/>'
+      +'<path d="M0 316c120-20 220 8 340-2 130-10 260-4 420 12v34H0Z" fill="color-mix(in srgb,var(--il-success) 30%,var(--il-surface))"/>';
+    const path = '<path d="M360 360c-6-40 30-64 26-96-4-30-40-40-38-70" fill="none" stroke="color-mix(in srgb,var(--il-warning-soft) 78%,var(--il-surface))" stroke-width="46" stroke-linecap="round" opacity=".9"/>'
+      +'<g fill="color-mix(in srgb,var(--il-warning) 16%,var(--il-surface))"><ellipse cx="360" cy="336" rx="20" ry="8"/><ellipse cx="372" cy="300" rx="18" ry="7"/><ellipse cx="356" cy="266" rx="16" ry="6"/></g>';
+    const scenery = cloud(150, 62, 1.05) + cloud(500, 50, .9) + bush(64, 300, 1.05) + bush(704, 302, 1) + bush(250, 320, .7)
+      + tree(level)
+      + flower(300, 300, "var(--il-secondary)", 1) + flower(322, 314, "var(--il-warning)", .85) + flower(66, 250, "var(--il-focus)", .8)
+      + tuft(196, 320) + tuft(548, 322) + tuft(690, 264)
+      + butterfly(470, 150, "var(--il-secondary)") + butterfly(250, 120, "var(--il-warning)");
+    return '<svg class="il-world-scene" viewBox="0 0 760 360" role="img" aria-label="Tu jardín de aprendizaje">'
+      +'<defs><linearGradient id="ilSkyDay" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="color-mix(in srgb,var(--il-focus) 14%,var(--il-surface))"/><stop offset="1" stop-color="color-mix(in srgb,var(--il-focus) 4%,var(--il-surface))"/></linearGradient>'
+      +'<linearGradient id="ilGrass" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--il-success-soft)"/><stop offset="1" stop-color="color-mix(in srgb,var(--il-success) 22%,var(--il-surface))"/></linearGradient></defs>'
+      +(customSky ? sky(bg, false) : daySky) + ground + path + scenery
+      +(items.has("world-flowers")?flower(250,296,"var(--il-secondary)",1)+flower(276,306,"var(--il-warning)",.9)+flower(228,308,"var(--il-focus)",.85)+flower(300,290,"var(--il-secondary)",.8):'')
+      +(items.has("world-bench")?'<g transform="translate(556 244)">'+groundShadow(40,74,54,9)+'<path d="M8 30v40M72 30v40" stroke="var(--il-coral-ink)" stroke-width="7" stroke-linecap="round"/><rect x="-2" y="22" width="84" height="11" rx="5" fill="'+BROWN+'"/><rect x="-2" y="0" width="84" height="8" rx="4" fill="'+BROWN+'"/><path d="M6 6v18M74 6v18" stroke="'+BROWN+'" stroke-width="5" stroke-linecap="round"/></g>':'')
+      +(items.has("world-toy-plane")?'<g class="world-flit" transform="translate(520 96)"><path d="m0 0 52-16-16 34-12-14Z" fill="var(--il-secondary)"/><path d="m52-16-28 20 8 14Z" fill="var(--il-coral-ink)"/><path d="M-40 8q20-10 40-8" fill="none" stroke="var(--il-surface)" stroke-width="3" stroke-linecap="round" stroke-dasharray="2 8" opacity=".8"/></g>':'')
+      +(items.has("world-ball")?'<g transform="translate(300 330)">'+groundShadow(0,16,18,6)+'<circle r="17" fill="var(--il-surface)" stroke="var(--il-border-strong)" stroke-width="2"/><path d="M-17 0a17 17 0 0 1 34 0Z" fill="var(--il-secondary)"/><path d="M0-17v34M-17 0h34" stroke="var(--il-surface)" stroke-width="2.4"/></g>':'')
+      +(items.has("world-pond")?'<g transform="translate(612 322)"><ellipse rx="88" ry="27" fill="color-mix(in srgb,var(--il-focus) 18%,var(--il-surface))"/><ellipse cx="0" cy="-4" rx="72" ry="19" fill="color-mix(in srgb,var(--il-focus) 30%,var(--il-surface))"/><path d="M-42-6h30M-24 6h34" stroke="var(--il-surface)" stroke-width="3" stroke-linecap="round" opacity=".65"/><g transform="translate(26 -3)"><ellipse rx="15" ry="9" fill="var(--il-success)"/><circle cx="-3" cy="-2" r="3.4" fill="var(--il-secondary)"/></g></g>':'')
+      +(items.has("world-bicycle")?'<g transform="translate(470 262)" fill="none" stroke="var(--il-primary)" stroke-width="6" stroke-linecap="round"><circle cx="22" cy="46" r="19"/><circle cx="92" cy="46" r="19"/><path d="m22 46 26-40 21 40M48 6h18M40 46h40l8-24"/></g>':'')
+      +(items.has("world-lanterns")?'<path d="M118 150q260-58 526 6" fill="none" stroke="var(--il-primary)" stroke-width="2.5" opacity=".5"/><g fill="var(--il-warning)" stroke="var(--il-warning-ink)" stroke-width="1.5"><circle cx="230" cy="150" r="8"/><circle cx="360" cy="140" r="8"/><circle cx="500" cy="145" r="8"/><circle cx="620" cy="158" r="8"/></g>':'')
+      +(items.has("world-greenhouse")?'<g transform="translate(628 150)">'+groundShadow(52,116,60,10)+'<path d="m0 66 52-52 52 52v52H0Z" fill="color-mix(in srgb,var(--il-focus) 8%,var(--il-surface))" stroke="var(--il-success)" stroke-width="5" stroke-linejoin="round"/><path d="M52 14v104M0 66h104M26 40l26 26M78 40 52 66" stroke="var(--il-success)" stroke-width="3" opacity=".55"/></g>':'')
+      +'</svg>';
   }
   function personalSpace(settings, progress, options) {
     options = options || {}; const items = set(options.activeItems || settings.activeWorldItems); const isEso = options.band === "eso";
