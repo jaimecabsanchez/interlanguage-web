@@ -26,7 +26,7 @@ assert.ok(varied.includes("filter:"), "recolorea únicamente las máscaras corre
 
 const portrait = V.avatar(base, {}, { portrait:true });
 assert.ok(portrait.includes("is-portrait"), "genera previsualización de rostro");
-assert.ok(V.scene(base, {}, "p12", { level:1 }).includes("Tu mundo de aprendizaje"), "mantiene el jardín infantil");
-assert.ok(V.scene(base, {}, "eso", { level:1 }).includes("Your personal space"), "mantiene el espacio de ESO");
+assert.ok(V.scene(base, {}, "p12", { level:1 }).includes("Tu jardín de aprendizaje"), "mantiene el jardín infantil");
+assert.ok(V.scene(base, {}, "eso", { level:1 }).includes("Your study space"), "mantiene el espacio de ESO");
 
 console.log("world-visual: avatar maestro inmutable comprobado");
