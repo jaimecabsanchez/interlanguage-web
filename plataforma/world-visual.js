@@ -219,14 +219,49 @@
       +'</svg>';
   }
   function personalSpace(settings, progress, options) {
-    options = options || {}; const items = set(options.activeItems || settings.activeWorldItems); const isEso = options.band === "eso";
-    return '<svg class="il-world-scene is-secondary" viewBox="0 0 760 360" role="img" aria-label="'+(isEso?'Your personal space':'Tu base personal')+'">'+sky(settings.worldBackground, true)
-      +'<path d="M0 278h760v82H0Z" fill="var(--il-border)"/><rect x="64" y="70" width="168" height="125" rx="10" fill="var(--il-surface)" stroke="var(--il-border-strong)" stroke-width="5"/><path d="M88 165c38-50 70-14 118-68" fill="none" stroke="var(--il-success)" stroke-width="8"/><circle cx="206" cy="97" r="8" fill="var(--il-secondary)"/>'
-      +'<path d="M322 254h306M354 254v68M595 254v68" stroke="var(--il-primary)" stroke-width="15" stroke-linecap="round"/><rect x="338" y="213" width="270" height="48" rx="10" fill="var(--il-primary)"/>'
-      +(items.has("world-plant")?'<g transform="translate(370 155)"><path d="M27 59V25M27 40C8 34 7 18 8 10c18 4 24 15 19 30Zm0 4c18-5 22-19 22-31-17 3-24 13-22 31Z" fill="var(--il-success)"/><path d="M8 59h39l-6 35H14Z" fill="var(--il-secondary)"/></g>':'')
-      +(items.has("world-travel-board")?'<g transform="translate(270 65)"><rect width="126" height="94" rx="8" fill="var(--il-surface)" stroke="var(--il-border-strong)" stroke-width="5"/><path d="m16 74 29-31 20 18 18-22 25 35" fill="none" stroke="var(--il-focus)" stroke-width="7"/></g>':'')
-      +(items.has("world-music-poster")?'<g transform="translate(430 66)"><rect width="100" height="112" rx="8" fill="var(--il-secondary-soft)"/><path d="M58 27v45c0 12-20 16-25 6-5-11 11-19 25-12M58 36l24-7v34" fill="none" stroke="var(--il-secondary)" stroke-width="7" stroke-linecap="round"/></g>':'')
-      +(items.has("world-tech-desk")?'<g transform="translate(520 118)"><rect width="150" height="94" rx="8" fill="var(--il-primary-soft)" stroke="var(--il-primary)" stroke-width="6"/><path d="M75 94v24M42 118h66" stroke="var(--il-primary)" stroke-width="7" stroke-linecap="round"/></g>':'')+'</svg>';
+    options = options || {}; const items = set(options.activeItems || settings.activeWorldItems);
+    const isEso = options.band === "eso"; const level = options.level || 1;
+    const NAVY = "var(--il-primary)"; const NAVY_DEEP = "color-mix(in srgb,var(--il-primary) 78%,var(--il-text-primary))";
+    // 10-11 (base): pared cálida crema, suelo de madera, acento coral.
+    // ESO (space): pared navy tenue, suelo neutro, acento jade — más sobrio.
+    const wall = isEso ? "color-mix(in srgb,var(--il-primary-soft) 86%,var(--il-surface))" : "color-mix(in srgb,var(--il-warning-soft) 52%,var(--il-surface))";
+    const floor = isEso ? "var(--il-surface-secondary)" : "color-mix(in srgb,var(--il-warning) 18%,var(--il-surface))";
+    const rug = isEso ? "color-mix(in srgb,var(--il-focus) 12%,var(--il-surface))" : "color-mix(in srgb,var(--il-secondary) 15%,var(--il-surface))";
+    const accent = isEso ? "var(--il-success)" : "var(--il-secondary)";
+    const screen = "color-mix(in srgb,var(--il-focus) 24%,var(--il-surface))";
+    const shelfWood = "var(--il-avatar-hair-brown)";
+    const shadow = c => '<ellipse cx="'+c[0]+'" cy="'+c[1]+'" rx="'+c[2]+'" ry="'+c[3]+'" fill="var(--il-primary)" opacity=".08"/>';
+    // Estructura base (siempre): pared, suelo, rodapié y alfombra bajo el avatar.
+    const room = '<rect width="760" height="360" fill="'+wall+'"/><path d="M0 270h760v90H0Z" fill="'+floor+'"/><path d="M0 270h760" stroke="color-mix(in srgb,var(--il-primary) 12%,var(--il-surface))" stroke-width="3"/>'
+      +'<ellipse cx="340" cy="332" rx="168" ry="26" fill="'+rug+'"/>';
+    // Nivel 1 · Escritorio (con cajonera y patas).
+    const desk = '<g transform="translate(430 250)">'+shadow([150,92,156,15])
+      +'<rect x="208" y="16" width="84" height="94" rx="4" fill="'+NAVY_DEEP+'"/><path d="M222 44h56M222 74h56" stroke="'+NAVY+'" stroke-width="3"/><g fill="'+accent+'"><circle cx="250" cy="30" r="3.2"/><circle cx="250" cy="59" r="3.2"/><circle cx="250" cy="90" r="3.2"/></g>'
+      +'<rect x="10" y="16" width="13" height="94" fill="'+NAVY_DEEP+'"/><rect x="0" y="0" width="298" height="17" rx="5" fill="'+NAVY+'"/><rect x="0" y="13" width="298" height="4" fill="'+NAVY_DEEP+'"/></g>';
+    // Nivel 2 · Monitor sobre el escritorio.
+    const monitor = level >= 2 ? '<g transform="translate(492 168)"><rect width="110" height="68" rx="7" fill="'+NAVY_DEEP+'"/><rect x="7" y="7" width="96" height="54" rx="3" fill="'+screen+'"/>'
+      +(isEso?'<path d="M16 55l22-22 15 13 17-19 20 28Z" fill="color-mix(in srgb,var(--il-focus) 46%,var(--il-surface))"/><circle cx="90" cy="20" r="6" fill="var(--il-warning)"/>':'<path d="M12 55c14-10 22-2 30-10s16 4 26-4v14H12Z" fill="color-mix(in srgb,var(--il-success) 40%,var(--il-surface))"/><circle cx="86" cy="22" r="7" fill="var(--il-warning)"/>')
+      +'<rect x="49" y="68" width="12" height="12" fill="'+NAVY_DEEP+'"/><rect x="34" y="80" width="42" height="6" rx="3" fill="'+NAVY_DEEP+'"/></g>' : '';
+    // Nivel 3 · Estantería con libros.
+    const shelf = level >= 3 ? '<g transform="translate(48 120)">'+shadow([56,152,64,11])
+      +'<rect width="108" height="150" rx="7" fill="'+shelfWood+'"/><rect x="10" y="10" width="88" height="130" rx="3" fill="'+wall+'"/><path d="M10 58h88M10 104h88" stroke="'+shelfWood+'" stroke-width="6"/>'
+      +'<g><rect x="18" y="20" width="10" height="32" fill="var(--il-secondary)"/><rect x="30" y="24" width="10" height="28" fill="var(--il-success)"/><rect x="42" y="18" width="10" height="34" fill="'+NAVY+'"/><rect x="58" y="22" width="24" height="30" rx="2" fill="var(--il-warning)"/></g>'
+      +'<g><rect x="18" y="70" width="24" height="30" rx="2" fill="'+NAVY+'"/><rect x="50" y="66" width="10" height="34" fill="var(--il-secondary)"/><rect x="62" y="72" width="10" height="28" fill="var(--il-success)"/><rect x="74" y="70" width="10" height="30" fill="var(--il-warning)"/></g></g>' : '';
+    // Nivel 4 · Tablón de misiones en la pared.
+    const board = level >= 4 ? '<g transform="translate(474 52)"><rect width="164" height="86" rx="7" fill="color-mix(in srgb,var(--il-warning) 26%,var(--il-surface))" stroke="'+shelfWood+'" stroke-width="5"/>'
+      +'<g transform="translate(16 14)"><rect width="46" height="34" rx="3" fill="var(--il-surface)"/><path d="M9 18l6 6 12-14" fill="none" stroke="'+accent+'" stroke-width="4" stroke-linecap="round"/></g>'
+      +'<g transform="translate(72 12)"><rect width="44" height="30" rx="3" fill="var(--il-surface)"/><path d="m22 8 3 7 7 1-5 5 1 7-6-4-6 4 1-7-5-5 7-1Z" fill="var(--il-warning)"/></g>'
+      +'<g transform="translate(120 16)"><rect width="30" height="52" rx="3" fill="var(--il-surface)"/><path d="M7 14h16M7 26h16M7 38h10" stroke="'+NAVY+'" stroke-width="3" stroke-linecap="round" opacity=".55"/></g>'
+      +'<circle cx="30" cy="10" r="3" fill="'+accent+'"/><circle cx="130" cy="10" r="3" fill="'+accent+'"/></g>' : '';
+    // Nivel 5 · Lámpara de escritorio + trofeo en la estantería.
+    const lamp = level >= 5 ? '<g transform="translate(648 176)" fill="none" stroke="'+NAVY+'" stroke-width="5" stroke-linecap="round"><path d="M14 74V44l22-18"/><ellipse cx="18" cy="76" rx="14" ry="4" fill="'+NAVY_DEEP+'" stroke="none"/></g><path d="M666 152l20 10-12 16-20-10Z" fill="'+accent+'"/>' : '';
+    const trophy = level >= 5 ? '<g transform="translate(78 96)"><path d="M4 2h20v9c0 8-5 12-10 12S4 19 4 11Z" fill="var(--il-warning)"/><path d="M4 4C-4 4-4 14 4 14M24 4c8 0 8 10 0 10" fill="none" stroke="var(--il-warning)" stroke-width="3"/><path d="M14 23v6M8 30h12" stroke="var(--il-warning-ink)" stroke-width="3" stroke-linecap="round"/></g>' : '';
+    return '<svg class="il-world-scene is-secondary" viewBox="0 0 760 360" role="img" aria-label="'+(isEso?'Your study space':'Tu base de aprendizaje')+'">'
+      +room+shelf+board+desk+monitor+lamp+trophy
+      +(items.has("world-plant")?'<g transform="translate(392 206)">'+shadow([16,66,26,7])+'<path d="M16 64V24M16 40C-2 34-3 16-2 8c18 4 24 15 18 32Zm0 4c18-6 22-24 21-36-17 3-24 15-21 36Z" fill="var(--il-success)"/><path d="M2 64h30l-5 32H7Z" fill="'+accent+'"/></g>':'')
+      +(items.has("world-travel-board")?'<g transform="translate(196 54)"><rect width="120" height="88" rx="8" fill="var(--il-surface)" stroke="'+shelfWood+'" stroke-width="5"/><path d="m14 70 28-30 19 17 17-21 24 33" fill="none" stroke="var(--il-focus)" stroke-width="6" stroke-linecap="round"/><circle cx="40" cy="34" r="6" fill="var(--il-secondary)"/></g>':'')
+      +(items.has("world-music-poster")?'<g transform="translate(648 54)"><rect width="92" height="104" rx="8" fill="var(--il-secondary-soft)"/><path d="M54 26v42c0 11-19 15-24 5-4-10 11-17 24-11M54 34l22-6v31" fill="none" stroke="var(--il-secondary)" stroke-width="6" stroke-linecap="round"/></g>':'')
+      +(items.has("world-tech-desk")?'<g transform="translate(320 214)"><rect width="70" height="44" rx="6" fill="'+NAVY_DEEP+'"/><rect x="6" y="6" width="58" height="28" rx="2" fill="'+screen+'"/><path d="M35 44v10M22 54h26" stroke="'+NAVY+'" stroke-width="5" stroke-linecap="round"/></g>':'')+'</svg>';
   }
   function scene(settings, progress, band, options) { return band === "p12" || band === "p34" ? garden(settings, progress, options) : personalSpace(settings, progress, Object.assign({}, options, { band })); }
 
