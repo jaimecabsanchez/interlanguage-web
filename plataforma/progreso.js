@@ -31,6 +31,10 @@
       $("progressTitleLead").textContent = "Tu progreso,";
       $("progressSubtitle").textContent = "Revisa tu práctica, tus habilidades y el próximo objetivo.";
     }
+    // Primaria: mascota zorro en la cabecera (coherente con Inicio). ESO no lleva.
+    if (ageMode && ageMode.indexOf("primary") === 0 && window.ILVisual) {
+      const pm = $("progressMascot"); if (pm) pm.innerHTML = ILVisual.nemo("hi");
+    }
   }
 
   // Escena decorativa por edad detrás del héroe de la semana (solo tokens --il-*).

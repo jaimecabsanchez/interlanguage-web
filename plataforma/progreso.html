@@ -14,7 +14,7 @@
 <link rel="stylesheet" href="app.css?v=20260809d">
 <link rel="stylesheet" href="etapa.css?v=20260809d">
 <link rel="stylesheet" href="shell.css?v=20260816c">
-<link rel="stylesheet" href="progreso.css?v=20260818c">
+<link rel="stylesheet" href="progreso.css?v=20260823a">
 <link rel="stylesheet" href="il-visual.css?v=20260821b">
 <link rel="stylesheet" href="age-mode.css?v=20260823b">
 <style>
@@ -83,7 +83,27 @@
 
       <main class="app-shell progress-shell">
         <header class="progress-header">
-          <div>
+          <div class="greeting-hero" aria-hidden="true">
+            <svg class="greeting-sky" viewBox="0 0 480 132" preserveAspectRatio="none">
+              <defs>
+                <radialGradient id="ilSunGlow" cx="0.5" cy="0.5" r="0.5">
+                  <stop offset="0" stop-color="var(--il-warning)" stop-opacity="0.5"/>
+                  <stop offset="0.5" stop-color="var(--il-warning)" stop-opacity="0.16"/>
+                  <stop offset="1" stop-color="var(--il-warning)" stop-opacity="0"/>
+                </radialGradient>
+              </defs>
+              <ellipse cx="474" cy="2" rx="170" ry="104" fill="url(#ilSunGlow)"/>
+              <g fill="var(--il-surface)">
+                <ellipse cx="120" cy="42" rx="34" ry="10" opacity="0.8"/>
+                <ellipse cx="152" cy="36" rx="22" ry="9" opacity="0.8"/>
+                <ellipse cx="250" cy="30" rx="24" ry="8" opacity="0.55"/>
+              </g>
+              <path d="M0 132 Q120 104 250 114 Q370 122 480 110 L480 132Z" fill="color-mix(in srgb,var(--il-success) 22%,var(--il-surface))"/>
+              <path d="M0 132 Q150 118 300 124 Q400 128 480 122 L480 132Z" fill="color-mix(in srgb,var(--il-success) 38%,var(--il-surface))"/>
+            </svg>
+            <span class="greeting-mascot" id="progressMascot"></span>
+          </div>
+          <div class="progress-headline">
             <p class="ui-label" id="progressEyebrow">Tu aprendizaje</p>
             <h1><span id="progressTitleLead">Tu progreso,</span> <span id="studentName">paso a paso</span></h1>
             <p id="progressSubtitle">Lo que estás aprendiendo y lo que conviene practicar.</p>
@@ -209,6 +229,6 @@
 <script src="progress-data.js?v=20260819a"></script>
 <script src="motor/achievements.js?v=20260816a"></script>
 <script src="achievement-store.js?v=20260816a"></script>
-<script src="progreso.js?v=20260821a"></script>
+<script src="progreso.js?v=20260823a"></script>
 </body>
 </html>

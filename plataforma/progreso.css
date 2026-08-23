@@ -3,6 +3,31 @@
 .demo-strip>span{display:flex;align-items:center;gap:var(--il-space-2)}.demo-strip svg{width:18px;height:18px}.demo-strip button{width:var(--il-touch);height:var(--il-touch);display:grid;place-items:center;border:0;background:transparent;color:var(--il-primary);border-radius:var(--il-radius-sm);cursor:pointer}.demo-strip button svg{width:19px;height:19px}
 .progress-header{display:flex;align-items:flex-end;justify-content:space-between;gap:var(--il-space-6);padding:var(--il-space-7) 0 var(--il-space-5)}
 .progress-header h1{font-size:var(--il-fs-3xl);letter-spacing:var(--il-tracking-tight);margin:var(--il-space-1) 0 var(--il-space-2)}.progress-header h1 span{color:var(--il-success)}.progress-header>div>p:last-child{max-width:610px;color:var(--il-text-secondary);margin:0}
+
+/* — Primaria: cabecera con escena suave + mascota (coherente con Inicio) — */
+.progress-header .greeting-hero{display:none}
+body[data-stage="p12"] .progress-header,
+body[data-stage="p34"] .progress-header,
+body[data-stage="p56"] .progress-header{position:relative;overflow:hidden;align-items:center;border-radius:26px;padding:var(--il-space-4) var(--il-space-5) var(--il-space-5);margin-bottom:var(--il-space-4);background:linear-gradient(180deg,color-mix(in srgb,var(--il-focus) 15%,var(--il-surface)) 0%,color-mix(in srgb,var(--il-focus) 5%,var(--il-surface)) 52%,var(--il-surface) 100%)}
+body[data-stage="p12"] .progress-header .greeting-hero,
+body[data-stage="p34"] .progress-header .greeting-hero,
+body[data-stage="p56"] .progress-header .greeting-hero{display:block;position:absolute;inset:0;z-index:0;pointer-events:none}
+.progress-header .greeting-sky{position:absolute;inset:0;width:100%;height:100%}
+.progress-header .progress-headline,
+.progress-header .identity-summary{position:relative;z-index:1}
+.progress-header .greeting-mascot{position:absolute;left:16px;bottom:-2px;width:76px;height:76px;z-index:1;filter:drop-shadow(0 5px 9px color-mix(in srgb,var(--il-primary) 20%,transparent))}
+.progress-header .greeting-mascot .il-nemo{width:100%;height:100%}
+body[data-stage="p12"] .progress-header .greeting-mascot{width:90px;height:90px}
+body[data-stage="p56"] .progress-header .greeting-mascot{display:none}
+body[data-stage="p12"] .progress-header .progress-headline,
+body[data-stage="p34"] .progress-header .progress-headline{padding-left:104px}
+/* Móvil: la escena se mantiene, pero el texto no se desplaza y la mascota se achica */
+@media (max-width:600px){
+  body[data-stage="p12"] .progress-header .progress-headline,
+  body[data-stage="p34"] .progress-header .progress-headline{padding-left:0;padding-top:64px}
+  body[data-stage="p12"] .progress-header .greeting-mascot,
+  body[data-stage="p34"] .progress-header .greeting-mascot{width:64px;height:64px;left:12px;bottom:auto;top:8px}
+}
 .ui-label{margin:0;color:var(--il-muted);font-family:var(--il-font-display);font-size:var(--il-fs-xs);font-weight:var(--il-weight-extrabold);letter-spacing:var(--il-tracking-label);text-transform:uppercase}
 .identity-summary{display:flex;align-items:center;gap:var(--il-space-2);flex-wrap:wrap;justify-content:flex-end}.identity-summary>span{min-height:var(--il-touch);display:inline-flex;align-items:center;gap:var(--il-space-2);padding:var(--il-space-2) var(--il-space-3);border:1px solid var(--il-border);border-radius:var(--il-radius-pill);background:var(--il-surface);color:var(--il-text-secondary);font-size:var(--il-fs-sm)}.identity-summary svg{width:18px;height:18px;color:var(--il-success)}.identity-summary b{color:var(--il-text-primary)}
 .progress-tabs{position:sticky;top:var(--il-space-2);z-index:var(--il-z-sticky);display:grid;grid-template-columns:repeat(3,1fr);gap:var(--il-space-1);padding:var(--il-space-1);margin-bottom:var(--il-space-5);border:1px solid var(--il-border);border-radius:var(--il-radius-md);background:color-mix(in srgb,var(--il-surface) 94%,transparent);box-shadow:var(--il-shadow-sm);backdrop-filter:blur(12px)}
