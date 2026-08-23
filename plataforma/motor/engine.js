@@ -50,7 +50,8 @@
   }
 
   function supportFor(exercise, band) {
-    const english = band !== "p12";
+    // Peques (6-9 → p12/p34): interfaz en español. Mayores (p56/eso): en inglés.
+    const english = band !== "p12" && band !== "p34";
     const type = exercise.tipo || "";
     if (type === "emparejar") return english ? "LOOK · MATCH" : "MIRA · RELACIONA";
     if (type === "ordenar") return english ? "THINK · ORDER" : "PIENSA · ORDENA";
@@ -67,7 +68,7 @@
     task.lastChild.textContent = supportFor(exercise, band);
     const label = el("span", "eng-label");
     label.innerHTML = icon(skill.icon) + "<span></span>";
-    label.lastChild.textContent = exercise.etiqueta || (band === "p12" ? skill.es : skill.en);
+    label.lastChild.textContent = exercise.etiqueta || (band === "p12" || band === "p34" ? skill.es : skill.en);
     context.append(task, label);
     return context;
   }
@@ -532,7 +533,7 @@
   function interfaceCopy(band) {
     const copies = {
       p12: { check: "Comprobar", checkAgain: "Probar otra vez", next: "Siguiente", finish: "¡Terminar!", listen: "Escuchar", playing: "Escuchando…", replay: "Otra vez", retryAudio: "Reintentar", success: "¡Genial!", retry: "Casi. Prueba otra vez.", error: "Vamos a aprenderlo.", guide: "Vamos paso a paso", support: "Escucha · Mira · Elige" },
-      p34: { check: "Check", checkAgain: "Try again", next: "Next", finish: "Finish", listen: "Listen", playing: "Playing…", replay: "Replay", retryAudio: "Try again", success: "Great!", retry: "Almost! Try once more.", error: "Let’s learn it.", guide: "Una pista para empezar", support: "Listen · Think · Choose" },
+      p34: { check: "Comprobar", checkAgain: "Probar otra vez", next: "Siguiente", finish: "¡Terminar!", listen: "Escuchar", playing: "Escuchando…", replay: "Otra vez", retryAudio: "Reintentar", success: "¡Muy bien!", retry: "¡Casi! Prueba otra vez.", error: "Vamos a aprenderlo.", guide: "Una pista para empezar", support: "Escucha · Piensa · Elige" },
       p56: { check: "Comprobar", checkAgain: "Comprobar de nuevo", next: "Continuar", finish: "Finalizar misión", listen: "Listen", playing: "Reproduciendo…", replay: "Repetir", retryAudio: "Reintentar", success: "¡Muy bien!", retry: "Casi.", error: "Vamos a verlo.", guide: "Pista rápida", support: "Think · Answer · Learn" },
       eso: { check: "Check", checkAgain: "Check again", next: "Continue", finish: "Finish session", listen: "Listen", playing: "Playing…", replay: "Replay", retryAudio: "Try again", success: "Great work!", retry: "Almost.", error: "Let’s review it.", guide: "Quick tip", support: "Read · Respond · Improve" }
     };

@@ -12,7 +12,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="design-system.css?v=20260816b">
 <link rel="stylesheet" href="app.css?v=20260809d">
-<link rel="stylesheet" href="motor/motor.css?v=20260823b">
+<link rel="stylesheet" href="motor/motor.css?v=20260823c">
 <link rel="stylesheet" href="il-visual.css?v=20260821b">
 <link rel="stylesheet" href="etapa.css?v=20260809d">
 <style>
@@ -220,7 +220,7 @@
 <script src="world-data.js?v=20260810d"></script>
 <script src="motor/visual-assets.js?v=20260814b"></script>
 <script src="motor/adaptacion.js?v=20260814a"></script>
-<script src="motor/engine.js?v=20260823a"></script>
+<script src="motor/engine.js?v=20260823c"></script>
 <script>
   const $ = id => document.getElementById(id);
   const params = new URLSearchParams(location.search);
@@ -495,10 +495,10 @@
     const sec = ageExperience.id === "secondary";
     const young = ageExperience.id === "primary-young";
     if (examMode) {
-      $("summaryTitle").textContent = sec ? "Exam done" : "¡Examen hecho!";
+      $("summaryTitle").textContent = sec ? "Challenge done" : "¡Reto superado!";
       $("summaryLead").textContent = sec
         ? "You answered " + items.length + " · " + bonusCorrect + " correct."
-        : (young ? "¡Examen hecho! " + bonusCorrect + " de " + items.length : "Examen: " + bonusCorrect + " de " + items.length + " aciertos.");
+        : (young ? "¡Reto superado! " + bonusCorrect + " de " + items.length : "Reto: " + bonusCorrect + " de " + items.length + " aciertos.");
     } else if (reviewDueMode) {
       $("summaryTitle").textContent = sec ? "Review done" : "¡Repaso hecho!";
       $("summaryLead").textContent = sec
@@ -652,7 +652,7 @@
         }
         items = picked.map(id => byId[id]).filter(Boolean);
         if (!items.length) { location.href = "inicio.html"; return; }
-        $("missionName").textContent = ageExperience.id === "secondary" ? "Exam" : "Examen";
+        $("missionName").textContent = ageExperience.id === "secondary" ? "Challenge" : "Reto";
         index = 0; showExercise(); return;
       }
       $("missionName").textContent = (reviewMode ? (ageExperience.id === "secondary" ? "Review · " : "Repaso · ") : "") + missionMeta.unitTitle;

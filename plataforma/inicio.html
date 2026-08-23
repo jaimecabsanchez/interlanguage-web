@@ -529,10 +529,10 @@
     const practiced = window.ILMastery ? Object.keys(ILMastery.all(username)).length : 0;
     if (window.ILMission && ILMission.examDue && ILMission.examDue(username) && practiced >= 5) {
       $("recoIcon").innerHTML = ILIcon("stamp");
-      $("recoEyebrow").textContent = en ? "MILESTONE" : "TOCA EXAMEN";
-      $("recoTitle").textContent = en ? "Time for your exam" : "Es hora de tu examen";
+      $("recoEyebrow").textContent = en ? "CHALLENGE" : "TU RETO";
+      $("recoTitle").textContent = en ? "A challenge awaits!" : "¡Un reto te espera!";
       $("recoCopy").textContent = en ? "A round with what you've been practising." : "Un repaso con lo que has ido practicando.";
-      $("recoCta").textContent = en ? "Start exam" : "Empezar examen";
+      $("recoCta").textContent = en ? "Start challenge" : "Empezar reto";
       $("recoCta").href = "leccion.html?mode=exam";
       card.classList.add("reco--exam"); card.hidden = false;
       return;
