@@ -175,6 +175,18 @@
       '<path d="m36 23 3.9 7.9 8.7 1.2-6.3 6.1 1.5 8.6L36 50.7 28 45.9l1.5-8.6-6.3-6.1 8.7-1.2Z" fill="var(--il-primary)"/>'
   };
 
+  // Alias de ids: en Perfil/medallas se usan ids heredados (streak_2, primera…) y en el
+  // catálogo algunos ids difieren de la clave del motivo. Se traducen a la clave real del
+  // MOTIF para que NUNCA caigan al genérico (estrella): racha→llama, primera→avión, etc.
+  const STAMP_ALIAS = {
+    streak_2: "streak-spark", streak_5: "streak-spark", streak_10: "streak-spark", streak_30: "streak-spark",
+    "streak-5": "streak-spark", "streak-10": "streak-spark", "streak-30": "streak-spark",
+    aciertos_5: "sharp", aciertos_10: "sharp", "sharp-5": "sharp", "sharp-10": "sharp",
+    pleno: "perfect-round", record_racha: "record-streak",
+    primera: "first-flight", diez_lecciones: "missions-10",
+    "ten-missions": "missions-10", "fifty-missions": "missions-50"
+  };
+
   // Familia de color (solo afecta al aro/puntos cuando el sello está conseguido;
   // el símbolo mantiene su propia paleta). Bloqueado/progreso convergen a gris.
   function stampTone(id) {
@@ -202,28 +214,46 @@
   // raster: toda la colección es SVG para compartir marco, escalar y recolorear.
   const ACHIEVEMENT_IMG = {};
 
+  let STAMP_SEQ = 0;
   function stamp(id, opts) {
     opts = opts || {};
+    const key = STAMP_ALIAS[id] || id;
     let state = opts.state;
     if (!state) state = opts.locked ? "locked" : "earned"; // compat: {locked:bool}
-    const family = opts.tone || stampTone(id);
-    const motif = MOTIF[id] || MOTIF._default;
+    const family = opts.tone || stampTone(key);
+    const motif = MOTIF[key] || MOTIF._default;
     const showLock = state === "locked" || state === "progress";
     const cls = "il-stamp il-stamp--" + family + " is-" + state;
     let beads = "";
     const N = 18, R = 28.4;
     for (let i = 0; i < N; i++) {
       const ang = (i / N) * Math.PI * 2 - Math.PI / 2;
-      beads += '<circle cx="' + (36 + Math.cos(ang) * R).toFixed(2) + '" cy="' + (36 + Math.sin(ang) * R).toFixed(2) + '" r="1.35"/>';
+      beads += '<circle cx="' + (36 + Math.cos(ang) * R).toFixed(2) + '" cy="' + (36 + Math.sin(ang) * R).toFixed(2) + '" r="1.4"/>';
     }
+    // Relieve 3D con degradados fijos (blanco/negro): sirven sobre cualquier color de
+    // familia. gloss = brillo arriba-izq; shade = viñeta que oscurece los bordes (cúpula).
+    const n = ++STAMP_SEQ;
+    const defs =
+      '<defs>' +
+      '<radialGradient id="ilGl' + n + '" cx="0.36" cy="0.26" r="0.7">' +
+        '<stop offset="0" stop-color="#fff" stop-opacity="0.92"/>' +
+        '<stop offset="0.5" stop-color="#fff" stop-opacity="0.16"/>' +
+        '<stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>' +
+      '<radialGradient id="ilSh' + n + '" cx="0.5" cy="0.6" r="0.62">' +
+        '<stop offset="0.55" stop-color="#000" stop-opacity="0"/>' +
+        '<stop offset="1" stop-color="#000" stop-opacity="0.17"/></radialGradient>' +
+      '</defs>';
     return (
-      '<svg class="' + cls + '" viewBox="0 0 72 72" role="img" aria-hidden="true">' +
+      '<svg class="' + cls + '" viewBox="0 0 72 72" role="img" aria-hidden="true">' + defs +
       '<circle cx="36" cy="36" r="31.5" class="il-stamp__rim"/>' +
+      '<circle cx="36" cy="36" r="31.5" fill="url(#ilSh' + n + ')"/>' +
       '<g class="il-stamp__beads">' + beads + "</g>" +
       '<circle cx="36" cy="36" r="25.2" class="il-stamp__disc"/>' +
+      '<circle cx="36" cy="36" r="25.2" fill="url(#ilSh' + n + ')"/>' +
       '<circle cx="36" cy="36" r="25.2" class="il-stamp__edge" fill="none"/>' +
-      '<ellipse class="il-stamp__shine" cx="29" cy="24" rx="12" ry="5.5" transform="rotate(-24 29 24)"/>' +
-      '<g class="il-stamp__motif">' + motif + "</g>" +
+      '<ellipse cx="30" cy="23" rx="15" ry="8" fill="url(#ilGl' + n + ')" transform="rotate(-20 30 23)"/>' +
+      '<g class="il-stamp__motif" transform="translate(36 36) scale(1.07) translate(-36 -36)">' + motif + "</g>" +
+      '<circle cx="36" cy="36" r="31.5" fill="url(#ilGl' + n + ')" opacity="0.5"/>' +
       (showLock ? LOCK : "") +
       "</svg>"
     );

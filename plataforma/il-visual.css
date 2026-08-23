@@ -11,7 +11,7 @@
    Marco idéntico para todos: aro exterior + aro de puntos + disco + brillo,
    con una sombra sutil que da profundidad. Solo cambian símbolo, color de
    familia (al estar conseguido) y estado. --fam = color de familia. */
-.il-stamp{display:block;width:100%;height:100%;overflow:visible;filter:drop-shadow(0 2px 3px color-mix(in srgb,var(--il-primary) 16%,transparent))}
+.il-stamp{display:block;width:100%;height:100%;overflow:visible;filter:drop-shadow(0 3px 5px color-mix(in srgb,var(--il-primary) 22%,transparent))}
 .il-stamp--blue{--fam:var(--il-focus)}
 .il-stamp--coral{--fam:var(--il-secondary)}
 .il-stamp--navy{--fam:var(--il-primary)}
@@ -26,10 +26,10 @@
 .il-stamp__shine{fill:#fff;opacity:.5}
 
 /* CONSEGUIDO · aro y puntos con color de familia; disco con leve tinte. */
-.il-stamp.is-earned .il-stamp__rim{fill:color-mix(in srgb,var(--fam) 40%,var(--il-surface))}
-.il-stamp.is-earned .il-stamp__beads circle{fill:color-mix(in srgb,var(--fam) 62%,var(--il-surface))}
-.il-stamp.is-earned .il-stamp__disc{fill:color-mix(in srgb,var(--fam) 7%,var(--il-surface))}
-.il-stamp.is-earned .il-stamp__edge{stroke:color-mix(in srgb,var(--fam) 40%,var(--il-surface))}
+.il-stamp.is-earned .il-stamp__rim{fill:color-mix(in srgb,var(--fam) 54%,var(--il-surface))}
+.il-stamp.is-earned .il-stamp__beads circle{fill:color-mix(in srgb,var(--fam) 78%,var(--il-surface))}
+.il-stamp.is-earned .il-stamp__disc{fill:color-mix(in srgb,var(--fam) 11%,var(--il-surface))}
+.il-stamp.is-earned .il-stamp__edge{stroke:color-mix(in srgb,var(--fam) 52%,var(--il-surface))}
 
 /* EN PROGRESO · tono suave azul-gris; el símbolo se desatura un poco. */
 .il-stamp.is-progress .il-stamp__rim{fill:color-mix(in srgb,var(--il-focus) 14%,var(--il-surface-secondary))}
