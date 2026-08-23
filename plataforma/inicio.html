@@ -29,6 +29,41 @@
   .student-pill.streak{color:var(--il-warning-ink)}.student-pill svg{width:17px;height:17px}.profile-link{width:var(--il-touch);height:var(--il-touch);display:grid;place-items:center;border-radius:var(--il-radius-sm);background:var(--il-primary);color:var(--il-on-primary)}.profile-link:hover{color:var(--il-on-primary);background:var(--il-primary-hover)}.profile-link svg{width:22px;height:22px}
   .home-grid{display:grid;gap:var(--il-space-4)}
 
+  /* ===== Primaria más rica: cabecera-escena + mascota + tarjetas con color ===== */
+  .home-content{position:relative}
+  .home-grid{position:relative;z-index:1}
+  .greeting-hero{display:none}
+  /* Cabecera con escena (cielo, sol, nubes, colinas) solo en Primaria */
+  body[data-stage="p12"] .home-greeting,
+  body[data-stage="p34"] .home-greeting,
+  body[data-stage="p56"] .home-greeting{position:relative;overflow:hidden;padding:var(--il-space-4) var(--il-space-5) var(--il-space-5);margin-bottom:var(--il-space-1);border-radius:26px;background:linear-gradient(180deg,color-mix(in srgb,var(--il-focus) 22%,var(--il-surface)),color-mix(in srgb,var(--il-focus) 6%,var(--il-surface)) 60%,var(--il-surface))}
+  body[data-stage="p12"] .greeting-hero,
+  body[data-stage="p34"] .greeting-hero,
+  body[data-stage="p56"] .greeting-hero{display:block;position:absolute;inset:0;z-index:0;pointer-events:none}
+  .greeting-sky{position:absolute;inset:0;width:100%;height:100%}
+  .home-greeting .greeting-copy,.home-greeting .student-stats{position:relative;z-index:1}
+  .greeting-mascot{position:absolute;left:14px;bottom:-2px;width:76px;height:76px;z-index:1;filter:drop-shadow(0 5px 9px color-mix(in srgb,var(--il-primary) 20%,transparent))}
+  .greeting-mascot .il-nemo{width:100%;height:100%}
+  body[data-stage="p12"] .home-greeting{padding-bottom:var(--il-space-6)}
+  body[data-stage="p12"] .greeting-mascot{width:90px;height:90px}
+  body[data-stage="p12"] .home-greeting .greeting-copy,
+  body[data-stage="p34"] .home-greeting .greeting-copy{padding-left:96px}
+  body[data-stage="p56"] .greeting-mascot{display:none}
+
+  /* Tarjetas del lateral con color (no blancas y sosas) */
+  body[data-stage="p12"] .insight-card,
+  body[data-stage="p34"] .insight-card,
+  body[data-stage="p56"] .insight-card{border-radius:24px;border-color:transparent}
+  body[data-stage="p12"] .weekly-goal,
+  body[data-stage="p34"] .weekly-goal,
+  body[data-stage="p56"] .weekly-goal{background:linear-gradient(160deg,color-mix(in srgb,var(--il-success) 18%,var(--il-surface)),var(--il-surface) 70%)}
+  body[data-stage="p12"] .weekly-goal .insight-title__icon,
+  body[data-stage="p34"] .weekly-goal .insight-title__icon,
+  body[data-stage="p56"] .weekly-goal .insight-title__icon{background:var(--il-success);color:var(--il-on-success,#fff)}
+  body[data-stage="p12"] .reco-card,
+  body[data-stage="p34"] .reco-card,
+  body[data-stage="p56"] .reco-card{background:linear-gradient(160deg,color-mix(in srgb,var(--il-focus) 12%,var(--il-surface)),var(--il-surface) 72%)}
+
   /* ===== Tarjeta de misión: una misión que apetece empezar (no un panel) ===== */
   .daily-mission{position:relative;overflow:hidden;padding:clamp(22px,5vw,34px);border:1px solid var(--il-border-soft,var(--il-border));border-radius:var(--il-radius-xl);
     background:linear-gradient(158deg,var(--il-warning-soft) 0%,var(--il-surface) 46%);
@@ -48,6 +83,8 @@
   .mission-meta .meta-sep{display:none}
   /* Ilustración protagonista integrada */
   .mission-illo{flex:0 0 auto;width:clamp(96px,26vw,132px);height:clamp(96px,26vw,132px);filter:drop-shadow(0 10px 18px color-mix(in srgb,var(--il-secondary) 16%,transparent))}
+  body[data-stage="p12"] .mission-illo{width:clamp(124px,32vw,172px);height:clamp(124px,32vw,172px)}
+  body[data-stage="p34"] .mission-illo{width:clamp(110px,29vw,150px);height:clamp(110px,29vw,150px)}
   .mission-illo svg{width:100%;height:100%;display:block}
   /* Ilustraciones como imagen (assets premium del usuario): recorte circular para
      ocultar el fondo blanco del PNG y sin doble sombra (el asset ya la trae). */
@@ -176,6 +213,15 @@
     <aside class="rail" data-il-rail="inicio"></aside>
     <main class="home-content">
       <header class="home-greeting">
+        <div class="greeting-hero" aria-hidden="true">
+          <svg class="greeting-sky" viewBox="0 0 480 132" preserveAspectRatio="xMidYMax slice">
+            <g transform="translate(410 42)"><g stroke="var(--il-warning)" stroke-width="3.4" stroke-linecap="round" opacity="0.72"><path d="M0-25v-7"/><path d="M17-17l5-5"/><path d="M-17-17l-5-5"/><path d="M25 0h7"/><path d="M-25 0h-7"/></g><circle r="19" fill="color-mix(in srgb,var(--il-warning) 58%,var(--il-secondary) 24%)"/></g>
+            <g fill="var(--il-surface)" opacity="0.95"><ellipse cx="118" cy="36" rx="30" ry="13"/><ellipse cx="146" cy="31" rx="21" ry="12"/><ellipse cx="262" cy="22" rx="22" ry="10"/><ellipse cx="286" cy="19" rx="15" ry="9"/></g>
+            <path d="M0 132 Q110 84 230 106 Q350 126 480 100 L480 132Z" fill="color-mix(in srgb,var(--il-success) 42%,var(--il-surface))"/>
+            <path d="M0 132 Q150 106 300 120 Q400 128 480 118 L480 132Z" fill="var(--il-success)"/>
+          </svg>
+          <span class="greeting-mascot" id="greetingMascot"></span>
+        </div>
         <div class="greeting-copy"><h1 id="greeting">Hola</h1><p id="greetingMessage">Tienes una misión breve preparada para hoy.</p></div>
         <div class="student-stats">
           <span class="student-pill streak" id="streakPill"><span data-il-icon="flame" aria-hidden="true"></span><span id="streak">0 días</span></span>
@@ -512,6 +558,7 @@
       const stage = IL_ETAPA.apply(profile);
       const experience = IL_ETAPA.current().config;
       const exerciseExperience = IL_ETAPA.current().exercise;
+      if (experience.id !== "secondary" && window.ILVisual) { const gm = $("greetingMascot"); if (gm) gm.innerHTML = ILVisual.nemo("hi"); }
       const [progress, rawWeek, placement, skillData] = await Promise.all([ILAuth.getProgress(), ILAuth.getWeekActivity(), ILAuth.getPlacement(), ILAuth.getSkillBreakdown().catch(() => ({ hasData: false, skills: [] }))]);
       const week = ILProgressData.normalizeWeek(profile, rawWeek, ILAuth.isDemo());
       const username = profile.username || "";
