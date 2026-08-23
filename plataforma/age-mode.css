@@ -282,6 +282,18 @@ body[data-age-mode="primary-young"] .mission-cta.is-complete>[data-il-icon]{
   background:var(--il-on-success); color:var(--il-success); box-shadow:0 3px 8px -3px rgba(0,0,0,.25);
 }
 body[data-age-mode="primary-young"] .mission-cta.is-complete>[data-il-icon] svg{ width:21px; height:21px; }
+/*   8-9 y 10-11 (primary-upper): MISMO "¡Hecho!" limpio que en 5-7. Sin esta regla
+     se colaba la sombra-losa coral del botón base por debajo del verde (feo). */
+body[data-age-mode="primary-upper"] .mission-cta.is-complete{
+  background:linear-gradient(180deg, color-mix(in srgb,var(--il-success) 90%,var(--il-surface)) 0%, var(--il-success) 100%);
+  color:var(--il-on-success);
+  opacity:1; cursor:default; pointer-events:auto; border:0;
+  box-shadow:0 10px 22px -14px color-mix(in srgb,var(--il-success) 55%,transparent);
+}
+body[data-age-mode="primary-upper"] .mission-cta.is-complete>[data-il-icon]{
+  display:grid; place-items:center; width:32px; height:32px; border-radius:50%;
+  background:var(--il-on-success); color:var(--il-success); box-shadow:0 3px 8px -3px color-mix(in srgb,var(--il-success) 55%,transparent);
+}
 /*   Repasar: acción secundaria discreta en teal, con icono de refresco. */
 body[data-age-mode="primary-young"] .mission-review{ display:inline-flex; align-items:center; gap:6px; color:var(--il-success); font-weight:var(--il-weight-bold); }
 body[data-age-mode="primary-young"] .mission-review:hover{ color:color-mix(in srgb,var(--il-success) 80%,#000 12%); text-decoration:none; }

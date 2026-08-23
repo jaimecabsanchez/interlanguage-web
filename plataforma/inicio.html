@@ -129,11 +129,13 @@
   /* ===== CTA coral, físico ===== */
   .mission-cta{width:100%;min-height:56px;font-size:var(--il-fs-lg);gap:8px;
     background:var(--il-secondary);color:var(--il-on-primary);border:0;
-    box-shadow:0 10px 0 -4px var(--il-coral-ink),0 16px 26px -14px color-mix(in srgb,var(--il-secondary) 70%,transparent);
     transition:transform 90ms var(--il-ease),box-shadow 90ms var(--il-ease),background 160ms var(--il-ease)}
+  /* La losa coral SOLO para el botón activo (empezar); nunca para "hecho",
+     si no se colaba por debajo del verde. */
+  .mission-cta:not(.is-complete){box-shadow:0 10px 0 -4px var(--il-coral-ink),0 16px 26px -14px color-mix(in srgb,var(--il-secondary) 70%,transparent)}
   .mission-cta svg{width:19px;height:19px}
-  .mission-cta:hover{background:var(--il-secondary-hover);transform:translateY(-2px);box-shadow:0 12px 0 -4px var(--il-coral-ink),0 20px 30px -14px color-mix(in srgb,var(--il-secondary) 72%,transparent)}
-  .mission-cta:active{transform:translateY(3px);box-shadow:0 6px 0 -4px var(--il-coral-ink),0 10px 18px -14px color-mix(in srgb,var(--il-secondary) 60%,transparent)}
+  .mission-cta:not(.is-complete):hover{background:var(--il-secondary-hover);transform:translateY(-2px);box-shadow:0 12px 0 -4px var(--il-coral-ink),0 20px 30px -14px color-mix(in srgb,var(--il-secondary) 72%,transparent)}
+  .mission-cta:not(.is-complete):active{transform:translateY(3px);box-shadow:0 6px 0 -4px var(--il-coral-ink),0 10px 18px -14px color-mix(in srgb,var(--il-secondary) 60%,transparent)}
   /* Estado "hecho": verde alegre pero limpio, sombra suave (no losa oscura). */
   .mission-cta.is-complete,
   .mission-cta.is-complete:hover,
@@ -202,7 +204,7 @@
   .reco-card.reco--exam .reco-card__icon{background:color-mix(in srgb,var(--il-focus) 16%,var(--il-surface));color:var(--il-focus)}
   .reco-card.reco--exam .reco-card__eyebrow,.reco-card.reco--exam .ui-label{color:var(--il-focus)}
 </style>
-<link rel="stylesheet" href="age-mode.css?v=20260823a">
+<link rel="stylesheet" href="age-mode.css?v=20260823b">
 </head>
 <body>
 <div class="il-offline" id="offline" hidden><span data-il-icon="wifiOff" aria-hidden="true"></span> Sin conexión.</div>
