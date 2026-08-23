@@ -1,5 +1,15 @@
 .profile-home{max-width:var(--il-max-width-content);padding-bottom:calc(var(--il-nav-height) + var(--il-space-6))}
 .profile-home__header{padding:var(--il-space-7) 0 var(--il-space-5)}
+/* — Primaria: cabecera con fondo de escena suave (coherente con Inicio/Progreso; sin mascota, el avatar ya es el personaje) — */
+.profile-home__header .greeting-hero{display:none}
+body[data-stage="p12"] .profile-home__header,
+body[data-stage="p34"] .profile-home__header,
+body[data-stage="p56"] .profile-home__header{position:relative;overflow:hidden;border-radius:24px;padding:var(--il-space-5) var(--il-space-6);margin-bottom:var(--il-space-4);background:linear-gradient(180deg,color-mix(in srgb,var(--il-focus) 14%,var(--il-surface)) 0%,color-mix(in srgb,var(--il-focus) 5%,var(--il-surface)) 55%,var(--il-surface) 100%)}
+body[data-stage="p12"] .profile-home__header .greeting-hero,
+body[data-stage="p34"] .profile-home__header .greeting-hero,
+body[data-stage="p56"] .profile-home__header .greeting-hero{display:block;position:absolute;inset:0;z-index:0;pointer-events:none}
+.profile-home__header .greeting-sky{position:absolute;inset:0;width:100%;height:100%}
+.profile-home__header p,.profile-home__header h1{position:relative;z-index:1}
 .profile-home__header h1{margin:var(--il-space-1) 0 0;font-size:var(--il-fs-3xl)}
 .profile-home__grid{display:grid;grid-template-columns:minmax(0,.88fr) minmax(380px,1.12fr);grid-template-areas:"identity world" "stamps world" "settings settings";gap:var(--il-space-4);align-items:stretch}
 

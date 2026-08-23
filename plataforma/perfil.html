@@ -16,7 +16,7 @@
 <link rel="stylesheet" href="shell.css?v=20260816c">
 <link rel="stylesheet" href="il-visual.css?v=20260821b">
 <link rel="stylesheet" href="world.css?v=20260821a">
-<link rel="stylesheet" href="perfil.css?v=20260810d">
+<link rel="stylesheet" href="perfil.css?v=20260823a">
 <link rel="stylesheet" href="age-mode.css?v=20260823b">
 </head>
 <body>
@@ -28,7 +28,28 @@
     <aside class="rail" data-il-rail="perfil"></aside>
     <div class="shell-main">
       <main class="app-shell profile-home">
-        <header class="profile-home__header"><p class="ui-label" id="profileEyebrow">MI ESPACIO</p><h1 id="profileTitle">Mi perfil</h1></header>
+        <header class="profile-home__header">
+          <div class="greeting-hero" aria-hidden="true">
+            <svg class="greeting-sky" viewBox="0 0 480 120" preserveAspectRatio="none">
+              <defs>
+                <radialGradient id="ilSunGlow" cx="0.5" cy="0.5" r="0.5">
+                  <stop offset="0" stop-color="var(--il-warning)" stop-opacity="0.5"/>
+                  <stop offset="0.5" stop-color="var(--il-warning)" stop-opacity="0.16"/>
+                  <stop offset="1" stop-color="var(--il-warning)" stop-opacity="0"/>
+                </radialGradient>
+              </defs>
+              <ellipse cx="474" cy="2" rx="160" ry="96" fill="url(#ilSunGlow)"/>
+              <g fill="var(--il-surface)">
+                <ellipse cx="120" cy="38" rx="34" ry="9" opacity="0.8"/>
+                <ellipse cx="152" cy="32" rx="22" ry="8" opacity="0.8"/>
+                <ellipse cx="250" cy="26" rx="24" ry="7" opacity="0.55"/>
+              </g>
+              <path d="M0 120 Q120 94 250 104 Q370 112 480 100 L480 120Z" fill="color-mix(in srgb,var(--il-success) 22%,var(--il-surface))"/>
+              <path d="M0 120 Q150 108 300 114 Q400 116 480 110 L480 120Z" fill="color-mix(in srgb,var(--il-success) 38%,var(--il-surface))"/>
+            </svg>
+          </div>
+          <p class="ui-label" id="profileEyebrow">MI ESPACIO</p><h1 id="profileTitle">Mi perfil</h1>
+        </header>
 
         <div class="profile-home__grid">
           <section class="identity-card" aria-labelledby="profileName">
