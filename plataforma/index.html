@@ -12,7 +12,12 @@
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="design-system.css?v=20260816b">
 <link rel="stylesheet" href="app.css?v=20260809d">
+<link rel="stylesheet" href="il-visual.css?v=20260821b">
 <style>
+  /* El zorro es el personaje de la marca: limpio, sin caja, y protagonista. */
+  .brand-fox{background:none;box-shadow:none;width:60px;height:60px}
+  .brand-fox .il-nemo,.brand-fox svg{width:60px;height:60px}
+  .auth-hero .plane .il-nemo{width:100%;height:100%}
   /* Fondo cálido con formas (coherente con la app) */
   body{background:
     radial-gradient(120% 55% at 100% 0%, #FDECE4 0%, transparent 55%),
@@ -47,19 +52,14 @@
 <div class="auth-wrap">
  <div class="auth-shell">
   <aside class="auth-hero" aria-hidden="true">
-    <svg class="plane" viewBox="0 0 96 96" fill="none" aria-hidden="true">
-      <path d="M18 66 Q42 80 78 58" stroke="rgba(255,255,255,.45)" stroke-width="3" stroke-linecap="round" stroke-dasharray="0.5 8"/>
-      <path d="M20 48 L78 22 L54 72 L46 54 Z" fill="#FF6B4A"/>
-      <path d="M78 22 L46 54 L54 72 Z" fill="#E14F30"/>
-      <path d="M70 32 l3 -6 3 6 6 3 -6 3 -3 6 -3 -6 -6 -3 Z" fill="#1E9C74"/>
-    </svg>
+    <div class="plane" id="heroFox" aria-hidden="true"></div>
     <h2>Aprende inglés,<br>un poco cada día.</h2>
     <p>Sesiones cortas y divertidas para practicar en casa, a tu ritmo.</p>
     <div class="tags"><span class="tag"><span data-il-icon="target"></span>Misión diaria</span><span class="tag"><span data-il-icon="route"></span>A tu ritmo</span></div>
   </aside>
   <form class="auth-card" id="loginForm" autocomplete="on">
     <div class="brand-mark">
-      <div class="brand-fox" aria-hidden="true"><span data-il-icon="plane"></span></div>
+      <div class="brand-fox" id="brandFox" aria-hidden="true"></div>
       <div class="brand-name">Interlanguage <span>HOME</span></div>
     </div>
     <h1>¡Hola de nuevo!</h1>
@@ -97,9 +97,15 @@
 <script src="supabase-config.js?v=20260809d"></script>
 <script src="auth-utils.js?v=20260809d"></script>
 <script src="auth.js?v=20260823a"></script>
+<script src="il-visual.js?v=20260821b"></script>
 <script>
   const $ = (id) => document.getElementById(id);
   if (ILAuth.isDemo()) $("demoBanner").classList.remove("hidden");
+  // El zorro da la bienvenida (personaje de la marca), en el panel y en la marca.
+  if (window.ILVisual) {
+    const hf = $("heroFox"); if (hf) hf.innerHTML = ILVisual.nemo("hi");
+    const bf = $("brandFox"); if (bf) bf.innerHTML = ILVisual.nemo("wave");
+  }
 
   function routeFor(p) {
     if (p.is_admin) return "admin.html";

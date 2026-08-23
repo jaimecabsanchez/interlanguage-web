@@ -13,7 +13,11 @@
 <link rel="stylesheet" href="design-system.css?v=20260816b">
 <link rel="stylesheet" href="app.css?v=20260809d">
 <link rel="stylesheet" href="etapa.css?v=20260809d">
+<link rel="stylesheet" href="il-visual.css?v=20260821b">
 <style>
+  /* El zorro (personaje de la marca) da la bienvenida, limpio y sin caja. */
+  .ob-fox:has(.il-nemo){background:none;box-shadow:none}
+  .ob-fox .il-nemo{width:100%;height:100%}
   body{font-family:var(--il-font-body);background:
     radial-gradient(120% 45% at 100% 0%,var(--il-secondary-soft) 0%,transparent 55%),
     radial-gradient(120% 45% at 0% 4%,var(--il-success-soft) 0%,transparent 52%),
@@ -70,6 +74,7 @@
 <script src="auth-utils.js?v=20260809d"></script>
 <script src="etapa.js?v=20260821d"></script>
 <script src="auth.js?v=20260823a"></script>
+<script src="il-visual.js?v=20260821b"></script>
 <script>
   const $ = (id) => document.getElementById(id);
   let name = "explorador", stage = "p56";
@@ -81,7 +86,7 @@
       { icon:"shield", h:()=>"Puedes probar otra vez", p:"Si algo cuesta, te ayudaremos paso a paso." }
     ],
     p34: [
-      { icon:"plane", h:n=>"¡Hola, "+n+"!", p:"Tu avión de papel marcará todo lo que avanzas." },
+      { icon:"plane", h:n=>"¡Hola, "+n+"!", p:"Nemo te acompaña en tu viaje por el inglés." },
       { icon:"target", h:()=>"Cada día, una misión corta", p:"Practica un poco y sigue haciendo crecer tu inglés.", preview:"Tu primera misión", meta:"5 actividades", time:"7 min" },
       { icon:"shield", h:()=>"Los errores también enseñan", p:"Recibirás una pista y podrás volver a intentarlo." }
     ],
@@ -107,8 +112,10 @@
 
   function render() {
     const s = steps()[i];
+    // El paso de bienvenida lo protagoniza el zorro (Nemo); el resto, iconos.
+    const iconHtml = (s.icon === "plane" && window.ILVisual) ? ILVisual.nemo("hi") : ILIcon(s.icon);
     $("main").innerHTML =
-      '<div class="ob-fox" aria-hidden="true">'+ILIcon(s.icon)+'</div>' +
+      '<div class="ob-fox" aria-hidden="true">'+iconHtml+'</div>' +
       '<h1 class="ob-h">'+escHtml(s.h(name))+'</h1>' +
       '<p class="ob-p">'+escHtml(s.p)+'</p>' +
       (s.preview ? '<div class="ob-preview"><span class="ob-preview__icon" aria-hidden="true">'+ILIcon("books")+'</span><span><strong>'+escHtml(s.preview)+'</strong><small>'+escHtml(s.meta)+'</small></span><span class="ob-preview__time">'+escHtml(s.time)+'</span></div>' : '');
