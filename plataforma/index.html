@@ -95,7 +95,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-config.js?v=20260809d"></script>
 <script src="auth-utils.js?v=20260809d"></script>
-<script src="auth.js?v=20260819a"></script>
+<script src="auth.js?v=20260823a"></script>
 <script>
   const $ = (id) => document.getElementById(id);
   if (ILAuth.isDemo()) $("demoBanner").classList.remove("hidden");
@@ -105,6 +105,18 @@
     if (p.must_change_password) return "cambiar-clave.html";
     return "inicio.html";
   }
+
+  // Enlace de un solo toque para revisores: ?demo=1&as=lucia entra directo, sin teclear.
+  // Solo funciona en modo demo (con ?demo=1); en producción real se ignora.
+  (function autoDemo() {
+    try {
+      const asUser = new URLSearchParams(location.search).get("as");
+      if (asUser && ILAuth.isDemo() && typeof ILAuth.demoLoginAs === "function") {
+        const r = ILAuth.demoLoginAs(asUser);
+        if (r && r.ok) { location.href = routeFor(r.profile); }
+      }
+    } catch (e) {}
+  })();
 
   // si ya hay sesión, entra directo
   (async () => { const p = await ILAuth.getProfile(); if (p) location.href = routeFor(p); })();

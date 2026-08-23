@@ -21,14 +21,23 @@
     const isLocal = host === "localhost" || host === "127.0.0.1" || host === "" || host.endsWith(".local");
     const qs = new URLSearchParams(location.search);
     // ?demo=1 / ?demo=0 fuerza o desactiva el modo demo en CUALQUIER dominio (enlaces de
-    // preview para ver/enseñar la app con "lucia"); queda recordado en el navegador.
+    // preview para ver/enseñar la app con "lucia"). La marca de la URL MANDA al instante,
+    // aunque el navegador bloquee el almacenamiento (Safari privado / iPad con privacidad
+    // estricta): así un enlace compartido siempre entra en demo. Guardarlo es solo "por si acaso".
     // En LOCAL el demo está activado por defecto. Sin marca en un dominio real → producción (Supabase).
-    if (qs.get("demo") === "1") localStorage.setItem("il_force_demo", "1");
-    else if (qs.get("demo") === "0") localStorage.setItem("il_force_demo", "0");
-    const stored = localStorage.getItem("il_force_demo");
-    if (stored === "1") forceDemo = true;
-    else if (stored === "0") forceDemo = false;
-    else forceDemo = isLocal;
+    const qDemo = qs.get("demo");
+    let decided = null;
+    if (qDemo === "1") { forceDemo = true; decided = "1"; }
+    else if (qDemo === "0") { forceDemo = false; decided = "0"; }
+    try {
+      if (decided) localStorage.setItem("il_force_demo", decided);
+      if (decided === null) {
+        const stored = localStorage.getItem("il_force_demo");
+        if (stored === "1") forceDemo = true;
+        else if (stored === "0") forceDemo = false;
+        else forceDemo = isLocal;
+      }
+    } catch (e) { if (decided === null) forceDemo = isLocal; }
   } catch (e) {}
   const DEMO = noKeys || forceDemo;
 
@@ -104,6 +113,19 @@
       } catch (e) { /* si el proyecto no soporta MFA, se ignora */ }
       await this._afterLogin();
       return { ok: true, profile: await this.getProfile() };
+    },
+
+    // Entrada de un solo toque para ENSEÑAR la app (enlaces de revisión por WhatsApp):
+    // en modo demo inicia sesión como una cuenta de ejemplo (p. ej. "lucia") SIN teclear
+    // contraseña, así el revisor no puede equivocarse ni pelearse con el autocorrector.
+    // Fuera de demo no hace nada (producción sigue exigiendo credenciales reales).
+    demoLoginAs(username) {
+      if (!DEMO) return { ok: false, error: "Solo disponible en modo demo." };
+      const u = String(username || "").trim().toLowerCase();
+      const acc = demoLoad().find(a => a.username === u);
+      if (!acc) return { ok: false, error: "Cuenta de ejemplo no encontrada." };
+      try { localStorage.setItem(DEMO_SESSION, u); } catch (e) {}
+      return { ok: true, profile: pub(acc) };
     },
 
     // Completa el segundo paso (código de la app de autenticación)
