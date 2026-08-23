@@ -135,6 +135,49 @@
     if (current === previous) return { tone: "neutral", text: "Mantienes el mismo ritmo que la semana pasada." };
     return { tone: "neutral", text: "Aún puedes sumar sesiones esta semana, a tu ritmo." };
   }
+  function weeklyPresentation(week, band) {
+    const goal = Math.max(1, Number(week && week.goal) || 5);
+    const count = Math.min(goal, Math.max(0, Number(week && week.count) || 0));
+    const remaining = Math.max(0, goal - count);
+    const complete = remaining === 0;
+    if (band === "p12") {
+      return {
+        count: count, goal: goal, remaining: remaining, complete: complete,
+        title: "Mi semana",
+        countLabel: count + " / " + goal,
+        message: complete
+          ? "¡Lo has conseguido! Tu semana está completa."
+          : (count === 0
+            ? "Tu semana empieza aquí. Cada sesión cuenta."
+            : "¡Vas genial! Ya has hecho " + count + ". Solo te " + (remaining === 1 ? "falta 1" : "faltan " + remaining) + ".")
+      };
+    }
+    return {
+      count: count, goal: goal, remaining: remaining, complete: complete,
+      title: count + " de " + goal + " sesiones",
+      countLabel: count + " de " + goal + " sesiones",
+      message: complete
+        ? "Objetivo semanal completado"
+        : (count === 0 ? "Completa tu primera sesión de la semana" : (remaining === 1 ? "Solo te falta una sesión" : "Te faltan " + remaining + " sesiones"))
+    };
+  }
+  function contextualAction(data, band) {
+    const state = weeklyPresentation(data && data.week, band);
+    if (state.complete) {
+      return { label: band === "p12" ? "Ver mis sellos" : "Ver logros", href: "#stamps", tab: "stamps" };
+    }
+    return {
+      label: band === "p12" && state.remaining === 1 ? "Completa el último día" : "Completar sesión",
+      href: "leccion.html",
+      tab: null
+    };
+  }
+  function visibleSkills(skills) {
+    return (skills || [])
+      .filter(skill => skill && skill.percent != null)
+      .slice()
+      .sort((a, b) => b.percent - a.percent);
+  }
   function normalizeDemoWeek(source, now) {
     const date = new Date(now || Date.now());
     const today = (date.getDay() + 6) % 7;
@@ -223,5 +266,9 @@
     });
   }
 
-  return { SKILLS, DEMO_LEARNING, countWeek, detectComeback, buildStamps, normalizeDemoWeek, normalizeWeek, buildSnapshot, load };
+  return {
+    SKILLS, DEMO_LEARNING, countWeek, detectComeback, buildStamps,
+    normalizeDemoWeek, normalizeWeek, weeklyPresentation, contextualAction,
+    visibleSkills, buildSnapshot, load
+  };
 });

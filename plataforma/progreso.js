@@ -5,6 +5,7 @@
   const DAY_NAMES = ["lunes", "martes", "miércoles", "jueves", "viernes", "sábado", "domingo"];
   let snapshot = null;
   let ageMode = "primary-upper";
+  let ageBand = "p56";
   let currentUser = "";
 
   function icon(name) { return window.ILIcon ? window.ILIcon(name) : ""; }
@@ -19,20 +20,24 @@
   }
 
   function renderHeader(data) {
-    $("studentName").textContent = firstName(data.profile) + (ageMode === "primary-young" ? "!" : "");
+    $("studentName").textContent = firstName(data.profile) + (ageBand === "p12" ? "!" : "");
     $("studentLevel").textContent = (data.placement && data.placement.placed ? data.placement.label : data.profile.level) || "Nivel por descubrir";
     $("studentSessions").textContent = data.lessons;
-    if (ageMode === "primary-young") {
+    if (ageBand === "p12") {
       $("progressEyebrow").textContent = "MIS AVANCES";
       $("progressTitleLead").textContent = "¡Mira cuánto avanzas,";
-      $("progressSubtitle").textContent = "Aquí puedes ver todo lo que ya estás aprendiendo.";
+      $("progressSubtitle").textContent = "Cada día sabes un poquito más.";
+    } else if (ageBand === "p34") {
+      $("progressEyebrow").textContent = "TUS AVANCES";
+      $("progressTitleLead").textContent = "Tu progreso,";
+      $("progressSubtitle").textContent = "Esto es lo que has conseguido esta semana.";
     } else if (ageMode === "secondary") {
       $("progressEyebrow").textContent = "LEARNING OVERVIEW";
       $("progressTitleLead").textContent = "Tu progreso,";
       $("progressSubtitle").textContent = "Revisa tu práctica, tus habilidades y el próximo objetivo.";
     }
-    // Primaria: mascota zorro en la cabecera (coherente con Inicio). ESO no lleva.
-    if (ageMode && ageMode.indexOf("primary") === 0 && window.ILVisual) {
+    // El zorro acompaña solo a 5–7 y queda como detalle secundario.
+    if (ageBand === "p12" && window.ILVisual) {
       const pm = $("progressMascot"); if (pm) pm.innerHTML = ILVisual.nemo("hi");
     }
   }
@@ -40,17 +45,11 @@
   // Escena decorativa por edad detrás del héroe de la semana (solo tokens --il-*).
   function weekScene(band) {
     if (band === "p12") return '<svg viewBox="0 0 600 260" preserveAspectRatio="xMidYMax slice" aria-hidden="true">'
-      + '<g transform="translate(556 150)"><g stroke="var(--il-warning)" stroke-width="5" stroke-linecap="round" opacity=".34"><path d="M0-30v-11M30 0h11M21 21l8 8M21-21l8-8M-21 21l-8 8"/></g><circle r="22" fill="var(--il-warning-soft)"/><circle r="15" fill="color-mix(in srgb,var(--il-warning) 32%,var(--il-surface))"/></g>'
-      + '<g fill="var(--il-surface)" opacity=".85"><g transform="translate(452 96)"><circle cx="-16" cy="4" r="12"/><circle cx="2" cy="-4" r="16"/><circle cx="20" cy="4" r="12"/><rect x="-18" y="2" width="40" height="12" rx="6"/></g></g>'
-      + '<path d="M0 260v-40c70-18 130 10 210-2s150-22 210-6c60 10 120 6 180-8v56Z" fill="color-mix(in srgb,var(--il-success) 20%,var(--il-surface))" opacity=".6"/>'
-      + '<path d="M0 260v-22c90-14 150 8 250-2s180-14 350 4v20Z" fill="color-mix(in srgb,var(--il-success) 30%,var(--il-surface))" opacity=".55"/>'
-      + '<g stroke="var(--il-success)" stroke-width="4" stroke-linecap="round" opacity=".45"><path d="M120 244v-16M128 245v-20M136 244v-16M470 246v-14M478 247v-18M486 246v-14"/></g></svg>';
+      + '<path d="M0 260v-38c88-18 158 10 250-2s184-18 350 8v30Z" fill="color-mix(in srgb,var(--il-success) 24%,var(--il-surface))" opacity=".55"/>'
+      + '<path d="M0 260v-18c110-12 210 8 320-2s180-8 280 4v16Z" fill="color-mix(in srgb,var(--il-success) 36%,var(--il-surface))" opacity=".42"/></svg>';
     if (band === "p34") return '<svg viewBox="0 0 600 260" preserveAspectRatio="xMidYMax slice" aria-hidden="true">'
-      + '<g fill="var(--il-surface)" opacity=".8"><g transform="translate(150 70)"><circle cx="-16" cy="4" r="10"/><circle cx="2" cy="-5" r="14"/><circle cx="20" cy="4" r="10"/><rect x="-18" y="2" width="38" height="11" rx="5"/></g></g>'
-      + '<path d="M330 260 470 120l50 60 30-26 120 106Z" fill="color-mix(in srgb,var(--il-success) 24%,var(--il-surface))" opacity=".55"/>'
-      + '<path d="M470 120l28 34-28 15-20-15Z" fill="var(--il-surface)" opacity=".8"/>'
-      + '<path d="M470 120V92" stroke="var(--il-primary)" stroke-width="4" stroke-linecap="round"/><path d="M470 92l24 7-24 9Z" fill="var(--il-secondary)"/>'
-      + '<path d="M0 260v-26c90-14 150 8 250-2s180-12 350 6v22Z" fill="color-mix(in srgb,var(--il-success) 22%,var(--il-surface))" opacity=".5"/></svg>';
+      + '<path d="M390 260 500 150l42 48 34-30 92 92Z" fill="color-mix(in srgb,var(--il-success) 18%,var(--il-surface))" opacity=".38"/>'
+      + '<path d="M500 150V126" stroke="var(--il-primary)" stroke-width="3" stroke-linecap="round" opacity=".5"/><path d="M500 126l20 6-20 8Z" fill="var(--il-secondary)" opacity=".65"/></svg>';
     // 10-11 / ESO: lineas concentricas sutiles en la esquina, sobre el navy (sobrio).
     const s = "color-mix(in srgb,var(--il-on-dark) 12%,transparent)";
     return '<svg viewBox="0 0 600 260" preserveAspectRatio="xMaxYMax slice" aria-hidden="true"><g fill="none" stroke="' + s + '" stroke-width="2"><circle cx="558" cy="262" r="66"/><circle cx="558" cy="262" r="116"/><circle cx="558" cy="262" r="166"/></g></svg>';
@@ -66,19 +65,20 @@
       const completed = done.has(index); const state = completed ? "completed" : (index === today ? "today" : (index < today ? "pending" : "future"));
       const day = document.createElement("div"); day.className = "week-day is-" + state + (index === today ? " is-today" : "");
       const label = document.createElement("span"); label.className = "week-day__label"; label.textContent = letter;
-      const dot = document.createElement("span"); dot.className = "week-day__dot"; dot.innerHTML = completed ? icon("check") : String(index + 1);
+      const dot = document.createElement("span"); dot.className = "week-day__dot"; dot.innerHTML = completed ? icon("check") : (ageBand === "p34" ? "○" : String(index + 1));
       dot.setAttribute("aria-label", DAY_NAMES[index] + ": " + ({ completed: index === today ? "completado, hoy" : "completado", today: "hoy", pending: "pendiente", future: "futuro" })[state]);
       day.append(label, dot); container.appendChild(day);
     });
     $("weekMinutes").textContent = valueText(data.minutesWeek);
+    $("weekCompactMinutes").textContent = valueText(data.minutesWeek);
+    $("weekActiveDays").textContent = Math.min(week.goal, (week.practiced || []).length);
     const comparison = $("weekComparison"); comparison.classList.toggle("is-positive", data.weekComparison.tone === "positive"); comparison.lastElementChild.textContent = data.weekComparison.text;
     $("streakNow").textContent = data.streak; $("streakBest").textContent = data.bestStreak;
     // Pluralización correcta (1 día / 2 días) en todos los modos
     const nowStrong = $("streakNow").parentElement; if (nowStrong && nowStrong.lastChild) nowStrong.lastChild.textContent = data.streak === 1 ? " día" : " días";
     const bestSmall = $("streakBest").parentElement; if (bestSmall && bestSmall.lastChild) bestSmall.lastChild.textContent = data.bestStreak === 1 ? " día" : " días";
     renderNextStamp(data.stamps.next);
-    const wband = (window.IL_ETAPA && IL_ETAPA.current() && IL_ETAPA.current().band) || "p56";
-    const scene = $("weekScene"); if (scene) scene.innerHTML = weekScene(wband);
+    const scene = $("weekScene"); if (scene) scene.innerHTML = weekScene(ageBand);
   }
 
   function remainingCopy(stampData) {
@@ -90,8 +90,17 @@
     return "Te " + (remaining === 1 ? "falta 1 sesión" : "faltan " + remaining + " sesiones") + ".";
   }
   function renderNextStamp(stampData) {
-    if (!stampData) { $("nextStampTitle").textContent = "Pasaporte completo"; $("nextStampCopy").textContent = remainingCopy(null); return; }
-    $("nextStampTitle").textContent = stampData.name; $("nextStampCopy").textContent = remainingCopy(stampData);
+    if (!stampData) {
+      $("nextStampTitle").textContent = "Pasaporte completo";
+      $("nextStampCopy").textContent = remainingCopy(null);
+      $("nextStampCount").textContent = "Completo";
+      $("nextStampRemaining").textContent = "Has conseguido todos los sellos disponibles.";
+      return;
+    }
+    $("nextStampTitle").textContent = stampData.name;
+    $("nextStampCopy").textContent = (ageBand === "p12" || ageBand === "p34") ? stampData.requirement : remainingCopy(stampData);
+    $("nextStampCount").textContent = stampData.current + " / " + stampData.target;
+    $("nextStampRemaining").textContent = remainingCopy(stampData);
     const ps = document.querySelector(".passport-stamp"); if (ps && window.ILVisual) ps.innerHTML = ILVisual.stamp(stampData.id, { locked: false });
     const bar = $("nextStampProgress"); bar.style.setProperty("--il-stamp-progress", stampData.percent + "%"); bar.setAttribute("aria-valuemax", stampData.target); bar.setAttribute("aria-valuenow", stampData.current); bar.setAttribute("aria-label", "Progreso hacia " + stampData.name + ": " + stampData.current + " de " + stampData.target);
   }
@@ -106,7 +115,10 @@
       metricElement("temas completados", data.topicsCompleted, "flag")
     );
     const skills = $("skillsList"); skills.replaceChildren();
-    data.skills.forEach(skill => {
+    const skillsToShow = ageBand === "p34" && window.ILProgressData
+      ? ILProgressData.visibleSkills(data.skills)
+      : data.skills;
+    skillsToShow.forEach(skill => {
       const row = document.createElement("div"); row.className = "skill-row" + (skill.percent == null ? " is-unavailable" : "");
       const visual = document.createElement("span"); visual.className = "skill-icon"; visual.innerHTML = icon(skill.icon);
       const body = document.createElement("div");
@@ -121,6 +133,8 @@
     if (!data.phrases.length) { const empty = document.createElement("p"); empty.className = "phrase-empty"; empty.textContent = "Tus primeras expresiones están muy cerca. Sigue con tu próxima misión."; phrases.appendChild(empty); }
     else data.phrases.forEach(text => { const phrase = document.createElement("p"); phrase.className = "phrase"; phrase.textContent = text; phrases.appendChild(phrase); });
     $("reinforceTitle").textContent = data.reinforce.skill; $("reinforceCopy").textContent = data.reinforce.description; $("reinforceCta").href = data.reinforce.href; $("reinforceCta").textContent = "Practicar " + data.reinforce.skill.toLowerCase();
+    const reinforce = document.querySelector(".reinforce-panel");
+    if (reinforce) reinforce.hidden = ageBand === "p34" && !data.isDemo && skillsToShow.length === 0;
   }
 
   function progressCopy(stampData) {
@@ -225,54 +239,74 @@
     if (typeof dialog.showModal === "function") dialog.showModal(); else dialog.setAttribute("open", "");
   }
 
-  // Primaria inicial: simplifica Progreso (los datos completos siguen en superior/ESO y en el panel de familias).
-  function applyYoung(data) {
+  // p12 y p34 comparten primary-young, pero su jerarquía y tono dependen de la banda real.
+  function applyPrimaryBand(data) {
     const rename = (id, label) => { const tab = $(id); const span = tab && tab.querySelector("span:last-child"); if (span) span.textContent = label; };
-    rename("tab-week", "Mi semana"); rename("tab-learning", "Lo que sé"); rename("tab-stamps", "Mis sellos");
-
-    // MI SEMANA: recuento simple + una sola línea motivadora
-    const week = data.week; const count = Math.min(week.count, week.goal);
-    const weekTitle = $("weekTitle"); if (weekTitle) weekTitle.textContent = "Mi semana";
-    const strong = document.querySelector("#panel-week .section-heading--inverse strong");
-    if (strong) strong.textContent = count + " / " + week.goal + (count >= week.goal ? " ✓" : "");
-    const primary = document.querySelector(".week-primary");
-    if (primary && !$("weekYoungNote")) {
-      const note = document.createElement("p"); note.id = "weekYoungNote"; note.className = "week-young-note";
-      const rem = Math.max(0, week.goal - count);
-      note.textContent = rem === 0 ? "¡Semana completa!" : ("¡Solo " + (rem === 1 ? "falta 1" : "faltan " + rem) + "!");
-      primary.appendChild(note);
+    if (ageBand === "p12") {
+      rename("tab-week", "Mi semana"); rename("tab-learning", "Lo que sé"); rename("tab-stamps", "Mis sellos");
+    } else {
+      rename("tab-week", "Esta semana"); rename("tab-learning", "Mi aprendizaje"); rename("tab-stamps", "Logros");
     }
 
-    // RACHA: simple y bien pluralizada
+    const state = ILProgressData.weeklyPresentation(data.week, ageBand);
+    const weekTitle = $("weekTitle"); if (weekTitle) weekTitle.textContent = ageBand === "p12" ? state.title : "Esta semana";
+    const strong = document.querySelector("#panel-week .section-heading--inverse strong");
+    if (strong) strong.textContent = state.countLabel + (state.complete && ageBand === "p12" ? " ✓" : "");
+    $("weekPrimaryMessage").textContent = state.message;
+
     const streakStrong = document.querySelector(".consistency-item strong");
     if (streakStrong) streakStrong.textContent = data.streak + (data.streak === 1 ? " día seguido" : " días seguidos");
+    const streakSupport = $("streakSupport");
+    if (streakSupport) streakSupport.textContent = ageBand === "p12" ? "¡Qué constancia!" : "Sigue así, a tu ritmo.";
 
-    // PRÓXIMO SELLO: contador simple + tarjeta pulsable → detalle
-    const nextStamp = data.stamps.next; const aside = document.querySelector(".next-stamp");
-    if (aside && nextStamp && !$("nextStampCount")) {
-      const c = document.createElement("p"); c.id = "nextStampCount"; c.className = "next-stamp__count";
-      c.textContent = nextStamp.current + " / " + nextStamp.target;
-      aside.insertBefore(c, $("nextStampProgress"));
-    }
-    if (aside) {
-      aside.classList.add("is-tappable"); aside.setAttribute("role", "link"); aside.tabIndex = 0;
-      const go = () => activateTab("stamps", true);
-      aside.addEventListener("click", go);
-      aside.addEventListener("keydown", event => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); go(); } });
+    const action = ILProgressData.contextualAction(data, ageBand);
+    const cta = $("contextualProgressCta");
+    cta.textContent = action.label + " →";
+    cta.href = action.href;
+    if (action.tab) cta.dataset.openTab = action.tab;
+    else delete cta.dataset.openTab;
+
+    const learningIntro = document.querySelector(".learning-intro");
+    if (learningIntro) learningIntro.dataset.band = ageBand;
+    if (ageBand === "p12") {
+      $("learningEyebrow").textContent = "LO QUE YA ES TUYO";
+      $("learningTitle").textContent = "¡Mira todo lo que ya sabes!";
+      $("learningSubtitle").textContent = "Estas palabras y frases ya forman parte de tu inglés.";
+    } else {
+      $("learningEyebrow").textContent = "MI APRENDIZAJE";
+      $("learningTitle").textContent = "Lo que estoy aprendiendo";
+      $("learningSubtitle").textContent = "Mis habilidades y el inglés que ya puedo utilizar.";
     }
 
-    // LO QUE SÉ: resumen muy visual (palabras + frases) y frases con estado vacío positivo
     const panelLearning = $("panel-learning");
-    if (panelLearning && !$("learningYoung")) {
-      const words = data.wordsLearned || 0; const phraseCount = (data.phrases || []).length;
+    if (ageBand === "p12" && panelLearning && !$("learningYoung")) {
+      const words = data.wordsLearned; const phraseCount = (data.phrases || []).length;
       const box = document.createElement("div"); box.id = "learningYoung"; box.className = "learning-young";
       box.innerHTML =
-        '<div class="learning-young__stat"><strong>' + words + '</strong><span>palabras nuevas</span></div>' +
-        '<div class="learning-young__stat"><strong>' + phraseCount + '</strong><span>' + (phraseCount === 1 ? "frase" : "frases") + '</span></div>';
+        '<div class="learning-young__stat"><strong>' + valueText(words) + '</strong><span>palabras aprendidas</span></div>' +
+        '<div class="learning-young__stat"><strong>' + phraseCount + '</strong><span>' + (phraseCount === 1 ? "frase que ya sé decir" : "frases que ya sé decir") + '</span></div>';
       const layout = panelLearning.querySelector(".learning-layout"); panelLearning.insertBefore(box, layout);
     }
-    const phrasesTitle = $("phrasesTitle"); if (phrasesTitle) phrasesTitle.textContent = "Ya sé decir";
+    const skillsTitle = $("skillsTitle"); if (skillsTitle && ageBand === "p34") skillsTitle.textContent = "Lo que más has practicado";
+    const phrasesTitle = $("phrasesTitle"); if (phrasesTitle) phrasesTitle.textContent = ageBand === "p12" ? "Mi inglés" : "Frases dominadas";
     if (!(data.phrases || []).length) { const empty = document.querySelector("#phraseList .phrase-empty"); if (empty) empty.textContent = "¡Tu primera frase está muy cerca!"; }
+  }
+
+  function renderRailProgress(data) {
+    if (ageBand !== "p12" && ageBand !== "p34") return;
+    const summary = data && data.profileSummary;
+    const rail = document.querySelector(".rail[data-il-rail=progreso]");
+    if (!rail || !summary || summary.levelProgress == null || !summary.nextLevel) return;
+    const previous = rail.querySelector(".rail-level-progress"); if (previous) previous.remove();
+    const block = document.createElement("div"); block.className = "rail-level-progress";
+    const title = document.createElement("strong"); title.textContent = summary.levelName;
+    const track = document.createElement("div"); track.className = "rail-level-progress__track"; track.setAttribute("role", "progressbar");
+    track.setAttribute("aria-label", "Progreso hacia " + summary.nextLevel);
+    track.setAttribute("aria-valuemin", "0"); track.setAttribute("aria-valuemax", "100"); track.setAttribute("aria-valuenow", summary.levelProgress);
+    track.style.setProperty("--il-level-progress", Math.max(0, Math.min(100, summary.levelProgress)) + "%"); track.appendChild(document.createElement("span"));
+    const copy = document.createElement("small"); copy.textContent = summary.levelProgress + "% para " + summary.nextLevel.toLowerCase();
+    block.append(title, track, copy);
+    const foot = rail.querySelector(".rail-foot"); rail.insertBefore(block, foot || null);
   }
 
   function activateTab(name, focus) {
@@ -308,12 +342,17 @@
       if (profile.must_change_password) { location.href = "cambiar-clave.html"; return; }
       ILProfileSettings.setActive(profile.username || "", profile.sex);
       currentUser = profile.username || "";
-      IL_ETAPA.apply(profile); ageMode = IL_ETAPA.current().mode; snapshot = await ILProgressData.load(ILAuth, window.ILMission, { ageMode: ageMode }); if (!snapshot) throw new Error("No progress snapshot");
-      renderHeader(snapshot); renderWeek(snapshot); renderLearning(snapshot); renderStamps(snapshot); setupTabs(); setupDialog();
-      if (ageMode === "primary-young") applyYoung(snapshot);
+      IL_ETAPA.apply(profile); ageMode = IL_ETAPA.current().mode; ageBand = IL_ETAPA.current().band;
+      snapshot = await ILProgressData.load(ILAuth, window.ILMission, { ageMode: ageMode }); if (!snapshot) throw new Error("No progress snapshot");
+      renderHeader(snapshot); renderWeek(snapshot); renderLearning(snapshot); renderStamps(snapshot);
+      if (ageBand === "p12" || ageBand === "p34") applyPrimaryBand(snapshot);
+      setupTabs(); setupDialog();
       if (snapshot.isDemo && sessionStorage.getItem("il_demo_strip_off") !== "1") $("demoStrip").hidden = false;
       $("demoClose").addEventListener("click", () => { $("demoStrip").hidden = true; sessionStorage.setItem("il_demo_strip_off", "1"); });
-      if (window.ILLayout) window.ILLayout.mount(); $("loading").hidden = true; $("app").classList.remove("hidden");
+      if (window.ILLayout) window.ILLayout.mount();
+      renderRailProgress(snapshot);
+      if (document.readyState !== "complete") window.addEventListener("load", () => renderRailProgress(snapshot), { once: true });
+      $("loading").hidden = true; $("app").classList.remove("hidden");
     } catch (error) {
       console.error("No se pudo cargar Progreso", error); $("loading").hidden = true; $("errorState").hidden = false;
     }

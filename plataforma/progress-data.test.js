@@ -61,4 +61,19 @@ assert.equal(P.countWeek(["2026-08-03", "2026-08-04"], 0, "2026-08-06T12:00:00Z"
 const mondayDemo = P.normalizeWeek({ username: "lucia" }, null, true, "2026-08-10T12:00:00Z");
 assert.deepEqual(mondayDemo, { goal: 5, count: 1, practiced: [0] }, "el lunes no inventa actividad futura");
 
-console.log("progress-data: 26 comprobaciones correctas");
+const p12Week = P.weeklyPresentation({ goal: 5, count: 4 }, "p12");
+assert.equal(p12Week.message, "¡Vas genial! Ya has hecho 4. Solo te falta 1.");
+assert.equal(p12Week.countLabel, "4 / 5");
+const p34Week = P.weeklyPresentation({ goal: 5, count: 4 }, "p34");
+assert.equal(p34Week.title, "4 de 5 sesiones");
+assert.equal(p34Week.message, "Solo te falta una sesión");
+assert.deepEqual(P.contextualAction({ week: { goal: 5, count: 4 } }, "p12"), {
+  label: "Completa el último día", href: "leccion.html", tab: null
+});
+assert.deepEqual(P.contextualAction({ week: { goal: 5, count: 5 } }, "p34"), {
+  label: "Ver logros", href: "#stamps", tab: "stamps"
+});
+assert.deepEqual(P.visibleSkills(demo.skills).map(skill => skill.id), ["vocabulary", "reading", "grammar", "listening"]);
+assert.deepEqual(P.visibleSkills(real.skills), [], "una cuenta real sin evidencia no recibe porcentajes inventados");
+
+console.log("progress-data: 34 comprobaciones correctas");

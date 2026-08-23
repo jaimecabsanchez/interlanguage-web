@@ -14,9 +14,9 @@
 <link rel="stylesheet" href="app.css?v=20260809d">
 <link rel="stylesheet" href="etapa.css?v=20260809d">
 <link rel="stylesheet" href="shell.css?v=20260816c">
-<link rel="stylesheet" href="progreso.css?v=20260823a">
 <link rel="stylesheet" href="il-visual.css?v=20260821b">
 <link rel="stylesheet" href="age-mode.css?v=20260823b">
+<link rel="stylesheet" href="progreso.css?v=20260823b">
 <style>
   /* ---------- Colección de sellos (Progreso → pasaporte) ---------- */
   .stamp-grid.is-achievements{display:block}
@@ -136,6 +136,11 @@
               </div>
               <div class="week-bar" id="weekBar" role="progressbar" aria-valuemin="0" aria-valuemax="5" aria-valuenow="0"><span></span></div>
               <div class="week-days" id="weekDays" aria-label="Actividad de lunes a domingo"></div>
+              <p class="week-primary__message" id="weekPrimaryMessage"></p>
+              <div class="week-compact-metrics" aria-label="Resumen de actividad semanal">
+                <span><b id="weekCompactMinutes">—</b> min practicados</span>
+                <span><b id="weekActiveDays">0</b> días activos</span>
+              </div>
               <div class="week-support">
                 <div><span data-il-icon="clock" aria-hidden="true"></span><span><b id="weekMinutes">—</b><small>minutos esta semana</small></span></div>
                 <p id="weekComparison"><span data-il-icon="trend" aria-hidden="true"></span><span>Verás tu ritmo con más datos.</span></p>
@@ -146,6 +151,10 @@
               <div class="section-heading"><div><p class="ui-label">Próximo sello</p><h2 id="nextStampTitle">Tu siguiente logro</h2></div></div>
               <div class="passport-stamp" aria-hidden="true"><span data-il-icon="plane"></span></div>
               <p class="next-stamp__copy" id="nextStampCopy">Cada sesión te acerca un poco más.</p>
+              <div class="next-stamp__status">
+                <strong id="nextStampCount">—</strong>
+                <span id="nextStampRemaining">Sigue practicando para acercarte.</span>
+              </div>
               <div class="mini-progress" id="nextStampProgress" role="progressbar" aria-valuemin="0" aria-valuemax="1" aria-valuenow="0"><span></span></div>
               <button class="text-action" type="button" data-open-tab="stamps">Ver todos los sellos <span aria-hidden="true">→</span></button>
             </aside>
@@ -154,20 +163,21 @@
           <div class="consistency-band">
             <div class="consistency-item">
               <span class="consistency-icon"><span data-il-icon="flame" aria-hidden="true"></span></span>
-              <div><p>Racha actual</p><strong><span id="streakNow">0</span> días</strong><small>Tu mejor racha: <span id="streakBest">0</span> días</small></div>
+              <div><p>Racha actual</p><strong><span id="streakNow">0</span> días</strong><small id="streakSupport">Tu mejor racha: <span id="streakBest">0</span> días</small></div>
             </div>
             <div class="consistency-divider" aria-hidden="true"></div>
             <div class="consistency-item">
               <span class="consistency-icon consistency-icon--flex"><span data-il-icon="buoy" aria-hidden="true"></span></span>
               <div><p>Día flexible</p><strong>Tu semana puede adaptarse</strong><small>Si un día no puedes, no pasa nada: cuenta la semana.</small></div>
             </div>
+            <a class="btn btn-primary contextual-progress-cta" id="contextualProgressCta" href="leccion.html">Completar sesión</a>
           </div>
         </section>
 
         <section class="progress-panel" id="panel-learning" role="tabpanel" tabindex="0" aria-labelledby="tab-learning" hidden>
           <div class="learning-intro">
-            <div><p class="ui-label">Mi aprendizaje</p><h2>Lo que vas aprendiendo</h2></div>
-            <p>Lo que ya puedes usar en inglés.</p>
+            <div><p class="ui-label" id="learningEyebrow">Mi aprendizaje</p><h2 id="learningTitle">Lo que vas aprendiendo</h2></div>
+            <p id="learningSubtitle">Lo que ya puedes usar en inglés.</p>
           </div>
 
           <div class="learning-metrics" id="learningMetrics" aria-label="Métricas de aprendizaje"></div>
@@ -226,9 +236,9 @@
 <script src="auth.js?v=20260823a"></script>
 <script src="mission-state.js?v=20260821b"></script>
 <script src="profile-settings.js?v=20260819a"></script>
-<script src="progress-data.js?v=20260819a"></script>
+<script src="progress-data.js?v=20260823b"></script>
 <script src="motor/achievements.js?v=20260816a"></script>
 <script src="achievement-store.js?v=20260816a"></script>
-<script src="progreso.js?v=20260823a"></script>
+<script src="progreso.js?v=20260823b"></script>
 </body>
 </html>
