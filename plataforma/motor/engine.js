@@ -593,7 +593,9 @@
     const header = el("div", "eng-question-header");
     const instruction = el("h1", "eng-instruction", instructionFor(exercise, options.stage));
     instruction.id = "exerciseInstruction"; header.appendChild(instruction);
-    const audioText = exercise.tipo === "hablar" ? "" : (exercise.audio || "");
+    // Escuchar en alto: audio explícito si lo hay; si no, la frase de ejemplo en inglés
+    // (feedback.context), para que casi todas las actividades tengan botón de escucha.
+    const audioText = exercise.tipo === "hablar" ? "" : (exercise.audio || (exercise.feedback && exercise.feedback.context) || "");
     if (audioText) {
       const audio = el("button", "eng-audio"); audio.type = "button";
       audio.innerHTML = '<span class="eng-audio-waves" aria-hidden="true"><i></i><i></i><i></i></span>' + icon("speaker") + '<span class="eng-audio-label">' + ui.listen + '</span>';
