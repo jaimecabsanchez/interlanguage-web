@@ -539,6 +539,48 @@
     return copies[band] || copies.p56;
   }
 
+  /* ------------------------------------------------------------------
+     "Juice" del acierto — recompensa breve y con criterio (no carnaval):
+     un tono corto y agradable + un "+puntos" que sube y se desvanece +
+     un pop en la opción correcta. Respeta el ajuste de sonido y
+     prefers-reduced-motion. Nunca bloquea ni depende de assets externos.
+     ------------------------------------------------------------------ */
+  let _celebrateCtx = null;
+  function correctChime() {
+    try {
+      if (!audioSettings().sound) return;
+      const AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) return;
+      _celebrateCtx = _celebrateCtx || new AC();
+      const ctx = _celebrateCtx;
+      if (ctx.state === "suspended") ctx.resume();
+      const t0 = ctx.currentTime;
+      [660, 988].forEach((freq, i) => {          // dos notas ascendentes, alegres y breves
+        const osc = ctx.createOscillator(), gain = ctx.createGain();
+        osc.type = "sine"; osc.frequency.value = freq;
+        const t = t0 + i * 0.085;
+        gain.gain.setValueAtTime(0.0001, t);
+        gain.gain.linearRampToValueAtTime(0.13, t + 0.015);
+        gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.2);
+        osc.connect(gain).connect(ctx.destination);
+        osc.start(t); osc.stop(t + 0.22);
+      });
+    } catch (e) { /* el sonido nunca debe romper el ejercicio */ }
+  }
+  function celebrate(root, points) {
+    correctChime();
+    try {
+      root.classList.add("eng-win");                 // dispara el pop de la opción correcta (CSS)
+      if (points) {
+        const pop = document.createElement("span");
+        pop.className = "eng-pop"; pop.textContent = "+" + points;
+        pop.setAttribute("aria-hidden", "true");
+        root.appendChild(pop);
+        setTimeout(() => { if (pop.parentNode) pop.parentNode.removeChild(pop); }, 1200);
+      }
+    } catch (e) {}
+  }
+
   function render(container, exercise, options) {
     options = options || {};
     const band = options.stage || "p56";
@@ -721,6 +763,7 @@
             ? (secondary ? "The correct answer is “" : "La respuesta correcta es “") + result.correctLabel + "”."
             : (secondary ? "You solved the activity correctly." : "Has resuelto la actividad correctamente."));
         renderFeedback(feedback, "success", ui.success, successCopy, result.context);
+        celebrate(root, 10);
         if (typeof options.onFeedback === "function") options.onFeedback("success");
         resolve(true);
       } else if (attempts === 1) {
