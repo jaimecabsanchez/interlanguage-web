@@ -36,7 +36,7 @@
   /* Cabecera con escena (cielo, sol, nubes, colinas) solo en Primaria */
   body[data-stage="p12"] .home-greeting,
   body[data-stage="p34"] .home-greeting,
-  body[data-stage="p56"] .home-greeting{position:relative;overflow:hidden;padding:var(--il-space-4) var(--il-space-5) var(--il-space-5);margin-bottom:var(--il-space-1);border-radius:26px;background:linear-gradient(180deg,color-mix(in srgb,var(--il-focus) 22%,var(--il-surface)),color-mix(in srgb,var(--il-focus) 6%,var(--il-surface)) 60%,var(--il-surface))}
+  body[data-stage="p56"] .home-greeting{position:relative;overflow:hidden;padding:var(--il-space-4) var(--il-space-5) var(--il-space-5);margin-bottom:var(--il-space-1);border-radius:26px;background:linear-gradient(180deg,color-mix(in srgb,var(--il-focus) 15%,var(--il-surface)) 0%,color-mix(in srgb,var(--il-focus) 5%,var(--il-surface)) 52%,var(--il-surface) 100%)}
   body[data-stage="p12"] .greeting-hero,
   body[data-stage="p34"] .greeting-hero,
   body[data-stage="p56"] .greeting-hero{display:block;position:absolute;inset:0;z-index:0;pointer-events:none}
@@ -214,11 +214,25 @@
     <main class="home-content">
       <header class="home-greeting">
         <div class="greeting-hero" aria-hidden="true">
-          <svg class="greeting-sky" viewBox="0 0 480 132" preserveAspectRatio="xMidYMax slice">
-            <g transform="translate(410 42)"><g stroke="var(--il-warning)" stroke-width="3.4" stroke-linecap="round" opacity="0.72"><path d="M0-25v-7"/><path d="M17-17l5-5"/><path d="M-17-17l-5-5"/><path d="M25 0h7"/><path d="M-25 0h-7"/></g><circle r="19" fill="color-mix(in srgb,var(--il-warning) 58%,var(--il-secondary) 24%)"/></g>
-            <g fill="var(--il-surface)" opacity="0.95"><ellipse cx="118" cy="36" rx="30" ry="13"/><ellipse cx="146" cy="31" rx="21" ry="12"/><ellipse cx="262" cy="22" rx="22" ry="10"/><ellipse cx="286" cy="19" rx="15" ry="9"/></g>
-            <path d="M0 132 Q110 84 230 106 Q350 126 480 100 L480 132Z" fill="color-mix(in srgb,var(--il-success) 42%,var(--il-surface))"/>
-            <path d="M0 132 Q150 106 300 120 Q400 128 480 118 L480 132Z" fill="var(--il-success)"/>
+          <svg class="greeting-sky" viewBox="0 0 480 132" preserveAspectRatio="none">
+            <defs>
+              <radialGradient id="ilSunGlow" cx="0.5" cy="0.5" r="0.5">
+                <stop offset="0" stop-color="var(--il-warning)" stop-opacity="0.5"/>
+                <stop offset="0.5" stop-color="var(--il-warning)" stop-opacity="0.16"/>
+                <stop offset="1" stop-color="var(--il-warning)" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+            <!-- luz cálida del sol entrando por la esquina (sin disco flotante) -->
+            <ellipse cx="474" cy="2" rx="170" ry="104" fill="url(#ilSunGlow)"/>
+            <!-- nubes muy suaves -->
+            <g fill="var(--il-surface)">
+              <ellipse cx="120" cy="42" rx="34" ry="10" opacity="0.8"/>
+              <ellipse cx="152" cy="36" rx="22" ry="9" opacity="0.8"/>
+              <ellipse cx="250" cy="30" rx="24" ry="8" opacity="0.55"/>
+            </g>
+            <!-- colinas bajas y apagadas (banda fina al fondo, sin pegote verde) -->
+            <path d="M0 132 Q120 104 250 114 Q370 122 480 110 L480 132Z" fill="color-mix(in srgb,var(--il-success) 22%,var(--il-surface))"/>
+            <path d="M0 132 Q150 118 300 124 Q400 128 480 122 L480 132Z" fill="color-mix(in srgb,var(--il-success) 38%,var(--il-surface))"/>
           </svg>
           <span class="greeting-mascot" id="greetingMascot"></span>
         </div>
