@@ -269,14 +269,13 @@ body[data-age-mode="primary-young"] .skill-chip__icon svg{ width:22px; height:22
 /*   CTA con más energía (coral); "Hecho" se mantiene en verde — */
 body[data-age-mode="primary-young"] .mission-cta:not(.is-complete){ background:var(--il-secondary); color:var(--il-on-primary); }
 body[data-age-mode="primary-young"] .mission-cta:not(.is-complete):hover{ background:var(--il-secondary-hover); }
-/*   "¡Hecho!" (misión completada): barra teal→jade VÍVIDA, recompensa, no atenuada. */
+/*   "¡Hecho!" (misión completada): verde alegre pero LIMPIO (no oscuro), sombra
+     suave difusa — recompensa tranquila, sin losa dura ni mezcla hacia navy. */
 body[data-age-mode="primary-young"] .mission-cta.is-complete{
-  background:
-    radial-gradient(160% 220% at 0% 0%, color-mix(in srgb,var(--il-success) 42%,transparent) 0%, transparent 55%),
-    linear-gradient(120deg, color-mix(in srgb,var(--il-success) 90%,var(--il-surface) 4%) 0%, color-mix(in srgb,var(--il-success) 56%,var(--il-primary)) 100%);
+  background:linear-gradient(180deg, color-mix(in srgb,var(--il-success) 90%,var(--il-surface)) 0%, var(--il-success) 100%);
   color:var(--il-on-success);
   opacity:1; cursor:default; pointer-events:auto; border:0;
-  box-shadow:0 12px 0 -4px color-mix(in srgb,var(--il-success) 55%,#000 24%), 0 22px 30px -16px color-mix(in srgb,var(--il-success) 55%,transparent);
+  box-shadow:0 10px 22px -14px color-mix(in srgb,var(--il-success) 55%,transparent);
 }
 body[data-age-mode="primary-young"] .mission-cta.is-complete>[data-il-icon]{
   display:grid; place-items:center; width:36px; height:36px; border-radius:50%;

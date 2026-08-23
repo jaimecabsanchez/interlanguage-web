@@ -134,7 +134,10 @@
   .mission-cta svg{width:19px;height:19px}
   .mission-cta:hover{background:var(--il-secondary-hover);transform:translateY(-2px);box-shadow:0 12px 0 -4px var(--il-coral-ink),0 20px 30px -14px color-mix(in srgb,var(--il-secondary) 72%,transparent)}
   .mission-cta:active{transform:translateY(3px);box-shadow:0 6px 0 -4px var(--il-coral-ink),0 10px 18px -14px color-mix(in srgb,var(--il-secondary) 60%,transparent)}
-  .mission-cta.is-complete{background:var(--il-success);color:var(--il-on-success);box-shadow:0 10px 0 -4px var(--il-jade-deep,var(--il-success)),0 16px 26px -14px color-mix(in srgb,var(--il-success) 60%,transparent)}
+  /* Estado "hecho": verde alegre pero limpio, sombra suave (no losa oscura). */
+  .mission-cta.is-complete,
+  .mission-cta.is-complete:hover,
+  .mission-cta.is-complete:active{background:linear-gradient(180deg,color-mix(in srgb,var(--il-success) 90%,var(--il-surface)),var(--il-success));color:var(--il-on-success);transform:none;box-shadow:0 9px 20px -13px color-mix(in srgb,var(--il-success) 55%,transparent);cursor:default}
   .mission-cta{position:relative}
   .cta-spark{display:none;position:absolute;right:16px;top:50%;transform:translateY(-50%);width:30px;height:30px;color:#fff;pointer-events:none}.cta-spark svg{width:100%;height:100%}
   body[data-age-mode="primary-young"] .cta-spark,body[data-age-mode="primary-upper"] .cta-spark{display:block}
@@ -199,7 +202,7 @@
   .reco-card.reco--exam .reco-card__icon{background:color-mix(in srgb,var(--il-focus) 16%,var(--il-surface));color:var(--il-focus)}
   .reco-card.reco--exam .reco-card__eyebrow,.reco-card.reco--exam .ui-label{color:var(--il-focus)}
 </style>
-<link rel="stylesheet" href="age-mode.css?v=20260819c">
+<link rel="stylesheet" href="age-mode.css?v=20260823a">
 </head>
 <body>
 <div class="il-offline" id="offline" hidden><span data-il-icon="wifiOff" aria-hidden="true"></span> Sin conexión.</div>
