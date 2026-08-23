@@ -52,6 +52,19 @@ const liveWithoutKeys = createStageSystem({
 assert.equal(liveWithoutKeys.apply({ age: 8 }), "p34", "a live host never enables the demo selector or override");
 assert.equal(liveBody.dataset.ageMode, "primary-young");
 
+// Enlace de preview (?demo=1) en un dominio real: el demo está FORZADO, así que
+// el selector de etapa y el override SÍ se activan aunque el host no sea local.
+const livePreviewBody = { dataset: {}, appendChild() {} };
+const livePreview = createStageSystem({
+  Date,
+  location: { search: "?ageMode=secondary", hostname: "vocal-sable-9ad3e4.netlify.app" },
+  ILAuth: { isDemo: () => true, isDemoForced: () => true },
+  sessionStorage: storage(),
+  document: { body: livePreviewBody, getElementById: () => null, createElement: () => ({ setAttribute() {}, appendChild() {}, append() {}, addEventListener() {}, querySelector() { return null; } }) }
+});
+assert.equal(livePreview.apply({ age: 8 }), "eso", "a forced-demo preview link enables the stage override on a live host");
+assert.equal(livePreviewBody.dataset.ageMode, "secondary");
+
 const demoBody = { dataset: {}, appendChild() {} };
 const demo = createStageSystem({
   Date,

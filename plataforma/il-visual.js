@@ -3,11 +3,20 @@
    ------------------------------------------------------------
    Fuente única del sistema visual con función (no decoración):
      · ILVisual.nemo(mood)      → personaje guía (zorro), por estados
-     · ILVisual.stamp(id, opts) → sello de pasaporte con identidad propia
+     · ILVisual.stamp(id, opts) → sello/achievement de la colección
      · ILVisual.plane(kind, el) → el avión como hilo del progreso
      · ILVisual.reveal(el)      → revelado suave de un desbloqueo
    Reglas: colores solo con tokens --il-*; respeta prefers-reduced-motion;
    Nemo aparece SOLO en momentos concretos (no presencia permanente).
+
+   SELLOS · una sola colección coherente ---------------------------------
+   Todos comparten EXACTAMENTE el mismo marco (aro exterior + aro de puntos
+   + disco + brillo + sombra) y el MISMO candado. Lo único que cambia entre
+   sellos es (1) el símbolo central, (2) el color de familia al estar
+   conseguido y (3) el estado. Tres estados:
+     · earned   → color de familia, sin candado (recompensa)
+     · progress → tono suave/desaturado, candado secundario, muestra avance
+     · locked   → gris azulado, candado navy en la esquina inferior derecha
    ============================================================ */
 (function () {
   "use strict";
@@ -71,96 +80,151 @@
     );
   }
 
-  /* ---------- SELLOS · pasaporte con identidad propia -----------------
-     Marco común (anillo de pasaporte) + motivo único por id.
-     No emojis, no medallas genéricas.                                    */
-  const P = 'fill="none" stroke="var(--il-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"';
-  const STAMP_MOTIF = {
+  /* ---------- SELLOS · símbolos de la colección -----------------------
+     Cada símbolo cabe dentro del disco (radio ~25, centro 36,36). Usan
+     navy como base y acentos coral/ámbar/jade; el estado (locked/progress)
+     los desatura por CSS, así un mismo símbolo sirve para los 3 estados.  */
+  const P = 'fill="none" stroke="var(--il-primary)" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"';
+  const PERI = "color-mix(in srgb,var(--il-focus) 40%,var(--il-surface))"; // azul periwinkle suave
+
+  const MOTIF = {
+    // Primer vuelo · avión de papel navy + estela coral + destello
     "first-flight":
-      '<path d="M25.2 34.8 46.8 25.2 38.4 46.8 34.8 38.4Z" fill="var(--il-primary)"/>' +
-      '<path d="M20 47q6-2.4 11 0" fill="none" stroke="var(--il-primary)" stroke-width="1.8" stroke-linecap="round" stroke-dasharray="1 4" opacity=".55"/>',
+      '<path d="M22 35 50 21 42 50Z" fill="var(--il-primary)"/>' +
+      '<path d="M22 35 42 50 36.5 37.5Z" fill="' + PERI + '"/>' +
+      '<path d="M36.5 37.5 42 50 39 42.5Z" fill="var(--il-primary)"/>' +
+      '<path d="M20.5 51q5-1 7.6-4.4" fill="none" stroke="var(--il-secondary)" stroke-width="1.8" stroke-linecap="round" stroke-dasharray="0.2 3.3"/>' +
+      '<path d="M27.4 22.2 28.6 24.8 31.2 26 28.6 27.2 27.4 29.8 26.2 27.2 23.6 26 26.2 24.8Z" fill="var(--il-secondary)"/>',
+    // Explorador de la semana · calendario
     "weekly-explorer":
-      '<rect x="23" y="28" width="26" height="20" rx="3" ' + P + '/>' +
-      '<path d="M23 34H49M30 25v6M42 25v6M31 41l3.5 3.5L42 37" ' + P + '/>',
-    "morning-explorer":
-      '<path d="M18 45H54" ' + P + '/>' +
-      '<path d="M27 45a9 9 0 0 1 18 0Z" fill="var(--il-primary)"/>' +
-      '<path d="M36 27v-4M25.5 30.5l-2.6-2.6M46.5 30.5l2.6-2.6" ' + P + '/>',
-    "weekend-planner":
-      '<rect x="22" y="26" width="28" height="22" rx="4" ' + P + '/>' +
-      '<path d="M22 33h28M29 23v6M43 23v6M28 39h8M28 43h13" ' + P + '/>' +
-      '<path d="m43 37 5-2.2-2 5-1-2Z" fill="var(--il-primary)"/>',
-    "word-collector":
-      '<path d="M24 27h24a3 3 0 0 1 3 3v11a3 3 0 0 1-3 3H36l-6 5v-5h-6a3 3 0 0 1-3-3V30a3 3 0 0 1 3-3Z" ' + P + '/>' +
-      '<path d="M30 34h13M30 38h9" ' + P + '/>',
-    "listening-star":
-      '<g transform="translate(15.6,21.6) scale(.78)"><path d="m21 6 3.4 6.9 7.6 1.1-5.5 5.4 1.3 7.6L21 30.4 14.2 27l1.3-7.6-5.5-5.4 7.6-1.1L21 6Z" fill="var(--il-primary)"/></g>' +
-      '<path d="M43 29a10 10 0 0 1 0 14M47 25a15 15 0 0 1 0 22" ' + P + ' opacity=".7"/>',
-    comeback:
-      '<path d="M46 36a10 10 0 1 1-3-7.1" fill="none" stroke="var(--il-primary)" stroke-width="2.4" stroke-linecap="round"/>' +
-      '<path d="M45 22v7h-7" ' + P + '/>' +
-      '<path d="M31 36 41 32 37.5 42 35.5 37.5Z" fill="var(--il-primary)"/>',
+      '<rect x="22.5" y="27" width="27" height="21" rx="3.4" fill="var(--il-surface)" stroke="var(--il-primary)" stroke-width="2.1"/>' +
+      '<path d="M22.5 34.6V30.4a3.4 3.4 0 0 1 3.4-3.4h20.2a3.4 3.4 0 0 1 3.4 3.4v4.2Z" fill="var(--il-primary)"/>' +
+      '<path d="M29 25v5.4M43 25v5.4" stroke="var(--il-primary)" stroke-width="2.5" stroke-linecap="round"/>' +
+      '<g fill="' + PERI + '"><rect x="26.6" y="38" width="4.4" height="4" rx="1"/><rect x="33.8" y="38" width="4.4" height="4" rx="1"/><rect x="41" y="38" width="4.4" height="4" rx="1"/><rect x="26.6" y="43.4" width="4.4" height="4" rx="1"/></g>' +
+      '<rect x="33.8" y="43.4" width="4.4" height="4" rx="1" fill="var(--il-secondary)"/>',
+    // Racha · llama (misma familia para 5/10/30 días)
     "streak-spark":
-      '<path d="M37 20c2.5 5-1.5 7.5-1.5 11a4.5 4.5 0 0 0 9 0c0-.8-.3-1.7-.8-2.5A12 12 0 1 1 30 39c0-5.5 4.5-8.5 7-19Z" fill="var(--il-primary)"/>',
+      '<path d="M36 19c1.5 5.4 6.6 6.9 6.6 12.6a6.6 6.6 0 0 1-13.2.2c0-2.3 1.2-3.9 1.2-3.9-.1 2.5 1.4 3.5 2.5 3.5 1.5 0 2.1-1.2 1.4-2.9-1.4-3.7.6-7.5 1.5-9.5Z" fill="var(--il-primary)"/>' +
+      '<path d="M36 33.5c1 2.4 3.1 3 3.1 5.3a3.1 3.1 0 0 1-6.2 0c0-1.6 1.5-2.5 1.5-4Z" fill="var(--il-secondary)"/>',
+    // 10 misiones · bandera premium
     "missions-10":
-      '<path d="M28 21v30" ' + P + '/><path d="M28 24h17l-3.5 5 3.5 5H28" fill="var(--il-primary)"/>',
+      '<path d="M30.5 20.5V51" stroke="var(--il-primary)" stroke-width="2.6" stroke-linecap="round"/>' +
+      '<circle cx="30.5" cy="20.5" r="2.6" fill="var(--il-secondary)"/>' +
+      '<path d="M33 23.4H48l-4.2 4.6 4.2 4.6H33Z" fill="var(--il-primary)"/>' +
+      '<path d="M24 50.6a6.5 3 0 0 1 13 0Z" fill="' + PERI + '"/>' +
+      '<path d="M41.6 40.4 42.5 42.6 44.7 43.5 42.5 44.4 41.6 46.6 40.7 44.4 38.5 43.5 40.7 42.6Z" fill="var(--il-secondary)"/>',
+    // 50 misiones · trofeo
     "missions-50":
-      '<path d="M29 23h14v6a7 7 0 0 1-14 0zM34 36h4M33 36l-1 7h8l-1-7M30 46h12" ' + P + '/>' +
-      '<path d="M25 24a3 3 0 0 0 3 4M47 24a3 3 0 0 1-3 4" ' + P + '/>',
+      '<path d="M29 23h14v5.6a7 7 0 0 1-14 0Z" fill="var(--il-primary)"/>' +
+      '<path d="M29 25.6h-3.4a2.7 2.7 0 0 0 2.8 4.6M43 25.6h3.4a2.7 2.7 0 0 1-2.8 4.6" ' + P + '/>' +
+      '<path d="M36 35.4v4.6M31.4 40h9.2" ' + P + '/>' +
+      '<rect x="29.8" y="45.4" width="12.4" height="3.6" rx="1.3" fill="var(--il-primary)"/>' +
+      '<path d="M36 24.6 37.1 26.8 39.5 27.1 37.7 28.7 38.2 31 36 29.9 33.8 31 34.3 28.7 32.5 27.1 34.9 26.8Z" fill="var(--il-warning)"/>',
+    // Explorador matinal · sol sonriente + colinas (el más ilustrativo)
+    "morning-explorer":
+      '<g stroke="var(--il-secondary)" stroke-width="2.3" stroke-linecap="round"><path d="M36 18.5v-2.6"/><path d="M47.6 23l1.8-1.8"/><path d="M24.4 23l-1.8-1.8"/><path d="M53.6 33h2.6"/><path d="M15.8 33h2.6"/></g>' +
+      '<circle cx="36" cy="33" r="9.2" fill="color-mix(in srgb,var(--il-warning) 52%,var(--il-secondary) 26%)"/>' +
+      '<circle cx="32.6" cy="32.4" r="1.3" fill="var(--il-primary)"/><circle cx="39.4" cy="32.4" r="1.3" fill="var(--il-primary)"/>' +
+      '<path d="M32.6 35.6a3.8 3.8 0 0 0 6.8 0" fill="none" stroke="var(--il-primary)" stroke-width="1.5" stroke-linecap="round"/>' +
+      '<path d="M17.5 50.5c3.6-6.2 9.4-6.2 13 0Z" fill="color-mix(in srgb,var(--il-success) 58%,var(--il-surface))"/>' +
+      '<path d="M27 50.5c4.2-7.2 12.4-7.2 16.6 0 2-3.4 6.2-3.4 10.4 0v.4H23.4Z" fill="var(--il-success)"/>',
+    // Coleccionista de palabras · burbuja con texto
+    "word-collector":
+      '<path d="M23 27.5h26a3.2 3.2 0 0 1 3.2 3.2v9.6a3.2 3.2 0 0 1-3.2 3.2H33l-6 5.2v-5.2h-4a3.2 3.2 0 0 1-3.2-3.2V30.7a3.2 3.2 0 0 1 3.2-3.2Z" fill="var(--il-primary)"/>' +
+      '<path d="M29 33.6h16M29 38.6h10" fill="none" stroke="var(--il-surface)" stroke-width="2.4" stroke-linecap="round"/>',
+    // Estrella del listening · estrella + ondas de sonido
+    "listening-star":
+      '<path d="M30 24.5 32.9 30.4 39.4 31.35 34.7 35.95 35.8 42.45 30 39.4 24.2 42.45 25.3 35.95 20.6 31.35 27.1 30.4Z" fill="var(--il-primary)"/>' +
+      '<path d="M42 30a9 9 0 0 1 0 12M46.5 26.5a14 14 0 0 1 0 19" fill="none" stroke="var(--il-secondary)" stroke-width="2.3" stroke-linecap="round"/>',
+    // Estrella del speaking · dos burbujas (conversación)
     "speaking-star":
-      '<path d="M22 27h28a3 3 0 0 1 3 3v9a3 3 0 0 1-3 3H35l-6 5v-5h-7a3 3 0 0 1-3-3v-9a3 3 0 0 1 3-3Z" ' + P + '/>' +
-      '<path d="m36 30 1.6 3.3 3.6.5-2.6 2.5.6 3.6L36 42l-3.2 1.4.6-3.6-2.6-2.5 3.6-.5L36 30Z" fill="var(--il-primary)"/>',
+      '<path d="M33 25.5h15a3 3 0 0 1 3 3v7a3 3 0 0 1-3 3h-2v3.6l-4.2-3.6H33a3 3 0 0 1-3-3v-7a3 3 0 0 1 3-3Z" fill="none" stroke="var(--il-primary)" stroke-width="2.1" stroke-linejoin="round"/>' +
+      '<path d="M21 29h15a3 3 0 0 1 3 3v7.6a3 3 0 0 1-3 3h-8l-5 4.2v-4.2h-2a3 3 0 0 1-3-3V32a3 3 0 0 1 3-3Z" fill="var(--il-primary)"/>' +
+      '<path d="M28.5 33 29.75 35.55 32.55 35.95 30.55 37.95 31.03 40.75 28.5 39.42 25.97 40.75 26.45 37.95 24.45 35.95 27.25 35.55Z" fill="var(--il-secondary)"/>',
+    // Constructor de gramática · bloques (construir estructuras)
     "grammar-builder":
-      '<rect x="24" y="35" width="11" height="11" rx="2" ' + P + '/><rect x="37" y="35" width="11" height="11" rx="2" ' + P + '/>' +
-      '<rect x="30.5" y="23" width="11" height="11" rx="2" fill="var(--il-primary)"/>',
+      '<rect x="23.5" y="36" width="11" height="11" rx="2.6" fill="color-mix(in srgb,var(--il-primary) 42%,var(--il-surface))"/>' +
+      '<path d="M37 47V41.5a5.5 5.5 0 0 1 11 0V47Z" fill="color-mix(in srgb,var(--il-primary) 25%,var(--il-surface))"/>' +
+      '<rect x="30.5" y="24" width="11" height="11" rx="2.6" fill="var(--il-primary)"/>',
+    // Explorador lector · libro abierto (misma familia)
     "reading-explorer":
-      '<path d="M36 29c-4-2.6-9-2.6-13-1.6v17c4-1 9-1 13 1.6 4-2.6 9-2.6 13-1.6v-17c-4-1-9-1-13 1.6Z" ' + P + '/><path d="M36 29v17" ' + P + '/>',
+      '<path d="M36 30c-3.6-2.4-8.6-2.4-12.4-1V45c3.8-1.4 8.8-1.4 12.4 1 3.6-2.4 8.6-2.4 12.4-1V29c-3.8-1.4-8.8-1.4-12.4 1Z" fill="var(--il-surface)" stroke="var(--il-primary)" stroke-width="2.1" stroke-linejoin="round"/>' +
+      '<path d="M36 30v16" fill="none" stroke="var(--il-primary)" stroke-width="2.1"/>' +
+      '<path d="M27 34.5h5.6M27 38.5h5.6M39.4 34.5H45M39.4 38.5H45" fill="none" stroke="var(--il-secondary)" stroke-width="1.6" stroke-linecap="round"/>',
+    // Planes de finde (ESO) · calendario con check
+    "weekend-planner":
+      '<rect x="22.5" y="27" width="27" height="21" rx="3.4" fill="var(--il-surface)" stroke="var(--il-primary)" stroke-width="2.1"/>' +
+      '<path d="M22.5 34.6V30.4a3.4 3.4 0 0 1 3.4-3.4h20.2a3.4 3.4 0 0 1 3.4 3.4v4.2Z" fill="var(--il-primary)"/>' +
+      '<path d="M29 25v5.4M43 25v5.4" stroke="var(--il-primary)" stroke-width="2.5" stroke-linecap="round"/>' +
+      '<path d="m30.5 41.5 3.4 3.4 7.2-7.6" fill="none" stroke="var(--il-secondary)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>',
+    // Dominio / especiales (misma colección)
     "perfect-round":
-      '<circle cx="36" cy="36" r="13" ' + P + '/><circle cx="36" cy="36" r="6.5" ' + P + '/>' +
-      '<path d="m31.5 36 3 3 6-6.5" fill="none" stroke="var(--il-primary)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>',
+      '<circle cx="36" cy="36" r="12.5" fill="none" stroke="var(--il-primary)" stroke-width="2.1"/>' +
+      '<circle cx="36" cy="36" r="6" fill="none" stroke="var(--il-primary)" stroke-width="2.1"/>' +
+      '<path d="m31.7 36 3 3 6-6.4" fill="none" stroke="var(--il-secondary)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>',
     sharp:
       '<path d="M39 20 26 39h8l-2 13 13-21h-8l2-11Z" fill="var(--il-primary)"/>',
+    comeback:
+      '<path d="M47 36a11 11 0 1 1-3.2-7.7" fill="none" stroke="var(--il-primary)" stroke-width="2.4" stroke-linecap="round"/>' +
+      '<path d="M45 21v7h-7" fill="none" stroke="var(--il-primary)" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>' +
+      '<circle cx="36" cy="36" r="3.4" fill="var(--il-secondary)"/>',
     "record-streak":
-      '<path d="M22 45l8-8 5 5 13-14" ' + P + '/><path d="M43 28h7v7" ' + P + '/>',
+      '<path d="M22 45l7.5-8 5 5 13.5-14.5" fill="none" stroke="var(--il-primary)" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/>' +
+      '<path d="M42 27.5h7v7" fill="none" stroke="var(--il-secondary)" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/>',
     _default:
-      '<path d="m36 24 3.7 7.5 8.3 1.2-6 5.9 1.4 8.2L36 50.9 28.6 46.8l1.4-8.2-6-5.9 8.3-1.2L36 24Z" fill="var(--il-primary)"/>'
+      '<path d="m36 23 3.9 7.9 8.7 1.2-6.3 6.1 1.5 8.6L36 50.7 28 45.9l1.5-8.6-6.3-6.1 8.7-1.2Z" fill="var(--il-primary)"/>'
   };
 
-  // Tono de la medalla por familia/tema (variedad legible; el motivo sigue navy).
+  // Familia de color (solo afecta al aro/puntos cuando el sello está conseguido;
+  // el símbolo mantiene su propia paleta). Bloqueado/progreso convergen a gris.
   function stampTone(id) {
     id = String(id || "");
     if (/listen/.test(id)) return "blue";
     if (/speak/.test(id)) return "coral";
-    if (/grammar|sharp/.test(id)) return "navy";
-    if (/read/.test(id)) return "green";
-    if (/word|vocab|collector/.test(id)) return "green";
+    if (/grammar|sharp|constructor/.test(id)) return "navy";
+    if (/read|word|vocab|collector/.test(id)) return "green";
+    if (/morning|streak|racha|record|comeback|month|fifty|missions-50|trophy/.test(id)) return "gold";
     if (/perfect|round|pleno/.test(id)) return "coral";
-    if (/streak|racha|record|comeback/.test(id)) return "gold";
-    if (/mission|explorer|planner|morning|weekly|flight|ten|fifty|journey/.test(id)) return "blue";
+    if (/mission|flight|weekly|explorer|planner|ten|journey|flag/.test(id)) return "blue";
     return "gold";
   }
+
+  // Candado ÚNICO para toda la colección (esquina inferior derecha).
+  const LOCK =
+    '<g class="il-stamp__lock" transform="translate(45.5,45.5)">' +
+    '<circle cx="9.5" cy="9.5" r="10.6" fill="var(--il-surface)" stroke="var(--il-border)" stroke-width="1"/>' +
+    '<rect x="5" y="9" width="9" height="7" rx="1.7" fill="var(--il-primary)"/>' +
+    '<path d="M6.6 9V7.4a2.9 2.9 0 0 1 5.8 0V9" fill="none" stroke="var(--il-primary)" stroke-width="1.7"/>' +
+    '<circle cx="9.5" cy="12.2" r="1" fill="var(--il-surface)"/>' +
+    "</g>";
+
+  // Se conserva por compatibilidad (Inicio consulta esta API). Ya no hay imágenes
+  // raster: toda la colección es SVG para compartir marco, escalar y recolorear.
+  const ACHIEVEMENT_IMG = {};
+
   function stamp(id, opts) {
     opts = opts || {};
-    const locked = !!opts.locked;
-    const motif = STAMP_MOTIF[id] || STAMP_MOTIF._default;
-    const cls = "il-stamp il-stamp--" + (opts.tone || stampTone(id)) + (locked ? " il-stamp--locked" : "");
-    const lockBadge = locked
-      ? '<g class="il-stamp__lock" transform="translate(48,48)">' +
-        '<circle cx="9" cy="9" r="10" fill="var(--il-surface)"/>' +
-        '<rect x="4.5" y="8.5" width="9" height="7" rx="1.6" fill="none" stroke="var(--il-text-secondary)" stroke-width="1.8"/>' +
-        '<path d="M6.2 8.5V6.8a2.8 2.8 0 0 1 5.6 0v1.7" fill="none" stroke="var(--il-text-secondary)" stroke-width="1.8"/></g>'
-      : "";
+    let state = opts.state;
+    if (!state) state = opts.locked ? "locked" : "earned"; // compat: {locked:bool}
+    const family = opts.tone || stampTone(id);
+    const motif = MOTIF[id] || MOTIF._default;
+    const showLock = state === "locked" || state === "progress";
+    const cls = "il-stamp il-stamp--" + family + " is-" + state;
     let beads = "";
-    for (let i = 0; i < 20; i++) { const a = i / 20 * Math.PI * 2; beads += '<circle cx="' + (36 + Math.cos(a) * 32.6).toFixed(1) + '" cy="' + (36 + Math.sin(a) * 32.6).toFixed(1) + '" r="1.5"/>'; }
+    const N = 18, R = 28.4;
+    for (let i = 0; i < N; i++) {
+      const ang = (i / N) * Math.PI * 2 - Math.PI / 2;
+      beads += '<circle cx="' + (36 + Math.cos(ang) * R).toFixed(2) + '" cy="' + (36 + Math.sin(ang) * R).toFixed(2) + '" r="1.35"/>';
+    }
     return (
       '<svg class="' + cls + '" viewBox="0 0 72 72" role="img" aria-hidden="true">' +
-      '<circle cx="36" cy="36" r="33.5" class="il-stamp__rim"/>' +
-      '<g class="il-stamp__beads">' + beads + '</g>' +
-      '<circle cx="36" cy="36" r="27.5" class="il-stamp__disc"/>' +
-      '<circle cx="36" cy="36" r="27.5" class="il-stamp__edge" fill="none" stroke-width="1.6"/>' +
-      '<ellipse class="il-stamp__shine" cx="29" cy="24" rx="15" ry="7.5" transform="rotate(-26 29 24)"/>' +
+      '<circle cx="36" cy="36" r="31.5" class="il-stamp__rim"/>' +
+      '<g class="il-stamp__beads">' + beads + "</g>" +
+      '<circle cx="36" cy="36" r="25.2" class="il-stamp__disc"/>' +
+      '<circle cx="36" cy="36" r="25.2" class="il-stamp__edge" fill="none"/>' +
+      '<ellipse class="il-stamp__shine" cx="29" cy="24" rx="12" ry="5.5" transform="rotate(-24 29 24)"/>' +
       '<g class="il-stamp__motif">' + motif + "</g>" +
-      lockBadge +
+      (showLock ? LOCK : "") +
       "</svg>"
     );
   }
@@ -196,5 +260,5 @@
     el.classList.add("il-reveal");
   }
 
-  window.ILVisual = { nemo, stamp, plane, reveal, reduceMotion: reduce };
+  window.ILVisual = { nemo, stamp, plane, reveal, reduceMotion: reduce, achievementImage: function (id) { return ACHIEVEMENT_IMG[id] || ""; } };
 })();

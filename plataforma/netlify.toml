@@ -1,0 +1,6 @@
+# Configuración del sitio "Interlanguage HOME" (la app).
+# En Netlify, este sitio usa Base directory = "plataforma", así que Netlify
+# lee ESTE netlify.toml y publica la carpeta plataforma tal cual (sin build).
+[build]
+  publish = "."
+  command = ""

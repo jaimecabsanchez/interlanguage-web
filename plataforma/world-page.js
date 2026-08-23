@@ -56,7 +56,7 @@
     $("worldScene").innerHTML = ILWorldVisual.scene(settings, progress, band, { level:meta.level, activeItems:activeItems() });
     $("worldAvatar").innerHTML = ILWorldVisual.avatar(settings, progress);
     const worldMode = activeTab === "world"; $("worldStage").classList.toggle("is-avatar-editor", !worldMode); $("worldStage").classList.toggle("is-world-editor", worldMode);
-    const companion = worldMode && settings.worldCompanion && settings.worldCompanion !== "none" ? settings.worldCompanion : ""; $("worldCompanion").hidden = !companion; if (companion) $("worldCompanion").innerHTML = ILWorldVisual.companion(companion);
+    $("worldCompanion").hidden = true; // el compañero se dibuja dentro de la escena (evita duplicado)
     if (animate && !ILVisual.reduceMotion()) {
       const target = worldMode ? $("worldScene") : $("worldAvatar");
       target.animate([{ transform:"scale(.985)" }, { transform:"scale(1.012)" }, { transform:"scale(1)" }], { duration:240, easing:"cubic-bezier(.2,.7,.3,1)" });

@@ -1,6 +1,42 @@
 window.dataLayer = window.dataLayer || [];
-  function pushEvent(name, params){ window.dataLayer.push(Object.assign({event: name}, params || {})); }
+  // Consentimiento de cookies: sin 'accepted' NO se envía analítica (consent-first).
+  var IL_CONSENT = null;
+  try { IL_CONSENT = localStorage.getItem('il_cookie_consent'); } catch (e) {}
+  function pushEvent(name, params){
+    if (IL_CONSENT !== 'accepted') return;
+    window.dataLayer.push(Object.assign({event: name}, params || {}));
+  }
   window.addEventListener('DOMContentLoaded', function(){ pushEvent('pagina_cargada', { page_path: window.location.pathname }); });
+
+  // Aviso de cookies: se muestra si aún no hay decisión; al aceptar, activa la analítica.
+  (function(){
+    var banner = document.getElementById('cookieBanner');
+    if (!banner) return;
+    function persist(v){ try { localStorage.setItem('il_cookie_consent', v); } catch (e) {} IL_CONSENT = v; }
+    if (IL_CONSENT !== 'accepted' && IL_CONSENT !== 'rejected'){ banner.hidden = false; }
+    var accept = document.getElementById('cookieAccept');
+    var reject = document.getElementById('cookieReject');
+    if (accept) accept.addEventListener('click', function(){
+      persist('accepted'); banner.hidden = true;
+      pushEvent('consentimiento_cookies', { estado: 'aceptado' });
+      pushEvent('pagina_cargada', { page_path: window.location.pathname });
+    });
+    if (reject) reject.addEventListener('click', function(){ persist('rejected'); banner.hidden = true; });
+  })();
+
+  // Botón flotante de WhatsApp — rellena WHATSAPP_NUMBER para activarlo (país+número, sin + ni espacios).
+  var WHATSAPP_NUMBER = '';
+  (function(){
+    var el = document.getElementById('whatsappFloat');
+    if (!el || !WHATSAPP_NUMBER) return;
+    var text = encodeURIComponent('Hola, me gustaría recibir información sobre los programas de Interlanguage.');
+    el.href = 'https://wa.me/' + WHATSAPP_NUMBER + '?text=' + text;
+    el.hidden = false;
+  })();
+
+  // Muestra/oculta el mensaje de error de envío de un formulario.
+  function setFormError(el, text){ if (!el) return; el.textContent = text || ''; el.hidden = !text; }
+  var FORM_ENDPOINT = 'form-handler.php';
 
   // barra sticky de conversión: aparece tras el hero, se oculta en el formulario de contacto
   (function(){
@@ -33,6 +69,8 @@ window.dataLayer = window.dataLayer || [];
     let timer = null;
     let paused = false;
     const DURATION = 3200;
+    const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let playing = false;
 
     slides.forEach(function(_, i){
       const dot = document.createElement('div');
@@ -60,24 +98,38 @@ window.dataLayer = window.dataLayer || [];
       stop();
       timer = setInterval(function(){ if (!paused) goTo((current + 1) % slides.length); }, DURATION);
     }
-    function stop(){ if (timer) clearInterval(timer); }
+    function stop(){ if (timer) clearInterval(timer); timer = null; }
+
+    const playBtn = document.getElementById('heroPlayPause');
+    const ICON_PAUSE = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>';
+    const ICON_PLAY = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>';
+    function setPlaying(on){
+      playing = on;
+      if (on){ paused = false; start(); } else { paused = true; stop(); }
+      if (playBtn){
+        playBtn.setAttribute('aria-label', on ? 'Pausar la presentación' : 'Reproducir la presentación');
+        playBtn.innerHTML = on ? ICON_PAUSE : ICON_PLAY;
+      }
+    }
+    if (playBtn) playBtn.addEventListener('click', function(){ setPlaying(!playing); });
 
     dots[0].classList.add('active');
-    start();
+    // Con reduced-motion no arranca solo: el usuario lo reproduce si quiere.
+    setPlaying(!reduceMotion);
 
     // pausa al pasar el ratón, reanuda al salir
     frame.addEventListener('mouseenter', function(){ paused = true; });
     frame.addEventListener('mouseleave', function(){ paused = false; });
 
     dots.forEach(function(dot, i){
-      dot.addEventListener('click', function(){ goTo(i); start(); });
+      dot.addEventListener('click', function(){ goTo(i); if (playing) start(); });
     });
 
     // flechas de anterior / siguiente
     const prevBtn = document.getElementById('heroPrev');
     const nextBtn = document.getElementById('heroNext');
-    if (prevBtn) prevBtn.addEventListener('click', function(){ goTo((current - 1 + slides.length) % slides.length); start(); });
-    if (nextBtn) nextBtn.addEventListener('click', function(){ goTo((current + 1) % slides.length); start(); });
+    if (prevBtn) prevBtn.addEventListener('click', function(){ goTo((current - 1 + slides.length) % slides.length); if (playing) start(); });
+    if (nextBtn) nextBtn.addEventListener('click', function(){ goTo((current + 1) % slides.length); if (playing) start(); });
 
     // deslizar con el dedo en móvil
     let touchStartX = null;
@@ -88,7 +140,7 @@ window.dataLayer = window.dataLayer || [];
       if (Math.abs(diff) > 40){
         if (diff < 0) goTo((current + 1) % slides.length);
         else goTo((current - 1 + slides.length) % slides.length);
-        start();
+        if (playing) start();
       }
       touchStartX = null;
     }, { passive:true });
@@ -210,7 +262,8 @@ window.dataLayer = window.dataLayer || [];
   function goToServicePage(key){
     showView('view-service-' + key);
     pushEvent('clic_cta', { cta_id: 'servicio-subpagina-' + key });
-    history.replaceState(null, '', '#servicio-' + key);
+    // pushState (no replaceState): así el botón "atrás" del navegador vuelve a la home.
+    history.pushState({ view: 'service-' + key }, '', '#servicio-' + key);
   }
 
   // tarjetas de servicio en la home
@@ -276,6 +329,7 @@ window.dataLayer = window.dataLayer || [];
 
     const campForm = document.getElementById('campForm');
     const campFormMsg = document.getElementById('campFormMsg');
+    const campErrEl = document.getElementById('campFormErrorMsg');
 
     // navegación de pasos del formulario de inscripción
     (function(){
@@ -329,16 +383,49 @@ window.dataLayer = window.dataLayer || [];
       }
       const n = checked.length;
       const total = (weekPrices[n] || 0) + (comedorCheckbox.checked ? 52 * n : 0);
-      pushEvent('lead_generado', {
-        servicio: 'campamentos',
-        semanas: checked.map(function(c){ return c.value; }).join(','),
-        comedor: comedorCheckbox.checked,
-        total: total
+      const val = function(id){ var el = document.getElementById(id); return el ? el.value : ''; };
+      const payload = new URLSearchParams({
+        form_type: 'campamento',
+        sede: val('campSede'),
+        semanas: checked.map(function(c){ return c.value; }).join(', '),
+        comedor: comedorCheckbox.checked ? 'Sí' : 'No',
+        total: String(total),
+        alumnoNombre: val('campAlumnoNombre'),
+        alumnoApellidos: val('campAlumnoApellidos'),
+        colegio: val('campColegio'),
+        alergias: val('campAlergias'),
+        fullName: val('campTutor'),
+        email: val('campEmail'),
+        phone: val('campTelefono'),
+        comentarios: val('campComentarios'),
+        rgpd: document.getElementById('campRgpd').checked ? '1' : '',
+        website: val('campHp')
       });
-      pushEvent('formulario_enviado', { servicio: 'campamentos-inscripcion' });
-      campFormMsg.classList.add('show');
-      campForm.querySelectorAll('input, select, textarea, button').forEach(function(el){ el.disabled = true; });
-      campFormMsg.scrollIntoView({ behavior:'smooth', block:'center' });
+
+      const btn = document.getElementById('campSubmitBtn');
+      const prevLabel = btn.textContent;
+      setFormError(campErrEl, '');
+      btn.disabled = true; btn.textContent = 'Enviando…';
+
+      fetch(FORM_ENDPOINT, { method: 'POST', body: payload })
+        .then(function(r){ if (!r.ok) throw new Error('http'); return r.json(); })
+        .then(function(res){
+          if (!res || !res.ok) throw new Error('resp');
+          pushEvent('lead_generado', {
+            servicio: 'campamentos',
+            semanas: checked.map(function(c){ return c.value; }).join(','),
+            comedor: comedorCheckbox.checked,
+            total: total
+          });
+          pushEvent('formulario_enviado', { servicio: 'campamentos-inscripcion' });
+          campFormMsg.classList.add('show');
+          campForm.querySelectorAll('input, select, textarea, button').forEach(function(el){ el.disabled = true; });
+          campFormMsg.scrollIntoView({ behavior:'smooth', block:'center' });
+        })
+        .catch(function(){
+          btn.disabled = false; btn.textContent = prevLabel;
+          setFormError(campErrEl, 'No hemos podido enviar la inscripción. Inténtalo de nuevo en unos segundos.');
+        });
     });
   })();
 
@@ -400,6 +487,17 @@ window.dataLayer = window.dataLayer || [];
     }
   })();
 
+  // Sincroniza la vista con el historial: el botón atrás/adelante restaura la vista correcta.
+  function syncViewFromHash(){
+    const h = (window.location.hash || '').replace('#','');
+    if (h.indexOf('servicio-') === 0){
+      const key = h.replace('servicio-','');
+      if (document.getElementById('view-service-' + key)){ showView('view-service-' + key); return; }
+    }
+    showView('view-home');
+  }
+  window.addEventListener('popstate', syncViewFromHash);
+
   document.querySelectorAll('[data-cta]').forEach(function(el){
     el.addEventListener('click', function(){ pushEvent('clic_cta', { cta_id: el.getAttribute('data-cta'), cta_text: el.textContent.trim() }); });
   });
@@ -407,6 +505,7 @@ window.dataLayer = window.dataLayer || [];
   const form = document.getElementById('leadForm');
   const msg = document.getElementById('formMsg');
   const submitBtn = document.getElementById('submitBtn');
+  const leadErrEl = document.getElementById('formErrorMsg');
 
   function validateField(field){
     let valid = true;
@@ -466,10 +565,34 @@ window.dataLayer = window.dataLayer || [];
     if (!allValid){ form.reportValidity(); return; }
     const service = document.getElementById('service').value;
     const studentAge = document.getElementById('studentAge').value;
-    pushEvent('lead_generado', { servicio: service, edad_alumno: studentAge });
-    pushEvent('formulario_enviado', { servicio: service });
-    msg.classList.add('show');
-    submitBtn.disabled = true;
-    form.querySelectorAll('input, select, textarea').forEach(function(el){ el.disabled = true; });
-    msg.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    const payload = new URLSearchParams({
+      form_type: 'lead',
+      service: service,
+      studentAge: studentAge,
+      message: document.getElementById('message').value,
+      fullName: document.getElementById('fullName').value,
+      email: document.getElementById('email').value,
+      phone: document.getElementById('phone').value,
+      rgpd: rgpd.checked ? '1' : '',
+      website: (document.getElementById('leadHp') || {}).value || ''
+    });
+
+    const prevLabel = submitBtn.textContent;
+    setFormError(leadErrEl, '');
+    submitBtn.disabled = true; submitBtn.textContent = 'Enviando…';
+
+    fetch(FORM_ENDPOINT, { method: 'POST', body: payload })
+      .then(function(r){ if (!r.ok) throw new Error('http'); return r.json(); })
+      .then(function(res){
+        if (!res || !res.ok) throw new Error('resp');
+        pushEvent('lead_generado', { servicio: service, edad_alumno: studentAge });
+        pushEvent('formulario_enviado', { servicio: service });
+        msg.classList.add('show');
+        form.querySelectorAll('input, select, textarea, button').forEach(function(el){ el.disabled = true; });
+        msg.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      })
+      .catch(function(){
+        submitBtn.disabled = false; submitBtn.textContent = prevLabel;
+        setFormError(leadErrEl, 'No hemos podido enviar la solicitud. Inténtalo de nuevo en unos segundos.');
+      });
   });

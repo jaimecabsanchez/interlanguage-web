@@ -269,6 +269,31 @@ body[data-age-mode="primary-young"] .skill-chip__icon svg{ width:22px; height:22
 /*   CTA con más energía (coral); "Hecho" se mantiene en verde — */
 body[data-age-mode="primary-young"] .mission-cta:not(.is-complete){ background:var(--il-secondary); color:var(--il-on-primary); }
 body[data-age-mode="primary-young"] .mission-cta:not(.is-complete):hover{ background:var(--il-secondary-hover); }
+/*   "¡Hecho!" (misión completada): barra teal→jade VÍVIDA, recompensa, no atenuada. */
+body[data-age-mode="primary-young"] .mission-cta.is-complete{
+  background:
+    radial-gradient(160% 220% at 0% 0%, color-mix(in srgb,var(--il-success) 42%,transparent) 0%, transparent 55%),
+    linear-gradient(120deg, color-mix(in srgb,var(--il-success) 90%,var(--il-surface) 4%) 0%, color-mix(in srgb,var(--il-success) 56%,var(--il-primary)) 100%);
+  color:var(--il-on-success);
+  opacity:1; cursor:default; pointer-events:auto; border:0;
+  box-shadow:0 12px 0 -4px color-mix(in srgb,var(--il-success) 55%,#000 24%), 0 22px 30px -16px color-mix(in srgb,var(--il-success) 55%,transparent);
+}
+body[data-age-mode="primary-young"] .mission-cta.is-complete>[data-il-icon]{
+  display:grid; place-items:center; width:36px; height:36px; border-radius:50%;
+  background:var(--il-on-success); color:var(--il-success); box-shadow:0 3px 8px -3px rgba(0,0,0,.25);
+}
+body[data-age-mode="primary-young"] .mission-cta.is-complete>[data-il-icon] svg{ width:21px; height:21px; }
+/*   Repasar: acción secundaria discreta en teal, con icono de refresco. */
+body[data-age-mode="primary-young"] .mission-review{ display:inline-flex; align-items:center; gap:6px; color:var(--il-success); font-weight:var(--il-weight-bold); }
+body[data-age-mode="primary-young"] .mission-review:hover{ color:color-mix(in srgb,var(--il-success) 80%,#000 12%); text-decoration:none; }
+body[data-age-mode="primary-young"] .mission-review svg{ width:16px; height:16px; }
+/*   Pequeños destellos amarillos (saludo + mensaje de semana), muy discretos. */
+body[data-age-mode="primary-young"] .home-greeting h1::after,
+body[data-age-mode="primary-young"] .week-note::after{
+  content:""; display:inline-block; width:.7em; height:.7em; margin-left:.32em; vertical-align:.02em; background:var(--il-warning);
+  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2c1 6 3 8 9 10-6 2-8 4-9 10-1-6-3-8-9-10 6-2 8-4 9-10z'/%3E%3C/svg%3E") center/contain no-repeat;
+  mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2c1 6 3 8 9 10-6 2-8 4-9 10-1-6-3-8-9-10 6-2 8-4 9-10z'/%3E%3C/svg%3E") center/contain no-repeat;
+}
 body[data-age-mode="primary-young"] .mission-nemo{ font-size:var(--il-fs-base); }
 body[data-age-mode="primary-young"] .week-note{ font-size:var(--il-fs-lg); }
 /*   Sello grande y protagonista (hereda el sello centrado de la base) — */
@@ -285,6 +310,119 @@ body[data-age-mode="secondary"] .mission-cta{ background:var(--il-primary); colo
 body[data-age-mode="secondary"] .mission-cta:hover{ background:var(--il-primary-hover); }
 body[data-age-mode="secondary"] .home-greeting p{ color:var(--il-muted); font-size:var(--il-fs-sm); }
 body[data-age-mode="secondary"] .mission-context{ font-size:var(--il-fs-xs); }
+
+/* CTA "Session complete": barra teal→navy premium, plana con textura sutil
+   (sustituye al verde físico cuando la sesión de ESO está completada). */
+body[data-age-mode="secondary"] .mission-cta.is-complete{
+  background:
+    radial-gradient(140% 200% at 0% 0%, color-mix(in srgb,var(--il-success) 55%,transparent) 0%, transparent 52%),
+    linear-gradient(100deg, color-mix(in srgb,var(--il-success) 88%,#000 10%) 0%, color-mix(in srgb,var(--il-primary) 52%,var(--il-success)) 100%);
+  color:var(--il-on-success);
+  box-shadow:0 16px 32px -18px color-mix(in srgb,var(--il-success) 65%,#000 35%);
+  opacity:1; cursor:default;   /* barra "hecho" vívida, no atenuada como un botón deshabilitado */
+}
+body[data-age-mode="secondary"] .mission-cta.is-complete::before{
+  content:""; position:absolute; inset:0; border-radius:inherit; pointer-events:none; z-index:0;
+  background-image:radial-gradient(circle, color-mix(in srgb,var(--il-on-success) 32%,transparent) 1px, transparent 1.5px);
+  background-size:19px 19px; opacity:.22;
+}
+body[data-age-mode="secondary"] .mission-cta.is-complete > *{ position:relative; z-index:1; }
+
+/* ============================================================
+   ESO · DASHBOARD PREMIUM — sidebar navy a sangre + lienzo amplio
+   Réplica fiel del panel de referencia para secundaria. Solo afecta
+   a ESO; primaria conserva su rail claro y su composición centrada.
+   ============================================================ */
+@media (min-width:1024px){
+  body[data-age-mode="secondary"]{ --il-eso-rail:272px; }
+
+  /* El contenedor deja de centrarse con max-width: pasa a rail a sangre
+     (izquierda) + zona de contenido fluida (derecha). Vale para Inicio
+     (.home) y para el resto de páginas del alumno (.shell). */
+  body[data-age-mode="secondary"] .home,
+  body[data-age-mode="secondary"] .shell{
+    max-width:none; width:100%; margin:0; padding:0; gap:0;
+    grid-template-columns:var(--il-eso-rail) minmax(0,1fr);
+    align-items:stretch;
+  }
+
+  /* --- RAIL: panel navy a sangre, altura completa, fijado al hacer scroll --- */
+  body[data-age-mode="secondary"] .rail{
+    position:sticky; top:0; align-self:stretch;
+    height:100vh; min-height:100vh; margin:0;
+    padding:24px 16px 18px;
+    border:0; border-right:1px solid color-mix(in srgb,#000 26%,var(--il-primary));
+    border-radius:0; box-shadow:none;
+    background:
+      radial-gradient(130% 42% at 50% 0%, color-mix(in srgb,var(--il-navy-2) 60%,transparent) 0%, transparent 62%),
+      linear-gradient(180deg, var(--il-primary) 0%, var(--il-primary-hover) 100%);
+    color:var(--il-on-dark);
+  }
+  /* Marca: cuadro blanco + icono navy, "Inter" claro + "language" coral */
+  body[data-age-mode="secondary"] .rail .brand{
+    color:var(--il-on-dark); padding:4px 8px 18px;
+    border-bottom-color:color-mix(in srgb,var(--il-on-dark) 14%,transparent);
+  }
+  body[data-age-mode="secondary"] .rail .brand .logo{
+    background:var(--il-on-dark); color:var(--il-primary);
+    box-shadow:0 8px 18px -10px rgba(0,0,0,.7);
+  }
+  body[data-age-mode="secondary"] .rail .brand span b{ color:var(--il-secondary); }
+
+  /* Ítems de navegación: texto claro atenuado; activo en navy más claro */
+  body[data-age-mode="secondary"] .rail a{
+    color:color-mix(in srgb,var(--il-on-dark) 72%,transparent);
+    border-color:transparent; font-weight:var(--il-weight-semibold);
+  }
+  body[data-age-mode="secondary"] .rail a:hover{
+    background:color-mix(in srgb,var(--il-on-dark) 8%,transparent);
+    border-color:transparent; color:var(--il-on-dark); transform:none;
+  }
+  body[data-age-mode="secondary"] .rail a.is-active,
+  body[data-age-mode="secondary"] .rail a.is-active:hover{
+    background:color-mix(in srgb,var(--il-navy-2) 82%,var(--il-on-dark) 5%);
+    border-color:color-mix(in srgb,var(--il-on-dark) 13%,transparent);
+    color:var(--il-on-dark); box-shadow:0 10px 22px -16px rgba(0,0,0,.85); transform:none;
+  }
+
+  /* Pie del rail: divisor tenue, avatar coral, chevron, ajustes */
+  body[data-age-mode="secondary"] .rail .rail-foot{
+    padding-top:14px; border-top-color:color-mix(in srgb,var(--il-on-dark) 12%,transparent);
+  }
+  body[data-age-mode="secondary"] .rail-user{
+    position:relative; border-radius:var(--il-radius-md); padding:8px 26px 8px 10px;
+  }
+  body[data-age-mode="secondary"] .rail-user:hover{ background:color-mix(in srgb,var(--il-on-dark) 7%,transparent); }
+  body[data-age-mode="secondary"] .rail-user__av{ background:var(--il-secondary); color:var(--il-on-primary); }
+  body[data-age-mode="secondary"] .rail-user__meta b{ color:var(--il-on-dark); }
+  body[data-age-mode="secondary"] .rail-user__meta small{ color:color-mix(in srgb,var(--il-on-dark) 58%,transparent); }
+  body[data-age-mode="secondary"] .rail-user::after{
+    content:""; position:absolute; right:12px; top:50%; width:7px; height:7px;
+    border-right:2px solid color-mix(in srgb,var(--il-on-dark) 46%,transparent);
+    border-top:2px solid color-mix(in srgb,var(--il-on-dark) 46%,transparent);
+    transform:translateY(-50%) rotate(45deg);
+  }
+  body[data-age-mode="secondary"] .rail-settings{ color:color-mix(in srgb,var(--il-on-dark) 70%,transparent); }
+  body[data-age-mode="secondary"] .rail-settings:hover{
+    background:color-mix(in srgb,var(--il-on-dark) 8%,transparent); color:var(--il-on-dark);
+  }
+
+  /* --- Zona de contenido: padding cómodo + tope de ancho, centrada.
+     El padding-top reserva la banda superior (banner demo + selector). --- */
+  body[data-age-mode="secondary"] .home-content,
+  body[data-age-mode="secondary"] .shell-main{
+    width:100%; max-width:1240px; margin-inline:auto;
+    padding:clamp(44px,6vh,60px) clamp(24px,3vw,56px) 72px;
+  }
+
+  /* Banner "Modo demo": fuera del flujo (fijo) y centrado en la zona de
+     contenido, para que la rejilla arranque en y=0 y el rail ocupe el alto
+     completo (Ajustes deja de cortarse). Solo el banner de nivel body. */
+  body[data-age-mode="secondary"]>.demo-strip{
+    position:fixed; top:12px; left:50%; z-index:40; margin:0;
+    transform:translateX(calc(-50% + var(--il-eso-rail)/2));
+  }
+}
 
 /* ============================================================
    FASE 2 · EJERCICIOS · Primaria inicial: más visual, menos texto,

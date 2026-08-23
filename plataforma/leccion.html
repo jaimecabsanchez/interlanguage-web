@@ -12,7 +12,7 @@
 <link rel="stylesheet" href="design-system.css?v=20260816b">
 <link rel="stylesheet" href="app.css?v=20260809d">
 <link rel="stylesheet" href="motor/motor.css?v=20260818b">
-<link rel="stylesheet" href="il-visual.css?v=20260818b">
+<link rel="stylesheet" href="il-visual.css?v=20260821a">
 <link rel="stylesheet" href="etapa.css?v=20260809d">
 <style>
   body{background:linear-gradient(180deg,var(--il-primary-soft),var(--il-background) 26%);min-height:100dvh}
@@ -107,7 +107,7 @@
   @media (min-width:1024px){.lesson{max-width:820px;padding-inline:var(--il-space-6)}.lesson-header{padding-top:var(--il-space-5)}}
   @media (prefers-reduced-motion:reduce){.segment,.progress-plane{transition:none}.success-react.is-visible,.summary-card,.summary-seal::after{animation:none}.summary-seal::after{display:none}}
 </style>
-<link rel="stylesheet" href="age-mode.css?v=20260810j">
+<link rel="stylesheet" href="age-mode.css?v=20260819c">
 <link rel="stylesheet" href="lesson-young.css?v=20260814c">
 </head>
 <body class="lesson-page">
@@ -197,35 +197,37 @@
   </div>
 </dialog>
 
-<script src="layout.js?v=20260816c"></script>
-<script src="il-visual.js?v=20260818b"></script>
+<script src="layout.js?v=20260819a"></script>
+<script src="il-visual.js?v=20260821a"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-config.js?v=20260809d"></script>
 <script src="auth-utils.js?v=20260809d"></script>
-<script src="etapa.js?v=20260810d"></script>
-<script src="auth.js?v=20260818a"></script>
+<script src="etapa.js?v=20260821d"></script>
+<script src="auth.js?v=20260819a"></script>
 <script src="content/schema.js?v=20260817a"></script>
 <script src="content/loader.js?v=20260817a"></script>
-<script src="content/manifest.js?v=20260817a"></script>
+<script src="content/manifest.js?v=20260821d"></script>
 <script src="contenido.js?v=20260817a"></script>
 <script src="motor/motivacion.js?v=20260809d"></script>
 <script src="motor/matriz.js?v=20260809d"></script>
-<script src="mission-state.js?v=20260813a"></script>
+<script src="mission-state.js?v=20260821b"></script>
 <script src="motor/pedagogia.js?v=20260813a"></script>
 <script src="mastery-store.js?v=20260813a"></script>
 <script src="motor/achievements.js?v=20260816a"></script>
 <script src="achievement-store.js?v=20260816a"></script>
-<script src="profile-settings.js?v=20260812a"></script>
+<script src="profile-settings.js?v=20260819a"></script>
 <script src="world-data.js?v=20260810d"></script>
 <script src="motor/visual-assets.js?v=20260814b"></script>
 <script src="motor/adaptacion.js?v=20260814a"></script>
-<script src="motor/engine.js?v=20260818a"></script>
+<script src="motor/engine.js?v=20260821a"></script>
 <script>
   const $ = id => document.getElementById(id);
   const params = new URLSearchParams(location.search);
   const reviewMode = params.get("mode") === "errors";
   const bonusMode = params.get("mode") === "bonus";
   const reviewDueMode = params.get("mode") === "review";
+  const examMode = params.get("mode") === "exam"; // examen periódico (repaso acumulativo)
+  const extraMode = () => bonusMode || reviewDueMode || examMode; // no tocan la misión diaria
   let units = [];
   const byId = {}, unitOf = {};
 
@@ -348,7 +350,7 @@
           if (window.ILMastery && currentEx) ILMastery.recordByType(username, outcome.id || currentEx.id, currentEx.tipo, outcome.correct, missionMeta && missionMeta.date);
           if (reviewMode) {
             if (outcome.correct) { reviewCorrect += 1; reviewResolved.push(outcome.id); }
-          } else if (bonusMode || reviewDueMode) {
+          } else if (extraMode()) {
             if (outcome.correct) bonusCorrect += 1;
           } else {
             ILMission.advance(username, outcome, missionMeta.date);
@@ -491,7 +493,12 @@
   function renderExtraSummary() {
     const sec = ageExperience.id === "secondary";
     const young = ageExperience.id === "primary-young";
-    if (reviewDueMode) {
+    if (examMode) {
+      $("summaryTitle").textContent = sec ? "Exam done" : "¡Examen hecho!";
+      $("summaryLead").textContent = sec
+        ? "You answered " + items.length + " · " + bonusCorrect + " correct."
+        : (young ? "¡Examen hecho! " + bonusCorrect + " de " + items.length : "Examen: " + bonusCorrect + " de " + items.length + " aciertos.");
+    } else if (reviewDueMode) {
       $("summaryTitle").textContent = sec ? "Review done" : "¡Repaso hecho!";
       $("summaryLead").textContent = sec
         ? "You reviewed " + items.length + " · " + bonusCorrect + " correct."
@@ -515,6 +522,7 @@
   async function finishMission() {
    try {
     if (currentController && currentController.destroy) currentController.destroy();
+    if (examMode) { ILMission.resetExam(username); renderExtraSummary(); return; }
     if (bonusMode || reviewDueMode) { renderExtraSummary(); return; }
     if (reviewMode) {
       ILMission.resolveErrors(username, reviewResolved, missionMeta.date);
@@ -562,9 +570,9 @@
    }
   }
 
-  function resumeTimer() { if (!reviewMode && !bonusMode && !reviewDueMode) ILMission.begin(username, missionMeta); }
+  function resumeTimer() { if (!reviewMode && !extraMode()) ILMission.begin(username, missionMeta); }
   $("closeMission").addEventListener("click", () => {
-    if (!reviewMode && !bonusMode && !reviewDueMode) ILMission.pause(username, undefined, missionMeta.date);
+    if (!reviewMode && !extraMode()) ILMission.pause(username, undefined, missionMeta.date);
     $("exitDialog").showModal(); requestAnimationFrame(() => $("keepPractising").focus());
   });
   $("keepPractising").addEventListener("click", () => { $("exitDialog").close("continue"); });
@@ -578,7 +586,7 @@
     rd.addEventListener("click", e => { if (e.target === rd) close(); });
     rd.addEventListener("cancel", e => { e.preventDefault(); close(); });
   })();
-  addEventListener("beforeunload", () => { if (!reviewMode && !bonusMode && !reviewDueMode && username && missionMeta) ILMission.pause(username, undefined, missionMeta.date); });
+  addEventListener("beforeunload", () => { if (!reviewMode && !extraMode() && username && missionMeta) ILMission.pause(username, undefined, missionMeta.date); });
 
   (async () => {
     try {
@@ -618,6 +626,32 @@
         items = dueIds.map(id => byId[id]).filter(Boolean).slice(0, exerciseExperience.sessionSize);
         if (!items.length) { location.href = "inicio.html"; return; }
         $("missionName").textContent = ageExperience.id === "secondary" ? "Review" : "Repaso";
+        index = 0; showExercise(); return;
+      }
+      if (examMode) {
+        // Examen periódico: repaso acumulativo de lo YA practicado, priorizando lo fallado
+        // y lo que vence, intercalando habilidades. Un poco más largo que una misión.
+        const map = window.ILMastery ? ILMastery.all(username) : {};
+        const dueSet = new Set(window.ILMastery ? ILMastery.due(username) : []);
+        const rankOf = id => {
+          const c = map[id] || {};
+          let r = 0;
+          if (c.state === "needs_review" || c.last_result === "incorrect") r -= 100; // fallos primero
+          if (dueSet.has(id)) r -= 40;                                                // luego lo que vence
+          r += Math.min(20, Number(c.evidence) || 0);                                 // menos evidencia → antes
+          return r;
+        };
+        const seenIds = Object.keys(map).filter(id => byId[id]).sort((a, b) => rankOf(a) - rankOf(b));
+        const size = Math.min(seenIds.length, (exerciseExperience.sessionSize || 6) + 2);
+        const picked = []; let lastSkill = null; const rest = seenIds.slice();
+        while (rest.length && picked.length < size) {
+          let i = rest.findIndex(id => byId[id].habilidad !== lastSkill);
+          if (i === -1) i = 0;
+          const id = rest.splice(i, 1)[0]; picked.push(id); lastSkill = byId[id].habilidad;
+        }
+        items = picked.map(id => byId[id]).filter(Boolean);
+        if (!items.length) { location.href = "inicio.html"; return; }
+        $("missionName").textContent = ageExperience.id === "secondary" ? "Exam" : "Examen";
         index = 0; showExercise(); return;
       }
       $("missionName").textContent = (reviewMode ? (ageExperience.id === "secondary" ? "Review · " : "Repaso · ") : "") + missionMeta.unitTitle;

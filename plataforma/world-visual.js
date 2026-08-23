@@ -145,17 +145,35 @@
       +accessory(acc, hairTone)+'</g></svg>';
   }
 
+  // Compañero: gatito sentado COMPLETO (cabeza, orejas, cuerpo, patas y cola), no una cara suelta.
+  function catCompanion(body, head, ear, eye, nose) {
+    return '<svg class="il-companion" viewBox="0 0 100 100" aria-hidden="true">'
+      + '<ellipse cx="52" cy="91" rx="27" ry="5" fill="var(--il-jade-deep)" opacity=".14"/>'
+      + '<path d="M75 82c15-1 22-15 15-30-3 13-13 15-20 13Z" fill="' + body + '"/>'
+      + '<path d="M50 47c15 0 25 13 25 28 0 9-4 14-10 14H35c-6 0-10-5-10-14 0-15 10-28 25-28Z" fill="' + body + '"/>'
+      + '<ellipse cx="40" cy="87" rx="7" ry="4.6" fill="' + head + '"/><ellipse cx="60" cy="87" rx="7" ry="4.6" fill="' + head + '"/>'
+      + '<circle cx="50" cy="37" r="19" fill="' + head + '"/>'
+      + '<path d="M33 29 29 11l17 9ZM67 29 71 11 54 20Z" fill="' + head + '"/>'
+      + '<path d="M34 26l-2-8 8 5ZM66 26l2-8-8 5Z" fill="' + ear + '"/>'
+      + '<circle cx="43" cy="37" r="2.9" fill="' + eye + '"/><circle cx="57" cy="37" r="2.9" fill="' + eye + '"/>'
+      + '<circle cx="44" cy="36" r="1" fill="var(--il-surface)"/><circle cx="58" cy="36" r="1" fill="var(--il-surface)"/>'
+      + '<path d="M50 42l-3.5 3.5h7Z" fill="' + nose + '"/>'
+      + '<path d="M50 45.5v3.5M46.5 50q3.5 3 7 0" fill="none" stroke="' + eye + '" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>'
+      + '<path d="M33 42l-11-3M33 46l-11 1M67 42l11-3M67 46l11 1" stroke="' + eye + '" stroke-width="1.3" stroke-linecap="round" opacity=".45"/>'
+      + '</svg>';
+  }
   function companion(id) {
-    if (id === "pet-brisa") return '<svg class="il-companion" viewBox="0 0 100 100" aria-hidden="true"><path d="M22 40 10 22c14-1 23 5 28 14M78 40l12-18c-14-1-23 5-28 14" fill="var(--il-avatar-hair-brown)"/><circle cx="50" cy="53" r="34" fill="var(--il-warning-soft)"/><path d="M38 50h1M61 50h1" stroke="var(--il-text-primary)" stroke-width="5" stroke-linecap="round"/><ellipse cx="50" cy="63" rx="7" ry="5" fill="var(--il-text-primary)"/></svg>';
-    if (id === "pet-menta") return '<svg class="il-companion" viewBox="0 0 100 100" aria-hidden="true"><ellipse cx="47" cy="58" rx="34" ry="25" fill="var(--il-success)"/><path d="M24 58c5-16 14-23 25-23 12 0 22 8 27 23Z" fill="var(--il-success-soft)"/><circle cx="81" cy="57" r="13" fill="var(--il-jade-tint)"/><path d="M83 53h1" stroke="var(--il-text-primary)" stroke-width="4" stroke-linecap="round"/></svg>';
-    return '<svg class="il-companion" viewBox="0 0 100 100" aria-hidden="true"><path d="m25 39 4-24 18 17M75 39l-4-24-18 17" fill="var(--il-primary)"/><circle cx="50" cy="55" r="34" fill="var(--il-primary-soft)"/><path d="M38 51h1M61 51h1" stroke="var(--il-text-primary)" stroke-width="5" stroke-linecap="round"/><path d="m50 58-5 5h10Z" fill="var(--il-secondary)"/></svg>';
+    if (id === "pet-brisa") return catCompanion("var(--il-secondary)", "color-mix(in srgb,var(--il-secondary) 88%,var(--il-surface))", "var(--il-warning-soft)", "var(--il-primary)", "var(--il-coral-ink)");
+    if (id === "pet-menta") return catCompanion("var(--il-success)", "color-mix(in srgb,var(--il-success) 86%,var(--il-surface))", "var(--il-success-soft)", "var(--il-primary)", "var(--il-warning)");
+    return catCompanion("color-mix(in srgb,var(--il-primary) 34%,var(--il-surface))", "color-mix(in srgb,var(--il-primary) 44%,var(--il-surface))", "var(--il-secondary-soft)", "var(--il-primary)", "var(--il-secondary)");
   }
 
-  function sky(background, secondary) {
-    if (background === "night") return '<path d="M0 0h760v360H0Z" fill="var(--il-primary)"/><circle cx="650" cy="68" r="30" fill="var(--il-warning-soft)"/><g fill="var(--il-surface)" opacity=".75"><circle cx="100" cy="55" r="3"/><circle cx="220" cy="88" r="3"/><circle cx="545" cy="43" r="3"/></g>';
-    if (background === "sunset") return '<path d="M0 0h760v360H0Z" fill="var(--il-secondary-soft)"/><circle cx="632" cy="100" r="50" fill="var(--il-warning-soft)"/>';
-    if (background === "city") return '<path d="M0 0h760v360H0Z" fill="var(--il-surface-secondary)"/><g fill="var(--il-primary-soft)"><rect x="20" y="80" width="90" height="210"/><rect x="120" y="35" width="105" height="255"/><rect x="236" y="110" width="80" height="180"/></g>';
-    return '<path d="M0 0h760v360H0Z" fill="'+(secondary ? 'var(--il-surface-secondary)' : 'var(--il-primary-soft)')+'"/><circle cx="645" cy="70" r="34" fill="var(--il-warning-soft)"/>';
+  function sky(background, secondary, h) {
+    h = h || 360; const rect = 'M0 0h760v' + h + 'H0Z';
+    if (background === "night") return '<path d="' + rect + '" fill="var(--il-primary)"/><circle cx="650" cy="88" r="30" fill="var(--il-warning-soft)"/><g fill="var(--il-surface)" opacity=".75"><circle cx="100" cy="75" r="3"/><circle cx="220" cy="118" r="3"/><circle cx="545" cy="63" r="3"/><circle cx="360" cy="150" r="2.4"/><circle cx="150" cy="180" r="2.4"/></g>';
+    if (background === "sunset") return '<path d="' + rect + '" fill="var(--il-secondary-soft)"/><circle cx="632" cy="130" r="50" fill="var(--il-warning-soft)"/>';
+    if (background === "city") return '<path d="' + rect + '" fill="var(--il-surface-secondary)"/><g fill="var(--il-primary-soft)"><rect x="20" y="120" width="90" height="' + (h - 120) + '"/><rect x="120" y="75" width="105" height="' + (h - 75) + '"/><rect x="236" y="150" width="80" height="' + (h - 150) + '"/></g>';
+    return '<path d="' + rect + '" fill="' + (secondary ? 'var(--il-surface-secondary)' : 'var(--il-primary-soft)') + '"/><circle cx="645" cy="90" r="34" fill="var(--il-warning-soft)"/>';
   }
   // --- Piezas vectoriales reutilizables del jardín (formas limpias, paleta de tokens) ---
   const GREEN_HI = "color-mix(in srgb,var(--il-success) 45%,var(--il-surface))";
@@ -191,19 +209,22 @@
   function garden(settings, progress, options) {
     options = options || {}; const items = set(options.activeItems || settings.activeWorldItems); const level = options.level || 1;
     const bg = settings.worldBackground; const customSky = bg && bg !== "day";
-    const daySky = '<rect width="760" height="360" fill="url(#ilSkyDay)"/>'
-      +'<g transform="translate(650 66)"><g stroke="var(--il-warning)" stroke-width="4" stroke-linecap="round" opacity=".5"><path d="M0-52v-16M0 52v16M52 0h16M-52 0h-16M37 37l11 11M-37-37l-11-11M37-37l11-11M-37 37l-11 11"/></g><circle r="34" fill="var(--il-warning-soft)"/><circle r="24" fill="color-mix(in srgb,var(--il-warning) 22%,var(--il-surface))"/></g>';
+    // Lienzo VERTICAL: el cielo llena la parte alta y el jardín se apoya abajo, para que el
+    // preview (más alto que ancho) no deje bandas en blanco. El suelo va desplazado GY hacia abajo.
+    const SKYH = 720, GY = 360;
+    const sunDay = '<g transform="translate(646 96)"><g stroke="var(--il-warning)" stroke-width="4" stroke-linecap="round" opacity=".5"><path d="M0-52v-16M0 52v16M52 0h16M-52 0h-16M37 37l11 11M-37-37l-11-11M37-37l11-11M-37 37l-11 11"/></g><circle r="34" fill="var(--il-warning-soft)"/><circle r="24" fill="color-mix(in srgb,var(--il-warning) 22%,var(--il-surface))"/></g>';
+    const skyLayer = customSky ? sky(bg, false, SKYH) : '<rect width="760" height="' + SKYH + '" fill="url(#ilSkyDay)"/>' + sunDay;
+    const skyProps = cloud(158, 104, 1.05) + cloud(560, 74, .9) + butterfly(474, 196, "var(--il-secondary)") + butterfly(256, 156, "var(--il-warning)");
     // Colinas con profundidad + camino con piedras (clearing central para el avatar).
     const ground = '<path d="M0 236c150-40 250 16 390-10 130-24 250-8 370 26v108H0Z" fill="color-mix(in srgb,var(--il-success) 16%,var(--il-surface))"/>'
       +'<path d="M0 274c140-30 240 12 360-6 130-18 260-6 400 20v72H0Z" fill="url(#ilGrass)"/>'
       +'<path d="M0 316c120-20 220 8 340-2 130-10 260-4 420 12v34H0Z" fill="color-mix(in srgb,var(--il-success) 30%,var(--il-surface))"/>';
     const path = '<path d="M360 360c-6-40 30-64 26-96-4-30-40-40-38-70" fill="none" stroke="color-mix(in srgb,var(--il-warning-soft) 78%,var(--il-surface))" stroke-width="46" stroke-linecap="round" opacity=".9"/>'
       +'<g fill="color-mix(in srgb,var(--il-warning) 16%,var(--il-surface))"><ellipse cx="360" cy="336" rx="20" ry="8"/><ellipse cx="372" cy="300" rx="18" ry="7"/><ellipse cx="356" cy="266" rx="16" ry="6"/></g>';
-    const scenery = cloud(150, 62, 1.05) + cloud(500, 50, .9) + bush(64, 300, 1.05) + bush(704, 302, 1) + bush(250, 320, .7)
+    const scenery = bush(64, 300, 1.05) + bush(704, 302, 1) + bush(250, 320, .7)
       + tree(level)
       + flower(300, 300, "var(--il-secondary)", 1) + flower(322, 314, "var(--il-warning)", .85) + flower(66, 250, "var(--il-focus)", .8)
-      + tuft(196, 320) + tuft(548, 322) + tuft(690, 264)
-      + butterfly(470, 150, "var(--il-secondary)") + butterfly(250, 120, "var(--il-warning)");
+      + tuft(196, 320) + tuft(548, 322) + tuft(690, 264);
     // 8-9 "Explorer Garden": mismos componentes base + props de exploración/aprendizaje
     // (pizarra ABC, pila de libros, mochila) para diferenciarlo del jardín más sencillo de 5-7.
     const explorer = options.band === "p34" ? (
@@ -220,10 +241,11 @@
         +'<rect x="9" y="12" width="15" height="14" rx="3" fill="var(--il-surface)" opacity=".9"/><path d="M17 2v9" stroke="var(--il-coral-ink)" stroke-width="2.4"/>'
         +'<path d="M6 30l-3 8M28 30l3 8" stroke="var(--il-coral-ink)" stroke-width="3" stroke-linecap="round"/></g>'
     ) : "";
-    return '<svg class="il-world-scene" viewBox="0 0 760 360" role="img" aria-label="Tu jardín de aprendizaje">'
+    return '<svg class="il-world-scene" viewBox="0 0 760 ' + SKYH + '" preserveAspectRatio="xMidYMax slice" role="img" aria-label="Tu jardín de aprendizaje">'
       +'<defs><linearGradient id="ilSkyDay" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="color-mix(in srgb,var(--il-focus) 14%,var(--il-surface))"/><stop offset="1" stop-color="color-mix(in srgb,var(--il-focus) 4%,var(--il-surface))"/></linearGradient>'
       +'<linearGradient id="ilGrass" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--il-success-soft)"/><stop offset="1" stop-color="color-mix(in srgb,var(--il-success) 22%,var(--il-surface))"/></linearGradient></defs>'
-      +(customSky ? sky(bg, false) : daySky) + ground + path + scenery + explorer
+      + skyLayer + skyProps
+      +'<g transform="translate(0 ' + GY + ')">' + ground + path + scenery + explorer
       +(items.has("world-flowers")?flower(250,296,"var(--il-secondary)",1)+flower(276,306,"var(--il-warning)",.9)+flower(228,308,"var(--il-focus)",.85)+flower(300,290,"var(--il-secondary)",.8):'')
       +(items.has("world-bench")?'<g transform="translate(556 244)">'+groundShadow(40,74,54,9)+'<path d="M8 30v40M72 30v40" stroke="var(--il-coral-ink)" stroke-width="7" stroke-linecap="round"/><rect x="-2" y="22" width="84" height="11" rx="5" fill="'+BROWN+'"/><rect x="-2" y="0" width="84" height="8" rx="4" fill="'+BROWN+'"/><path d="M6 6v18M74 6v18" stroke="'+BROWN+'" stroke-width="5" stroke-linecap="round"/></g>':'')
       +(items.has("world-toy-plane")?'<g transform="translate(520 96)"><g class="world-flit"><path d="m0 0 52-16-16 34-12-14Z" fill="var(--il-secondary)"/><path d="m52-16-28 20 8 14Z" fill="var(--il-coral-ink)"/><path d="M-40 8q20-10 40-8" fill="none" stroke="var(--il-surface)" stroke-width="3" stroke-linecap="round" stroke-dasharray="2 8" opacity=".8"/></g></g>':'')
@@ -232,8 +254,8 @@
       +(items.has("world-bicycle")?'<g transform="translate(470 262)" fill="none" stroke="var(--il-primary)" stroke-width="6" stroke-linecap="round"><circle cx="22" cy="46" r="19"/><circle cx="92" cy="46" r="19"/><path d="m22 46 26-40 21 40M48 6h18M40 46h40l8-24"/></g>':'')
       +(items.has("world-lanterns")?'<path d="M118 150q260-58 526 6" fill="none" stroke="var(--il-primary)" stroke-width="2.5" opacity=".5"/><g fill="var(--il-warning)" stroke="var(--il-warning-ink)" stroke-width="1.5"><circle cx="230" cy="150" r="8"/><circle cx="360" cy="140" r="8"/><circle cx="500" cy="145" r="8"/><circle cx="620" cy="158" r="8"/></g>':'')
       +(items.has("world-greenhouse")?'<g transform="translate(628 150)">'+groundShadow(52,116,60,10)+'<path d="m0 66 52-52 52 52v52H0Z" fill="color-mix(in srgb,var(--il-focus) 8%,var(--il-surface))" stroke="var(--il-success)" stroke-width="5" stroke-linejoin="round"/><path d="M52 14v104M0 66h104M26 40l26 26M78 40 52 66" stroke="var(--il-success)" stroke-width="3" opacity=".55"/></g>':'')
-      +(settings.worldCompanion && settings.worldCompanion !== "none" ? '<ellipse cx="266" cy="342" rx="34" ry="8" fill="var(--il-jade-deep)" opacity=".12"/>'+companion(settings.worldCompanion).replace('<svg class="il-companion"', '<svg class="world-pet" x="228" y="276" width="78" height="78"') : '')
-      +'</svg>';
+      +(settings.worldCompanion && settings.worldCompanion !== "none" ? '<ellipse cx="266" cy="342" rx="30" ry="7" fill="var(--il-jade-deep)" opacity=".14"/>'+companion(settings.worldCompanion).replace('<svg class="il-companion"', '<svg class="world-pet" x="222" y="256" width="90" height="90"') : '')
+      +'</g></svg>';
   }
   function personalSpace(settings, progress, options) {
     options = options || {}; const items = set(options.activeItems || settings.activeWorldItems);
@@ -248,9 +270,11 @@
     const screen = "color-mix(in srgb,var(--il-focus) 24%,var(--il-surface))";
     const shelfWood = "var(--il-avatar-hair-brown)";
     const shadow = c => '<ellipse cx="'+c[0]+'" cy="'+c[1]+'" rx="'+c[2]+'" ry="'+c[3]+'" fill="var(--il-primary)" opacity=".08"/>';
-    // Estructura base (siempre): pared, suelo, rodapié y alfombra bajo el avatar.
-    const room = '<rect width="760" height="360" fill="'+wall+'"/><path d="M0 270h760v90H0Z" fill="'+floor+'"/><path d="M0 270h760" stroke="color-mix(in srgb,var(--il-primary) 12%,var(--il-surface))" stroke-width="3"/>'
-      +'<ellipse cx="340" cy="332" rx="168" ry="26" fill="'+rug+'"/>';
+    // Lienzo VERTICAL (igual que el jardín): pared alta + suelo abajo, sin bandas en blanco.
+    const SKYH = 720, GY = 360;
+    // Estructura base (siempre): pared, suelo, rodapié y alfombra bajo el avatar (abajo del todo).
+    const room = '<rect width="760" height="' + SKYH + '" fill="' + wall + '"/><path d="M0 630h760v90H0Z" fill="' + floor + '"/><path d="M0 630h760" stroke="color-mix(in srgb,var(--il-primary) 12%,var(--il-surface))" stroke-width="3"/>'
+      +'<ellipse cx="340" cy="692" rx="168" ry="26" fill="' + rug + '"/>';
     // Nivel 1 · Escritorio (con cajonera y patas).
     const desk = '<g transform="translate(430 250)">'+shadow([150,92,156,15])
       +'<rect x="208" y="16" width="84" height="94" rx="4" fill="'+NAVY_DEEP+'"/><path d="M222 44h56M222 74h56" stroke="'+NAVY+'" stroke-width="3"/><g fill="'+accent+'"><circle cx="250" cy="30" r="3.2"/><circle cx="250" cy="59" r="3.2"/><circle cx="250" cy="90" r="3.2"/></g>'
@@ -273,12 +297,20 @@
     // Nivel 5 · Lámpara de escritorio + trofeo en la estantería.
     const lamp = level >= 5 ? '<g transform="translate(648 176)" fill="none" stroke="'+NAVY+'" stroke-width="5" stroke-linecap="round"><path d="M14 74V44l22-18"/><ellipse cx="18" cy="76" rx="14" ry="4" fill="'+NAVY_DEEP+'" stroke="none"/></g><path d="M666 152l20 10-12 16-20-10Z" fill="'+accent+'"/>' : '';
     const trophy = level >= 5 ? '<g transform="translate(78 96)"><path d="M4 2h20v9c0 8-5 12-10 12S4 19 4 11Z" fill="var(--il-warning)"/><path d="M4 4C-4 4-4 14 4 14M24 4c8 0 8 10 0 10" fill="none" stroke="var(--il-warning)" stroke-width="3"/><path d="M14 23v6M8 30h12" stroke="var(--il-warning-ink)" stroke-width="3" stroke-linecap="round"/></g>' : '';
-    return '<svg class="il-world-scene is-secondary" viewBox="0 0 760 360" role="img" aria-label="'+(isEso?'Your study space':'Tu base de aprendizaje')+'">'
-      +room+shelf+board+desk+monitor+lamp+trophy
+    // Decoración de la pared alta (ventana con vistas + cuadro), para que la zona superior no quede vacía.
+    const windowView = isEso
+      ? '<rect width="150" height="112" rx="4" fill="' + screen + '"/><g fill="var(--il-surface)" opacity=".7"><circle cx="120" cy="24" r="4"/><circle cx="42" cy="20" r="3"/><circle cx="82" cy="42" r="3"/></g>'
+      : '<rect width="150" height="112" rx="4" fill="color-mix(in srgb,var(--il-focus) 22%,var(--il-surface))"/><circle cx="112" cy="30" r="15" fill="var(--il-warning-soft)"/><path d="M0 112c26-30 54-30 80 0M54 112c28-26 62-26 70 0" fill="color-mix(in srgb,var(--il-success) 34%,var(--il-surface))"/>';
+    const wallDecor = '<g transform="translate(428 52)">' + shadow([78, 62, 92, 11])
+      + '<rect x="-6" y="-6" width="162" height="124" rx="8" fill="' + shelfWood + '"/>' + windowView
+      + '<path d="M75 0v112M0 56h150" stroke="' + shelfWood + '" stroke-width="5"/></g>'
+      + '<g transform="translate(150 66)"><rect x="-5" y="-5" width="92" height="70" rx="6" fill="' + shelfWood + '"/><rect width="82" height="60" rx="3" fill="var(--il-surface)"/><path d="m10 50 19-21 14 12 11-15 18 24" fill="none" stroke="' + accent + '" stroke-width="4" stroke-linecap="round"/><circle cx="25" cy="23" r="5" fill="var(--il-warning)"/></g>';
+    return '<svg class="il-world-scene is-secondary" viewBox="0 0 760 ' + SKYH + '" preserveAspectRatio="xMidYMax slice" role="img" aria-label="'+(isEso?'Your study space':'Tu base de aprendizaje')+'">'
+      +room+wallDecor+'<g transform="translate(0 ' + GY + ')">'+shelf+board+desk+monitor+lamp+trophy
       +(items.has("world-plant")?'<g transform="translate(392 206)">'+shadow([16,66,26,7])+'<path d="M16 64V24M16 40C-2 34-3 16-2 8c18 4 24 15 18 32Zm0 4c18-6 22-24 21-36-17 3-24 15-21 36Z" fill="var(--il-success)"/><path d="M2 64h30l-5 32H7Z" fill="'+accent+'"/></g>':'')
       +(items.has("world-travel-board")?'<g transform="translate(196 54)"><rect width="120" height="88" rx="8" fill="var(--il-surface)" stroke="'+shelfWood+'" stroke-width="5"/><path d="m14 70 28-30 19 17 17-21 24 33" fill="none" stroke="var(--il-focus)" stroke-width="6" stroke-linecap="round"/><circle cx="40" cy="34" r="6" fill="var(--il-secondary)"/></g>':'')
       +(items.has("world-music-poster")?'<g transform="translate(648 54)"><rect width="92" height="104" rx="8" fill="var(--il-secondary-soft)"/><path d="M54 26v42c0 11-19 15-24 5-4-10 11-17 24-11M54 34l22-6v31" fill="none" stroke="var(--il-secondary)" stroke-width="6" stroke-linecap="round"/></g>':'')
-      +(items.has("world-tech-desk")?'<g transform="translate(320 214)"><rect width="70" height="44" rx="6" fill="'+NAVY_DEEP+'"/><rect x="6" y="6" width="58" height="28" rx="2" fill="'+screen+'"/><path d="M35 44v10M22 54h26" stroke="'+NAVY+'" stroke-width="5" stroke-linecap="round"/></g>':'')+'</svg>';
+      +(items.has("world-tech-desk")?'<g transform="translate(320 214)"><rect width="70" height="44" rx="6" fill="'+NAVY_DEEP+'"/><rect x="6" y="6" width="58" height="28" rx="2" fill="'+screen+'"/><path d="M35 44v10M22 54h26" stroke="'+NAVY+'" stroke-width="5" stroke-linecap="round"/></g>':'')+'</g></svg>';
   }
   function scene(settings, progress, band, options) { return band === "p12" || band === "p34" ? garden(settings, progress, Object.assign({}, options, { band })) : personalSpace(settings, progress, Object.assign({}, options, { band })); }
 
@@ -298,8 +330,8 @@
       tech:'<rect x="9" y="16" width="82" height="56" rx="7" fill="var(--il-primary-soft)" stroke="var(--il-primary)" stroke-width="6"/><path d="M50 72v14M29 87h42" stroke="var(--il-primary)" stroke-width="6" stroke-linecap="round"/>',
       'bg-day':'<circle cx="50" cy="50" r="31" fill="var(--il-warning-soft)"/><g stroke="var(--il-warning)" stroke-width="4"><path d="M50 7v12M50 81v12M7 50h12M81 50h12"/></g>',
       'bg-sunset':'<circle cx="50" cy="47" r="29" fill="var(--il-secondary)"/><path d="M12 72h76" stroke="var(--il-primary)" stroke-width="7"/>',
-      'bg-city':'<g fill="var(--il-primary)"><rect x="12" y="42" width="20" height="45"/><rect x="39" y="20" width="25" height="67"/><rect x="70" y="50" width="18" height="37"/></g>',
-      'bg-night':'<path d="M31 14a36 36 0 1 0 53 48 31 31 0 0 1-53-48Z" fill="var(--il-primary)"/><circle cx="78" cy="22" r="5" fill="var(--il-warning)"/>'
+      'bg-city':'<circle cx="76" cy="24" r="9" fill="var(--il-warning-soft)"/><g fill="var(--il-primary)"><rect x="12" y="44" width="20" height="44" rx="2"/><rect x="38" y="24" width="24" height="64" rx="2"/><rect x="68" y="52" width="20" height="36" rx="2"/></g><g fill="var(--il-warning-soft)"><rect x="17" y="50" width="4" height="4" rx="1"/><rect x="24" y="50" width="4" height="4" rx="1"/><rect x="17" y="60" width="4" height="4" rx="1"/><rect x="44" y="32" width="4" height="4" rx="1"/><rect x="52" y="32" width="4" height="4" rx="1"/><rect x="44" y="44" width="4" height="4" rx="1"/><rect x="52" y="44" width="4" height="4" rx="1"/><rect x="74" y="60" width="4" height="4" rx="1"/></g>',
+      'bg-night':'<path d="M31 14a36 36 0 1 0 53 48 31 31 0 0 1-53-48Z" fill="var(--il-primary)"/><g fill="var(--il-warning)"><circle cx="78" cy="20" r="4"/><circle cx="30" cy="30" r="2"/><circle cx="52" cy="18" r="1.7"/><circle cx="66" cy="40" r="1.7"/></g>'
     };
     return '<svg viewBox="0 0 100 100" aria-hidden="true">'+(pieces[visual] || pieces.plant)+'</svg>';
   }

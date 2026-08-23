@@ -13,7 +13,7 @@
   const SKILLS = [
     { id: "vocabulary", label: "Vocabulary", icon: "books" },
     { id: "listening", label: "Listening", icon: "ear" },
-    { id: "grammar", label: "Grammar", icon: "pencil" },
+    { id: "grammar", label: "Grammar", icon: "grammar" },
     { id: "reading", label: "Reading", icon: "book" },
     { id: "writing", label: "Writing", icon: "pencil" },
     { id: "speaking", label: "Speaking", icon: "chat" }

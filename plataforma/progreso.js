@@ -158,20 +158,38 @@
     A.FAMILIES.forEach(fam => {
       const inFam = list.filter(i => i.family === fam);
       if (!inFam.length) return;
+      const prog = inFam.map(item => ({ item: item, p: A.progressOf(item.id, ctx) }));
+      const doneInFam = prog.filter(x => x.p.done).length;
+
       const section = document.createElement("div"); section.className = "ach-family";
-      const heading = document.createElement("p"); heading.className = "ach-family__title"; heading.textContent = ACH_FAMILY_LABEL[fam] || fam; section.appendChild(heading);
+      const head = document.createElement("div"); head.className = "ach-family__head";
+      const heading = document.createElement("p"); heading.className = "ach-family__title"; heading.textContent = ACH_FAMILY_LABEL[fam] || fam;
+      const rule = document.createElement("span"); rule.className = "ach-family__rule"; rule.setAttribute("aria-hidden", "true");
+      const tally = document.createElement("span"); tally.className = "ach-family__tally"; tally.textContent = doneInFam + "/" + inFam.length;
+      head.append(heading, rule, tally); section.appendChild(head);
+
       const row = document.createElement("div"); row.className = "ach-family__grid";
-      inFam.forEach(item => {
-        const p = A.progressOf(item.id, ctx); const done = p.done; if (done) { unlocked++; doneNow.push(item.id); }
-        const card = document.createElement("div"); card.className = "stamp-card ach-card rarity-" + item.rarity + (done ? " is-unlocked" : " is-locked");
-        const top = document.createElement("span"); top.className = "stamp-card__top";
-        const visual = document.createElement("span"); visual.className = "stamp-card__visual"; visual.innerHTML = window.ILVisual ? ILVisual.stamp(item.visual, { locked: !done }) : icon("stamp");
-        const state = document.createElement("span"); state.className = "stamp-card__state"; state.innerHTML = icon(done ? "check" : "lock"); state.appendChild(document.createTextNode(done ? " Conseguido" : " En progreso")); top.append(visual, state);
-        const title = document.createElement("h3"); title.textContent = A.displayName(item, band);
-        const desc = document.createElement("p"); desc.textContent = item.description;
-        const bar = document.createElement("span"); bar.className = "stamp-card__progress"; bar.style.setProperty("--il-stamp-progress", (p.percent || 0) + "%"); bar.appendChild(document.createElement("span"));
-        const count = document.createElement("span"); count.className = "stamp-card__count"; count.textContent = done ? "Conseguido" : (item.momentary ? "Especial" : (p.current + " / " + p.target));
-        card.append(top, title, desc, bar, count); row.appendChild(card);
+      prog.forEach(({ item, p }) => {
+        const done = p.done; if (done) { unlocked++; doneNow.push(item.id); }
+        const state = done ? "earned" : ((p.current > 0 && !item.momentary) ? "progress" : "locked");
+        const card = document.createElement("div"); card.className = "ach-card is-" + state;
+        card.title = item.description;
+
+        const visual = document.createElement("span"); visual.className = "ach-card__visual";
+        visual.innerHTML = window.ILVisual ? ILVisual.stamp(item.visual, { state: state }) : icon("stamp");
+
+        const status = document.createElement("span"); status.className = "ach-card__status";
+        if (done) status.innerHTML = icon("check");
+        status.appendChild(document.createTextNode(done ? " Conseguido" : state === "progress" ? "En progreso" : "Bloqueado"));
+
+        const title = document.createElement("h3"); title.className = "ach-card__title"; title.textContent = A.displayName(item, band);
+
+        const bar = document.createElement("span"); bar.className = "ach-card__bar"; bar.style.setProperty("--il-stamp-progress", (p.percent || 0) + "%"); bar.appendChild(document.createElement("span"));
+
+        const value = document.createElement("span"); value.className = "ach-card__value";
+        value.textContent = done ? "Conseguido" : (item.momentary ? "Sello especial" : (p.current + " / " + p.target));
+
+        card.append(visual, status, title, bar, value); row.appendChild(card);
       });
       section.appendChild(row); grid.appendChild(section);
     });

@@ -14,17 +14,52 @@
 <link rel="stylesheet" href="etapa.css?v=20260809d">
 <link rel="stylesheet" href="shell.css?v=20260816c">
 <link rel="stylesheet" href="progreso.css?v=20260818c">
-<link rel="stylesheet" href="il-visual.css?v=20260818b">
-<link rel="stylesheet" href="age-mode.css?v=20260810j">
+<link rel="stylesheet" href="il-visual.css?v=20260821a">
+<link rel="stylesheet" href="age-mode.css?v=20260819c">
 <style>
+  /* ---------- Colección de sellos (Progreso → pasaporte) ---------- */
   .stamp-grid.is-achievements{display:block}
-  .ach-family{margin-bottom:var(--il-space-6)}
+  .ach-family{margin-bottom:var(--il-space-7)}
   .ach-family:last-child{margin-bottom:0}
-  .ach-family__title{margin:0 0 var(--il-space-3);font-family:var(--il-font-display);font-size:var(--il-fs-xs);font-weight:var(--il-weight-extrabold);text-transform:uppercase;letter-spacing:var(--il-tracking-label);color:var(--il-text-secondary)}
+  .ach-family__head{display:flex;align-items:center;gap:var(--il-space-3);margin:0 0 var(--il-space-4)}
+  .ach-family__title{margin:0;font-family:var(--il-font-display);font-size:var(--il-fs-xs);font-weight:var(--il-weight-extrabold);text-transform:uppercase;letter-spacing:var(--il-tracking-label);color:var(--il-text-secondary)}
+  .ach-family__rule{flex:1;height:1px;background:var(--il-border)}
+  .ach-family__tally{font-size:var(--il-fs-xs);font-weight:var(--il-weight-bold);color:var(--il-muted);white-space:nowrap}
   .ach-family__grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(158px,1fr));gap:var(--il-space-3)}
-  .ach-card.rarity-rare{border-color:color-mix(in srgb,var(--il-secondary) 42%,var(--il-border))}
-  .ach-card.rarity-epic{border-color:color-mix(in srgb,var(--il-warning) 50%,var(--il-border))}
-  .ach-card .stamp-card__count{white-space:nowrap}
+
+  /* Tarjeta de logro · badge / estado / nombre / barra / valor */
+  .ach-card{position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;gap:var(--il-space-2);min-height:210px;padding:var(--il-space-5) var(--il-space-4) var(--il-space-4);border:1px solid var(--il-border);border-radius:var(--il-radius-lg);background:var(--il-surface);transition:transform var(--il-transition-fast),border-color var(--il-transition-fast),box-shadow var(--il-transition-fast)}
+  .ach-card:hover{transform:translateY(-2px);border-color:var(--il-border-strong);box-shadow:var(--il-shadow-md)}
+  .ach-card.is-progress{background:var(--il-surface-secondary)}
+  .ach-card.is-earned{background:var(--il-success-soft);border-color:color-mix(in srgb,var(--il-success) 26%,var(--il-border))}
+  .ach-card__visual{width:var(--ach-badge,64px);height:var(--ach-badge,64px);margin-bottom:var(--il-space-1)}
+  .ach-card__status{display:inline-flex;align-items:center;gap:4px;font-size:var(--il-fs-xs);font-weight:var(--il-weight-bold);letter-spacing:var(--il-tracking-label);text-transform:uppercase;color:var(--il-muted)}
+  .ach-card__status svg{width:13px;height:13px}
+  .ach-card.is-earned .ach-card__status{color:var(--il-success)}
+  .ach-card__title{margin:0;min-height:2.5em;display:flex;align-items:center;font-family:var(--il-font-display);font-size:var(--il-fs-lg);font-weight:var(--il-weight-bold);line-height:1.2;color:var(--il-text-primary)}
+  .ach-card__bar{width:100%;height:6px;margin-top:auto;overflow:hidden;border-radius:var(--il-radius-pill);background:var(--il-border)}
+  .ach-card__bar span{display:block;width:var(--il-stamp-progress,0%);height:100%;border-radius:inherit;background:var(--il-muted);transition:width var(--il-duration-slow,.5s) var(--il-ease,ease-out)}
+  .ach-card.is-progress .ach-card__bar span{background:var(--il-focus)}
+  .ach-card.is-earned .ach-card__bar span{background:var(--il-success)}
+  .ach-card__value{font-size:var(--il-fs-sm);font-weight:var(--il-weight-semibold);color:var(--il-muted);white-space:nowrap}
+  .ach-card.is-earned .ach-card__value{color:var(--il-success)}
+
+  /* Contador-resumen + guiño de "pasaporte" */
+  .stamps-eyebrow{display:inline-flex;align-items:center;gap:6px}
+  .stamps-eyebrow svg{width:14px;height:14px;opacity:.75}
+  .stamps-count{display:inline-flex;align-items:center;gap:6px}
+  .stamps-count svg{width:15px;height:15px}
+
+  /* Adaptación por edad: misma colección, densidad distinta */
+  body[data-age-mode="primary-young"] .ach-card{--ach-badge:78px;min-height:224px;gap:var(--il-space-3)}
+  body[data-age-mode="primary-young"] .ach-card__title{font-size:var(--il-fs-xl)}
+  body[data-age-mode="primary-young"] .ach-family__grid{grid-template-columns:repeat(auto-fill,minmax(168px,1fr))}
+  body[data-age-mode="primary-upper"] .ach-card{--ach-badge:60px;min-height:198px}
+  body[data-age-mode="secondary"] .ach-card{--ach-badge:58px;min-height:190px;padding-top:var(--il-space-4)}
+  body[data-age-mode="secondary"] .ach-card:hover{box-shadow:var(--il-shadow-sm)}
+  body[data-age-mode="secondary"] .ach-card .il-stamp{filter:none}
+
+  @media (prefers-reduced-motion:reduce){.ach-card,.ach-card__bar span{transition:none}}
 </style>
 </head>
 <body>
@@ -139,8 +174,8 @@
 
         <section class="progress-panel" id="panel-stamps" role="tabpanel" tabindex="0" aria-labelledby="tab-stamps" hidden>
           <div class="stamps-intro">
-            <div><p class="ui-label">Tu pasaporte</p><h2>Sellos que reconocen tu avance</h2><p>Cada sello reconoce algo que has conseguido.</p></div>
-            <strong><span id="stampsUnlocked">0</span> conseguidos</strong>
+            <div><p class="ui-label stamps-eyebrow"><span data-il-icon="stamp" aria-hidden="true"></span> Tu pasaporte</p><h2>Sellos que reconocen tu avance</h2><p>Cada sello reconoce algo que has conseguido.</p></div>
+            <strong class="stamps-count"><span data-il-icon="check" aria-hidden="true"></span><span id="stampsUnlocked">0</span> conseguidos</strong>
           </div>
           <div class="stamp-grid" id="stampGrid"></div>
         </section>
@@ -161,18 +196,18 @@
   <p class="dialog-progress-copy" id="stampDialogProgressCopy"></p>
 </dialog>
 
-<script src="layout.js?v=20260816c"></script>
-<script src="il-visual.js?v=20260818b"></script>
+<script src="layout.js?v=20260819a"></script>
+<script src="il-visual.js?v=20260821a"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-config.js?v=20260809d"></script>
 <script src="auth-utils.js?v=20260809d"></script>
-<script src="etapa.js?v=20260810d"></script>
-<script src="auth.js?v=20260818a"></script>
-<script src="mission-state.js?v=20260813a"></script>
-<script src="profile-settings.js?v=20260812a"></script>
-<script src="progress-data.js?v=20260810b"></script>
+<script src="etapa.js?v=20260821d"></script>
+<script src="auth.js?v=20260819a"></script>
+<script src="mission-state.js?v=20260821b"></script>
+<script src="profile-settings.js?v=20260819a"></script>
+<script src="progress-data.js?v=20260819a"></script>
 <script src="motor/achievements.js?v=20260816a"></script>
 <script src="achievement-store.js?v=20260816a"></script>
-<script src="progreso.js?v=20260818b"></script>
+<script src="progreso.js?v=20260821a"></script>
 </body>
 </html>

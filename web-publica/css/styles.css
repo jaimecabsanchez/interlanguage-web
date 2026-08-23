@@ -743,6 +743,11 @@ picture{display:contents;}
   .submit-btn:disabled{opacity:.55; cursor:not-allowed; transform:none;}
   .form-msg{display:none; grid-column:1/-1; background:#e8f5f1; border:1.5px solid var(--teal-dark); color:var(--teal-dark); padding:16px 18px; border-radius:14px; font-weight:700; font-size:.92rem;}
   .form-msg.show{display:block;}
+  /* Mensaje de error de envío (cuando el backend falla) */
+  .form-error{grid-column:1/-1; background:#fdecea; border:1.5px solid #e0685f; color:#a3271b; padding:14px 16px; border-radius:14px; font-weight:600; font-size:.9rem;}
+  .form-error[hidden]{display:none;}
+  /* Campo trampa anti-bots: fuera de pantalla, sin ocupar hueco ni ser accesible */
+  .hp-field{position:absolute !important; left:-9999px !important; width:1px; height:1px; opacity:0; pointer-events:none;}
 
   /* ---------- FOOTER ---------- */
   footer{background:var(--navy); color:rgba(255,255,255,.62); padding:54px 24px 26px; font-size:.86rem;}
@@ -759,3 +764,35 @@ picture{display:contents;}
   .footer-social a{width:36px; height:36px; border-radius:50%; background:rgba(255,255,255,.08); display:flex; align-items:center; justify-content:center; font-size:.76rem; font-weight:700;}
   .footer-bottom{max-width:1200px; margin:44px auto 0; padding-top:24px; border-top:1px solid rgba(255,255,255,.1); display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px; font-size:.78rem;}
   .footer-bottom a{text-decoration:none; color:rgba(255,255,255,.55); margin-left:16px;}
+
+  /* ---------- MEJORAS: accesibilidad, cookies, WhatsApp, carrusel ---------- */
+  .skip-link{position:absolute; left:12px; top:-60px; z-index:2000; background:var(--navy); color:#fff; padding:10px 16px; border-radius:0 0 10px 10px; font-weight:700; text-decoration:none; transition:top .18s ease;}
+  .skip-link:focus{top:0;}
+  #main{outline:none;}
+  .nav--wide{max-width:1200px; padding-left:40px; padding-right:40px;}
+
+  /* botón pausa/reproducción del carrusel del hero (WCAG 2.2.2) */
+  .hero-slide-play{position:absolute; left:14px; bottom:14px; z-index:4; width:38px; height:38px; border:none; border-radius:50%; background:rgba(22,41,74,.55); color:#fff; display:flex; align-items:center; justify-content:center; cursor:pointer; -webkit-backdrop-filter:blur(4px); backdrop-filter:blur(4px); transition:background .18s ease;}
+  .hero-slide-play:hover{background:rgba(22,41,74,.85);}
+  .hero-slide-play svg{width:18px; height:18px;}
+  .hero-slide-play:focus-visible{outline:3px solid #fff; outline-offset:2px;}
+
+  /* botón flotante de WhatsApp (oculto hasta configurar el número) */
+  .whatsapp-float{position:fixed; right:20px; bottom:20px; z-index:1500; width:58px; height:58px; border-radius:50%; background:#25D366; color:#fff; display:flex; align-items:center; justify-content:center; box-shadow:0 6px 20px rgba(0,0,0,.25); text-decoration:none; transition:transform .18s ease;}
+  .whatsapp-float:hover{transform:scale(1.06);}
+  .whatsapp-float[hidden]{display:none;}
+  @media (max-width:600px){ .whatsapp-float{width:52px; height:52px; right:16px; bottom:16px;} }
+
+  /* aviso de cookies (consentimiento previo a la analítica) */
+  .cookie-banner{position:fixed; left:16px; right:16px; bottom:16px; z-index:1800; max-width:920px; margin:0 auto; background:#fff; border:1px solid #e4e4e4; border-radius:16px; box-shadow:0 10px 40px rgba(0,0,0,.18); padding:18px 20px; display:flex; align-items:center; gap:18px; flex-wrap:wrap;}
+  .cookie-banner[hidden]{display:none;}
+  .cookie-text{margin:0; flex:1; min-width:220px; font-size:.9rem; color:var(--navy); line-height:1.5;}
+  .cookie-text a{color:var(--coral-dark); font-weight:700;}
+  .cookie-actions{display:flex; gap:10px; flex-shrink:0;}
+  .cookie-btn{border:none; border-radius:999px; padding:11px 22px; font-weight:700; font-size:.9rem; cursor:pointer; font-family:inherit;}
+  .cookie-reject{background:#eef0f2; color:var(--navy);}
+  .cookie-reject:hover{background:#e2e5e8;}
+  .cookie-accept{background:var(--coral); color:#fff;}
+  .cookie-accept:hover{background:var(--coral-dark);}
+  .cookie-btn:focus-visible{outline:3px solid var(--navy); outline-offset:2px;}
+  @media (max-width:600px){ .cookie-banner{padding:16px; gap:12px;} .cookie-actions{width:100%;} .cookie-btn{flex:1;} }

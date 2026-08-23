@@ -7,38 +7,39 @@
 .il-nemo{display:block;width:100%;height:100%}
 .il-nemo,.il-stamp{-webkit-tap-highlight-color:transparent}
 
-/* ---------- Sellos ---------- */
-.il-stamp{display:block;width:100%;height:100%}
-/* Sello = medalla coleccionable: aro dorado con perlado, disco crema, brillo. */
-.il-stamp__rim{fill:color-mix(in srgb,var(--il-warning) 46%,var(--il-surface))}
-.il-stamp__beads circle{fill:color-mix(in srgb,var(--il-warning) 74%,var(--il-surface))}
-.il-stamp__disc{fill:var(--il-warning-soft)}
-.il-stamp__edge{stroke:color-mix(in srgb,var(--il-warning) 58%,var(--il-surface))}
-.il-stamp__shine{fill:var(--il-surface);opacity:.5}
-/* Color por familia (el motivo sigue navy sobre disco claro). gold = base. */
-.il-stamp--blue .il-stamp__rim{fill:color-mix(in srgb,var(--il-focus) 40%,var(--il-surface))}
-.il-stamp--blue .il-stamp__beads circle{fill:color-mix(in srgb,var(--il-focus) 60%,var(--il-surface))}
-.il-stamp--blue .il-stamp__disc{fill:color-mix(in srgb,var(--il-focus) 12%,var(--il-surface))}
-.il-stamp--blue .il-stamp__edge{stroke:color-mix(in srgb,var(--il-focus) 48%,var(--il-surface))}
-.il-stamp--coral .il-stamp__rim{fill:color-mix(in srgb,var(--il-secondary) 42%,var(--il-surface))}
-.il-stamp--coral .il-stamp__beads circle{fill:color-mix(in srgb,var(--il-secondary) 62%,var(--il-surface))}
-.il-stamp--coral .il-stamp__disc{fill:var(--il-secondary-soft)}
-.il-stamp--coral .il-stamp__edge{stroke:color-mix(in srgb,var(--il-secondary) 52%,var(--il-surface))}
-.il-stamp--navy .il-stamp__rim{fill:color-mix(in srgb,var(--il-primary) 42%,var(--il-surface))}
-.il-stamp--navy .il-stamp__beads circle{fill:color-mix(in srgb,var(--il-primary) 60%,var(--il-surface))}
-.il-stamp--navy .il-stamp__disc{fill:var(--il-primary-soft)}
-.il-stamp--navy .il-stamp__edge{stroke:color-mix(in srgb,var(--il-primary) 50%,var(--il-surface))}
-.il-stamp--green .il-stamp__rim{fill:color-mix(in srgb,var(--il-success) 42%,var(--il-surface))}
-.il-stamp--green .il-stamp__beads circle{fill:color-mix(in srgb,var(--il-success) 62%,var(--il-surface))}
-.il-stamp--green .il-stamp__disc{fill:var(--il-success-soft)}
-.il-stamp--green .il-stamp__edge{stroke:color-mix(in srgb,var(--il-success) 50%,var(--il-surface))}
-.il-stamp--locked .il-stamp__rim{fill:var(--il-surface-secondary)}
-.il-stamp--locked .il-stamp__beads circle{fill:var(--il-border-strong)}
-.il-stamp--locked .il-stamp__disc{fill:var(--il-surface-secondary)}
-.il-stamp--locked .il-stamp__edge{stroke:var(--il-border-strong)}
-.il-stamp--locked .il-stamp__shine{opacity:.25}
-.il-stamp--locked .il-stamp__motif *{fill:var(--il-text-tertiary,var(--il-text-secondary));stroke:var(--il-text-tertiary,var(--il-text-secondary));opacity:.9}
-.il-stamp--locked .il-stamp__motif{opacity:.45}
+/* ---------- Sellos · colección unificada ----------
+   Marco idéntico para todos: aro exterior + aro de puntos + disco + brillo,
+   con una sombra sutil que da profundidad. Solo cambian símbolo, color de
+   familia (al estar conseguido) y estado. --fam = color de familia. */
+.il-stamp{display:block;width:100%;height:100%;overflow:visible;filter:drop-shadow(0 2px 3px color-mix(in srgb,var(--il-primary) 16%,transparent))}
+.il-stamp--blue{--fam:var(--il-focus)}
+.il-stamp--coral{--fam:var(--il-secondary)}
+.il-stamp--navy{--fam:var(--il-primary)}
+.il-stamp--green{--fam:var(--il-success)}
+.il-stamp--gold{--fam:var(--il-warning)}
+
+/* Base neutra (sirve de estado bloqueado). */
+.il-stamp__rim{fill:var(--il-surface-secondary)}
+.il-stamp__beads circle{fill:color-mix(in srgb,var(--il-muted) 60%,var(--il-surface))}
+.il-stamp__disc{fill:var(--il-surface)}
+.il-stamp__edge{stroke:var(--il-border);stroke-width:1.4}
+.il-stamp__shine{fill:#fff;opacity:.5}
+
+/* CONSEGUIDO · aro y puntos con color de familia; disco con leve tinte. */
+.il-stamp.is-earned .il-stamp__rim{fill:color-mix(in srgb,var(--fam) 40%,var(--il-surface))}
+.il-stamp.is-earned .il-stamp__beads circle{fill:color-mix(in srgb,var(--fam) 62%,var(--il-surface))}
+.il-stamp.is-earned .il-stamp__disc{fill:color-mix(in srgb,var(--fam) 7%,var(--il-surface))}
+.il-stamp.is-earned .il-stamp__edge{stroke:color-mix(in srgb,var(--fam) 40%,var(--il-surface))}
+
+/* EN PROGRESO · tono suave azul-gris; el símbolo se desatura un poco. */
+.il-stamp.is-progress .il-stamp__rim{fill:color-mix(in srgb,var(--il-focus) 14%,var(--il-surface-secondary))}
+.il-stamp.is-progress .il-stamp__beads circle{fill:color-mix(in srgb,var(--il-focus) 30%,var(--il-muted))}
+.il-stamp.is-progress .il-stamp__motif{filter:grayscale(.55) opacity(.9)}
+.il-stamp.is-progress .il-stamp__lock{opacity:.9}
+
+/* BLOQUEADO · gris azulado; el símbolo se apaga en gris. */
+.il-stamp.is-locked .il-stamp__shine{opacity:.3}
+.il-stamp.is-locked .il-stamp__motif{filter:grayscale(1) opacity(.5)}
 
 /* Cuando el sello propio ocupa un contenedor con marco antiguo (pasaporte,
    tarjeta, diálogo), se retira el marco doble y ocupa todo el hueco. */

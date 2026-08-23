@@ -28,8 +28,8 @@
   const secondaryMode = () => document.body && document.body.dataset.ageMode === "secondary";
   const SKILL_META = {
     listening: { icon: "ear", es: "Listening", en: "Listening" },
-    vocabulary: { icon: "book", es: "Vocabulary", en: "Vocabulary" },
-    grammar: { icon: "pencil", es: "Grammar", en: "Grammar" },
+    vocabulary: { icon: "books", es: "Vocabulary", en: "Vocabulary" },
+    grammar: { icon: "grammar", es: "Grammar", en: "Grammar" },
     reading: { icon: "book", es: "Reading", en: "Reading" },
     writing: { icon: "pencil", es: "Writing", en: "Writing" },
     speaking: { icon: "chat", es: "Speaking", en: "Speaking" }
@@ -72,6 +72,68 @@
     return context;
   }
 
+  /* ---------- Voz natural para el audio (TTS) ----------
+     Sin voz explícita, el navegador usa la voz por defecto del sistema, que en
+     algunos equipos es una voz "novelty" robótica/inquietante. Elegimos una voz
+     inglesa natural (Samantha/Alex/Google/Microsoft…), evitando esas voces raras. */
+  const VOICE_PREFERENCE = [
+    "ava", "zoe", "evan", "noelle", "nathan", "joelle", "jamie", "serena", "kate",
+    "google us english", "google uk english female", "microsoft aria", "microsoft jenny",
+    "microsoft libby", "microsoft sonia", "samantha", "allison", "susan",
+    "karen", "moira", "tessa", "daniel", "arthur", "google uk english male", "microsoft guy", "alex"
+  ];
+  const VOICE_BLOCKLIST = ["albert", "bad news", "bahh", "bells", "boing", "bubbles", "cellos",
+    "deranged", "good news", "jester", "organ", "superstar", "trinoids", "whisper", "wobble",
+    "zarvox", "fred", "ralph", "junior", "kathy", "flo", "grandma", "grandpa", "rocko",
+    "shelley", "sandy", "eddy", "reed", "rishi", "bruce", "agnes", "victoria"];
+  let cachedVoice = null, voiceResolved = false;
+  function englishVoices() {
+    try { return (window.speechSynthesis.getVoices() || []).filter(v => /^en[-_]?/i.test(v.lang || "")); }
+    catch (e) { return []; }
+  }
+  function scoreVoice(v) {
+    const name = (v.name || "").toLowerCase();
+    if (VOICE_BLOCKLIST.some(b => name === b || name.indexOf(" " + b) !== -1)) return -1000;
+    let score = 0;
+    // 1) Calidad de la voz: es lo que más hace que suene natural (no robótica).
+    if (/premium/.test(name)) score += 1400;
+    else if (/siri/.test(name)) score += 1300;
+    else if (/enhanced/.test(name)) score += 1200;
+    else if (/neural|natural/.test(name)) score += 1100;
+    if (v.localService === false) score += 300; // voces de red (Google/Microsoft) suelen ser naturales
+    // 2) Nombre conocido por sonar bien.
+    const idx = VOICE_PREFERENCE.findIndex(p => name.indexOf(p) !== -1);
+    if (idx !== -1) score += 200 - idx * 4;
+    // 3) Acento y desempates.
+    if (/en[-_]us/i.test(v.lang)) score += 20; else if (/en[-_]gb/i.test(v.lang)) score += 14;
+    if (v.default) score += 3;
+    return score;
+  }
+  function pickVoice() {
+    const voices = englishVoices();
+    if (!voices.length) return null;
+    let best = null, bestScore = -Infinity;
+    voices.forEach(v => { const s = scoreVoice(v); if (s > bestScore) { bestScore = s; best = v; } });
+    return best;
+  }
+  function preferredVoice() {
+    // 1) Voz elegida a mano en Ajustes (si sigue disponible). 2) Selección automática natural.
+    try {
+      const saved = ((audioSettings().voiceName) || "").trim();
+      if (saved) { const match = englishVoices().find(v => v.name === saved); if (match) return match; }
+    } catch (e) {}
+    if (voiceResolved && cachedVoice) return cachedVoice;
+    cachedVoice = pickVoice();
+    if (cachedVoice) voiceResolved = true;
+    return cachedVoice;
+  }
+  try {
+    if (typeof window !== "undefined" && "speechSynthesis" in window) {
+      window.speechSynthesis.getVoices();
+      window.speechSynthesis.addEventListener("voiceschanged", function () { voiceResolved = false; preferredVoice(); });
+    }
+  } catch (e) {}
+
   function speak(text, callbacks) {
     callbacks = callbacks || {};
     try {
@@ -86,7 +148,10 @@
       }
       window.speechSynthesis.cancel();
       const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = "en-US";
+      const voice = preferredVoice();
+      if (voice) { utterance.voice = voice; utterance.lang = voice.lang || "en-US"; }
+      else utterance.lang = "en-US";
+      utterance.pitch = 1;
       utterance.rate = settings.audioSpeed || 0.9;
       utterance.onstart = () => callbacks.onStart && callbacks.onStart();
       utterance.onend = () => callbacks.onEnd && callbacks.onEnd();
@@ -114,7 +179,10 @@
   const TEMPLATES = {};
 
   function singleChoice(host, exercise, withImage, onChange) {
-    const options = exercise.opciones || [];
+    // Orden aleatorio de las opciones: en los packs la correcta suele ir primera;
+    // barajamos una COPIA (no muta el ejercicio) para que la posición no delate
+    // la respuesta. `correcta:true` sigue identificando la buena tras barajar.
+    const options = shuffle(exercise.opciones || []);
     const card = host.closest(".eng-card");
     const supportive = !!(card && (card.classList.contains("eng-card--p12") || card.classList.contains("eng-card--p34")));
     const autoVisuals = options.map(illustrationFor);
@@ -558,7 +626,10 @@
         }
       }));
       header.appendChild(audio);
-      if (exercise.audio_auto && exerciseAudio.sound && exerciseAudio.autoplayAudio) setTimeout(() => audio.click(), 350);
+      // Auto-reproduce en ejercicios de escucha (oír el enunciado es imprescindible) o si el
+      // ejercicio lo pide con audio_auto. Siempre respetando los ajustes de sonido/autoplay.
+      const autoPlayAudio = exercise.audio_auto || exercise.habilidad === "listening";
+      if (autoPlayAudio && exerciseAudio.sound && exerciseAudio.autoplayAudio) setTimeout(() => audio.click(), 350);
     }
     root.appendChild(header);
 

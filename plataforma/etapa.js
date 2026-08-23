@@ -62,8 +62,8 @@
       languageSupport: "spanish",
       celebration: "frequent",
       skillPriority: ["listening", "vocabulary", "speaking", "grammar", "reading"],
-      unitIds: ["primer-vuelo"],
-      themes: ["school life", "everyday situations"],
+      unitIds: ["primer-vuelo", "la-comida", "gramatica-inicial"],
+      themes: ["school life", "everyday situations", "grammar"],
       copy: {
         greeting: name => "¡Hola, " + name + "!",
         ready: "Tu misión de hoy está lista.",
@@ -91,8 +91,8 @@
       languageSupport: "mixed",
       celebration: "balanced",
       skillPriority: ["vocabulary", "listening", "grammar", "reading", "writing", "speaking"],
-      unitIds: ["rutina-diaria"],
-      themes: ["school life", "friends", "everyday situations"],
+      unitIds: ["rutina-diaria", "la-comida", "gramatica-media"],
+      themes: ["school life", "friends", "everyday situations", "grammar"],
       copy: {
         greeting: name => "¡Hola, " + name + "!",
         ready: "Tu misión de hoy está preparada.",
@@ -120,8 +120,8 @@
       languageSupport: "english",
       celebration: "minimal",
       skillPriority: ["listening", "reading", "grammar", "writing", "vocabulary", "speaking"],
-      unitIds: ["future-plans"],
-      themes: ["travel", "school life", "friends", "technology", "music", "everyday situations", "social situations", "future plans"],
+      unitIds: ["future-plans", "gramatica-eso"],
+      themes: ["travel", "school life", "friends", "technology", "music", "everyday situations", "social situations", "future plans", "grammar"],
       copy: {
         greeting: name => "Hola, " + name,
         ready: "Tu sesión de hoy está preparada.",
@@ -198,7 +198,10 @@
     if (!isDemo(options)) return false;
     if (options && typeof options.demo === "boolean") return options.demo;
     const host = String((env.location && env.location.hostname) || "");
-    return host === "localhost" || host === "127.0.0.1" || host === "" || host.endsWith(".local");
+    if (host === "localhost" || host === "127.0.0.1" || host === "" || host.endsWith(".local")) return true;
+    // Enlaces de preview (?demo=1) en un dominio real: mostrar el selector de etapa
+    // para poder enseñar cómo queda cada edad. En producción real (con claves) isDemo es false.
+    return !!(env.ILAuth && typeof env.ILAuth.isDemoForced === "function" && env.ILAuth.isDemoForced());
   }
 
   function clearDemoMission(profile) {

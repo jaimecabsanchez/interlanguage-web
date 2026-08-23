@@ -77,6 +77,9 @@
   const API = {
     DEMO,
     isDemo() { return DEMO; },
+    // ¿El modo demo está FORZADO (localhost o enlace de preview ?demo=1)? Sirve para
+    // mostrar herramientas de demo (p. ej. el selector de etapa) también en un dominio real.
+    isDemoForced() { return forceDemo; },
 
     async signIn(identifier, password) {
       identifier = String(identifier || "").trim();
@@ -576,10 +579,10 @@
   // Equilibrio por habilidad. Producción: agrupa objetivos dominados por skill (real).
   // Demo: valores de muestra coherentes con la actividad (cuenta de muestra). Sin datos → hasData:false.
   const SKILL_DEFS = [
-    { key: "vocabulary", label: "Vocabulario", icon: "book" },
-    { key: "grammar", label: "Gramática", icon: "pencil" },
+    { key: "vocabulary", label: "Vocabulario", icon: "books" },
+    { key: "grammar", label: "Gramática", icon: "grammar" },
     { key: "listening", label: "Listening", icon: "ear" },
-    { key: "reading", label: "Reading", icon: "chat" }
+    { key: "reading", label: "Reading", icon: "book" }
   ];
   API.getSkillBreakdown = async function () {
     const prof = await this.getProfile();

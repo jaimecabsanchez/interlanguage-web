@@ -14,6 +14,7 @@
 <link rel="stylesheet" href="etapa.css?v=20260809d">
 <link rel="stylesheet" href="shell.css?v=20260816c">
 <link rel="stylesheet" href="ajustes.css?v=20260810a">
+<link rel="stylesheet" href="age-mode.css?v=20260819c">
 </head>
 <body>
 <div id="loading" class="il-state il-state--loading"><span class="il-spinner" aria-hidden="true"></span><p>Preparando tus ajustes…</p></div>
@@ -31,6 +32,7 @@
             <label class="setting-row" for="settingSound"><span class="setting-icon"><span data-il-icon="speaker"></span></span><span class="setting-copy"><b data-en="Sound">Sonido</b><small data-en="Exercise audio and pronunciation.">Audio y pronunciación de los ejercicios.</small></span><span class="switch-control"><input id="settingSound" data-setting="sound" type="checkbox"><span class="switch-track" aria-hidden="true"></span><span class="switch-state"></span></span></label>
             <label class="setting-row" for="settingAutoplay"><span class="setting-icon"><span data-il-icon="play"></span></span><span class="setting-copy"><b data-en="Autoplay audio">Audio automático</b><small data-en="Play audio when an activity recommends it.">Reproduce el audio cuando el ejercicio lo recomienda.</small></span><span class="switch-control"><input id="settingAutoplay" data-setting="autoplayAudio" type="checkbox"><span class="switch-track" aria-hidden="true"></span><span class="switch-state"></span></span></label>
             <label class="setting-row" for="settingSpeed"><span class="setting-icon"><span data-il-icon="ear"></span></span><span class="setting-copy"><b data-en="Audio speed">Velocidad del audio</b><small data-en="Adjust the pace of the pronunciation.">Ajusta el ritmo de la pronunciación.</small></span><select id="settingSpeed" data-setting="audioSpeed"><option value="0.75" data-en="Slower">Más despacio</option><option value="0.9" data-en="Standard">Normal</option><option value="1" data-en="Natural">Natural</option></select></label>
+            <label class="setting-row" for="settingVoice"><span class="setting-icon"><span data-il-icon="speaker"></span></span><span class="setting-copy"><b data-en="Voice">Voz</b><small data-en="Choose the voice that reads the English audio.">Elige la voz que lee el audio en inglés.</small></span><select id="settingVoice" data-setting="voiceName"><option value="" data-en="Automatic (natural)">Automática (natural)</option></select></label>
             <label class="setting-row" for="settingGoal"><span class="setting-icon"><span data-il-icon="target"></span></span><span class="setting-copy"><b data-en="Daily goal">Objetivo diario</b><small data-en="A helpful guide, never an obligation.">Una referencia amable, nunca una obligación.</small></span><select id="settingGoal" data-setting="dailyGoal"><option value="5">5 min</option><option value="8">8 min</option><option value="10">10 min</option><option value="15">15 min</option></select></label>
             <label class="setting-row" for="settingMotion"><span class="setting-icon"><span data-il-icon="refresh"></span></span><span class="setting-copy"><b data-en="Reduce motion">Reducir animaciones</b><small data-en="Minimise movement and transitions.">Minimiza movimientos y transiciones.</small></span><span class="switch-control"><input id="settingMotion" data-setting="reduceMotion" type="checkbox"><span class="switch-track" aria-hidden="true"></span><span class="switch-state"></span></span></label>
             <label class="setting-row" for="settingText"><span class="setting-icon"><span data-il-icon="books"></span></span><span class="setting-copy"><b data-en="Text size">Tamaño de texto</b><small data-en="Make the platform more comfortable to read.">Haz que la plataforma sea más cómoda de leer.</small></span><select id="settingText" data-setting="textSize"><option value="normal" data-en="Standard">Normal</option><option value="large" data-en="Large">Grande</option></select></label>
@@ -56,12 +58,12 @@
 
 <dialog class="privacy-dialog" id="privacyDialog" aria-labelledby="privacyTitle"><button type="button" class="dialog-close" id="privacyClose" aria-label="Cerrar"><span data-il-icon="close"></span></button><span class="privacy-icon" aria-hidden="true"><span data-il-icon="shield"></span></span><p class="ui-label" data-en="PRIVACY">PRIVACIDAD</p><h2 id="privacyTitle" data-en="Your learning stays private">Tu aprendizaje es privado</h2><p data-en="We do not show public rankings or compare your progress with other students. Your family and the education team manage the data needed to support your learning.">No mostramos rankings públicos ni comparamos tu progreso con el de otros alumnos. Tu familia y el equipo educativo gestionan los datos necesarios para tu aprendizaje.</p></dialog>
 
-<script src="layout.js?v=20260816c"></script>
+<script src="layout.js?v=20260819a"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-config.js?v=20260809d"></script>
-<script src="etapa.js?v=20260810d"></script>
-<script src="auth.js?v=20260818a"></script>
-<script src="profile-settings.js?v=20260812a"></script>
-<script src="ajustes.js?v=20260811f"></script>
+<script src="etapa.js?v=20260821d"></script>
+<script src="auth.js?v=20260819a"></script>
+<script src="profile-settings.js?v=20260819a"></script>
+<script src="ajustes.js?v=20260819b"></script>
 </body>
 </html>

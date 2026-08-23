@@ -16,6 +16,10 @@
   const STATE_PREFIX = "il_mission_state_v1_";
   const HISTORY_PREFIX = "il_mission_history_v1_";
   const SESSION_PREFIX = "il_session_";
+  const SERVED_PREFIX = "il_served_v1_";   // ejercicios ya servidos (rotación sin repetición)
+  const EXAM_PREFIX = "il_exam_v1_";       // contador para el examen periódico
+  const EXAM_EVERY = 5;                    // examen cada N misiones normales completadas
+  const SERVED_CAP = 300;                  // memoria de rotación (ids)
   const CEFR_IDX = { "Pre-A1": 0, A1: 1, A2: 2, B1: 3 };
 
   function isoDay(value) {
@@ -156,6 +160,7 @@
     if (!history.some(entry => entry && entry.id === id)) {
       history.push({ id: id, date: state.date, unitId: state.unitId, completedAt: state.completedAt });
       write(key, history.slice(-180));
+      if (state.unitId !== "examen") bumpExam(username); // el propio examen no cuenta para el siguiente
     }
   }
 
@@ -190,6 +195,29 @@
     return save(username, state);
   }
 
+  // --- Rotación sin repetición: registro de ejercicios ya servidos --------------
+  // Lista ordenada (antiguo → reciente), deduplicada a la ÚLTIMA aparición. Al elegir
+  // la sesión se prioriza lo NO servido y, cuando el pool se agota, lo servido hace más
+  // tiempo → así el alumno recorre todo el banco antes de repetir.
+  function servedKey(username) { return SERVED_PREFIX + userKey(username); }
+  function served(username) { const v = read(servedKey(username), []); return Array.isArray(v) ? v : []; }
+  function markServed(username, ids) {
+    ids = (ids || []).filter(Boolean);
+    if (!ids.length) return;
+    const merged = served(username).concat(ids);
+    const seen = new Set(); const out = [];
+    for (let i = merged.length - 1; i >= 0; i--) { if (!seen.has(merged[i])) { seen.add(merged[i]); out.unshift(merged[i]); } }
+    write(servedKey(username), out.slice(-SERVED_CAP));
+  }
+
+  // --- Examen periódico: cuenta misiones normales completadas desde el último ----
+  function examKey(username) { return EXAM_PREFIX + userKey(username); }
+  function examState(username) { const v = read(examKey(username), null); return (v && typeof v === "object") ? v : { sinceExam: 0 }; }
+  function bumpExam(username) { const s = examState(username); s.sinceExam = (Number(s.sinceExam) || 0) + 1; write(examKey(username), s); }
+  function examDue(username) { return (Number(examState(username).sinceExam) || 0) >= EXAM_EVERY; }
+  function examProgress(username) { return { since: Number(examState(username).sinceExam) || 0, every: EXAM_EVERY, due: examDue(username) }; }
+  function resetExam(username) { write(examKey(username), { sinceExam: 0 }); }
+
   function hashStr(value) {
     let h = 0; const s = String(value || "");
     for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0;
@@ -209,7 +237,14 @@
     const selectedUnits = Array.isArray(options.unitIds) && options.unitIds.length
       ? units.filter(unit => options.unitIds.indexOf(unit.id) !== -1)
       : units;
-    const all = selectedUnits.flatMap(unit => unit.ejercicios || []);
+    // Misión temática del día: si el perfil tiene varias unidades, se elige UNA de forma
+    // determinista por día y usuario. Así cada día es una misión coherente (p. ej. rutina un
+    // día, comida otro) y tanto inicio.html como leccion.html construyen la misma sesión.
+    // Con una sola unidad no cambia nada.
+    const dayUnits = selectedUnits.length > 1
+      ? [selectedUnits[hashStr(String(options.username || "") + "|" + (options.date || isoDay())) % selectedUnits.length]]
+      : selectedUnits;
+    const all = dayUnits.flatMap(unit => unit.ejercicios || []);
     const byId = {}; allContent.forEach(ex => { byId[ex.id] = ex; });
     const date = options.date || isoDay();
     const context = [options.banda || "", options.limit || 6, (options.unitIds || []).join(","), (options.skillPriority || []).join(",")].join("|");
@@ -223,20 +258,23 @@
     let pool = options.matrix && typeof options.matrix.filtra === "function"
       ? options.matrix.filtra(all, options.banda)
       : all.slice();
-    const previous = cached && Array.isArray(cached.ids) ? cached.ids : [];
     const target = CEFR_IDX[options.cefr] != null ? CEFR_IDX[options.cefr] : 1;
     const skillPriority = Array.isArray(options.skillPriority) ? options.skillPriority : [];
     const seed = hashStr(String(options.username || "") + "|" + date);
+    // Cobertura: -1 = aún no servido (máxima prioridad); si ya se sirvió, el índice en el
+    // registro (más antiguo = menor) hace que vuelva antes lo que hace más tiempo que no cae.
+    const servedList = served(options.username);
+    const coverageOf = id => { const i = servedList.indexOf(id); return i === -1 ? -1 : i; };
     const scored = pool.map(ex => {
       const level = CEFR_IDX[ex.nivel] != null ? CEFR_IDX[ex.nivel] : 0;
       return {
         ex: ex,
+        coverage: coverageOf(ex.id),
         score: level > target ? 100 + level - target : target - level,
-        recent: previous.indexOf(ex.id) !== -1 ? 1 : 0,
         priority: skillPriority.indexOf(ex.habilidad) === -1 ? skillPriority.length : skillPriority.indexOf(ex.habilidad),
         random: seededRand(seed + hashStr(ex.id))
       };
-    }).sort((a, b) => (a.score - b.score) || (a.recent - b.recent) || (a.priority - b.priority) || (a.random - b.random));
+    }).sort((a, b) => (a.coverage - b.coverage) || (a.score - b.score) || (a.priority - b.priority) || (a.random - b.random));
     const picked = []; let lastSkill = null; const rest = scored.slice();
     while (rest.length && picked.length < (options.limit || 6)) {
       let index = rest.findIndex(entry => entry.ex.habilidad !== lastSkill);
@@ -252,7 +290,9 @@
       const gentleIndex = picked.findIndex(ex => GENTLE_FIRST.indexOf(ex.tipo) !== -1);
       if (gentleIndex > 0) picked.unshift(picked.splice(gentleIndex, 1)[0]);
     }
-    write(sessionKey(options.username), { date: date, context: context, ids: picked.map(ex => ex.id) });
+    const pickedIds = picked.map(ex => ex.id);
+    write(sessionKey(options.username), { date: date, context: context, ids: pickedIds });
+    markServed(options.username, pickedIds); // avanza la rotación (una vez por sesión nueva del día)
     return picked;
   }
 
@@ -272,6 +312,11 @@
     unitCompletionCount,
     resolveErrors,
     getOrCreateSession,
-    _keys: { stateKey, historyKey, sessionKey }
+    served,
+    examDue,
+    examProgress,
+    resetExam,
+    EXAM_EVERY,
+    _keys: { stateKey, historyKey, sessionKey, servedKey, examKey }
   };
 });
