@@ -30,4 +30,5 @@ assert.equal(summary.perfect, false);
 
 rows = [ev(1, true), Events.create(Object.assign({}, base, { exercise_id:"e2", attempt_number:1, correct:true }))];
 assert.equal(Events.summarize(rows, ["e1", "e2"]).perfect, true);
+assert.equal(Events.create({ exercise_id:"e3" }).age_band, "neutral", "un evento sin banda no finge p56");
 console.log("learning-events: first try, eventual success, técnico y perfecto correctos");

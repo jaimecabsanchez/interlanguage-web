@@ -73,14 +73,15 @@
 <script src="supabase-config.js?v=20260809d"></script>
 <script src="auth-utils.js?v=20260809d"></script>
 <script src="copy-registry.js?v=20260824b"></script>
-<script src="etapa.js?v=20260824a"></script>
+<script src="age-policy.js?v=20260824a"></script>
+<script src="etapa.js?v=20260824b"></script>
 <script src="observability.js?v=20260824a"></script>
 <script src="learning-data.js?v=20260824a"></script>
-<script src="auth.js?v=20260824b"></script>
+<script src="auth.js?v=20260824c"></script>
 <script src="il-visual.js?v=20260821b"></script>
 <script>
   const $ = (id) => document.getElementById(id);
-  let name = "explorador", stage = "p56";
+  let name = "explorador", stage = "neutral";
 
   const COPY = {
     p12: [
@@ -102,9 +103,14 @@
       { icon:"plane", h:n=>"Hola, "+n, p:"Aquí tendrás una ruta clara para practicar a tu nivel." },
       { icon:"target", h:()=>"Práctica breve y enfocada", p:"Sesiones diseñadas para avanzar sin perder tiempo.", preview:"Starting mission", meta:"7 activities", time:"10 min" },
       { icon:"shield", h:()=>"Feedback que sirve", p:"Cada error se convierte en una explicación y un nuevo intento." }
+    ],
+    neutral: [
+      { icon:"plane", h:n=>"Hola, "+n, p:"Vamos a preparar una experiencia clara para ti." },
+      { icon:"target", h:()=>"Una misión breve cada día", p:"Practica unos minutos y avanza paso a paso.", preview:"Misión de inicio", meta:"Actividades adaptadas", time:"5–8 min" },
+      { icon:"shield", h:()=>"Puedes volver a intentarlo", p:"Tendrás pistas y explicaciones cuando las necesites." }
     ]
   };
-  const steps = () => COPY[stage] || COPY.p56;
+  const steps = () => COPY[stage] || COPY.neutral;
   let i = 0;
 
   function escHtml(value) {

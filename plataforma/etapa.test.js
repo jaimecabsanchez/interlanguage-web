@@ -15,12 +15,13 @@ assert.equal(base.modeFor({ age: 7 }), "primary-young");
 assert.equal(base.modeFor({ age: 9 }), "primary-young");
 assert.equal(base.modeFor({ age: 10 }), "primary-upper");
 assert.equal(base.modeFor({ age: 13 }), "secondary");
-assert.equal(base.modeFor({}), "primary-upper");
+assert.equal(base.modeFor({}), "neutral");
 assert.equal(base.bandFor({ age: 7 }), "p12");
 assert.equal(base.bandFor({ age: 9 }), "p34");
 assert.equal(base.bandFor({ age: 11 }), "p56");
 assert.equal(base.bandFor({ age: 12 }), "eso");
 assert.equal(base.bandFor({ age_mode: "secondary" }), "eso");
+assert.equal(base.bandFor({}), "neutral");
 assert.equal(base.config("primary-young").exerciseLimit, 5);
 assert.equal(base.config("primary-upper").exerciseLimit, 6);
 assert.equal(base.config("secondary").exerciseLimit, 7);
@@ -30,6 +31,7 @@ assert.equal(base.exerciseConfig("p34").instructionLanguage, "spanish");
 assert.equal(base.exerciseConfig("p56").instructionLanguage, "spanish-contextual-english");
 assert.equal(base.exerciseConfig("p56").guideIntensity, "low");
 assert.equal(base.exerciseConfig("eso").visualSupport, "content-only");
+assert.equal(base.exerciseConfig("unknown").band, "neutral");
 assert.deepEqual(base.DEMO_STAGES.map(item => item.band), ["p12", "p34", "p56", "eso"]);
 assert.equal(base.config("primary-upper").copy.startCta, "Empezar", "p56 conserva chrome en español");
 
@@ -86,5 +88,16 @@ const fiveYearDemo = createStageSystem({
 });
 assert.equal(fiveYearDemo.apply({ age: 9 }, { demo: true }), "p12");
 assert.equal(fiveYearDemo.current().exercise.sessionSize, 4);
+
+const reports = [];
+const unresolvedBody = { dataset:{}, appendChild() {} };
+const unresolved = createStageSystem({
+  Date, location:{ search:"" }, ILObservability:{ report:(...args) => reports.push(args) },
+  document:{ body:unresolvedBody, getElementById:() => null }, sessionStorage:storage(), localStorage:storage()
+});
+assert.equal(unresolved.apply({ id:"student-without-age" }, { demo:false }), "neutral");
+assert.equal(unresolvedBody.dataset.ageMode, "neutral");
+assert.equal(unresolvedBody.dataset.stage, "neutral");
+assert.ok(reports.some(entry => entry[0] === "invalid_data" && entry[1] === "age_band_unresolved"));
 
 console.log("etapa.test.js ok");

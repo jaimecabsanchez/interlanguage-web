@@ -78,10 +78,11 @@
 <script src="supabase-config.js?v=20260809d"></script>
 <script src="auth-utils.js?v=20260809d"></script>
 <script src="copy-registry.js?v=20260824b"></script>
-<script src="etapa.js?v=20260824a"></script>
+<script src="age-policy.js?v=20260824a"></script>
+<script src="etapa.js?v=20260824b"></script>
 <script src="observability.js?v=20260824a"></script>
 <script src="learning-data.js?v=20260824a"></script>
-<script src="auth.js?v=20260824b"></script>
+<script src="auth.js?v=20260824c"></script>
 <script>
   const $ = (id) => document.getElementById(id);
 
@@ -99,7 +100,7 @@
   ];
 
   let i = 0;
-  let stage = "p56";
+  let stage = "neutral";
   const answers = new Array(QUESTIONS.length).fill(null);
 
   function render() {

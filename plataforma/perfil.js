@@ -1,7 +1,7 @@
 (function () {
   "use strict";
   const $ = id => document.getElementById(id);
-  let band = "p56";
+  let band = "neutral";
 
   function firstName(profile) { return String(profile.full_name || "Alumno").trim().split(/\s+/)[0] || "Alumno"; }
   function stageCopy() {

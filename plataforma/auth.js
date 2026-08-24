@@ -789,7 +789,7 @@
     }
     if (cefr && CEFR_ORDER.indexOf(cefr) !== -1) {
       const legacy = { id:eventUuid() || undefined, student_id:prof.student_id, result_cefr:cefr, instrument_id:"legacy-cache-import", instrument_version:"1",
-        age_band:(window.IL_ETAPA && IL_ETAPA.current && IL_ETAPA.current().band) || "p56", confidence:null,
+        age_band:(window.IL_ETAPA && IL_ETAPA.current && IL_ETAPA.current().band) || "neutral", confidence:null,
         completed_at:new Date().toISOString(), metadata:{ migrated_from:"localStorage" } };
       const migrated = await sb.from("student_placements").insert(legacy);
       if (!migrated.error) return { cefr, placed:true, label:levelLabel(cefr), approximate:true, source:"server_migrated", synced:true };
@@ -809,7 +809,7 @@
     try { localStorage.setItem(LKEY(prof.username), cefr); } catch (e) { observe("data_unavailable", e, { area:"placement", operation:"write_cache" }); }
     if (DEMO) { const db = demoLoad(); const acc = db.find(a => a.username === prof.username); if (acc) { acc.level = levelLabel(cefr); demoSave(db); } return { ok:true, cefr, label:levelLabel(cefr), approximate:true, source:"demo", synced:true }; }
     if (!sb || !prof.student_id) return { ok:true, cefr, label:levelLabel(cefr), approximate:true, source:"cache", synced:false };
-    const row = { id:eventUuid() || undefined, student_id:prof.student_id, result_cefr:cefr, instrument_id:meta.instrument_id || "legacy-eight-question", instrument_version:meta.instrument_version || "1", age_band:meta.age_band || "p56", confidence:meta.confidence == null ? null : meta.confidence, completed_at:new Date().toISOString(), metadata:meta.metadata || {} };
+    const row = { id:eventUuid() || undefined, student_id:prof.student_id, result_cefr:cefr, instrument_id:meta.instrument_id || "legacy-eight-question", instrument_version:meta.instrument_version || "1", age_band:meta.age_band || "neutral", confidence:meta.confidence == null ? null : meta.confidence, completed_at:new Date().toISOString(), metadata:meta.metadata || {} };
     const { error } = await sb.from("student_placements").insert(row);
     if (error) { observe("network_failure", error, { area:"placement", operation:"save", table:"student_placements" }); queueLearning("placement", row); return { ok:true, cefr, label:levelLabel(cefr), approximate:true, source:"cache", synced:false, queued:true }; }
     return { ok:true, cefr, label:levelLabel(cefr), approximate:true, source:"server", synced:true };

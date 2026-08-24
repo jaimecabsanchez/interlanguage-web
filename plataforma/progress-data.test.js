@@ -46,6 +46,8 @@ assert.equal(real.skills.every(s => s.percent === null), true);
 assert.equal(real.profileSummary.levelProgress, null, "no inventa progreso de nivel en cuentas reales");
 assert.equal(real.learningEvidence.sufficient, false, "cuenta real sin evidencia declara insuficiencia");
 assert.equal(real.comeback, true);
+assert.equal(real.ageMode, "neutral");
+assert.equal(real.ageBand, "neutral", "snapshot sin banda usa el estado neutral seguro");
 const secondary = P.buildSnapshot({
   isDemo: false,
   ageMode: "secondary",

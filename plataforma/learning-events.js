@@ -40,7 +40,7 @@
       exercise_id: String(input.exercise_id || input.id || ""),
       objective_id: String(input.objective_id || ""),
       variant_id: String(input.variant_id || ""),
-      age_band: String(input.age_band || "p56"),
+      age_band: String(input.age_band || "neutral"),
       cefr: String(input.cefr || ""),
       skill: String(input.skill || ""),
       content_version: String(input.content_version || "1"),

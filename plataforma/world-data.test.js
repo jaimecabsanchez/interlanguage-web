@@ -10,6 +10,9 @@ assert.deepEqual(W.levelMeta({ lessons:7 }), { level:2, lessons:7, start:5, targ
 assert.equal(W.worldType("p12"), "garden");
 assert.equal(W.worldType("p56"), "base");
 assert.equal(W.worldType("eso"), "space");
+assert.equal(W.band("unknown"), "neutral");
+assert.equal(W.worldType("unknown"), "neutral");
+assert.deepEqual(W.catalogFor("unknown", "world"), [], "neutral no hereda recompensas de otra edad");
 assert.equal(W.catalogFor("eso", "world").some(item => item.id === "world-flowers"), false);
 assert.equal(W.catalogFor("p12", "world").some(item => item.id === "world-toy-plane"), true);
 

@@ -88,7 +88,7 @@
   const STAMP_NAMES = ["first-flight", "weekly-explorer", "word-collector"].reduce((names, id) => {
     const item = Achievements && Achievements.byId[id]; names[id] = item ? item.name : id; return names;
   }, {});
-  function band(value) { return ALL.indexOf(value) >= 0 ? value : "p56"; }
+  function band(value) { return ALL.indexOf(value) >= 0 ? value : "neutral"; }
   function worldLevel(progress) {
     const lessons = Math.max(0, Number(progress && progress.lessons) || 0);
     if (lessons >= 40) return 5;
@@ -104,7 +104,7 @@
     const start = starts[level]; const target = targets[level];
     return { level, lessons, start, target, remaining:Math.max(0, target - lessons), percent:Math.min(100, Math.round((lessons - start) / (target - start) * 100)) };
   }
-  function worldType(value) { const key = band(value); return key === "eso" ? "space" : (key === "p56" ? "base" : "garden"); }
+  function worldType(value) { const key = band(value); return key === "eso" ? "space" : (key === "p56" ? "base" : (key === "neutral" ? "neutral" : "garden")); }
   function context(progress, stamps, value) {
     return {
       band:band(value), lessons:Math.max(0, Number(progress && progress.lessons) || 0),

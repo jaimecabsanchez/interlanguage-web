@@ -547,9 +547,10 @@
       p12: { check: "Comprobar", checkAgain: "Probar otra vez", next: "Siguiente", finish: "¡Terminar!", listen: "Escuchar", playing: "Escuchando…", replay: "Otra vez", retryAudio: "Reintentar", success: "¡Genial!", retry: "Casi. Prueba otra vez.", error: "Vamos a aprenderlo.", guide: "Vamos paso a paso", support: "Escucha · Mira · Elige" },
       p34: { check: "Comprobar", checkAgain: "Probar otra vez", next: "Siguiente", finish: "¡Terminar!", listen: "Escuchar", playing: "Escuchando…", replay: "Otra vez", retryAudio: "Reintentar", success: "¡Muy bien!", retry: "¡Casi! Prueba otra vez.", error: "Vamos a aprenderlo.", guide: "Una pista para empezar", support: "Escucha · Piensa · Elige" },
       p56: { check: "Comprobar", checkAgain: "Comprobar de nuevo", next: "Continuar", finish: "Finalizar misión", listen: "Listen", playing: "Reproduciendo…", replay: "Repetir", retryAudio: "Reintentar", success: "¡Muy bien!", retry: "Casi.", error: "Vamos a verlo.", guide: "Pista rápida", support: "Think · Answer · Learn" },
-      eso: { check: "Check", checkAgain: "Check again", next: "Continue", finish: "Finish session", listen: "Listen", playing: "Playing…", replay: "Replay", retryAudio: "Try again", success: "Great work!", retry: "Almost.", error: "Let’s review it.", guide: "Quick tip", support: "Read · Respond · Improve" }
+      eso: { check: "Check", checkAgain: "Check again", next: "Continue", finish: "Finish session", listen: "Listen", playing: "Playing…", replay: "Replay", retryAudio: "Try again", success: "Great work!", retry: "Almost.", error: "Let’s review it.", guide: "Quick tip", support: "Read · Respond · Improve" },
+      neutral: { check:"Comprobar", checkAgain:"Probar otra vez", next:"Continuar", finish:"Finalizar", listen:"Escuchar", playing:"Reproduciendo…", replay:"Repetir", retryAudio:"Reintentar", success:"¡Muy bien!", retry:"Casi.", error:"Vamos a verlo.", guide:"Ver pista", support:"Escucha · Piensa · Responde" }
     };
-    return copies[band] || copies.p56;
+    return copies[band] || copies.neutral;
   }
 
   /* ------------------------------------------------------------------
@@ -589,7 +590,7 @@
 
   function render(container, exercise, options) {
     options = options || {};
-    const band = options.stage || "p56";
+    const band = options.stage || "neutral";
     const secondary = band === "eso";
     const experience = options.experience || {};
     const ui = interfaceCopy(band);

@@ -4,8 +4,8 @@
   const DAYS = ["L", "M", "X", "J", "V", "S", "D"];
   const DAY_NAMES = ["lunes", "martes", "miércoles", "jueves", "viernes", "sábado", "domingo"];
   let snapshot = null;
-  let ageMode = "primary-upper";
-  let ageBand = "p56";
+  let ageMode = "neutral";
+  let ageBand = "neutral";
   let currentUser = "";
 
   function icon(name) { return window.ILIcon ? window.ILIcon(name) : ""; }
@@ -173,7 +173,7 @@
     const grid = $("stampGrid");
     if (!A) return renderStampsLegacy(data);
     grid.classList.add("is-achievements"); grid.replaceChildren();
-    const band = (window.IL_ETAPA && IL_ETAPA.current() && IL_ETAPA.current().band) || "p56";
+    const band = (window.IL_ETAPA && IL_ETAPA.current() && IL_ETAPA.current().band) || "neutral";
     const ctx = achievementCtx(data);
     const list = A.availableFor(band);
     let unlocked = 0; const doneNow = [];

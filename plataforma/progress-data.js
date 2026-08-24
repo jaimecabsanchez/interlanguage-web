@@ -206,7 +206,7 @@
     const measured = !demo && input.learningMetrics && input.learningMetrics.status === "available" ? input.learningMetrics : null;
     const data = {
       isDemo: !!input.isDemo,
-      ageMode: input.ageMode || "primary-upper",
+      ageMode: input.ageMode || "neutral",
       ageBand: input.ageBand || (input.ageMode === "secondary" ? "eso" : (input.ageMode === "primary-upper" ? "p56" : (input.ageMode === "primary-young" ? "p34" : "neutral"))),
       profile: profile,
       placement: input.placement || null,
@@ -256,10 +256,10 @@
       auth.getProgress(), auth.getWeekActivity(), auth.getActivityDays(3650), auth.getSkillBreakdown(), auth.getMasteredPhrases(), auth.getPlacement(),
       typeof auth.getLearningMetrics === "function" ? auth.getLearningMetrics() : Promise.resolve({ status:"empty", source:"server", sample:0, sufficient:false })
     ]);
-    const ageMode = options.ageMode || "primary-upper";
-    const focusUnitId = ageMode === "secondary" ? "future-plans" : "rutina-diaria";
+    const ageMode = options.ageMode || "neutral";
+    const focusUnitId = ageMode === "secondary" ? "future-plans" : (ageMode === "neutral" ? "" : "rutina-diaria");
     let focusMissions = 0;
-    if (mission && typeof mission.unitCompletionCount === "function") focusMissions = mission.unitCompletionCount(profile.username || "", focusUnitId);
+    if (focusUnitId && mission && typeof mission.unitCompletionCount === "function") focusMissions = mission.unitCompletionCount(profile.username || "", focusUnitId);
     return buildSnapshot({
       profile: profile, progress: results[0], week: results[1], activityDays: results[2], authSkills: results[3],
       masteredPhrases: results[4], placement: results[5], learningMetrics:results[6], isDemo: auth.isDemo(), ageMode: ageMode, focusMissions: focusMissions,

@@ -1,6 +1,6 @@
 (function () {
   "use strict";
-  const $ = id => document.getElementById(id); let username = ""; let settings = null; let saveTimer = null; let band = "p56";
+  const $ = id => document.getElementById(id); let username = ""; let settings = null; let saveTimer = null; let band = "neutral";
   function updateSwitch(input) { input.closest(".switch-control").querySelector(".switch-state").textContent = input.checked ? (band === "eso" ? "On" : "Activado") : (band === "eso" ? "Off" : "Desactivado"); }
   function render() {
     document.querySelectorAll("[data-setting]").forEach(control => { const value = settings[control.dataset.setting]; if (control.type === "checkbox") { control.checked = !!value; updateSwitch(control); } else control.value = String(value); });

@@ -1,8 +1,8 @@
 /* ============================================================
    Interlanguage · Adaptación por etapa
    Una arquitectura, dos capas:
-   - banda pedagógica: p12 / p34 / p56 / eso
-   - perfil de experiencia: primary-young / primary-upper / secondary
+   - banda pedagógica: p12 / p34 / p56 / eso / neutral
+   - perfil de experiencia: primary-young / primary-upper / secondary / neutral
    ============================================================ */
 (function (root, factory) {
   "use strict";
@@ -14,11 +14,12 @@
 
   const env = environment || {};
   const Copy = env.ILCopy || (typeof require === "function" ? require("./copy-registry.js") : null);
-  const MODES = ["primary-young", "primary-upper", "secondary"];
-  const BANDS = ["p12", "p34", "p56", "eso"];
+  const AgePolicy = env.ILAgePolicy || (typeof require === "function" ? require("./age-policy.js") : null);
+  const MODES = ["primary-young", "primary-upper", "secondary", "neutral"];
+  const BANDS = ["p12", "p34", "p56", "eso", "neutral"];
   const STORAGE_KEY = "il_demo_age_mode_v1";
-  const MODE_FROM_BAND = { p12: "primary-young", p34: "primary-young", p56: "primary-upper", eso: "secondary" };
-  const DEMO_BAND = { "primary-young": "p34", "primary-upper": "p56", secondary: "eso" };
+  const MODE_FROM_BAND = { p12: "primary-young", p34: "primary-young", p56: "primary-upper", eso: "secondary", neutral:"neutral" };
+  const DEMO_BAND = { "primary-young": "p34", "primary-upper": "p56", secondary: "eso", neutral:"neutral" };
   const DEMO_STAGES = [
     { band:"p12", label:"5–7 años" },
     { band:"p34", label:"8–9 años" },
@@ -26,32 +27,11 @@
     { band:"eso", label:"ESO" }
   ];
   const MODE_ALIAS = {
-    p12: "primary-young", p34: "primary-young", p56: "primary-upper", eso: "secondary",
+    p12: "primary-young", p34: "primary-young", p56: "primary-upper", eso: "secondary", neutral:"neutral",
     primaria_inicial: "primary-young", primaria_superior: "primary-upper", primaria: "primary-upper"
   };
 
-  const BAND_EXPERIENCE = Object.freeze({
-    p12: Object.freeze({
-      band: "p12", ageLabel: "5–7", instructionLanguage: "spanish", visualSupport: "required",
-      guideIntensity: "high", celebrationIntensity: "high", touchSize: 56, maxVisibleOptions: 3,
-      sessionSize: 4, hintLabel: "Una pista", listenLabel: "Escuchar"
-    }),
-    p34: Object.freeze({
-      band: "p34", ageLabel: "8–9", instructionLanguage: "spanish", visualSupport: "preferred",
-      guideIntensity: "medium", celebrationIntensity: "medium", touchSize: 52, maxVisibleOptions: 4,
-      sessionSize: 5, hintLabel: "Pista", listenLabel: "Listen"
-    }),
-    p56: Object.freeze({
-      band: "p56", ageLabel: "10–11", instructionLanguage: "spanish-contextual-english", visualSupport: "optional",
-      guideIntensity: "low", celebrationIntensity: "balanced", touchSize: 48, maxVisibleOptions: 4,
-      sessionSize: 6, hintLabel: "Ver pista", listenLabel: "Listen"
-    }),
-    eso: Object.freeze({
-      band: "eso", ageLabel: "12+", instructionLanguage: "english", visualSupport: "content-only",
-      guideIntensity: "none", celebrationIntensity: "minimal", touchSize: 44, maxVisibleOptions: 5,
-      sessionSize: 7, hintLabel: "Show hint", listenLabel: "Listen"
-    })
-  });
+  const BAND_EXPERIENCE = AgePolicy.BANDS;
 
   const PROFILES = {
     "primary-young": {
@@ -89,11 +69,24 @@
       skillPriority: ["listening", "reading", "grammar", "writing", "vocabulary", "speaking"],
       unitIds: ["future-plans", "gramatica-eso"],
       themes: ["travel", "school life", "friends", "technology", "music", "everyday situations", "social situations", "future plans", "grammar"]
+    },
+    neutral: {
+      id:"neutral", label:"Experiencia neutral", sessionLabel:"5–8 min", exerciseLimit:5,
+      guide:"discreet", languageSupport:"spanish", celebration:"minimal",
+      skillPriority:["listening", "vocabulary", "grammar", "reading", "writing", "speaking"],
+      unitIds:[], themes:[]
     }
   };
 
   function withCopy(profile, band) { return Object.assign({}, profile, { copy:Copy ? Copy.view(band) : {} }); }
-  let active = { mode: "primary-upper", band: "p56", config: withCopy(PROFILES["primary-upper"], "p56"), exercise: BAND_EXPERIENCE.p56 };
+  let active = { mode:"neutral", band:"neutral", config:withCopy(PROFILES.neutral, "neutral"), exercise:BAND_EXPERIENCE.neutral };
+
+  function reportInvalidBand(profile, reason) {
+    const observer = env.ILObservability;
+    if (observer && typeof observer.report === "function") observer.report("invalid_data", "age_band_unresolved", {
+      area:"stage", operation:"resolve_band", status:reason || "missing_profile_age", profile_id:profile && profile.id
+    });
+  }
 
   function year() { return (env.Date || Date).now ? new (env.Date || Date)().getFullYear() : new Date().getFullYear(); }
   function normalMode(value) {
@@ -113,10 +106,11 @@
   function bandFor(profile) {
     const explicitBand = profile && profile.stage;
     if (BANDS.indexOf(explicitBand) !== -1) return explicitBand;
+    if (explicitBand) reportInvalidBand(profile, "invalid_explicit_band");
     const explicitMode = normalMode(profile && (profile.age_mode || profile.ageMode));
     if (explicitMode) return DEMO_BAND[explicitMode];
     const age = ageFor(profile);
-    if (age == null) return "p56";
+    if (age == null) { reportInvalidBand(profile, "missing_profile_age"); return "neutral"; }
     if (age <= 7) return "p12";
     if (age <= 9) return "p34";
     if (age <= 11) return "p56";
@@ -124,11 +118,11 @@
   }
   function modeFor(profile) {
     const explicit = normalMode(profile && (profile.age_mode || profile.ageMode));
-    return explicit || MODE_FROM_BAND[bandFor(profile)] || "primary-upper";
+    return explicit || MODE_FROM_BAND[bandFor(profile)] || "neutral";
   }
   function config(mode) {
     const selectedMode = normalMode(mode) || active.mode;
-    const profile = PROFILES[selectedMode] || PROFILES["primary-upper"];
+    const profile = PROFILES[selectedMode] || PROFILES.neutral;
     const selectedBand = selectedMode === active.mode ? active.band : DEMO_BAND[selectedMode];
     return withCopy(profile, selectedBand);
   }
@@ -196,7 +190,7 @@
     });
     select.value = active.band;
     select.addEventListener("change", event => {
-      const next = normalBand(event.target.value) || "p56";
+      const next = normalBand(event.target.value) || "neutral";
       safeStorage(env.sessionStorage, "setItem", STORAGE_KEY, next);
       clearDemoMission(profile);
       if (env.location && env.location.href && typeof env.location.assign === "function") {
@@ -221,12 +215,12 @@
     }
     const overrideBand = demo ? (requested || stored || normalBand(demoMode())) : null;
     const band = overrideBand || bandFor(profile);
-    const mode = overrideBand ? MODE_FROM_BAND[band] : modeFor(profile);
-    active = { mode, band, config: withCopy(PROFILES[mode], band), exercise: BAND_EXPERIENCE[band] || BAND_EXPERIENCE.p56 };
+    const mode = overrideBand ? MODE_FROM_BAND[band] : (MODE_FROM_BAND[band] || "neutral");
+    active = { mode, band, config:withCopy(PROFILES[mode] || PROFILES.neutral, band), exercise:BAND_EXPERIENCE[band] || BAND_EXPERIENCE.neutral };
     if (env.document && env.document.body) {
       env.document.body.dataset.ageMode = mode;
       env.document.body.dataset.stage = band;
-      env.document.body.dataset.guide = PROFILES[mode].guide;
+      env.document.body.dataset.guide = (PROFILES[mode] || PROFILES.neutral).guide;
     }
     mountDemoSelector(profile, demo);
     return band;
@@ -242,7 +236,7 @@
     bandFor,
     modeFor,
     config,
-    exerciseConfig(band) { return BAND_EXPERIENCE[band] || BAND_EXPERIENCE.p56; },
+    exerciseConfig(band) { return BAND_EXPERIENCE[band] || BAND_EXPERIENCE.neutral; },
     current() { return active; },
     copy(value) { return config(value).copy; },
     mountDemoSelector,

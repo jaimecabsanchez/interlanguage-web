@@ -34,6 +34,11 @@ ok("p56 RECHAZA comprensión (P7 solo ESO)", !M.esApta(comprension_A2, "p56"));
 ok("eso acepta comprensión A2 (P7)", M.esApta(comprension_A2, "eso"));
 ok("eso admite Pre-A1 cuando el contenido tiene contexto ESO", M.esApta(img_preA1_eso, "eso"));
 
+// neutral: interacción conservadora, sin fingir una edad concreta
+ok("banda desconocida usa interacción neutral", M.esApta(ordenar_A1, "desconocida"));
+ok("neutral no hereda silenciosamente completar de p56", !M.esApta(completar_A1, "desconocida"));
+ok("neutral no bloquea por una etapa que todavía no pudo resolver", M.esApta(img_A1_p12_3, "neutral"));
+
 // filtra
 const lista = [img_preA1_3, img_A1_4, completar_A1, comprension_A2, ordenar_A1];
 ok("filtra p12 deja solo lo apto por interacción", M.filtra(lista, "p12").length === 1);

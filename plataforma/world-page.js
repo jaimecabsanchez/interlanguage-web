@@ -17,7 +17,7 @@
   };
 
   let username = "";
-  let band = "p56";
+  let band = "neutral";
   let progress = {};
   let settings = null;
   let stampIds = [];
