@@ -18,10 +18,11 @@
    ============================================================ */
 (function (root, factory) {
   "use strict";
-  const api = factory();
+  const Copy = typeof module !== "undefined" && module.exports ? require("../copy-registry.js") : root.ILCopy;
+  const api = factory(Copy);
   if (typeof module !== "undefined" && module.exports) module.exports = api;
   root.IL_ACHIEVEMENTS = api;
-})(typeof self !== "undefined" ? self : this, function () {
+})(typeof globalThis !== "undefined" ? globalThis : this, function (Copy) {
   "use strict";
 
   const FAMILIES = ["constancia", "learning", "skills", "mastery", "special"];
@@ -197,7 +198,8 @@
     return { current: current, target: target, percent: target ? Math.min(100, Math.round(current / target * 100)) : 100, done: current >= target, momentary: false };
   }
 
-  function displayName(item, band) { return band && band !== "eso" && item.nameEs ? item.nameEs : item.name; }
+  function displayName(item, band) { return Copy && Copy.reward ? Copy.reward(item, band, "name") : (band && band !== "eso" && item.nameEs ? item.nameEs : item.name); }
+  function displayCopy(item, band, field) { return Copy && Copy.reward ? Copy.reward(item, band, field) : (item && item[field]) || ""; }
   function migrateId(oldId) { return LEGACY_MAP[oldId] || null; }
   function migrateEarned(oldIds) {
     const set = new Set();
@@ -209,6 +211,6 @@
   return {
     FAMILIES, CATALOG, byId: BY_ID, LEGACY_MAP,
     evaluate, progressOf, meets, currentValue, targetValue,
-    availableFor, byFamily, displayName, migrateId, migrateEarned, isMomentary
+    availableFor, byFamily, displayName, displayCopy, migrateId, migrateEarned, isMomentary
   };
 });

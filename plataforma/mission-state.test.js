@@ -28,7 +28,7 @@ assert.equal(state.status, "in_progress");
 state = M.advance("lucia", { id: "a", correct: true, learnedExpressions: ["Have breakfast"] }, meta.date);
 assert.equal(state.currentIndex, 1);
 assert.equal(state.correctCount, 1);
-assert.equal(state.points, 10);
+assert.equal(state.points, 0, "la verdad de aprendizaje no almacena una recompensa +10 implícita");
 
 state = M.advance("lucia", { id: "b", correct: false }, meta.date);
 assert.deepEqual(state.incorrectIds, ["b"]);

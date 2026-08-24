@@ -6,24 +6,25 @@ let pass = 0, fail = 0;
 const ok = (n, c) => { if (c) { pass++; console.log("✅ " + n); } else { fail++; console.error("❌ " + n); } };
 const has = (arr, id) => arr.indexOf(id) !== -1;
 
-// Medallas de constancia por racha
-ok("racha 2 da 'streak_2'", has(M.evaluate({ streak: 2, session: {} }), "streak_2"));
-ok("racha 5 da 'streak_5'", has(M.evaluate({ streak: 5, session: {} }), "streak_5"));
-ok("racha 1 NO da 'streak_2'", !has(M.evaluate({ streak: 1, session: {} }), "streak_2"));
-ok("no se re-otorga si ya se tenía", !has(M.evaluate({ streak: 5, earned: ["streak_5"], session: {} }), "streak_5"));
+// El adaptador evalúa siempre ids del catálogo canónico.
+ok("racha 5 da 'streak-5'", has(M.evaluate({ streak: 5, session: {} }), "streak-5"));
+ok("racha 1 NO da logro de racha", !has(M.evaluate({ streak: 1, session: {} }), "streak-5"));
+ok("no se re-otorga si ya se tenía con id legacy", !has(M.evaluate({ streak: 5, earned: ["streak_5"], session: {} }), "streak-5"));
 
 // Aciertos seguidos y sesión perfecta
-ok("5 aciertos seguidos -> 'aciertos_5'", has(M.evaluate({ session: { total: 5, allCorrect: true, maxCorrectStreak: 5 } }), "aciertos_5"));
-ok("sesión perfecta -> 'pleno'", has(M.evaluate({ session: { total: 5, allCorrect: true, maxCorrectStreak: 5 } }), "pleno"));
-ok("no perfecta si falla alguno", !has(M.evaluate({ session: { total: 5, allCorrect: false, maxCorrectStreak: 3 } }), "pleno"));
+ok("5 aciertos seguidos -> 'sharp-5'", has(M.evaluate({ session: { total: 5, allCorrect: true, maxCorrectStreak: 5 } }), "sharp-5"));
+ok("sesión perfecta -> 'perfect-round'", has(M.evaluate({ session: { total: 5, allCorrect: true, maxCorrectStreak: 5 } }), "perfect-round"));
+ok("no perfecta si falla alguno", !has(M.evaluate({ session: { total: 5, allCorrect: false, maxCorrectStreak: 3 } }), "perfect-round"));
 
 // Mejora: récord de racha
-ok("record si supera su mejor marca", has(M.evaluate({ streak: 6, prevBest: 5, session: {} }), "record_racha"));
-ok("no record si no supera", !has(M.evaluate({ streak: 5, prevBest: 5, session: {} }), "record_racha"));
+ok("record si supera su mejor marca", has(M.evaluate({ streak: 6, prevBest: 5, session: {} }), "record-streak"));
+ok("no record si no supera", !has(M.evaluate({ streak: 5, prevBest: 5, session: {} }), "record-streak"));
 
 // Dominio por lecciones
-ok("primera lección", has(M.evaluate({ lessons: 1, session: {} }), "primera"));
-ok("10 lecciones", has(M.evaluate({ lessons: 10, session: {} }), "diez_lecciones"));
+ok("primera lección", has(M.evaluate({ lessons: 1, session: {} }), "first-flight"));
+ok("10 lecciones", has(M.evaluate({ lessons: 10, session: {} }), "ten-missions"));
+ok("convierte ids canónicos a persistencia legacy", JSON.stringify(M.toLegacyIds(["first-flight", "perfect-round"])) === JSON.stringify(["primera", "pleno"]));
+ok("el catálogo adaptado no contiene emojis", M.MEDALS.every(item => !item.icon));
 
 // Racha flexible con comodín
 ok("practicar ayer -> +1", M.nextStreak({ current: 3, last_practice_date: "2026-07-29", freezes_available: 1 }, "2026-07-30").current === 4);

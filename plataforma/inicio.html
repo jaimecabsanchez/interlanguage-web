@@ -318,7 +318,8 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-config.js?v=20260809d"></script>
 <script src="auth-utils.js?v=20260809d"></script>
-<script src="copy-registry.js?v=20260824a"></script>
+<script src="copy-registry.js?v=20260824b"></script>
+<script src="motor/achievements.js?v=20260824a"></script>
 <script src="etapa.js?v=20260824a"></script>
 <script src="content/schema.js?v=20260824a"></script>
 <script src="content/loader.js?v=20260817a"></script>
@@ -326,12 +327,12 @@
 <script src="contenido.js?v=20260817a"></script>
 <script src="observability.js?v=20260824a"></script>
 <script src="learning-data.js?v=20260824a"></script>
-<script src="auth.js?v=20260824a"></script>
+<script src="auth.js?v=20260824b"></script>
 <script src="motor/matriz.js?v=20260824a"></script>
-<script src="mission-state.js?v=20260824a"></script>
+<script src="mission-state.js?v=20260824b"></script>
 <script src="motor/pedagogia.js?v=20260813a"></script>
 <script src="mastery-store.js?v=20260824a"></script>
-    <script src="progress-data.js?v=20260824a"></script>
+    <script src="progress-data.js?v=20260824b"></script>
 <script src="profile-settings.js?v=20260819a"></script>
 <script src="avatar-rig.js?v=20260820c"></script>
 <script src="world-visual.js?v=20260820c"></script>
@@ -501,13 +502,15 @@
   function renderStamp(username, unit, experience) {
     const isSecondary = experience.id === "secondary";
     const stampId = isSecondary ? "weekend-planner" : "morning-explorer";
-    const stampTitle = isSecondary ? "Weekend Planner" : "Morning Explorer";
+    const reward = window.IL_ACHIEVEMENTS && IL_ACHIEVEMENTS.byId[stampId];
+    const stampTitle = reward ? IL_ACHIEVEMENTS.displayName(reward, IL_ETAPA.current().band) : stampId;
     const mark = document.querySelector(".stamp-mark"), stampCard = $("stampCard");
     if (mark && window.ILVisual) {
       mark.innerHTML = ILVisual.stamp(stampId, { locked: false, scene: true });
       if (stampCard) stampCard.classList.toggle("has-img", !!ILVisual.achievementImage(stampId));
     }
-    const target = 5; const current = Math.min(target, ILMission.unitCompletionCount(username, unit ? unit.id : ""));
+    const target = reward ? IL_ACHIEVEMENTS.targetValue(reward.criterion) : 5;
+    const current = Math.min(target, ILMission.unitCompletionCount(username, unit ? unit.id : ""));
     $("stampEyebrow").textContent = isSecondary ? "Next achievement" : "Próximo sello";
     $("stampTitle").textContent = stampTitle;
     $("stampCount").textContent = current + " / " + target;

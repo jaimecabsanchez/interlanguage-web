@@ -580,17 +580,10 @@
       });
     } catch (e) { /* el sonido nunca debe romper el ejercicio */ }
   }
-  function celebrate(root, points) {
+  function celebrate(root) {
     correctChime();
     try {
       root.classList.add("eng-win");                 // dispara el pop de la opción correcta (CSS)
-      if (points) {
-        const pop = document.createElement("span");
-        pop.className = "eng-pop"; pop.textContent = "+" + points;
-        pop.setAttribute("aria-hidden", "true");
-        root.appendChild(pop);
-        setTimeout(() => { if (pop.parentNode) pop.parentNode.removeChild(pop); }, 1200);
-      }
     } catch (e) {}
   }
 
@@ -770,7 +763,6 @@
           correct: correct,
           attempt_no: attempts,
           hint_used: attempts > 1 || guided,
-          points: correct && attempts === 1 && !guided ? 10 : 0,
           selectedLabel: result.selectedLabel,
           correctLabel: result.correctLabel,
           learnedExpressions: result.learnedExpressions || [],
@@ -809,7 +801,7 @@
             ? (secondary ? "The correct answer is “" : "La respuesta correcta es “") + result.correctLabel + "”."
             : (secondary ? "You solved the activity correctly." : "Has resuelto la actividad correctamente."));
         renderFeedback(feedback, "success", ui.success, successCopy, result.context);
-        celebrate(root, attempts === 1 && !guided ? 10 : 0);
+        celebrate(root);
         if (typeof options.onFeedback === "function") options.onFeedback("success");
         resolve(true);
       } else if (attempts === 1) {

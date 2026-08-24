@@ -13,6 +13,8 @@ assert.equal(Copy.text("startCta", "p56"), "Empezar", "p56 conserva chrome compr
 assert.equal(Copy.skill("grammar", "p56"), "Grammar", "p56 introduce inglés en aprendizaje");
 assert.equal(Copy.missionTitle({ id:"rutina-diaria" }, "p56"), "My daily routine");
 assert.equal(Copy.text("startCta", "eso"), "Start session");
+assert.equal(Copy.reward({ name:"Perfect Round", nameEs:"Ronda perfecta" }, "p56", "name"), "Ronda perfecta");
+assert.equal(Copy.reward({ name:"Perfect Round", nameEs:"Ronda perfecta" }, "eso", "name"), "Perfect Round");
 assert.equal(Copy.normalizeBand("desconocida"), "neutral");
 assert.equal(Copy.text("startCta", "desconocida"), "Empezar", "fallback neutral y seguro");
 assert.equal(Copy.missionTitle({ id:"custom", titulo:{ es:"Mi unidad", en:"My unit" } }, "p34"), "Mi unidad");

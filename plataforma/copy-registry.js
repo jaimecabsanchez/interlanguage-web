@@ -89,11 +89,18 @@
     const key = type === "emparejar" || type === "ordenar" || type === "hablar" ? type : (hasAudio ? "audio" : "elegir");
     const entry = SUPPORT[key]; return englishLearningLabel(normalizeBand(band)) ? entry.en : entry.es;
   }
+  function reward(item, band, field) {
+    if (!item) return "";
+    const safeBand = normalizeBand(band); const english = safeBand === "eso";
+    if (!field || field === "name") return english ? (item.name || item.nameEs || "") : (item.nameEs || item.name || "");
+    const englishField = field + "En"; const spanishField = field + "Es";
+    return english ? (item[englishField] || item[field] || item[spanishField] || "") : (item[spanishField] || item[field] || item[englishField] || "");
+  }
   function view(band) {
     const safeBand = normalizeBand(band); const out = {};
     Object.keys(COPY[safeBand]).forEach(key => { out[key] = key === "greeting" ? name => text(key, safeBand, { name }) : text(key, safeBand); });
     return Object.freeze(out);
   }
 
-  return { BANDS, LANGUAGE, COPY, SKILLS, MISSIONS, SUPPORT, normalizeBand, text, skill, missionTitle, support, view, has:key => BANDS.some(band => COPY[band][key] != null) };
+  return { BANDS, LANGUAGE, COPY, SKILLS, MISSIONS, SUPPORT, normalizeBand, text, skill, missionTitle, support, reward, view, has:key => BANDS.some(band => COPY[band][key] != null) };
 });

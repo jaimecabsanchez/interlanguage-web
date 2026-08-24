@@ -173,7 +173,6 @@
       state.currentCorrectStreak += 1;
       state.maxCorrectStreak = Math.max(state.maxCorrectStreak, state.currentCorrectStreak);
       state.incorrectIds = state.incorrectIds.filter(id => id !== itemId);
-      state.points += Number(result.points) || 10;
     } else if (!technical) {
       state.currentCorrectStreak = 0;
       if (itemId && state.incorrectIds.indexOf(itemId) === -1) state.incorrectIds.push(itemId);

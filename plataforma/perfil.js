@@ -50,7 +50,7 @@
       const username = profile.username || ""; const settings = ILProfileSettings.setActive(username, profile.sex);
       IL_ETAPA.apply(profile); band = IL_ETAPA.current().band; stageCopy();
       const [learning, progress, medals] = await Promise.all([
-        ILProgressData.load(ILAuth, window.ILMission, { ageMode:IL_ETAPA.current().mode }), ILAuth.getProgress(), ILAuth.listMedals()
+        ILProgressData.load(ILAuth, window.ILMission, { ageMode:IL_ETAPA.current().mode, ageBand:IL_ETAPA.current().band }), ILAuth.getProgress(), ILAuth.listMedals()
       ]);
       if (!learning || !progress) throw new Error("No profile data");
       const stamps = mergeStamps(learning, medals); const stampIds = stamps.map(item => item.id); const summary = learning.profileSummary;

@@ -98,26 +98,20 @@
     }
     return false;
   }
-  function metric(current, target) {
-    if (current == null) return { current: null, target: target, percent: null, unlocked: false };
-    const safe = Math.max(0, Number(current) || 0);
-    return { current: safe, target: target, percent: clamp(Math.round(safe / target * 100), 0, 100), unlocked: safe >= target };
-  }
-  function stamp(id, name, description, requirement, value, icon) {
-    return Object.assign({ id, name, description, requirement, icon: icon || "stamp" }, value);
-  }
   function buildStamps(data) {
-    const focusStamp = data.ageMode === "secondary"
-      ? stamp("weekend-planner", "Weekend Planner", "Planificas situaciones cotidianas con un inglés más natural.", "Completa 5 misiones sobre planes y conversaciones.", metric(data.focusMissions, 5), "calendar")
-      : stamp("morning-explorer", "Morning Explorer", "Dominas cada vez más expresiones de tu rutina.", "Completa 5 misiones sobre rutinas.", metric(data.focusMissions, 5), "route");
-    const stamps = [
-      stamp("first-flight", "First Flight", "Tu primer paso en la ruta de aprendizaje.", "Completa tu primera misión.", metric(data.lessons, 1), "plane"),
-      stamp("weekly-explorer", "Weekly Explorer", "Has mantenido un ritmo constante esta semana.", "Completa 5 sesiones en una semana.", metric(data.weekCount, 5), "calendar"),
-      focusStamp,
-      stamp("word-collector", "Word Collector", "Tu vocabulario sigue creciendo.", "Aprende 50 palabras.", metric(data.wordsLearned, 50), "books"),
-      stamp("listening-star", "Listening Star", "Reconoces el inglés con más seguridad.", "Completa correctamente 20 ejercicios de listening.", metric(data.listeningCorrect, 20), "ear"),
-      stamp("comeback", "Comeback", "Volviste a practicar después de una pausa.", "Retoma tu práctica tras varios días.", data.comeback == null ? metric(null, 1) : metric(data.comeback ? 1 : 0, 1), "refresh")
-    ];
+    const A = typeof require === "function" ? require("./motor/achievements.js") : (typeof globalThis !== "undefined" && globalThis.IL_ACHIEVEMENTS);
+    if (!A) return { items:[], next:null, unlocked:0, status:"catalog_unavailable" };
+    const band = data.ageBand || "neutral";
+    const ctx = { lessons:data.lessons || 0, streak:data.streak || 0, prevBest:data.bestStreak || 0, weekCount:data.weekCount || 0,
+      focusMissions:data.focusMissions || 0, wordsLearned:data.wordsLearned || 0, skillCorrect:{ listening:data.listeningCorrect || 0 },
+      mastery:{}, comeback:!!data.comeback, earned:[] };
+    const catalog = band === "neutral" ? A.CATALOG : A.availableFor(band);
+    const stamps = catalog.map(item => {
+      const progress = A.progressOf(item.id, ctx);
+      return { id:item.id, name:A.displayName(item, band), description:A.displayCopy(item, band, "description"),
+        requirement:A.displayCopy(item, band, "requirement"), icon:item.visual, family:item.family,
+        current:progress.current, target:progress.target, percent:progress.percent, unlocked:progress.done, momentary:progress.momentary };
+    });
     const next = stamps.filter(item => !item.unlocked && item.current != null).sort((a, b) => (b.percent || 0) - (a.percent || 0))[0] || null;
     return { items: stamps, next: next, unlocked: stamps.filter(item => item.unlocked).length };
   }
@@ -213,6 +207,7 @@
     const data = {
       isDemo: !!input.isDemo,
       ageMode: input.ageMode || "primary-upper",
+      ageBand: input.ageBand || (input.ageMode === "secondary" ? "eso" : (input.ageMode === "primary-upper" ? "p56" : (input.ageMode === "primary-young" ? "p34" : "neutral"))),
       profile: profile,
       placement: input.placement || null,
       lessons: Number(progress.lessons) || 0,
@@ -267,7 +262,8 @@
     if (mission && typeof mission.unitCompletionCount === "function") focusMissions = mission.unitCompletionCount(profile.username || "", focusUnitId);
     return buildSnapshot({
       profile: profile, progress: results[0], week: results[1], activityDays: results[2], authSkills: results[3],
-      masteredPhrases: results[4], placement: results[5], learningMetrics:results[6], isDemo: auth.isDemo(), ageMode: ageMode, focusMissions: focusMissions
+      masteredPhrases: results[4], placement: results[5], learningMetrics:results[6], isDemo: auth.isDemo(), ageMode: ageMode, focusMissions: focusMissions,
+      ageBand:options.ageBand || (profile && profile.stage) || (ageMode === "secondary" ? "eso" : (ageMode === "primary-upper" ? "p56" : (ageMode === "primary-young" ? "p34" : "neutral")))
     });
   }
 

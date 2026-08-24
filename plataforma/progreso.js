@@ -360,7 +360,7 @@
       ILProfileSettings.setActive(profile.username || "", profile.sex);
       currentUser = profile.username || "";
       IL_ETAPA.apply(profile); ageMode = IL_ETAPA.current().mode; ageBand = IL_ETAPA.current().band;
-      snapshot = await ILProgressData.load(ILAuth, window.ILMission, { ageMode: ageMode }); if (!snapshot) throw new Error("No progress snapshot");
+      snapshot = await ILProgressData.load(ILAuth, window.ILMission, { ageMode:ageMode, ageBand:ageBand }); if (!snapshot) throw new Error("No progress snapshot");
       renderHeader(snapshot); renderWeek(snapshot); renderLearning(snapshot); renderStamps(snapshot);
       if (ageBand === "p12" || ageBand === "p34") { applyPrimaryBand(snapshot); await renderWorldPreview(snapshot); }
       setupTabs(); setupDialog();

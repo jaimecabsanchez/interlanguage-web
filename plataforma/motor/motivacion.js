@@ -7,54 +7,23 @@
    Navegador (window.IL_MOTIVACION) y Node (module.exports).
    ============================================================ */
 (function (root, factory) {
-  const api = factory();
+  const Achievements = typeof module !== "undefined" && module.exports ? require("./achievements.js") : root.IL_ACHIEVEMENTS;
+  const api = factory(Achievements);
   if (typeof module !== "undefined" && module.exports) module.exports = api;
   root.IL_MOTIVACION = api;
-})(typeof self !== "undefined" ? self : this, function () {
+})(typeof globalThis !== "undefined" ? globalThis : this, function (Achievements) {
   "use strict";
 
-  // Catálogo de medallas (mismos ids que la tabla rewards de la BD).
-  // family: constancia · aciertos · mejora · dominio
-  const MEDALS = [
-    { id: "streak_2",      family: "constancia", name: "2 días seguidos",     icon: "🔥" },
-    { id: "streak_5",      family: "constancia", name: "5 días seguidos",     icon: "🔥" },
-    { id: "streak_10",     family: "constancia", name: "10 días seguidos",    icon: "🔥" },
-    { id: "streak_30",     family: "constancia", name: "Un mes de racha",     icon: "🏆" },
-    { id: "aciertos_5",    family: "aciertos",   name: "5 aciertos seguidos", icon: "🎯" },
-    { id: "aciertos_10",   family: "aciertos",   name: "10 aciertos seguidos",icon: "🎯" },
-    { id: "pleno",         family: "aciertos",   name: "Sesión perfecta",     icon: "⭐" },
-    { id: "record_racha",  family: "mejora",     name: "Nuevo récord de racha",icon: "📈" },
-    { id: "primera",       family: "dominio",    name: "Primera lección",     icon: "🏅" },
-    { id: "diez_lecciones",family: "dominio",    name: "10 lecciones",        icon: "🎓" }
-  ];
-  const byId = {}; MEDALS.forEach(m => byId[m.id] = m);
-
-  // Criterios (puros). ctx = { streak, prevBest, lessons, session:{total, allCorrect, maxCorrectStreak} }
-  const CRITERIA = {
-    streak_2:       (c) => c.streak >= 2,
-    streak_5:       (c) => c.streak >= 5,
-    streak_10:      (c) => c.streak >= 10,
-    streak_30:      (c) => c.streak >= 30,
-    aciertos_5:     (c) => c.session.maxCorrectStreak >= 5,
-    aciertos_10:    (c) => c.session.maxCorrectStreak >= 10,
-    pleno:          (c) => c.session.total >= 3 && c.session.allCorrect,
-    record_racha:   (c) => c.streak >= 2 && c.streak > (c.prevBest || 0),
-    primera:        (c) => c.lessons >= 1,
-    diez_lecciones: (c) => c.lessons >= 10
-  };
-
-  // Devuelve las medallas RECIÉN ganadas (cumplen criterio y no se tenían ya).
-  function evaluate(ctx) {
-    const earned = new Set(ctx.earned || []);
-    const session = ctx.session || { total: 0, allCorrect: false, maxCorrectStreak: 0 };
-    const c = { streak: ctx.streak || 0, prevBest: ctx.prevBest || 0, lessons: ctx.lessons || 0, session: session };
-    const out = [];
-    for (const m of MEDALS) {
-      if (earned.has(m.id)) continue;
-      if (CRITERIA[m.id] && CRITERIA[m.id](c)) out.push(m.id);
-    }
-    return out;
-  }
+  if (!Achievements) throw new Error("IL_ACHIEVEMENTS debe cargarse antes de motivacion.js");
+  const MEDALS = Achievements.CATALOG;
+  const byId = Achievements.byId;
+  const LEGACY_ID_BY_CANONICAL = Object.freeze({
+    "first-flight":"primera", "ten-missions":"diez_lecciones", "streak-5":"streak_5", "streak-10":"streak_10",
+    "streak-30":"streak_30", "sharp-5":"aciertos_5", "sharp-10":"aciertos_10", "perfect-round":"pleno", "record-streak":"record_racha"
+  });
+  function canonicalEarned(ids) { return Achievements.migrateEarned(ids).concat((ids || []).filter(id => Achievements.byId[id])); }
+  function evaluate(ctx) { return Achievements.evaluate(Object.assign({}, ctx, { earned:canonicalEarned(ctx && ctx.earned) })); }
+  function toLegacyIds(ids) { return (ids || []).map(id => LEGACY_ID_BY_CANONICAL[id]).filter(Boolean); }
 
   // Racha FLEXIBLE: un día perdido no la rompe si hay comodín disponible.
   // row = { current, last_practice_date, freezes_available }
@@ -71,5 +40,5 @@
     return { current: 1, freezes_available: freezes, last_practice_date: today, usedFreeze: false };
   }
 
-  return { MEDALS, byId, CRITERIA, evaluate, nextStreak };
+  return { MEDALS, byId, evaluate, nextStreak, canonicalEarned, toLegacyIds, LEGACY_ID_BY_CANONICAL };
 });

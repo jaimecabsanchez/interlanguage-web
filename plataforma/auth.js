@@ -494,7 +494,8 @@
   API.listMedals = async function () {
     const Mot = (typeof window !== "undefined" && window.IL_MOTIVACION) || null;
     const p = await this.getProgress(); if (!p || !Mot) return [];
-    const earned = new Set(await this._earnedMedals(p));
+    const stored = await this._earnedMedals(p);
+    const earned = new Set(Mot.canonicalEarned ? Mot.canonicalEarned(stored) : stored);
     return Mot.MEDALS.map(m => ({ ...m, earned: earned.has(m.id) }));
   };
 
@@ -522,9 +523,10 @@
     if (Mot) {
       const earned = await this._earnedMedals(p);
       newMedals = Mot.evaluate({ streak: p.streak, prevBest: prevBest, lessons: p.lessons, session: summary, earned: earned });
-      if (newMedals.length) await this._awardMedals(p, newMedals);
+      const persistentIds = Mot.toLegacyIds ? Mot.toLegacyIds(newMedals) : newMedals;
+      if (persistentIds.length) await this._awardMedals(p, persistentIds);
     }
-    p.newMedals = newMedals.map(id => (Mot ? Mot.byId[id] : { id, name: id, icon: "🏅" }));
+    p.newMedals = newMedals.map(id => (Mot ? Mot.byId[id] : { id, name: id, visual: "stamp" }));
     return p;
   };
 

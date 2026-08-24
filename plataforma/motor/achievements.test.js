@@ -13,6 +13,8 @@ const has = (arr, id) => arr.indexOf(id) !== -1;
 ok("familias válidas", A.CATALOG.every(i => A.FAMILIES.indexOf(i.family) >= 0));
 (function () { const seen = {}; let dup = false; A.CATALOG.forEach(i => { if (seen[i.id]) dup = true; seen[i.id] = 1; }); ok("ids únicos (sin duplicados)", !dup); })();
 ok("cada logro tiene criterio y visual", A.CATALOG.every(i => i.criterion && i.visual));
+ok("motivación consume el mismo catálogo", M.MEDALS === A.CATALOG);
+ok("el catálogo canónico no usa emojis de interfaz", A.CATALOG.every(i => !i.icon));
 ok("rarezas válidas", A.CATALOG.every(i => ["common", "rare", "epic"].indexOf(i.rarity) >= 0));
 ok("momentary bien marcado", A.byId["perfect-round"].momentary === true && A.byId["first-flight"].momentary === false);
 
@@ -54,6 +56,7 @@ ok("weekend-planner solo en ESO", has(A.evaluate({ focusMissions: 5, band: "eso"
 ok("morning-explorer NO en ESO", !has(A.evaluate({ focusMissions: 5, band: "eso", session: {} }), "morning-explorer"));
 ok("morning-explorer sí en p12", has(A.evaluate({ focusMissions: 5, band: "p12", session: {} }), "morning-explorer"));
 ok("availableFor(eso) excluye morning", A.availableFor("eso").every(i => i.id !== "morning-explorer"));
+ok("copy de reward respeta banda", A.displayName(A.byId["perfect-round"], "p12") === "Ronda perfecta" && A.displayName(A.byId["perfect-round"], "eso") === "Perfect Round");
 
 // ---- progressOf ----
 (function () { const p = A.progressOf("ten-missions", { lessons: 4 }); ok("progreso 4/10 = 40%", p.current === 4 && p.target === 10 && p.percent === 40 && p.done === false); })();

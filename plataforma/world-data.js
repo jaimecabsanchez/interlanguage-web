@@ -4,9 +4,10 @@
    ============================================================ */
 (function (root, factory) {
   "use strict";
-  if (typeof module === "object" && module.exports) module.exports = factory();
-  else root.ILWorldData = factory();
-})(typeof globalThis !== "undefined" ? globalThis : this, function () {
+  const Achievements = typeof module === "object" && module.exports ? require("./motor/achievements.js") : root.IL_ACHIEVEMENTS;
+  if (typeof module === "object" && module.exports) module.exports = factory(Achievements);
+  else root.ILWorldData = factory(Achievements);
+})(typeof globalThis !== "undefined" ? globalThis : this, function (Achievements) {
   "use strict";
 
   const ALL = ["p12", "p34", "p56", "eso"];
@@ -84,7 +85,9 @@
     { id:"pet-menta", category:"world", section:"Compañero", name:"Menta", nameEn:"Menta", visual:"turtle", settingKey:"worldCompanion", settingValue:"pet-menta", bands:YOUNG, unlock:worldLevelRule(5) }
   ]);
 
-  const STAMP_NAMES = { "first-flight":"First Flight", "weekly-explorer":"Weekly Explorer", "word-collector":"Word Collector" };
+  const STAMP_NAMES = ["first-flight", "weekly-explorer", "word-collector"].reduce((names, id) => {
+    const item = Achievements && Achievements.byId[id]; names[id] = item ? item.name : id; return names;
+  }, {});
   function band(value) { return ALL.indexOf(value) >= 0 ? value : "p56"; }
   function worldLevel(progress) {
     const lessons = Math.max(0, Number(progress && progress.lessons) || 0);
@@ -123,7 +126,11 @@
   function requirement(item, ctx, secondary) {
     const rule = item.unlock || always; const current = valueFor(rule, ctx); const remaining = Math.max(0, Number(rule.value) - current);
     if (rule.type === "always") return secondary ? "Available" : "Disponible";
-    if (rule.type === "stamp") return (secondary ? "Earn " : "Consigue ") + (STAMP_NAMES[rule.value] || rule.value);
+    if (rule.type === "stamp") {
+      const achievement = Achievements && Achievements.byId[rule.value];
+      const name = achievement && Achievements.displayName ? Achievements.displayName(achievement, secondary ? "eso" : "p34") : (STAMP_NAMES[rule.value] || rule.value);
+      return (secondary ? "Earn " : "Consigue ") + name;
+    }
     if (rule.type === "streak") return remaining > 0
       ? (secondary ? remaining + " more days in your streak" : "Mantén tu racha " + remaining + (remaining === 1 ? " día más" : " días más"))
       : (secondary ? "Streak achieved" : "Racha conseguida");
