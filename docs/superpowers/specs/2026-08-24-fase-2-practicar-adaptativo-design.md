@@ -1,7 +1,7 @@
 # Fase 2 · Practicar adaptativo
 
 **Fecha:** 2026-08-24  
-**Estado:** diseño aprobado; pendiente de revisión de la especificación escrita
+**Estado:** aprobado para implementación con ajustes de revisión incorporados
 
 ## 1. Objetivo
 
@@ -62,28 +62,36 @@ Minimiza pasos, pero oculta el motivo de la selección y no permite que el alumn
 
 ## 5. Modelo de opciones
 
-La pantalla presenta tres caminos estables:
+La pantalla presenta tres caminos estables. La misión diaria conserva prioridad de producto: la práctica libre nunca debe competir visualmente con una misión pendiente.
 
 ### 5.1 Recomendado para ti
 
-Orden de decisión:
+Si la misión diaria está pendiente, la primera recomendación es completarla y se presenta con prioridad visual clara. Las rutas de práctica libre siguen accesibles, pero como opciones secundarias.
+
+Cuando la misión diaria ya está completada, el orden de decisión es:
 
 1. ejercicios cuyo dominio vence y son compatibles con edad/contenido;
 2. habilidad con evidencia suficiente que conviene reforzar;
 3. práctica extra compatible con la banda y CEFR;
-4. misión diaria, solo como fallback explícito si no existe ninguna práctica extra disponible.
+4. práctica general compatible como fallback explícito.
 
 La tarjeta explica la causa sin exponer puntuaciones internas. Ejemplos: «Tienes 3 cosas listas para repasar» o «Practicar escucha te ayudará a afianzar lo de esta semana».
 
 ### 5.2 Repasar errores
 
-Utiliza los errores pendientes de la misión diaria mediante `leccion.html?mode=errors`. Si no existen, la opción permanece visible como estado positivo no interactivo: «No tienes errores pendientes». No redirige silenciosamente a otro modo.
+Utiliza los intentos pendientes de consolidar de la misión diaria mediante `leccion.html?mode=errors`. En `p12` el concepto visible es siempre «Repasar», con copy positivo como «Vamos a practicar otra vez algunas cosas». La palabra «errores» no aparece. `p34` puede explicar «Practica otra vez lo que más cuesta»; `p56/eso` pueden usar un lenguaje progresivamente más explícito.
+
+Si no existen elementos pendientes, la opción permanece visible como estado positivo no interactivo: «Todo listo por ahora». No redirige silenciosamente a otro modo.
 
 ### 5.3 Elegir habilidad
 
 Abre un selector contenido en la misma pantalla. Solo muestra habilidades que tengan al menos un ejercicio compatible con la banda y el contenido asignado al perfil.
 
+En `p12`, la primera vista muestra como máximo tres conceptos infantiles —«Escuchar», «Palabras» y «Hablar»— en lugar de terminología académica. `p34` introduce gradualmente «Vocabulario», «Gramática» o «Lectura». `p56/eso` utilizan los nombres canónicos/contextuales de habilidades.
+
 La navegación resultante es `leccion.html?mode=skill&skill=<id>`. El parámetro `skill` se valida contra los IDs canónicos; un valor inválido produce un estado seguro y observable, no un fallback engañoso.
+
+Ante varias habilidades o modalidades pedagógicamente equivalentes, `practice-options.js` aplica variedad usando práctica reciente y un cooldown ligero. Esta regla solo desempata: nunca desplaza una necesidad pedagógica importante, un repaso vencido ni la misión diaria pendiente.
 
 ## 6. Adaptación por banda
 
@@ -123,7 +131,7 @@ La navegación resultante es `leccion.html?mode=skill&skill=<id>`. El parámetro
 1. `practicar.js` obtiene el perfil autenticado y aplica `IL_ETAPA`.
 2. Carga placement, progreso, eventos/mastery locales disponibles, estado de misión y contenido ya ensamblado.
 3. Normaliza un contexto sin información personal innecesaria.
-4. `practice-options.js` cruza disponibilidad con `ILAgePolicy`, `IL_MATRIZ` y las unidades asignadas al perfil.
+4. `practice-options.js` cruza disponibilidad con `ILAgePolicy`, `IL_MATRIZ`, unidades asignadas, necesidad pedagógica y práctica reciente.
 5. Devuelve el modelo de opciones.
 6. La UI renderiza únicamente opciones demostrables.
 7. Al elegir una ruta, se navega a `leccion.html` con parámetros explícitos.
@@ -144,14 +152,15 @@ No se guarda una recomendación como dato permanente en esta entrega. Se recalcu
 - rota contenido para evitar repetición cuando haya alternativas;
 - muestra un resumen de práctica, no la recompensa de misión diaria.
 
-Si la habilidad deja de tener contenido compatible entre la pantalla y la sesión, se muestra «Esta práctica todavía no está disponible» con regreso a Practicar.
+Si la habilidad deja de tener contenido compatible entre la pantalla y la sesión, se muestra «Esta práctica todavía no está disponible» con regreso a Practicar y preservando el resto de opciones. Solo se ofrece volver a Inicio cuando no exista ninguna práctica disponible.
 
 ## 9. Estados y errores
 
 - **Carga:** skeletons con `aria-busy`, sin bloquear toda la pantalla con un spinner permanente.
 - **Sin errores pendientes:** estado positivo, no botón deshabilitado sin explicación.
 - **Sin mastery suficiente:** la recomendación usa práctica extra y lo explica de forma neutral.
-- **Sin contenido compatible:** estado vacío con vuelta a Inicio; nunca inventa ejercicios.
+- **Skill sin contenido compatible:** estado claro con vuelta a Practicar y acceso a las demás opciones.
+- **Sin ninguna práctica compatible:** estado vacío con vuelta a Inicio; nunca inventa ejercicios.
 - **Sin conexión:** conserva navegación y explica que no se pudo preparar la práctica.
 - **Parámetro inválido:** `invalid_data` en observabilidad y estado seguro.
 - **Fallo al registrar un intento:** se mantiene la outbox existente; no se penaliza al alumno.
@@ -191,9 +200,12 @@ Los nombres de habilidades reutilizan `ILCopy.skill`. El inglés editorial dentr
 
 ### Unitarias
 
-- prioridad: vencido → habilidad a reforzar → extra → diaria;
+- misión diaria pendiente siempre conserva prioridad visual y de recomendación;
+- con misión completada: vencido → habilidad a reforzar → extra compatible;
+- cooldown reciente solo desempata opciones pedagógicamente equivalentes;
 - errores disponibles/no disponibles;
 - habilidades sin contenido excluidas;
+- `p12` expone inicialmente como máximo Escuchar / Palabras / Hablar y no muestra «errores»;
 - banda y skill inválidas usan estado seguro;
 - combinaciones edad × CEFR sin techo artificial;
 - `mode=skill` no muta la misión diaria;
@@ -214,6 +226,7 @@ Los nombres de habilidades reutilizan `ILCopy.skill`. El inglés editorial dentr
 - teclado, foco, estados vacíos y ausencia de desbordamiento horizontal;
 - sin errores de consola;
 - recorrido Practicar → habilidad → resumen → Practicar;
+- skill que pierde disponibilidad vuelve a Practicar, no a Inicio;
 - misión diaria conserva exactamente su estado antes y después de práctica extra.
 
 ### Regresión
@@ -244,6 +257,9 @@ Cada entrega sube `?v=`, mantiene el árbol verde y se guarda en un commit de un
 
 - `Practicar` abre un centro guiado y nunca inicia una sesión accidentalmente.
 - Las tres rutas comunican propósito y disponibilidad real.
+- Una misión diaria pendiente continúa siendo la acción prioritaria.
+- `p12` usa conceptos infantiles y nunca presenta «Repasar errores».
+- La variedad evita repetición sin desplazar una necesidad pedagógica superior.
 - `p12/p34`, `p56` y `eso` cumplen su política lingüística.
 - La práctica por habilidad registra aprendizaje sin modificar la misión diaria.
 - Edad y CEFR permanecen independientes.
