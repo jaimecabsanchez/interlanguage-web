@@ -23,7 +23,7 @@
 .il-stamp__beads circle{fill:color-mix(in srgb,var(--il-muted) 60%,var(--il-surface))}
 .il-stamp__disc{fill:var(--il-surface)}
 .il-stamp__edge{stroke:var(--il-border);stroke-width:1.4}
-.il-stamp__shine{fill:#fff;opacity:.5}
+.il-stamp__shine{fill:var(--il-on-primary);opacity:.5}
 
 /* CONSEGUIDO · aro y puntos con color de familia; disco con leve tinte. */
 .il-stamp.is-earned .il-stamp__rim{fill:color-mix(in srgb,var(--fam) 54%,var(--il-surface))}

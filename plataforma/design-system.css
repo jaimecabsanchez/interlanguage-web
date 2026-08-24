@@ -17,6 +17,8 @@
   --il-error:#b43a3a;
   --il-warning:#a86100;
   --il-warning-ink:#754600;
+  --il-info:#2f6fed;
+  --il-info-ink:#214f9f;
   --il-background:#f7f6f1;
   --il-surface:#ffffff;
   --il-surface-secondary:#eef3f4;
@@ -33,6 +35,8 @@
   --il-success-soft:#e7f4ef;
   --il-error-soft:#fbecec;
   --il-warning-soft:#fff4df;
+  --il-info-soft:#edf3ff;
+  --il-neutral-soft:#f3f5f6;
   --il-focus:#2f6fed;
   --il-on-primary:#ffffff;
   --il-on-secondary:#16294a;
@@ -40,6 +44,16 @@
   --il-on-dark:#ffffff;
   --il-error-hover:#922f2f;
   --il-overlay:rgba(11,25,45,.56);
+  --il-surface-glass:rgba(255,255,255,.96);
+  --il-on-dark-muted:rgba(255,255,255,.55);
+  --il-on-dark-soft:rgba(255,255,255,.72);
+  --il-primary-shadow:rgba(22,41,74,.45);
+  --il-primary-shadow-soft:rgba(22,41,74,.40);
+  --il-success-border:rgba(22,132,103,.22);
+  --il-error-border:rgba(180,58,58,.22);
+  --il-warning-border:rgba(168,97,0,.22);
+  --il-primary-border:rgba(22,41,74,.16);
+  --il-secondary-border:rgba(199,73,45,.18);
 
   /* Avatar modular · paleta inclusiva y compartida */
   --il-avatar-skin-1:#f7d8c4;
@@ -177,7 +191,11 @@
   --il-transition-base:var(--il-duration-base) var(--il-ease);
   --il-motion-fast:var(--il-duration-fast);
   --il-motion:var(--il-duration-base);
-  --il-touch:44px;
+  --il-touch-target:44px;
+  --il-control-height:48px;
+  --il-density-gap:var(--il-space-4);
+  --il-copy-measure:64ch;
+  --il-touch:var(--il-touch-target);
 
   /* Layout. Los breakpoints se documentan como tokens y se repiten
      literalmente en @media porque CSS no admite var() en media queries. */
@@ -210,21 +228,46 @@
 :root[data-stage="p12"],body[data-stage="p12"]{
   --il-scale:1.08;
   --il-radius:var(--il-radius-lg);
+  --il-touch-target:56px;
+  --il-control-height:56px;
+  --il-density-gap:var(--il-space-5);
+  --il-copy-measure:38ch;
 }
 
 :root[data-stage="p34"],body[data-stage="p34"]{
   --il-scale:1.04;
   --il-radius:var(--il-radius-lg);
+  --il-touch-target:52px;
+  --il-control-height:52px;
+  --il-density-gap:var(--il-space-4);
+  --il-copy-measure:46ch;
 }
 
 :root[data-stage="p56"],body[data-stage="p56"]{
   --il-scale:1;
   --il-radius:var(--il-radius-md);
+  --il-touch-target:48px;
+  --il-control-height:48px;
+  --il-density-gap:var(--il-space-4);
+  --il-copy-measure:58ch;
 }
 
 :root[data-stage="eso"],body[data-stage="eso"]{
   --il-scale:.97;
   --il-radius:var(--il-radius-sm);
+  --il-touch-target:44px;
+  --il-control-height:44px;
+  --il-density-gap:var(--il-space-3);
+  --il-copy-measure:68ch;
+}
+
+:root[data-stage="neutral"],body[data-stage="neutral"]{
+  --il-scale:1;
+  --il-radius:var(--il-radius-md);
+  --il-touch-target:48px;
+  --il-control-height:48px;
+  --il-density-gap:var(--il-space-4);
+  --il-copy-measure:58ch;
 }
 
 html[data-il-text-size="large"]{font-size:112.5%;}
