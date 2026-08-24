@@ -1,7 +1,7 @@
 # Fase 1 — Design system y arquitectura por edad
 
 Fecha: 2026-08-24  
-Estado: propuesta para revisión  
+Estado: aprobado con ajustes
 Ámbito: `plataforma/` (Interlanguage HOME)
 
 ## 1. Objetivo
@@ -80,7 +80,8 @@ Se creará `copy-registry.js` como módulo puro y testeable. Su API mínima ser�
 Reglas lingüísticas:
 
 - `p12` y `p34`: interfaz, instrucciones, acciones, habilidades y nombres de misión visibles en español;
-- `p56` y `eso`: inglés cuando el patrón del producto lo requiera;
+- `p56`: interfaz principalmente comprensible en español, introduciendo inglés de forma contextual en misión, aprendizaje y acciones cuando sea natural; el chrome no se traduce automáticamente;
+- `eso`: inglés con mucha más presencia, manteniendo siempre claridad;
 - el contenido lingüístico de ejercicios no se traduce;
 - los títulos de contenido deben declarar variantes `es/en` o resolver mediante el mapa existente;
 - una clave ausente usa un fallback explícito y genera una señal de observabilidad en desarrollo; no muestra `undefined` ni una etiqueta legacy accidental;
@@ -108,10 +109,10 @@ Política objetivo:
 |---|---|---:|---|---|---|
 | `p12` | español | 56 px | mínima | alta, puntual | baja |
 | `p34` | español | 52 px | baja | media | media-baja |
-| `p56` | inglés contextual | 48 px | media | discreta | media-alta |
+| `p56` | español + inglés contextual | 48 px | media | discreta | media-alta |
 | `eso` | inglés/maduro | 44 px | alta controlada | mínima | alta |
 
-`data-stage` seguirá siendo el selector CSS estable. No se duplicará la banda en clases manuales de cada página.
+`data-stage` seguirá siendo el selector CSS estable. No se duplicará la banda en clases manuales de cada página. Una banda desconocida no se convertirá silenciosamente en `p56`: primero se resolverá desde perfil, estado o contexto; si no es posible se aplicará una política neutral segura y se registrará `invalid_data`.
 
 ### 4.5 Matriz edad × CEFR
 
@@ -163,7 +164,8 @@ No se añaden nuevos logros. Se retira el `+10` genérico de la experiencia porq
 
 ### `p56`
 
-- Copy funcional en inglés donde ya corresponde.
+- Chrome y explicaciones principalmente comprensibles en español.
+- Inglés contextual en misión, aprendizaje y acciones donde resulte natural.
 - Targets de 48 px y densidad media.
 - Mayor visibilidad de contexto y progreso.
 - Ayuda discreta, no infantil.
@@ -172,8 +174,10 @@ No se añaden nuevos logros. Se retira el `+10` genérico de la experiencia porq
 
 - Tono maduro y compacto.
 - Targets nunca inferiores a 44 px.
-- Nemo ausente salvo caso editorial justificado.
+- Inglés con mucha más presencia, sin comprometer la claridad.
 - Cero infantilización y ninguna regresión al consolidar Primaria.
+
+En todas las bandas, la identidad o avatar del propio alumno tiene prioridad. Nemo no se convierte en mascota persistente: se limita a apoyos puntuales de bienvenida, pista, resultado o desbloqueo cuando aporte comprensión.
 
 ## 6. Migración incremental
 
@@ -212,7 +216,7 @@ No se añaden nuevos logros. Se retira el `+10` genérico de la experiencia porq
 ## 7. Manejo de errores y compatibilidad
 
 - Copy ausente: fallback seguro, señal de observabilidad y test fallido en catálogos requeridos.
-- Banda desconocida: fallback `p56`, igual que la plataforma actual.
+- Banda desconocida: resolver desde perfil/estado/contexto; si no es posible, política neutral segura, `data-stage="neutral"` y evento observable `invalid_data`. Nunca fallback silencioso a `p56`.
 - Reward legacy: migración idempotente al id canónico; ids sin equivalencia se conservan como dato histórico o se ignoran solo para presentación, nunca se borran.
 - Componente no montado: la página conserva su HTML existente; las mejoras JS son progresivas.
 - CSS legacy: los alias continúan durante esta fase y se eliminan únicamente si no tienen consumidores.
@@ -226,7 +230,7 @@ Se añadirán tests para:
 2. contraste AA de combinaciones funcionales;
 3. targets mínimos por banda;
 4. cobertura de copy requerida en las cuatro bandas;
-5. interfaz española en `p12/p34` e inglesa contextual en `p56/eso`;
+5. interfaz española en `p12/p34`, español con inglés contextual en `p56` e inglés claro con mayor presencia en `eso`;
 6. contenido de ejercicios intacto;
 7. catálogo único y sin ids duplicados;
 8. migración de todos los ids legacy conocidos;
@@ -252,8 +256,11 @@ La Fase 1 estará terminada cuando:
 
 - las cuatro bandas resuelvan políticas y copy desde fuentes canónicas;
 - `p12/p34` no muestren inglés accidental en interfaz;
+- `p56` mantenga chrome comprensible en español y use inglés solo de forma contextual;
 - el inglés editorial de ejercicios no haya cambiado;
 - edad no imponga un techo CEFR;
+- una banda desconocida active un modo neutral observable y nunca `p56` silencioso;
+- el avatar del alumno tenga prioridad y Nemo permanezca puntual;
 - exista un único catálogo funcional de rewards;
 - no queden emojis de interfaz en el catálogo legacy;
 - el `+10` genérico no se muestre;
@@ -276,4 +283,3 @@ La Fase 1 estará terminada cuando:
 ## 11. Rollback
 
 La fase no necesita migración destructiva de base de datos. Cada entrega conserva adaptadores y aliases hasta verificar consumidores. El rollback consiste en volver a los consumidores legacy manteniendo intactos ids y datos persistidos. No se elimina almacenamiento local ni progreso del servidor.
-
