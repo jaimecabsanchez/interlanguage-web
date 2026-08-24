@@ -27,12 +27,12 @@
   const icon = name => window.ILIcon ? window.ILIcon(name) : "";
   const secondaryMode = () => document.body && document.body.dataset.ageMode === "secondary";
   const SKILL_META = {
-    listening: { icon: "ear", es: "Listening", en: "Listening" },
-    vocabulary: { icon: "books", es: "Vocabulary", en: "Vocabulary" },
-    grammar: { icon: "grammar", es: "Grammar", en: "Grammar" },
-    reading: { icon: "book", es: "Reading", en: "Reading" },
-    writing: { icon: "pencil", es: "Writing", en: "Writing" },
-    speaking: { icon: "chat", es: "Speaking", en: "Speaking" }
+    listening: { icon: "ear", es: "Escucha", en: "Listening" },
+    vocabulary: { icon: "books", es: "Vocabulario", en: "Vocabulary" },
+    grammar: { icon: "grammar", es: "Gramática", en: "Grammar" },
+    reading: { icon: "book", es: "Lectura", en: "Reading" },
+    writing: { icon: "pencil", es: "Escritura", en: "Writing" },
+    speaking: { icon: "chat", es: "Habla", en: "Speaking" }
   };
 
   const visuals = () => window.ILExerciseVisuals;
@@ -68,7 +68,7 @@
     task.lastChild.textContent = supportFor(exercise, band);
     const label = el("span", "eng-label");
     label.innerHTML = icon(skill.icon) + "<span></span>";
-    label.lastChild.textContent = exercise.etiqueta || (band === "p12" || band === "p34" ? skill.es : skill.en);
+    label.lastChild.textContent = band === "p12" || band === "p34" ? skill.es : skill.en;
     context.append(task, label);
     return context;
   }

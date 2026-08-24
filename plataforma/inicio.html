@@ -333,7 +333,23 @@
   const $ = id => document.getElementById(id);
   let units = [];
   const byId = {}, unitOf = {};
-  const skillLabels = { vocabulary: "Vocabulary", grammar: "Grammar", listening: "Listening", reading: "Reading", writing: "Writing", speaking: "Speaking" };
+  const visibleUnitNames = {
+    "primer-vuelo": { es: "Mi primer día de cole", en: "My first school day" },
+    "rutina-diaria": { es: "Mi rutina diaria", en: "My daily routine" },
+    "la-comida": { es: "La comida que me gusta", en: "Food I like" },
+    "gramatica-inicial": { es: "Palabras y frases", en: "Words & sentences" },
+    "gramatica-media": { es: "Laboratorio de gramática", en: "Grammar lab" },
+    "gramatica-eso": { es: "Gramática en uso", en: "Grammar in use" },
+    "future-plans": { es: "Planes para el fin de semana", en: "Plans for the weekend" }
+  };
+  const visibleSkillNames = {
+    vocabulary: { es: "Vocabulario", en: "Vocabulary" },
+    grammar: { es: "Gramática", en: "Grammar" },
+    listening: { es: "Escucha", en: "Listening" },
+    reading: { es: "Lectura", en: "Reading" },
+    writing: { es: "Escritura", en: "Writing" },
+    speaking: { es: "Habla", en: "Speaking" }
+  };
   const skillIcon = { listening: "ear", reading: "book", writing: "pencil", vocabulary: "books", grammar: "grammar", speaking: "chat", challenge: "flag" };
 
   // Ilustración protagonista (SVG propio, colores de marca). Una composición limpia por tema.
@@ -439,7 +455,18 @@
   $("demoClose").addEventListener("click", () => { $("demoStrip").hidden = true; sessionStorage.setItem("il_demo_strip_off", "1"); });
 
   function firstName(profile) { return (profile.full_name || "").trim().split(/\s+/)[0] || "explorer"; }
-  function titleFor(unit) { return unit && unit.id === "rutina-diaria" ? "My daily routine" : ((unit && unit.titulo) || "Tu misión de hoy"); }
+  function visibleNameFor(names, key, band, fallback) {
+    const entry = names[key];
+    if (!entry) return fallback;
+    return band === "p12" || band === "p34" ? entry.es : entry.en;
+  }
+  function titleFor(unit, band) {
+    const fallback = (unit && unit.titulo) || (band === "p12" || band === "p34" ? "Tu misión de hoy" : "Today's mission");
+    return visibleNameFor(visibleUnitNames, unit && unit.id, band, fallback);
+  }
+  function skillLabelFor(skill, band) {
+    return visibleNameFor(visibleSkillNames, skill, band, skill);
+  }
   function outcomeFor(unit) { return unit && unit.id === "rutina-diaria" ? "Aprenderás a hablar sobre lo que haces cada mañana." : ((unit && unit.descripcion) || "Practicarás inglés con actividades breves y variadas."); }
   function dayGap(last) { return last ? Math.round((Date.parse(ILMission.today()) - Date.parse(last)) / 86400000) : null; }
 
@@ -585,7 +612,7 @@
       const session = ILMission.getOrCreateSession({ username, units, banda: stage, cefr: placement.cefr, matrix: window.IL_MATRIZ, limit: exerciseExperience.sessionSize, unitIds: experience.unitIds, skillPriority: experience.skillPriority });
       if (!session.length) throw new Error("No mission content");
       const unit = unitOf[session[0].id] || units[0];
-      const meta = { date: ILMission.today(), unitId: unit ? unit.id : "", unitTitle: titleFor(unit), itemIds: session.map(item => item.id) };
+      const meta = { date: ILMission.today(), unitId: unit ? unit.id : "", unitTitle: titleFor(unit, stage), itemIds: session.map(item => item.id) };
       const state = ILMission.ensure(username, meta);
       const doneToday = state.status === "completed" || (progress && progress.last === ILMission.today());
       const inProgress = state.status === "in_progress" && state.completedCount > 0 && !doneToday;
@@ -609,7 +636,7 @@
         $("level").textContent = (placement && placement.placed ? placement.label : profile.level) || "Explorer";
       }
       $("missionEyebrowText").textContent = experience.copy.missionEyebrow;
-      $("missionTitle").textContent = titleFor(unit); $("missionOutcome").textContent = outcomeFor(unit);
+      $("missionTitle").textContent = titleFor(unit, stage); $("missionOutcome").textContent = outcomeFor(unit);
       // Ilustración protagonista integrada (no en ESO, que va sobrio).
       // Ilustración solo en primaria superior (el reloj queda bien); en pequeños y ESO la tarjeta va limpia (como el mockup).
       // Ilustración temática en todas las bandas salvo ESO (sobrio). Los pequeños son lo más
@@ -627,7 +654,7 @@
       const skills = Array.from(new Set(session.map(item => item.habilidad).filter(Boolean))).slice(0, 4); $("skillList").innerHTML = "";
       skills.forEach(skill => {
         const chip = document.createElement("span"); chip.className = "skill-chip"; chip.dataset.skill = skill;
-        const label = skillLabels[skill] || skill; chip.title = label; chip.setAttribute("aria-label", label);
+        const label = skillLabelFor(skill, stage); chip.title = label; chip.setAttribute("aria-label", label);
         chip.innerHTML = '<span class="skill-chip__icon" aria-hidden="true">' + ILIcon(skillIcon[skill] || "star") + '</span><span class="skill-chip__label">' + label + '</span>';
         $("skillList").appendChild(chip);
       });
