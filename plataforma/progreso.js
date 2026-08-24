@@ -307,7 +307,7 @@
     const card = $("progressWorldCard");
     if (!card || !window.ILProfileSettings) return;
     try {
-      await loadWorldScript("world-data.js?v=20260810d", "ILWorldData");
+      await loadWorldScript("world-data.js?v=20260824b", "ILWorldData");
       await loadWorldScript("avatar-rig.js?v=20260814a", "ILAvatarRig");
       await loadWorldScript("world-visual.js?v=20260820c", "ILWorldVisual");
       const settings = ILProfileSettings.getActive();

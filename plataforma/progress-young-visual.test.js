@@ -9,10 +9,10 @@ const js = fs.readFileSync(path.join(root, "progreso.js"), "utf8");
 
 assert.match(html, /id="progressWorldCard"[^>]+href="tienda\.html"[^>]+hidden/);
 assert.match(html, /progreso\.css\?v=20260824a/);
-assert.match(html, /progreso\.js\?v=20260824a/);
+assert.match(html, /progreso\.js\?v=20260824e/);
 
 assert.match(js, /if \(ageBand !== "p12" && ageBand !== "p34"\) return;/);
-assert.match(js, /loadWorldScript\("world-data\.js\?v=20260810d"/);
+assert.match(js, /loadWorldScript\("world-data\.js\?v=20260824b"/);
 assert.match(js, /loadWorldScript\("world-visual\.js\?v=20260820c"/);
 assert.match(js, /ILWorldVisual\.scene\(settings, progress, ageBand/);
 assert.match(js, /ILWorldData\.unlockStatus\(item, context\)\.unlocked/);
