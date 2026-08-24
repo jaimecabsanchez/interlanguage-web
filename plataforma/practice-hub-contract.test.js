@@ -1,0 +1,22 @@
+const assert = require("node:assert/strict");
+const fs = require("fs");
+const path = require("path");
+const root = __dirname;
+const html = fs.readFileSync(path.join(root, "practicar.html"), "utf8");
+const css = fs.readFileSync(path.join(root, "practicar.css"), "utf8");
+const js = fs.readFileSync(path.join(root, "practicar.js"), "utf8");
+const layout = fs.readFileSync(path.join(root, "layout.js"), "utf8");
+
+assert.match(html, /data-il-rail="practicar"/);
+assert.match(html, /data-il-nav="practicar"/);
+assert.match(html, /practice-options\.js\?v=20260824a/);
+assert.match(html, /practicar\.css\?v=20260824a/);
+assert.match(html, /practicar\.js\?v=20260824a/);
+assert.match(layout, /k: "practicar", label: "Practicar", href: "practicar\.html"/);
+assert.doesNotMatch(css, /#[0-9a-fA-F]{3,8}\b/);
+assert.match(css, /var\(--il-touch-target\)/);
+assert.match(css, /prefers-reduced-motion/);
+assert.match(js, /ILPracticeOptions\.build/);
+assert.match(js, /ILCopy\.practiceSkill/);
+assert.doesNotMatch(js, /innerHTML\s*=/);
+console.log("practice hub: estructura, tokens, copy y navegación comprobados");

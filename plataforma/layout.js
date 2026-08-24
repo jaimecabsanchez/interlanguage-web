@@ -20,7 +20,7 @@
   const LOGO = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 11 21 3l-7 18-3-7-8-3Z"/></svg>';
   const TABS = [
     { k: "inicio", label: "Inicio", href: "inicio.html" },
-    { k: "practicar", label: "Practicar", href: "leccion.html" },
+    { k: "practicar", label: "Practicar", href: "practicar.html" },
     { k: "progreso", label: "Progreso", href: "progreso.html" },
     { k: "perfil", label: "Perfil", href: "perfil.html" }
   ];

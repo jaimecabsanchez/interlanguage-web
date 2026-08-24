@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Practicar · Interlanguage HOME</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png?v=20260823">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png?v=20260823">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="design-system.css?v=20260824b">
+<link rel="stylesheet" href="app.css?v=20260824a">
+<link rel="stylesheet" href="shell.css?v=20260824a">
+<link rel="stylesheet" href="etapa.css?v=20260824a">
+<link rel="stylesheet" href="practicar.css?v=20260824a">
+</head>
+<body>
+<div id="loading" class="practice-loading" aria-busy="true" aria-label="Preparando opciones de práctica">
+  <div class="practice-loading__line practice-loading__line--title"></div>
+  <div class="practice-loading__card"></div>
+  <div class="practice-loading__line"></div>
+</div>
+
+<div id="errorState" class="il-state" role="alert" hidden>
+  <div class="ic"><span data-il-icon="warning" aria-hidden="true"></span></div>
+  <h1 id="errorTitle">No hemos podido preparar la práctica</h1>
+  <p id="errorBody">Revisa tu conexión e inténtalo de nuevo.</p>
+  <button class="btn btn-primary" id="retryPractice" type="button">Reintentar</button>
+</div>
+
+<div id="app" class="hidden app-with-rail">
+  <div class="shell">
+    <aside class="rail" data-il-rail="practicar"></aside>
+    <div class="shell-main">
+      <main class="app-shell practice-shell">
+        <header class="practice-header">
+          <p class="ui-label" id="practiceEyebrow">PRÁCTICA PERSONAL</p>
+          <h1 id="practiceTitle">Practicar</h1>
+          <p id="practiceSubtitle">Elige una práctica breve según lo que necesitas hoy.</p>
+        </header>
+
+        <section class="practice-primary" aria-labelledby="recommendedTitle">
+          <div class="practice-primary__visual" aria-hidden="true"><span data-il-icon="target"></span></div>
+          <div class="practice-primary__body">
+            <p class="ui-label" id="recommendedEyebrow">RECOMENDADO PARA TI</p>
+            <h2 id="recommendedTitle">Lo mejor para hoy</h2>
+            <p id="recommendedBody"></p>
+          </div>
+          <a class="btn btn-primary practice-primary__cta" id="recommendedCta" href="leccion.html"><span id="recommendedCtaIcon" data-il-icon="play" aria-hidden="true"></span><span id="recommendedCtaText">Empezar</span></a>
+        </section>
+
+        <div class="practice-grid">
+          <section class="practice-card practice-card--review" id="reviewCard" aria-labelledby="reviewTitle">
+            <div class="practice-card__icon" aria-hidden="true"><span data-il-icon="refresh"></span></div>
+            <div class="practice-card__copy">
+              <h2 id="reviewTitle">Repasar</h2>
+              <p id="reviewBody"></p>
+            </div>
+            <a class="btn btn-ghost" id="reviewCta" href="leccion.html?mode=errors">Repasar</a>
+            <p class="practice-card__status" id="reviewStatus" role="status" hidden><span data-il-icon="check" aria-hidden="true"></span><span></span></p>
+          </section>
+
+          <section class="practice-card practice-card--skills" aria-labelledby="skillsTitle">
+            <div class="practice-card__icon" aria-hidden="true"><span data-il-icon="books"></span></div>
+            <div class="practice-card__copy">
+              <h2 id="skillsTitle">Elegir habilidad</h2>
+              <p id="skillsLead">Practica justo lo que te apetece reforzar.</p>
+            </div>
+            <div class="practice-skills" id="skillOptions" role="list"></div>
+          </section>
+        </div>
+
+        <section class="practice-empty" id="emptyPractice" role="status" hidden>
+          <span class="practice-empty__icon" data-il-icon="info" aria-hidden="true"></span>
+          <div><h2 id="emptyTitle">Todavía no hay práctica preparada</h2><p id="emptyBody"></p></div>
+          <a class="btn btn-ghost" id="emptyHome" href="inicio.html">Volver a Inicio</a>
+        </section>
+      </main>
+    </div>
+  </div>
+  <nav class="app-nav" data-il-nav="practicar"></nav>
+</div>
+
+<script src="layout.js?v=20260824a"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js?v=20260809d"></script>
+<script src="auth-utils.js?v=20260809d"></script>
+<script src="copy-registry.js?v=20260824c"></script>
+<script src="age-policy.js?v=20260824a"></script>
+<script src="etapa.js?v=20260824b"></script>
+<script src="content/schema.js?v=20260824a"></script>
+<script src="content/loader.js?v=20260817a"></script>
+<script src="content/manifest.js?v=20260821e"></script>
+<script src="contenido.js?v=20260817a"></script>
+<script src="observability.js?v=20260824a"></script>
+<script src="learning-data.js?v=20260824a"></script>
+<script src="auth.js?v=20260824c"></script>
+<script src="motor/matriz.js?v=20260824b"></script>
+<script src="mission-state.js?v=20260824b"></script>
+<script src="motor/pedagogia.js?v=20260813a"></script>
+<script src="mastery-store.js?v=20260824a"></script>
+<script src="practice-options.js?v=20260824a"></script>
+<script src="practicar.js?v=20260824a"></script>
+</body>
+</html>
