@@ -6,16 +6,22 @@ const root = __dirname;
 const home = fs.readFileSync(path.join(root, "inicio.html"), "utf8");
 const engine = fs.readFileSync(path.join(root, "motor", "engine.js"), "utf8");
 const lesson = fs.readFileSync(path.join(root, "leccion.html"), "utf8");
+const Copy = require("./copy-registry.js");
 
-assert.match(home, /"gramatica-inicial": \{ es: "Palabras y frases", en: "Words & sentences" \}/);
-assert.match(home, /grammar: \{ es: "Gramática", en: "Grammar" \}/);
-assert.match(home, /band === "p12" \|\| band === "p34" \? entry\.es : entry\.en/);
+assert.equal(Copy.missionTitle({ id:"gramatica-inicial" }, "p12"), "Palabras y frases");
+assert.equal(Copy.missionTitle({ id:"gramatica-inicial" }, "p34"), "Palabras y frases");
+assert.equal(Copy.missionTitle({ id:"gramatica-inicial" }, "p56"), "Words & sentences");
+assert.equal(Copy.skill("grammar", "p34"), "Gramática");
+assert.equal(Copy.skill("grammar", "p56"), "Grammar");
+assert.equal(Copy.text("startCta", "p56"), "Empezar");
+assert.match(home, /ILCopy\.missionTitle\(unit, band\)/);
 assert.match(home, /titleFor\(unit, stage\)/);
 assert.match(home, /skillLabelFor\(skill, stage\)/);
 
-assert.match(engine, /grammar: \{ icon: "grammar", es: "Gramática", en: "Grammar" \}/);
-assert.match(engine, /band === "p12" \|\| band === "p34" \? skill\.es : skill\.en/);
+assert.match(engine, /ILCopy\.skill\(skillId, band\)/);
+assert.match(engine, /ILCopy\.support\(exercise\.tipo/);
 assert.doesNotMatch(engine, /exercise\.etiqueta \|\| \(band === "p12"/);
-assert.match(lesson, /motor\/engine\.js\?v=20260824d/);
+assert.match(lesson, /copy-registry\.js\?v=20260824a/);
+assert.match(lesson, /motor\/engine\.js\?v=20260824e/);
 
-console.log("visible language: 9 comprobaciones correctas");
+console.log("visible language: registro canónico y p56 híbrido comprobados");

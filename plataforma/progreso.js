@@ -36,9 +36,10 @@
       $("progressTitleLead").textContent = "Tu progreso,";
       $("progressSubtitle").textContent = "Revisa tu práctica, tus habilidades y el próximo objetivo.";
     }
-    // El zorro acompaña solo a 5–7 y queda como detalle secundario.
-    if (ageBand === "p12" && window.ILVisual) {
-      const pm = $("progressMascot"); if (pm) pm.innerHTML = ILVisual.nemo("hi");
+    // La identidad del alumno tiene prioridad; el personaje genérico queda para apoyos puntuales.
+    if (ageBand === "p12" && window.ILWorldVisual && window.ILProfileSettings) {
+      const pm = $("progressMascot");
+      if (pm) pm.innerHTML = ILWorldVisual.avatar(ILProfileSettings.getActive(), data || {}, { compact:true });
     }
   }
 

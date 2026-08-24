@@ -17,6 +17,7 @@ body[data-stage="p56"] .progress-header .greeting-hero{display:block;position:ab
 .progress-header .identity-summary{position:relative;z-index:1}
 .progress-header .greeting-mascot{position:absolute;left:16px;bottom:-2px;width:76px;height:76px;z-index:1;filter:drop-shadow(0 5px 9px color-mix(in srgb,var(--il-primary) 20%,transparent))}
 .progress-header .greeting-mascot .il-nemo{width:100%;height:100%}
+.progress-header .greeting-mascot .il-student-avatar{width:100%;height:100%;object-fit:contain;object-position:center bottom}
 body[data-stage="p12"] .progress-header .greeting-mascot{width:90px;height:90px}
 body[data-stage="p56"] .progress-header .greeting-mascot{display:none}
 body[data-stage="p12"] .progress-header .progress-headline,

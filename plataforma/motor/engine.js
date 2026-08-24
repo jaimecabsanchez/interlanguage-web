@@ -26,14 +26,7 @@
   };
   const icon = name => window.ILIcon ? window.ILIcon(name) : "";
   const secondaryMode = () => document.body && document.body.dataset.ageMode === "secondary";
-  const SKILL_META = {
-    listening: { icon: "ear", es: "Escucha", en: "Listening" },
-    vocabulary: { icon: "books", es: "Vocabulario", en: "Vocabulary" },
-    grammar: { icon: "grammar", es: "Gramática", en: "Grammar" },
-    reading: { icon: "book", es: "Lectura", en: "Reading" },
-    writing: { icon: "pencil", es: "Escritura", en: "Writing" },
-    speaking: { icon: "chat", es: "Habla", en: "Speaking" }
-  };
+  const SKILL_ICON = { listening:"ear", vocabulary:"books", grammar:"grammar", reading:"book", writing:"pencil", speaking:"chat" };
 
   const visuals = () => window.ILExerciseVisuals;
   function illustrationFor(option) {
@@ -50,25 +43,19 @@
   }
 
   function supportFor(exercise, band) {
-    // Peques (6-9 → p12/p34): interfaz en español. Mayores (p56/eso): en inglés.
-    const english = band !== "p12" && band !== "p34";
-    const type = exercise.tipo || "";
-    if (type === "emparejar") return english ? "LOOK · MATCH" : "MIRA · RELACIONA";
-    if (type === "ordenar") return english ? "THINK · ORDER" : "PIENSA · ORDENA";
-    if (type === "hablar") return english ? "LISTEN · SPEAK" : "ESCUCHA · HABLA";
-    if (exercise.audio) return english ? "LISTEN · CHOOSE" : "ESCUCHA · ELIGE";
-    return english ? "LOOK · CHOOSE" : "MIRA · ELIGE";
+    return window.ILCopy ? ILCopy.support(exercise.tipo || "", !!exercise.audio, band) : "MIRA · ELIGE";
   }
 
   function exerciseContext(exercise, band) {
     const context = el("div", "eng-context");
-    const skill = SKILL_META[exercise.habilidad] || SKILL_META.vocabulary;
+    const skillId = SKILL_ICON[exercise.habilidad] ? exercise.habilidad : "vocabulary";
+    const skillIcon = SKILL_ICON[skillId];
     const task = el("span", "eng-task-mode");
-    task.innerHTML = icon(skill.icon) + "<span></span>";
+    task.innerHTML = icon(skillIcon) + "<span></span>";
     task.lastChild.textContent = supportFor(exercise, band);
     const label = el("span", "eng-label");
-    label.innerHTML = icon(skill.icon) + "<span></span>";
-    label.lastChild.textContent = band === "p12" || band === "p34" ? skill.es : skill.en;
+    label.innerHTML = icon(skillIcon) + "<span></span>";
+    label.lastChild.textContent = window.ILCopy ? ILCopy.skill(skillId, band) : skillId;
     context.append(task, label);
     return context;
   }

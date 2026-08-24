@@ -26,10 +26,12 @@ assert.equal(base.config("primary-upper").exerciseLimit, 6);
 assert.equal(base.config("secondary").exerciseLimit, 7);
 assert.equal(base.exerciseConfig("p12").touchSize, 56);
 assert.equal(base.exerciseConfig("p12").sessionSize, 4);
-assert.equal(base.exerciseConfig("p34").instructionLanguage, "bilingual");
+assert.equal(base.exerciseConfig("p34").instructionLanguage, "spanish");
+assert.equal(base.exerciseConfig("p56").instructionLanguage, "spanish-contextual-english");
 assert.equal(base.exerciseConfig("p56").guideIntensity, "low");
 assert.equal(base.exerciseConfig("eso").visualSupport, "content-only");
 assert.deepEqual(base.DEMO_STAGES.map(item => item.band), ["p12", "p34", "p56", "eso"]);
+assert.equal(base.config("primary-upper").copy.startCta, "Empezar", "p56 conserva chrome en español");
 
 const body = { dataset: {}, appendChild() {} };
 const production = createStageSystem({

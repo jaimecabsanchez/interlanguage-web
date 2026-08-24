@@ -13,6 +13,7 @@
   "use strict";
 
   const env = environment || {};
+  const Copy = env.ILCopy || (typeof require === "function" ? require("./copy-registry.js") : null);
   const MODES = ["primary-young", "primary-upper", "secondary"];
   const BANDS = ["p12", "p34", "p56", "eso"];
   const STORAGE_KEY = "il_demo_age_mode_v1";
@@ -36,12 +37,12 @@
       sessionSize: 4, hintLabel: "Una pista", listenLabel: "Escuchar"
     }),
     p34: Object.freeze({
-      band: "p34", ageLabel: "8–9", instructionLanguage: "bilingual", visualSupport: "preferred",
+      band: "p34", ageLabel: "8–9", instructionLanguage: "spanish", visualSupport: "preferred",
       guideIntensity: "medium", celebrationIntensity: "medium", touchSize: 52, maxVisibleOptions: 4,
       sessionSize: 5, hintLabel: "Pista", listenLabel: "Listen"
     }),
     p56: Object.freeze({
-      band: "p56", ageLabel: "10–11", instructionLanguage: "mixed", visualSupport: "optional",
+      band: "p56", ageLabel: "10–11", instructionLanguage: "spanish-contextual-english", visualSupport: "optional",
       guideIntensity: "low", celebrationIntensity: "balanced", touchSize: 48, maxVisibleOptions: 4,
       sessionSize: 6, hintLabel: "Ver pista", listenLabel: "Listen"
     }),
@@ -63,24 +64,7 @@
       celebration: "frequent",
       skillPriority: ["listening", "vocabulary", "speaking", "grammar", "reading"],
       unitIds: ["primer-vuelo", "la-comida", "gramatica-inicial"],
-      themes: ["school life", "everyday situations", "grammar"],
-      copy: {
-        greeting: name => "¡Hola, " + name + "!",
-        ready: "Tu misión de hoy está lista.",
-        active: "Sigue desde donde lo dejaste.",
-        complete: "¡Misión lista!",
-        comeback: "¡Qué bien verte! Empezamos con algo sencillo.",
-        missionEyebrow: "TU MISIÓN DE HOY",
-        startCta: "Empezar",
-        continueCta: "Seguir",
-        reviewCta: "Repasar",
-        completedCta: "¡Hecho!",
-        exercise: "Actividad",
-        countJoin: "de",
-        pace: "Una actividad cada vez",
-        summaryTitle: "¡Misión completada!",
-        summaryLead: "¡Buen trabajo!"
-      }
+      themes: ["school life", "everyday situations", "grammar"]
     },
     "primary-upper": {
       id: "primary-upper",
@@ -92,24 +76,7 @@
       celebration: "balanced",
       skillPriority: ["vocabulary", "listening", "grammar", "reading", "writing", "speaking"],
       unitIds: ["rutina-diaria", "la-comida", "gramatica-media"],
-      themes: ["school life", "friends", "everyday situations", "grammar"],
-      copy: {
-        greeting: name => "¡Hola, " + name + "!",
-        ready: "Tu misión de hoy está preparada.",
-        active: "Tu misión está en marcha. Continúa donde la dejaste.",
-        complete: "Misión completada. Hoy has avanzado.",
-        comeback: "Qué bien verte. Retomamos con una misión breve.",
-        missionEyebrow: "TU MISIÓN DE HOY",
-        startCta: "Empezar",
-        continueCta: "Continuar",
-        reviewCta: "Repasar errores",
-        completedCta: "Misión completada",
-        exercise: "Ejercicio",
-        countJoin: "de",
-        pace: "Una actividad cada vez",
-        summaryTitle: "¡Misión completada!",
-        summaryLead: "Has avanzado un poco más en tu inglés."
-      }
+      themes: ["school life", "friends", "everyday situations", "grammar"]
     },
     secondary: {
       id: "secondary",
@@ -121,28 +88,12 @@
       celebration: "minimal",
       skillPriority: ["listening", "reading", "grammar", "writing", "vocabulary", "speaking"],
       unitIds: ["future-plans", "gramatica-eso"],
-      themes: ["travel", "school life", "friends", "technology", "music", "everyday situations", "social situations", "future plans", "grammar"],
-      copy: {
-        greeting: name => "Hola, " + name,
-        ready: "Tu sesión de hoy está preparada.",
-        active: "Continúa tu sesión desde el último ejercicio.",
-        complete: "Sesión completada. Objetivo de hoy conseguido.",
-        comeback: "Bienvenido de nuevo. Retoma con una sesión breve.",
-        missionEyebrow: "TODAY’S SESSION",
-        startCta: "Start session",
-        continueCta: "Continue",
-        reviewCta: "Review mistakes",
-        completedCta: "Session complete",
-        exercise: "Exercise",
-        countJoin: "of",
-        pace: "One step at a time",
-        summaryTitle: "Session complete",
-        summaryLead: "You’ve completed today’s session and strengthened your English."
-      }
+      themes: ["travel", "school life", "friends", "technology", "music", "everyday situations", "social situations", "future plans", "grammar"]
     }
   };
 
-  let active = { mode: "primary-upper", band: "p56", config: PROFILES["primary-upper"], exercise: BAND_EXPERIENCE.p56 };
+  function withCopy(profile, band) { return Object.assign({}, profile, { copy:Copy ? Copy.view(band) : {} }); }
+  let active = { mode: "primary-upper", band: "p56", config: withCopy(PROFILES["primary-upper"], "p56"), exercise: BAND_EXPERIENCE.p56 };
 
   function year() { return (env.Date || Date).now ? new (env.Date || Date)().getFullYear() : new Date().getFullYear(); }
   function normalMode(value) {
@@ -175,7 +126,12 @@
     const explicit = normalMode(profile && (profile.age_mode || profile.ageMode));
     return explicit || MODE_FROM_BAND[bandFor(profile)] || "primary-upper";
   }
-  function config(mode) { return PROFILES[normalMode(mode) || active.mode] || PROFILES["primary-upper"]; }
+  function config(mode) {
+    const selectedMode = normalMode(mode) || active.mode;
+    const profile = PROFILES[selectedMode] || PROFILES["primary-upper"];
+    const selectedBand = selectedMode === active.mode ? active.band : DEMO_BAND[selectedMode];
+    return withCopy(profile, selectedBand);
+  }
   function safeStorage(storage, action, key, value) {
     try { return storage && typeof storage[action] === "function" ? storage[action](key, value) : null; }
     catch (error) { return null; }
@@ -266,7 +222,7 @@
     const overrideBand = demo ? (requested || stored || normalBand(demoMode())) : null;
     const band = overrideBand || bandFor(profile);
     const mode = overrideBand ? MODE_FROM_BAND[band] : modeFor(profile);
-    active = { mode, band, config: PROFILES[mode], exercise: BAND_EXPERIENCE[band] || BAND_EXPERIENCE.p56 };
+    active = { mode, band, config: withCopy(PROFILES[mode], band), exercise: BAND_EXPERIENCE[band] || BAND_EXPERIENCE.p56 };
     if (env.document && env.document.body) {
       env.document.body.dataset.ageMode = mode;
       env.document.body.dataset.stage = band;
