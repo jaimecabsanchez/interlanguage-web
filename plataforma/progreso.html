@@ -16,7 +16,7 @@
 <link rel="stylesheet" href="shell.css?v=20260816c">
 <link rel="stylesheet" href="il-visual.css?v=20260821b">
 <link rel="stylesheet" href="age-mode.css?v=20260823b">
-<link rel="stylesheet" href="progreso.css?v=20260823b">
+<link rel="stylesheet" href="progreso.css?v=20260824a">
 <style>
   /* ---------- Colección de sellos (Progreso → pasaporte) ---------- */
   .stamp-grid.is-achievements{display:block}
@@ -147,6 +147,16 @@
               </div>
             </article>
 
+            <a class="progress-world-card" id="progressWorldCard" href="tienda.html" hidden>
+              <span class="progress-world-card__preview" id="progressWorldPreview"></span>
+              <span class="progress-world-card__copy">
+                <span class="ui-label">MI MUNDO</span>
+                <strong>Tu mundo crece contigo</strong>
+                <span>Cada misión hace que tu jardín siga creciendo.</span>
+                <span class="progress-world-card__action">Entrar en mi mundo <span aria-hidden="true">→</span></span>
+              </span>
+            </a>
+
             <aside class="next-stamp" aria-labelledby="nextStampTitle">
               <div class="section-heading"><div><p class="ui-label">Próximo sello</p><h2 id="nextStampTitle">Tu siguiente logro</h2></div></div>
               <div class="passport-stamp" aria-hidden="true"><span data-il-icon="plane"></span></div>
@@ -239,6 +249,6 @@
 <script src="progress-data.js?v=20260823b"></script>
 <script src="motor/achievements.js?v=20260816a"></script>
 <script src="achievement-store.js?v=20260816a"></script>
-<script src="progreso.js?v=20260823b"></script>
+<script src="progreso.js?v=20260824a"></script>
 </body>
 </html>

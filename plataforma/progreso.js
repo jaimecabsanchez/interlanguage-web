@@ -106,35 +106,38 @@
   }
 
   function renderLearning(data) {
-    const metrics = $("learningMetrics"); metrics.replaceChildren(
-      metricElement("sesiones completadas", data.lessons, "plane"),
-      metricElement("minutos practicados", data.minutesTotal, "clock"),
-      metricElement("palabras aprendidas", data.wordsLearned, "books"),
-      metricElement("expresiones dominadas", data.expressionsMastered, "chat"),
-      metricElement("de precisión", data.accuracy == null ? null : data.accuracy + "%", "target"),
-      metricElement("temas completados", data.topicsCompleted, "flag")
-    );
+    const youngPrimary = ageBand === "p12" || ageBand === "p34";
+    const metrics = $("learningMetrics"); metrics.replaceChildren();
     const skills = $("skillsList"); skills.replaceChildren();
-    const skillsToShow = ageBand === "p34" && window.ILProgressData
-      ? ILProgressData.visibleSkills(data.skills)
-      : data.skills;
-    skillsToShow.forEach(skill => {
-      const row = document.createElement("div"); row.className = "skill-row" + (skill.percent == null ? " is-unavailable" : "");
-      const visual = document.createElement("span"); visual.className = "skill-icon"; visual.innerHTML = icon(skill.icon);
-      const body = document.createElement("div");
-      const copy = document.createElement("div"); copy.className = "skill-copy"; const name = document.createElement("strong"); name.textContent = skill.label; const note = document.createElement("span"); note.textContent = skill.percent == null ? "Sigue practicando" : "Progreso observado"; copy.append(name, note);
-      const track = document.createElement("div"); track.className = "skill-track"; track.setAttribute("role", "progressbar"); const fill = document.createElement("span"); track.appendChild(fill);
-      if (skill.percent == null) { track.setAttribute("aria-label", skill.label + ": sin datos suficientes"); }
-      else { track.style.setProperty("--il-skill-progress", skill.percent + "%"); track.setAttribute("aria-valuemin", "0"); track.setAttribute("aria-valuemax", "100"); track.setAttribute("aria-valuenow", skill.percent); track.setAttribute("aria-label", skill.label + ": " + skill.percent + "%"); }
-      body.append(copy, track); const value = document.createElement("span"); value.className = "skill-value"; value.textContent = skill.percent == null ? "Sin datos" : skill.percent + "%";
-      row.append(visual, body, value); skills.appendChild(row);
-    });
+    let skillsToShow = [];
+    if (!youngPrimary) {
+      metrics.replaceChildren(
+        metricElement("sesiones completadas", data.lessons, "plane"),
+        metricElement("minutos practicados", data.minutesTotal, "clock"),
+        metricElement("palabras aprendidas", data.wordsLearned, "books"),
+        metricElement("expresiones dominadas", data.expressionsMastered, "chat"),
+        metricElement("de precisión", data.accuracy == null ? null : data.accuracy + "%", "target"),
+        metricElement("temas completados", data.topicsCompleted, "flag")
+      );
+      skillsToShow = data.skills;
+      skillsToShow.forEach(skill => {
+        const row = document.createElement("div"); row.className = "skill-row" + (skill.percent == null ? " is-unavailable" : "");
+        const visual = document.createElement("span"); visual.className = "skill-icon"; visual.innerHTML = icon(skill.icon);
+        const body = document.createElement("div");
+        const copy = document.createElement("div"); copy.className = "skill-copy"; const name = document.createElement("strong"); name.textContent = skill.label; const note = document.createElement("span"); note.textContent = skill.percent == null ? "Sigue practicando" : "Progreso observado"; copy.append(name, note);
+        const track = document.createElement("div"); track.className = "skill-track"; track.setAttribute("role", "progressbar"); const fill = document.createElement("span"); track.appendChild(fill);
+        if (skill.percent == null) { track.setAttribute("aria-label", skill.label + ": sin datos suficientes"); }
+        else { track.style.setProperty("--il-skill-progress", skill.percent + "%"); track.setAttribute("aria-valuemin", "0"); track.setAttribute("aria-valuemax", "100"); track.setAttribute("aria-valuenow", skill.percent); track.setAttribute("aria-label", skill.label + ": " + skill.percent + "%"); }
+        body.append(copy, track); const value = document.createElement("span"); value.className = "skill-value"; value.textContent = skill.percent == null ? "Sin datos" : skill.percent + "%";
+        row.append(visual, body, value); skills.appendChild(row);
+      });
+    }
     const phrases = $("phraseList"); phrases.replaceChildren();
     if (!data.phrases.length) { const empty = document.createElement("p"); empty.className = "phrase-empty"; empty.textContent = "Tus primeras expresiones están muy cerca. Sigue con tu próxima misión."; phrases.appendChild(empty); }
     else data.phrases.forEach(text => { const phrase = document.createElement("p"); phrase.className = "phrase"; phrase.textContent = text; phrases.appendChild(phrase); });
     $("reinforceTitle").textContent = data.reinforce.skill; $("reinforceCopy").textContent = data.reinforce.description; $("reinforceCta").href = data.reinforce.href; $("reinforceCta").textContent = "Practicar " + data.reinforce.skill.toLowerCase();
     const reinforce = document.querySelector(".reinforce-panel");
-    if (reinforce) reinforce.hidden = ageBand === "p34" && !data.isDemo && skillsToShow.length === 0;
+    if (reinforce) reinforce.hidden = !youngPrimary && ageBand === "p34" && !data.isDemo && skillsToShow.length === 0;
   }
 
   function progressCopy(stampData) {
@@ -254,10 +257,13 @@
     if (strong) strong.textContent = state.countLabel + (state.complete && ageBand === "p12" ? " ✓" : "");
     $("weekPrimaryMessage").textContent = state.message;
 
-    const streakStrong = document.querySelector(".consistency-item strong");
-    if (streakStrong) streakStrong.textContent = data.streak + (data.streak === 1 ? " día seguido" : " días seguidos");
+    const streakItem = document.querySelector(".consistency-item");
+    const streakLabel = streakItem && streakItem.querySelector("p");
+    if (streakLabel) streakLabel.textContent = "Tu ritmo";
+    const streakStrong = streakItem && streakItem.querySelector("strong");
+    if (streakStrong) streakStrong.textContent = data.streak >= 5 ? "¡Qué buena constancia!" : data.streak >= 2 ? "¡Sigues avanzando!" : data.streak === 1 ? "¡Buen comienzo!" : "Tu camino empieza hoy";
     const streakSupport = $("streakSupport");
-    if (streakSupport) streakSupport.textContent = ageBand === "p12" ? "¡Qué constancia!" : "Sigue así, a tu ritmo.";
+    if (streakSupport) streakSupport.textContent = "Cada misión hace crecer tu recorrido.";
 
     const action = ILProgressData.contextualAction(data, ageBand);
     const cta = $("contextualProgressCta");
@@ -278,35 +284,45 @@
       $("learningSubtitle").textContent = "Mis habilidades y el inglés que ya puedo utilizar.";
     }
 
-    const panelLearning = $("panel-learning");
-    if (ageBand === "p12" && panelLearning && !$("learningYoung")) {
-      const words = data.wordsLearned; const phraseCount = (data.phrases || []).length;
-      const box = document.createElement("div"); box.id = "learningYoung"; box.className = "learning-young";
-      box.innerHTML =
-        '<div class="learning-young__stat"><strong>' + valueText(words) + '</strong><span>palabras aprendidas</span></div>' +
-        '<div class="learning-young__stat"><strong>' + phraseCount + '</strong><span>' + (phraseCount === 1 ? "frase que ya sé decir" : "frases que ya sé decir") + '</span></div>';
-      const layout = panelLearning.querySelector(".learning-layout"); panelLearning.insertBefore(box, layout);
-    }
-    const skillsTitle = $("skillsTitle"); if (skillsTitle && ageBand === "p34") skillsTitle.textContent = "Lo que más has practicado";
     const phrasesTitle = $("phrasesTitle"); if (phrasesTitle) phrasesTitle.textContent = ageBand === "p12" ? "Mi inglés" : "Frases dominadas";
+    const skillNames = { Listening: "Escucha", Vocabulary: "Vocabulario", Grammar: "Gramática", Reading: "Lectura", Writing: "Escritura", Speaking: "Habla" };
+    $("reinforceTitle").textContent = skillNames[data.reinforce.skill] || data.reinforce.skill;
+    $("reinforceCta").textContent = "Practicar ahora";
     if (!(data.phrases || []).length) { const empty = document.querySelector("#phraseList .phrase-empty"); if (empty) empty.textContent = "¡Tu primera frase está muy cerca!"; }
   }
 
-  function renderRailProgress(data) {
+  function loadWorldScript(src, globalName) {
+    if (window[globalName]) return Promise.resolve();
+    return new Promise((resolve, reject) => {
+      const script = document.createElement("script"); script.src = src; script.async = false;
+      script.addEventListener("load", resolve, { once: true });
+      script.addEventListener("error", reject, { once: true });
+      document.head.appendChild(script);
+    });
+  }
+
+  async function renderWorldPreview(data) {
     if (ageBand !== "p12" && ageBand !== "p34") return;
-    const summary = data && data.profileSummary;
-    const rail = document.querySelector(".rail[data-il-rail=progreso]");
-    if (!rail || !summary || summary.levelProgress == null || !summary.nextLevel) return;
-    const previous = rail.querySelector(".rail-level-progress"); if (previous) previous.remove();
-    const block = document.createElement("div"); block.className = "rail-level-progress";
-    const title = document.createElement("strong"); title.textContent = summary.levelName;
-    const track = document.createElement("div"); track.className = "rail-level-progress__track"; track.setAttribute("role", "progressbar");
-    track.setAttribute("aria-label", "Progreso hacia " + summary.nextLevel);
-    track.setAttribute("aria-valuemin", "0"); track.setAttribute("aria-valuemax", "100"); track.setAttribute("aria-valuenow", summary.levelProgress);
-    track.style.setProperty("--il-level-progress", Math.max(0, Math.min(100, summary.levelProgress)) + "%"); track.appendChild(document.createElement("span"));
-    const copy = document.createElement("small"); copy.textContent = summary.levelProgress + "% para " + summary.nextLevel.toLowerCase();
-    block.append(title, track, copy);
-    const foot = rail.querySelector(".rail-foot"); rail.insertBefore(block, foot || null);
+    const card = $("progressWorldCard");
+    if (!card || !window.ILProfileSettings) return;
+    try {
+      await loadWorldScript("world-data.js?v=20260810d", "ILWorldData");
+      await loadWorldScript("avatar-rig.js?v=20260814a", "ILAvatarRig");
+      await loadWorldScript("world-visual.js?v=20260820c", "ILWorldVisual");
+      const settings = ILProfileSettings.getActive();
+      const progress = { lessons: data.lessons, streak: data.streak };
+      const stampIds = ((data.stamps && data.stamps.items) || []).filter(item => item.unlocked).map(item => item.id);
+      const context = ILWorldData.context(progress, stampIds, ageBand);
+      const wanted = new Set(settings.activeWorldItems || []);
+      const activeItems = ILWorldData.catalogFor(ageBand, "world")
+        .filter(item => item.toggle === "world" && wanted.has(item.id) && ILWorldData.unlockStatus(item, context).unlocked)
+        .map(item => item.id);
+      const meta = ILWorldData.levelMeta(progress);
+      $("progressWorldPreview").innerHTML = ILWorldVisual.scene(settings, progress, ageBand, { level: meta.level, activeItems: activeItems });
+      card.hidden = false;
+    } catch (error) {
+      card.hidden = true;
+    }
   }
 
   function activateTab(name, focus) {
@@ -345,13 +361,11 @@
       IL_ETAPA.apply(profile); ageMode = IL_ETAPA.current().mode; ageBand = IL_ETAPA.current().band;
       snapshot = await ILProgressData.load(ILAuth, window.ILMission, { ageMode: ageMode }); if (!snapshot) throw new Error("No progress snapshot");
       renderHeader(snapshot); renderWeek(snapshot); renderLearning(snapshot); renderStamps(snapshot);
-      if (ageBand === "p12" || ageBand === "p34") applyPrimaryBand(snapshot);
+      if (ageBand === "p12" || ageBand === "p34") { applyPrimaryBand(snapshot); await renderWorldPreview(snapshot); }
       setupTabs(); setupDialog();
       if (snapshot.isDemo && sessionStorage.getItem("il_demo_strip_off") !== "1") $("demoStrip").hidden = false;
       $("demoClose").addEventListener("click", () => { $("demoStrip").hidden = true; sessionStorage.setItem("il_demo_strip_off", "1"); });
       if (window.ILLayout) window.ILLayout.mount();
-      renderRailProgress(snapshot);
-      if (document.readyState !== "complete") window.addEventListener("load", () => renderRailProgress(snapshot), { once: true });
       $("loading").hidden = true; $("app").classList.remove("hidden");
     } catch (error) {
       console.error("No se pudo cargar Progreso", error); $("loading").hidden = true; $("errorState").hidden = false;
