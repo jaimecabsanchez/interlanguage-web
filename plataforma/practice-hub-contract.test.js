@@ -9,7 +9,7 @@ const layout = fs.readFileSync(path.join(root, "layout.js"), "utf8");
 
 assert.match(html, /data-il-rail="practicar"/);
 assert.match(html, /data-il-nav="practicar"/);
-assert.match(html, /practice-options\.js\?v=20260824a/);
+assert.match(html, /practice-options\.js\?v=20260824b/);
 assert.match(html, /practicar\.css\?v=20260824a/);
 assert.match(html, /practicar\.js\?v=20260824a/);
 assert.match(layout, /k: "practicar", label: "Practicar", href: "practicar\.html"/);

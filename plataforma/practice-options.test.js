@@ -35,4 +35,13 @@ model = Options.build({ band:"unknown", dailyStatus:"completed", availableSkills
 assert.equal(model.band, "neutral");
 assert.equal(model.hasAnyPractice, false);
 
-console.log("practice options: prioridad diaria, variedad, skills y neutral comprobados");
+const picked = Options.selectExercises({
+  cefr:"A1", limit:2,
+  exercises:[
+    {id:"recent-a1",nivel:"A1"}, {id:"fresh-a1",nivel:"A1"}, {id:"fresh-a2",nivel:"A2"}
+  ],
+  recentEvents:[{exercise_id:"recent-a1",submitted_at:"2026-08-24T12:00:00Z"}]
+});
+assert.deepEqual(picked.map(item => item.id), ["fresh-a1", "recent-a1"], "el nivel manda y el cooldown solo desempata");
+
+console.log("practice options: prioridad diaria, variedad, skills, selector y neutral comprobados");

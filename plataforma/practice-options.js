@@ -10,6 +10,7 @@
 
   const SKILLS = Object.freeze(["listening", "vocabulary", "grammar", "reading", "writing", "speaking"]);
   const P12_ORDER = Object.freeze(["listening", "vocabulary", "speaking", "reading", "grammar", "writing"]);
+  const CEFR_ORDER = Object.freeze(["Pre-A1", "A1", "A2", "B1", "B2", "C1", "C2"]);
 
   function count(value) { return Math.max(0, Number(value) || 0); }
   function safeBand(value) { return ["p12", "p34", "p56", "eso", "neutral"].indexOf(value) >= 0 ? value : "neutral"; }
@@ -44,6 +45,25 @@
   }
   function hasSkill(available, id) { return normalizeSkills(available).some(item => item.id === id); }
 
+  function selectExercises(input) {
+    input = input || {};
+    const target = CEFR_ORDER.indexOf(input.cefr);
+    const recent = {};
+    (input.recentEvents || []).forEach(event => {
+      if (!event || event.technical_failure || !event.exercise_id) return;
+      const stamp = Date.parse(event.submitted_at || event.started_at || "") || 0;
+      recent[event.exercise_id] = Math.max(recent[event.exercise_id] || 0, stamp);
+    });
+    return (input.exercises || []).filter(Boolean).slice().sort((a, b) => {
+      const aLevel = CEFR_ORDER.indexOf(a.nivel);
+      const bLevel = CEFR_ORDER.indexOf(b.nivel);
+      const aDistance = target < 0 || aLevel < 0 ? 0 : Math.abs(aLevel - target);
+      const bDistance = target < 0 || bLevel < 0 ? 0 : Math.abs(bLevel - target);
+      if (aDistance !== bDistance) return aDistance - bDistance; // nivel antes que cooldown
+      return (recent[a.id] || 0) - (recent[b.id] || 0) || String(a.id || "").localeCompare(String(b.id || ""));
+    }).slice(0, Math.max(1, Number(input.limit) || 6));
+  }
+
   function build(input) {
     input = input || {};
     const band = safeBand(input.band);
@@ -77,5 +97,5 @@
     return Object.freeze({ band, dailyPending, recommended, review:Object.freeze(review), skills:Object.freeze(skills), hasAnyPractice });
   }
 
-  return Object.freeze({ SKILLS, P12_ORDER, safeBand, recentBySkill, normalizeSkills, visibleSkills, variedSkill, build });
+  return Object.freeze({ SKILLS, P12_ORDER, CEFR_ORDER, safeBand, recentBySkill, normalizeSkills, visibleSkills, variedSkill, selectExercises, build });
 });

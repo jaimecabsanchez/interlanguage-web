@@ -218,6 +218,7 @@
 <script src="motor/matriz.js?v=20260824b"></script>
 <script src="mission-state.js?v=20260824b"></script>
 <script src="learning-events.js?v=20260824b"></script>
+<script src="practice-options.js?v=20260824b"></script>
 <script src="motor/pedagogia.js?v=20260813a"></script>
 <script src="mastery-store.js?v=20260824a"></script>
 <script src="achievement-store.js?v=20260816a"></script>
@@ -233,7 +234,9 @@
   const bonusMode = params.get("mode") === "bonus";
   const reviewDueMode = params.get("mode") === "review";
   const examMode = params.get("mode") === "exam"; // examen periódico (repaso acumulativo)
-  const extraMode = () => bonusMode || reviewDueMode || examMode; // no tocan la misión diaria
+  const skillMode = params.get("mode") === "skill";
+  const requestedSkill = params.get("skill") || "";
+  const extraMode = () => bonusMode || reviewDueMode || examMode || skillMode; // no tocan la misión diaria
   let units = [];
   const byId = {}, unitOf = {};
 
@@ -290,10 +293,14 @@
     return ILCopy.missionTitle(unit, stageName);
   }
 
-  function errorState(title, text) {
-    $("stage").innerHTML = '<div class="il-state"><div class="ic">' + ILIcon("warning") + "</div><h2></h2><p></p><a class=\"btn btn-ghost\" href=\"inicio.html\">Volver al inicio</a></div>";
+  function errorState(title, text, action) {
+    action = action || {};
+    const href = action.href || "inicio.html";
+    const label = action.label || "Volver al inicio";
+    $("stage").innerHTML = '<div class="il-state"><div class="ic">' + ILIcon("warning") + "</div><h2></h2><p></p><a class=\"btn btn-ghost\"></a></div>";
     $("stage").querySelector("h2").textContent = title;
     $("stage").querySelector("p").textContent = text;
+    const link = $("stage").querySelector("a"); link.href = href; link.textContent = label;
   }
 
   function updateHeader() {
@@ -546,7 +553,10 @@
     $("learnedBlock").hidden = true; $("reviewCallout").hidden = true;
     const nsx = $("summaryNewStamp"); if (nsx) nsx.hidden = true;
     $("reviewErrors").hidden = true; $("oneMore").hidden = true;
-    if (sec) $("summaryHome").textContent = "Back to home";
+    if (skillMode) {
+      $("summaryHome").href = "practicar.html";
+      $("summaryHome").textContent = sec ? "Back to practice" : "Volver a Practicar";
+    } else if (sec) $("summaryHome").textContent = "Back to home";
     const seal = document.querySelector(".summary-seal"); if (seal) seal.innerHTML = ILIcon("plane");
     $("missionSummary").classList.remove("hidden"); $("missionSummary").focus();
   }
@@ -555,6 +565,12 @@
    try {
     if (currentController && currentController.destroy) currentController.destroy();
     if (examMode) { ILMission.resetExam(username); renderExtraSummary(); return; }
+    if (skillMode) {
+      const sessionTruth = IL_LearningEvents.summarize(learningEvents, missionMeta.itemIds);
+      try { await ILAuth.finishPracticeSession(practiceSession, sessionTruth); }
+      catch (error) { if (window.ILObservability) ILObservability.report("network_failure", error, { area:"lesson", operation:"finish_skill_practice", skill:requestedSkill }); }
+      renderExtraSummary(); return;
+    }
     if (bonusMode || reviewDueMode) { renderExtraSummary(); return; }
     if (reviewMode) {
       ILMission.resolveErrors(username, reviewResolved, missionMeta.date);
@@ -610,7 +626,7 @@
     $("exitDialog").showModal(); requestAnimationFrame(() => $("keepPractising").focus());
   });
   $("keepPractising").addEventListener("click", () => { $("exitDialog").close("continue"); });
-  $("saveAndExit").addEventListener("click", () => { $("exitDialog").close("exit"); location.href = "inicio.html"; });
+  $("saveAndExit").addEventListener("click", () => { $("exitDialog").close("exit"); location.href = skillMode ? "practicar.html" : "inicio.html"; });
   $("exitDialog").addEventListener("cancel", event => { event.preventDefault(); $("exitDialog").close("continue"); });
   $("exitDialog").addEventListener("close", () => { if ($("exitDialog").returnValue !== "exit") { resumeTimer(); $("closeMission").focus(); } });
   (function () {
@@ -638,6 +654,37 @@
       placementState = placement;
       completionProgress = progress;
       $("headerStreak").textContent = progress ? (progress.streak || 0) : 0;
+      if (skillMode) {
+        const assignedUnits = (ageExperience.unitIds && ageExperience.unitIds.length) ? units.filter(unit => ageExperience.unitIds.indexOf(unit.id) !== -1) : units;
+        const allAssigned = assignedUnits.flatMap(unit => unit.ejercicios || []);
+        const compatible = window.IL_MATRIZ && IL_MATRIZ.filtra ? IL_MATRIZ.filtra(allAssigned, stageName) : allAssigned;
+        const validSkill = ILPracticeOptions.SKILLS.indexOf(requestedSkill) !== -1;
+        const available = compatible.filter(exercise => validSkill && exercise.habilidad === requestedSkill);
+        if (!validSkill || !available.length) {
+          if (window.ILObservability) ILObservability.report("invalid_data", new Error("Skill practice unavailable"), { area:"lesson", operation:"load_skill", skill:requestedSkill, age_band:stageName });
+          const hasPractice = compatible.length > 0;
+          $("missionName").textContent = ageExperience.id === "secondary" ? "Practice" : "Practicar";
+          $("exerciseCount").textContent = "";
+          $("segmentProgress").hidden = true;
+          $("themeLine").hidden = true;
+          errorState(
+            ageExperience.id === "secondary" ? "This practice is not available" : "Esta práctica no está disponible",
+            ageExperience.id === "secondary" ? "Choose another practice option." : "Puedes elegir otra forma de practicar.",
+            hasPractice ? { href:"practicar.html", label:ageExperience.id === "secondary" ? "Back to practice" : "Volver a Practicar" } : null
+          );
+          return;
+        }
+        const cachedEvents = await ILAuth.getCachedLearningEvents();
+        items = ILPracticeOptions.selectExercises({ exercises:available, cefr:placement && placement.cefr, recentEvents:cachedEvents, limit:exerciseExperience.sessionSize });
+        missionMeta = { date:ILMission.today(), unitId:"skill-" + requestedSkill, unitTitle:ILCopy.practiceSkill(requestedSkill, stageName), itemIds:items.map(item => item.id) };
+        const clientSessionKey = [username, missionMeta.date, "extra", missionMeta.unitId].join("|");
+        learningEvents = (cachedEvents || []).filter(event => event.client_session_key === clientSessionKey);
+        practiceSession = await ILAuth.startPracticeSession({ client_session_key:clientSessionKey, mode:"extra", age_band:stageName,
+          cefr:placement && placement.cefr, content_version:"1", activities_planned:missionMeta.itemIds }) || { id:null, client_session_key:clientSessionKey };
+        if (!practiceSession.client_session_key) practiceSession.client_session_key = clientSessionKey;
+        $("missionName").textContent = missionMeta.unitTitle;
+        index = 0; showExercise(); return;
+      }
       dailyItems = ILMission.getOrCreateSession({ username, units, banda: stageName, cefr: placement.cefr, matrix: window.IL_MATRIZ, limit: exerciseExperience.sessionSize, unitIds: ageExperience.unitIds, skillPriority: ageExperience.skillPriority });
       if (!dailyItems.length) { errorState("Contenido no disponible", "Todavía no hay ejercicios preparados para tu nivel hoy."); return; }
       const primaryUnit = unitOf[dailyItems[0].id] || units[0];
