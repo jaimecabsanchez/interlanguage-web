@@ -58,6 +58,13 @@
     emparejar:{ es:"MIRA · RELACIONA", en:"LOOK · MATCH" }, ordenar:{ es:"PIENSA · ORDENA", en:"THINK · ORDER" },
     hablar:{ es:"ESCUCHA · HABLA", en:"LISTEN · SPEAK" }
   });
+  const PRACTICE = Object.freeze({
+    p12:Object.freeze({ title:"¿Qué practicamos hoy?", subtitle:"Elige una opción y avanzamos paso a paso.", recommended:"Lo mejor para hoy", dailyTitle:"Tu misión de hoy", dailyBody:"Primero completa tu misión. Después podrás practicar más.", dailyCta:"Ir a mi misión", dueBody:"Hay algunas cosas listas para practicar otra vez.", skillBody:"Hoy te ayudará practicar {skill}.", extraBody:"Una práctica corta para seguir avanzando.", start:"Empezar", reviewTitle:"Repasar", reviewBody:"Vamos a practicar otra vez algunas cosas.", reviewEmpty:"Todo listo por ahora", chooseTitle:"Elige qué practicar", noContentTitle:"Todavía no hay práctica preparada", noContentBody:"Puedes volver a Inicio. Tu progreso está guardado.", backHome:"Volver a Inicio" }),
+    p34:Object.freeze({ title:"Practicar", subtitle:"Elige cómo quieres reforzar tu inglés.", recommended:"Recomendado para ti", dailyTitle:"Completa tu misión", dailyBody:"Tu misión de hoy sigue pendiente. Es el mejor siguiente paso.", dailyCta:"Continuar misión", dueBody:"Tienes contenido listo para repasar.", skillBody:"Practicar {skill} te ayudará a afianzar lo aprendido.", extraBody:"Una ronda corta para seguir avanzando.", start:"Practicar", reviewTitle:"Repasar", reviewBody:"Practica otra vez lo que más cuesta.", reviewEmpty:"No tienes nada pendiente", chooseTitle:"Elegir habilidad", noContentTitle:"Práctica no disponible", noContentBody:"Todavía no hay contenido compatible para practicar.", backHome:"Volver a Inicio" }),
+    p56:Object.freeze({ title:"Practicar", subtitle:"Elige una práctica breve según lo que necesitas hoy.", recommended:"Recomendado para ti", dailyTitle:"Primero, tu misión", dailyBody:"Tu misión diaria sigue pendiente. Complétala antes de la práctica extra.", dailyCta:"Continuar misión", dueBody:"Tienes contenido listo para review.", skillBody:"Un poco de {skill} es la mejor opción ahora.", extraBody:"Práctica extra adaptada a tu nivel.", start:"Practicar ahora", reviewTitle:"Repasar puntos clave", reviewBody:"Vuelve a lo que necesita un poco más de práctica.", reviewEmpty:"Todo al día", chooseTitle:"Elegir habilidad", noContentTitle:"Práctica no disponible", noContentBody:"No hay contenido compatible disponible ahora mismo.", backHome:"Volver a Inicio" }),
+    eso:Object.freeze({ title:"Practice", subtitle:"Choose a focused session for what you need today.", recommended:"Recommended", dailyTitle:"Complete today’s session", dailyBody:"Your daily session is still pending and remains the priority.", dailyCta:"Continue session", dueBody:"You have review items ready.", skillBody:"A focused {skill} session is the strongest next step.", extraBody:"A short extra session matched to your level.", start:"Start practice", reviewTitle:"Review mistakes", reviewBody:"Revisit the items that need another attempt.", reviewEmpty:"Everything is up to date", chooseTitle:"Choose a skill", noContentTitle:"Practice unavailable", noContentBody:"There is no compatible practice content available right now.", backHome:"Back to home" }),
+    neutral:Object.freeze({ title:"Practicar", subtitle:"Elige una práctica disponible.", recommended:"Recomendado", dailyTitle:"Tu misión de hoy", dailyBody:"Tu misión sigue pendiente y es el siguiente paso recomendado.", dailyCta:"Ir a la misión", dueBody:"Hay contenido listo para repasar.", skillBody:"Puedes practicar {skill}.", extraBody:"Una práctica breve disponible.", start:"Practicar", reviewTitle:"Repasar", reviewBody:"Practica de nuevo algunos contenidos.", reviewEmpty:"Todo listo por ahora", chooseTitle:"Elegir práctica", noContentTitle:"Práctica no disponible", noContentBody:"No hay contenido compatible disponible ahora mismo.", backHome:"Volver a Inicio" })
+  });
 
   function normalizeBand(band) { return BANDS.indexOf(band) >= 0 ? band : "neutral"; }
   function reportMissing(kind, key, band) {
@@ -89,6 +96,16 @@
     const key = type === "emparejar" || type === "ordenar" || type === "hablar" ? type : (hasAudio ? "audio" : "elegir");
     const entry = SUPPORT[key]; return englishLearningLabel(normalizeBand(band)) ? entry.en : entry.es;
   }
+  function practice(key, band, params) {
+    const safeBand = normalizeBand(band); const value = PRACTICE[safeBand][key];
+    if (value == null) { reportMissing("practice", key, safeBand); return ""; }
+    return interpolate(value, params);
+  }
+  function practiceSkill(id, band) {
+    const safeBand = normalizeBand(band);
+    const young = { listening:"Escuchar", vocabulary:"Palabras", speaking:"Hablar", reading:"Leer", grammar:"Frases", writing:"Escribir" };
+    return safeBand === "p12" && young[id] ? young[id] : skill(id, safeBand);
+  }
   function reward(item, band, field) {
     if (!item) return "";
     const safeBand = normalizeBand(band); const english = safeBand === "eso";
@@ -102,5 +119,5 @@
     return Object.freeze(out);
   }
 
-  return { BANDS, LANGUAGE, COPY, SKILLS, MISSIONS, SUPPORT, normalizeBand, text, skill, missionTitle, support, reward, view, has:key => BANDS.some(band => COPY[band][key] != null) };
+  return { BANDS, LANGUAGE, COPY, SKILLS, MISSIONS, SUPPORT, PRACTICE, normalizeBand, text, skill, missionTitle, support, practice, practiceSkill, reward, view, has:key => BANDS.some(band => COPY[band][key] != null) };
 });

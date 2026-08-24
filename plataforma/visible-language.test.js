@@ -21,7 +21,7 @@ assert.match(home, /skillLabelFor\(skill, stage\)/);
 assert.match(engine, /ILCopy\.skill\(skillId, band\)/);
 assert.match(engine, /ILCopy\.support\(exercise\.tipo/);
 assert.doesNotMatch(engine, /exercise\.etiqueta \|\| \(band === "p12"/);
-assert.match(lesson, /copy-registry\.js\?v=20260824b/);
+assert.match(lesson, /copy-registry\.js\?v=20260824c/);
 assert.match(lesson, /motor\/engine\.js\?v=20260824g/);
 
 console.log("visible language: registro canónico y p56 híbrido comprobados");

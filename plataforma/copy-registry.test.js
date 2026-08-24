@@ -14,6 +14,11 @@ assert.equal(Copy.skill("grammar", "p56"), "Grammar", "p56 introduce inglés en 
 assert.equal(Copy.missionTitle({ id:"rutina-diaria" }, "p56"), "My daily routine");
 assert.equal(Copy.text("startCta", "eso"), "Start session");
 assert.equal(Copy.reward({ name:"Perfect Round", nameEs:"Ronda perfecta" }, "p56", "name"), "Ronda perfecta");
+assert.equal(Copy.practice("reviewTitle", "p12"), "Repasar");
+assert.doesNotMatch(Copy.practice("reviewBody", "p12"), /error/i);
+assert.equal(Copy.practiceSkill("vocabulary", "p12"), "Palabras");
+assert.equal(Copy.practiceSkill("grammar", "p34"), "Gramática");
+assert.equal(Copy.practice("title", "eso"), "Practice");
 assert.equal(Copy.reward({ name:"Perfect Round", nameEs:"Ronda perfecta" }, "eso", "name"), "Perfect Round");
 assert.equal(Copy.normalizeBand("desconocida"), "neutral");
 assert.equal(Copy.text("startCta", "desconocida"), "Empezar", "fallback neutral y seguro");
