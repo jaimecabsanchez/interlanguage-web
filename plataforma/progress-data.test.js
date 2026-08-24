@@ -44,6 +44,7 @@ assert.equal(real.minutesTotal, null, "no inventa minutos en cuentas reales");
 assert.equal(real.wordsLearned, null, "no inventa palabras en cuentas reales");
 assert.equal(real.skills.every(s => s.percent === null), true);
 assert.equal(real.profileSummary.levelProgress, null, "no inventa progreso de nivel en cuentas reales");
+assert.equal(real.learningEvidence.sufficient, false, "cuenta real sin evidencia declara insuficiencia");
 assert.equal(real.comeback, true);
 const secondary = P.buildSnapshot({
   isDemo: false,
@@ -75,5 +76,12 @@ assert.deepEqual(P.contextualAction({ week: { goal: 5, count: 5 } }, "p34"), {
 });
 assert.deepEqual(P.visibleSkills(demo.skills).map(skill => skill.id), ["vocabulary", "reading", "grammar", "listening"]);
 assert.deepEqual(P.visibleSkills(real.skills), [], "una cuenta real sin evidencia no recibe porcentajes inventados");
+
+const measuredReal = P.buildSnapshot({
+  isDemo:false, profile:{username:"ana"}, progress:{lessons:6}, week:{goal:5,count:2,practiced:[0,2]},
+  learningMetrics:{status:"available",source:"server",sample:8,sufficient:true,accuracy:75,minutesWeek:19,period:{days:14}}
+});
+assert.equal(measuredReal.accuracy, 75, "muestra real suficiente usa precisión de servidor");
+assert.equal(measuredReal.minutesWeek, 19);
 
 console.log("progress-data: 34 comprobaciones correctas");

@@ -21,6 +21,10 @@
       const label = document.createElement("dt"); label.innerHTML = icon(item.icon); const labelText = document.createElement("span"); labelText.textContent = item.label; label.appendChild(labelText);
       const value = document.createElement("dd"); value.textContent = item.value == null ? "—" : String(item.value) + item.suffix;
       if (item.value == null) value.setAttribute("aria-label", item.label + ": todavía sin datos suficientes");
+      const period = item.period && (item.period.label || (item.period.days ? "últimos " + item.period.days + " días" : ""));
+      const evidenceLabel = item.source === "demo" ? "Dato de demostración" : ((item.sample || 0) + " evidencias" + (period ? ", " + period : ""));
+      wrapper.title = evidenceLabel;
+      wrapper.setAttribute("aria-label", item.label + ": " + (item.value == null ? "aún no hay suficiente información" : String(item.value) + item.suffix) + ". " + evidenceLabel);
       wrapper.append(label, value); grid.appendChild(wrapper);
     });
   }

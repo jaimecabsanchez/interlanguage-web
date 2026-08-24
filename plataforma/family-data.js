@@ -17,8 +17,11 @@
   function firstName(profile) {
     return String((profile && (profile.first_name || profile.full_name)) || "Alumno").trim().split(/\s+/)[0] || "Alumno";
   }
-  function metric(id, label, value, suffix, icon) {
-    return { id, label, value: number(value), suffix: suffix || "", icon };
+  function metric(id, label, value, suffix, icon, evidence) {
+    evidence = evidence || {};
+    return { id, label, value: number(value), suffix: suffix || "", icon,
+      source:evidence.source || "unknown", period:evidence.period || null,
+      sample:number(evidence.sample), sufficient:!!evidence.sufficient };
   }
   function measuredSkills(skills) {
     return (skills || []).filter(skill => number(skill.percent) != null).map(skill => Object.assign({}, skill, { percent: number(skill.percent) }));
@@ -44,6 +47,7 @@
   function sparseModel(snapshot, name, forcedNewState) {
     const week = snapshot.week || {};
     const phrases = forcedNewState ? [] : (snapshot.phrases || []).slice();
+    const evidence = snapshot.learningEvidence || { source:snapshot.isDemo ? "demo" : "server", sample:0, sufficient:false };
     return {
       name,
       title: "Progreso de " + name,
@@ -52,11 +56,11 @@
       phrases,
       expressionsTotal: forcedNewState ? null : number(snapshot.expressionsMastered),
       metrics: [
-        metric("days", "días de práctica", forcedNewState ? 0 : week.count, "", "calendar"),
-        metric("exercises", "ejercicios", null, "", "target"),
-        metric("expressions", "expresiones nuevas", forcedNewState ? null : (snapshot.expressionsMastered || null), "", "chat"),
-        metric("accuracy", "de precisión", forcedNewState ? null : snapshot.accuracy, "%", "trend"),
-        metric("minutes", "minutos", forcedNewState ? null : snapshot.minutesWeek, "", "clock")
+        metric("days", "días de práctica", forcedNewState ? 0 : week.count, "", "calendar", { source:"practice_sessions", period:{label:"Esta semana"}, sample:week.count, sufficient:week.count > 0 }),
+        metric("exercises", "ejercicios", null, "", "target", evidence),
+        metric("expressions", "expresiones nuevas", forcedNewState ? null : (snapshot.expressionsMastered || null), "", "chat", evidence),
+        metric("accuracy", "de precisión", forcedNewState ? null : snapshot.accuracy, "%", "trend", evidence),
+        metric("minutes", "minutos", forcedNewState ? null : snapshot.minutesWeek, "", "clock", evidence)
       ],
       consistency: { history: [], message: null },
       contents: [], strengths: [], reinforce: null, evolution: { history: [], message: null }, recommendation: null, classConnection: null
@@ -95,11 +99,11 @@
       phrases: (snapshot.phrases || []).slice(),
       expressionsTotal: number(snapshot.expressionsMastered),
       metrics: [
-        metric("days", "días de práctica", snapshot.week && snapshot.week.count, "", "calendar"),
-        metric("exercises", "ejercicios", evidence.exercisesWeek, "", "target"),
-        metric("expressions", "expresiones nuevas", evidence.newExpressionsWeek, "", "chat"),
-        metric("accuracy", "de precisión", snapshot.accuracy, "%", "trend"),
-        metric("minutes", "minutos", snapshot.minutesWeek, "", "clock")
+        metric("days", "días de práctica", snapshot.week && snapshot.week.count, "", "calendar", { source:snapshot.isDemo ? "demo" : "practice_sessions", period:{label:"Esta semana"}, sample:snapshot.week && snapshot.week.count, sufficient:true }),
+        metric("exercises", "ejercicios", evidence.exercisesWeek, "", "target", snapshot.learningEvidence || {source:"demo",sample:evidence.exercisesWeek,sufficient:true}),
+        metric("expressions", "expresiones nuevas", evidence.newExpressionsWeek, "", "chat", snapshot.learningEvidence || {source:"demo",sample:evidence.exercisesWeek,sufficient:true}),
+        metric("accuracy", "de precisión", snapshot.accuracy, "%", "trend", snapshot.learningEvidence || {source:"demo",sample:evidence.exercisesWeek,sufficient:true}),
+        metric("minutes", "minutos", snapshot.minutesWeek, "", "clock", snapshot.learningEvidence || {source:"demo",sample:evidence.exercisesWeek,sufficient:true})
       ],
       headline: trendMessage(name, history),
       consistency: { history, message: trendMessage(name, history) },

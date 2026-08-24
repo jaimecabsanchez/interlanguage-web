@@ -58,6 +58,7 @@
       requires_visual: source.requires_visual != null ? !!source.requires_visual : type === "elegir_imagen" || source.presentacion === "visual",
       requires_writing: source.requires_writing != null ? !!source.requires_writing : skill === "writing",
       instruction: source.instruction || source.instruccion || "", instruction_audio: source.instruction_audio || source.audio || "",
+      audio_src: source.audio_src || source.audio_url || "",
       stimulus: copy(source.stimulus != null ? source.stimulus : source.estimulo), options: copy(source.options || source.opciones || []), answer,
       accepted_answers: array(source.accepted_answers), hint: source.hint || feedback.incorrect || "",
       explanation: source.explanation || source.explicacion || "", learned_expressions: array(source.learned_expressions || feedback.learnedExpressions),

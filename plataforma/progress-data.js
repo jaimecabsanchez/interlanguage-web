@@ -209,6 +209,7 @@
     const previousWeek = countWeek(days, -1, input.now);
     const hasPreviousData = previousWeek > 0;
     const phrases = (input.masteredPhrases && input.masteredPhrases.length) ? input.masteredPhrases : (demo ? demo.phrases.slice() : []);
+    const measured = !demo && input.learningMetrics && input.learningMetrics.status === "available" ? input.learningMetrics : null;
     const data = {
       isDemo: !!input.isDemo,
       ageMode: input.ageMode || "primary-upper",
@@ -222,9 +223,9 @@
       previousWeek: previousWeek,
       weekComparison: comparison(Number(week.count) || 0, previousWeek, hasPreviousData),
       minutesTotal: demo ? demo.minutesTotal : null,
-      minutesWeek: demo ? demo.minutesWeek : null,
+      minutesWeek: demo ? demo.minutesWeek : (measured ? measured.minutesWeek : null),
       wordsLearned: demo ? demo.wordsLearned : null,
-      accuracy: demo ? demo.accuracy : null,
+      accuracy: demo ? demo.accuracy : (measured && measured.sufficient ? measured.accuracy : null),
       topicsCompleted: demo ? demo.topicsCompleted : null,
       phrases: phrases,
       expressionsMastered: demo ? demo.expressionsMastered : phrases.length,
@@ -235,7 +236,10 @@
         : input.focusMissions,
       listeningCorrect: demo ? demo.listeningCorrect : null,
       comeback: demo ? demo.comeback : detectComeback(days),
-      familyEvidence: demo ? demo.family : null
+      familyEvidence: demo ? demo.family : null,
+      learningEvidence: demo
+        ? { source:"demo", period:{ label:"Datos de demostración" }, sample:demo.family.exercisesWeek, sufficient:true }
+        : (input.learningMetrics || { status:"empty", source:"server", sample:0, sufficient:false })
     };
     data.profileSummary = demo ? demo.profile : {
       levelName: (profile.level || (input.placement && input.placement.label) || "Nivel por descubrir").replace(" · ", " "),
@@ -254,7 +258,8 @@
     const profile = await auth.getProfile();
     if (!profile) return null;
     const results = await Promise.all([
-      auth.getProgress(), auth.getWeekActivity(), auth.getActivityDays(3650), auth.getSkillBreakdown(), auth.getMasteredPhrases(), auth.getPlacement()
+      auth.getProgress(), auth.getWeekActivity(), auth.getActivityDays(3650), auth.getSkillBreakdown(), auth.getMasteredPhrases(), auth.getPlacement(),
+      typeof auth.getLearningMetrics === "function" ? auth.getLearningMetrics() : Promise.resolve({ status:"empty", source:"server", sample:0, sufficient:false })
     ]);
     const ageMode = options.ageMode || "primary-upper";
     const focusUnitId = ageMode === "secondary" ? "future-plans" : "rutina-diaria";
@@ -262,7 +267,7 @@
     if (mission && typeof mission.unitCompletionCount === "function") focusMissions = mission.unitCompletionCount(profile.username || "", focusUnitId);
     return buildSnapshot({
       profile: profile, progress: results[0], week: results[1], activityDays: results[2], authSkills: results[3],
-      masteredPhrases: results[4], placement: results[5], isDemo: auth.isDemo(), ageMode: ageMode, focusMissions: focusMissions
+      masteredPhrases: results[4], placement: results[5], learningMetrics:results[6], isDemo: auth.isDemo(), ageMode: ageMode, focusMissions: focusMissions
     });
   }
 

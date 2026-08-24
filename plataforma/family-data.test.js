@@ -26,6 +26,7 @@ const full = Family.build({
 
 assert.equal(full.sufficientEvidence, true);
 assert.equal(full.metrics.find(item => item.id === "exercises").value, 31);
+assert.equal(full.metrics.find(item => item.id === "accuracy").source, "demo");
 assert.equal(full.consistency.history[3].sessions, 4, "la semana actual procede del snapshot compartido");
 assert.equal(full.strengths[0].label, "Vocabulary");
 assert.equal(full.reinforce.skill, "Listening");
@@ -34,6 +35,7 @@ assert.match(full.evolution.message, /precisión ha mejorado/);
 
 const sparse = Family.build({ profile: { full_name: "Lucía" }, lessons: 1, week: { count: 1 }, skills: [] });
 assert.equal(sparse.sufficientEvidence, false);
+assert.equal(sparse.metrics.find(item => item.id === "accuracy").sufficient, false);
 assert.match(sparse.lowDataMessage, /acaba de empezar/);
 assert.equal(sparse.consistency.history.length, 0);
 

@@ -1,0 +1,14 @@
+const assert = require("node:assert/strict");
+const create = require("./observability.js");
+const data = new Map();
+const storage = { getItem:key => data.get(key) || null, setItem:(key,value) => data.set(key,String(value)), removeItem:key => data.delete(key) };
+const log = { error(){}, warn(){} };
+const obs = create(storage, log);
+obs.report("technical_failure", new Error("audio"), { area:"lesson", operation:"play", exercise_id:"e1", answer:"secreto", token:"no" });
+const rows = obs.list();
+assert.equal(rows.length, 1);
+assert.equal(rows[0].kind, "technical_failure");
+assert.equal(rows[0].context.exercise_id, "e1");
+assert.equal(rows[0].context.answer, undefined, "no registra respuestas");
+assert.equal(rows[0].context.token, undefined, "no registra secretos arbitrarios");
+console.log("observability: categorías estructuradas y contexto seguro comprobados");

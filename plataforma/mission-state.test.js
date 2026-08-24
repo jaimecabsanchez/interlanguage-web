@@ -76,4 +76,23 @@ const gentleUnits = [{ ejercicios: [
 const gentle = M.getOrCreateSession({ username: "leo", date: "2026-08-11", units: gentleUnits, banda: "p56", cefr: "A1", limit: 2, skillPriority: ["grammar", "vocabulary"] });
 assert.equal(gentle[0].id, "gentle", "la sesión empieza con una victoria temprana cuando está disponible");
 
-console.log("mission-state: 19 comprobaciones correctas");
+const truthMeta = { date:"2026-08-12", unitId:"truth", unitTitle:"Truth", itemIds:["w", "t"] };
+M.begin("truth", truthMeta, 1000);
+let truth = M.advance("truth", { id:"w", correct:true, first_try_correct:false, eventual_success:true, hint_used:true }, truthMeta.date);
+assert.equal(truth.correctCount, 0, "un acierto tras reintento no cuenta como first try");
+assert.equal(truth.eventualSuccessCount, 1, "sí cuenta como éxito eventual");
+assert.deepEqual(truth.incorrectIds, ["w"], "el ejercicio queda disponible para repaso");
+truth = M.advance("truth", { id:"t", technical_failure:true, eventual_success:false }, truthMeta.date);
+truth = M.complete("truth", 2000, truthMeta.date);
+assert.equal(truth.technicalFailureCount, 1);
+assert.equal(truth.perfect, false, "reintento o fallo técnico impiden sesión perfecta");
+
+const legacyStorage = memoryStorage();
+const legacyMission = createMissionStore(legacyStorage);
+legacyStorage.setItem(legacyMission._keys.stateKey("legacy"), JSON.stringify({ version:1, date:"2026-08-13", unitId:"old", itemIds:["a"], currentIndex:1, completedCount:1, correctCount:1, incorrectIds:[], learnedExpressions:[], total:1, status:"completed" }));
+const migrated = legacyMission.get("legacy", "2026-08-13");
+assert.equal(migrated.version, 2);
+assert.equal(migrated.eventualSuccessCount, 1, "el estado v1 se conserva al migrar");
+assert.equal(migrated.perfect, true, "una sesión v1 ya completada conserva su resultado");
+
+console.log("mission-state: compatibilidad v1, first try, eventual y fallo técnico correctos");

@@ -16,6 +16,6 @@ assert.match(home, /skillLabelFor\(skill, stage\)/);
 assert.match(engine, /grammar: \{ icon: "grammar", es: "Gramática", en: "Grammar" \}/);
 assert.match(engine, /band === "p12" \|\| band === "p34" \? skill\.es : skill\.en/);
 assert.doesNotMatch(engine, /exercise\.etiqueta \|\| \(band === "p12"/);
-assert.match(lesson, /motor\/engine\.js\?v=20260824b/);
+assert.match(lesson, /motor\/engine\.js\?v=20260824d/);
 
 console.log("visible language: 9 comprobaciones correctas");

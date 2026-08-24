@@ -40,7 +40,10 @@
     if (!PED || !username || !exerciseId) return null;
     const map = read(username);
     const prev = map[exerciseId] || PED.blank(exerciseId);
+    if (ev && ev.technical_failure) return prev;
     const card = PED.applyAttempt(prev, { correct: !!(ev && ev.correct), production: !!(ev && ev.production) }, day || today());
+    card.attempt_count = (Number(prev.attempt_count) || 0) + 1;
+    card.first_result = prev.first_result || (ev && ev.correct ? "correct" : "incorrect");
     map[exerciseId] = card;
     write(username, map);
     return card;
@@ -49,6 +52,11 @@
   /* Igual, deduciendo "production" a partir del tipo de ejercicio. */
   function recordByType(username, exerciseId, tipo, correct, day) {
     return record(username, exerciseId, { correct: !!correct, production: !!PRODUCTION[tipo] }, day);
+  }
+
+  function recordEvent(username, exerciseId, tipo, event, day) {
+    event = event || {};
+    return record(username, exerciseId, { correct:event.correct === true, production:!!PRODUCTION[tipo], technical_failure:!!event.technical_failure }, day);
   }
 
   function all(username) { return read(username); }
@@ -63,5 +71,5 @@
 
   function clear(username) { try { storage.removeItem(key(username)); return true; } catch (e) { return false; } }
 
-  return { record, recordByType, all, due, dueCount, clear, _key: key };
+  return { record, recordByType, recordEvent, all, due, dueCount, clear, _key: key };
 });

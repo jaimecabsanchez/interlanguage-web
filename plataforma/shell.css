@@ -55,3 +55,5 @@ body{
   .shell-main{animation:none;}
   .rail a:hover{transform:none;}
 }
+/* Netlify inyecta este iframe fuera del HTML publicado. Nunca puede cubrir la navegación móvil. */
+#nl-badge-frame{display:none!important}

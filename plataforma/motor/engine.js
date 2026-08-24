@@ -165,6 +165,31 @@
     }
   }
 
+  // Audio editorial primero; TTS es únicamente fallback.
+  function playAudio(source, text, callbacks) {
+    callbacks = callbacks || {};
+    const settings = audioSettings();
+    if (!settings.sound) { if (callbacks.onDisabled) callbacks.onDisabled(); return null; }
+    if (source && typeof Audio !== "undefined") {
+      try {
+        const media = new Audio(source); media.preload = "auto"; media.playbackRate = settings.audioSpeed || 1;
+        if (callbacks.onLoading) callbacks.onLoading();
+        media.onplaying = () => callbacks.onStart && callbacks.onStart("editorial");
+        media.onended = () => callbacks.onEnd && callbacks.onEnd("editorial");
+        media.onerror = () => speak(text, {
+          onStart:() => callbacks.onStart && callbacks.onStart("tts"),
+          onEnd:() => callbacks.onEnd && callbacks.onEnd("tts"),
+          onDisabled:callbacks.onDisabled,
+          onError:error => callbacks.onError && callbacks.onError(error || new Error("audio_unavailable"))
+        });
+        const promise = media.play();
+        if (promise && promise.catch) promise.catch(() => media.onerror());
+        return media;
+      } catch (error) { /* continúa al fallback TTS */ }
+    }
+    return speak(text, callbacks);
+  }
+
   function baseResult(exercise, result) {
     const feedback = exercise.feedback || {};
     return {
@@ -589,6 +614,9 @@
     const experience = options.experience || {};
     const ui = interfaceCopy(band);
     const guided = !!options.guided;
+    let audioReplays = 0;
+    let audioStarted = false;
+    let technicalFailure = null;
     if (guided && window.IL_ADAPTACION) exercise = window.IL_ADAPTACION.simplify(exercise, true);
     container.innerHTML = "";
     // Un ejercicio que no se puede montar nunca debe ser un punto muerto:
@@ -597,8 +625,11 @@
       const foot = el("div", "eng-footer");
       const skip = el("button", "btn btn-primary btn-block", secondary ? "Continue" : "Continuar");
       skip.type = "button";
+      const failure = { id:exercise && exercise.id, exercise_id:exercise && exercise.id, technical_failure:true,
+        failure_type:"activity_unavailable", attempt_no:0, attempt_number:0, correct:null, learnedExpressions:[] };
+      if (typeof options.onTechnicalFailure === "function") options.onTechnicalFailure(failure);
       skip.addEventListener("click", () => {
-        if (typeof options.onNext === "function") options.onNext({ id: exercise && exercise.id, correct: false, learnedExpressions: [], skipped: true });
+        if (typeof options.onNext === "function") options.onNext(failure);
       });
       foot.appendChild(skip); container.appendChild(foot);
       return { focus: () => skip.focus(), destroy: () => {} };
@@ -639,7 +670,8 @@
     // Escuchar en alto: audio explícito si lo hay; si no, la frase de ejemplo en inglés
     // (feedback.context), para que casi todas las actividades tengan botón de escucha.
     const audioText = exercise.tipo === "hablar" ? "" : (exercise.audio || (exercise.feedback && exercise.feedback.context) || "");
-    if (audioText) {
+    const audioSource = exercise.audio_src || exercise.audio_url || "";
+    if (audioText || audioSource) {
       const audio = el("button", "eng-audio"); audio.type = "button";
       audio.innerHTML = '<span class="eng-audio-waves" aria-hidden="true"><i></i><i></i><i></i></span>' + icon("speaker") + '<span class="eng-audio-label">' + ui.listen + '</span>';
       audio.setAttribute("aria-label", secondary ? "Listen to the exercise audio" : ui.listen + " audio del ejercicio");
@@ -650,9 +682,12 @@
         audio.title = secondary ? "Enable sound in Profile to play this audio." : "Activa el sonido en Perfil para escuchar este audio.";
         audio.setAttribute("aria-label", secondary ? "Audio disabled. Enable it in Profile." : "Audio desactivado. Actívalo en Perfil.");
         audio.querySelector(".eng-audio-label").textContent = secondary ? "Audio disabled" : "Audio desactivado";
+        if (exercise.habilidad === "listening" || exercise.requires_audio) setTimeout(() => registerTechnicalFailure("audio_disabled"), 0);
       }
-      audio.addEventListener("click", () => speak(audioText, {
+      audio.addEventListener("click", () => playAudio(audioSource, audioText, {
+        onLoading: () => { audio.querySelector(".eng-audio-label").textContent = secondary ? "Loading…" : "Cargando…"; },
         onStart: () => {
+          if (audioStarted) audioReplays += 1; audioStarted = true;
           audio.classList.add("is-playing"); audio.setAttribute("aria-pressed", "true");
           audio.querySelector(".eng-audio-label").textContent = ui.playing;
         },
@@ -668,6 +703,7 @@
           audio.classList.remove("is-playing"); audio.setAttribute("aria-pressed", "false");
           audio.querySelector(".eng-audio-label").textContent = ui.retryAudio;
           if (root.isConnected && window.ILToast) window.ILToast("No hemos podido reproducir el audio.", { type: "err" });
+          if (exercise.habilidad === "listening" || exercise.requires_audio) registerTechnicalFailure("audio_unavailable");
         }
       }));
       header.appendChild(audio);
@@ -701,6 +737,7 @@
 
     let state = "ready";
     let attempts = 0;
+    let attemptStartedAt = Date.now();
     let lastAnswer = "";
     let result = null;
     const signature = value => { try { return JSON.stringify(value); } catch (error) { return String(value); } };
@@ -711,6 +748,21 @@
       state = answered ? "selected" : "ready";
       action.disabled = !answered || (attempts === 1 && !changed);
     });
+
+    function registerTechnicalFailure(failureType) {
+      if (technicalFailure) return;
+      technicalFailure = { id:exercise.id, exercise_id:exercise.id, technical_failure:true, failure_type:failureType,
+        attempt_no:0, attempt_number:0, correct:null, hint_used:false, audio_replays:audioReplays,
+        started_at:new Date().toISOString(), submitted_at:new Date().toISOString(), response_time_ms:0,
+        learnedExpressions:[], first_try_correct:false, eventual_success:false };
+      state = "technical";
+      try { template.setDisabled(true); } catch (error) {}
+      renderFeedback(feedback, "error", secondary ? "Audio unavailable" : "Audio no disponible",
+        secondary ? "You can continue. This will not affect your progress." : "Puedes continuar sin penalización. No afectará a tu progreso.", "");
+      action.disabled = false; action.textContent = secondary ? "Continue without penalty" : "Continuar sin penalización";
+      action.onclick = () => { state = "continuing"; action.disabled = true; if (typeof options.onNext === "function") options.onNext(technicalFailure); };
+      if (typeof options.onTechnicalFailure === "function") options.onTechnicalFailure(technicalFailure);
+    }
 
     function resolve(correct) {
       state = "resolved";
@@ -730,12 +782,17 @@
           type: exercise.tipo,
           correct: correct,
           attempt_no: attempts,
-          hint_used: attempts > 1,
-          points: correct ? 10 : 0,
+          hint_used: attempts > 1 || guided,
+          points: correct && attempts === 1 && !guided ? 10 : 0,
           selectedLabel: result.selectedLabel,
           correctLabel: result.correctLabel,
           learnedExpressions: result.learnedExpressions || [],
           guided: guided
+          ,first_try_correct: correct && attempts === 1 && !guided
+          ,eventual_success: !!correct
+          ,attempt_count: attempts
+          ,audio_replays: audioReplays
+          ,technical_failure: false
         });
       }
     }
@@ -744,27 +801,28 @@
     // se queda bloqueado — resolvemos el ejercicio para poder continuar.
     function failSafeAdvance(err) {
       if (window.console && console.error) console.error("[Interlanguage] Fallo al evaluar el ejercicio", exercise && exercise.id, err);
-      if (!result) result = { correct: false, learnedExpressions: [] };
-      result.final = true;
-      try { template.setDisabled(true); } catch (e) {}
-      try { renderFeedback(feedback, "error", ui.error, secondary ? "Let’s keep going." : "Seguimos.", ""); } catch (e) {}
-      state = "resolved"; action.disabled = false;
-      if (options.lastOne) action.textContent = ui.finish;
-      else action.innerHTML = ui.next + ' <span aria-hidden="true">→</span>';
-      action.onclick = () => { state = "continuing"; action.disabled = true; if (typeof options.onNext === "function") options.onNext(result); };
+      registerTechnicalFailure("evaluation_failure");
     }
     action.addEventListener("click", () => {
-      if (state === "resolved" || state === "continuing" || action.disabled) return;
+      if (state === "resolved" || state === "continuing" || state === "technical" || action.disabled) return;
       state = "checking"; action.disabled = true; attempts += 1;
       try {
       result = template.evaluate();
+      const submittedAt = Date.now();
+      if (typeof options.onAttempt === "function") options.onAttempt({
+        id:exercise.id, exercise_id:exercise.id, type:exercise.tipo, correct:!!result.correct,
+        attempt_no:attempts, attempt_number:attempts, hint_used:attempts > 1 || guided,
+        audio_replays:audioReplays, answer:template.getAnswer(),
+        started_at:new Date(attemptStartedAt).toISOString(), submitted_at:new Date(submittedAt).toISOString(),
+        response_time_ms:Math.max(0, submittedAt - attemptStartedAt), technical_failure:false
+      });
       if (result.correct) {
         const successCopy = (exercise.feedback && exercise.feedback.correct) ||
           (result.correctLabel
             ? (secondary ? "The correct answer is “" : "La respuesta correcta es “") + result.correctLabel + "”."
             : (secondary ? "You solved the activity correctly." : "Has resuelto la actividad correctamente."));
         renderFeedback(feedback, "success", ui.success, successCopy, result.context);
-        celebrate(root, 10);
+        celebrate(root, attempts === 1 && !guided ? 10 : 0);
         if (typeof options.onFeedback === "function") options.onFeedback("success");
         resolve(true);
       } else if (attempts === 1) {
@@ -774,6 +832,7 @@
         renderFeedback(feedback, "retry", ui.retry, hint, "");
         if (typeof options.onFeedback === "function") options.onFeedback("retry");
         action.textContent = ui.checkAgain; action.disabled = true;
+        attemptStartedAt = Date.now();
         setTimeout(() => template.focus(), 0);
       } else {
         const solution = result.correctLabel
@@ -804,5 +863,5 @@
     };
   }
 
-  window.IL_ENGINE = { render, speak, instructionFor, visualFor: illustrationFor, _templates: TEMPLATES, _norm: norm };
+  window.IL_ENGINE = { render, speak, playAudio, instructionFor, visualFor: illustrationFor, _templates: TEMPLATES, _norm: norm };
 })();

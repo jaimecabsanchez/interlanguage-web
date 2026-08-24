@@ -54,6 +54,19 @@
   const toLoginEmail = U.toLoginEmail ? (id) => U.toLoginEmail(id, DOMAIN)
     : (id) => looksLikeEmail(id) ? String(id).trim().toLowerCase() : usernameToEmail(id);
   const validSex = value => value === "male" || value === "female";
+  const LearningData = window.ILLearningData || null;
+  const Obs = window.ILObservability || { report(kind, error, context) {
+    if (window.console && console.error) console.error("[Interlanguage]", kind, context || {}, error || "");
+  } };
+  const OUTBOX_KEY = "il_learning_outbox_v1";
+  const EVENT_PREFIX = "il_learning_events_v1_";
+  function observe(kind, error, context) { return Obs.report(kind, error, context); }
+  function readJson(key, fallback) { try { const value = JSON.parse(localStorage.getItem(key)); return value == null ? fallback : value; } catch (error) { return fallback; } }
+  function writeJson(key, value) { try { localStorage.setItem(key, JSON.stringify(value)); return true; } catch (error) { observe("data_unavailable", error, { area:"storage", operation:"write" }); return false; } }
+  function appendBounded(key, value, limit) { const rows = readJson(key, []); rows.push(value); writeJson(key, rows.slice(-(limit || 500))); }
+  function queueLearning(kind, payload) { appendBounded(OUTBOX_KEY, { kind, payload, queued_at:new Date().toISOString() }, 500); }
+  function eventKey(username) { return EVENT_PREFIX + encodeURIComponent(String(username || "guest").toLowerCase()); }
+  function eventUuid() { return window.crypto && window.crypto.randomUUID ? window.crypto.randomUUID() : null; }
 
   /* ---------------- MODO DEMO (localStorage) ---------------- */
   const DEMO_DB = "il_demo_db_v2", DEMO_SESSION = "il_demo_session_v2";
@@ -143,6 +156,7 @@
     async _afterLogin() {
       try { const { data: { user } } = await sb.auth.getUser();
             if (user) await sb.from("users").update({ last_login_at: new Date().toISOString() }).eq("id", user.id); } catch (e) {}
+      try { await this.flushLearningOutbox(); } catch (error) { observe("network_failure", error, { area:"learning", operation:"flush_after_login" }); }
     },
 
     /* ------- 2FA (verificación en dos pasos, TOTP) ------- */
@@ -545,12 +559,60 @@
   };
 
   // Crea la sesión de práctica del día (para agrupar los intentos)
-  API.startPracticeSession = async function () {
-    if (DEMO || !sb) return null;
+  API.startPracticeSession = async function (meta) {
+    meta = meta || {};
+    if (DEMO || !sb) return { id:null, client_session_key:meta.client_session_key || null, source:"demo" };
     const prof = await this.getProfile();
     if (!prof || !prof.student_id) return null;
-    const { data } = await sb.from("practice_sessions").insert({ student_id: prof.student_id }).select("id").single();
-    return data ? data.id : null;
+    const row = {
+      student_id:prof.student_id, client_session_key:meta.client_session_key || null,
+      mode:meta.mode || "daily", age_band:meta.age_band || null, cefr:meta.cefr || null,
+      content_version:meta.content_version || "1", activities_planned:meta.activities_planned || null
+    };
+    const { data, error } = await sb.from("practice_sessions").upsert(row, { onConflict:"student_id,client_session_key", ignoreDuplicates:false }).select("id,client_session_key").single();
+    if (error) { observe("network_failure", error, { area:"learning", operation:"start_session", table:"practice_sessions" }); queueLearning("session_start", row); return { id:null, client_session_key:row.client_session_key, queued:true, source:"cache" }; }
+    return { id:data && data.id || null, client_session_key:row.client_session_key, source:"server" };
+  };
+
+  // Guarda cada intento inmutable. La cola local es caché/outbox, nunca una reward.
+  API.recordLearningEvent = async function (event) {
+    if (!event || !event.attempt_id) return { ok:false, error:"invalid_event" };
+    const prof = await this.getProfile();
+    if (!prof) return { ok:false, error:"no_profile" };
+    appendBounded(eventKey(prof.username), event, 1000);
+    if (DEMO || !sb || !prof.student_id) return { ok:true, source:"demo" };
+    const row = {
+      id:event.attempt_id, student_id:prof.student_id, practice_session_id:event.session_id || null,
+      exercise_key:event.exercise_id || null, objective_key:event.objective_id || null, variant_key:event.variant_id || null,
+      client_session_key:event.client_session_key || null, age_band:event.age_band || null, cefr:event.cefr || null,
+      skill:event.skill || null, content_version:event.content_version || null,
+      result:event.technical_failure ? "skipped" : (event.correct ? "correct" : "incorrect"),
+      attempt_no:event.attempt_number || 0, hint_used:!!event.hint_used, response:event.answer == null ? null : { value:event.answer },
+      duration_ms:event.response_time_ms || null, audio_replays:event.audio_replays || 0,
+      started_at:event.started_at || null, submitted_at:event.submitted_at || new Date().toISOString(),
+      mode:event.mode || "daily", technical_failure:!!event.technical_failure, failure_type:event.failure_type || null
+    };
+    const { error } = await sb.from("attempts").upsert(row, { onConflict:"id", ignoreDuplicates:true });
+    if (error) { observe("network_failure", error, { area:"learning", operation:"record_attempt", table:"attempts", exercise_id:event.exercise_id }); queueLearning("attempt", row); return { ok:false, queued:true, source:"cache" }; }
+    return { ok:true, source:"server" };
+  };
+
+  API.getCachedLearningEvents = async function () {
+    const prof = await this.getProfile(); return prof ? readJson(eventKey(prof.username), []) : [];
+  };
+
+  API.saveExerciseMastery = async function (payload) {
+    if (!payload || !payload.exercise_key) return { ok:false };
+    if (DEMO || !sb) return { ok:true, source:"demo" };
+    const prof = await this.getProfile(); if (!prof || !prof.student_id) return { ok:false };
+    const card = payload.card || {};
+    const row = { student_id:prof.student_id, exercise_key:payload.exercise_key, objective_key:payload.objective_key || null,
+      skill:payload.skill || null, mastery_state:card.state || "practicing", evidence_score:Number(card.evidence) || 0,
+      attempt_count:Number(card.attempt_count || card.attempts) || 1, first_result:card.first_result || null,
+      last_result:card.last_result || null, next_review_at:card.next_review_at || null, updated_at:new Date().toISOString() };
+    const { error } = await sb.from("exercise_mastery").upsert(row, { onConflict:"student_id,exercise_key" });
+    if (error) { observe("network_failure", error, { area:"learning", operation:"save_mastery", table:"exercise_mastery", exercise_id:payload.exercise_key }); queueLearning("mastery", row); return { ok:false, queued:true }; }
+    return { ok:true, source:"server" };
   };
 
   // Envía una respuesta de selección: valida EN SERVIDOR y registra el intento
@@ -571,10 +633,43 @@
     if (DEMO || !sb) return [];
     const prof = await this.getProfile();
     if (!prof || !prof.student_id) return [];
-    const { data } = await sb.from("mastery")
+    const { data, error } = await sb.from("mastery")
       .select("mastery_state, objectives(can_do)")
       .eq("student_id", prof.student_id).eq("mastery_state", "mastered");
+    if (error) { observe("data_unavailable", error, { area:"progress", operation:"mastered_phrases", table:"mastery" }); return []; }
     return (data || []).map(m => m.objectives && m.objectives.can_do).filter(Boolean);
+  };
+
+  // Métricas reales: solo evidencia evaluable; porcentajes con muestra mínima.
+  API.getLearningMetrics = async function () {
+    if (DEMO) return { status:"demo", source:"demo", sufficient:true };
+    const prof = await this.getProfile();
+    if (!sb || !prof || !prof.student_id) return { status:"empty", source:"server", sufficient:false, sample:0 };
+    const from = dayAdd(-13);
+    const [{ data:attempts, error:attemptError }, { data:sessions, error:sessionError }] = await Promise.all([
+      sb.from("attempts").select("exercise_key,client_session_key,attempt_no,result,hint_used,technical_failure,duration_ms,skill,submitted_at").eq("student_id", prof.student_id).gte("submitted_at", from + "T00:00:00Z").order("submitted_at", { ascending:true }),
+      sb.from("practice_sessions").select("date,started_at,finished_at,completed").eq("student_id", prof.student_id).eq("completed", true).gte("date", from)
+    ]);
+    if (attemptError || sessionError) {
+      observe("data_unavailable", attemptError || sessionError, { area:"progress", operation:"learning_metrics", table:attemptError ? "attempts" : "practice_sessions" });
+      return { status:"error", source:"server", sufficient:false, sample:0, period:{ days:14, from } };
+    }
+    const groups = {};
+    (attempts || []).filter(row => !row.technical_failure && row.attempt_no > 0).forEach(row => {
+      const key = (row.client_session_key || "session") + "|" + (row.exercise_key || "exercise");
+      if (!groups[key] || row.attempt_no < groups[key].attempt_no) groups[key] = row;
+    });
+    const firstAttempts = Object.values(groups);
+    const sample = firstAttempts.length;
+    const accuracy = sample >= 5 ? Math.round(100 * firstAttempts.filter(row => row.result === "correct" && !row.hint_used).length / sample) : null;
+    const minutes = (sessions || []).reduce((sum, row) => {
+      if (!row.started_at || !row.finished_at) return sum;
+      return sum + Math.max(0, new Date(row.finished_at).getTime() - new Date(row.started_at).getTime());
+    }, 0);
+    return { status:sample ? "available" : "empty", source:"server", sufficient:sample >= 5, sample,
+      period:{ days:14, from, to:new Date().toISOString().slice(0, 10) }, accuracy,
+      minutesWeek:sessions && sessions.length ? Math.round(minutes / 60000) : null,
+      exercises:sample, sessions:(sessions || []).length };
   };
 
   // Días con práctica dentro de una ventana (por defecto, últimos ~112 días para el mapa mensual).
@@ -586,14 +681,17 @@
     if (!prof) return [];
     const cutoff = dayAdd(-daysBack);
     const set = new Set();
-    loadDays(prof.username).forEach(d => { if (d >= cutoff) set.add(d); });
-    try { const pr = await this.getProgress(); if (pr && pr.last && pr.last >= cutoff) set.add(pr.last); } catch (e) {}
+    if (DEMO) {
+      loadDays(prof.username).forEach(d => { if (d >= cutoff) set.add(d); });
+      try { const pr = await this.getProgress(); if (pr && pr.last && pr.last >= cutoff) set.add(pr.last); }
+      catch (e) { observe("data_unavailable", e, { area:"progress", operation:"demo_activity_cache" }); }
+    }
     if (!DEMO && sb && prof.student_id) {
-      try {
-        const { data } = await sb.from("practice_sessions")
-          .select("created_at").eq("student_id", prof.student_id).gte("created_at", cutoff + "T00:00:00Z");
-        (data || []).forEach(s => set.add(new Date(s.created_at).toISOString().slice(0, 10)));
-      } catch (e) {}
+      if (LearningData) {
+        const result = await LearningData.activityDays(sb, prof.student_id, cutoff);
+        if (result.status === "error") observe("data_unavailable", result.error, { area:"progress", operation:"activity_days", table:result.source });
+        else (result.days || []).forEach(day => set.add(day));
+      } else observe("invalid_data", "ILLearningData no cargado", { area:"progress", operation:"activity_days" });
     }
     return [...set].sort();
   };
@@ -616,26 +714,15 @@
       // Perfil de muestra determinista; sube suavemente con las misiones hechas.
       const base = { vocabulary: 46, grammar: 34, listening: 22, reading: 40 };
       const skills = SKILL_DEFS.map(s => ({ ...s, pct: Math.max(6, Math.min(94, Math.round(base[s.key] + n * 1.1))) }));
-      return { hasData: true, skills: skills };
+      return { hasData: true, status:"available", source:"demo", period:{ label:"Datos de demostración" }, sample:n, skills: skills.map(skill => Object.assign({}, skill, { sample:n, sufficient:true })) };
     }
     if (!sb || !prof.student_id) return { hasData: false, skills: SKILL_DEFS.map(s => ({ ...s, pct: 0 })) };
-    try {
-      const { data } = await sb.from("mastery")
-        .select("mastery_state, objectives(skill)")
-        .eq("student_id", prof.student_id);
-      if (!data || !data.length) return { hasData: false, skills: SKILL_DEFS.map(s => ({ ...s, pct: 0 })) };
-      const tot = {}, mas = {};
-      data.forEach(r => {
-        const sk = (r.objectives && r.objectives.skill || "").toLowerCase();
-        if (!sk) return;
-        tot[sk] = (tot[sk] || 0) + 1;
-        if (r.mastery_state === "mastered") mas[sk] = (mas[sk] || 0) + 1;
-      });
-      const skills = SKILL_DEFS.map(s => ({ ...s, pct: tot[s.key] ? Math.round(100 * (mas[s.key] || 0) / tot[s.key]) : 0 }));
-      return { hasData: skills.some(s => s.pct > 0), skills: skills };
-    } catch (e) {
-      return { hasData: false, skills: SKILL_DEFS.map(s => ({ ...s, pct: 0 })) };
-    }
+    if (!LearningData) return { hasData:false, status:"error", source:"none", skills:SKILL_DEFS.map(s => ({ ...s, pct:null, sample:0, sufficient:false })) };
+    const result = await LearningData.skillBreakdown(sb, prof.student_id);
+    if (result.status === "error") { observe("data_unavailable", result.error, { area:"progress", operation:"skill_breakdown", table:result.source }); return { hasData:false, status:"error", source:result.source, skills:SKILL_DEFS.map(s => ({ ...s, pct:null, sample:0, sufficient:false })) }; }
+    const byKey = {}; (result.skills || []).forEach(item => { byKey[item.key] = item; });
+    const skills = SKILL_DEFS.map(def => Object.assign({}, def, byKey[def.key] || { pct:null, sample:0, sufficient:false }));
+    return { hasData:skills.some(item => item.pct != null), status:result.status, source:result.source, sample:result.sample || 0, skills };
   };
 
   // Objetivo semanal: días de ESTA semana (lunes→domingo) con práctica real.
@@ -655,14 +742,17 @@
     // registro local + el último día de práctica; en real, además las sesiones de BD.
     const idx = new Set();
     const addYmd = (d) => { if (d && d >= mondayIso && d <= sundayIso) idx.add((new Date(d + "T00:00:00Z").getUTCDay() + 6) % 7); };
-    loadDays(prof.username).forEach(addYmd);
-    try { const pr = await this.getProgress(); if (pr && pr.last) addYmd(pr.last); } catch (e) {}
+    if (DEMO) {
+      loadDays(prof.username).forEach(addYmd);
+      try { const pr = await this.getProgress(); if (pr && pr.last) addYmd(pr.last); }
+      catch (e) { observe("data_unavailable", e, { area:"progress", operation:"demo_week_cache" }); }
+    }
     if (!DEMO && sb && prof.student_id) {
-      try {
-        const { data } = await sb.from("practice_sessions")
-          .select("created_at").eq("student_id", prof.student_id).gte("created_at", monday.toISOString());
-        (data || []).forEach(s => addYmd(iso(new Date(s.created_at))));
-      } catch (e) {}
+      if (LearningData) {
+        const result = await LearningData.activityDays(sb, prof.student_id, mondayIso);
+        if (result.status === "error") observe("data_unavailable", result.error, { area:"progress", operation:"week_activity", table:result.source });
+        else (result.days || []).forEach(addYmd);
+      } else observe("invalid_data", "ILLearningData no cargado", { area:"progress", operation:"week_activity" });
     }
     const practiced = [...idx].sort((a, b) => a - b);
     return { goal: GOAL, monday: mondayIso, practiced: practiced, count: practiced.length };
@@ -684,20 +774,43 @@
     const prof = await this.getProfile();
     if (!prof) return { cefr: null, placed: false, label: "" };
     let cefr = null;
-    try { cefr = localStorage.getItem(LKEY(prof.username)); } catch (e) {}
-    if (!cefr && CEFR_ORDER.indexOf((prof.cefr || "")) !== -1) cefr = prof.cefr;
-    return { cefr: cefr, placed: !!cefr, label: cefr ? levelLabel(cefr) : "" };
+    try { cefr = localStorage.getItem(LKEY(prof.username)); } catch (e) { observe("data_unavailable", e, { area:"placement", operation:"read_cache" }); }
+    if (DEMO || !sb || !prof.student_id) {
+      if (!cefr && CEFR_ORDER.indexOf((prof.cefr || "")) !== -1) cefr = prof.cefr;
+      return { cefr, placed:!!cefr, label:cefr ? levelLabel(cefr) : "", approximate:true, source:DEMO ? "demo" : "cache", synced:DEMO };
+    }
+    const { data, error } = await sb.from("student_placements").select("result_cefr,instrument_id,instrument_version,age_band,confidence,completed_at").eq("student_id", prof.student_id).order("completed_at", { ascending:false }).limit(1).maybeSingle();
+    if (error) { observe("data_unavailable", error, { area:"placement", operation:"read", table:"student_placements" }); return { cefr, placed:!!cefr, label:cefr ? levelLabel(cefr) : "", approximate:true, source:"cache", synced:false, status:"error" }; }
+    if (data && CEFR_ORDER.indexOf(data.result_cefr) !== -1) {
+      cefr = data.result_cefr; try { localStorage.setItem(LKEY(prof.username), cefr); } catch (e) {}
+      return { cefr, placed:true, label:levelLabel(cefr), approximate:true, source:"server", synced:true, instrument:data.instrument_id, instrumentVersion:data.instrument_version, confidence:data.confidence, completedAt:data.completed_at };
+    }
+    if (cefr && CEFR_ORDER.indexOf(cefr) !== -1) {
+      const legacy = { id:eventUuid() || undefined, student_id:prof.student_id, result_cefr:cefr, instrument_id:"legacy-cache-import", instrument_version:"1",
+        age_band:(window.IL_ETAPA && IL_ETAPA.current && IL_ETAPA.current().band) || "p56", confidence:null,
+        completed_at:new Date().toISOString(), metadata:{ migrated_from:"localStorage" } };
+      const migrated = await sb.from("student_placements").insert(legacy);
+      if (!migrated.error) return { cefr, placed:true, label:levelLabel(cefr), approximate:true, source:"server_migrated", synced:true };
+      observe("network_failure", migrated.error, { area:"placement", operation:"migrate_legacy", table:"student_placements" });
+      queueLearning("placement", legacy);
+    }
+    return { cefr, placed:!!cefr, label:cefr ? levelLabel(cefr) : "", approximate:true, source:cefr ? "legacy_cache" : "server", synced:false, status:"empty" };
   };
 
   // Guarda el resultado del test. Fuente de verdad local para componer la sesión hoy;
   // la persistencia definitiva en BD (students.level_id) es una pequeña migración pendiente.
-  API.savePlacement = async function (cefr) {
+  API.savePlacement = async function (cefr, meta) {
     if (CEFR_ORDER.indexOf(cefr) === -1) return { ok: false };
     const prof = await this.getProfile();
     if (!prof) return { ok: false };
-    try { localStorage.setItem(LKEY(prof.username), cefr); } catch (e) {}
-    if (DEMO) { const db = demoLoad(); const acc = db.find(a => a.username === prof.username); if (acc) { acc.level = levelLabel(cefr); demoSave(db); } }
-    return { ok: true, cefr: cefr, label: levelLabel(cefr) };
+    meta = meta || {};
+    try { localStorage.setItem(LKEY(prof.username), cefr); } catch (e) { observe("data_unavailable", e, { area:"placement", operation:"write_cache" }); }
+    if (DEMO) { const db = demoLoad(); const acc = db.find(a => a.username === prof.username); if (acc) { acc.level = levelLabel(cefr); demoSave(db); } return { ok:true, cefr, label:levelLabel(cefr), approximate:true, source:"demo", synced:true }; }
+    if (!sb || !prof.student_id) return { ok:true, cefr, label:levelLabel(cefr), approximate:true, source:"cache", synced:false };
+    const row = { id:eventUuid() || undefined, student_id:prof.student_id, result_cefr:cefr, instrument_id:meta.instrument_id || "legacy-eight-question", instrument_version:meta.instrument_version || "1", age_band:meta.age_band || "p56", confidence:meta.confidence == null ? null : meta.confidence, completed_at:new Date().toISOString(), metadata:meta.metadata || {} };
+    const { error } = await sb.from("student_placements").insert(row);
+    if (error) { observe("network_failure", error, { area:"placement", operation:"save", table:"student_placements" }); queueLearning("placement", row); return { ok:true, cefr, label:levelLabel(cefr), approximate:true, source:"cache", synced:false, queued:true }; }
+    return { ok:true, cefr, label:levelLabel(cefr), approximate:true, source:"server", synced:true };
   };
 
   // Resumen para el INFORME de la familia (solo lectura, sin notas ni comparaciones)
@@ -709,9 +822,10 @@
     let days = pr ? (pr.lessons || 0) : 0;
     if (!DEMO && sb && prof.student_id) {
       try {
-        const { count } = await sb.from("practice_sessions").select("id", { count: "exact", head: true }).eq("student_id", prof.student_id);
+        const { count, error } = await sb.from("practice_sessions").select("id", { count: "exact", head: true }).eq("student_id", prof.student_id).eq("completed", true);
+        if (error) observe("data_unavailable", error, { area:"report", operation:"session_count", table:"practice_sessions" });
         if (count != null) days = count;
-      } catch (e) {}
+      } catch (e) { observe("network_failure", e, { area:"report", operation:"session_count", table:"practice_sessions" }); }
     }
     return {
       first_name: prof.first_name || (prof.full_name || "").split(" ")[0] || "Alumno",
@@ -725,12 +839,55 @@
   };
 
   // Cierra la sesión con su resumen
-  API.finishPracticeSession = async function (sessionId, correct, total) {
-    if (DEMO || !sb || !sessionId) return;
-    await sb.from("practice_sessions").update({
-      completed: true, correct_count: correct, total_count: total, finished_at: new Date().toISOString()
-    }).eq("id", sessionId);
+  API.finishPracticeSession = async function (sessionRef, summary) {
+    if (DEMO || !sb) return;
+    const sessionId = sessionRef && typeof sessionRef === "object" ? sessionRef.id : sessionRef;
+    const clientSessionKey = sessionRef && typeof sessionRef === "object" ? sessionRef.client_session_key : "";
+    if (!sessionId && !clientSessionKey) return;
+    summary = summary || {};
+    const row = { completed:true, correct_count:Number(summary.first_try_correct_count || summary.correct) || 0,
+      total_count:Number(summary.planned_count || summary.total) || 0, evaluable_count:Number(summary.evaluable_count) || 0,
+      first_try_correct_count:Number(summary.first_try_correct_count) || 0, eventual_success_count:Number(summary.eventual_success_count) || 0,
+      technical_failure_count:Number(summary.technical_failure_count) || 0, hint_used_count:Number(summary.hint_used_count) || 0,
+      perfect:!!summary.perfect, finished_at:new Date().toISOString() };
+    const prof = await this.getProfile();
+    let request = sb.from("practice_sessions").update(row);
+    request = sessionId ? request.eq("id", sessionId) : request.eq("student_id", prof && prof.student_id).eq("client_session_key", clientSessionKey);
+    const { error } = await request;
+    if (error) {
+      observe("network_failure", error, { area:"learning", operation:"finish_session", table:"practice_sessions" });
+      queueLearning("session_finish", { id:sessionId || null, student_id:prof && prof.student_id, client_session_key:clientSessionKey || "", row });
+      return { ok:false, queued:true };
+    }
+    return { ok:true, source:"server" };
   };
+
+  API.flushLearningOutbox = async function () {
+    if (DEMO || !sb) return { ok:true, pending:0 };
+    const queued = readJson(OUTBOX_KEY, []); if (!queued.length) return { ok:true, pending:0 };
+    const pending = [];
+    for (const item of queued) {
+      let response = { error:new Error("unknown_outbox_item") };
+      try {
+        if (item.kind === "attempt") response = await sb.from("attempts").upsert(item.payload, { onConflict:"id", ignoreDuplicates:true });
+        else if (item.kind === "mastery") response = await sb.from("exercise_mastery").upsert(item.payload, { onConflict:"student_id,exercise_key" });
+        else if (item.kind === "placement") response = await sb.from("student_placements").upsert(item.payload, { onConflict:"id" });
+        else if (item.kind === "session_start") response = await sb.from("practice_sessions").upsert(item.payload, { onConflict:"student_id,client_session_key" });
+        else if (item.kind === "session_finish") {
+          let finish = sb.from("practice_sessions").update(item.payload.row);
+          response = item.payload.id
+            ? await finish.eq("id", item.payload.id)
+            : await finish.eq("student_id", item.payload.student_id).eq("client_session_key", item.payload.client_session_key);
+        }
+      } catch (error) { response = { error }; }
+      if (response && response.error) pending.push(item);
+    }
+    writeJson(OUTBOX_KEY, pending);
+    if (pending.length) observe("network_failure", "Quedan eventos pendientes", { area:"learning", operation:"flush", status:String(pending.length) });
+    return { ok:pending.length === 0, pending:pending.length };
+  };
+
+  addEventListener("online", () => { API.flushLearningOutbox().catch(error => observe("network_failure", error, { area:"learning", operation:"flush_online" })); });
 
   window.ILAuth = API;
 })();

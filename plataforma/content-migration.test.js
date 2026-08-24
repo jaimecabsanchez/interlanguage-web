@@ -1,6 +1,7 @@
 const assert = require("assert");
 const crypto = require("crypto");
 const loader = require("./content/loader.js");
+const manifest = require("./content/manifest.js");
 
 const EXPECTED = {
   "pv-1":"50aaaf1c142ab24d2e7a0c6ac951aa93803a35e0abd2a5b71fddb8340f4589a9","pv-2":"f47f607fd2eba38582e06113aae1bc54020f372e772eae7a22b1136b38ed9442","pv-3":"e4310be6669eeb75a09447288174278060f3c24e9448c28fbac948bcb26dee9c","pv-4":"15bbfa7d6100387d47c97441ec566077e29bed258c615c352bbfc50aae00a024","pv-5":"3c0f5fd92243edcec3e53228a57a0e3cd0bbe314ae32bb397f3960313f0a14c9",
@@ -11,26 +12,30 @@ const EXPECTED = {
 
 loader.reset();
 global.ILContent = loader;
-[
-  "./content/p12/school.js",
-  "./content/shared/daily-routine.js",
-  "./content/shared/food.js",
-  "./content/eso/future-plans.js"
-].forEach(file => { delete require.cache[require.resolve(file)]; require(file); });
+manifest.forEach(entry => {
+  const file = "./" + entry.split("?")[0];
+  delete require.cache[require.resolve(file)]; require(file);
+});
 delete global.ILContent;
 
 const result = loader.assemble();
 assert.equal(result.diagnostics.errors.length, 0, JSON.stringify(result.diagnostics.errors));
-assert.equal(result.unidades.length, 4);
-assert.equal(result.exercises.length, 25);
+assert.deepEqual(result.packs, ["p12-school-core", "primary-daily-routine", "primary-food", "grammar-core", "eso-future-plans"]);
+assert.equal(result.unidades.length, 7);
+assert.equal(result.objectives.length, 25);
+assert.equal(result.exercises.length, 153);
 
 function fingerprint(exercise) {
   const editorial = { id:exercise.id,tipo:exercise.tipo,instruccion:exercise.instruccion,opciones:exercise.opciones||null,respuesta:exercise.respuesta||null,pares:exercise.pares||null,preguntas:exercise.preguntas||null };
   return crypto.createHash("sha256").update(JSON.stringify(editorial)).digest("hex");
 }
 
-result.exercises.forEach(exercise => assert.equal(fingerprint(exercise), EXPECTED[exercise.id], "Cambió el contenido editorial de " + exercise.id));
-assert.deepEqual(result.unidades.map(unit => unit.id), ["primer-vuelo", "rutina-diaria", "la-comida", "future-plans"]);
+Object.keys(EXPECTED).forEach(id => {
+  const exercise = result.exercises.find(item => item.id === id);
+  assert(exercise, "Falta el ejercicio histórico " + id);
+  assert.equal(fingerprint(exercise), EXPECTED[id], "Cambió el contenido editorial de " + id);
+});
+assert.deepEqual(result.unidades.map(unit => unit.id), ["primer-vuelo", "rutina-diaria", "la-comida", "gramatica-inicial", "gramatica-media", "gramatica-eso", "future-plans"]);
 assert(result.exercises.every(exercise => exercise.objective_id));
-assert.equal(new Set(result.exercises.map(exercise => exercise.id)).size, 25);
-console.log("content migration: 4 unidades y 25 ejercicios conservados");
+assert.equal(new Set(result.exercises.map(exercise => exercise.id)).size, 153);
+console.log("content migration: manifest canónico (7 unidades/153 ejercicios) y 25 fingerprints históricos conservados");

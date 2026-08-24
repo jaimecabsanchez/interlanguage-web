@@ -12,7 +12,7 @@
 })(typeof globalThis !== "undefined" ? globalThis : this, function createMissionStore(storage) {
   "use strict";
 
-  const VERSION = 1;
+  const VERSION = 2;
   const STATE_PREFIX = "il_mission_state_v1_";
   const HISTORY_PREFIX = "il_mission_history_v1_";
   const SESSION_PREFIX = "il_session_";
@@ -53,6 +53,11 @@
       currentIndex: 0,
       completedCount: 0,
       correctCount: 0,
+      eventualSuccessCount: 0,
+      technicalFailureCount: 0,
+      hintUsedCount: 0,
+      evaluableCount: 0,
+      perfect: false,
       incorrectIds: [],
       currentCorrectStreak: 0,
       maxCorrectStreak: 0,
@@ -71,7 +76,17 @@
   function get(username, date) {
     const state = read(stateKey(username), null);
     const target = date || isoDay();
-    if (!state || state.version !== VERSION || state.date !== target) return null;
+    if (!state || state.date !== target) return null;
+    if (state.version !== VERSION && state.version !== 1) return null;
+    if (state.version === 1) {
+      state.version = VERSION;
+      state.eventualSuccessCount = Number(state.correctCount) || 0;
+      state.technicalFailureCount = 0;
+      state.hintUsedCount = 0;
+      state.evaluableCount = Number(state.completedCount) || 0;
+      state.perfect = state.status === "completed" && state.total > 0 && state.correctCount === state.total;
+      write(stateKey(username), state);
+    }
     return state;
   }
 
@@ -84,6 +99,12 @@
     state.total = state.itemIds.length || Number(state.total) || 0;
     state.currentIndex = clamp(state.currentIndex, 0, state.total);
     state.completedCount = clamp(state.completedCount, 0, state.total);
+    state.correctCount = clamp(state.correctCount, 0, state.total);
+    state.eventualSuccessCount = clamp(state.eventualSuccessCount, 0, state.total);
+    state.technicalFailureCount = Math.max(0, Number(state.technicalFailureCount) || 0);
+    state.hintUsedCount = Math.max(0, Number(state.hintUsedCount) || 0);
+    state.evaluableCount = clamp(state.evaluableCount, 0, state.total);
+    state.perfect = !!state.perfect;
     write(stateKey(username), state);
     return state;
   }
@@ -135,20 +156,32 @@
     const state = get(username, date || result.date);
     if (!state || state.status === "completed") return state;
     const itemId = result.id || state.itemIds[state.currentIndex];
-    const correct = !!result.correct;
+    const technical = !!result.technical_failure;
+    const eventual = result.eventual_success != null ? !!result.eventual_success : !!result.correct;
+    const firstTry = result.first_try_correct != null ? !!result.first_try_correct : (!!result.correct && !result.hint_used && !technical);
     state.completedCount = clamp(state.completedCount + 1, 0, state.total);
     state.currentIndex = state.completedCount;
-    if (correct) {
+    if (technical) {
+      state.technicalFailureCount += 1;
+      state.currentCorrectStreak = 0;
+    } else {
+      state.evaluableCount = clamp(state.evaluableCount + 1, 0, state.total);
+      if (result.hint_used) state.hintUsedCount += 1;
+    }
+    if (firstTry && !technical) {
       state.correctCount += 1;
       state.currentCorrectStreak += 1;
       state.maxCorrectStreak = Math.max(state.maxCorrectStreak, state.currentCorrectStreak);
       state.incorrectIds = state.incorrectIds.filter(id => id !== itemId);
       state.points += Number(result.points) || 10;
-    } else {
+    } else if (!technical) {
       state.currentCorrectStreak = 0;
       if (itemId && state.incorrectIds.indexOf(itemId) === -1) state.incorrectIds.push(itemId);
     }
-    state.learnedExpressions = uniq(state.learnedExpressions.concat(result.learnedExpressions || [])).slice(0, 12);
+    if (eventual && !technical) state.eventualSuccessCount = clamp(state.eventualSuccessCount + 1, 0, state.total);
+    state.learnedExpressions = eventual && !technical
+      ? uniq(state.learnedExpressions.concat(result.learnedExpressions || [])).slice(0, 12)
+      : state.learnedExpressions;
     return save(username, state);
   }
 
@@ -171,6 +204,8 @@
     state.currentIndex = state.total;
     state.completedCount = state.total;
     state.completedAt = state.completedAt || new Date(Number(now) || Date.now()).toISOString();
+    state.perfect = state.total > 0 && state.technicalFailureCount === 0 && state.hintUsedCount === 0
+      && state.evaluableCount === state.total && state.correctCount === state.total;
     state = save(username, state);
     addHistory(username, state);
     return state;

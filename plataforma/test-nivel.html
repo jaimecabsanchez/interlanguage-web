@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="design-system.css?v=20260816b">
+<link rel="stylesheet" href="design-system.css?v=20260824a">
 <link rel="stylesheet" href="app.css?v=20260809d">
 <link rel="stylesheet" href="etapa.css?v=20260809d">
 <style>
@@ -78,7 +78,9 @@
 <script src="supabase-config.js?v=20260809d"></script>
 <script src="auth-utils.js?v=20260809d"></script>
 <script src="etapa.js?v=20260821d"></script>
-<script src="auth.js?v=20260823a"></script>
+<script src="observability.js?v=20260824a"></script>
+<script src="learning-data.js?v=20260824a"></script>
+<script src="auth.js?v=20260824a"></script>
 <script>
   const $ = (id) => document.getElementById(id);
 
@@ -134,7 +136,7 @@
 
   async function finish() {
     const cefr = computeLevel();
-    const r = await ILAuth.savePlacement(cefr);
+    const r = await ILAuth.savePlacement(cefr, { instrument_id:"legacy-eight-question", instrument_version:"1", age_band:stage });
     const label = (r && r.label) || cefr;
     // Con contenido hasta A2 en el MVP, avisamos con honestidad si sale B1.
     const noContentYet = (cefr === "B1");
@@ -144,7 +146,7 @@
       '<div class="result">' +
       '<div class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4 10-11"/></svg></div>' +
       '<h1>' + (stage === "eso" ? "Your starting point is ready" : "¡Ya tenemos tu punto de partida!") + '</h1>' +
-      '<div class="lvl">Tu punto de partida: ' + label + '</div>' +
+      '<div class="lvl">Tu punto de partida aproximado: ' + label + '</div>' +
       '<p>' + (noContentYet
         ? "¡Vas muy bien! De momento practicarás con lo más avanzado disponible; pronto añadiremos retos de tu nivel."
         : "Adaptaremos las misiones a tu nivel. Podrás subir a tu ritmo, sin prisa.") + '</p>' +

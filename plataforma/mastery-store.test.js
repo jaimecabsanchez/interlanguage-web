@@ -22,6 +22,10 @@ assert.equal(card.evidence, 3, "completar aporta evidencia reforzada de producci
 assert.deepEqual(mastery.due("lucia", "2026-08-11"), [], "no vence antes de la fecha prevista");
 assert.deepEqual(mastery.due("lucia", card.next_review_at), ["pv-1"], "vence en la fecha de repaso");
 assert.equal(mastery.dueCount("lucia", card.next_review_at), 1, "expone el total para la recomendación de Inicio");
+const beforeTechnical = mastery.all("lucia")["pv-1"];
+const afterTechnical = mastery.recordEvent("lucia", "pv-1", "elegir_imagen", { technical_failure:true }, "2026-08-12");
+assert.deepEqual(afterTechnical, beforeTechnical, "un fallo técnico no modifica mastery");
+assert.equal(beforeTechnical.attempt_count, 2, "mastery conserva número de intentos reales");
 
 assert.equal(mastery.clear("lucia"), true, "puede limpiar el estado del usuario");
 assert.deepEqual(mastery.all("lucia"), {}, "la limpieza queda aislada por usuario");

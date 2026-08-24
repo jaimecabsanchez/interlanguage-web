@@ -3,6 +3,7 @@
 const A = require("./achievements.js");
 const WORLD = require("../world-data.js");
 const M = require("./motivacion.js");
+const LearningEvents = require("../learning-events.js");
 
 let pass = 0, fail = 0;
 const ok = (n, c) => { if (c) { pass++; console.log("✅ " + n); } else { fail++; console.error("❌ " + n); } };
@@ -35,6 +36,13 @@ ok("record-streak si supera récord", has(A.evaluate({ streak: 6, prevBest: 5, s
 // negativos
 ok("contexto vacío no otorga nada", A.evaluate({ session: {} }).length === 0);
 ok("no perfect si falla alguno", !has(A.evaluate({ session: { total: 4, allCorrect: false, maxCorrectStreak: 2 } }), "perfect-round"));
+const retryEvents = [
+  LearningEvents.create({exercise_id:"e1",attempt_number:1,correct:false}),
+  LearningEvents.create({exercise_id:"e1",attempt_number:2,correct:true,hint_used:true}),
+  ...["e2","e3","e4"].map(id => LearningEvents.create({exercise_id:id,attempt_number:1,correct:true}))
+];
+const retrySummary = LearningEvents.summarize(retryEvents, ["e1","e2","e3","e4"]);
+ok("wrong → retry → correct NO concede perfect-round", !has(A.evaluate({ session:{ total:4, allCorrect:retrySummary.perfect } }), "perfect-round"));
 ok("no record si no supera", !has(A.evaluate({ streak: 5, prevBest: 5, session: {} }), "record-streak"));
 
 // ---- duplicate achievements / reward granted once ----
