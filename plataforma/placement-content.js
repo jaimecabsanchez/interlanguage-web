@@ -32,7 +32,7 @@
   const DATA = {
     p12:{
       "Pre-A1":[
-        {type:"elegir_imagen",skill:"vocabulary",instruction:{es:"Mira y elige.",en:"Look and choose."},prompt:"Where is the apple?",options:[["apple","apple.webp"],["banana","banana.webp"],["book","book.webp"]],answer:0,explanation:{es:"Apple significa manzana.",en:"Apple means manzana."}},
+        {type:"elegir_imagen",skill:"listening",instruction:{es:"Escucha y elige.",en:"Listen and choose."},prompt:"¿Qué palabra escuchas?",audio:"apple",options:[["apple","apple.webp"],["banana","banana.webp"],["book","book.webp"]],answer:0,explanation:{es:"Apple significa manzana.",en:"Apple means manzana."}},
         {type:"elegir_texto",skill:"vocabulary",instruction:{es:"Elige la palabra.",en:"Choose the word."},prompt:"Which word means «libro»?",options:["book","chair","milk"],answer:0,explanation:{es:"Book significa libro.",en:"Book means libro."}},
         {type:"elegir_texto",skill:"reading",instruction:{es:"Mira la palabra y elige.",en:"Look and choose."},prompt:"Choose the colour red.",options:["blue","red","green"],answer:1,explanation:{es:"Red significa rojo.",en:"Red means rojo."}}
       ],
@@ -55,7 +55,7 @@
     p34:{
       "Pre-A1":[
         {type:"elegir_texto",skill:"vocabulary",instruction:{es:"Elige la palabra.",en:"Choose the word."},prompt:"Which word means «mesa»?",options:["table","window","pencil"],answer:0,explanation:{es:"Table significa mesa.",en:"Table means mesa."}},
-        {type:"elegir_imagen",skill:"vocabulary",instruction:{es:"Mira y elige.",en:"Look and choose."},prompt:"Choose the school bag.",options:[["school bag","school-bag.webp"],["chair","chair.webp"],["milk","milk.webp"]],answer:0,explanation:{es:"School bag significa mochila.",en:"School bag means mochila."}},
+        {type:"elegir_imagen",skill:"listening",instruction:{es:"Escucha y elige.",en:"Listen and choose."},prompt:"¿Qué palabra escuchas?",audio:"school bag",options:[["school bag","school-bag.webp"],["chair","chair.webp"],["milk","milk.webp"]],answer:0,explanation:{es:"School bag significa mochila.",en:"School bag means mochila."}},
         {type:"elegir_texto",skill:"reading",instruction:{es:"Lee y elige.",en:"Read and choose."},prompt:"Hello!",options:["¡Hola!","¡Adiós!","Buenas noches"],answer:0,explanation:{es:"Hello se usa para saludar.",en:"Hello is a greeting."}}
       ],
       A1:[
