@@ -31,7 +31,9 @@
     profile = await ILAuth.getProfile(); if (!profile) { location.href = "index.html"; return; }
     if (profile.is_admin) { location.href = "admin.html"; return; }
     if (profile.must_change_password) { location.href = "cambiar-clave.html"; return; }
-    const placement = await ILAuth.getPlacement(); if (placement.placed) { location.href = "inicio.html"; return; }
+    const query = new URLSearchParams(location.search);
+    const demoPreview = ILAuth.isDemo && ILAuth.isDemo() && query.get("onboardingDemo") === "1";
+    const placement = await ILAuth.getPlacement(); if (placement.placed && !demoPreview) { location.href = "inicio.html"; return; }
     band = IL_ETAPA.apply(profile) || "neutral"; content = ILCopy.onboarding(band); document.documentElement.lang = band === "eso" ? "en" : "es";
     ILProfileSettings.setActive(profile.username, profile.sex); render(); if (window.ILLayout) ILLayout.mount();
   })().catch(error => { if (window.ILObservability) ILObservability.report("technical_failure", error, { area:"onboarding", operation:"initialise" }); location.href = "index.html"; });

@@ -7,7 +7,9 @@
 
   function copy(key, params) { return ILCopy.placement(key, band, params); }
   function report(code, error) {
-    if (window.ILObservability && ILObservability.report) ILObservability.report("technical_failure", error || code, { area:"placement", operation:code });
+    const invalid = code === "invalid_draft" || code === "incompatible_draft" || code === "unknown_age_band";
+    const detail = error instanceof Error ? error : new Error(code);
+    if (window.ILObservability && ILObservability.report) ILObservability.report(invalid ? "invalid_data" : "technical_failure", detail, { area:"placement", operation:code });
   }
   function node(tag, className, textValue) {
     const el = document.createElement(tag);
@@ -70,7 +72,7 @@
     selected = null; updateProgress(); clear(stage); stage.setAttribute("aria-busy", "false"); actions.hidden = false;
     unknown.textContent = copy("unknown"); next.textContent = copy("next"); next.disabled = true;
     const card = panel(), header = node("div", "placement-question-header");
-    header.append(node("p", "placement-eyebrow", copy("eyebrow")), node("span", "placement-skill", ILCopy.skill(current.skill, band)));
+    header.append(node("p", "placement-eyebrow", copy("eyebrow")), node("span", "placement-skill", ILCopy.practiceSkill(current.skill, band)));
     card.append(header, node("p", "placement-instruction", current.instruction[language()] || current.instruction.es));
     renderAudio(card); card.append(node("h1", "placement-prompt", current.prompt));
     const group = node("fieldset", "placement-options" + (current.interaction_type === "elegir_imagen" ? " placement-options--visual" : ""));
@@ -108,7 +110,7 @@
     ILPlacementSession.clear(localStorage, profile.username); clear(stage); stage.setAttribute("aria-busy", "false");
     const card = panel("result"), mark = node("div", "placement-result-mark"); mark.innerHTML = ILIcon("check"); card.append(mark);
     card.append(node("p", "placement-eyebrow", copy("eyebrow")), node("h1", "placement-title", copy("resultTitle")));
-    card.append(node("div", "placement-level", copy("resultLevel", { level:saved.label || state.result })), node("p", "placement-body", copy("resultBody")));
+    card.append(node("div", "placement-level", copy("resultLevel", { level:state.result })), node("p", "placement-body", copy("resultBody")));
     const evidence = evidenceItems();
     if (evidence.length) {
       const box = node("section", "placement-evidence"), list = node("ul"); box.append(node("h2", "", copy("seenTitle")));
@@ -135,11 +137,12 @@
       document.documentElement.lang = band === "eso" ? "en" : "es"; $("loadingLabel").textContent = copy("loading");
       const query = new URLSearchParams(location.search);
       const demoRetest = ILAuth.isDemo && ILAuth.isDemo() && (query.get("placementDemo") === "1" || query.get("retest") === "1");
+      const demoSeed = demoRetest && ILPlacementEngine.LEVELS.indexOf(query.get("placementSeed")) >= 0 ? query.get("placementSeed") : "";
       const placement = await ILAuth.getPlacement(); if (placement.placed && !demoRetest) { location.href = "inicio.html"; return; }
       context = { username:profile.username, band, instrumentId:ILPlacementContent.INSTRUMENT_ID, instrumentVersion:ILPlacementContent.VERSION };
-      const draft = ILPlacementSession.read(localStorage, context, (code, error) => report(code, error));
+      const draft = demoSeed ? null : ILPlacementSession.read(localStorage, context, (code, error) => report(code, error));
       startedAt = draft && draft.startedAt || new Date().toISOString();
-      state = draft && draft.engineState || ILPlacementEngine.create({ band, seedCefr:levelFrom(profile.cefr || profile.level || profile.level_id) });
+      state = draft && draft.engineState || ILPlacementEngine.create({ band, seedCefr:demoSeed || levelFrom(profile.cefr || profile.level || profile.level_id) });
       if (draft) { $("status").textContent = copy("resume"); renderQuestion(); } else intro();
       if (window.ILLayout) ILLayout.mount();
     } catch (error) { report("initialise", error); fatal(); }

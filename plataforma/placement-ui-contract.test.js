@@ -8,10 +8,11 @@ const css = fs.readFileSync(path.join(root, "test-nivel.css"), "utf8");
 const js = fs.readFileSync(path.join(root, "test-nivel.js"), "utf8");
 
 ["placement-content.js", "placement-engine.js", "placement-session.js", "test-nivel.js"].forEach(file => {
-  assert.match(html, new RegExp(file.replace(".", "\\.") + "\\?v=20260909a"), file + " tiene cache-busting vigente");
+  assert.match(html, new RegExp(file.replace(".", "\\.") + (file === "test-nivel.js" ? "\\?v=20260910d" : "\\?v=20260909a")), file + " tiene cache-busting vigente");
 });
 assert.match(html, /test-nivel\.css\?v=20260910a/);
 assert.match(js, /ILPlacementEngine\.select/);
+assert.match(js, /ILCopy\.practiceSkill\(current\.skill, band\)/, "p12 recibe Palabras/Frases en vez de etiquetas académicas");
 assert.match(js, /ILPlacementSession\.read/);
 assert.match(js, /ILAuth\.savePlacement/);
 assert.match(js, /technicalFailure:true/);

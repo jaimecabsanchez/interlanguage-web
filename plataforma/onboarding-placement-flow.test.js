@@ -9,12 +9,13 @@ const indexHtml = read("index.html"), testJs = read("test-nivel.js"), homeHtml =
 assert.match(indexHtml, /entry-flow\.js\?v=20260909a/);
 assert.match(indexHtml, /await routeFor\(res\.profile\)/);
 assert.match(onboardingHtml, /onboarding\.css\?v=20260910a/);
-assert.match(onboardingHtml, /onboarding\.js\?v=20260910a/);
+assert.match(onboardingHtml, /onboarding\.js\?v=20260910b/);
 assert.match(onboardingHtml, /avatar-rig\.js/);
 assert.match(onboardingHtml, /world-visual\.js/);
 assert.match(onboardingJs, /ILWorldVisual\.avatar/);
 assert.doesNotMatch(onboardingJs, /ILVisual\.nemo/, "la identidad del alumno tiene prioridad");
 assert.match(onboardingJs, /ILAuth\.getPlacement/);
+assert.match(onboardingJs, /onboardingDemo/);
 assert.match(onboardingJs, /ILEntryFlow\.completeOnboarding/);
 assert.match(onboardingJs, /location\.href = "test-nivel\.html"/);
 assert.match(testJs, /placement\.placed[^\n]*inicio\.html/);
