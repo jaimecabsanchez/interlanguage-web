@@ -10,6 +10,7 @@
 
   const SKILLS = Object.freeze(["listening", "vocabulary", "grammar", "reading", "writing", "speaking"]);
   const P12_ORDER = Object.freeze(["listening", "vocabulary", "speaking", "reading", "grammar", "writing"]);
+  const P34_ORDER = Object.freeze(["listening", "vocabulary", "speaking", "reading"]);
   const CEFR_ORDER = Object.freeze(["Pre-A1", "A1", "A2", "B1", "B2", "C1", "C2"]);
   const COOLDOWN_MS = 36 * 60 * 60 * 1000;
   const EQUIVALENT_NEED_RANGE = 8;
@@ -38,8 +39,9 @@
   }
   function visibleSkills(band, available) {
     const safe = safeBand(band); const list = normalizeSkills(available);
-    if (safe !== "p12") return list;
-    return P12_ORDER.map(id => list.find(item => item.id === id)).filter(Boolean).slice(0, 3);
+    if (safe === "p12") return P12_ORDER.map(id => list.find(item => item.id === id)).filter(Boolean).slice(0, 3);
+    if (safe === "p34") return P34_ORDER.map(id => list.find(item => item.id === id)).filter(Boolean);
+    return list;
   }
   function variedSkill(available, recentEvents, options) {
     const list = normalizeSkills(available); if (!list.length) return null;
@@ -83,6 +85,8 @@
     input = input || {};
     const band = safeBand(input.band);
     const allSkills = normalizeSkills(input.availableSkills);
+    const evidencedSkills = allSkills.filter(item => item.sufficient && item.evidence > 0);
+    const recommendationSkills = evidencedSkills.length ? evidencedSkills : allSkills;
     const skills = visibleSkills(band, allSkills);
     const dailyStatus = String(input.dailyStatus || "not_started");
     const dailyAvailable = input.dailyAvailable !== false;
@@ -96,12 +100,10 @@
       recommended = { kind:"daily", reason:"daily_pending", href:"leccion.html", skill:null, count:0 };
     } else if (dueCount > 0) {
       recommended = { kind:"due", reason:"review_due", href:"leccion.html?mode=review", skill:null, count:dueCount };
-    } else if (input.reinforceSkill && hasSkill(allSkills, input.reinforceSkill)) {
-      recommended = { kind:"skill", reason:"reinforce", href:"leccion.html?mode=skill&skill=" + encodeURIComponent(input.reinforceSkill), skill:input.reinforceSkill, count:0 };
     } else {
-      const choice = variedSkill(allSkills, input.recentEvents, { now:input.now });
+      const choice = variedSkill(recommendationSkills, input.recentEvents, { now:input.now });
       recommended = choice
-        ? { kind:"skill", reason:"variety", href:"leccion.html?mode=skill&skill=" + encodeURIComponent(choice.id), skill:choice.id, count:0, recentlyPracticed:choice.recentlyPracticed }
+        ? { kind:"skill", reason:choice.id === input.reinforceSkill ? "reinforce" : "variety", href:"leccion.html?mode=skill&skill=" + encodeURIComponent(choice.id), skill:choice.id, count:0, recentlyPracticed:choice.recentlyPracticed }
         : (hasExtra ? { kind:"extra", reason:"practice_extra", href:"leccion.html?mode=bonus", skill:null, count:0 } : null);
     }
 
@@ -112,5 +114,5 @@
     return Object.freeze({ band, dailyPending, recommended, review:Object.freeze(review), skills:Object.freeze(skills), hasAnyPractice });
   }
 
-  return Object.freeze({ SKILLS, P12_ORDER, CEFR_ORDER, COOLDOWN_MS, EQUIVALENT_NEED_RANGE, safeBand, recentBySkill, normalizeSkills, visibleSkills, variedSkill, selectExercises, build });
+  return Object.freeze({ SKILLS, P12_ORDER, P34_ORDER, CEFR_ORDER, COOLDOWN_MS, EQUIVALENT_NEED_RANGE, safeBand, recentBySkill, normalizeSkills, visibleSkills, variedSkill, selectExercises, build });
 });

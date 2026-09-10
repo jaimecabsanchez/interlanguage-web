@@ -17,8 +17,13 @@ assert.equal(Copy.reward({ name:"Perfect Round", nameEs:"Ronda perfecta" }, "p56
 assert.equal(Copy.practice("reviewTitle", "p12"), "Repasar");
 assert.doesNotMatch(Copy.practice("reviewBody", "p12"), /error/i);
 assert.equal(Copy.practiceSkill("vocabulary", "p12"), "Palabras");
-assert.equal(Copy.practiceSkill("grammar", "p34"), "Gramática");
+assert.equal(Copy.practiceSkill("listening", "p34"), "Listening · Escuchar");
 assert.equal(Copy.practice("title", "eso"), "Practice");
+for (const band of Copy.BANDS) {
+  for (const key of ["dailyTime", "reviewTime", "skillTime", "dailyOutcome", "reviewOutcome", "skillOutcome", "unavailableTitle", "unavailableBody", "alternativesTitle"]) {
+    assert.ok(Copy.practice(key, band), band + " necesita el texto de práctica " + key);
+  }
+}
 assert.equal(Copy.placement("unknown", "p12"), "Aún no lo sé");
 assert.equal(Copy.placement("choose", "p56"), "Choose one answer");
 assert.equal(Copy.placement("resultTitle", "eso"), "Your starting point is ready");

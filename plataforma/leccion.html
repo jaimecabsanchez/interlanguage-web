@@ -203,7 +203,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-config.js?v=20260809d"></script>
 <script src="auth-utils.js?v=20260809d"></script>
-<script src="copy-registry.js?v=20260910a"></script>
+<script src="copy-registry.js?v=20260910b"></script>
 <script src="age-policy.js?v=20260824a"></script>
 <script src="etapa.js?v=20260824b"></script>
 <script src="observability.js?v=20260824a"></script>
@@ -218,7 +218,7 @@
 <script src="motor/matriz.js?v=20260824b"></script>
 <script src="mission-state.js?v=20260824b"></script>
 <script src="learning-events.js?v=20260824b"></script>
-<script src="practice-options.js?v=20260824b"></script>
+<script src="practice-options.js?v=20260910a"></script>
 <script src="motor/pedagogia.js?v=20260813a"></script>
 <script src="mastery-store.js?v=20260824a"></script>
 <script src="achievement-store.js?v=20260816a"></script>
@@ -260,6 +260,7 @@
   let placementState = null;
   let learningEvents = [];
   let practiceSession = { id:null, client_session_key:"" };
+  let skillStartedAt = 0;
 
   function modeName() { return reviewMode || reviewDueMode ? "review" : (extraMode() ? "extra" : "daily"); }
   function recordLearning(raw) {
@@ -529,10 +530,25 @@
     if (typeof dialog.showModal === "function") dialog.showModal(); else dialog.setAttribute("open", "");
   }
 
-  function renderExtraSummary() {
+  function renderExtraSummary(sessionTruth) {
     const sec = ageExperience.id === "secondary";
     const young = ageExperience.id === "primary-young";
-    if (examMode) {
+    if (skillMode) {
+      const skillLabel = ILCopy.practiceSkill(requestedSkill, stageName);
+      const truth = sessionTruth || IL_LearningEvents.summarize(learningEvents, missionMeta.itemIds);
+      const attempts = (truth.outcomes || []).reduce((total, outcome) => total + outcome.attempt_count, 0);
+      $("summaryTitle").textContent = sec ? (skillLabel + " practice complete") : (young ? "¡Muy bien!" : "Práctica de " + skillLabel + " completada");
+      $("summaryLead").textContent = sec
+        ? "Your attempts, time and learning evidence have been saved."
+        : (young ? "Has practicado " + skillLabel + ". Tu avance está guardado." : "Hemos guardado tus intentos, el tiempo y tu progreso en " + skillLabel + ".");
+      const stats = document.querySelector(".summary-stats"); if (stats) stats.hidden = false;
+      $("summaryScore").textContent = truth.first_try_correct_count + "/" + truth.planned_count;
+      $("summaryTime").textContent = minutes(Date.now() - skillStartedAt) + " min";
+      $("summaryLearned").textContent = attempts;
+      $("summaryScoreLabel").textContent = sec ? "first try" : (young ? "a la primera" : "a la primera");
+      $("summaryTimeLabel").textContent = sec ? "time" : "tiempo";
+      $("summaryLearnedLabel").textContent = sec ? "attempts" : "intentos";
+    } else if (examMode) {
       $("summaryTitle").textContent = sec ? "Challenge done" : "¡Reto superado!";
       $("summaryLead").textContent = sec
         ? "You answered " + items.length + " · " + bonusCorrect + " correct."
@@ -548,7 +564,7 @@
         ? "You practised " + items.length + " more · " + bonusCorrect + " correct."
         : (young ? "¡Has practicado " + items.length + " más!" : "Has practicado " + items.length + " más · " + bonusCorrect + " aciertos.");
     }
-    const stats = document.querySelector(".summary-stats"); if (stats) stats.hidden = true;
+    const stats = document.querySelector(".summary-stats"); if (stats && !skillMode) stats.hidden = true;
     $("summaryStreak").hidden = true; $("summaryReward").hidden = true;
     $("learnedBlock").hidden = true; $("reviewCallout").hidden = true;
     const nsx = $("summaryNewStamp"); if (nsx) nsx.hidden = true;
@@ -569,7 +585,7 @@
       const sessionTruth = IL_LearningEvents.summarize(learningEvents, missionMeta.itemIds);
       try { await ILAuth.finishPracticeSession(practiceSession, sessionTruth); }
       catch (error) { if (window.ILObservability) ILObservability.report("network_failure", error, { area:"lesson", operation:"finish_skill_practice", skill:requestedSkill }); }
-      renderExtraSummary(); return;
+      renderExtraSummary(sessionTruth); return;
     }
     if (bonusMode || reviewDueMode) { renderExtraSummary(); return; }
     if (reviewMode) {
@@ -662,21 +678,23 @@
         const available = compatible.filter(exercise => validSkill && exercise.habilidad === requestedSkill);
         if (!validSkill || !available.length) {
           if (window.ILObservability) ILObservability.report("invalid_data", new Error("Skill practice unavailable"), { area:"lesson", operation:"load_skill", skill:requestedSkill, age_band:stageName });
-          const hasPractice = compatible.length > 0;
+          const hasPractice = compatible.some(exercise => ILPracticeOptions.SKILLS.indexOf(exercise.habilidad) !== -1);
+          if (hasPractice) { location.replace("practicar.html?notice=unavailable"); return; }
           $("missionName").textContent = ageExperience.id === "secondary" ? "Practice" : "Practicar";
           $("exerciseCount").textContent = "";
           $("segmentProgress").hidden = true;
           $("themeLine").hidden = true;
           errorState(
-            ageExperience.id === "secondary" ? "This practice is not available" : "Esta práctica no está disponible",
-            ageExperience.id === "secondary" ? "Choose another practice option." : "Puedes elegir otra forma de practicar.",
-            hasPractice ? { href:"practicar.html", label:ageExperience.id === "secondary" ? "Back to practice" : "Volver a Practicar" } : null
+            ageExperience.id === "secondary" ? "Practice unavailable" : "Práctica no disponible",
+            ageExperience.id === "secondary" ? "There is no compatible practice content available right now." : "No hay contenido compatible disponible ahora mismo.",
+            { href:"inicio.html", label:ageExperience.id === "secondary" ? "Back to home" : "Volver a Inicio" }
           );
           return;
         }
         const cachedEvents = await ILAuth.getCachedLearningEvents();
         items = ILPracticeOptions.selectExercises({ exercises:available, cefr:placement && placement.cefr, recentEvents:cachedEvents, limit:exerciseExperience.sessionSize });
         missionMeta = { date:ILMission.today(), unitId:"skill-" + requestedSkill, unitTitle:ILCopy.practiceSkill(requestedSkill, stageName), itemIds:items.map(item => item.id) };
+        skillStartedAt = Date.now();
         const clientSessionKey = [username, missionMeta.date, "extra", missionMeta.unitId].join("|");
         learningEvents = (cachedEvents || []).filter(event => event.client_session_key === clientSessionKey);
         practiceSession = await ILAuth.startPracticeSession({ client_session_key:clientSessionKey, mode:"extra", age_band:stageName,

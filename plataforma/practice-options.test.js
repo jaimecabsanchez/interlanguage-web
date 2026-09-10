@@ -16,7 +16,7 @@ assert.equal(model.recommended.kind, "due", "el repaso vencido precede al refuer
 model = Options.build({ band:"p34", dailyStatus:"completed", dueCount:0, availableSkills:skills });
 assert.notEqual(model.recommended.kind, "daily", "la misión terminada libera la recomendación adaptativa");
 
-model = Options.build({ band:"p56", dailyStatus:"completed", reinforceSkill:"grammar", availableSkills:skills });
+model = Options.build({ band:"p56", dailyStatus:"completed", reinforceSkill:"grammar", availableSkills:skills.map(item => Object.assign({}, item, { need:item.id === "grammar" ? 60 : 20 })) });
 assert.equal(model.recommended.skill, "grammar", "una necesidad explícita no se desplaza por variedad");
 assert.equal(model.recommended.reason, "reinforce");
 
@@ -40,10 +40,21 @@ const stronger = Options.variedSkill([{id:"listening",count:2,need:80},{id:"gram
 assert.equal(stronger.id, "listening", "la necesidad pedagógica superior gana al cooldown");
 assert.equal(stronger.recentlyPracticed, true, "el modelo explicita cuándo la necesidad gana aunque exista cooldown");
 
+model = Options.build({
+  band:"p56", dailyStatus:"completed",
+  availableSkills:[{id:"listening",count:2,need:90,evidence:1,sufficient:false},{id:"reading",count:2,need:55,evidence:8,sufficient:true}]
+});
+assert.equal(model.recommended.skill, "reading", "la recomendación prioriza habilidades con evidencia suficiente");
+
 model = Options.build({ band:"p12", dailyStatus:"completed", errorCount:2, availableSkills:skills });
 assert.equal(model.review.available, true);
 assert.equal(model.skills.length, 3, "p12 muestra como máximo tres conceptos iniciales");
 assert.deepEqual(model.skills.map(item => item.id), ["listening", "vocabulary", "speaking"]);
+
+model = Options.build({ band:"p34", dailyStatus:"completed", availableSkills:Options.SKILLS.map(id => ({id,count:1})) });
+assert.deepEqual(model.skills.map(item => item.id), ["listening", "vocabulary", "speaking", "reading"], "p34 introduce cuatro habilidades comprensibles");
+assert.equal(Options.build({ band:"p56", dailyStatus:"completed", availableSkills:skills }).skills.length, 4, "p56 conserva todas las habilidades disponibles");
+assert.equal(Options.build({ band:"eso", dailyStatus:"completed", availableSkills:skills }).skills.length, 4, "ESO conserva todas las habilidades disponibles");
 
 model = Options.build({ band:"unknown", dailyStatus:"completed", availableSkills:[] , hasExtra:false });
 assert.equal(model.band, "neutral");

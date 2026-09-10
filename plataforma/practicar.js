@@ -22,8 +22,11 @@
     candidates.sort((a, b) => Number(a.pct) - Number(b.pct)); return candidates[0] ? candidates[0].key : null;
   }
   function availableWithNeed(counts, breakdown) {
-    const pct = {}; (breakdown && breakdown.skills || []).forEach(item => { if (item.pct != null) pct[item.key] = Number(item.pct); });
-    return Object.keys(counts).map(id => ({ id, count:counts[id], need:Object.prototype.hasOwnProperty.call(pct, id) ? 100 - pct[id] : 0 }));
+    const evidence = {}; (breakdown && breakdown.skills || []).forEach(item => { evidence[item.key] = item; });
+    return Object.keys(counts).map(id => {
+      const item = evidence[id] || {};
+      return { id, count:counts[id], need:item.pct != null ? 100 - Number(item.pct) : 0, evidence:Number(item.sample) || 0, sufficient:item.sufficient !== false };
+    });
   }
   function localiseChrome(profile) {
     document.documentElement.lang = band === "eso" ? "en" : "es";
@@ -34,8 +37,14 @@
     $("recommendedEyebrow").textContent = copy("recommended");
     $("reviewTitle").textContent = copy("reviewTitle");
     $("skillsTitle").textContent = copy("chooseTitle");
-    $("skillsLead").textContent = band === "eso" ? "Focus on one area without changing today’s session." : (band === "p12" ? "Elige una de estas opciones." : "Practica un área sin cambiar tu misión de hoy.");
+    $("skillsLead").textContent = copy("chooseBody");
+    $("skillsMeta").textContent = copy("skillTime") + " · " + copy("skillOutcome");
     $("emptyTitle").textContent = copy("noContentTitle"); $("emptyBody").textContent = copy("noContentBody"); $("emptyHome").textContent = copy("backHome");
+    if (new URLSearchParams(location.search).get("notice") === "unavailable") {
+      $("practiceNoticeTitle").textContent = copy("unavailableTitle");
+      $("practiceNoticeBody").textContent = copy("unavailableBody") + " " + copy("alternativesTitle") + ".";
+      $("practiceNotice").hidden = false;
+    }
   }
   function renderRecommended(item) {
     if (!item) { $("recommendedTitle").textContent = copy("noContentTitle"); $("recommendedBody").textContent = copy("noContentBody"); $("recommendedCta").hidden = true; return; }
@@ -44,9 +53,12 @@
     else if (item.kind === "due") body = copy("dueBody");
     else if (item.kind === "skill") { const label = ILCopy.practiceSkill(item.skill, band); title = label; body = copy("skillBody", { skill:label }); }
     $("recommendedTitle").textContent = title; $("recommendedBody").textContent = body; $("recommendedCtaText").textContent = cta; $("recommendedCta").href = item.href; $("recommendedCta").hidden = false;
+    $("recommendedTime").textContent = copy(item.kind === "daily" ? "dailyTime" : (item.kind === "due" ? "reviewTime" : "skillTime"));
+    $("recommendedOutcome").textContent = copy(item.kind === "daily" ? "dailyOutcome" : (item.kind === "due" ? "reviewOutcome" : "skillOutcome"));
   }
   function renderReview(review) {
     $("reviewBody").textContent = review.available ? copy("reviewBody") : copy("reviewEmpty");
+    $("reviewMeta").textContent = review.available ? (copy("reviewTime") + " · " + copy("reviewOutcome")) : "";
     $("reviewCta").textContent = copy("reviewTitle"); $("reviewCta").hidden = !review.available;
     $("reviewStatus").hidden = review.available; if (!review.available) $("reviewStatus").querySelector("span:last-child").textContent = copy("reviewEmpty");
     $("reviewCard").classList.toggle("is-complete", !review.available);
@@ -56,7 +68,10 @@
     skills.forEach(skill => {
       const link = document.createElement("a"); link.className = "practice-skill"; link.href = "leccion.html?mode=skill&skill=" + encodeURIComponent(skill.id); link.setAttribute("role", "listitem");
       const icon = document.createElement("span"); icon.setAttribute("data-il-icon", SKILL_ICON[skill.id] || "target"); icon.setAttribute("aria-hidden", "true");
-      const label = document.createElement("span"); label.textContent = ILCopy.practiceSkill(skill.id, band); link.append(icon, label); host.appendChild(link);
+      const text = document.createElement("span"); text.className = "practice-skill__copy";
+      const label = document.createElement("strong"); label.textContent = ILCopy.practiceSkill(skill.id, band);
+      const duration = document.createElement("small"); duration.textContent = copy("skillTime");
+      text.append(label, duration); link.append(icon, text); host.appendChild(link);
     });
     if (window.ILLayout) ILLayout.mount();
   }
