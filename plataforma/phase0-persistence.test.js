@@ -18,4 +18,6 @@ assert.match(auth, /il_learning_outbox_v1/, "los fallos de red conservan una out
 assert.match(auth, /flushLearningOutbox/, "la outbox se reintenta al recuperar conexión");
 assert.match(auth, /client_session_key/, "las sesiones se pueden reconciliar por una clave cliente estable");
 assert.match(auth, /session_finish[\s\S]*client_session_key/, "una sesión iniciada sin conexión conserva su cierre pendiente");
+assert.match(auth, /PMETAKEY/, "la caché de placement conserva metadatos trazables");
+assert.match(auth, /confidence_band/, "la confianza cualitativa se conserva junto al valor numérico");
 console.log("phase0 persistence: migración aditiva, placement, mastery y outbox comprobados");

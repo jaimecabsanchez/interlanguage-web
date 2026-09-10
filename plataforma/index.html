@@ -98,7 +98,8 @@
 <script src="auth-utils.js?v=20260809d"></script>
 <script src="observability.js?v=20260824a"></script>
 <script src="learning-data.js?v=20260824a"></script>
-<script src="auth.js?v=20260824c"></script>
+<script src="auth.js?v=20260909a"></script>
+<script src="entry-flow.js?v=20260909a"></script>
 <script src="il-visual.js?v=20260821b"></script>
 <script>
   const $ = (id) => document.getElementById(id);
@@ -109,26 +110,24 @@
     const bf = $("brandFox"); if (bf) bf.innerHTML = ILVisual.nemo("wave");
   }
 
-  function routeFor(p) {
-    if (p.is_admin) return "admin.html";
-    if (p.must_change_password) return "cambiar-clave.html";
-    return "inicio.html";
+  async function routeFor(p) {
+    return ILEntryFlow.resolve(p, ILAuth, localStorage);
   }
 
   // Enlace de un solo toque para revisores: ?demo=1&as=lucia entra directo, sin teclear.
   // Solo funciona en modo demo (con ?demo=1); en producción real se ignora.
-  (function autoDemo() {
+  (async function autoDemo() {
     try {
       const asUser = new URLSearchParams(location.search).get("as");
       if (asUser && ILAuth.isDemo() && typeof ILAuth.demoLoginAs === "function") {
         const r = ILAuth.demoLoginAs(asUser);
-        if (r && r.ok) { location.href = routeFor(r.profile); }
+        if (r && r.ok) { location.href = await routeFor(r.profile); }
       }
     } catch (e) {}
   })();
 
   // si ya hay sesión, entra directo
-  (async () => { const p = await ILAuth.getProfile(); if (p) location.href = routeFor(p); })();
+  (async () => { const p = await ILAuth.getProfile(); if (p) location.href = await routeFor(p); })();
 
   $("eye").addEventListener("click", () => {
     const i = $("password");
@@ -149,7 +148,7 @@
     if (mfaFactorId) {
       const res = await ILAuth.completeMFA(mfaFactorId, $("mfacode").value);
       if (!res.ok) { msg.textContent = res.error; msg.classList.add("show"); btn.disabled = false; btn.textContent = old; return; }
-      location.href = routeFor(res.profile); return;
+      location.href = await routeFor(res.profile); return;
     }
 
     const res = await ILAuth.signIn($("username").value, $("password").value);
@@ -167,7 +166,7 @@
       btn.disabled = false; btn.textContent = old;
       return;
     }
-    location.href = routeFor(res.profile);
+    location.href = await routeFor(res.profile);
   });
 </script>
 </body>

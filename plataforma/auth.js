@@ -768,6 +768,7 @@
     return ({ "Pre-A1": "Principiante", "A1": "Explorer · A1", "A2": "Explorer · A2", "B1": "Adventurer · B1" })[cefr] || cefr;
   }
   const LKEY = (u) => "il_level_" + u;
+  const PMETAKEY = (u) => "il_placement_meta_" + u;
   API.CEFR_ORDER = CEFR_ORDER;
   API.levelLabel = levelLabel;
 
@@ -776,16 +777,21 @@
     const prof = await this.getProfile();
     if (!prof) return { cefr: null, placed: false, label: "" };
     let cefr = null;
+    let cachedMeta = {};
     try { cefr = localStorage.getItem(LKEY(prof.username)); } catch (e) { observe("data_unavailable", e, { area:"placement", operation:"read_cache" }); }
+    try { cachedMeta = JSON.parse(localStorage.getItem(PMETAKEY(prof.username)) || "{}"); } catch (e) { observe("invalid_data", e, { area:"placement", operation:"read_meta_cache" }); }
     if (DEMO || !sb || !prof.student_id) {
       if (!cefr && CEFR_ORDER.indexOf((prof.cefr || "")) !== -1) cefr = prof.cefr;
-      return { cefr, placed:!!cefr, label:cefr ? levelLabel(cefr) : "", approximate:true, source:DEMO ? "demo" : "cache", synced:DEMO };
+      return { cefr, placed:!!cefr, label:cefr ? levelLabel(cefr) : "", approximate:true, source:DEMO ? "demo" : "cache", synced:DEMO,
+        instrument:cachedMeta.instrument_id || "", instrumentVersion:cachedMeta.instrument_version || "", confidence:cachedMeta.confidence == null ? null : cachedMeta.confidence,
+        confidenceBand:cachedMeta.confidence_band || "", coverageLimited:!!cachedMeta.coverage_limited, completedAt:cachedMeta.completed_at || "" };
     }
-    const { data, error } = await sb.from("student_placements").select("result_cefr,instrument_id,instrument_version,age_band,confidence,completed_at").eq("student_id", prof.student_id).order("completed_at", { ascending:false }).limit(1).maybeSingle();
-    if (error) { observe("data_unavailable", error, { area:"placement", operation:"read", table:"student_placements" }); return { cefr, placed:!!cefr, label:cefr ? levelLabel(cefr) : "", approximate:true, source:"cache", synced:false, status:"error" }; }
+    const { data, error } = await sb.from("student_placements").select("result_cefr,instrument_id,instrument_version,age_band,confidence,completed_at,metadata").eq("student_id", prof.student_id).order("completed_at", { ascending:false }).limit(1).maybeSingle();
+    if (error) { observe("data_unavailable", error, { area:"placement", operation:"read", table:"student_placements" }); return { cefr, placed:!!cefr, label:cefr ? levelLabel(cefr) : "", approximate:true, source:"cache", synced:false, status:"error", confidence:cachedMeta.confidence, confidenceBand:cachedMeta.confidence_band || "", coverageLimited:!!cachedMeta.coverage_limited }; }
     if (data && CEFR_ORDER.indexOf(data.result_cefr) !== -1) {
       cefr = data.result_cefr; try { localStorage.setItem(LKEY(prof.username), cefr); } catch (e) {}
-      return { cefr, placed:true, label:levelLabel(cefr), approximate:true, source:"server", synced:true, instrument:data.instrument_id, instrumentVersion:data.instrument_version, confidence:data.confidence, completedAt:data.completed_at };
+      const serverMeta = data.metadata || {};
+      return { cefr, placed:true, label:levelLabel(cefr), approximate:true, source:"server", synced:true, instrument:data.instrument_id, instrumentVersion:data.instrument_version, confidence:data.confidence, confidenceBand:serverMeta.confidence_band || "", coverageLimited:!!serverMeta.coverage_limited, completedAt:data.completed_at };
     }
     if (cefr && CEFR_ORDER.indexOf(cefr) !== -1) {
       const legacy = { id:eventUuid() || undefined, student_id:prof.student_id, result_cefr:cefr, instrument_id:"legacy-cache-import", instrument_version:"1",
@@ -806,13 +812,20 @@
     const prof = await this.getProfile();
     if (!prof) return { ok: false };
     meta = meta || {};
+    const confidenceBand = ["high","medium","low"].indexOf(meta.confidence_band) >= 0 ? meta.confidence_band : (["high","medium","low"].indexOf(meta.confidence) >= 0 ? meta.confidence : "");
+    const confidence = typeof meta.confidence === "number" ? Math.max(0, Math.min(1, meta.confidence)) : ({high:0.9,medium:0.65,low:0.35}[confidenceBand] || null);
+    const completedAt = new Date().toISOString();
+    const placementMeta = { instrument_id:meta.instrument_id || "legacy-eight-question", instrument_version:meta.instrument_version || "1", age_band:meta.age_band || "neutral",
+      confidence, confidence_band:confidenceBand, coverage_limited:!!(meta.metadata && meta.metadata.coverage_limited), completed_at:completedAt };
     try { localStorage.setItem(LKEY(prof.username), cefr); } catch (e) { observe("data_unavailable", e, { area:"placement", operation:"write_cache" }); }
-    if (DEMO) { const db = demoLoad(); const acc = db.find(a => a.username === prof.username); if (acc) { acc.level = levelLabel(cefr); demoSave(db); } return { ok:true, cefr, label:levelLabel(cefr), approximate:true, source:"demo", synced:true }; }
-    if (!sb || !prof.student_id) return { ok:true, cefr, label:levelLabel(cefr), approximate:true, source:"cache", synced:false };
-    const row = { id:eventUuid() || undefined, student_id:prof.student_id, result_cefr:cefr, instrument_id:meta.instrument_id || "legacy-eight-question", instrument_version:meta.instrument_version || "1", age_band:meta.age_band || "neutral", confidence:meta.confidence == null ? null : meta.confidence, completed_at:new Date().toISOString(), metadata:meta.metadata || {} };
+    try { localStorage.setItem(PMETAKEY(prof.username), JSON.stringify(placementMeta)); } catch (e) { observe("data_unavailable", e, { area:"placement", operation:"write_meta_cache" }); }
+    if (DEMO) { const db = demoLoad(); const acc = db.find(a => a.username === prof.username); if (acc) { acc.level = levelLabel(cefr); demoSave(db); } return { ok:true, cefr, label:levelLabel(cefr), approximate:true, source:"demo", synced:true, confidence, confidenceBand, coverageLimited:placementMeta.coverage_limited, completedAt }; }
+    if (!sb || !prof.student_id) return { ok:true, cefr, label:levelLabel(cefr), approximate:true, source:"cache", synced:false, confidence, confidenceBand, coverageLimited:placementMeta.coverage_limited, completedAt };
+    const metadata = Object.assign({}, meta.metadata || {}, confidenceBand ? { confidence_band:confidenceBand } : {});
+    const row = { id:eventUuid() || undefined, student_id:prof.student_id, result_cefr:cefr, instrument_id:placementMeta.instrument_id, instrument_version:placementMeta.instrument_version, age_band:placementMeta.age_band, confidence, completed_at:completedAt, metadata };
     const { error } = await sb.from("student_placements").insert(row);
-    if (error) { observe("network_failure", error, { area:"placement", operation:"save", table:"student_placements" }); queueLearning("placement", row); return { ok:true, cefr, label:levelLabel(cefr), approximate:true, source:"cache", synced:false, queued:true }; }
-    return { ok:true, cefr, label:levelLabel(cefr), approximate:true, source:"server", synced:true };
+    if (error) { observe("network_failure", error, { area:"placement", operation:"save", table:"student_placements" }); queueLearning("placement", row); return { ok:true, cefr, label:levelLabel(cefr), approximate:true, source:"cache", synced:false, queued:true, confidence, confidenceBand, coverageLimited:placementMeta.coverage_limited, completedAt }; }
+    return { ok:true, cefr, label:levelLabel(cefr), approximate:true, source:"server", synced:true, confidence, confidenceBand, coverageLimited:placementMeta.coverage_limited, completedAt };
   };
 
   // Resumen para el INFORME de la familia (solo lectura, sin notas ni comparaciones)

@@ -2,8 +2,8 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>¡Bienvenido! · Interlanguage</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Tu comienzo · Interlanguage HOME</title>
 <meta name="robots" content="noindex">
 <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png?v=20260823">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png?v=20260823">
@@ -13,143 +13,37 @@
 <link rel="stylesheet" href="design-system.css?v=20260824b">
 <link rel="stylesheet" href="app.css?v=20260824a">
 <link rel="stylesheet" href="etapa.css?v=20260824a">
-<link rel="stylesheet" href="il-visual.css?v=20260824a">
-<style>
-  /* El zorro (personaje de la marca) da la bienvenida, limpio y sin caja. */
-  .ob-fox:has(.il-nemo){background:none;box-shadow:none}
-  .ob-fox .il-nemo{width:100%;height:100%}
-  body{font-family:var(--il-font-body);background:
-    radial-gradient(120% 45% at 100% 0%,var(--il-secondary-soft) 0%,transparent 55%),
-    radial-gradient(120% 45% at 0% 4%,var(--il-success-soft) 0%,transparent 52%),
-    var(--il-background);}
-  .ob{max-width:520px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;padding:0 20px}
-  .ob-top{display:flex;justify-content:center;gap:8px;padding:26px 0 6px}
-  .dot{width:9px;height:9px;border-radius:50%;background:var(--il-line-2);transition:background var(--il-motion),width var(--il-motion)}
-  .dot.on{background:var(--il-primary)}
-  .dot.now{width:24px;border-radius:6px}
-  .ob-main{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding-block:var(--il-space-6)}
-  /* Símbolo de cada paso */
-  .ob-fox{width:120px;height:120px;margin:0 auto 16px;border-radius:var(--il-radius-xl);display:grid;place-items:center;color:var(--il-on-primary);line-height:1;
-    background:var(--il-primary);box-shadow:var(--il-shadow-md);
-    animation:obPop .42s cubic-bezier(.2,1.25,.3,1) both}
-  .ob-fox svg{width:54px;height:54px}
-  @keyframes obPop{from{opacity:0;transform:scale(.55)}to{opacity:1;transform:scale(1)}}
-  @keyframes obUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
-  body[data-stage="eso"] .ob-fox{width:88px;height:88px;border-radius:var(--il-radius-md)}
-  body[data-stage="eso"] .ob-fox svg{width:38px;height:38px}
-  .ob-h{font-family:var(--il-font-display);font-weight:800;color:var(--il-navy);font-size:1.7rem;margin:6px 0 8px;animation:obUp .38s cubic-bezier(.2,.7,.3,1) .07s both}
-  .ob-p{color:var(--il-soft);font-size:1.1rem;max-width:360px;margin:0 auto;animation:obUp .38s cubic-bezier(.2,.7,.3,1) .13s both}
-  .ob-preview{width:min(100%,380px);display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:var(--il-space-3);margin-top:var(--il-space-6);padding:var(--il-space-4);border:1px solid var(--il-border);border-radius:var(--il-radius-lg);background:var(--il-surface);box-shadow:var(--il-shadow-sm);text-align:left;animation:obUp .38s cubic-bezier(.2,.7,.3,1) .19s both}
-  .ob-preview__icon{width:46px;height:46px;display:grid;place-items:center;border-radius:var(--il-radius-md);background:var(--il-secondary-soft);color:var(--il-secondary)}.ob-preview__icon svg{width:24px;height:24px}
-  .ob-preview strong,.ob-preview small{display:block}.ob-preview strong{font-family:var(--il-font-display);font-size:var(--il-fs-sm);color:var(--il-text-primary)}.ob-preview small{margin-top:2px;color:var(--il-text-secondary);font-size:var(--il-fs-xs)}
-  .ob-preview__time{color:var(--il-primary);font-family:var(--il-font-display);font-size:var(--il-fs-sm);font-weight:var(--il-weight-extrabold);white-space:nowrap}
-  .ob-actions{padding:16px 0 28px;display:flex;gap:10px;align-items:center}
-  .ob-actions .btn{flex:1;transition:transform .15s ease,box-shadow .15s ease,background .15s ease}
-  .ob-actions .btn:active{transform:scale(.98)}
-  .ob-skip{background:none;border:none;color:var(--il-faint);font-family:inherit;font-size:.9rem;cursor:pointer}
-  body[data-stage="p12"] .ob-actions .btn{min-height:56px;font-size:var(--il-fs-lg)}
-  body[data-stage="p34"] .ob-actions .btn{min-height:52px}
-  body[data-stage="p56"] .ob-actions .btn{min-height:48px}
-  @media (max-height:700px){.ob-main{justify-content:flex-start;padding-top:var(--il-space-6)}.ob-fox{width:88px;height:88px}.ob-fox svg{width:40px;height:40px}.ob-preview{margin-top:var(--il-space-4)}}
-  @media (prefers-reduced-motion: reduce){ .ob-fox,.ob-h,.ob-p,.ob-preview{animation:none} }
-</style>
+<link rel="stylesheet" href="age-mode.css?v=20260824a">
+<link rel="stylesheet" href="world.css?v=20260820c">
+<link rel="stylesheet" href="onboarding.css?v=20260910a">
 </head>
 <body>
-<div class="ob">
-  <div class="ob-top" role="progressbar" aria-label="Progreso de bienvenida" aria-valuemin="1" aria-valuemax="3" aria-valuenow="1" id="onboardingProgress">
-    <span class="dot on" data-d="0" aria-hidden="true"></span><span class="dot" data-d="1" aria-hidden="true"></span><span class="dot" data-d="2" aria-hidden="true"></span>
+<main class="welcome-shell">
+  <div class="welcome-progress" id="onboardingProgress" role="progressbar" aria-label="Progreso de bienvenida" aria-valuemin="1" aria-valuemax="3" aria-valuenow="1">
+    <span class="welcome-dot is-active" aria-hidden="true"></span><span class="welcome-dot" aria-hidden="true"></span><span class="welcome-dot" aria-hidden="true"></span>
   </div>
-
-  <div class="ob-main" id="main" aria-live="polite"></div>
-
-  <div class="ob-actions">
-    <button class="ob-skip" id="skip" hidden>Saltar</button>
-    <button class="btn btn-primary btn-block" id="next">Siguiente</button>
-  </div>
-</div>
-
+  <section class="welcome-stage" id="main" aria-live="polite" aria-busy="true">
+    <div class="welcome-loading" role="status"><span aria-hidden="true"></span><p>Preparando tu espacio</p></div>
+  </section>
+  <footer class="welcome-actions">
+    <button class="btn btn-secondary" id="back" type="button" hidden>Volver</button>
+    <button class="btn btn-primary" id="next" type="button" disabled>Siguiente</button>
+  </footer>
+</main>
 <script src="layout.js?v=20260824a"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-config.js?v=20260809d"></script>
 <script src="auth-utils.js?v=20260809d"></script>
-<script src="copy-registry.js?v=20260824c"></script>
+<script src="copy-registry.js?v=20260910a"></script>
 <script src="age-policy.js?v=20260824a"></script>
 <script src="etapa.js?v=20260824b"></script>
 <script src="observability.js?v=20260824a"></script>
 <script src="learning-data.js?v=20260824a"></script>
-<script src="auth.js?v=20260824c"></script>
-<script src="il-visual.js?v=20260821b"></script>
-<script>
-  const $ = (id) => document.getElementById(id);
-  let name = "explorador", stage = "neutral";
-
-  const COPY = {
-    p12: [
-      { icon:"plane", h:n=>"¡Hola, "+n+"!", p:"Tu aventura de inglés empieza aquí." },
-      { icon:"target", h:()=>"Una misión cada día", p:"Escucha, mira y juega durante unos minutos.", preview:"Tu primera misión", meta:"4 retos", time:"5 min" },
-      { icon:"shield", h:()=>"Puedes probar otra vez", p:"Si algo cuesta, te ayudaremos paso a paso." }
-    ],
-    p34: [
-      { icon:"plane", h:n=>"¡Hola, "+n+"!", p:"Nemo te acompaña en tu viaje por el inglés." },
-      { icon:"target", h:()=>"Cada día, una misión corta", p:"Practica un poco y sigue haciendo crecer tu inglés.", preview:"Tu primera misión", meta:"5 actividades", time:"7 min" },
-      { icon:"shield", h:()=>"Los errores también enseñan", p:"Recibirás una pista y podrás volver a intentarlo." }
-    ],
-    p56: [
-      { icon:"plane", h:n=>"Hola, "+n, p:"Tu ruta mostrará lo que aprendes y lo que ya dominas." },
-      { icon:"target", h:()=>"Una misión breve al día", p:"Unos minutos para avanzar sin que se haga pesado.", preview:"Misión de inicio", meta:"6 actividades", time:"8 min" },
-      { icon:"shield", h:()=>"Aprender incluye equivocarse", p:"Te daremos contexto, pistas y otra oportunidad." }
-    ],
-    eso: [
-      { icon:"plane", h:n=>"Hola, "+n, p:"Aquí tendrás una ruta clara para practicar a tu nivel." },
-      { icon:"target", h:()=>"Práctica breve y enfocada", p:"Sesiones diseñadas para avanzar sin perder tiempo.", preview:"Starting mission", meta:"7 activities", time:"10 min" },
-      { icon:"shield", h:()=>"Feedback que sirve", p:"Cada error se convierte en una explicación y un nuevo intento." }
-    ],
-    neutral: [
-      { icon:"plane", h:n=>"Hola, "+n, p:"Vamos a preparar una experiencia clara para ti." },
-      { icon:"target", h:()=>"Una misión breve cada día", p:"Practica unos minutos y avanza paso a paso.", preview:"Misión de inicio", meta:"Actividades adaptadas", time:"5–8 min" },
-      { icon:"shield", h:()=>"Puedes volver a intentarlo", p:"Tendrás pistas y explicaciones cuando las necesites." }
-    ]
-  };
-  const steps = () => COPY[stage] || COPY.neutral;
-  let i = 0;
-
-  function escHtml(value) {
-    return String(value == null ? "" : value).replace(/[&<>'"]/g, char => ({
-      "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;"
-    })[char]);
-  }
-
-  function render() {
-    const s = steps()[i];
-    // El paso de bienvenida lo protagoniza el zorro (Nemo); el resto, iconos.
-    const iconHtml = (s.icon === "plane" && window.ILVisual) ? ILVisual.nemo("hi") : ILIcon(s.icon);
-    $("main").innerHTML =
-      '<div class="ob-fox" aria-hidden="true">'+iconHtml+'</div>' +
-      '<h1 class="ob-h">'+escHtml(s.h(name))+'</h1>' +
-      '<p class="ob-p">'+escHtml(s.p)+'</p>' +
-      (s.preview ? '<div class="ob-preview"><span class="ob-preview__icon" aria-hidden="true">'+ILIcon("books")+'</span><span><strong>'+escHtml(s.preview)+'</strong><small>'+escHtml(s.meta)+'</small></span><span class="ob-preview__time">'+escHtml(s.time)+'</span></div>' : '');
-    document.querySelectorAll('.dot').forEach((d,di)=>{ d.classList.toggle('on', di<=i); d.classList.toggle('now', di===i); });
-    $("onboardingProgress").setAttribute("aria-valuenow", String(i + 1));
-    $("next").textContent = i === steps().length-1 ? (stage === "eso" ? "Find my starting point" : "Descubrir mi punto de partida") : "Siguiente";
-    $("skip").hidden = (stage !== "eso") || i === steps().length-1;
-  }
-
-  function finish() {
-    try { const u = (window.__user||''); localStorage.setItem('il_onboarded_'+u, '1'); } catch(e){}
-    location.href = "test-nivel.html";   // primero el test de nivel; luego ya empieza a practicar
-  }
-  $("next").addEventListener("click", () => { if (i < steps().length-1) { i++; render(); } else finish(); });
-  $("skip").addEventListener("click", finish);
-
-  (async () => {
-    const p = await ILAuth.getProfile();
-    if (!p) { location.href = "index.html"; return; }
-    if (p.is_admin) { location.href = "admin.html"; return; }
-    window.__user = p.username;
-    name = (p.full_name || "").split(" ")[0] || "campeón";
-    stage = IL_ETAPA.apply(p);
-    render();
-  })();
-</script>
+<script src="profile-settings.js?v=20260819a"></script>
+<script src="auth.js?v=20260909a"></script>
+<script src="entry-flow.js?v=20260909a"></script>
+<script src="avatar-rig.js?v=20260820c"></script>
+<script src="world-visual.js?v=20260820c"></script>
+<script src="onboarding.js?v=20260910b"></script>
 </body>
 </html>
