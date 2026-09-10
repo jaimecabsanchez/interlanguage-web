@@ -13,18 +13,32 @@ assert.equal(model.dailyPending, true);
 model = Options.build({ band:"p34", dailyStatus:"completed", dueCount:3, reinforceSkill:"grammar", availableSkills:skills });
 assert.equal(model.recommended.kind, "due", "el repaso vencido precede al refuerzo tras completar la misión");
 
+model = Options.build({ band:"p34", dailyStatus:"completed", dueCount:0, availableSkills:skills });
+assert.notEqual(model.recommended.kind, "daily", "la misión terminada libera la recomendación adaptativa");
+
 model = Options.build({ band:"p56", dailyStatus:"completed", reinforceSkill:"grammar", availableSkills:skills });
 assert.equal(model.recommended.skill, "grammar", "una necesidad explícita no se desplaza por variedad");
 assert.equal(model.recommended.reason, "reinforce");
 
+const now = Date.parse("2026-08-24T18:00:00Z");
 model = Options.build({
   band:"p56", dailyStatus:"completed", availableSkills:skills,
+  now,
   recentEvents:[{ skill:"listening", submitted_at:"2026-08-24T12:00:00Z" }, { skill:"vocabulary", submitted_at:"2026-08-23T12:00:00Z" }]
 });
 assert.equal(model.recommended.skill, "grammar", "el cooldown desempata sin repetir la skill reciente");
 
-const stronger = Options.variedSkill([{id:"listening",count:2,need:5},{id:"grammar",count:2,need:1}], [{skill:"listening",submitted_at:"2026-08-24T12:00:00Z"}]);
+const equivalent = Options.variedSkill(
+  [{id:"listening",count:2,need:64},{id:"grammar",count:2,need:60}],
+  [{skill:"listening",submitted_at:"2026-08-24T12:00:00Z"}],
+  { now }
+);
+assert.equal(equivalent.id, "grammar", "una alternativa pedagógicamente equivalente evita repetir la skill en cooldown");
+assert.equal(equivalent.recentlyPracticed, false);
+
+const stronger = Options.variedSkill([{id:"listening",count:2,need:80},{id:"grammar",count:2,need:40}], [{skill:"listening",submitted_at:"2026-08-24T12:00:00Z"}], { now });
 assert.equal(stronger.id, "listening", "la necesidad pedagógica superior gana al cooldown");
+assert.equal(stronger.recentlyPracticed, true, "el modelo explicita cuándo la necesidad gana aunque exista cooldown");
 
 model = Options.build({ band:"p12", dailyStatus:"completed", errorCount:2, availableSkills:skills });
 assert.equal(model.review.available, true);
@@ -34,6 +48,9 @@ assert.deepEqual(model.skills.map(item => item.id), ["listening", "vocabulary", 
 model = Options.build({ band:"unknown", dailyStatus:"completed", availableSkills:[] , hasExtra:false });
 assert.equal(model.band, "neutral");
 assert.equal(model.hasAnyPractice, false);
+
+model = Options.build({ band:"p34", dailyStatus:"completed", availableSkills:[{id:"not-a-skill",count:4}], hasExtra:false });
+assert.equal(model.hasAnyPractice, false, "una skill inválida no crea una ruta engañosa");
 
 const picked = Options.selectExercises({
   cefr:"A1", limit:2,

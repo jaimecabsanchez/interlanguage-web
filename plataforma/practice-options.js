@@ -11,6 +11,8 @@
   const SKILLS = Object.freeze(["listening", "vocabulary", "grammar", "reading", "writing", "speaking"]);
   const P12_ORDER = Object.freeze(["listening", "vocabulary", "speaking", "reading", "grammar", "writing"]);
   const CEFR_ORDER = Object.freeze(["Pre-A1", "A1", "A2", "B1", "B2", "C1", "C2"]);
+  const COOLDOWN_MS = 36 * 60 * 60 * 1000;
+  const EQUIVALENT_NEED_RANGE = 8;
 
   function count(value) { return Math.max(0, Number(value) || 0); }
   function safeBand(value) { return ["p12", "p34", "p56", "eso", "neutral"].indexOf(value) >= 0 ? value : "neutral"; }
@@ -27,7 +29,11 @@
   function normalizeSkills(input) {
     const values = Array.isArray(input) ? input : Object.keys(input || {}).map(id => ({ id, count:input[id] }));
     return values.map(item => typeof item === "string" ? ({ id:item, count:1 }) : item).filter(item => item && SKILLS.indexOf(item.id) >= 0 && count(item.count) > 0).map(item => ({
-      id:item.id, count:count(item.count), need:Number.isFinite(Number(item.need)) ? Number(item.need) : 0
+      id:item.id,
+      count:count(item.count),
+      need:Number.isFinite(Number(item.need)) ? Number(item.need) : 0,
+      evidence:count(item.evidence),
+      sufficient:item.sufficient !== false
     }));
   }
   function visibleSkills(band, available) {
@@ -35,13 +41,22 @@
     if (safe !== "p12") return list;
     return P12_ORDER.map(id => list.find(item => item.id === id)).filter(Boolean).slice(0, 3);
   }
-  function variedSkill(available, recentEvents) {
+  function variedSkill(available, recentEvents, options) {
     const list = normalizeSkills(available); if (!list.length) return null;
     const recent = recentBySkill(recentEvents);
-    return list.slice().sort((a, b) => {
-      if (b.need !== a.need) return b.need - a.need; // necesidad pedagógica siempre primero
+    const now = Number(options && options.now) || Date.now();
+    const strongestNeed = Math.max.apply(null, list.map(item => item.need));
+    const equivalent = list.filter(item => strongestNeed - item.need <= EQUIVALENT_NEED_RANGE);
+    const cooled = equivalent.filter(item => !recent[item.id] || now - recent[item.id] >= COOLDOWN_MS);
+    const pool = cooled.length ? cooled : equivalent;
+    const selected = pool.slice().sort((a, b) => {
+      if (b.need !== a.need) return b.need - a.need;
       return (recent[a.id] || 0) - (recent[b.id] || 0) || SKILLS.indexOf(a.id) - SKILLS.indexOf(b.id);
     })[0];
+    return Object.freeze(Object.assign({}, selected, {
+      recentlyPracticed:!!(recent[selected.id] && now - recent[selected.id] < COOLDOWN_MS),
+      lastPracticedAt:recent[selected.id] || 0
+    }));
   }
   function hasSkill(available, id) { return normalizeSkills(available).some(item => item.id === id); }
 
@@ -84,9 +99,9 @@
     } else if (input.reinforceSkill && hasSkill(allSkills, input.reinforceSkill)) {
       recommended = { kind:"skill", reason:"reinforce", href:"leccion.html?mode=skill&skill=" + encodeURIComponent(input.reinforceSkill), skill:input.reinforceSkill, count:0 };
     } else {
-      const choice = variedSkill(allSkills, input.recentEvents);
+      const choice = variedSkill(allSkills, input.recentEvents, { now:input.now });
       recommended = choice
-        ? { kind:"skill", reason:"variety", href:"leccion.html?mode=skill&skill=" + encodeURIComponent(choice.id), skill:choice.id, count:0 }
+        ? { kind:"skill", reason:"variety", href:"leccion.html?mode=skill&skill=" + encodeURIComponent(choice.id), skill:choice.id, count:0, recentlyPracticed:choice.recentlyPracticed }
         : (hasExtra ? { kind:"extra", reason:"practice_extra", href:"leccion.html?mode=bonus", skill:null, count:0 } : null);
     }
 
@@ -97,5 +112,5 @@
     return Object.freeze({ band, dailyPending, recommended, review:Object.freeze(review), skills:Object.freeze(skills), hasAnyPractice });
   }
 
-  return Object.freeze({ SKILLS, P12_ORDER, CEFR_ORDER, safeBand, recentBySkill, normalizeSkills, visibleSkills, variedSkill, selectExercises, build });
+  return Object.freeze({ SKILLS, P12_ORDER, CEFR_ORDER, COOLDOWN_MS, EQUIVALENT_NEED_RANGE, safeBand, recentBySkill, normalizeSkills, visibleSkills, variedSkill, selectExercises, build });
 });
