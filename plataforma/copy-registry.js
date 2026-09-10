@@ -72,6 +72,33 @@
     eso:Object.freeze({ eyebrow:"STARTING POINT", introTitle:"A short adaptive check", introBody:"Questions adjust as you go. This is a starting point, not a grade.", start:"Start", step:"Question {current} of up to {max}", choose:"Choose one answer", unknown:"I don’t know yet", saved:"Answer saved", next:"Next question", resume:"Continuing where you left off", resultTitle:"Your starting point is ready", resultLevel:"You’ll start at {level}", resultBody:"Your sessions will match both your English level and your age.", seenTitle:"Today you saw", continue:"Start my first session", pending:"Saved on this device. It will sync when you’re back online.", loading:"Preparing your check", unavailable:"We can’t prepare the check right now", retry:"Try again", listen:"Listen", audioError:"Audio is unavailable. We’ll continue with another activity."}),
     neutral:Object.freeze({ eyebrow:"TU PUNTO DE PARTIDA", introTitle:"Vamos a encontrar un buen comienzo", introBody:"Responde lo que sepas. Esto no es una nota.", start:"Empezar", step:"Pregunta {current} de hasta {max}", choose:"Elige una respuesta", unknown:"Todavía no lo sé", saved:"Respuesta guardada", next:"Siguiente", resume:"Continuamos donde lo dejaste", resultTitle:"Tu punto de partida está listo", resultLevel:"Empezaremos en {level}", resultBody:"Prepararemos una primera misión adecuada para ti.", seenTitle:"Hoy has visto", continue:"Ir a mi primera misión", pending:"Guardado aquí. Se sincronizará cuando vuelva la conexión.", loading:"Preparando tu calibración", unavailable:"No podemos preparar la calibración ahora", retry:"Intentar de nuevo", listen:"Escuchar", audioError:"El audio no está disponible. Continuamos con otra actividad."})
   });
+  const ONBOARDING = Object.freeze({
+    p12:Object.freeze({ next:"Siguiente", finish:"Buscar mi mejor comienzo", steps:Object.freeze([
+      Object.freeze({ visual:"avatar", title:"¡Hola, {name}!", body:"Este es tu rincón para aprender inglés a tu manera." }),
+      Object.freeze({ visual:"target", title:"Una misión cortita cada día", body:"Escucharás, mirarás y jugarás con palabras y frases.", preview:"Tu primera misión", meta:"Pasos claros", time:"5 min" }),
+      Object.freeze({ visual:"route", title:"Tu mundo crecerá contigo", body:"Primero veremos por dónde empezar. Después, cada misión mostrará todo lo que vas aprendiendo." })
+    ])}),
+    p34:Object.freeze({ next:"Siguiente", finish:"Encontrar mi punto de partida", steps:Object.freeze([
+      Object.freeze({ visual:"avatar", title:"¡Hola, {name}!", body:"Esta será tu ruta personal para avanzar en inglés." }),
+      Object.freeze({ visual:"target", title:"Una misión breve cada día", body:"Practicarás con actividades elegidas para tu edad y tu nivel.", preview:"Tu primera misión", meta:"Actividades adaptadas", time:"7 min" }),
+      Object.freeze({ visual:"route", title:"Verás cómo crece tu inglés", body:"Una calibración corta encontrará un buen comienzo y tu mundo irá reflejando lo que consigues." })
+    ])}),
+    p56:Object.freeze({ next:"Siguiente", finish:"Encontrar mi punto de partida", steps:Object.freeze([
+      Object.freeze({ visual:"avatar", title:"Hola, {name}", body:"Tu ruta combinará tu edad, tu nivel de inglés y lo que vayas aprendiendo." }),
+      Object.freeze({ visual:"target", title:"Una misión enfocada cada día", body:"Práctica breve, feedback útil y contenido que evoluciona contigo.", preview:"Starting mission", meta:"Práctica adaptada", time:"8 min" }),
+      Object.freeze({ visual:"route", title:"Primero, una calibración breve", body:"Ajustaremos el punto de partida para que las misiones no sean ni demasiado fáciles ni demasiado difíciles." })
+    ])}),
+    eso:Object.freeze({ next:"Next", finish:"Find my starting point", steps:Object.freeze([
+      Object.freeze({ visual:"avatar", title:"Hi, {name}", body:"Your route will combine your age, English level and real learning evidence." }),
+      Object.freeze({ visual:"target", title:"Short, focused practice", body:"Clear sessions and useful feedback, without wasting your time.", preview:"Starting session", meta:"Adaptive practice", time:"10 min" }),
+      Object.freeze({ visual:"route", title:"First, a short adaptive check", body:"We’ll find a starting point that is challenging enough without becoming frustrating." })
+    ])}),
+    neutral:Object.freeze({ next:"Siguiente", finish:"Encontrar mi punto de partida", steps:Object.freeze([
+      Object.freeze({ visual:"avatar", title:"Hola, {name}", body:"Vamos a preparar una ruta clara para ti." }),
+      Object.freeze({ visual:"target", title:"Una misión breve cada día", body:"Practicarás paso a paso con contenido adaptado.", preview:"Tu primera misión", meta:"Práctica adaptada", time:"5–8 min" }),
+      Object.freeze({ visual:"route", title:"Empezamos por conocerte", body:"Una calibración corta nos ayudará a elegir un buen punto de partida." })
+    ])})
+  });
 
   function normalizeBand(band) { return BANDS.indexOf(band) >= 0 ? band : "neutral"; }
   function reportMissing(kind, key, band) {
@@ -118,6 +145,10 @@
     if (value == null) { reportMissing("placement", key, safeBand); return ""; }
     return interpolate(value, params);
   }
+  function onboarding(band) {
+    const entry = ONBOARDING[normalizeBand(band)];
+    return Object.freeze({ next:entry.next, finish:entry.finish, steps:entry.steps });
+  }
   function reward(item, band, field) {
     if (!item) return "";
     const safeBand = normalizeBand(band); const english = safeBand === "eso";
@@ -131,5 +162,5 @@
     return Object.freeze(out);
   }
 
-  return { BANDS, LANGUAGE, COPY, SKILLS, MISSIONS, SUPPORT, PRACTICE, PLACEMENT, normalizeBand, text, skill, missionTitle, support, practice, practiceSkill, placement, reward, view, has:key => BANDS.some(band => COPY[band][key] != null) };
+  return { BANDS, LANGUAGE, COPY, SKILLS, MISSIONS, SUPPORT, PRACTICE, PLACEMENT, ONBOARDING, normalizeBand, text, skill, missionTitle, support, practice, practiceSkill, placement, onboarding, reward, view, has:key => BANDS.some(band => COPY[band][key] != null) };
 });
