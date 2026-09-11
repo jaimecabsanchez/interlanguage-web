@@ -1,0 +1,40 @@
+const assert = require("node:assert/strict");
+const fs = require("node:fs");
+const path = require("node:path");
+
+const lesson = fs.readFileSync(path.join(__dirname, "leccion.html"), "utf8");
+const engine = fs.readFileSync(path.join(__dirname, "motor", "engine.js"), "utf8");
+const css = fs.readFileSync(path.join(__dirname, "motor", "motor.css"), "utf8");
+
+assert.match(lesson, /motor\/session-state\.js\?v=20260911a[\s\S]*motor\/engine\.js\?v=20260911a/, "el estado carga antes que el motor");
+assert.doesNotMatch(lesson, /lesson-young\.css/, "la sesión no mantiene una segunda capa visual conflictiva");
+assert.match(lesson, /exerciseCount"[^>]*>Ejercicio 1 de 6/);
+assert.match(lesson, /\$\("exerciseCount"\)\.textContent = current \+ " \/ " \+ total/);
+assert.match(engine, /sessionMachine\.create\(\)/);
+assert.match(engine, /root\.dataset\.state = next\.value/);
+assert.match(engine, /sessionMachine\.resolve\(sessionState, false\)/);
+assert.match(engine, /sessionState\.attempts === 1/);
+assert.match(engine, /setTimeout\(\(\) => action\.focus\(\), 0\)/);
+assert.match(engine, /\^\[1-4\]\$/);
+assert.match(engine, /event\.key !== "Enter"/);
+assert.match(engine, /p12:\{ elegir_imagen:"Escucha y toca\."/);
+assert.match(engine, /p34:\{ elegir_imagen:"Escucha y elige\."/);
+assert.match(engine, /p56:\{ elegir_imagen:"Listen and choose\."/);
+assert.match(engine, /eso:\{ elegir_imagen:"Listen and choose\."/);
+assert.match(engine, /success: "¡Genial!"/);
+assert.match(engine, /success: "¡Eso es!"/);
+assert.match(engine, /success: "Correcto"/);
+assert.match(engine, /success: "Correct"/);
+assert.match(engine, /dataAudioState|dataset\.audioState|setAudioLabel/);
+assert.match(css, /eng-card--simple\{max-width:720px\}/);
+assert.match(css, /eng-card--visual\{max-width:880px\}/);
+assert.match(css, /eng-card--manipulation,.eng-card--reading\{max-width:960px\}/);
+assert.match(css, /eng-card--p12[\s\S]*min-height:56px/);
+assert.match(css, /eng-card--p34[\s\S]*min-height:52px/);
+assert.match(css, /eng-card--p56[\s\S]*min-height:48px/);
+assert.match(css, /eng-card--eso[\s\S]*min-height:44px/);
+assert.match(css, /justify-content:stretch/, "la rejilla ocupa el ancho disponible en móvil");
+assert.match(css, /prefers-reduced-motion:reduce/);
+assert.doesNotMatch(css, /#[0-9a-fA-F]{3,8}\b/);
+
+console.log("session experience: jerarquía, estados, edades, audio, teclado y medidas comprobados");
