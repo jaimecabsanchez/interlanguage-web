@@ -2,11 +2,11 @@
 (function (root) {
   "use strict";
   const entries = [
-    "content/p12/school.js?v=20260821e",
-    "content/shared/daily-routine.js?v=20260821e",
-    "content/shared/food.js?v=20260821e",
-    "content/shared/grammar.js?v=20260821e",
-    "content/eso/future-plans.js?v=20260821e"
+    "content/p12/school.js?v=20260912a",
+    "content/shared/daily-routine.js?v=20260912a",
+    "content/shared/food.js?v=20260912a",
+    "content/shared/grammar.js?v=20260912a",
+    "content/eso/future-plans.js?v=20260912a"
   ];
   root.IL_CONTENT_MANIFEST = entries;
   if (root.ILContent) root.ILContent.setManifest(entries);

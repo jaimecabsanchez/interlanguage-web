@@ -23,7 +23,7 @@ assert.equal(result.diagnostics.errors.length, 0, JSON.stringify(result.diagnost
 assert.deepEqual(result.packs, ["p12-school-core", "primary-daily-routine", "primary-food", "grammar-core", "eso-future-plans"]);
 assert.equal(result.unidades.length, 7);
 assert.equal(result.objectives.length, 25);
-assert.equal(result.exercises.length, 153);
+assert.equal(result.exercises.length, 209);
 
 function fingerprint(exercise) {
   const editorial = { id:exercise.id,tipo:exercise.tipo,instruccion:exercise.instruccion,opciones:exercise.opciones||null,respuesta:exercise.respuesta||null,pares:exercise.pares||null,preguntas:exercise.preguntas||null };
@@ -37,5 +37,5 @@ Object.keys(EXPECTED).forEach(id => {
 });
 assert.deepEqual(result.unidades.map(unit => unit.id), ["primer-vuelo", "rutina-diaria", "la-comida", "gramatica-inicial", "gramatica-media", "gramatica-eso", "future-plans"]);
 assert(result.exercises.every(exercise => exercise.objective_id));
-assert.equal(new Set(result.exercises.map(exercise => exercise.id)).size, 153);
-console.log("content migration: manifest canónico (7 unidades/153 ejercicios) y 25 fingerprints históricos conservados");
+assert.equal(new Set(result.exercises.map(exercise => exercise.id)).size, 209);
+console.log("content migration: 7 unidades, 209 ejercicios y 25 fingerprints históricos conservados");

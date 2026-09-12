@@ -1,7 +1,7 @@
-/* Pack editorial generado desde contenido.js; editar el dato, no el motor. */
+/* Banco editorial: metadatos explícitos y mecánicas reutilizables. */
 ILContent.registerPack({
   "id": "p12-school-core",
-  "version": 1,
+  "version": 2,
   "stages": [
     "p12",
     "p34"
@@ -159,7 +159,11 @@ ILContent.registerPack({
       "variant_group": "school-objects",
       "tags": [
         "school"
-      ]
+      ],
+      "mechanic": "listen_image",
+      "estimated_seconds": 35,
+      "hint": "Escucha otra vez y busca el libro.",
+      "explanation": "“Book” significa “libro”."
     },
     {
       "id": "pv-2",
@@ -206,7 +210,11 @@ ILContent.registerPack({
       "variant_group": "school-objects",
       "tags": [
         "school"
-      ]
+      ],
+      "mechanic": "listen_image",
+      "estimated_seconds": 35,
+      "hint": "Busca el objeto que usamos para escribir.",
+      "explanation": "“Pencil” significa “lápiz”."
     },
     {
       "id": "pv-3",
@@ -243,14 +251,17 @@ ILContent.registerPack({
       "unit_id": "primer-vuelo",
       "objective_id": "school-greetings",
       "stage": [
-        "p12",
         "p34"
       ],
       "difficulty": 2,
       "variant_group": "school-greetings",
       "tags": [
         "school"
-      ]
+      ],
+      "mechanic": "listen_text",
+      "estimated_seconds": 40,
+      "hint": "Es el saludo que usamos por la mañana.",
+      "explanation": "“Good morning” significa “Buenos días”."
     },
     {
       "id": "pv-4",
@@ -294,7 +305,11 @@ ILContent.registerPack({
         "incorrect": "Míralo con calma y prueba otra vez.",
         "context": "",
         "learnedExpressions": []
-      }
+      },
+      "mechanic": "matching",
+      "estimated_seconds": 65,
+      "hint": "Míralo con calma y prueba otra vez.",
+      "explanation": "¡Bien hecho!"
     },
     {
       "id": "pv-5",
@@ -331,14 +346,17 @@ ILContent.registerPack({
       "unit_id": "primer-vuelo",
       "objective_id": "school-greetings",
       "stage": [
-        "p12",
         "p34"
       ],
       "difficulty": 2,
       "variant_group": "school-greetings",
       "tags": [
         "school"
-      ]
+      ],
+      "mechanic": "gap_fill",
+      "estimated_seconds": 40,
+      "hint": "Elige el saludo que usarías con tu teacher.",
+      "explanation": "¡Muy bien! Es un saludo sencillo para empezar la clase."
     },
     {
       "id": "pv-6",
@@ -385,7 +403,11 @@ ILContent.registerPack({
       "variant_group": "school-objects",
       "tags": [
         "school"
-      ]
+      ],
+      "mechanic": "listen_image",
+      "estimated_seconds": 35,
+      "hint": "Es donde guardas tus libros para el cole.",
+      "explanation": "“School bag” significa “mochila”."
     },
     {
       "id": "pv-7",
@@ -432,7 +454,11 @@ ILContent.registerPack({
       "variant_group": "school-objects",
       "tags": [
         "school"
-      ]
+      ],
+      "mechanic": "listen_image",
+      "estimated_seconds": 35,
+      "hint": "Es donde nos sentamos en clase.",
+      "explanation": "“Chair” significa “silla”."
     },
     {
       "id": "pv-8",
@@ -479,7 +505,11 @@ ILContent.registerPack({
       "variant_group": "school-greetings",
       "tags": [
         "school"
-      ]
+      ],
+      "mechanic": "listen_image",
+      "estimated_seconds": 35,
+      "hint": "Es lo que decimos antes de dormir.",
+      "explanation": "“Good night” significa “Buenas noches”."
     },
     {
       "id": "pv-9",
@@ -526,7 +556,11 @@ ILContent.registerPack({
       "variant_group": "school-greetings",
       "tags": [
         "school"
-      ]
+      ],
+      "mechanic": "listen_image",
+      "estimated_seconds": 35,
+      "hint": "Es el saludo de la mañana.",
+      "explanation": "“Good morning” significa “Buenos días”."
     },
     {
       "id": "pv-10",
@@ -562,14 +596,17 @@ ILContent.registerPack({
       "unit_id": "primer-vuelo",
       "objective_id": "school-objects",
       "stage": [
-        "p12",
         "p34"
       ],
       "difficulty": 2,
       "variant_group": "school-objects",
       "tags": [
         "school"
-      ]
+      ],
+      "mechanic": "gap_fill",
+      "estimated_seconds": 40,
+      "hint": "Piensa en dónde te sientas.",
+      "explanation": "“Chair” es “silla”."
     },
     {
       "id": "pv-11",
@@ -606,14 +643,17 @@ ILContent.registerPack({
       "unit_id": "primer-vuelo",
       "objective_id": "school-greetings",
       "stage": [
-        "p12",
         "p34"
       ],
       "difficulty": 2,
       "variant_group": "school-greetings",
       "tags": [
         "school"
-      ]
+      ],
+      "mechanic": "listen_text",
+      "estimated_seconds": 40,
+      "hint": "Es lo que decimos al despedirnos.",
+      "explanation": "“Goodbye” significa “Hasta luego / Adiós”."
     },
     {
       "id": "pv-12",
@@ -657,7 +697,11 @@ ILContent.registerPack({
         "incorrect": "Míralo con calma y prueba otra vez.",
         "context": "",
         "learnedExpressions": []
-      }
+      },
+      "mechanic": "matching",
+      "estimated_seconds": 65,
+      "hint": "Míralo con calma y prueba otra vez.",
+      "explanation": "¡Bien hecho!"
     },
     {
       "id": "pv-13",
@@ -693,14 +737,17 @@ ILContent.registerPack({
       "unit_id": "primer-vuelo",
       "objective_id": "school-classroom",
       "stage": [
-        "p12",
         "p34"
       ],
       "difficulty": 1,
       "variant_group": "school-classroom",
       "tags": [
         "school"
-      ]
+      ],
+      "mechanic": "gap_fill",
+      "estimated_seconds": 40,
+      "hint": "Cuenta: one, two, three…",
+      "explanation": "“Three” es “tres”."
     },
     {
       "id": "pv-14",
@@ -736,14 +783,17 @@ ILContent.registerPack({
       "unit_id": "primer-vuelo",
       "objective_id": "school-classroom",
       "stage": [
-        "p12",
         "p34"
       ],
       "difficulty": 1,
       "variant_group": "school-classroom",
       "tags": [
         "school"
-      ]
+      ],
+      "mechanic": "gap_fill",
+      "estimated_seconds": 40,
+      "hint": "Es el primer número: one.",
+      "explanation": "“One” es “uno”."
     },
     {
       "id": "pv-15",
@@ -790,7 +840,11 @@ ILContent.registerPack({
       "variant_group": "school-greetings",
       "tags": [
         "school"
-      ]
+      ],
+      "mechanic": "listen_image",
+      "estimated_seconds": 35,
+      "hint": "Es lo que decimos al marcharnos.",
+      "explanation": "“Goodbye” es el saludo de despedida."
     },
     {
       "id": "pv-16",
@@ -830,7 +884,11 @@ ILContent.registerPack({
         "incorrect": "Fíjate en el orden: sujeto + verbo + resto, y prueba otra vez.",
         "context": "I have a book.",
         "learnedExpressions": []
-      }
+      },
+      "mechanic": "sentence_order",
+      "estimated_seconds": 60,
+      "hint": "Fíjate en el orden: sujeto + verbo + resto, y prueba otra vez.",
+      "explanation": "Orden correcto: «I have a book.». En inglés va primero el sujeto y luego el verbo."
     },
     {
       "id": "pv-17",
@@ -870,7 +928,11 @@ ILContent.registerPack({
         "incorrect": "Fíjate en el orden: sujeto + verbo + resto, y prueba otra vez.",
         "context": "This is my pencil.",
         "learnedExpressions": []
-      }
+      },
+      "mechanic": "sentence_order",
+      "estimated_seconds": 60,
+      "hint": "Fíjate en el orden: sujeto + verbo + resto, y prueba otra vez.",
+      "explanation": "Orden correcto: «This is my pencil.». En inglés va primero el sujeto y luego el verbo."
     },
     {
       "id": "pv-18",
@@ -893,7 +955,16 @@ ILContent.registerPack({
       "variant_group": "school-greetings",
       "tags": [
         "school"
-      ]
+      ],
+      "mechanic": "speaking",
+      "estimated_seconds": 60,
+      "assessment": "self_report",
+      "hint": "Escucha la frase en partes y repítela.",
+      "explanation": "Has practicado cómo decir: How are you?",
+      "feedback": {
+        "incorrect": "Escucha la frase en partes y repítela.",
+        "correct": "Has practicado cómo decir: How are you?"
+      }
     },
     {
       "id": "pv-19",
@@ -938,7 +1009,11 @@ ILContent.registerPack({
       "variant_group": "school-classroom",
       "tags": [
         "school"
-      ]
+      ],
+      "mechanic": "gap_fill",
+      "estimated_seconds": 40,
+      "hint": "“Sit down” significa sentarse.",
+      "explanation": "“Sit down, please” = “Siéntate, por favor”."
     },
     {
       "id": "pv-20",
@@ -984,7 +1059,11 @@ ILContent.registerPack({
       "variant_group": "school-classroom",
       "tags": [
         "school"
-      ]
+      ],
+      "mechanic": "listen_text",
+      "estimated_seconds": 40,
+      "hint": "“Open” significa abrir.",
+      "explanation": "“Open your book” = “Abre el libro”."
     },
     {
       "id": "pv-21",
@@ -1024,14 +1103,17 @@ ILContent.registerPack({
       "unit_id": "primer-vuelo",
       "objective_id": "school-objects",
       "stage": [
-        "p12",
         "p34"
       ],
       "difficulty": 1,
       "variant_group": "school-objects",
       "tags": [
         "school"
-      ]
+      ],
+      "mechanic": "gap_fill",
+      "estimated_seconds": 40,
+      "hint": "Mochila se dice “backpack”.",
+      "explanation": "“Backpack” es mochila."
     },
     {
       "id": "pv-22",
@@ -1071,14 +1153,17 @@ ILContent.registerPack({
       "unit_id": "primer-vuelo",
       "objective_id": "school-objects",
       "stage": [
-        "p12",
         "p34"
       ],
       "difficulty": 1,
       "variant_group": "school-objects",
       "tags": [
         "school"
-      ]
+      ],
+      "mechanic": "gap_fill",
+      "estimated_seconds": 40,
+      "hint": "Lápiz se dice “pencil”.",
+      "explanation": "“Pencil” es lápiz."
     },
     {
       "id": "pv-23",
@@ -1118,14 +1203,17 @@ ILContent.registerPack({
       "unit_id": "primer-vuelo",
       "objective_id": "school-greetings",
       "stage": [
-        "p12",
         "p34"
       ],
       "difficulty": 1,
       "variant_group": "school-greetings",
       "tags": [
         "school"
-      ]
+      ],
+      "mechanic": "gap_fill",
+      "estimated_seconds": 40,
+      "hint": "A “Good morning!” respondemos igual.",
+      "explanation": "Respondemos “Good morning!”."
     },
     {
       "id": "pv-24",
@@ -1170,7 +1258,11 @@ ILContent.registerPack({
       "variant_group": "school-language",
       "tags": [
         "school"
-      ]
+      ],
+      "mechanic": "gap_fill",
+      "estimated_seconds": 40,
+      "hint": "Tras “Can I” va el verbo en infinitivo: go.",
+      "explanation": "Tras “Can I” usamos el infinitivo: “Can I go…?”."
     },
     {
       "id": "pv-25",
@@ -1207,14 +1299,17 @@ ILContent.registerPack({
       "unit_id": "primer-vuelo",
       "objective_id": "school-objects",
       "stage": [
-        "p12",
         "p34"
       ],
       "difficulty": 1,
       "variant_group": "school-objects",
       "tags": [
         "school"
-      ]
+      ],
+      "mechanic": "gap_fill",
+      "estimated_seconds": 40,
+      "hint": "Libro se dice “book”.",
+      "explanation": "“Book” es libro."
     },
     {
       "id": "pv-26",
@@ -1251,14 +1346,17 @@ ILContent.registerPack({
       "unit_id": "primer-vuelo",
       "objective_id": "school-objects",
       "stage": [
-        "p12",
         "p34"
       ],
       "difficulty": 1,
       "variant_group": "school-objects",
       "tags": [
         "school"
-      ]
+      ],
+      "mechanic": "gap_fill",
+      "estimated_seconds": 40,
+      "hint": "Silla se dice “chair”.",
+      "explanation": "“Chair” es silla."
     },
     {
       "id": "pv-27",
@@ -1298,14 +1396,17 @@ ILContent.registerPack({
       "unit_id": "primer-vuelo",
       "objective_id": "school-greetings",
       "stage": [
-        "p12",
         "p34"
       ],
       "difficulty": 1,
       "variant_group": "school-greetings",
       "tags": [
         "school"
-      ]
+      ],
+      "mechanic": "gap_fill",
+      "estimated_seconds": 40,
+      "hint": "A “Thank you!” → “You're welcome!”.",
+      "explanation": "A “Thank you!” respondemos “You're welcome!”."
     },
     {
       "id": "pv-28",
@@ -1345,14 +1446,17 @@ ILContent.registerPack({
       "unit_id": "primer-vuelo",
       "objective_id": "school-classroom",
       "stage": [
-        "p12",
         "p34"
       ],
       "difficulty": 2,
       "variant_group": "school-classroom",
       "tags": [
         "school"
-      ]
+      ],
+      "mechanic": "gap_fill",
+      "estimated_seconds": 40,
+      "hint": "“Sit down” significa siéntate.",
+      "explanation": "“Sit down” = siéntate."
     },
     {
       "id": "pv-29",
@@ -1392,7 +1496,11 @@ ILContent.registerPack({
         "incorrect": "Fíjate en el orden: sujeto + verbo + resto, y prueba otra vez.",
         "context": "I have a pencil.",
         "learnedExpressions": []
-      }
+      },
+      "mechanic": "sentence_order",
+      "estimated_seconds": 60,
+      "hint": "Fíjate en el orden: sujeto + verbo + resto, y prueba otra vez.",
+      "explanation": "Orden correcto: «I have a pencil.». En inglés va primero el sujeto y luego el verbo."
     },
     {
       "id": "pv-30",
@@ -1437,7 +1545,400 @@ ILContent.registerPack({
       "variant_group": "school-language",
       "tags": [
         "school"
+      ],
+      "mechanic": "gap_fill",
+      "estimated_seconds": 40,
+      "hint": "“This is…” en singular.",
+      "explanation": "Con “this” (singular) usamos “is”: This is my book."
+    },
+    {
+      "id": "school-name-chair",
+      "unit_id": "primer-vuelo",
+      "objective_id": "school-objects",
+      "tipo": "imagen_palabra",
+      "mechanic": "image_word",
+      "stage": [
+        "p12",
+        "p34"
+      ],
+      "edad": [
+        5,
+        9
+      ],
+      "nivel": "Pre-A1",
+      "habilidad": "vocabulary",
+      "difficulty": 2,
+      "estimated_seconds": 40,
+      "instruccion": "Mira y elige la palabra.",
+      "instructions": {
+        "p12": "Mira y elige la palabra.",
+        "p34": "Mira y elige la palabra."
+      },
+      "hint": "Mira el objeto donde te sientas.",
+      "explanation": "Chair es silla.",
+      "feedback": {
+        "incorrect": "Mira el objeto donde te sientas.",
+        "correct": "Chair es silla.",
+        "correctAnswer": "Chair es silla."
+      },
+      "variant_group": "school-objects-school-name-chair",
+      "stimulus_visual": "chair",
+      "opciones": [
+        {
+          "texto": "chair",
+          "correcta": true
+        },
+        {
+          "texto": "book",
+          "correcta": false
+        },
+        {
+          "texto": "pencil",
+          "correcta": false
+        }
       ]
+    },
+    {
+      "id": "school-find-bag",
+      "unit_id": "primer-vuelo",
+      "objective_id": "school-objects",
+      "tipo": "palabra_imagen",
+      "mechanic": "word_image",
+      "stage": [
+        "p12",
+        "p34"
+      ],
+      "edad": [
+        5,
+        9
+      ],
+      "nivel": "Pre-A1",
+      "habilidad": "vocabulary",
+      "difficulty": 2,
+      "estimated_seconds": 35,
+      "instruccion": "Busca la imagen.",
+      "instructions": {
+        "p12": "Busca la imagen.",
+        "p34": "Busca la imagen."
+      },
+      "hint": "La llevas a la espalda.",
+      "explanation": "School bag es la mochila del cole.",
+      "feedback": {
+        "incorrect": "La llevas a la espalda.",
+        "correct": "School bag es la mochila del cole.",
+        "correctAnswer": "School bag es la mochila del cole."
+      },
+      "variant_group": "school-objects-school-find-bag",
+      "prompt": "school bag",
+      "opciones": [
+        {
+          "texto": "school bag",
+          "correcta": true,
+          "visual": "school bag"
+        },
+        {
+          "texto": "chair",
+          "correcta": false,
+          "visual": "chair"
+        },
+        {
+          "texto": "book",
+          "correcta": false,
+          "visual": "book"
+        }
+      ]
+    },
+    {
+      "id": "school-build-greeting",
+      "unit_id": "primer-vuelo",
+      "objective_id": "school-language",
+      "tipo": "ordenar",
+      "mechanic": "sentence_order",
+      "stage": [
+        "p12",
+        "p34"
+      ],
+      "edad": [
+        5,
+        9
+      ],
+      "nivel": "Pre-A1",
+      "habilidad": "speaking",
+      "difficulty": 2,
+      "estimated_seconds": 60,
+      "instruccion": "Forma la frase.",
+      "instructions": {
+        "p12": "Forma la frase.",
+        "p34": "Forma la frase."
+      },
+      "hint": "Empieza con I.",
+      "explanation": "I am Sam significa Me llamo Sam.",
+      "feedback": {
+        "incorrect": "Empieza con I.",
+        "correct": "I am Sam significa Me llamo Sam.",
+        "correctAnswer": "I am Sam significa Me llamo Sam."
+      },
+      "variant_group": "school-language-school-build-greeting",
+      "palabras": [
+        "I",
+        "am",
+        "Sam."
+      ],
+      "respuesta": [
+        "I",
+        "am",
+        "Sam."
+      ],
+      "audio": "I am Sam."
+    },
+    {
+      "id": "school-spell-book",
+      "unit_id": "primer-vuelo",
+      "objective_id": "school-objects",
+      "tipo": "deletrear",
+      "mechanic": "spelling",
+      "stage": [
+        "p34"
+      ],
+      "edad": [
+        8,
+        9
+      ],
+      "nivel": "Pre-A1",
+      "habilidad": "writing",
+      "difficulty": 2,
+      "estimated_seconds": 55,
+      "instruccion": "Completa las letras.",
+      "instructions": {
+        "p34": "Completa las letras."
+      },
+      "hint": "En el centro hay dos letras iguales.",
+      "explanation": "Book se escribe con dos oes: b-o-o-k.",
+      "feedback": {
+        "incorrect": "En el centro hay dos letras iguales.",
+        "correct": "Book se escribe con dos oes: b-o-o-k.",
+        "correctAnswer": "Book se escribe con dos oes: b-o-o-k."
+      },
+      "variant_group": "school-objects-school-spell-book",
+      "stimulus_visual": "book",
+      "mask": "b__k",
+      "respuesta": "book"
+    },
+    {
+      "id": "school-order-pencil",
+      "unit_id": "primer-vuelo",
+      "objective_id": "school-objects",
+      "tipo": "ordenar_palabra",
+      "mechanic": "word_order",
+      "stage": [
+        "p34"
+      ],
+      "edad": [
+        8,
+        9
+      ],
+      "nivel": "A1",
+      "habilidad": "writing",
+      "difficulty": 2,
+      "estimated_seconds": 50,
+      "instruccion": "Ordena las letras.",
+      "instructions": {
+        "p34": "Ordena las letras."
+      },
+      "hint": "Empieza por pen-.",
+      "explanation": "Pencil significa lápiz; termina en -cil.",
+      "feedback": {
+        "incorrect": "Empieza por pen-.",
+        "correct": "Pencil significa lápiz; termina en -cil.",
+        "correctAnswer": "Pencil significa lápiz; termina en -cil."
+      },
+      "variant_group": "school-objects-school-order-pencil",
+      "prompt": "Forma la palabra inglesa para lápiz.",
+      "palabras": [
+        "p",
+        "e",
+        "n",
+        "c",
+        "i",
+        "l"
+      ],
+      "respuesta": [
+        "p",
+        "e",
+        "n",
+        "c",
+        "i",
+        "l"
+      ]
+    },
+    {
+      "id": "school-sort-objects",
+      "unit_id": "primer-vuelo",
+      "objective_id": "school-classroom",
+      "tipo": "clasificar",
+      "mechanic": "classification",
+      "stage": [
+        "p12",
+        "p34"
+      ],
+      "edad": [
+        5,
+        9
+      ],
+      "nivel": "Pre-A1",
+      "habilidad": "vocabulary",
+      "difficulty": 2,
+      "estimated_seconds": 75,
+      "instruccion": "Agrupa los elementos.",
+      "instructions": {
+        "p12": "Agrupa los elementos.",
+        "p34": "Agrupa los elementos."
+      },
+      "hint": "Piensa en lo que haces con cada objeto.",
+      "explanation": "Leemos un book y nos sentamos en una chair.",
+      "feedback": {
+        "incorrect": "Piensa en lo que haces con cada objeto.",
+        "correct": "Leemos un book y nos sentamos en una chair.",
+        "correctAnswer": "Leemos un book y nos sentamos en una chair."
+      },
+      "variant_group": "school-classroom-school-sort-objects",
+      "categories": [
+        "Para leer",
+        "Para sentarse"
+      ],
+      "items": [
+        {
+          "text": "book",
+          "visual": "book",
+          "category": "Para leer"
+        },
+        {
+          "text": "chair",
+          "visual": "chair",
+          "category": "Para sentarse"
+        }
+      ]
+    },
+    {
+      "id": "school-repeat-help",
+      "unit_id": "primer-vuelo",
+      "objective_id": "school-greetings",
+      "tipo": "hablar",
+      "mechanic": "speaking",
+      "stage": [
+        "p12",
+        "p34"
+      ],
+      "edad": [
+        5,
+        9
+      ],
+      "nivel": "Pre-A1",
+      "habilidad": "speaking",
+      "difficulty": 2,
+      "estimated_seconds": 60,
+      "instruccion": "Escucha y repite.",
+      "instructions": {
+        "p12": "Escucha y repite.",
+        "p34": "Escucha y repite."
+      },
+      "hint": "Escucha la frase en partes.",
+      "explanation": "Has practicado cómo pedir ayuda con please.",
+      "feedback": {
+        "incorrect": "Escucha la frase en partes.",
+        "correct": "Has practicado cómo pedir ayuda con please.",
+        "correctAnswer": "Has practicado cómo pedir ayuda con please."
+      },
+      "variant_group": "school-greetings-school-repeat-help",
+      "frase": "Help me, please.",
+      "assessment": "self_report"
+    },
+    {
+      "id": "school-read-desk",
+      "unit_id": "primer-vuelo",
+      "objective_id": "school-classroom",
+      "tipo": "comprension",
+      "mechanic": "reading",
+      "stage": [
+        "p34"
+      ],
+      "edad": [
+        8,
+        9
+      ],
+      "nivel": "A1",
+      "habilidad": "reading",
+      "difficulty": 2,
+      "estimated_seconds": 100,
+      "instruccion": "Lee y responde.",
+      "instructions": {
+        "p34": "Lee y responde."
+      },
+      "hint": "Busca bag y lee las palabras que vienen después.",
+      "explanation": "Under the chair significa debajo de la silla.",
+      "feedback": {
+        "incorrect": "Busca bag y lee las palabras que vienen después.",
+        "correct": "Under the chair significa debajo de la silla.",
+        "correctAnswer": "Under the chair significa debajo de la silla."
+      },
+      "variant_group": "school-classroom-school-read-desk",
+      "estimulo": {
+        "texto": "My name is Tom. My book is on the desk. My bag is under the chair."
+      },
+      "preguntas": [
+        {
+          "pregunta": "Where is the bag?",
+          "opciones": [
+            {
+              "texto": "Under the chair.",
+              "correcta": true
+            },
+            {
+              "texto": "On the desk.",
+              "correcta": false
+            },
+            {
+              "texto": "In the book.",
+              "correcta": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "school-dialogue-name",
+      "unit_id": "primer-vuelo",
+      "objective_id": "school-greetings",
+      "tipo": "dialogo",
+      "mechanic": "dialogue",
+      "stage": [
+        "p34"
+      ],
+      "edad": [
+        8,
+        9
+      ],
+      "nivel": "A1",
+      "habilidad": "speaking",
+      "difficulty": 2,
+      "estimated_seconds": 80,
+      "instruccion": "Completa el diálogo.",
+      "instructions": {
+        "p34": "Completa el diálogo."
+      },
+      "hint": "La pregunta pide tu nombre.",
+      "explanation": "My name is… sirve para decir cómo te llamas.",
+      "feedback": {
+        "incorrect": "La pregunta pide tu nombre.",
+        "correct": "My name is… sirve para decir cómo te llamas.",
+        "correctAnswer": "My name is… sirve para decir cómo te llamas."
+      },
+      "variant_group": "school-greetings-school-dialogue-name",
+      "dialogue": [
+        "Alex: What is your name?",
+        "Sam: My ___ is Sam."
+      ],
+      "respuesta": "name"
     }
   ]
 });

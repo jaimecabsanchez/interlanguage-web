@@ -1,0 +1,11 @@
+const assert=require('node:assert/strict');const E=require('./learning-events');const createMission=require('./mission-state');const createMastery=require('./mastery-store');const PED=require('./motor/pedagogia');
+const values=new Map();const storage={getItem:k=>values.get(k)||null,setItem:(k,v)=>values.set(k,v)};
+const event=E.create({id:'oral',assessment:'self_report',correct:true,attempt_number:1,answer:{heard:true,repeated:true}});
+assert.equal(event.correct,null);assert.equal(event.assessment,'self_report');
+const summary=E.summarize([event],['oral']);assert.equal(summary.first_try_correct_count,0);assert.deepEqual(summary.incorrect_ids,[]);assert(!summary.perfect);
+assert.equal(summary.evaluable_count,0);
+const mastery=createMastery(PED,storage);mastery.recordEvent('student','oral','hablar',event);assert.deepEqual(mastery.all('student'),{});
+const mission=createMission(storage);mission.ensure('student',{date:'2026-09-12',unitId:'test',itemIds:['oral']});
+const state=mission.advance('student',{id:'oral',assessment:'self_report',correct:true,first_try_correct:false,eventual_success:false},'2026-09-12');
+assert.equal(state.completedCount,1);assert.equal(state.evaluableCount,0);assert.equal(state.correctCount,0);assert.deepEqual(state.incorrectIds,[]);
+console.log('self-report: participation without fabricated accuracy, mastery or errors');

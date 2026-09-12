@@ -114,7 +114,7 @@
   @media (min-width:1024px){.lesson{max-width:1040px;padding-inline:var(--il-space-6)}.lesson-header{padding-top:var(--il-space-5)}}
   @media (prefers-reduced-motion:reduce){.segment,.progress-plane{transition:none}.success-react.is-visible,.summary-card,.summary-seal::after{animation:none}.summary-seal::after{display:none}}
 </style>
-<link rel="stylesheet" href="motor/motor.css?v=20260911a">
+<link rel="stylesheet" href="motor/motor.css?v=20260912a">
 </head>
 <body class="lesson-page">
 <div class="il-offline" id="offline" hidden><span data-il-icon="wifiOff" aria-hidden="true"></span> Sin conexión.</div>
@@ -209,30 +209,34 @@
 <script src="supabase-config.js?v=20260809d"></script>
 <script src="auth-utils.js?v=20260809d"></script>
 <script src="copy-registry.js?v=20260910b"></script>
-<script src="age-policy.js?v=20260824a"></script>
+<script src="age-policy.js?v=20260912a"></script>
 <script src="etapa.js?v=20260824b"></script>
 <script src="observability.js?v=20260824a"></script>
 <script src="learning-data.js?v=20260824a"></script>
-<script src="auth.js?v=20260909a"></script>
-<script src="content/schema.js?v=20260824a"></script>
-<script src="content/loader.js?v=20260817a"></script>
-<script src="content/manifest.js?v=20260821e"></script>
-<script src="contenido.js?v=20260817a"></script>
+<script src="auth.js?v=20260912a"></script>
+<script src="content/mechanics.js?v=20260912a"></script>
+<script src="content/authoring.js?v=20260912a"></script>
+<script src="content/schema.js?v=20260912a"></script>
+<script src="content/loader.js?v=20260912a"></script>
+<script src="content/manifest.js?v=20260912a"></script>
+<script src="contenido.js?v=20260912a"></script>
 <script src="motor/achievements.js?v=20260824a"></script>
 <script src="motor/motivacion.js?v=20260824a"></script>
-<script src="motor/matriz.js?v=20260824b"></script>
-<script src="mission-state.js?v=20260824b"></script>
-<script src="learning-events.js?v=20260824b"></script>
+<script src="motor/matriz.js?v=20260912a"></script>
+<script src="motor/session-composer.js?v=20260912a"></script>
+<script src="mission-state.js?v=20260912a"></script>
+<script src="learning-events.js?v=20260912a"></script>
 <script src="practice-options.js?v=20260910a"></script>
 <script src="motor/pedagogia.js?v=20260813a"></script>
-<script src="mastery-store.js?v=20260824a"></script>
+<script src="mastery-store.js?v=20260912a"></script>
 <script src="achievement-store.js?v=20260816a"></script>
 <script src="profile-settings.js?v=20260819a"></script>
 <script src="world-data.js?v=20260824b"></script>
 <script src="motor/visual-assets.js?v=20260814b"></script>
 <script src="motor/adaptacion.js?v=20260814a"></script>
 <script src="motor/session-state.js?v=20260911a"></script>
-<script src="motor/engine.js?v=20260911a"></script>
+<script src="motor/mechanic-templates.js?v=20260912a"></script>
+<script src="motor/engine.js?v=20260912a"></script>
 <script>
   const $ = id => document.getElementById(id);
   const params = new URLSearchParams(location.search);
@@ -284,7 +288,7 @@
     Promise.resolve(ILAuth.recordLearningEvent(event)).catch(error => {
       if (window.ILObservability) ILObservability.report("network_failure", error, { area:"lesson", operation:"record_attempt", exercise_id:event.exercise_id });
     });
-    if (!event.technical_failure && window.ILMastery && exercise.id) {
+    if (!event.technical_failure && event.assessment !== 'self_report' && window.ILMastery && exercise.id) {
       const card = ILMastery.recordEvent(username, exercise.id, exercise.tipo, event, missionMeta && missionMeta.date);
       Promise.resolve(ILAuth.saveExerciseMastery({ exercise_key:exercise.id, objective_key:exercise.objective_id || "", skill:exercise.habilidad || "", card })).catch(error => {
         if (window.ILObservability) ILObservability.report("network_failure", error, { area:"lesson", operation:"save_mastery", exercise_id:exercise.id });
@@ -431,7 +435,7 @@
         ? (reviewCorrect === items.length ? "You solved every review exercise." : "You strengthened the areas that needed more practice.")
         : (reviewCorrect === items.length ? "Has resuelto todos los ejercicios del repaso." : "Has reforzado lo que necesitaba un poco más de práctica."))
       : ageExperience.copy.summaryLead;
-    $("summaryScore").textContent = (isReview ? reviewCorrect : state.correctCount) + "/" + (isReview ? items.length : state.total);
+    $("summaryScore").textContent = (isReview ? reviewCorrect : state.correctCount) + "/" + (isReview ? items.length : state.evaluableCount);
     $("summaryTime").textContent = minutes(isReview ? 0 : state.elapsedMs) + " min";
     $("summaryLearned").textContent = isReview ? reviewCorrect : learned.length;
     $("summaryLearnedLabel").textContent = isReview ? "errores resueltos" : "expresiones";
@@ -545,7 +549,7 @@
         ? "Your attempts, time and learning evidence have been saved."
         : (young ? "Has practicado " + skillLabel + ". Tu avance está guardado." : "Hemos guardado tus intentos, el tiempo y tu progreso en " + skillLabel + ".");
       const stats = document.querySelector(".summary-stats"); if (stats) stats.hidden = false;
-      $("summaryScore").textContent = truth.first_try_correct_count + "/" + truth.planned_count;
+      $("summaryScore").textContent = truth.first_try_correct_count + "/" + truth.evaluable_count;
       $("summaryTime").textContent = minutes(Date.now() - skillStartedAt) + " min";
       $("summaryLearned").textContent = attempts;
       $("summaryScoreLabel").textContent = sec ? "first try" : (young ? "a la primera" : "a la primera");
@@ -599,7 +603,7 @@
     const state = ILMission.complete(username, undefined, missionMeta.date);
     if (!state.completionRecorded) {
       const sessionTruth = IL_LearningEvents.summarize(learningEvents, state.itemIds);
-      const summary = { correct: sessionTruth.first_try_correct_count, total: state.total, allCorrect:sessionTruth.perfect, perfect:sessionTruth.perfect, maxCorrectStreak:state.maxCorrectStreak };
+      const summary = { correct: sessionTruth.first_try_correct_count, total: sessionTruth.evaluable_count, allCorrect:sessionTruth.perfect, perfect:sessionTruth.perfect, maxCorrectStreak:state.maxCorrectStreak };
       const streakPreview = window.IL_MOTIVACION && completionProgress
         ? window.IL_MOTIVACION.nextStreak({ current: completionProgress.streak, last_practice_date: completionProgress.last, freezes_available: completionProgress.freezes }, missionMeta.date)
         : null;

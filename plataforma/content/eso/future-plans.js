@@ -1,7 +1,7 @@
-/* Pack editorial generado desde contenido.js; editar el dato, no el motor. */
+/* Banco editorial: metadatos explícitos y mecánicas reutilizables. */
 ILContent.registerPack({
   "id": "eso-future-plans",
-  "version": 1,
+  "version": 2,
   "stages": [
     "eso"
   ],
@@ -172,7 +172,11 @@ ILContent.registerPack({
       "variant_group": "plans-suggestions",
       "tags": [
         "future-plans"
-      ]
+      ],
+      "mechanic": "listen_text",
+      "estimated_seconds": 40,
+      "hint": "Focus on the activity mentioned after “go to”.",
+      "explanation": "They are planning to go to a concert."
     },
     {
       "id": "fp-2",
@@ -217,7 +221,11 @@ ILContent.registerPack({
       "variant_group": "plans-suggestions",
       "tags": [
         "future-plans"
-      ]
+      ],
+      "mechanic": "gap_fill",
+      "estimated_seconds": 40,
+      "hint": "Choose the reply that clearly agrees with the suggestion.",
+      "explanation": "“Sounds good to me” shows that you like the plan."
     },
     {
       "id": "fp-3",
@@ -262,7 +270,11 @@ ILContent.registerPack({
       "variant_group": "plans-arrangements",
       "tags": [
         "future-plans"
-      ]
+      ],
+      "mechanic": "gap_fill",
+      "estimated_seconds": 55,
+      "hint": "The subject is “we”, so the auxiliary is “are”.",
+      "explanation": "Use the present continuous for a fixed arrangement."
     },
     {
       "id": "fp-4",
@@ -304,7 +316,11 @@ ILContent.registerPack({
         "incorrect": "Look at the word order (subject + verb + …) and try again.",
         "context": "Are you free on Saturday.",
         "learnedExpressions": []
-      }
+      },
+      "mechanic": "sentence_order",
+      "estimated_seconds": 60,
+      "hint": "Look at the word order (subject + verb + …) and try again.",
+      "explanation": "Correct order: “Are you free on Saturday.”. In English the subject comes first, then the verb."
     },
     {
       "id": "fp-5",
@@ -367,7 +383,11 @@ ILContent.registerPack({
         "incorrect": "Look again carefully and try once more.",
         "context": "",
         "learnedExpressions": []
-      }
+      },
+      "mechanic": "reading",
+      "estimated_seconds": 100,
+      "hint": "Look again carefully and try once more.",
+      "explanation": "Well done!"
     },
     {
       "id": "fp-6",
@@ -412,7 +432,11 @@ ILContent.registerPack({
       "variant_group": "plans-suggestions",
       "tags": [
         "future-plans"
-      ]
+      ],
+      "mechanic": "gap_fill",
+      "estimated_seconds": 40,
+      "hint": "Choose the friendly reply that offers another time.",
+      "explanation": "This keeps the conversation open and suggests an alternative."
     },
     {
       "id": "fp-7",
@@ -457,7 +481,11 @@ ILContent.registerPack({
       "variant_group": "plans-arrangements",
       "tags": [
         "future-plans"
-      ]
+      ],
+      "mechanic": "gap_fill",
+      "estimated_seconds": 55,
+      "hint": "Time clauses with “when” use the present simple.",
+      "explanation": "After “when”, use the present simple to refer to the future."
     },
     {
       "id": "fp-8",
@@ -502,7 +530,11 @@ ILContent.registerPack({
       "variant_group": "plans-future-forms",
       "tags": [
         "future-plans"
-      ]
+      ],
+      "mechanic": "gap_fill",
+      "estimated_seconds": 55,
+      "hint": "The subject is “we”, so use “are going to”.",
+      "explanation": "“Be going to” for plans: we are going to watch."
     },
     {
       "id": "fp-9",
@@ -547,7 +579,11 @@ ILContent.registerPack({
       "variant_group": "plans-future-forms",
       "tags": [
         "future-plans"
-      ]
+      ],
+      "mechanic": "gap_fill",
+      "estimated_seconds": 40,
+      "hint": "There is evidence (the clouds), so use “going to”.",
+      "explanation": "Use “going to” for predictions based on evidence."
     },
     {
       "id": "fp-10",
@@ -592,7 +628,11 @@ ILContent.registerPack({
       "variant_group": "plans-vocabulary",
       "tags": [
         "future-plans"
-      ]
+      ],
+      "mechanic": "gap_fill",
+      "estimated_seconds": 40,
+      "hint": "Look for a free-time activity with friends.",
+      "explanation": "“Hang out with friends” = quedar/pasar el rato con amigos."
     },
     {
       "id": "fp-11",
@@ -636,7 +676,11 @@ ILContent.registerPack({
         "incorrect": "Look at the word order (subject + verb + …) and try again.",
         "context": "What are you doing this weekend.",
         "learnedExpressions": []
-      }
+      },
+      "mechanic": "sentence_order",
+      "estimated_seconds": 60,
+      "hint": "Look at the word order (subject + verb + …) and try again.",
+      "explanation": "Correct order: “What are you doing this weekend.”. In English the subject comes first, then the verb."
     },
     {
       "id": "fp-12",
@@ -680,7 +724,11 @@ ILContent.registerPack({
         "incorrect": "Look at the word order (subject + verb + …) and try again.",
         "context": "I'm going to visit my cousins.",
         "learnedExpressions": []
-      }
+      },
+      "mechanic": "sentence_order",
+      "estimated_seconds": 60,
+      "hint": "Look at the word order (subject + verb + …) and try again.",
+      "explanation": "Correct order: “I'm going to visit my cousins.”. In English the subject comes first, then the verb."
     },
     {
       "id": "fp-13",
@@ -743,7 +791,11 @@ ILContent.registerPack({
         "incorrect": "Look again carefully and try once more.",
         "context": "",
         "learnedExpressions": []
-      }
+      },
+      "mechanic": "reading",
+      "estimated_seconds": 100,
+      "hint": "Look again carefully and try once more.",
+      "explanation": "Well done!"
     },
     {
       "id": "fp-14",
@@ -806,7 +858,11 @@ ILContent.registerPack({
         "incorrect": "Look again carefully and try once more.",
         "context": "",
         "learnedExpressions": []
-      }
+      },
+      "mechanic": "reading",
+      "estimated_seconds": 100,
+      "hint": "Look again carefully and try once more.",
+      "explanation": "Well done!"
     },
     {
       "id": "fp-15",
@@ -852,7 +908,11 @@ ILContent.registerPack({
       "variant_group": "plans-comprehension",
       "tags": [
         "future-plans"
-      ]
+      ],
+      "mechanic": "listen_text",
+      "estimated_seconds": 40,
+      "hint": "“Quarter past” means fifteen minutes after the hour.",
+      "explanation": "“A quarter past eight” is 8:15."
     },
     {
       "id": "fp-16",
@@ -897,7 +957,11 @@ ILContent.registerPack({
       "variant_group": "plans-suggestions",
       "tags": [
         "future-plans"
-      ]
+      ],
+      "mechanic": "gap_fill",
+      "estimated_seconds": 40,
+      "hint": "Choose the reply that says no in a friendly, polite way.",
+      "explanation": "This declines politely and keeps the friendship."
     },
     {
       "id": "fp-17",
@@ -942,7 +1006,11 @@ ILContent.registerPack({
       "variant_group": "plans-future-forms",
       "tags": [
         "future-plans"
-      ]
+      ],
+      "mechanic": "gap_fill",
+      "estimated_seconds": 55,
+      "hint": "After a present-tense “if” clause, use “will”.",
+      "explanation": "First conditional: if + present, … will + verb."
     },
     {
       "id": "fp-18",
@@ -984,7 +1052,11 @@ ILContent.registerPack({
         "incorrect": "Look again carefully and try once more.",
         "context": "",
         "learnedExpressions": []
-      }
+      },
+      "mechanic": "matching",
+      "estimated_seconds": 65,
+      "hint": "Look again carefully and try once more.",
+      "explanation": "Well done!"
     },
     {
       "id": "fp-19",
@@ -1007,7 +1079,16 @@ ILContent.registerPack({
       "variant_group": "plans-suggestions",
       "tags": [
         "future-plans"
-      ]
+      ],
+      "mechanic": "speaking",
+      "estimated_seconds": 60,
+      "assessment": "self_report",
+      "hint": "Listen to the model in short chunks.",
+      "explanation": "You practised saying: Would you like to come to the cinema?",
+      "feedback": {
+        "incorrect": "Listen to the model in short chunks.",
+        "correct": "You practised saying: Would you like to come to the cinema?"
+      }
     },
     {
       "id": "fp-20",
@@ -1052,7 +1133,11 @@ ILContent.registerPack({
       "variant_group": "plans-future-forms",
       "tags": [
         "future-plans"
-      ]
+      ],
+      "mechanic": "gap_fill",
+      "estimated_seconds": 40,
+      "hint": "Use “are” + -ing for a fixed plan tonight.",
+      "explanation": "Present continuous for arrangements: What are you doing?"
     },
     {
       "id": "fp-21",
@@ -1097,7 +1182,11 @@ ILContent.registerPack({
       "variant_group": "plans-vocabulary",
       "tags": [
         "future-plans"
-      ]
+      ],
+      "mechanic": "gap_fill",
+      "estimated_seconds": 40,
+      "hint": "“Fancy” here means “would like”.",
+      "explanation": "“Do you fancy…?” is an informal way to say “Would you like…?”."
     },
     {
       "id": "fp-22",
@@ -1142,7 +1231,11 @@ ILContent.registerPack({
       "variant_group": "plans-vocabulary",
       "tags": [
         "future-plans"
-      ]
+      ],
+      "mechanic": "gap_fill",
+      "estimated_seconds": 40,
+      "hint": "“Arrange” means to organise or plan something.",
+      "explanation": "“Arrange” ≈ “organise”."
     },
     {
       "id": "fp-23",
@@ -1187,7 +1280,11 @@ ILContent.registerPack({
       "variant_group": "plans-future-forms",
       "tags": [
         "future-plans"
-      ]
+      ],
+      "mechanic": "gap_fill",
+      "estimated_seconds": 40,
+      "hint": "For plans we use “be going to”.",
+      "explanation": "Plans decided before speaking → “be going to”."
     },
     {
       "id": "fp-24",
@@ -1232,7 +1329,11 @@ ILContent.registerPack({
       "variant_group": "plans-arrangements",
       "tags": [
         "future-plans"
-      ]
+      ],
+      "mechanic": "gap_fill",
+      "estimated_seconds": 40,
+      "hint": "With “we” use “are”.",
+      "explanation": "Present continuous for arrangements: “We are having…”."
     },
     {
       "id": "fp-25",
@@ -1277,7 +1378,11 @@ ILContent.registerPack({
       "variant_group": "plans-comprehension",
       "tags": [
         "future-plans"
-      ]
+      ],
+      "mechanic": "gap_fill",
+      "estimated_seconds": 40,
+      "hint": "Look for the day: “on Sunday”.",
+      "explanation": "The text says “on Sunday”."
     },
     {
       "id": "fp-26",
@@ -1322,7 +1427,11 @@ ILContent.registerPack({
       "variant_group": "plans-suggestions",
       "tags": [
         "future-plans"
-      ]
+      ],
+      "mechanic": "gap_fill",
+      "estimated_seconds": 40,
+      "hint": "A suggestion invites someone to do something: “Why don't we…?”.",
+      "explanation": "“Why don't we…?” makes a suggestion."
     },
     {
       "id": "fp-27",
@@ -1367,7 +1476,11 @@ ILContent.registerPack({
       "variant_group": "plans-future-forms",
       "tags": [
         "future-plans"
-      ]
+      ],
+      "mechanic": "gap_fill",
+      "estimated_seconds": 40,
+      "hint": "There is evidence (the clouds), so use “be going to”.",
+      "explanation": "Prediction with evidence → “be going to”: it is going to rain."
     },
     {
       "id": "fp-28",
@@ -1412,7 +1525,11 @@ ILContent.registerPack({
       "variant_group": "plans-arrangements",
       "tags": [
         "future-plans"
-      ]
+      ],
+      "mechanic": "gap_fill",
+      "estimated_seconds": 40,
+      "hint": "Arrangement → present continuous: “are you meeting…?”.",
+      "explanation": "Present continuous for arrangements: “are you meeting”."
     },
     {
       "id": "fp-29",
@@ -1457,7 +1574,11 @@ ILContent.registerPack({
       "variant_group": "plans-comprehension",
       "tags": [
         "future-plans"
-      ]
+      ],
+      "mechanic": "gap_fill",
+      "estimated_seconds": 40,
+      "hint": "They meet at 6 but take the 6:15 train.",
+      "explanation": "They take “the 6:15 train”."
     },
     {
       "id": "fp-30",
@@ -1501,7 +1622,11 @@ ILContent.registerPack({
         "incorrect": "Look at the word order (subject + verb + …) and try again.",
         "context": "I am going to study tonight.",
         "learnedExpressions": []
-      }
+      },
+      "mechanic": "sentence_order",
+      "estimated_seconds": 60,
+      "hint": "Look at the word order (subject + verb + …) and try again.",
+      "explanation": "Correct order: “I am going to study tonight.”. In English the subject comes first, then the verb."
     },
     {
       "id": "fp-31",
@@ -1546,7 +1671,310 @@ ILContent.registerPack({
       "variant_group": "plans-vocabulary",
       "tags": [
         "future-plans"
+      ],
+      "mechanic": "gap_fill",
+      "estimated_seconds": 40,
+      "hint": "An arrangement is a future plan; the others look back.",
+      "explanation": "An “arrangement” is a plan for the future."
+    },
+    {
+      "id": "plans-recall-ticket",
+      "unit_id": "future-plans",
+      "objective_id": "plans-vocabulary",
+      "tipo": "recordar",
+      "mechanic": "recall",
+      "stage": [
+        "eso"
+      ],
+      "edad": [
+        12,
+        18
+      ],
+      "nivel": "A2",
+      "habilidad": "vocabulary",
+      "difficulty": 2,
+      "estimated_seconds": 50,
+      "instruccion": "Write the word from memory.",
+      "instructions": {
+        "eso": "Write the word from memory."
+      },
+      "hint": "It starts with t and ends with t.",
+      "explanation": "A ticket gives you the right to travel on a service.",
+      "feedback": {
+        "incorrect": "It starts with t and ends with t.",
+        "correct": "A ticket gives you the right to travel on a service.",
+        "correctAnswer": "A ticket gives you the right to travel on a service."
+      },
+      "variant_group": "plans-vocabulary-plans-recall-ticket",
+      "prompt": "One word: the document you buy to travel on a train.",
+      "respuesta": "ticket"
+    },
+    {
+      "id": "plans-gap-meeting",
+      "unit_id": "future-plans",
+      "objective_id": "plans-arrangements",
+      "tipo": "completar",
+      "mechanic": "gap_fill",
+      "stage": [
+        "eso"
+      ],
+      "edad": [
+        12,
+        18
+      ],
+      "nivel": "A2",
+      "habilidad": "grammar",
+      "difficulty": 2,
+      "estimated_seconds": 55,
+      "instruccion": "Complete the sentence.",
+      "instructions": {
+        "eso": "Complete the sentence."
+      },
+      "hint": "Use the present continuous for an arrangement.",
+      "explanation": "We are meeting describes an agreed future arrangement.",
+      "feedback": {
+        "incorrect": "Use the present continuous for an arrangement.",
+        "correct": "We are meeting describes an agreed future arrangement.",
+        "correctAnswer": "We are meeting describes an agreed future arrangement."
+      },
+      "variant_group": "plans-arrangements-plans-gap-meeting",
+      "prompt": "We ___ meeting outside the cinema at six.",
+      "respuesta": "are"
+    },
+    {
+      "id": "plans-dialogue-invite",
+      "unit_id": "future-plans",
+      "objective_id": "plans-suggestions",
+      "tipo": "dialogo",
+      "mechanic": "dialogue",
+      "stage": [
+        "eso"
+      ],
+      "edad": [
+        12,
+        18
+      ],
+      "nivel": "A2",
+      "habilidad": "speaking",
+      "difficulty": 2,
+      "estimated_seconds": 80,
+      "instruccion": "Complete the dialogue.",
+      "instructions": {
+        "eso": "Complete the dialogue."
+      },
+      "hint": "Complete the polite expression I would… to.",
+      "explanation": "I would love to is a polite way to respond to an invitation.",
+      "feedback": {
+        "incorrect": "Complete the polite expression I would… to.",
+        "correct": "I would love to is a polite way to respond to an invitation.",
+        "correctAnswer": "I would love to is a polite way to respond to an invitation."
+      },
+      "variant_group": "plans-suggestions-plans-dialogue-invite",
+      "dialogue": [
+        "A: Would you like to come to the concert?",
+        "B: I would ___ to, but I am busy."
+      ],
+      "respuesta": "love"
+    },
+    {
+      "id": "plans-order-weekend",
+      "unit_id": "future-plans",
+      "objective_id": "plans-vocabulary",
+      "tipo": "ordenar_palabra",
+      "mechanic": "word_order",
+      "stage": [
+        "eso"
+      ],
+      "edad": [
+        12,
+        18
+      ],
+      "nivel": "A1",
+      "habilidad": "writing",
+      "difficulty": 2,
+      "estimated_seconds": 50,
+      "instruccion": "Put the letters in order.",
+      "instructions": {
+        "eso": "Put the letters in order."
+      },
+      "hint": "The word combines week and end.",
+      "explanation": "Weekend combines week + end.",
+      "feedback": {
+        "incorrect": "The word combines week and end.",
+        "correct": "Weekend combines week + end.",
+        "correctAnswer": "Weekend combines week + end."
+      },
+      "variant_group": "plans-vocabulary-plans-order-weekend",
+      "prompt": "Spell the word for Saturday and Sunday together.",
+      "palabras": [
+        "w",
+        "e",
+        "e",
+        "k",
+        "e",
+        "n",
+        "d"
+      ],
+      "respuesta": [
+        "w",
+        "e",
+        "e",
+        "k",
+        "e",
+        "n",
+        "d"
       ]
+    },
+    {
+      "id": "plans-sort-functions",
+      "unit_id": "future-plans",
+      "objective_id": "plans-future-forms",
+      "tipo": "clasificar",
+      "mechanic": "classification",
+      "stage": [
+        "eso"
+      ],
+      "edad": [
+        12,
+        18
+      ],
+      "nivel": "A2",
+      "habilidad": "grammar",
+      "difficulty": 2,
+      "estimated_seconds": 75,
+      "instruccion": "Sort the items.",
+      "instructions": {
+        "eso": "Sort the items."
+      },
+      "hint": "An arrangement was agreed before speaking.",
+      "explanation": "Present continuous often describes arrangements; will can express a decision made now.",
+      "feedback": {
+        "incorrect": "An arrangement was agreed before speaking.",
+        "correct": "Present continuous often describes arrangements; will can express a decision made now.",
+        "correctAnswer": "Present continuous often describes arrangements; will can express a decision made now."
+      },
+      "variant_group": "plans-future-forms-plans-sort-functions",
+      "categories": [
+        "Arrangement",
+        "Spontaneous decision"
+      ],
+      "items": [
+        {
+          "text": "We are meeting Jo at six.",
+          "category": "Arrangement"
+        },
+        {
+          "text": "The phone is ringing. I will answer it.",
+          "category": "Spontaneous decision"
+        },
+        {
+          "text": "I am flying to Rome on Friday.",
+          "category": "Arrangement"
+        }
+      ]
+    },
+    {
+      "id": "plans-dictate-platform",
+      "unit_id": "future-plans",
+      "objective_id": "plans-comprehension",
+      "tipo": "dictado",
+      "mechanic": "dictation",
+      "stage": [
+        "eso"
+      ],
+      "edad": [
+        12,
+        18
+      ],
+      "nivel": "A2",
+      "habilidad": "listening",
+      "difficulty": 3,
+      "estimated_seconds": 70,
+      "instruccion": "Listen and write.",
+      "instructions": {
+        "eso": "Listen and write."
+      },
+      "hint": "Listen separately for the platform and departure time.",
+      "explanation": "The announcement gives platform three and a departure time of 9:30.",
+      "feedback": {
+        "incorrect": "Listen separately for the platform and departure time.",
+        "correct": "The announcement gives platform three and a departure time of 9:30.",
+        "correctAnswer": "The announcement gives platform three and a departure time of 9:30."
+      },
+      "variant_group": "plans-comprehension-plans-dictate-platform",
+      "audio": "The train leaves from platform three at half past nine.",
+      "respuesta": "The train leaves from platform three at half past nine."
+    },
+    {
+      "id": "plans-write-message",
+      "unit_id": "future-plans",
+      "objective_id": "plans-suggestions",
+      "tipo": "escritura_guiada",
+      "mechanic": "guided_writing",
+      "stage": [
+        "eso"
+      ],
+      "edad": [
+        12,
+        18
+      ],
+      "nivel": "A2",
+      "habilidad": "writing",
+      "difficulty": 3,
+      "estimated_seconds": 140,
+      "instruccion": "Write and review your text.",
+      "instructions": {
+        "eso": "Write and review your text."
+      },
+      "hint": "You can open with Would you like to…?",
+      "explanation": "Compare your invitation, place and time with the model.",
+      "feedback": {
+        "incorrect": "You can open with Would you like to…?",
+        "correct": "Compare your invitation, place and time with the model.",
+        "correctAnswer": "Compare your invitation, place and time with the model."
+      },
+      "variant_group": "plans-suggestions-plans-write-message",
+      "prompt": "Write a short message inviting a friend to meet this weekend. Suggest a place and a time.",
+      "respuesta": "Hi Jo! Would you like to meet at the park on Saturday at three? Let me know!",
+      "assessment": "self_report",
+      "min_words": 12,
+      "rubric": [
+        "I included an invitation.",
+        "I suggested a place and a time.",
+        "My friend can understand how to reply."
+      ]
+    },
+    {
+      "id": "plans-repeat-check",
+      "unit_id": "future-plans",
+      "objective_id": "plans-arrangements",
+      "tipo": "hablar",
+      "mechanic": "speaking",
+      "stage": [
+        "eso"
+      ],
+      "edad": [
+        12,
+        18
+      ],
+      "nivel": "A2",
+      "habilidad": "speaking",
+      "difficulty": 2,
+      "estimated_seconds": 60,
+      "instruccion": "Listen and repeat.",
+      "instructions": {
+        "eso": "Listen and repeat."
+      },
+      "hint": "Stress station and ten to make the arrangement clear.",
+      "explanation": "You practised confirming a meeting place and time.",
+      "feedback": {
+        "incorrect": "Stress station and ten to make the arrangement clear.",
+        "correct": "You practised confirming a meeting place and time.",
+        "correctAnswer": "You practised confirming a meeting place and time."
+      },
+      "variant_group": "plans-arrangements-plans-repeat-check",
+      "frase": "Shall we meet outside the station at ten?",
+      "assessment": "self_report"
     }
   ]
 });

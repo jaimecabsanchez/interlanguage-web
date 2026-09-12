@@ -16,7 +16,7 @@
       const unit = Object.assign({}, rawUnit); const unitId = slug(unit.id); const objectiveId = "cms-" + unitId + "-objective";
       unit.id = unitId; unit.stage = ["p12", "p34", "p56", "eso"]; unit.objective_ids = [objectiveId];
       objectives.push({ id:objectiveId,unit_id:unitId,stage:unit.stage,cefr:unit.nivel||"A1",skill:"vocabulary",difficulty:2,description:"Contenido editorial local",literacy_load:"medium",prerequisites:[],tags:["cms"] });
-      (unit.ejercicios || []).forEach(rawExercise => exercises.push(Object.assign({}, rawExercise, { id:slug(rawExercise.id),unit_id:unitId,objective_id:objectiveId,stage:unit.stage,variant_group:objectiveId,tags:["cms"] })));
+      (unit.ejercicios || []).forEach(rawExercise => exercises.push(Object.assign({}, rawExercise, { id:slug(rawExercise.id),unit_id:unitId,objective_id:objectiveId,variant_group:objectiveId,tags:["cms"] })));
       delete unit.ejercicios; units[units.indexOf(rawUnit)] = unit;
     });
     return { id:"cms-local-content",version:1,stages:["p12","p34","p56","eso"],topic:"cms",units,objectives,exercises };

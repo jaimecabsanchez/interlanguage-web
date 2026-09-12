@@ -157,6 +157,7 @@
     if (!state || state.status === "completed") return state;
     const itemId = result.id || state.itemIds[state.currentIndex];
     const technical = !!result.technical_failure;
+    const selfReport = result.assessment === 'self_report';
     const eventual = result.eventual_success != null ? !!result.eventual_success : !!result.correct;
     const firstTry = result.first_try_correct != null ? !!result.first_try_correct : (!!result.correct && !result.hint_used && !technical);
     state.completedCount = clamp(state.completedCount + 1, 0, state.total);
@@ -164,21 +165,21 @@
     if (technical) {
       state.technicalFailureCount += 1;
       state.currentCorrectStreak = 0;
-    } else {
+    } else if (!selfReport) {
       state.evaluableCount = clamp(state.evaluableCount + 1, 0, state.total);
       if (result.hint_used) state.hintUsedCount += 1;
     }
-    if (firstTry && !technical) {
+    if (firstTry && !technical && !selfReport) {
       state.correctCount += 1;
       state.currentCorrectStreak += 1;
       state.maxCorrectStreak = Math.max(state.maxCorrectStreak, state.currentCorrectStreak);
       state.incorrectIds = state.incorrectIds.filter(id => id !== itemId);
-    } else if (!technical) {
+    } else if (!technical && !selfReport) {
       state.currentCorrectStreak = 0;
       if (itemId && state.incorrectIds.indexOf(itemId) === -1) state.incorrectIds.push(itemId);
     }
-    if (eventual && !technical) state.eventualSuccessCount = clamp(state.eventualSuccessCount + 1, 0, state.total);
-    state.learnedExpressions = eventual && !technical
+    if (eventual && !technical && !selfReport) state.eventualSuccessCount = clamp(state.eventualSuccessCount + 1, 0, state.total);
+    state.learnedExpressions = eventual && !technical && !selfReport
       ? uniq(state.learnedExpressions.concat(result.learnedExpressions || [])).slice(0, 12)
       : state.learnedExpressions;
     return save(username, state);
@@ -309,6 +310,16 @@
         random: seededRand(seed + hashStr(ex.id))
       };
     }).sort((a, b) => (a.coverage - b.coverage) || (a.score - b.score) || (a.priority - b.priority) || (a.random - b.random));
+    const composer = typeof globalThis !== 'undefined' && globalThis.ILSessionComposer || (typeof require === 'function' ? require('./motor/session-composer.js') : null);
+    if (composer && pool.some(e=>e.mechanic)) {
+      const mastery = read('il_mastery_v1_' + userKey(options.username), {});
+      const dueIds = Object.keys(mastery).filter(id=>mastery[id].next_review_at && mastery[id].next_review_at <= date);
+      const composition = composer.compose({exercises:pool,band:options.banda,cefr:options.cefr,seed:String(seed),recentIds:servedList,dueIds});
+      const ids = composition.items.map(e=>e.id);
+      write(sessionKey(options.username),{date,context,ids,estimatedSeconds:composition.estimatedSeconds,roles:composition.steps.map(s=>s.role),underTarget:composition.underTarget});
+      markServed(options.username,ids);
+      return composition.items;
+    }
     const picked = []; let lastSkill = null; const rest = scored.slice();
     while (rest.length && picked.length < (options.limit || 6)) {
       let index = rest.findIndex(entry => entry.ex.habilidad !== lastSkill);

@@ -588,8 +588,8 @@
       exercise_key:event.exercise_id || null, objective_key:event.objective_id || null, variant_key:event.variant_id || null,
       client_session_key:event.client_session_key || null, age_band:event.age_band || null, cefr:event.cefr || null,
       skill:event.skill || null, content_version:event.content_version || null,
-      result:event.technical_failure ? "skipped" : (event.correct ? "correct" : "incorrect"),
-      attempt_no:event.attempt_number || 0, hint_used:!!event.hint_used, response:event.answer == null ? null : { value:event.answer },
+      result:event.technical_failure || event.assessment === 'self_report' ? "skipped" : (event.correct ? "correct" : "incorrect"),
+      attempt_no:event.attempt_number || 0, hint_used:!!event.hint_used, response:event.answer == null ? null : { value:event.answer, assessment:event.assessment || 'objective' },
       duration_ms:event.response_time_ms || null, audio_replays:event.audio_replays || 0,
       started_at:event.started_at || null, submitted_at:event.submitted_at || new Date().toISOString(),
       mode:event.mode || "daily", technical_failure:!!event.technical_failure, failure_type:event.failure_type || null

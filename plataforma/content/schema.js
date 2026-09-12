@@ -1,10 +1,10 @@
 /* Interlanguage HOME · esquema canónico y compatibilidad editorial */
 (function (root, factory) {
   "use strict";
-  const api = factory();
+  const api = factory(root.ILAuthoring || (typeof require === 'function' ? require('./authoring.js') : null));
   if (typeof module === "object" && module.exports) module.exports = api;
   else root.ILContentSchema = api;
-})(typeof globalThis !== "undefined" ? globalThis : this, function () {
+})(typeof globalThis !== "undefined" ? globalThis : this, function (Authoring) {
   "use strict";
 
   const STAGES = ["p12", "p34", "p56", "eso"];
@@ -13,9 +13,10 @@
   const LITERACY = ["none", "low", "medium", "high"];
   const TEMPLATE_BY_TYPE = Object.freeze({
     elegir_imagen: "P1", elegir_texto: "P1", emparejar: "P3", clasificar: "P4",
-    ordenar: "P5", completar: "P6", comprension: "P7", hablar: "P9"
+    ordenar: "P5", completar: "P6", comprension: "P7", hablar: "P9",
+    imagen_palabra:'P1', palabra_imagen:'P1', ordenar_palabra:'P5', deletrear:'P8', recordar:'P8', dialogo:'P8', dictado:'P8', escritura_guiada:'P10'
   });
-  const TYPE_BY_TEMPLATE = Object.freeze({ P1: "elegir_texto", P3: "emparejar", P4: "clasificar", P5: "ordenar", P6: "completar", P7: "comprension", P9: "hablar" });
+  const TYPE_BY_TEMPLATE = Object.freeze({ P1: "elegir_texto", P3: "emparejar", P4: "clasificar", P5: "ordenar", P6: "completar", P7: "comprension", P8:'recordar', P9: "hablar", P10:'escritura_guiada' });
   const TEMPLATES = Object.keys(TYPE_BY_TEMPLATE);
   const ID_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
@@ -113,10 +114,15 @@
     return pack;
   }
 
-  function validatePack(input) {
+  function validatePack(input, options) {
     const pack = normalisePack(input);
     const errors = [], warnings = [];
     const add = (list, code, path, message) => list.push({ code, path, message });
+    if (options && options.publish) {
+      const raw = array(input.exercises || input.ejercicios).concat(array(input.units || input.unidades).flatMap(u=>array(u.exercises || u.ejercicios)));
+      if (!Authoring) add(errors,'missing_validator','pack','Validador editorial no disponible.');
+      else raw.forEach((e,i)=>Authoring.validate(e).errors.forEach(err=>add(errors,err.code,'exercises['+i+'].'+err.path,err.message)));
+    }
     if (!ID_RE.test(pack.id)) add(errors, "invalid_id", "id", "El pack necesita un ID slug único.");
     if (!pack.stages.length) add(errors, "invalid_stage", "stages", "El pack necesita al menos una etapa válida.");
     if (!pack.topic) add(errors, "missing_topic", "topic", "El pack necesita un tema.");
@@ -146,7 +152,7 @@
       if (LITERACY.indexOf(exercise.literacy_load) < 0) add(errors, "invalid_literacy", path + ".literacy_load", "Carga lectora no válida.");
       if (exercise.age_min == null || exercise.age_max == null || exercise.age_min > exercise.age_max) add(errors, "invalid_age_range", path + ".age", "Rango de edad inválido.");
       if (exercise.stage.some(stage => pack.stages.indexOf(stage) < 0)) add(errors, "stage_outside_pack", path + ".stage", "La etapa no está publicada por el pack.");
-      const needsChoice = ["P1", "P6"].indexOf(exercise.template) >= 0;
+      const needsChoice = exercise.template === 'P1' || (exercise.template === 'P6' && exercise.options.length);
       if (needsChoice && (!exercise.options.length || !hasCorrectOption(exercise.options))) add(errors, "missing_answer", path + ".options", "No hay una respuesta válida.");
       if (exercise.template === "P5" && !array(exercise.answer).length) add(errors, "missing_answer", path + ".answer", "Falta el orden correcto.");
       if (exercise.template === "P3" && !array(exercise.pares).length) add(errors, "missing_answer", path + ".pares", "Faltan parejas válidas.");

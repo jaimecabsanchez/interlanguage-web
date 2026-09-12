@@ -6,7 +6,7 @@ const lesson = fs.readFileSync(path.join(__dirname, "leccion.html"), "utf8");
 const engine = fs.readFileSync(path.join(__dirname, "motor", "engine.js"), "utf8");
 const css = fs.readFileSync(path.join(__dirname, "motor", "motor.css"), "utf8");
 
-assert.match(lesson, /motor\/session-state\.js\?v=20260911a[\s\S]*motor\/engine\.js\?v=20260911a/, "el estado carga antes que el motor");
+assert.match(lesson, /motor\/session-state\.js\?v=20260911a[\s\S]*motor\/engine\.js\?v=20260912a/, "el estado carga antes que el motor");
 assert.doesNotMatch(lesson, /lesson-young\.css/, "la sesión no mantiene una segunda capa visual conflictiva");
 assert.match(lesson, /exerciseCount"[^>]*>Ejercicio 1 de 6/);
 assert.match(lesson, /\$\("exerciseCount"\)\.textContent = current \+ " \/ " \+ total/);

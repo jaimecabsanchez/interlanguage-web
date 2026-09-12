@@ -22,7 +22,7 @@
   "use strict";
 
   const PREFIX = "il_mastery_v1_";
-  const PRODUCTION = { ordenar: 1, completar: 1, hablar: 1 }; // el resto es reconocimiento
+  const PRODUCTION = { ordenar:1, completar:1, deletrear:1, recordar:1, dialogo:1, dictado:1, ordenar_palabra:1 };
 
   function today() { return PED ? PED.ymd(new Date()) : new Date().toISOString().slice(0, 10); }
   function key(username) { return PREFIX + encodeURIComponent(String(username || "guest").trim().toLowerCase()); }
@@ -55,6 +55,7 @@
   }
 
   function recordEvent(username, exerciseId, tipo, event, day) {
+    if (event.assessment === 'self_report') return read(username)[exerciseId] || null;
     event = event || {};
     return record(username, exerciseId, { correct:event.correct === true, production:!!PRODUCTION[tipo], technical_failure:!!event.technical_failure }, day);
   }

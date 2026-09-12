@@ -1,9 +1,7 @@
-/* Pack editorial de GRAMÁTICA graduada por edad (verbos, tiempos verbales,
-   preposiciones y estructuras esenciales). Editar el dato, no el motor.
-   Unidades: gramatica-inicial (p12+p34) · gramatica-media (p56) · gramatica-eso (eso). */
+/* Banco editorial: metadatos explícitos y mecánicas reutilizables. */
 ILContent.registerPack({
   "id": "grammar-core",
-  "version": 1,
+  "version": 2,
   "stages": [
     "p12",
     "p34",
@@ -288,14 +286,17 @@ ILContent.registerPack({
       "unit_id": "gramatica-inicial",
       "objective_id": "gi-verbs",
       "stage": [
-        "p12",
         "p34"
       ],
       "difficulty": 1,
       "variant_group": "gi-verbs",
       "tags": [
         "grammar"
-      ]
+      ],
+      "mechanic": "gap_fill",
+      "estimated_seconds": 40,
+      "hint": "I → am; you/we/they → are; he/she/it → is.",
+      "explanation": "Con “I” usamos “am”: I am happy."
     },
     {
       "id": "gi-2",
@@ -331,14 +332,17 @@ ILContent.registerPack({
       "unit_id": "gramatica-inicial",
       "objective_id": "gi-verbs",
       "stage": [
-        "p12",
         "p34"
       ],
       "difficulty": 1,
       "variant_group": "gi-verbs",
       "tags": [
         "grammar"
-      ]
+      ],
+      "mechanic": "gap_fill",
+      "estimated_seconds": 40,
+      "hint": "they/we/you → are.",
+      "explanation": "Con “they” usamos “are”."
     },
     {
       "id": "gi-3",
@@ -374,14 +378,17 @@ ILContent.registerPack({
       "unit_id": "gramatica-inicial",
       "objective_id": "gi-verbs",
       "stage": [
-        "p12",
         "p34"
       ],
       "difficulty": 2,
       "variant_group": "gi-verbs",
       "tags": [
         "grammar"
-      ]
+      ],
+      "mechanic": "gap_fill",
+      "estimated_seconds": 40,
+      "hint": "Con she usamos “has”.",
+      "explanation": "he/she/it → has."
     },
     {
       "id": "gi-4",
@@ -421,7 +428,11 @@ ILContent.registerPack({
         "incorrect": "Fíjate en el orden: sujeto + verbo + resto, y prueba otra vez.",
         "context": "I am a boy.",
         "learnedExpressions": []
-      }
+      },
+      "mechanic": "sentence_order",
+      "estimated_seconds": 60,
+      "hint": "Fíjate en el orden: sujeto + verbo + resto, y prueba otra vez.",
+      "explanation": "Orden correcto: «I am a boy.». En inglés va primero el sujeto y luego el verbo."
     },
     {
       "id": "gi-5",
@@ -457,14 +468,17 @@ ILContent.registerPack({
       "unit_id": "gramatica-inicial",
       "objective_id": "gi-prepositions",
       "stage": [
-        "p12",
         "p34"
       ],
       "difficulty": 1,
       "variant_group": "gi-prepositions",
       "tags": [
         "grammar"
-      ]
+      ],
+      "mechanic": "gap_fill",
+      "estimated_seconds": 40,
+      "hint": "Dentro = “in”.",
+      "explanation": "“in” = dentro."
     },
     {
       "id": "gi-6",
@@ -500,14 +514,17 @@ ILContent.registerPack({
       "unit_id": "gramatica-inicial",
       "objective_id": "gi-prepositions",
       "stage": [
-        "p12",
         "p34"
       ],
       "difficulty": 1,
       "variant_group": "gi-prepositions",
       "tags": [
         "grammar"
-      ]
+      ],
+      "mechanic": "gap_fill",
+      "estimated_seconds": 40,
+      "hint": "Encima = “on”.",
+      "explanation": "“on” = encima."
     },
     {
       "id": "gi-7",
@@ -543,14 +560,17 @@ ILContent.registerPack({
       "unit_id": "gramatica-inicial",
       "objective_id": "gi-prepositions",
       "stage": [
-        "p12",
         "p34"
       ],
       "difficulty": 1,
       "variant_group": "gi-prepositions",
       "tags": [
         "grammar"
-      ]
+      ],
+      "mechanic": "gap_fill",
+      "estimated_seconds": 40,
+      "hint": "Debajo = “under”.",
+      "explanation": "“under” = debajo."
     },
     {
       "id": "gi-8",
@@ -595,7 +615,11 @@ ILContent.registerPack({
       "variant_group": "gi-prepositions",
       "tags": [
         "grammar"
-      ]
+      ],
+      "mechanic": "gap_fill",
+      "estimated_seconds": 40,
+      "hint": "Al lado = “next to”.",
+      "explanation": "“next to” = al lado de."
     },
     {
       "id": "gi-9",
@@ -631,14 +655,17 @@ ILContent.registerPack({
       "unit_id": "gramatica-inicial",
       "objective_id": "gi-basics",
       "stage": [
-        "p12",
         "p34"
       ],
       "difficulty": 1,
       "variant_group": "gi-basics",
       "tags": [
         "grammar"
-      ]
+      ],
+      "mechanic": "gap_fill",
+      "estimated_seconds": 40,
+      "hint": "Cerca → this; lejos → that.",
+      "explanation": "“This” para algo cerca."
     },
     {
       "id": "gi-10",
@@ -674,14 +701,17 @@ ILContent.registerPack({
       "unit_id": "gramatica-inicial",
       "objective_id": "gi-basics",
       "stage": [
-        "p12",
         "p34"
       ],
       "difficulty": 2,
       "variant_group": "gi-basics",
       "tags": [
         "grammar"
-      ]
+      ],
+      "mechanic": "gap_fill",
+      "estimated_seconds": 40,
+      "hint": "apple empieza por vocal → an apple.",
+      "explanation": "Antes de vocal (a-e-i-o-u) usamos “an”."
     },
     {
       "id": "gi-11",
@@ -717,14 +747,17 @@ ILContent.registerPack({
       "unit_id": "gramatica-inicial",
       "objective_id": "gi-basics",
       "stage": [
-        "p12",
         "p34"
       ],
       "difficulty": 1,
       "variant_group": "gi-basics",
       "tags": [
         "grammar"
-      ]
+      ],
+      "mechanic": "gap_fill",
+      "estimated_seconds": 40,
+      "hint": "El plural normal añade -s: cats.",
+      "explanation": "Añadimos -s: cats."
     },
     {
       "id": "gi-12",
@@ -766,7 +799,11 @@ ILContent.registerPack({
       "variant_group": "gi-basics",
       "tags": [
         "grammar"
-      ]
+      ],
+      "mechanic": "gap_fill",
+      "estimated_seconds": 40,
+      "hint": "Añade -s: books.",
+      "explanation": "Plural de book = books."
     },
     {
       "id": "gm-1",
@@ -811,7 +848,11 @@ ILContent.registerPack({
       "variant_group": "gm-present",
       "tags": [
         "grammar"
-      ]
+      ],
+      "mechanic": "gap_fill",
+      "estimated_seconds": 40,
+      "hint": "“every day” pide presente simple: he plays.",
+      "explanation": "Rutina + he → present simple con -s: plays."
     },
     {
       "id": "gm-2",
@@ -856,7 +897,11 @@ ILContent.registerPack({
       "variant_group": "gm-present",
       "tags": [
         "grammar"
-      ]
+      ],
+      "mechanic": "gap_fill",
+      "estimated_seconds": 40,
+      "hint": "Acción ahora mismo → be + -ing.",
+      "explanation": "“now/Look!” pide present continuous: is running."
     },
     {
       "id": "gm-3",
@@ -901,7 +946,11 @@ ILContent.registerPack({
       "variant_group": "gm-present",
       "tags": [
         "grammar"
-      ]
+      ],
+      "mechanic": "gap_fill",
+      "estimated_seconds": 40,
+      "hint": "Con we usamos “watch”.",
+      "explanation": "we/you/they → sin -s: watch."
     },
     {
       "id": "gm-4",
@@ -946,7 +995,11 @@ ILContent.registerPack({
       "variant_group": "gm-present",
       "tags": [
         "grammar"
-      ]
+      ],
+      "mechanic": "gap_fill",
+      "estimated_seconds": 40,
+      "hint": "Continuous = am/is/are + verbo-ing.",
+      "explanation": "be + -ing = present continuous: I'm eating."
     },
     {
       "id": "gm-5",
@@ -991,7 +1044,11 @@ ILContent.registerPack({
       "variant_group": "gm-past",
       "tags": [
         "grammar"
-      ]
+      ],
+      "mechanic": "gap_fill",
+      "estimated_seconds": 40,
+      "hint": "Verbos regulares añaden -ed: played.",
+      "explanation": "Regular: play → played."
     },
     {
       "id": "gm-6",
@@ -1036,7 +1093,11 @@ ILContent.registerPack({
       "variant_group": "gm-past",
       "tags": [
         "grammar"
-      ]
+      ],
+      "mechanic": "gap_fill",
+      "estimated_seconds": 40,
+      "hint": "go es irregular: went.",
+      "explanation": "Irregular: go → went."
     },
     {
       "id": "gm-7",
@@ -1081,7 +1142,11 @@ ILContent.registerPack({
       "variant_group": "gm-past",
       "tags": [
         "grammar"
-      ]
+      ],
+      "mechanic": "gap_fill",
+      "estimated_seconds": 40,
+      "hint": "Pasado de go = went.",
+      "explanation": "“Yesterday” → past simple: went."
     },
     {
       "id": "gm-8",
@@ -1121,7 +1186,11 @@ ILContent.registerPack({
         "incorrect": "Fíjate en el orden: sujeto + verbo + resto, y prueba otra vez.",
         "context": "She watched TV yesterday.",
         "learnedExpressions": []
-      }
+      },
+      "mechanic": "sentence_order",
+      "estimated_seconds": 60,
+      "hint": "Fíjate en el orden: sujeto + verbo + resto, y prueba otra vez.",
+      "explanation": "Orden correcto: «She watched TV yesterday.». En inglés va primero el sujeto y luego el verbo."
     },
     {
       "id": "gm-9",
@@ -1163,7 +1232,11 @@ ILContent.registerPack({
       "variant_group": "gm-prepositions",
       "tags": [
         "grammar"
-      ]
+      ],
+      "mechanic": "gap_fill",
+      "estimated_seconds": 40,
+      "hint": "Con días usamos “on”.",
+      "explanation": "Días → on: on Monday."
     },
     {
       "id": "gm-10",
@@ -1205,7 +1278,11 @@ ILContent.registerPack({
       "variant_group": "gm-prepositions",
       "tags": [
         "grammar"
-      ]
+      ],
+      "mechanic": "gap_fill",
+      "estimated_seconds": 40,
+      "hint": "in the morning/afternoon/evening.",
+      "explanation": "Partes del día → in: in the morning."
     },
     {
       "id": "gm-11",
@@ -1247,7 +1324,11 @@ ILContent.registerPack({
       "variant_group": "gm-prepositions",
       "tags": [
         "grammar"
-      ]
+      ],
+      "mechanic": "gap_fill",
+      "estimated_seconds": 40,
+      "hint": "Con horas usamos “at”.",
+      "explanation": "Horas → at: at 7 o'clock."
     },
     {
       "id": "gm-12",
@@ -1289,7 +1370,11 @@ ILContent.registerPack({
       "variant_group": "gm-prepositions",
       "tags": [
         "grammar"
-      ]
+      ],
+      "mechanic": "gap_fill",
+      "estimated_seconds": 40,
+      "hint": "Con meses usamos “in”.",
+      "explanation": "Meses → in: in July."
     },
     {
       "id": "ge-1",
@@ -1334,7 +1419,11 @@ ILContent.registerPack({
       "variant_group": "ge-tenses",
       "tags": [
         "grammar"
-      ]
+      ],
+      "mechanic": "gap_fill",
+      "estimated_seconds": 40,
+      "hint": "Life experience uses present perfect (have eaten).",
+      "explanation": "Experience → present perfect: have + past participle."
     },
     {
       "id": "ge-2",
@@ -1379,7 +1468,11 @@ ILContent.registerPack({
       "variant_group": "ge-tenses",
       "tags": [
         "grammar"
-      ]
+      ],
+      "mechanic": "gap_fill",
+      "estimated_seconds": 40,
+      "hint": "“While…” + longer action → past continuous.",
+      "explanation": "Background action → past continuous: was cooking."
     },
     {
       "id": "ge-3",
@@ -1424,7 +1517,11 @@ ILContent.registerPack({
       "variant_group": "ge-tenses",
       "tags": [
         "grammar"
-      ]
+      ],
+      "mechanic": "gap_fill",
+      "estimated_seconds": 40,
+      "hint": "since/for + unfinished time → present perfect.",
+      "explanation": "“since” → present perfect: has lived."
     },
     {
       "id": "ge-4",
@@ -1469,7 +1566,11 @@ ILContent.registerPack({
       "variant_group": "ge-tenses",
       "tags": [
         "grammar"
-      ]
+      ],
+      "mechanic": "gap_fill",
+      "estimated_seconds": 40,
+      "hint": "Future point in time → will be.",
+      "explanation": "Prediction/future state → “will be”."
     },
     {
       "id": "ge-5",
@@ -1513,7 +1614,11 @@ ILContent.registerPack({
         "incorrect": "Look at the word order (subject + verb + …) and try again.",
         "context": "I have already finished my homework.",
         "learnedExpressions": []
-      }
+      },
+      "mechanic": "sentence_order",
+      "estimated_seconds": 60,
+      "hint": "Look at the word order (subject + verb + …) and try again.",
+      "explanation": "Correct order: “I have already finished my homework.”. In English the subject comes first, then the verb."
     },
     {
       "id": "ge-6",
@@ -1558,7 +1663,11 @@ ILContent.registerPack({
       "variant_group": "ge-prepositions",
       "tags": [
         "grammar"
-      ]
+      ],
+      "mechanic": "gap_fill",
+      "estimated_seconds": 40,
+      "hint": "The phrase is “good at”.",
+      "explanation": "good at + skill."
     },
     {
       "id": "ge-7",
@@ -1603,7 +1712,11 @@ ILContent.registerPack({
       "variant_group": "ge-prepositions",
       "tags": [
         "grammar"
-      ]
+      ],
+      "mechanic": "gap_fill",
+      "estimated_seconds": 40,
+      "hint": "The phrase is “depend on”.",
+      "explanation": "depend on."
     },
     {
       "id": "ge-8",
@@ -1648,7 +1761,11 @@ ILContent.registerPack({
       "variant_group": "ge-prepositions",
       "tags": [
         "grammar"
-      ]
+      ],
+      "mechanic": "gap_fill",
+      "estimated_seconds": 40,
+      "hint": "The phrase is “interested in”.",
+      "explanation": "interested in."
     },
     {
       "id": "ge-9",
@@ -1693,7 +1810,11 @@ ILContent.registerPack({
       "variant_group": "ge-prepositions",
       "tags": [
         "grammar"
-      ]
+      ],
+      "mechanic": "gap_fill",
+      "estimated_seconds": 40,
+      "hint": "We say “arrive at” (a place), not “arrive to”.",
+      "explanation": "arrive at + place."
     },
     {
       "id": "ge-10",
@@ -1738,7 +1859,11 @@ ILContent.registerPack({
       "variant_group": "ge-modals",
       "tags": [
         "grammar"
-      ]
+      ],
+      "mechanic": "gap_fill",
+      "estimated_seconds": 40,
+      "hint": "“mustn't” = it's prohibited; “don't have to” = not necessary.",
+      "explanation": "Prohibition → mustn't."
     },
     {
       "id": "ge-11",
@@ -1783,7 +1908,11 @@ ILContent.registerPack({
       "variant_group": "ge-modals",
       "tags": [
         "grammar"
-      ]
+      ],
+      "mechanic": "gap_fill",
+      "estimated_seconds": 40,
+      "hint": "Obligation uses “have to / must”.",
+      "explanation": "Obligation → have to."
     },
     {
       "id": "ge-12",
@@ -1828,6 +1957,872 @@ ILContent.registerPack({
       "variant_group": "ge-modals",
       "tags": [
         "grammar"
+      ],
+      "mechanic": "gap_fill",
+      "estimated_seconds": 40,
+      "hint": "Apagar = turn off; encender = turn on.",
+      "explanation": "turn off = apagar."
+    },
+    {
+      "id": "gi-match-pronouns",
+      "unit_id": "gramatica-inicial",
+      "objective_id": "gi-basics",
+      "tipo": "emparejar",
+      "mechanic": "matching",
+      "stage": [
+        "p12",
+        "p34"
+      ],
+      "edad": [
+        5,
+        9
+      ],
+      "nivel": "Pre-A1",
+      "habilidad": "grammar",
+      "difficulty": 2,
+      "estimated_seconds": 65,
+      "instruccion": "Une las parejas.",
+      "instructions": {
+        "p12": "Une las parejas.",
+        "p34": "Une las parejas."
+      },
+      "hint": "We habla de un grupo que te incluye.",
+      "explanation": "I: yo; you: tú; we: nosotros.",
+      "feedback": {
+        "incorrect": "We habla de un grupo que te incluye.",
+        "correct": "I: yo; you: tú; we: nosotros.",
+        "correctAnswer": "I: yo; you: tú; we: nosotros."
+      },
+      "variant_group": "gi-basics-gi-match-pronouns",
+      "pares": [
+        {
+          "a": "I",
+          "b": "yo"
+        },
+        {
+          "a": "you",
+          "b": "tú"
+        },
+        {
+          "a": "we",
+          "b": "nosotros"
+        }
+      ]
+    },
+    {
+      "id": "gi-build-am",
+      "unit_id": "gramatica-inicial",
+      "objective_id": "gi-verbs",
+      "tipo": "ordenar",
+      "mechanic": "sentence_order",
+      "stage": [
+        "p12",
+        "p34"
+      ],
+      "edad": [
+        5,
+        9
+      ],
+      "nivel": "Pre-A1",
+      "habilidad": "grammar",
+      "difficulty": 2,
+      "estimated_seconds": 60,
+      "instruccion": "Forma la frase.",
+      "instructions": {
+        "p12": "Forma la frase.",
+        "p34": "Forma la frase."
+      },
+      "hint": "Empieza por I.",
+      "explanation": "Con I usamos am.",
+      "feedback": {
+        "incorrect": "Empieza por I.",
+        "correct": "Con I usamos am.",
+        "correctAnswer": "Con I usamos am."
+      },
+      "variant_group": "gi-verbs-gi-build-am",
+      "palabras": [
+        "I",
+        "am",
+        "happy."
+      ],
+      "respuesta": [
+        "I",
+        "am",
+        "happy."
+      ],
+      "audio": "I am happy."
+    },
+    {
+      "id": "gi-repeat-ready",
+      "unit_id": "gramatica-inicial",
+      "objective_id": "gi-basics",
+      "tipo": "hablar",
+      "mechanic": "speaking",
+      "stage": [
+        "p12",
+        "p34"
+      ],
+      "edad": [
+        5,
+        9
+      ],
+      "nivel": "Pre-A1",
+      "habilidad": "speaking",
+      "difficulty": 2,
+      "estimated_seconds": 60,
+      "instruccion": "Escucha y repite.",
+      "instructions": {
+        "p12": "Escucha y repite.",
+        "p34": "Escucha y repite."
+      },
+      "hint": "Escucha we are antes de ready.",
+      "explanation": "We are ready significa Estamos listos.",
+      "feedback": {
+        "incorrect": "Escucha we are antes de ready.",
+        "correct": "We are ready significa Estamos listos.",
+        "correctAnswer": "We are ready significa Estamos listos."
+      },
+      "variant_group": "gi-basics-gi-repeat-ready",
+      "frase": "We are ready.",
+      "assessment": "self_report"
+    },
+    {
+      "id": "gi-gap-is",
+      "unit_id": "gramatica-inicial",
+      "objective_id": "gi-verbs",
+      "tipo": "completar",
+      "mechanic": "gap_fill",
+      "stage": [
+        "p34"
+      ],
+      "edad": [
+        8,
+        9
+      ],
+      "nivel": "A1",
+      "habilidad": "grammar",
+      "difficulty": 2,
+      "estimated_seconds": 55,
+      "instruccion": "Completa la frase.",
+      "instructions": {
+        "p34": "Completa la frase."
+      },
+      "hint": "Con she usamos is, no am.",
+      "explanation": "She is my friend: ella es mi amiga.",
+      "feedback": {
+        "incorrect": "Con she usamos is, no am.",
+        "correct": "She is my friend: ella es mi amiga.",
+        "correctAnswer": "She is my friend: ella es mi amiga."
+      },
+      "variant_group": "gi-verbs-gi-gap-is",
+      "prompt": "She ___ my friend. (be)",
+      "respuesta": "is"
+    },
+    {
+      "id": "gi-recall-under",
+      "unit_id": "gramatica-inicial",
+      "objective_id": "gi-prepositions",
+      "tipo": "recordar",
+      "mechanic": "recall",
+      "stage": [
+        "p34"
+      ],
+      "edad": [
+        8,
+        9
+      ],
+      "nivel": "A1",
+      "habilidad": "grammar",
+      "difficulty": 2,
+      "estimated_seconds": 50,
+      "instruccion": "Escribe lo que recuerdas.",
+      "instructions": {
+        "p34": "Escribe lo que recuerdas."
+      },
+      "hint": "Empieza por un-.",
+      "explanation": "Under indica que algo está debajo.",
+      "feedback": {
+        "incorrect": "Empieza por un-.",
+        "correct": "Under indica que algo está debajo.",
+        "correctAnswer": "Under indica que algo está debajo."
+      },
+      "variant_group": "gi-prepositions-gi-recall-under",
+      "prompt": "Escribe en inglés: debajo de.",
+      "respuesta": "under"
+    },
+    {
+      "id": "gi-spell-they",
+      "unit_id": "gramatica-inicial",
+      "objective_id": "gi-basics",
+      "tipo": "ordenar_palabra",
+      "mechanic": "word_order",
+      "stage": [
+        "p34"
+      ],
+      "edad": [
+        8,
+        9
+      ],
+      "nivel": "A1",
+      "habilidad": "writing",
+      "difficulty": 2,
+      "estimated_seconds": 50,
+      "instruccion": "Ordena las letras.",
+      "instructions": {
+        "p34": "Ordena las letras."
+      },
+      "hint": "Empieza por th-.",
+      "explanation": "They significa ellos o ellas.",
+      "feedback": {
+        "incorrect": "Empieza por th-.",
+        "correct": "They significa ellos o ellas.",
+        "correctAnswer": "They significa ellos o ellas."
+      },
+      "variant_group": "gi-basics-gi-spell-they",
+      "prompt": "Forma la palabra para ellos/ellas.",
+      "palabras": [
+        "t",
+        "h",
+        "e",
+        "y"
+      ],
+      "respuesta": [
+        "t",
+        "h",
+        "e",
+        "y"
+      ]
+    },
+    {
+      "id": "gi-sort-things",
+      "unit_id": "gramatica-inicial",
+      "objective_id": "gi-basics",
+      "tipo": "clasificar",
+      "mechanic": "classification",
+      "stage": [
+        "p12",
+        "p34"
+      ],
+      "edad": [
+        5,
+        9
+      ],
+      "nivel": "Pre-A1",
+      "habilidad": "vocabulary",
+      "difficulty": 2,
+      "estimated_seconds": 75,
+      "instruccion": "Agrupa los elementos.",
+      "instructions": {
+        "p12": "Agrupa los elementos.",
+        "p34": "Agrupa los elementos."
+      },
+      "hint": "Piensa en para qué sirve cada objeto.",
+      "explanation": "We write with a pencil. We read a book.",
+      "feedback": {
+        "incorrect": "Piensa en para qué sirve cada objeto.",
+        "correct": "We write with a pencil. We read a book.",
+        "correctAnswer": "We write with a pencil. We read a book."
+      },
+      "variant_group": "gi-basics-gi-sort-things",
+      "categories": [
+        "Para escribir",
+        "Para leer"
+      ],
+      "items": [
+        {
+          "text": "pencil",
+          "visual": "pencil",
+          "category": "Para escribir"
+        },
+        {
+          "text": "book",
+          "visual": "book",
+          "category": "Para leer"
+        }
+      ]
+    },
+    {
+      "id": "gm-gap-does",
+      "unit_id": "gramatica-media",
+      "objective_id": "gm-present",
+      "tipo": "completar",
+      "mechanic": "gap_fill",
+      "stage": [
+        "p56"
+      ],
+      "edad": [
+        10,
+        11
+      ],
+      "nivel": "A1",
+      "habilidad": "grammar",
+      "difficulty": 2,
+      "estimated_seconds": 55,
+      "instruccion": "Completa la frase.",
+      "instructions": {
+        "p56": "Completa la frase."
+      },
+      "hint": "La pregunta es sobre he.",
+      "explanation": "Does introduce preguntas con he, she o it.",
+      "feedback": {
+        "incorrect": "La pregunta es sobre he.",
+        "correct": "Does introduce preguntas con he, she o it.",
+        "correctAnswer": "Does introduce preguntas con he, she o it."
+      },
+      "variant_group": "gm-present-gm-gap-does",
+      "prompt": "___ your brother play tennis?",
+      "respuesta": "Does"
+    },
+    {
+      "id": "gm-recall-went",
+      "unit_id": "gramatica-media",
+      "objective_id": "gm-past",
+      "tipo": "recordar",
+      "mechanic": "recall",
+      "stage": [
+        "p56"
+      ],
+      "edad": [
+        10,
+        11
+      ],
+      "nivel": "A1",
+      "habilidad": "grammar",
+      "difficulty": 2,
+      "estimated_seconds": 50,
+      "instruccion": "Escribe lo que recuerdas.",
+      "instructions": {
+        "p56": "Escribe lo que recuerdas."
+      },
+      "hint": "Go es irregular en pasado.",
+      "explanation": "El pasado de go es went.",
+      "feedback": {
+        "incorrect": "Go es irregular en pasado.",
+        "correct": "El pasado de go es went.",
+        "correctAnswer": "El pasado de go es went."
+      },
+      "variant_group": "gm-past-gm-recall-went",
+      "prompt": "Yesterday I ___ to the park. (go)",
+      "respuesta": "went"
+    },
+    {
+      "id": "gm-sort-time",
+      "unit_id": "gramatica-media",
+      "objective_id": "gm-prepositions",
+      "tipo": "clasificar",
+      "mechanic": "classification",
+      "stage": [
+        "p56"
+      ],
+      "edad": [
+        10,
+        11
+      ],
+      "nivel": "A1",
+      "habilidad": "grammar",
+      "difficulty": 2,
+      "estimated_seconds": 75,
+      "instruccion": "Agrupa los elementos.",
+      "instructions": {
+        "p56": "Agrupa los elementos."
+      },
+      "hint": "Día, mes y hora llevan preposiciones diferentes.",
+      "explanation": "On Monday, in July, at six.",
+      "feedback": {
+        "incorrect": "Día, mes y hora llevan preposiciones diferentes.",
+        "correct": "On Monday, in July, at six.",
+        "correctAnswer": "On Monday, in July, at six."
+      },
+      "variant_group": "gm-prepositions-gm-sort-time",
+      "categories": [
+        "in",
+        "on",
+        "at"
+      ],
+      "items": [
+        {
+          "text": "Monday",
+          "category": "on"
+        },
+        {
+          "text": "July",
+          "category": "in"
+        },
+        {
+          "text": "six o’clock",
+          "category": "at"
+        }
+      ]
+    },
+    {
+      "id": "gm-dialogue-do",
+      "unit_id": "gramatica-media",
+      "objective_id": "gm-present",
+      "tipo": "dialogo",
+      "mechanic": "dialogue",
+      "stage": [
+        "p56"
+      ],
+      "edad": [
+        10,
+        11
+      ],
+      "nivel": "A1",
+      "habilidad": "speaking",
+      "difficulty": 2,
+      "estimated_seconds": 80,
+      "instruccion": "Completa el diálogo.",
+      "instructions": {
+        "p56": "Completa el diálogo."
+      },
+      "hint": "Reutiliza el auxiliar de la pregunta.",
+      "explanation": "Do you…? se responde con Yes, I do.",
+      "feedback": {
+        "incorrect": "Reutiliza el auxiliar de la pregunta.",
+        "correct": "Do you…? se responde con Yes, I do.",
+        "correctAnswer": "Do you…? se responde con Yes, I do."
+      },
+      "variant_group": "gm-present-gm-dialogue-do",
+      "dialogue": [
+        "A: Do you like music?",
+        "B: Yes, I ___."
+      ],
+      "respuesta": "do"
+    },
+    {
+      "id": "gm-dictate-didnt",
+      "unit_id": "gramatica-media",
+      "objective_id": "gm-past",
+      "tipo": "dictado",
+      "mechanic": "dictation",
+      "stage": [
+        "p56"
+      ],
+      "edad": [
+        10,
+        11
+      ],
+      "nivel": "A2",
+      "habilidad": "listening",
+      "difficulty": 3,
+      "estimated_seconds": 70,
+      "instruccion": "Escucha y escribe.",
+      "instructions": {
+        "p56": "Escucha y escribe."
+      },
+      "hint": "Escucha la negación antes de play.",
+      "explanation": "Después de did not usamos play, no played.",
+      "feedback": {
+        "incorrect": "Escucha la negación antes de play.",
+        "correct": "Después de did not usamos play, no played.",
+        "correctAnswer": "Después de did not usamos play, no played."
+      },
+      "variant_group": "gm-past-gm-dictate-didnt",
+      "audio": "She did not play football yesterday.",
+      "respuesta": "She did not play football yesterday.",
+      "accepted_answers": [
+        "She didn't play football yesterday."
+      ]
+    },
+    {
+      "id": "gm-read-yesterday",
+      "unit_id": "gramatica-media",
+      "objective_id": "gm-past",
+      "tipo": "comprension",
+      "mechanic": "reading",
+      "stage": [
+        "p56"
+      ],
+      "edad": [
+        10,
+        11
+      ],
+      "nivel": "A1",
+      "habilidad": "reading",
+      "difficulty": 2,
+      "estimated_seconds": 100,
+      "instruccion": "Lee y responde.",
+      "instructions": {
+        "p56": "Lee y responde."
+      },
+      "hint": "Busca el verbo played.",
+      "explanation": "Played chess expresa la actividad que sí hicieron.",
+      "feedback": {
+        "incorrect": "Busca el verbo played.",
+        "correct": "Played chess expresa la actividad que sí hicieron.",
+        "correctAnswer": "Played chess expresa la actividad que sí hicieron."
+      },
+      "variant_group": "gm-past-gm-read-yesterday",
+      "estimulo": {
+        "texto": "Yesterday Sam visited his cousin. They played chess indoors because it was cold. They did not go to the park."
+      },
+      "preguntas": [
+        {
+          "pregunta": "What did they do?",
+          "opciones": [
+            {
+              "texto": "They played chess.",
+              "correcta": true
+            },
+            {
+              "texto": "They went to the park.",
+              "correcta": false
+            },
+            {
+              "texto": "They played football.",
+              "correcta": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "gm-write-yesterday",
+      "unit_id": "gramatica-media",
+      "objective_id": "gm-past",
+      "tipo": "escritura_guiada",
+      "mechanic": "guided_writing",
+      "stage": [
+        "p56"
+      ],
+      "edad": [
+        10,
+        11
+      ],
+      "nivel": "A2",
+      "habilidad": "writing",
+      "difficulty": 3,
+      "estimated_seconds": 140,
+      "instruccion": "Escribe y revisa tu texto.",
+      "instructions": {
+        "p56": "Escribe y revisa tu texto."
+      },
+      "hint": "Puedes usar visited y did not watch.",
+      "explanation": "En negativa, el pasado lo expresa did y el verbo queda en forma base.",
+      "feedback": {
+        "incorrect": "Puedes usar visited y did not watch.",
+        "correct": "En negativa, el pasado lo expresa did y el verbo queda en forma base.",
+        "correctAnswer": "En negativa, el pasado lo expresa did y el verbo queda en forma base."
+      },
+      "variant_group": "gm-past-gm-write-yesterday",
+      "prompt": "Write two sentences about yesterday. Use one positive and one negative sentence.",
+      "respuesta": "I visited my cousin. I did not watch TV.",
+      "assessment": "self_report",
+      "min_words": 8,
+      "rubric": [
+        "I wrote about yesterday.",
+        "I used one past verb.",
+        "After did not, I used the base verb."
+      ]
+    },
+    {
+      "id": "ge-transform-present-perfect",
+      "unit_id": "gramatica-eso",
+      "objective_id": "ge-tenses",
+      "tipo": "recordar",
+      "mechanic": "recall",
+      "stage": [
+        "eso"
+      ],
+      "edad": [
+        12,
+        18
+      ],
+      "nivel": "B1",
+      "habilidad": "grammar",
+      "difficulty": 2,
+      "estimated_seconds": 50,
+      "instruccion": "Write the word from memory.",
+      "instructions": {
+        "eso": "Write the word from memory."
+      },
+      "hint": "The situation started in the past and continues now.",
+      "explanation": "Use present perfect with since for a situation continuing now.",
+      "feedback": {
+        "incorrect": "The situation started in the past and continues now.",
+        "correct": "Use present perfect with since for a situation continuing now.",
+        "correctAnswer": "Use present perfect with since for a situation continuing now."
+      },
+      "variant_group": "ge-tenses-ge-transform-present-perfect",
+      "prompt": "Rewrite with since: I started living here in 2020. → I ___ here since 2020.",
+      "respuesta": "have lived",
+      "accepted_answers": [
+        "'ve lived"
+      ]
+    },
+    {
+      "id": "ge-gap-should",
+      "unit_id": "gramatica-eso",
+      "objective_id": "ge-modals",
+      "tipo": "completar",
+      "mechanic": "gap_fill",
+      "stage": [
+        "eso"
+      ],
+      "edad": [
+        12,
+        18
+      ],
+      "nivel": "A2",
+      "habilidad": "grammar",
+      "difficulty": 2,
+      "estimated_seconds": 55,
+      "instruccion": "Complete the sentence.",
+      "instructions": {
+        "eso": "Complete the sentence."
+      },
+      "hint": "This is advice, not an obligation.",
+      "explanation": "Should expresses advice; must expresses a stronger obligation.",
+      "feedback": {
+        "incorrect": "This is advice, not an obligation.",
+        "correct": "Should expresses advice; must expresses a stronger obligation.",
+        "correctAnswer": "Should expresses advice; must expresses a stronger obligation."
+      },
+      "variant_group": "ge-modals-ge-gap-should",
+      "prompt": "Use should or must: For gentle advice, say: You ___ take a break.",
+      "respuesta": "should"
+    },
+    {
+      "id": "ge-sort-since-for",
+      "unit_id": "gramatica-eso",
+      "objective_id": "ge-prepositions",
+      "tipo": "clasificar",
+      "mechanic": "classification",
+      "stage": [
+        "eso"
+      ],
+      "edad": [
+        12,
+        18
+      ],
+      "nivel": "B1",
+      "habilidad": "grammar",
+      "difficulty": 2,
+      "estimated_seconds": 75,
+      "instruccion": "Sort the items.",
+      "instructions": {
+        "eso": "Sort the items."
+      },
+      "hint": "Separate starting points from lengths of time.",
+      "explanation": "Since marks a starting point; for marks a duration.",
+      "feedback": {
+        "incorrect": "Separate starting points from lengths of time.",
+        "correct": "Since marks a starting point; for marks a duration.",
+        "correctAnswer": "Since marks a starting point; for marks a duration."
+      },
+      "variant_group": "ge-prepositions-ge-sort-since-for",
+      "categories": [
+        "since",
+        "for"
+      ],
+      "items": [
+        {
+          "text": "2020",
+          "category": "since"
+        },
+        {
+          "text": "three years",
+          "category": "for"
+        },
+        {
+          "text": "Monday",
+          "category": "since"
+        },
+        {
+          "text": "two hours",
+          "category": "for"
+        }
+      ]
+    },
+    {
+      "id": "ge-dialogue-advice",
+      "unit_id": "gramatica-eso",
+      "objective_id": "ge-modals",
+      "tipo": "dialogo",
+      "mechanic": "dialogue",
+      "stage": [
+        "eso"
+      ],
+      "edad": [
+        12,
+        18
+      ],
+      "nivel": "A2",
+      "habilidad": "speaking",
+      "difficulty": 2,
+      "estimated_seconds": 80,
+      "instruccion": "Complete the dialogue.",
+      "instructions": {
+        "eso": "Complete the dialogue."
+      },
+      "hint": "Use the modal for advice.",
+      "explanation": "Should is followed by the base form: should go.",
+      "feedback": {
+        "incorrect": "Use the modal for advice.",
+        "correct": "Should is followed by the base form: should go.",
+        "correctAnswer": "Should is followed by the base form: should go."
+      },
+      "variant_group": "ge-modals-ge-dialogue-advice",
+      "dialogue": [
+        "A: I have an exam tomorrow and I feel tired.",
+        "B: You ___ go to bed early. Use should."
+      ],
+      "respuesta": "should"
+    },
+    {
+      "id": "ge-dictate-if",
+      "unit_id": "gramatica-eso",
+      "objective_id": "ge-tenses",
+      "tipo": "dictado",
+      "mechanic": "dictation",
+      "stage": [
+        "eso"
+      ],
+      "edad": [
+        12,
+        18
+      ],
+      "nivel": "B1",
+      "habilidad": "listening",
+      "difficulty": 3,
+      "estimated_seconds": 70,
+      "instruccion": "Listen and write.",
+      "instructions": {
+        "eso": "Listen and write."
+      },
+      "hint": "Listen for present tense after if.",
+      "explanation": "In the first conditional, use present after if and will in the result.",
+      "feedback": {
+        "incorrect": "Listen for present tense after if.",
+        "correct": "In the first conditional, use present after if and will in the result.",
+        "correctAnswer": "In the first conditional, use present after if and will in the result."
+      },
+      "variant_group": "ge-tenses-ge-dictate-if",
+      "audio": "If it rains, we will stay at home.",
+      "respuesta": "If it rains, we will stay at home.",
+      "accepted_answers": [
+        "If it rains, we'll stay at home."
+      ]
+    },
+    {
+      "id": "ge-write-condition",
+      "unit_id": "gramatica-eso",
+      "objective_id": "ge-tenses",
+      "tipo": "escritura_guiada",
+      "mechanic": "guided_writing",
+      "stage": [
+        "eso"
+      ],
+      "edad": [
+        12,
+        18
+      ],
+      "nivel": "B1",
+      "habilidad": "writing",
+      "difficulty": 3,
+      "estimated_seconds": 140,
+      "instruccion": "Write and review your text.",
+      "instructions": {
+        "eso": "Write and review your text."
+      },
+      "hint": "Start with If it is… or If I have…",
+      "explanation": "Compare the tense in each clause with the model.",
+      "feedback": {
+        "incorrect": "Start with If it is… or If I have…",
+        "correct": "Compare the tense in each clause with the model.",
+        "correctAnswer": "Compare the tense in each clause with the model."
+      },
+      "variant_group": "ge-tenses-ge-write-condition",
+      "prompt": "Write two plans using if. Include a realistic condition and its result.",
+      "respuesta": "If it is sunny, I will walk to school. If it rains, I will take the bus.",
+      "assessment": "self_report",
+      "min_words": 12,
+      "rubric": [
+        "Each sentence has a condition and a result.",
+        "I used present tense after if.",
+        "I used will or a valid modal in the result."
+      ]
+    },
+    {
+      "id": "ge-repeat-request",
+      "unit_id": "gramatica-eso",
+      "objective_id": "ge-modals",
+      "tipo": "hablar",
+      "mechanic": "speaking",
+      "stage": [
+        "eso"
+      ],
+      "edad": [
+        12,
+        18
+      ],
+      "nivel": "A2",
+      "habilidad": "speaking",
+      "difficulty": 2,
+      "estimated_seconds": 60,
+      "instruccion": "Listen and repeat.",
+      "instructions": {
+        "eso": "Listen and repeat."
+      },
+      "hint": "Listen for the polite opening Could you.",
+      "explanation": "You practised a polite request for clarification.",
+      "feedback": {
+        "incorrect": "Listen for the polite opening Could you.",
+        "correct": "You practised a polite request for clarification.",
+        "correctAnswer": "You practised a polite request for clarification."
+      },
+      "variant_group": "ge-modals-ge-repeat-request",
+      "frase": "Could you explain that again, please?",
+      "assessment": "self_report"
+    },
+    {
+      "id": "gi-find-a-book",
+      "unit_id": "gramatica-inicial",
+      "objective_id": "gi-basics",
+      "tipo": "palabra_imagen",
+      "mechanic": "word_image",
+      "stage": [
+        "p12",
+        "p34"
+      ],
+      "edad": [
+        5,
+        9
+      ],
+      "nivel": "Pre-A1",
+      "habilidad": "grammar",
+      "difficulty": 2,
+      "estimated_seconds": 35,
+      "instruccion": "Busca la imagen.",
+      "instructions": {
+        "p12": "Busca la imagen.",
+        "p34": "Busca la imagen."
+      },
+      "hint": "A book es un libro.",
+      "explanation": "A acompaña aquí a un objeto: a book.",
+      "feedback": {
+        "incorrect": "A book es un libro.",
+        "correct": "A acompaña aquí a un objeto: a book.",
+        "correctAnswer": "A acompaña aquí a un objeto: a book."
+      },
+      "variant_group": "gi-basics-gi-find-a-book",
+      "prompt": "a book",
+      "opciones": [
+        {
+          "texto": "book",
+          "correcta": true,
+          "visual": "book"
+        },
+        {
+          "texto": "pencil",
+          "correcta": false,
+          "visual": "pencil"
+        },
+        {
+          "texto": "chair",
+          "correcta": false,
+          "visual": "chair"
+        }
       ]
     }
   ]

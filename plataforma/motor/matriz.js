@@ -35,6 +35,8 @@
     const cfg = BANDS[safeBand];
     const stages = Array.isArray(ej.stage) ? ej.stage : (ej.stage ? [ej.stage] : []);
     if (stages.length && safeBand !== "neutral" && stages.indexOf(safeBand) === -1) return false; // edad/contexto apropiados
+    const mechanics = typeof globalThis !== 'undefined' && globalThis.ILMechanics || (typeof require === 'function' ? require('../content/mechanics.js') : null);
+    if (ej.mechanic && mechanics) return mechanics.compatible(ej,safeBand) && ((ej.opciones||[]).length <= cfg.maxOpciones) && (!(ej.preguntas||[]).some(q=>(q.opciones||[]).length>cfg.maxOpciones));
     if (cfg.plantillas.indexOf(plantillaDe(ej)) === -1) return false;         // plantilla permitida
     const nOpc = (ej.opciones && ej.opciones.length) || 0;
     if (nOpc && nOpc > cfg.maxOpciones) return false;                          // nº de opciones (carga cognitiva)

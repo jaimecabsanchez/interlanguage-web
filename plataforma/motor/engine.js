@@ -38,6 +38,8 @@
   const audioSettings = () => window.ILProfileSettings ? window.ILProfileSettings.getActive() : { sound: true, autoplayAudio: true, audioSpeed: 0.9 };
 
   function instructionFor(exercise, stage) {
+    if (exercise.mechanic && exercise.instructions && exercise.instructions[stage]) return exercise.instructions[stage];
+    if (exercise.mechanic && !['elegir_texto','elegir_imagen'].includes(exercise.tipo)) return exercise.instruction || exercise.instruccion;
     const type = exercise && exercise.tipo || "unknown";
     const instructions = {
       p12:{ elegir_imagen:"Escucha y toca.", elegir_texto:"Mira y toca.", ordenar:"Toca en orden.", emparejar:"Busca las parejas.", hablar:"Escucha y repite.", completar:"Completa.", comprension:"Mira y responde." },
@@ -52,9 +54,10 @@
 
   function measureFor(exercise) {
     const type = exercise && exercise.tipo;
-    if (type === "elegir_imagen") return "visual";
+    if (['elegir_imagen','imagen_palabra','palabra_imagen'].includes(type)) return "visual";
     if (type === "ordenar" || type === "emparejar") return "manipulation";
-    if (type === "comprension") return "reading";
+    if (['comprension','dialogo','escritura_guiada'].includes(type)) return "reading";
+    if (['clasificar','ordenar_palabra'].includes(type)) return 'manipulation';
     return "simple";
   }
 
@@ -159,7 +162,7 @@
       utterance.rate = settings.audioSpeed || 0.9;
       utterance.onstart = () => callbacks.onStart && callbacks.onStart();
       utterance.onend = () => callbacks.onEnd && callbacks.onEnd();
-      utterance.onerror = event => callbacks.onError && callbacks.onError(event);
+      utterance.onerror = event => { if (!['canceled','interrupted'].includes(event && event.error)) callbacks.onError && callbacks.onError(event); };
       window.speechSynthesis.speak(utterance);
       return utterance;
     } catch (error) {
@@ -197,6 +200,7 @@
     const feedback = exercise.feedback || {};
     return {
       correct: !!result.correct,
+      assessment:result.assessment || exercise.assessment || 'objective',
       selectedLabel: result.selectedLabel || "",
       correctLabel: result.correctLabel || "",
       explanation: feedback.correctAnswer || exercise.explicacion || "",
@@ -215,7 +219,7 @@
     const card = host.closest(".eng-card");
     const supportive = !!(card && (card.classList.contains("eng-card--p12") || card.classList.contains("eng-card--p34")));
     const autoVisuals = options.map(illustrationFor);
-    const showVisuals = withImage || (supportive && autoVisuals.length > 0 && autoVisuals.every(Boolean));
+    const showVisuals = withImage || (!exercise.disable_auto_visuals && supportive && autoVisuals.length > 0 && autoVisuals.every(Boolean));
     let selected = -1;
     let disabled = false;
     const wrap = el("div", "eng-options" + (showVisuals ? " has-image" : ""));
@@ -242,7 +246,7 @@
         }
         button.appendChild(visual);
       }
-      button.appendChild(el("span", "eng-opt-text", option.texto || ""));
+      button.appendChild(el("span", exercise.hide_option_text ? 'sr-only' : "eng-opt-text", option.texto || ""));
       button.addEventListener("click", () => {
         if (disabled) return;
         clearJudgement();
@@ -349,6 +353,7 @@
     host.appendChild(line); host.appendChild(bank);
 
     function redraw() {
+      const restore = host.contains(document.activeElement);
       line.innerHTML = ""; bank.innerHTML = "";
       line.classList.remove("is-correct", "is-incorrect");
       answer.forEach((poolIndex, position) => {
@@ -365,6 +370,7 @@
         chip.addEventListener("click", () => { if (!disabled) { answer.push(poolIndex); redraw(); onChange(); } });
         bank.appendChild(chip);
       });
+      if (restore) (bank.querySelector('button') || line.querySelector('button'))?.focus();
     }
     redraw();
     const current = () => answer.map(index => pool[index].word);
@@ -414,6 +420,7 @@
     }
 
     function redraw() {
+      const restore = host.contains(document.activeElement);
       rows.innerHTML = ""; bank.innerHTML = "";
       rows.classList.remove("is-correct", "is-incorrect");
       pairs.forEach((pair, leftIndex) => {
@@ -443,6 +450,7 @@
         });
         bank.appendChild(button);
       });
+      if (restore) (selectedLeft != null ? bank.querySelector('button') : [...rows.querySelectorAll('button')].find(row=>row.querySelector('.eng-match-slot:not(.is-filled)')) || rows.querySelector('button'))?.focus();
     }
     redraw();
     return {
@@ -469,7 +477,7 @@
       const text = el("div", "eng-stimulus", stimulus.texto);
       text.lang = stimulus.lang || "en"; host.appendChild(text);
     }
-    const questions = exercise.preguntas || [];
+    const questions = (exercise.preguntas || []).map(question=>({...question,opciones:shuffle(question.opciones || [])}));
     const selected = new Array(questions.length).fill(-1);
     let disabled = false;
     const box = el("div", "eng-subquestions"); host.appendChild(box);
@@ -547,6 +555,8 @@
     };
   };
 
+  if (window.ILMechanicTemplates) window.ILMechanicTemplates.install(TEMPLATES,{el,baseResult,shuffle,illustrationFor,disableAll,norm,playAudio,audioSettings});
+
   function renderFeedback(panel, type, title, message, context) {
     panel.className = "eng-feedback is-visible is-" + type;
     panel.innerHTML = "";
@@ -612,6 +622,7 @@
     const secondary = band === "eso";
     const experience = options.experience || {};
     const ui = interfaceCopy(band);
+    if (exercise.assessment === 'self_report') ui.check = secondary ? 'Save practice' : 'Guardar práctica';
     const guided = !!options.guided;
     let audioReplays = 0;
     let audioStarted = false;
@@ -672,7 +683,7 @@
     instruction.id = "exerciseInstruction"; header.appendChild(instruction);
     // Escuchar en alto: audio explícito si lo hay; si no, la frase de ejemplo en inglés
     // (feedback.context), para que casi todas las actividades tengan botón de escucha.
-    const audioText = exercise.tipo === "hablar" ? "" : (exercise.audio || (exercise.feedback && exercise.feedback.context) || "");
+    const audioText = exercise.tipo === "hablar" ? "" : (exercise.audio || "");
     const audioSource = exercise.audio_src || exercise.audio_url || "";
     if (audioText || audioSource) {
       const audio = el("button", "eng-audio"); audio.type = "button"; audio.dataset.audioState = "ready";
@@ -719,6 +730,7 @@
     root.appendChild(header);
 
     const body = el("div", "eng-body"); root.appendChild(body);
+    if (exercise.tipo === 'elegir_texto' && exercise.habilidad !== 'listening') body.appendChild(el('p','eng-stimulus',exercise.prompt || exercise.instruction || exercise.instruccion));
     const footer = el("div", "eng-footer");
     const feedback = el("div", "eng-feedback");
     feedback.id = "exerciseFeedback";
@@ -740,7 +752,7 @@
     setSessionState(sessionMachine.ready(sessionState));
 
     function registerTechnicalFailure(failureType) {
-      if (technicalFailure) return;
+      if (technicalFailure || !root.isConnected || sessionState.final) return;
       technicalFailure = { id:exercise.id, exercise_id:exercise.id, technical_failure:true, failure_type:failureType,
         attempt_no:0, attempt_number:0, correct:null, hint_used:false, audio_replays:audioReplays,
         started_at:new Date().toISOString(), submitted_at:new Date().toISOString(), response_time_ms:0,
@@ -772,14 +784,15 @@
           id: exercise.id,
           type: exercise.tipo,
           correct: correct,
+          assessment:result.assessment,
           attempt_no: sessionState.attempts,
           hint_used: sessionState.attempts > 1 || guided,
           selectedLabel: result.selectedLabel,
           correctLabel: result.correctLabel,
           learnedExpressions: result.learnedExpressions || [],
           guided: guided
-          ,first_try_correct: correct && sessionState.attempts === 1 && !guided
-          ,eventual_success: !!correct
+          ,first_try_correct: result.assessment !== 'self_report' && correct && sessionState.attempts === 1 && !guided
+          ,eventual_success: result.assessment !== 'self_report' && !!correct
           ,attempt_count: sessionState.attempts
           ,audio_replays: audioReplays
           ,technical_failure: false
@@ -800,7 +813,7 @@
       result = template.evaluate();
       const submittedAt = Date.now();
       if (typeof options.onAttempt === "function") options.onAttempt({
-        id:exercise.id, exercise_id:exercise.id, type:exercise.tipo, correct:!!result.correct,
+        id:exercise.id, exercise_id:exercise.id, type:exercise.tipo, correct:result.assessment === 'self_report' ? null : !!result.correct, assessment:result.assessment,
         attempt_no:sessionState.attempts, attempt_number:sessionState.attempts, hint_used:sessionState.attempts > 1 || guided,
         audio_replays:audioReplays, answer:template.getAnswer(),
         started_at:new Date(attemptStartedAt).toISOString(), submitted_at:new Date(submittedAt).toISOString(),
@@ -809,7 +822,7 @@
       if (result.correct) {
         setSessionState(sessionMachine.resolve(sessionState, true));
         const successCopy = (exercise.feedback && exercise.feedback.correct) || result.explanation || "";
-        renderFeedback(feedback, "success", ui.success, successCopy, result.context);
+        renderFeedback(feedback, "success", result.assessment === 'self_report' ? (secondary ? 'Practice saved' : 'Práctica guardada') : ui.success, successCopy, result.context);
         celebrate(root);
         if (typeof options.onFeedback === "function") options.onFeedback("success");
         resolve(true);

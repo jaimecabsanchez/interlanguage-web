@@ -6,7 +6,7 @@ function pack(id, exerciseId) {
     id, version: 1, stages: ["p34"], topic: "school",
     units: [{ id: id + "-unit", title: "Unit", stage: "p34", cefr: "A1" }],
     objectives: [{ id: id + "-objective", unit_id: id + "-unit", stage: "p34", cefr: "A1", skill: "vocabulary", literacy_load: "low" }],
-    exercises: [{ id: exerciseId, unit_id: id + "-unit", objective_id: id + "-objective", template: "P1", variant: "elegir_texto", stage: "p34", age_min: 8, age_max: 9, cefr: "A1", skill: "vocabulary", literacy_load: "low", instruction: "Choose", options: [{ texto: "a", correcta: true }, { texto: "b" }] }]
+    exercises: [{ id: exerciseId, unit_id: id + "-unit", objective_id: id + "-objective", template: "P1", tipo:'elegir_texto', mechanic:'gap_fill', difficulty:1, estimated_seconds:40, hint:'Look at the first letter.', explanation:'A is the first letter.', variant: "elegir_texto", stage: ["p34"], age_min: 8, age_max: 9, cefr: "A1", skill: "vocabulary", literacy_load: "low", instruction: "Choose", options: [{ texto: "a", correcta: true }, { texto: "b" }] }]
   };
 }
 

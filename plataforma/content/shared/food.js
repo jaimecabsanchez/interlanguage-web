@@ -1,7 +1,7 @@
-/* Pack editorial generado desde contenido.js; editar el dato, no el motor. */
+/* Banco editorial: metadatos explícitos y mecánicas reutilizables. */
 ILContent.registerPack({
   "id": "primary-food",
-  "version": 1,
+  "version": 2,
   "stages": [
     "p12",
     "p34",
@@ -133,7 +133,6 @@ ILContent.registerPack({
       "unit_id": "la-comida",
       "objective_id": "food-words",
       "stage": [
-        "p12",
         "p34",
         "p56"
       ],
@@ -147,7 +146,11 @@ ILContent.registerPack({
         "incorrect": "Míralo con calma y prueba otra vez.",
         "context": "apple",
         "learnedExpressions": []
-      }
+      },
+      "mechanic": "listen_image",
+      "estimated_seconds": 35,
+      "hint": "Míralo con calma y prueba otra vez.",
+      "explanation": "¡Correcto! La respuesta es «apple»."
     },
     {
       "id": "lc-2",
@@ -183,7 +186,6 @@ ILContent.registerPack({
       "unit_id": "la-comida",
       "objective_id": "food-words",
       "stage": [
-        "p12",
         "p34",
         "p56"
       ],
@@ -197,7 +199,11 @@ ILContent.registerPack({
         "incorrect": "Míralo con calma y prueba otra vez.",
         "context": "banana",
         "learnedExpressions": []
-      }
+      },
+      "mechanic": "listen_image",
+      "estimated_seconds": 35,
+      "hint": "Míralo con calma y prueba otra vez.",
+      "explanation": "¡Correcto! La respuesta es «banana»."
     },
     {
       "id": "lc-3",
@@ -226,7 +232,6 @@ ILContent.registerPack({
       "unit_id": "la-comida",
       "objective_id": "food-likes",
       "stage": [
-        "p12",
         "p34",
         "p56"
       ],
@@ -240,7 +245,11 @@ ILContent.registerPack({
         "incorrect": "Míralo con calma y prueba otra vez.",
         "context": "like",
         "learnedExpressions": []
-      }
+      },
+      "mechanic": "gap_fill",
+      "estimated_seconds": 55,
+      "hint": "Míralo con calma y prueba otra vez.",
+      "explanation": "Con \"I\" usamos \"like\": I like pizza."
     },
     {
       "id": "lc-4",
@@ -266,7 +275,6 @@ ILContent.registerPack({
       "unit_id": "la-comida",
       "objective_id": "food-likes",
       "stage": [
-        "p12",
         "p34",
         "p56"
       ],
@@ -280,7 +288,11 @@ ILContent.registerPack({
         "incorrect": "Fíjate en el orden: sujeto + verbo + resto, y prueba otra vez.",
         "context": "I like apples.",
         "learnedExpressions": []
-      }
+      },
+      "mechanic": "sentence_order",
+      "estimated_seconds": 60,
+      "hint": "Fíjate en el orden: sujeto + verbo + resto, y prueba otra vez.",
+      "explanation": "Orden correcto: «I like apples.». En inglés va primero el sujeto y luego el verbo."
     },
     {
       "id": "lc-5",
@@ -305,7 +317,16 @@ ILContent.registerPack({
       "variant_group": "food-likes",
       "tags": [
         "food"
-      ]
+      ],
+      "mechanic": "speaking",
+      "estimated_seconds": 60,
+      "assessment": "self_report",
+      "hint": "Escucha la frase en partes y repítela.",
+      "explanation": "Has practicado cómo decir: I like apples and bananas.",
+      "feedback": {
+        "incorrect": "Escucha la frase en partes y repítela.",
+        "correct": "Has practicado cómo decir: I like apples and bananas."
+      }
     },
     {
       "id": "lc-6",
@@ -354,7 +375,11 @@ ILContent.registerPack({
         "incorrect": "Míralo con calma y prueba otra vez.",
         "context": "",
         "learnedExpressions": []
-      }
+      },
+      "mechanic": "matching",
+      "estimated_seconds": 65,
+      "hint": "Míralo con calma y prueba otra vez.",
+      "explanation": "¡Bien hecho!"
     },
     {
       "id": "lc-7",
@@ -399,7 +424,6 @@ ILContent.registerPack({
       "unit_id": "la-comida",
       "objective_id": "food-reading",
       "stage": [
-        "p12",
         "p34",
         "p56"
       ],
@@ -413,7 +437,11 @@ ILContent.registerPack({
         "incorrect": "Míralo con calma y prueba otra vez.",
         "context": "",
         "learnedExpressions": []
-      }
+      },
+      "mechanic": "reading",
+      "estimated_seconds": 100,
+      "hint": "Míralo con calma y prueba otra vez.",
+      "explanation": "¡Bien hecho!"
     },
     {
       "id": "lc-8",
@@ -461,7 +489,11 @@ ILContent.registerPack({
       "variant_group": "food-words",
       "tags": [
         "food"
-      ]
+      ],
+      "mechanic": "listen_image",
+      "estimated_seconds": 35,
+      "hint": "Es amarillo y se hace con leche.",
+      "explanation": "“Cheese” significa “queso”."
     },
     {
       "id": "lc-9",
@@ -509,7 +541,11 @@ ILContent.registerPack({
       "variant_group": "food-words",
       "tags": [
         "food"
-      ]
+      ],
+      "mechanic": "listen_image",
+      "estimated_seconds": 35,
+      "hint": "Es lo que usamos para hacer un sándwich.",
+      "explanation": "“Bread” significa “pan”."
     },
     {
       "id": "lc-10",
@@ -557,7 +593,11 @@ ILContent.registerPack({
       "variant_group": "food-words",
       "tags": [
         "food"
-      ]
+      ],
+      "mechanic": "listen_image",
+      "estimated_seconds": 35,
+      "hint": "Escucha otra vez: es lo que ponen las gallinas.",
+      "explanation": "“Egg” significa “huevo”."
     },
     {
       "id": "lc-11",
@@ -605,7 +645,11 @@ ILContent.registerPack({
       "variant_group": "food-words",
       "tags": [
         "food"
-      ]
+      ],
+      "mechanic": "listen_image",
+      "estimated_seconds": 35,
+      "hint": "Es lo blanco que bebemos en el desayuno.",
+      "explanation": "“Milk” significa “leche”."
     },
     {
       "id": "lc-12",
@@ -641,7 +685,6 @@ ILContent.registerPack({
       "unit_id": "la-comida",
       "objective_id": "food-words",
       "stage": [
-        "p12",
         "p34",
         "p56"
       ],
@@ -649,7 +692,11 @@ ILContent.registerPack({
       "variant_group": "food-words",
       "tags": [
         "food"
-      ]
+      ],
+      "mechanic": "gap_fill",
+      "estimated_seconds": 40,
+      "hint": "Es una fruta roja o verde.",
+      "explanation": "“Apple” es “manzana”."
     },
     {
       "id": "lc-13",
@@ -698,7 +745,11 @@ ILContent.registerPack({
       "variant_group": "food-reading",
       "tags": [
         "food"
-      ]
+      ],
+      "mechanic": "gap_fill",
+      "estimated_seconds": 40,
+      "hint": "“Don't like” es lo contrario de “like”.",
+      "explanation": "“I don't like…” = “No me gusta(n)…”."
     },
     {
       "id": "lc-14",
@@ -742,7 +793,11 @@ ILContent.registerPack({
       "variant_group": "food-likes",
       "tags": [
         "food"
-      ]
+      ],
+      "mechanic": "gap_fill",
+      "estimated_seconds": 55,
+      "hint": "Con I/you/we usamos “don't”, no “doesn't”.",
+      "explanation": "Con “I” la forma negativa es “don't”: I don't like fish."
     },
     {
       "id": "lc-15",
@@ -783,7 +838,11 @@ ILContent.registerPack({
         "incorrect": "Fíjate en el orden: sujeto + verbo + resto, y prueba otra vez.",
         "context": "I don't like cheese.",
         "learnedExpressions": []
-      }
+      },
+      "mechanic": "sentence_order",
+      "estimated_seconds": 60,
+      "hint": "Fíjate en el orden: sujeto + verbo + resto, y prueba otra vez.",
+      "explanation": "Orden correcto: «I don't like cheese.». En inglés va primero el sujeto y luego el verbo."
     },
     {
       "id": "lc-16",
@@ -807,7 +866,16 @@ ILContent.registerPack({
       "variant_group": "food-likes",
       "tags": [
         "food"
-      ]
+      ],
+      "mechanic": "speaking",
+      "estimated_seconds": 60,
+      "assessment": "self_report",
+      "hint": "Escucha la frase en partes y repítela.",
+      "explanation": "Has practicado cómo decir: Do you like bananas?",
+      "feedback": {
+        "incorrect": "Escucha la frase en partes y repítela.",
+        "correct": "Has practicado cómo decir: Do you like bananas?"
+      }
     },
     {
       "id": "lc-17",
@@ -847,7 +915,6 @@ ILContent.registerPack({
       "unit_id": "la-comida",
       "objective_id": "food-words",
       "stage": [
-        "p12",
         "p34",
         "p56"
       ],
@@ -855,7 +922,11 @@ ILContent.registerPack({
       "variant_group": "food-words",
       "tags": [
         "food"
-      ]
+      ],
+      "mechanic": "gap_fill",
+      "estimated_seconds": 40,
+      "hint": "Agua se dice “water”.",
+      "explanation": "“Water” es agua."
     },
     {
       "id": "lc-18",
@@ -895,7 +966,6 @@ ILContent.registerPack({
       "unit_id": "la-comida",
       "objective_id": "food-words",
       "stage": [
-        "p12",
         "p34",
         "p56"
       ],
@@ -903,7 +973,11 @@ ILContent.registerPack({
       "variant_group": "food-words",
       "tags": [
         "food"
-      ]
+      ],
+      "mechanic": "gap_fill",
+      "estimated_seconds": 40,
+      "hint": "Huevo se dice “egg”.",
+      "explanation": "“Egg” es huevo."
     },
     {
       "id": "lc-19",
@@ -949,7 +1023,11 @@ ILContent.registerPack({
       "variant_group": "food-likes",
       "tags": [
         "food"
-      ]
+      ],
+      "mechanic": "gap_fill",
+      "estimated_seconds": 40,
+      "hint": "Con I/you/we usamos “like”, sin -s.",
+      "explanation": "Con “I” usamos “like”: I like apples."
     },
     {
       "id": "lc-20",
@@ -995,7 +1073,11 @@ ILContent.registerPack({
       "variant_group": "food-reading",
       "tags": [
         "food"
-      ]
+      ],
+      "mechanic": "gap_fill",
+      "estimated_seconds": 40,
+      "hint": "Fíjate en “I don't like eggs”.",
+      "explanation": "“I don't like eggs” → no le gustan los huevos."
     },
     {
       "id": "lc-21",
@@ -1032,7 +1114,6 @@ ILContent.registerPack({
       "unit_id": "la-comida",
       "objective_id": "food-words",
       "stage": [
-        "p12",
         "p34",
         "p56"
       ],
@@ -1040,7 +1121,11 @@ ILContent.registerPack({
       "variant_group": "food-words",
       "tags": [
         "food"
-      ]
+      ],
+      "mechanic": "gap_fill",
+      "estimated_seconds": 40,
+      "hint": "Leche se dice “milk”.",
+      "explanation": "“Milk” es leche."
     },
     {
       "id": "lc-22",
@@ -1077,7 +1162,6 @@ ILContent.registerPack({
       "unit_id": "la-comida",
       "objective_id": "food-words",
       "stage": [
-        "p12",
         "p34",
         "p56"
       ],
@@ -1085,7 +1169,11 @@ ILContent.registerPack({
       "variant_group": "food-words",
       "tags": [
         "food"
-      ]
+      ],
+      "mechanic": "gap_fill",
+      "estimated_seconds": 40,
+      "hint": "Pan se dice “bread”.",
+      "explanation": "“Bread” es pan."
     },
     {
       "id": "lc-23",
@@ -1131,7 +1219,11 @@ ILContent.registerPack({
       "variant_group": "food-likes",
       "tags": [
         "food"
-      ]
+      ],
+      "mechanic": "gap_fill",
+      "estimated_seconds": 40,
+      "hint": "Tras “Do you” va el verbo sin -s: like.",
+      "explanation": "En preguntas con “do” usamos el verbo base: Do you like…?"
     },
     {
       "id": "lc-24",
@@ -1170,7 +1262,11 @@ ILContent.registerPack({
         "incorrect": "Fíjate en el orden: sujeto + verbo + resto, y prueba otra vez.",
         "context": "I like milk.",
         "learnedExpressions": []
-      }
+      },
+      "mechanic": "sentence_order",
+      "estimated_seconds": 60,
+      "hint": "Fíjate en el orden: sujeto + verbo + resto, y prueba otra vez.",
+      "explanation": "Orden correcto: «I like milk.». En inglés va primero el sujeto y luego el verbo."
     },
     {
       "id": "lc-25",
@@ -1216,7 +1312,11 @@ ILContent.registerPack({
       "variant_group": "food-reading",
       "tags": [
         "food"
-      ]
+      ],
+      "mechanic": "gap_fill",
+      "estimated_seconds": 40,
+      "hint": "Fíjate: “Ann likes apples and milk”.",
+      "explanation": "El texto dice “apples and milk”."
     },
     {
       "id": "lc-26",
@@ -1253,7 +1353,6 @@ ILContent.registerPack({
       "unit_id": "la-comida",
       "objective_id": "food-words",
       "stage": [
-        "p12",
         "p34",
         "p56"
       ],
@@ -1261,6 +1360,390 @@ ILContent.registerPack({
       "variant_group": "food-words",
       "tags": [
         "food"
+      ],
+      "mechanic": "gap_fill",
+      "estimated_seconds": 40,
+      "hint": "Queso se dice “cheese”.",
+      "explanation": "“Cheese” es queso."
+    },
+    {
+      "id": "food-name-egg",
+      "unit_id": "la-comida",
+      "objective_id": "food-words",
+      "tipo": "imagen_palabra",
+      "mechanic": "image_word",
+      "stage": [
+        "p12",
+        "p34",
+        "p56"
+      ],
+      "edad": [
+        5,
+        11
+      ],
+      "nivel": "Pre-A1",
+      "habilidad": "vocabulary",
+      "difficulty": 2,
+      "estimated_seconds": 40,
+      "instruccion": "Mira y elige la palabra.",
+      "instructions": {
+        "p12": "Mira y elige la palabra.",
+        "p34": "Mira y elige la palabra.",
+        "p56": "Mira y elige la palabra."
+      },
+      "hint": "Mira su forma y la yema.",
+      "explanation": "Egg significa huevo.",
+      "feedback": {
+        "incorrect": "Mira su forma y la yema.",
+        "correct": "Egg significa huevo.",
+        "correctAnswer": "Egg significa huevo."
+      },
+      "variant_group": "food-words-food-name-egg",
+      "stimulus_visual": "egg",
+      "opciones": [
+        {
+          "texto": "egg",
+          "correcta": true
+        },
+        {
+          "texto": "bread",
+          "correcta": false
+        },
+        {
+          "texto": "cheese",
+          "correcta": false
+        }
+      ]
+    },
+    {
+      "id": "food-find-bread",
+      "unit_id": "la-comida",
+      "objective_id": "food-words",
+      "tipo": "palabra_imagen",
+      "mechanic": "word_image",
+      "stage": [
+        "p12",
+        "p34",
+        "p56"
+      ],
+      "edad": [
+        5,
+        11
+      ],
+      "nivel": "Pre-A1",
+      "habilidad": "vocabulary",
+      "difficulty": 2,
+      "estimated_seconds": 35,
+      "instruccion": "Busca la imagen.",
+      "instructions": {
+        "p12": "Busca la imagen.",
+        "p34": "Busca la imagen.",
+        "p56": "Busca la imagen."
+      },
+      "hint": "Lo puedes usar para hacer una tostada.",
+      "explanation": "Bread significa pan.",
+      "feedback": {
+        "incorrect": "Lo puedes usar para hacer una tostada.",
+        "correct": "Bread significa pan.",
+        "correctAnswer": "Bread significa pan."
+      },
+      "variant_group": "food-words-food-find-bread",
+      "prompt": "bread",
+      "opciones": [
+        {
+          "texto": "bread",
+          "correcta": true,
+          "visual": "bread"
+        },
+        {
+          "texto": "apple",
+          "correcta": false,
+          "visual": "apple"
+        },
+        {
+          "texto": "milk",
+          "correcta": false,
+          "visual": "milk"
+        }
+      ]
+    },
+    {
+      "id": "food-build-like",
+      "unit_id": "la-comida",
+      "objective_id": "food-likes",
+      "tipo": "ordenar",
+      "mechanic": "sentence_order",
+      "stage": [
+        "p12",
+        "p34",
+        "p56"
+      ],
+      "edad": [
+        5,
+        11
+      ],
+      "nivel": "Pre-A1",
+      "habilidad": "grammar",
+      "difficulty": 2,
+      "estimated_seconds": 60,
+      "instruccion": "Forma la frase.",
+      "instructions": {
+        "p12": "Forma la frase.",
+        "p34": "Forma la frase.",
+        "p56": "Forma la frase."
+      },
+      "hint": "Primero quién: I.",
+      "explanation": "I like apples significa Me gustan las manzanas.",
+      "feedback": {
+        "incorrect": "Primero quién: I.",
+        "correct": "I like apples significa Me gustan las manzanas.",
+        "correctAnswer": "I like apples significa Me gustan las manzanas."
+      },
+      "variant_group": "food-likes-food-build-like",
+      "palabras": [
+        "I",
+        "like",
+        "apples."
+      ],
+      "respuesta": [
+        "I",
+        "like",
+        "apples."
+      ],
+      "audio": "I like apples."
+    },
+    {
+      "id": "food-sort-fruit",
+      "unit_id": "la-comida",
+      "objective_id": "food-words",
+      "tipo": "clasificar",
+      "mechanic": "classification",
+      "stage": [
+        "p12",
+        "p34",
+        "p56"
+      ],
+      "edad": [
+        5,
+        11
+      ],
+      "nivel": "Pre-A1",
+      "habilidad": "vocabulary",
+      "difficulty": 2,
+      "estimated_seconds": 75,
+      "instruccion": "Agrupa los elementos.",
+      "instructions": {
+        "p12": "Agrupa los elementos.",
+        "p34": "Agrupa los elementos.",
+        "p56": "Agrupa los elementos."
+      },
+      "hint": "Busca primero las dos frutas.",
+      "explanation": "Apple y banana son frutas. Milk es una bebida.",
+      "feedback": {
+        "incorrect": "Busca primero las dos frutas.",
+        "correct": "Apple y banana son frutas. Milk es una bebida.",
+        "correctAnswer": "Apple y banana son frutas. Milk es una bebida."
+      },
+      "variant_group": "food-words-food-sort-fruit",
+      "categories": [
+        "Fruta",
+        "Bebida"
+      ],
+      "items": [
+        {
+          "text": "apple",
+          "visual": "apple",
+          "category": "Fruta"
+        },
+        {
+          "text": "banana",
+          "visual": "banana",
+          "category": "Fruta"
+        },
+        {
+          "text": "milk",
+          "visual": "milk",
+          "category": "Bebida"
+        }
+      ]
+    },
+    {
+      "id": "food-repeat-please",
+      "unit_id": "la-comida",
+      "objective_id": "food-likes",
+      "tipo": "hablar",
+      "mechanic": "speaking",
+      "stage": [
+        "p12",
+        "p34",
+        "p56"
+      ],
+      "edad": [
+        5,
+        11
+      ],
+      "nivel": "Pre-A1",
+      "habilidad": "speaking",
+      "difficulty": 2,
+      "estimated_seconds": 60,
+      "instruccion": "Escucha y repite.",
+      "instructions": {
+        "p12": "Escucha y repite.",
+        "p34": "Escucha y repite.",
+        "p56": "Escucha y repite."
+      },
+      "hint": "Di milk y después please.",
+      "explanation": "Has practicado cómo pedir leche con educación.",
+      "feedback": {
+        "incorrect": "Di milk y después please.",
+        "correct": "Has practicado cómo pedir leche con educación.",
+        "correctAnswer": "Has practicado cómo pedir leche con educación."
+      },
+      "variant_group": "food-likes-food-repeat-please",
+      "frase": "Milk, please.",
+      "assessment": "self_report"
+    },
+    {
+      "id": "food-spell-cheese",
+      "unit_id": "la-comida",
+      "objective_id": "food-words",
+      "tipo": "deletrear",
+      "mechanic": "spelling",
+      "stage": [
+        "p34",
+        "p56"
+      ],
+      "edad": [
+        8,
+        11
+      ],
+      "nivel": "A1",
+      "habilidad": "writing",
+      "difficulty": 2,
+      "estimated_seconds": 55,
+      "instruccion": "Completa las letras.",
+      "instructions": {
+        "p34": "Completa las letras.",
+        "p56": "Completa las letras."
+      },
+      "hint": "Las dos letras que faltan son iguales.",
+      "explanation": "Cheese tiene dos ees seguidas.",
+      "feedback": {
+        "incorrect": "Las dos letras que faltan son iguales.",
+        "correct": "Cheese tiene dos ees seguidas.",
+        "correctAnswer": "Cheese tiene dos ees seguidas."
+      },
+      "variant_group": "food-words-food-spell-cheese",
+      "stimulus_visual": "cheese",
+      "mask": "ch__se",
+      "respuesta": "cheese"
+    },
+    {
+      "id": "food-dialogue-water",
+      "unit_id": "la-comida",
+      "objective_id": "food-likes",
+      "tipo": "dialogo",
+      "mechanic": "dialogue",
+      "stage": [
+        "p34",
+        "p56"
+      ],
+      "edad": [
+        8,
+        11
+      ],
+      "nivel": "A1",
+      "habilidad": "speaking",
+      "difficulty": 2,
+      "estimated_seconds": 80,
+      "instruccion": "Completa el diálogo.",
+      "instructions": {
+        "p34": "Completa el diálogo.",
+        "p56": "Completa el diálogo."
+      },
+      "hint": "Añade la palabra para pedir algo con educación.",
+      "explanation": "Please hace que la petición sea educada.",
+      "feedback": {
+        "incorrect": "Añade la palabra para pedir algo con educación.",
+        "correct": "Please hace que la petición sea educada.",
+        "correctAnswer": "Please hace que la petición sea educada."
+      },
+      "variant_group": "food-likes-food-dialogue-water",
+      "dialogue": [
+        "Waiter: What would you like to drink?",
+        "You: Water, ___."
+      ],
+      "respuesta": "please"
+    },
+    {
+      "id": "food-dictate-lunch",
+      "unit_id": "la-comida",
+      "objective_id": "food-reading",
+      "tipo": "dictado",
+      "mechanic": "dictation",
+      "stage": [
+        "p56"
+      ],
+      "edad": [
+        10,
+        11
+      ],
+      "nivel": "A1",
+      "habilidad": "listening",
+      "difficulty": 3,
+      "estimated_seconds": 70,
+      "instruccion": "Escucha y escribe.",
+      "instructions": {
+        "p56": "Escucha y escribe."
+      },
+      "hint": "Bread no se cuenta aquí: escucha some.",
+      "explanation": "Usamos some con una cantidad no especificada de pan.",
+      "feedback": {
+        "incorrect": "Bread no se cuenta aquí: escucha some.",
+        "correct": "Usamos some con una cantidad no especificada de pan.",
+        "correctAnswer": "Usamos some con una cantidad no especificada de pan."
+      },
+      "variant_group": "food-reading-food-dictate-lunch",
+      "audio": "There is some bread on the table.",
+      "respuesta": "There is some bread on the table."
+    },
+    {
+      "id": "food-write-lunch",
+      "unit_id": "la-comida",
+      "objective_id": "food-reading",
+      "tipo": "escritura_guiada",
+      "mechanic": "guided_writing",
+      "stage": [
+        "p56"
+      ],
+      "edad": [
+        10,
+        11
+      ],
+      "nivel": "A1",
+      "habilidad": "writing",
+      "difficulty": 3,
+      "estimated_seconds": 140,
+      "instruccion": "Escribe y revisa tu texto.",
+      "instructions": {
+        "p56": "Escribe y revisa tu texto."
+      },
+      "hint": "Empieza con I eat… y después I drink…",
+      "explanation": "El modelo distingue eat (comer) y drink (beber).",
+      "feedback": {
+        "incorrect": "Empieza con I eat… y después I drink…",
+        "correct": "El modelo distingue eat (comer) y drink (beber).",
+        "correctAnswer": "El modelo distingue eat (comer) y drink (beber)."
+      },
+      "variant_group": "food-reading-food-write-lunch",
+      "prompt": "Write two sentences about your lunch. Say what you eat and drink.",
+      "respuesta": "I eat a cheese sandwich. I drink water.",
+      "assessment": "self_report",
+      "min_words": 8,
+      "rubric": [
+        "I named a food.",
+        "I named a drink.",
+        "I checked eat and drink."
       ]
     }
   ]

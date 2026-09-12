@@ -20,7 +20,7 @@
   }
 
   function registerPack(input) {
-    const result = schema.validatePack(input);
+    const result = schema.validatePack(input, { publish:true });
     const key = result.value.id;
     if (!result.valid) {
       diagnostics.errors.push.apply(diagnostics.errors, result.errors.map(error => Object.assign({ pack_id: key }, error)));

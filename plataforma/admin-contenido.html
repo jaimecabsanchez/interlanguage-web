@@ -103,9 +103,14 @@
           <div class="fld"><label for="exIns">Pregunta / consigna</label><input type="text" id="exIns" placeholder='¿Cuál es "gato"?' required></div>
           <div class="fld"><label>Opciones (marca la correcta)</label><div id="optRows"></div>
             <button type="button" class="link-btn" id="addOpt">+ añadir opción</button></div>
-          <div class="fld"><label for="exExpl">Explicación (opcional, si falla)</label><input type="text" id="exExpl" placeholder="cat = gato"></div>
+          <div class="fld"><label for="exExpl">Explicación</label><input type="text" id="exExpl" placeholder="cat = gato" required></div>
+          <div class="fld"><label for="exHint">Pista para el reintento</label><input id="exHint" required></div>
+          <div class="row2"><div class="fld"><label for="exBand">Edad</label><select id="exBand"><option value="p34">8–9</option><option value="p12">5–7</option><option value="p56">10–11</option><option value="eso">ESO</option></select></div><div class="fld"><label for="exDifficulty">Dificultad (1–5)</label><input id="exDifficulty" type="number" min="1" max="5" value="2" required></div></div>
+          <div class="fld"><label for="exSeconds">Duración estimada en segundos</label><input id="exSeconds" type="number" min="10" max="600" value="40" required></div>
+          <div class="fld"><label for="exAudio">Texto del audio (obligatorio para Listening)</label><input id="exAudio"></div>
           <button class="btn btn-primary btn-block" type="submit">Guardar ejercicio</button>
         </form>
+        <details><summary>Importar una mecánica avanzada (JSON editorial)</summary><p>Incluye tipo, mechanic, instrucción, respuesta, pista, explicación, skill, CEFR, stage, difficulty y estimated_seconds.</p><label for="editorialJson">Ejercicio completo</label><textarea id="editorialJson" rows="10" style="width:100%"></textarea><button id="importEditorial" class="btn btn-ghost" type="button">Validar y añadir</button><p id="editorialResult" role="status"></p></details>
       </div>
     </div>
   </div>
@@ -117,9 +122,11 @@
 <script src="auth-utils.js?v=20260809d"></script>
 <script src="observability.js?v=20260824a"></script>
 <script src="learning-data.js?v=20260824a"></script>
-<script src="auth.js?v=20260909a"></script>
+<script src="auth.js?v=20260912a"></script>
 <script src="motor/visual-assets.js?v=20260814b"></script>
-<script src="content/schema.js?v=20260824a"></script>
+<script src="content/mechanics.js?v=20260912a"></script>
+<script src="content/authoring.js?v=20260912a"></script>
+<script src="content/schema.js?v=20260912a"></script>
 <script>
   const $ = (id) => document.getElementById(id);
   const KEY = "il_cms_content";
@@ -135,10 +142,10 @@
       const copy = Object.assign({}, unit), objectiveId = "cms-" + unit.id + "-objective";
       copy.stage = stages; copy.objective_ids = [objectiveId]; delete copy.ejercicios;
       objectives.push({ id:objectiveId,unit_id:unit.id,stage:stages,cefr:unit.nivel||"A1",skill:"vocabulary",difficulty:2,literacy_load:"medium" });
-      (unit.ejercicios || []).forEach(exercise => exercises.push(Object.assign({}, exercise, { unit_id:unit.id,objective_id:objectiveId,stage:stages,variant_group:objectiveId })));
+      (unit.ejercicios || []).forEach(exercise => exercises.push(Object.assign({}, exercise, { unit_id:unit.id,objective_id:objectiveId,variant_group:objectiveId })));
       return copy;
     });
-    return ILContentSchema.validatePack({ id:"cms-local-content",version:1,stages,topic:"cms",units,objectives,exercises });
+    return ILContentSchema.validatePack({ id:"cms-local-content",version:1,stages,topic:"cms",units,objectives,exercises }, { publish:true });
   }
   function save() {
     const validation = validateLocalContent();
@@ -243,8 +250,21 @@
       opciones: opts.map(o => { const oo = { texto: o.texto }; if (type === "elegir_imagen") oo.visual = o.visual; if (o.correcta) oo.correcta = true; return oo; })
     };
     const expl = $("exExpl").value.trim(); if (expl) ex.explicacion = expl;
+    ex.stage=[$('exBand').value];ex.difficulty=Number($('exDifficulty').value);ex.estimated_seconds=Number($('exSeconds').value);ex.hint=$('exHint').value.trim();ex.audio=$('exAudio').value.trim();
+    ex.mechanic=type==='elegir_imagen'?(ex.audio?'listen_image':'word_image'):(ex.habilidad==='listening'?'listen_text':'gap_fill');
+    if(ex.mechanic==='word_image')ex.prompt=ex.instruccion;
+    ex.feedback={correct:expl,incorrect:ex.hint};
     content[sel].ejercicios.push(ex);
-    save(); e.target.reset(); resetOpts(); renderExercises(); renderUnits();
+    if(!save()){content[sel].ejercicios.pop();return;} e.target.reset(); resetOpts(); renderExercises(); renderUnits();
+  };
+  $('importEditorial').onclick=()=>{
+    if(sel<0)return;
+    try {
+      const ex=JSON.parse($('editorialJson').value), result=ILAuthoring.validate(ex);
+      if(!result.valid)throw new Error(result.errors.map(e=>e.message).join(' '));
+      content[sel].ejercicios.push(ex);if(!save()){content[sel].ejercicios.pop();return;}
+      $('editorialResult').textContent='Ejercicio validado y guardado.';renderExercises();
+    } catch(error){$('editorialResult').textContent=error.message;}
   };
 
   (async () => {

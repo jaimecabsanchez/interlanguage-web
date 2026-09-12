@@ -46,7 +46,8 @@
       content_version: String(input.content_version || "1"),
       attempt_number: Math.max(0, Math.round(Number(input.attempt_number || input.attempt_no) || 0)),
       answer: value(input.answer, null),
-      correct: technical ? null : !!input.correct,
+      assessment: input.assessment === 'self_report' ? 'self_report' : 'objective',
+      correct: technical || input.assessment === 'self_report' ? null : !!input.correct,
       hint_used: technical ? false : !!input.hint_used,
       audio_replays: Math.max(0, Math.round(Number(input.audio_replays) || 0)),
       started_at: started,
@@ -68,6 +69,7 @@
     return {
       exercise_id: exerciseId,
       attempt_count: attempts.length,
+      self_report: attempts.some(event=>event.assessment === 'self_report'),
       first_try_correct: !!(first && first.correct === true && !first.hint_used),
       eventual_success: eventual,
       hint_used: attempts.some(event => event.hint_used),
@@ -83,7 +85,7 @@
     const eventualSuccessCount = outcomes.filter(item => item.eventual_success).length;
     const technicalFailureCount = outcomes.reduce((sum, item) => sum + item.technical_failure_count, 0);
     const hintUsedCount = outcomes.filter(item => item.hint_used).length;
-    const evaluableCount = outcomes.filter(item => item.attempt_count > 0).length;
+    const evaluableCount = outcomes.filter(item => item.attempt_count > 0 && !item.self_report).length;
     const perfect = ids.length > 0 && technicalFailureCount === 0 && hintUsedCount === 0
       && evaluableCount === ids.length && firstTryCorrectCount === ids.length;
     return {
@@ -95,7 +97,7 @@
       hint_used_count: hintUsedCount,
       perfect,
       outcomes,
-      incorrect_ids: outcomes.filter(item => !item.first_try_correct && !item.technical_failure).map(item => item.exercise_id)
+      incorrect_ids: outcomes.filter(item => !item.first_try_correct && !item.technical_failure && !item.self_report).map(item => item.exercise_id)
     };
   }
 

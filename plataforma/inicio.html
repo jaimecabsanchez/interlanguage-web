@@ -319,20 +319,23 @@
 <script src="supabase-config.js?v=20260809d"></script>
 <script src="auth-utils.js?v=20260809d"></script>
 <script src="copy-registry.js?v=20260910b"></script>
-<script src="age-policy.js?v=20260824a"></script>
+<script src="age-policy.js?v=20260912a"></script>
 <script src="motor/achievements.js?v=20260824a"></script>
 <script src="etapa.js?v=20260824b"></script>
-<script src="content/schema.js?v=20260824a"></script>
-<script src="content/loader.js?v=20260817a"></script>
-<script src="content/manifest.js?v=20260821e"></script>
-<script src="contenido.js?v=20260817a"></script>
+<script src="content/mechanics.js?v=20260912a"></script>
+<script src="content/authoring.js?v=20260912a"></script>
+<script src="content/schema.js?v=20260912a"></script>
+<script src="content/loader.js?v=20260912a"></script>
+<script src="content/manifest.js?v=20260912a"></script>
+<script src="contenido.js?v=20260912a"></script>
 <script src="observability.js?v=20260824a"></script>
 <script src="learning-data.js?v=20260824a"></script>
-<script src="auth.js?v=20260909a"></script>
-<script src="motor/matriz.js?v=20260824b"></script>
-<script src="mission-state.js?v=20260824b"></script>
+<script src="auth.js?v=20260912a"></script>
+<script src="motor/matriz.js?v=20260912a"></script>
+<script src="motor/session-composer.js?v=20260912a"></script>
+<script src="mission-state.js?v=20260912a"></script>
 <script src="motor/pedagogia.js?v=20260813a"></script>
-<script src="mastery-store.js?v=20260824a"></script>
+<script src="mastery-store.js?v=20260912a"></script>
     <script src="progress-data.js?v=20260824c"></script>
 <script src="profile-settings.js?v=20260819a"></script>
 <script src="avatar-rig.js?v=20260820c"></script>
@@ -636,7 +639,7 @@
       $("activityCount").textContent = experience.id === "secondary"
         ? (session.length + (session.length === 1 ? " exercise" : " exercises"))
         : (session.length + (session.length === 1 ? " reto" : " retos"));
-      $("missionTime").textContent = experience.sessionLabel;
+      $("missionTime").textContent = "≈ " + Math.max(1,Math.round(session.reduce((n,e)=>n+ILMechanics.estimate(e,stage),0)/60)) + " min";
       const skills = Array.from(new Set(session.map(item => item.habilidad).filter(Boolean))).slice(0, 4); $("skillList").innerHTML = "";
       skills.forEach(skill => {
         const chip = document.createElement("span"); chip.className = "skill-chip"; chip.dataset.skill = skill;
