@@ -1,0 +1,12 @@
+const assert=require('node:assert/strict'),R=require('./motor/rewards.js'),factory=require('./reward-store.js');
+const data=new Map(),storage={getItem:k=>data.get(k)||null,setItem:(k,v)=>data.set(k,v)};
+const S=factory(R,storage),r={sessionKey:'u|daily',date:'2026-09-01',completedAt:'2026-09-01T10:00:00.000Z',completed:true,mode:'daily',band:'p12',itemIds:['a','b'],events:['a','b'].map(id=>({attempt_id:id,exercise_id:id,client_session_key:'u|daily',correct:true}))};
+assert.equal(S.record('lucia',r).projection.balance,10);assert.equal(S.record('lucia',r).projection.balance,10);
+assert.equal(S.get(' LUCIA ').balance,10);assert.equal(S.get('other').balance,0);
+assert.equal(factory(R,storage).get('lucia').balance,10,'survives reload');
+assert.equal(S.purchase('lucia','bg-sunset','2026-09-01').ok,false);
+assert.equal(S.purchase('lucia','answers','2026-09-01').reason,'invalid-item');
+const failing=factory(R,{getItem:()=>null,setItem:()=>{throw Error('quota');}});assert.throws(()=>failing.record('lucia',r),/quota/);
+data.set(S._key('broken'),'not json');assert.throws(()=>S.get('broken'));assert.equal(data.get(S._key('broken')),'not json','corruption not silently overwritten');
+assert.throws(()=>S.record('',r),/user_required/);
+console.log('reward-store: persistence, isolation, insufficient funds, corruption and storage failure passed');

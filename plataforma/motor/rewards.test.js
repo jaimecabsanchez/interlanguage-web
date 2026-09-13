@@ -1,0 +1,61 @@
+const assert=require('node:assert/strict');
+const R=require('./rewards.js'),W=require('../world-data.js');
+let serial=0;
+function receipt(day,mode='daily',band='p12',ids=['a','b','c']){
+  const sessionKey='session-'+(++serial);
+  return {sessionKey,date:day,completedAt:day+'T12:00:00.000Z',completed:true,mode,band,itemIds:ids,
+    events:ids.map(id=>({attempt_id:sessionKey+'-'+id,client_session_key:sessionKey,exercise_id:id,objective_id:id,skill:'vocabulary',correct:true,assessment:'objective'}))};
+}
+const a=receipt('2026-09-01');
+assert.equal(R.project([a]).balance,10);
+assert.equal(R.project([a,a]).balance,10,'reload is idempotent');
+assert.equal(R.project([a,receipt(a.date)]).balance,10,'one mission per day');
+assert.equal(R.project([{...a,completed:false}]).balance,0);
+assert.equal(R.project([{...a,events:[]}]).balance,0);
+assert.equal(R.project([{...a,events:a.events.slice(0,2)}]).balance,0,'unfinished plan');
+assert.equal(R.project([{...a,events:a.events.map(e=>({...e,technical_failure:true}))}]).balance,0);
+assert.equal(R.project([{...a,events:a.events.map(e=>({...e,correct:null,assessment:'self_report'}))}]).balance,0);
+assert.equal(R.project([{...a,events:a.events.map(e=>({...e,correct:false}))}]).balance,10,'effort, not a perfection bribe');
+assert.equal(R.project([{...a,date:'2026-99-99'}]).balance,0);
+assert.equal(R.project([{...a,events:a.events.map(e=>({...e,client_session_key:'foreign'}))}]).balance,0);
+const extras=[receipt(a.date,'extra','p12',['d','e']),receipt(a.date,'extra','p12',['f','g']),receipt(a.date,'extra','p12',['h','i'])];
+extras.forEach((r,i)=>r.completedAt=a.date+'T1'+(i+3)+':00:00.000Z');
+assert.equal(R.project([a,...extras]).balance,14,'daily cap including diminishing extra returns');
+assert.equal(R.project(extras).balance,4,'daily 10 reserved even if not yet done');
+assert.equal(R.project([...extras,a]).balance,14,'replay order stable');
+assert.equal(R.project([a,receipt(a.date,'extra')]).balance,10,'same easy objectives cannot be farmed');
+const tomorrow=receipt('2026-09-02','extra');assert.equal(R.project([a,tomorrow]).balance,10,'old easy items do not renew automatically');
+tomorrow.dueIds=['a','b'];assert.equal(R.project([a,tomorrow]).balance,13,'real due review eligible');
+const repeat=receipt(tomorrow.date,'review');repeat.dueIds=['a','b'];repeat.completedAt=tomorrow.date+'T14:00:00.000Z';
+assert.equal(R.project([a,tomorrow,repeat]).balance,13,'same-day due replay blocked');
+const shared=receipt('2026-09-03');shared.events=a.events;assert.equal(R.project([a,shared]).balance,10,'attempts cannot be reused');
+for(const band of ['p12','p34','p56','eso']){
+  const rows=Array.from({length:9},(_,i)=>receipt('2026-09-'+String(i+7).padStart(2,'0'),'daily',band));
+  const p=R.project(rows);
+  assert.equal(p.awards.filter(a=>a.kind==='small-chest').length,3);
+  assert.equal(p.awards.filter(a=>a.kind==='weekly-chest').length,1);
+  assert(p.owned.every(id=>W.catalogFor(band).some(i=>i.id===id)),'age-compatible real cosmetics');
+  assert.equal(R.next(rows.slice(0,2),[],band,'2026-09-08').target,3);
+  assert.equal(p.earned,90,'chests have no hidden currency');
+}
+assert.equal(R.project([receipt('2026-09-01','daily','neutral')]).balance,10);
+assert.equal(R.next([],[],'neutral','2026-09-01'),null);
+const mastery=receipt('2026-09-01');mastery.masteredIds=mastery.itemIds;
+assert(R.project([mastery]).awards.some(a=>a.reason==='mastery-3'));
+const listening=receipt('2026-09-01','daily','eso',Array.from({length:10},(_,i)=>'l'+i));listening.events.forEach(e=>e.skill='listening');
+assert(R.project([listening]).awards.some(a=>a.reason==='listening-10'));
+const review=receipt('2026-09-01','review','p34',['r1','r2','r3','r4','r5']);review.dueIds=review.itemIds;
+assert(R.project([review]).awards.some(a=>a.reason==='review-5'));
+const achievements=receipt('2026-09-01');achievements.achievementItems=['world-flowers','world-flowers'];
+assert.equal(R.project([achievements]).awards.filter(a=>a.kind==='achievement').length,1);
+const money=[receipt('2026-09-01'),receipt('2026-09-02')];
+const purchase={id:'p',itemId:'bg-sunset',date:'2026-09-02',purchasedAt:'2026-09-02T13:00:00.000Z'};
+assert.equal(R.project(money,[purchase,purchase]).balance,0);
+assert.equal(R.project(money,[{...purchase,itemId:'mastery'}]).balance,20,'cannot buy learning');
+assert.equal(R.project(money,[{...purchase,itemId:'bg-night'}]).balance,20,'cannot overspend');
+assert.equal(R.project(money,[{...purchase,purchasedAt:'2026-08-01T00:00:00.000Z'}]).spent,0,'no spending future money');
+const later=Array.from({length:4},(_,i)=>receipt('2026-09-0'+(i+3)));
+assert.equal(R.project([...money,...later],[purchase]).spent,20,'later unlock cannot refund an earlier purchase');
+assert(R.next(money,[purchase],'p12','2026-09-02').item!=='bg-sunset','next chest avoids an already owned cosmetic');
+const frozen=JSON.stringify(a);R.project([a]);assert.equal(JSON.stringify(a),frozen,'projection never mutates educational events');
+console.log('rewards: evidence, idempotency, caps, cooldown, four ages, chests, growth and purchases passed');
