@@ -1,5 +1,7 @@
 const assert = require("assert");
 const W = require("./world-data.js");
+const rewardContext=W.context({lessons:0},[],'p12',['world-pond']);
+assert(W.unlockStatus(W.CATALOG.find(i=>i.id==='world-pond'),rewardContext).unlocked,'projected cosmetic ownership is respected');
 
 assert.equal(W.worldLevel({ lessons:0 }), 1);
 assert.equal(W.worldLevel({ lessons:5 }), 2);

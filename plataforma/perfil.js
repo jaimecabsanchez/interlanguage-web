@@ -36,8 +36,9 @@
       const name = document.createElement("b"); name.textContent = band === "eso" && stampNames[item.id] ? stampNames[item.id] : item.name; card.append(visual, name); host.appendChild(card);
     });
   }
-  function activeItems(settings, progress, stamps) {
-    const ctx = ILWorldData.context(progress, stamps, band); const requested = new Set(settings.activeWorldItems || []);
+  function activeItems(settings, progress, stamps, username) {
+    let owned=[];try { owned=ILRewardStore.get(username).owned; } catch (error) { /* Do not discard existing profile settings. */ }
+    const ctx = ILWorldData.context(progress, stamps, band, owned); const requested = new Set(settings.activeWorldItems || []);
     return ILWorldData.catalogFor(band, "world").filter(item => item.toggle === "world" && requested.has(item.id) && ILWorldData.unlockStatus(item, ctx).unlocked).map(item => item.id);
   }
 
@@ -60,7 +61,7 @@
       $("levelProgressText").textContent = summary.levelProgress == null ? (band === "eso" ? "Your next level starts here" : "Tu siguiente nivel empieza aquí") : pct + "% " + (band === "eso" ? "to " : "para ") + next;
       $("levelProgress").style.setProperty("--profile-progress", pct + "%"); $("levelProgress").setAttribute("aria-valuenow", String(pct)); $("levelProgress").setAttribute("aria-label", $("levelProgressText").textContent);
       $("profileAvatar").innerHTML = ILWorldVisual.avatar(settings, progress); $("profileWorldAvatar").innerHTML = ILWorldVisual.avatar(settings, progress);
-      const level = ILWorldData.worldLevel(progress); const objects = activeItems(settings, progress, stampIds);
+      const level = ILWorldData.worldLevel(progress); const objects = activeItems(settings, progress, stampIds, username);
       $("profileWorldScene").innerHTML = ILWorldVisual.scene(settings, progress, band, { level, activeItems:objects });
       $("worldLevelPill").textContent = (band === "eso" ? "Space level " : (band === "p56" ? "Base nivel " : "Jardín nivel ")) + level;
       renderStamps(stamps); ILLayout.mount();

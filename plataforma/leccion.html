@@ -65,46 +65,10 @@
   .exit-dialog__icon svg{width:27px;height:27px}.exit-dialog h2{font-size:var(--il-fs-xl);margin-bottom:var(--il-space-2)}.exit-dialog p{color:var(--il-text-secondary)}
   .exit-dialog__actions{display:flex;flex-direction:column;gap:var(--il-space-2);margin-top:var(--il-space-5)}
 
-  .mission-summary{position:fixed;inset:0;z-index:var(--il-z-modal);display:grid;place-items:center;overflow:auto;padding:var(--il-space-5);background:linear-gradient(160deg,var(--il-primary-soft),var(--il-background) 42%,var(--il-success-soft))}
-  .mission-summary.hidden{display:none}.summary-card{width:min(100%,590px);padding:clamp(24px,5vw,40px);border:1px solid var(--il-border);border-radius:var(--il-radius-xl);background:var(--il-surface);box-shadow:var(--il-shadow-lg);text-align:center;animation:summary-in var(--il-duration-slow) var(--il-ease) both}
-  .summary-seal{position:relative;width:94px;height:94px;display:grid;place-items:center;margin:0 auto var(--il-space-4);border-radius:50%;background:var(--il-success-soft);color:var(--il-success)}
-  .summary-seal::after{content:"";position:absolute;inset:-9px;border:2px solid var(--il-secondary);border-radius:50%;animation:summary-halo 800ms var(--il-ease) both}
-  .summary-seal svg{width:45px;height:45px}.summary-card h1{font-size:var(--il-fs-2xl);margin-bottom:var(--il-space-2)}.summary-lead{color:var(--il-text-secondary);margin-bottom:var(--il-space-5)}
-  .summary-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--il-space-2);margin-bottom:var(--il-space-5)}
-  .summary-stat{padding:14px 8px;border-radius:var(--il-radius-md);background:var(--il-surface-secondary)}.summary-stat strong{display:block;font-family:var(--il-font-display);font-size:var(--il-fs-xl);color:var(--il-primary);font-variant-numeric:tabular-nums}.summary-stat span{font-size:var(--il-fs-xs);color:var(--il-text-secondary)}
-  .summary-newstamp{margin:0 0 var(--il-space-5);padding:var(--il-space-4);border:1px dashed color-mix(in srgb,var(--il-secondary) 40%,var(--il-border));border-radius:var(--il-radius-lg);background:var(--il-secondary-soft)}
-  .summary-newstamp[hidden]{display:none}
-  .summary-newstamp__eyebrow{display:block;margin-bottom:var(--il-space-3);font-family:var(--il-font-display);font-size:var(--il-fs-xs);font-weight:var(--il-weight-extrabold);text-transform:uppercase;letter-spacing:var(--il-tracking-label);color:var(--il-coral-ink)}
-  .summary-newstamp__list{display:flex;gap:var(--il-space-4);justify-content:center;flex-wrap:wrap}
-  .summary-newstamp__item{display:flex;flex-direction:column;align-items:center;gap:6px;width:92px}
-  .summary-newstamp__stamp{width:72px;height:72px}.summary-newstamp__stamp svg{width:100%;height:100%}
-  .summary-newstamp__name{font-family:var(--il-font-display);font-weight:var(--il-weight-bold);font-size:var(--il-fs-xs);color:var(--il-text-primary);text-align:center;line-height:1.2}
-  .reward-dialog{width:min(92vw,420px);padding:0;border:0;border-radius:var(--il-radius-xl);background:var(--il-surface);color:var(--il-text-primary);box-shadow:var(--il-shadow-lg);text-align:center}
-  .reward-dialog::backdrop{background:var(--il-overlay);backdrop-filter:blur(3px)}
-  .reward-dialog__body{padding:var(--il-space-6)}
-  .reward-dialog__visual{width:96px;height:96px;margin:0 auto var(--il-space-3)}.reward-dialog__visual svg{width:100%;height:100%}
-  .reward-dialog .ui-label{color:var(--il-coral-ink)}
-  .reward-dialog h2{font-size:var(--il-fs-xl);margin:var(--il-space-1) 0 var(--il-space-2)}
-  .reward-dialog p{color:var(--il-text-secondary);font-size:var(--il-fs-sm)}
-  .reward-dialog__actions{display:flex;flex-direction:column;gap:var(--il-space-2);margin-top:var(--il-space-5)}
-  .summary-reward{display:grid;grid-template-columns:46px minmax(0,1fr) auto;align-items:center;gap:var(--il-space-3);margin-bottom:var(--il-space-5);padding:var(--il-space-4);border:1px solid color-mix(in srgb,var(--il-success) 28%,var(--il-border));border-radius:var(--il-radius-lg);background:var(--il-success-soft);text-align:left}
-  .summary-reward[hidden]{display:none}.summary-reward__icon{width:46px;height:46px;display:grid;place-items:center;border-radius:var(--il-radius-md);background:var(--il-success);color:var(--il-on-success)}.summary-reward__icon svg{width:24px;height:24px}.summary-reward b,.summary-reward small{display:block}.summary-reward b{font-family:var(--il-font-display);font-size:var(--il-fs-sm);color:var(--il-jade-deep)}.summary-reward small{margin-top:2px;color:var(--il-text-secondary);font-size:var(--il-fs-xs);line-height:1.4}.summary-reward__link{min-height:var(--il-touch);display:inline-flex;align-items:center;padding:var(--il-space-2) var(--il-space-3);border:1px solid var(--il-success);border-radius:var(--il-radius-sm);background:var(--il-surface);color:var(--il-jade-deep);font-size:var(--il-fs-xs);font-weight:var(--il-weight-bold);text-decoration:none}
-  .learned{margin-bottom:var(--il-space-5);text-align:left}.learned h2{font-size:var(--il-fs-base);margin-bottom:var(--il-space-3)}.learned-list{display:flex;flex-wrap:wrap;gap:var(--il-space-2)}.learned-chip{padding:7px 11px;border-radius:var(--il-radius-pill);background:var(--il-primary-soft);color:var(--il-primary);font-size:var(--il-fs-sm);font-weight:var(--il-weight-bold)}
-  .review-callout{display:flex;align-items:center;gap:var(--il-space-2);margin-bottom:var(--il-space-5);padding:12px 14px;border-radius:var(--il-radius-md);background:var(--il-warning-soft);color:var(--il-warning-ink);font-weight:var(--il-weight-bold);text-align:left}.review-callout svg{width:20px;height:20px;flex:0 0 auto}
-  .summary-streak{display:flex;align-items:center;gap:var(--il-space-3);margin-bottom:var(--il-space-5);padding:var(--il-space-3) var(--il-space-4);border-radius:var(--il-radius-lg);background:var(--il-warning-soft);text-align:left}
-  .summary-streak[hidden]{display:none}
-  .summary-streak__flame{width:44px;height:44px;flex:0 0 auto;display:grid;place-items:center;border-radius:50%;background:var(--il-surface);color:var(--il-warning)}
-  .summary-streak__flame svg{width:24px;height:24px}
-  .summary-streak p{margin:0;color:var(--il-warning-ink);font-size:var(--il-fs-sm);line-height:1.4}
-  .summary-streak b{font-family:var(--il-font-display);font-weight:var(--il-weight-extrabold)}
-  .summary-actions{display:flex;gap:var(--il-space-3)}.summary-actions .btn{flex:1}
-  @keyframes summary-in{from{opacity:0;transform:translateY(10px) scale(.985)}to{opacity:1;transform:none}}
-  @keyframes summary-halo{from{opacity:.65;transform:scale(.75)}to{opacity:0;transform:scale(1.18)}}
 
   @media (max-width:520px){
     .lesson{padding-inline:var(--il-space-3)}.lesson-header__top{grid-template-columns:var(--il-touch) minmax(0,1fr)}.lesson-streak{display:none}
-    .summary-reward{grid-template-columns:42px minmax(0,1fr)}.summary-reward__link{grid-column:2;justify-content:center}
-    #stage{padding-top:var(--il-space-3)}.summary-stats{gap:6px}.summary-stat{padding-inline:4px}.summary-actions{flex-direction:column}.summary-actions .btn-primary{order:-1}
+    #stage{padding-top:var(--il-space-3)}
   }
   body[data-stage="p56"] .segment-track,body[data-stage="eso"] .segment-track{gap:0;overflow:hidden;border-radius:var(--il-radius-pill);background:var(--il-border)}
   body[data-stage="p56"] .segment,body[data-stage="eso"] .segment{border-radius:0;background:transparent}
@@ -112,9 +76,10 @@
   body.lesson-page:has(.age-mode-switcher) .lesson-header{padding-right:250px}
   @media (max-width:620px){body.lesson-page:has(.age-mode-switcher) .lesson-header{padding-right:0}.lesson-name{display:none}.lesson-meta{justify-content:flex-start}}
   @media (min-width:1024px){.lesson{max-width:1040px;padding-inline:var(--il-space-6)}.lesson-header{padding-top:var(--il-space-5)}}
-  @media (prefers-reduced-motion:reduce){.segment,.progress-plane{transition:none}.success-react.is-visible,.summary-card,.summary-seal::after{animation:none}.summary-seal::after{display:none}}
+  @media (prefers-reduced-motion:reduce){.segment,.progress-plane{transition:none}.success-react.is-visible{animation:none}}
 </style>
 <link rel="stylesheet" href="motor/motor.css?v=20260912a">
+<link rel="stylesheet" href="session-ending.css?v=20260913a">
 </head>
 <body class="lesson-page">
 <div class="il-offline" id="offline" hidden><span data-il-icon="wifiOff" aria-hidden="true"></span> Sin conexión.</div>
@@ -154,54 +119,7 @@
   </div>
 </dialog>
 
-<section class="mission-summary hidden" id="missionSummary" tabindex="-1" aria-labelledby="summaryTitle">
-  <div class="summary-card">
-    <div class="summary-seal" aria-hidden="true"><span data-il-icon="stamp"></span></div>
-    <h1 id="summaryTitle">¡Misión completada!</h1>
-    <p class="summary-lead" id="summaryLead">Has avanzado un poco más con tu inglés.</p>
-    <div class="summary-stats" aria-label="Resumen de la misión">
-      <div class="summary-stat"><strong id="summaryScore">0/0</strong><span id="summaryScoreLabel">correctas</span></div>
-      <div class="summary-stat"><strong id="summaryTime">0 min</strong><span id="summaryTimeLabel">tiempo</span></div>
-      <div class="summary-stat"><strong id="summaryLearned">0</strong><span id="summaryLearnedLabel">expresiones</span></div>
-    </div>
-    <div class="summary-newstamp" id="summaryNewStamp" hidden>
-      <span class="summary-newstamp__eyebrow" id="summaryNewStampEyebrow">¡Nuevo sello!</span>
-      <div class="summary-newstamp__list" id="summaryNewStampList"></div>
-    </div>
-    <div class="summary-streak" id="summaryStreak" hidden>
-      <span class="summary-streak__flame" aria-hidden="true"><span data-il-icon="flame"></span></span>
-      <p id="summaryStreakCopy"></p>
-    </div>
-    <div class="summary-reward" id="summaryReward" hidden>
-      <span class="summary-reward__icon" aria-hidden="true"><span data-il-icon="route"></span></span>
-      <span><b id="summaryRewardTitle">Tu mundo ha avanzado</b><small id="summaryRewardCopy">Tu próximo desbloqueo está más cerca.</small></span>
-      <a class="summary-reward__link" id="summaryWorldLink" href="tienda.html">Ver mi mundo</a>
-    </div>
-    <div class="learned" id="learnedBlock" hidden>
-      <h2 id="learnedTitle">Expresiones que has practicado</h2>
-      <div class="learned-list" id="learnedList"></div>
-    </div>
-    <div class="review-callout" id="reviewCallout" hidden><span data-il-icon="refresh" aria-hidden="true"></span><span id="reviewMessage"></span></div>
-    <div class="summary-actions">
-      <a class="btn btn-ghost" id="summaryHome" href="inicio.html">Volver al inicio</a>
-      <a class="btn btn-primary" id="reviewErrors" href="leccion.html?mode=errors" hidden>Repasar errores</a>
-      <a class="btn btn-primary" id="oneMore" href="leccion.html?mode=bonus" hidden>¿Una más?</a>
-    </div>
-  </div>
-</section>
-
-<dialog class="reward-dialog" id="rewardDialog" aria-labelledby="rewardName">
-  <div class="reward-dialog__body">
-    <div class="reward-dialog__visual" id="rewardVisual" aria-hidden="true"></div>
-    <p class="ui-label" id="rewardEyebrow">¡Nueva recompensa!</p>
-    <h2 id="rewardName">Recompensa</h2>
-    <p id="rewardReason"></p>
-    <div class="reward-dialog__actions">
-      <a class="btn btn-primary" id="rewardTry" href="tienda.html">Probar ahora</a>
-      <button class="btn btn-ghost" id="rewardContinue" type="button">Seguir</button>
-    </div>
-  </div>
-</dialog>
+<section class="mission-summary hidden" id="missionSummary" tabindex="-1" aria-label="Resumen de sesión"></section>
 
 <script src="layout.js?v=20260824a"></script>
 <script src="il-visual.js?v=20260821b"></script>
@@ -231,7 +149,12 @@
 <script src="mastery-store.js?v=20260912a"></script>
 <script src="achievement-store.js?v=20260816a"></script>
 <script src="profile-settings.js?v=20260819a"></script>
-<script src="world-data.js?v=20260824b"></script>
+<script src="world-data.js?v=20260913a"></script>
+<script src="avatar-rig.js?v=20260814a"></script>
+<script src="world-visual.js?v=20260820c"></script>
+<script src="motor/rewards.js?v=20260913a"></script>
+<script src="reward-store.js?v=20260913a"></script>
+<script src="session-ending.js?v=20260913a"></script>
 <script src="motor/visual-assets.js?v=20260814b"></script>
 <script src="motor/adaptacion.js?v=20260814a"></script>
 <script src="motor/session-state.js?v=20260911a"></script>
@@ -270,7 +193,7 @@
   let placementState = null;
   let learningEvents = [];
   let practiceSession = { id:null, client_session_key:"" };
-  let skillStartedAt = 0;
+  let dueAtStart = [];
 
   function modeName() { return reviewMode || reviewDueMode ? "review" : (extraMode() ? "extra" : "daily"); }
   function recordLearning(raw) {
@@ -413,8 +336,6 @@
     currentController.focus();
   }
 
-  function minutes(ms) { return Math.max(1, Math.round(Math.max(0, ms) / 60000)); }
-
   function localizeLessonChrome() {
     if (ageExperience.id !== "secondary") return;
     $("closeMission").setAttribute("aria-label", "Exit session");
@@ -422,183 +343,75 @@
     $("exitDescription").textContent = "We’ll save your progress so you can continue later.";
     $("keepPractising").textContent = "Keep practising";
     $("saveAndExit").textContent = "Save and exit";
-    $("summaryHome").textContent = "Back to home";
-    $("learnedTitle").textContent = "Expressions you practised";
   }
 
-  function renderSummary(state, isReview) {
-    const learned = isReview ? [] : (state.learnedExpressions || []).slice(0, 4);
-    const errors = isReview ? Math.max(0, items.length - reviewCorrect) : (state.incorrectIds || []).length;
-    $("summaryTitle").textContent = isReview ? ageExperience.copy.reviewCta : ageExperience.copy.summaryTitle;
-    $("summaryLead").textContent = isReview
-      ? (ageExperience.id === "secondary"
-        ? (reviewCorrect === items.length ? "You solved every review exercise." : "You strengthened the areas that needed more practice.")
-        : (reviewCorrect === items.length ? "Has resuelto todos los ejercicios del repaso." : "Has reforzado lo que necesitaba un poco más de práctica."))
-      : ageExperience.copy.summaryLead;
-    $("summaryScore").textContent = (isReview ? reviewCorrect : state.correctCount) + "/" + (isReview ? items.length : state.evaluableCount);
-    $("summaryTime").textContent = minutes(isReview ? 0 : state.elapsedMs) + " min";
-    $("summaryLearned").textContent = isReview ? reviewCorrect : learned.length;
-    $("summaryLearnedLabel").textContent = isReview ? "errores resueltos" : "expresiones";
-    if (ageExperience.id === "secondary") {
-      $("summaryScoreLabel").textContent = "correct";
-      $("summaryTimeLabel").textContent = "time";
-      $("summaryLearnedLabel").textContent = isReview ? "mistakes resolved" : "expressions";
+  function renderEnding(state, award) {
+    let reward = null, rewardError = false, next = null;
+    const ids = items.length ? items.map(ex => ex.id) : (state && state.itemIds || missionMeta.itemIds || []);
+    const events = learningEvents.filter(event => ids.includes(event.exercise_id));
+    try {
+      if (award) {
+        const mastery = window.ILMastery ? ILMastery.all(username) : {};
+        const achievementItems = newAchievements.map(id => window.IL_ACHIEVEMENTS?.byId[id]?.reward)
+          .filter(id => ILWorldData.catalogFor(stageName).some(item => item.id === id));
+        reward = ILRewardStore.record(username, {
+          sessionKey:practiceSession.client_session_key, date:missionMeta.date, completedAt:new Date().toISOString(),
+          completed:true, mode:modeName(), band:stageName, itemIds:ids, events,
+          dueIds:dueAtStart, masteredIds:ids.filter(id => mastery[id]?.state === 'mastered'), achievementItems
+        });
+      } else {
+        const projection = ILRewardStore.get(username);
+        reward = {projection, session:projection.resultBySession[practiceSession.client_session_key]};
+      }
+      next = ILRewardStore.next(username, stageName, missionMeta.date || ILMission.today());
+    } catch (error) {
+      rewardError = true;
+      if (window.ILObservability) ILObservability.report('storage_failure', error, {area:'rewards'});
     }
-    $("learnedBlock").hidden = !learned.length;
-    $("learnedList").innerHTML = "";
-    learned.forEach(value => { const chip = document.createElement("span"); chip.className = "learned-chip"; chip.lang = "en"; chip.textContent = value; $("learnedList").appendChild(chip); });
-    $("reviewCallout").hidden = errors === 0;
-    $("reviewErrors").hidden = errors === 0;
-    $("reviewErrors").textContent = ageExperience.id === "secondary"
-      ? (isReview ? "Review again" : "Review mistakes")
-      : (isReview ? "Repasar de nuevo" : "Repasar errores");
-    // "¿Una más?": práctica extra voluntaria cuando la misión sale limpia y hay contenido sin usar hoy.
-    const oneMore = $("oneMore");
-    if (!isReview && errors === 0 && bonusPool.length) {
-      oneMore.hidden = false;
-      oneMore.textContent = ageExperience.id === "secondary" ? "Do one more" : (ageExperience.id === "primary-young" ? "¡Una más!" : "¿Una más?");
-    } else { oneMore.hidden = true; }
-    // Racha en el resumen: motiva y anticipa mañana, sin culpabilizar (solo suma positiva).
-    const streakEl = $("summaryStreak");
-    const streakCount = (completionProgress && completionProgress.streak) || 0;
-    if (isReview || streakCount < 1) {
-      streakEl.hidden = true;
-    } else {
-      streakEl.hidden = false;
-      const nextStreak = streakCount + 1;
-      const dayWord = streakCount === 1 ? "día" : "días";
-      const saved = !!completionProgress.streakSaved;
-      const streakIcon = streakEl.querySelector(".summary-streak__flame");
-      if (streakIcon) streakIcon.innerHTML = ILIcon(saved ? "buoy" : "flame");
-      $("summaryStreakCopy").innerHTML = saved
-        ? (ageExperience.id === "secondary"
-          ? "<b>Your flex day kept your streak</b> · You’re now at " + streakCount + " days."
-          : ageExperience.id === "primary-young"
-            ? "<b>¡Tu racha sigue!</b> · Tu día flexible cuidó tu racha de " + streakCount + " " + dayWord + "."
-            : "<b>Tu día flexible cuidó tu racha</b> · Sigues con " + streakCount + " " + dayWord + ".")
-        : (ageExperience.id === "secondary"
-          ? "<b>" + streakCount + "-day streak</b> · Come back tomorrow to reach " + nextStreak + "."
-          : ageExperience.id === "primary-young"
-            ? "<b>" + streakCount + " " + dayWord + " seguidos</b> · ¡Vuelve mañana para llegar a " + nextStreak + "!"
-            : "<b>Racha de " + streakCount + " " + dayWord + "</b> · Vuelve mañana para llegar a " + nextStreak + ".");
-    }
-    const reward = $("summaryReward");
-    reward.hidden = isReview || !completionProgress;
-    if (!reward.hidden) {
-      const next = ILWorldData.nextUnlock(completionProgress, stageName);
-      const nextName = next && ageExperience.id === "secondary" && next.nameEn ? next.nameEn : (next && next.name);
-      $("summaryRewardTitle").textContent = ageExperience.id === "secondary" ? "Your space has progressed" : "Tu mundo ha avanzado";
-      $("summaryRewardCopy").textContent = next
-        ? next.requirement + ": " + nextName + "."
-        : (ageExperience.id === "secondary" ? "Your current collection is complete." : "Has completado la colección disponible.");
-      $("summaryWorldLink").textContent = ageExperience.id === "secondary" ? "Personalise" : "Ver mi mundo";
-    }
-    if (errors) $("reviewMessage").textContent = ageExperience.id === "secondary"
-      ? errors + (errors === 1 ? " exercise to review" : " exercises to review")
-      : errors + (errors === 1 ? " ejercicio para repasar" : " ejercicios para repasar");
-    // §5 paso 3 · revela sello(s) nuevo(s), solo si pasó algo importante (celebración rara = más impacto).
-    const newStampEl = $("summaryNewStamp");
-    if (newStampEl && !isReview && newAchievements && newAchievements.length && window.IL_ACHIEVEMENTS) {
-      const listEl = $("summaryNewStampList"); listEl.innerHTML = "";
-      newAchievements.slice(0, 3).forEach(id => {
-        const it = IL_ACHIEVEMENTS.byId[id]; if (!it) return;
-        const cell = document.createElement("div"); cell.className = "summary-newstamp__item";
-        const st = document.createElement("span"); st.className = "summary-newstamp__stamp"; st.innerHTML = window.ILVisual ? ILVisual.stamp(it.visual, { locked: false }) : "";
-        const nm = document.createElement("span"); nm.className = "summary-newstamp__name"; nm.textContent = IL_ACHIEVEMENTS.displayName(it, stageName);
-        cell.append(st, nm); listEl.appendChild(cell);
-      });
-      $("summaryNewStampEyebrow").textContent = ageExperience.id === "secondary" ? (newAchievements.length > 1 ? "New achievements" : "New achievement") : (newAchievements.length > 1 ? "¡Nuevos sellos!" : "¡Nuevo sello!");
-      newStampEl.hidden = false;
-      if (window.ILVisual && ILVisual.reveal) ILVisual.reveal(newStampEl);
-    } else if (newStampEl) { newStampEl.hidden = true; }
-    $("missionSummary").classList.remove("hidden");
-    // El avión representa el avance. Los sellos solo se estampan cuando
-    // existe un desbloqueo real, no al terminar cualquier misión.
-    const seal = document.querySelector(".summary-seal");
-    if (seal) seal.innerHTML = ILIcon("plane");
-    $("missionSummary").focus();
-    // §6 · modal de recompensa si un logro nuevo desbloquea un cosmético.
-    if (!isReview && newAchievements && newAchievements.length && window.IL_ACHIEVEMENTS && window.ILWorldData) {
-      const rewardAch = newAchievements.map(id => IL_ACHIEVEMENTS.byId[id]).filter(x => x && x.reward)[0];
-      const rewardItem = rewardAch ? (ILWorldData.CATALOG || []).filter(i => i.id === rewardAch.reward)[0] : null;
-      if (rewardItem) setTimeout(() => showRewardModal(rewardItem, rewardAch), 650);
-    }
+    const truth = IL_LearningEvents.summarize(events, ids);
+    const learned = modeName() === 'daily' ? (state?.learnedExpressions || []) : [];
+    const settings = window.ILProfileSettings ? ILProfileSettings.getActive() : {};
+    return ILSessionEnding.render($('missionSummary'), {
+      band:stageName, mode:modeName(), itemIds:ids, events, learned,
+      errors:truth.incorrect_ids.length, reward, rewardError, next, settings, progress:completionProgress,
+      retry:() => renderEnding(state, true)
+    });
   }
 
-  function showRewardModal(item, ach) {
-    const sec = ageExperience.id === "secondary";
-    const dialog = $("rewardDialog"); if (!dialog) return;
-    $("rewardVisual").innerHTML = window.ILVisual ? ILVisual.stamp(ach.visual, { locked: false }) : "";
-    $("rewardEyebrow").textContent = sec ? "New item unlocked" : "¡Nueva recompensa!";
-    $("rewardName").textContent = (sec && item.nameEn ? item.nameEn : item.name);
-    $("rewardReason").textContent = sec ? ("Unlocked with " + ach.name + ".") : ("Lo has desbloqueado con " + IL_ACHIEVEMENTS.displayName(ach, stageName) + ".");
-    $("rewardTry").textContent = sec ? "Equip" : "Probar ahora";
-    $("rewardContinue").textContent = sec ? "Continue" : "Seguir";
-    if (typeof dialog.showModal === "function") dialog.showModal(); else dialog.setAttribute("open", "");
+  function renderSummary(state, isReview, award) {
+    return renderEnding(state, !!award);
   }
 
-  function renderExtraSummary(sessionTruth) {
-    const sec = ageExperience.id === "secondary";
-    const young = ageExperience.id === "primary-young";
-    if (skillMode) {
-      const skillLabel = ILCopy.practiceSkill(requestedSkill, stageName);
-      const truth = sessionTruth || IL_LearningEvents.summarize(learningEvents, missionMeta.itemIds);
-      const attempts = (truth.outcomes || []).reduce((total, outcome) => total + outcome.attempt_count, 0);
-      $("summaryTitle").textContent = sec ? (skillLabel + " practice complete") : (young ? "¡Muy bien!" : "Práctica de " + skillLabel + " completada");
-      $("summaryLead").textContent = sec
-        ? "Your attempts, time and learning evidence have been saved."
-        : (young ? "Has practicado " + skillLabel + ". Tu avance está guardado." : "Hemos guardado tus intentos, el tiempo y tu progreso en " + skillLabel + ".");
-      const stats = document.querySelector(".summary-stats"); if (stats) stats.hidden = false;
-      $("summaryScore").textContent = truth.first_try_correct_count + "/" + truth.evaluable_count;
-      $("summaryTime").textContent = minutes(Date.now() - skillStartedAt) + " min";
-      $("summaryLearned").textContent = attempts;
-      $("summaryScoreLabel").textContent = sec ? "first try" : (young ? "a la primera" : "a la primera");
-      $("summaryTimeLabel").textContent = sec ? "time" : "tiempo";
-      $("summaryLearnedLabel").textContent = sec ? "attempts" : "intentos";
-    } else if (examMode) {
-      $("summaryTitle").textContent = sec ? "Challenge done" : "¡Reto superado!";
-      $("summaryLead").textContent = sec
-        ? "You answered " + items.length + " · " + bonusCorrect + " correct."
-        : (young ? "¡Reto superado! " + bonusCorrect + " de " + items.length : "Reto: " + bonusCorrect + " de " + items.length + " aciertos.");
-    } else if (reviewDueMode) {
-      $("summaryTitle").textContent = sec ? "Review done" : "¡Repaso hecho!";
-      $("summaryLead").textContent = sec
-        ? "You reviewed " + items.length + " · " + bonusCorrect + " correct."
-        : (young ? "¡Has repasado " + items.length + "!" : "Has repasado " + items.length + " · " + bonusCorrect + " aciertos.");
-    } else {
-      $("summaryTitle").textContent = sec ? "Extra practice done" : (young ? "¡Práctica extra hecha!" : "Práctica extra completada");
-      $("summaryLead").textContent = sec
-        ? "You practised " + items.length + " more · " + bonusCorrect + " correct."
-        : (young ? "¡Has practicado " + items.length + " más!" : "Has practicado " + items.length + " más · " + bonusCorrect + " aciertos.");
-    }
-    const stats = document.querySelector(".summary-stats"); if (stats && !skillMode) stats.hidden = true;
-    $("summaryStreak").hidden = true; $("summaryReward").hidden = true;
-    $("learnedBlock").hidden = true; $("reviewCallout").hidden = true;
-    const nsx = $("summaryNewStamp"); if (nsx) nsx.hidden = true;
-    $("reviewErrors").hidden = true; $("oneMore").hidden = true;
-    if (skillMode) {
-      $("summaryHome").href = "practicar.html";
-      $("summaryHome").textContent = sec ? "Back to practice" : "Volver a Practicar";
-    } else if (sec) $("summaryHome").textContent = "Back to home";
-    const seal = document.querySelector(".summary-seal"); if (seal) seal.innerHTML = ILIcon("plane");
-    $("missionSummary").classList.remove("hidden"); $("missionSummary").focus();
+  function renderExtraSummary() {
+    return renderEnding(null, true);
+  }
+
+  async function finishExtraEvidence() {
+    const truth=IL_LearningEvents.summarize(learningEvents,items.map(item=>item.id));
+    try { await ILAuth.finishPracticeSession(practiceSession,truth); }
+    catch (error) { if(window.ILObservability)ILObservability.report('network_failure',error,{area:'lesson',operation:'finish_extra'}); }
   }
 
   async function finishMission() {
    try {
+    if (index < items.length) {
+      errorState('Sesión interrumpida', 'No hemos podido abrir el siguiente ejercicio. Tu avance anterior se conserva; vuelve a entrar para continuar.');
+      return;
+    }
     if (currentController && currentController.destroy) currentController.destroy();
-    if (examMode) { ILMission.resetExam(username); renderExtraSummary(); return; }
+    if (examMode) { await finishExtraEvidence(); ILMission.resetExam(username); renderExtraSummary(); return; }
     if (skillMode) {
       const sessionTruth = IL_LearningEvents.summarize(learningEvents, missionMeta.itemIds);
       try { await ILAuth.finishPracticeSession(practiceSession, sessionTruth); }
       catch (error) { if (window.ILObservability) ILObservability.report("network_failure", error, { area:"lesson", operation:"finish_skill_practice", skill:requestedSkill }); }
       renderExtraSummary(sessionTruth); return;
     }
-    if (bonusMode || reviewDueMode) { renderExtraSummary(); return; }
+    if (bonusMode || reviewDueMode) { await finishExtraEvidence(); renderExtraSummary(); return; }
     if (reviewMode) {
+      await finishExtraEvidence();
       ILMission.resolveErrors(username, reviewResolved, missionMeta.date);
       const state = ILMission.get(username, missionMeta.date) || ILMission.blank(missionMeta);
-      renderSummary(state, true); return;
+      renderSummary(state, true, true); return;
     }
     const state = ILMission.complete(username, undefined, missionMeta.date);
     if (!state.completionRecorded) {
@@ -631,7 +444,7 @@
         if (window.ILToast) ILToast("Misión guardada. Sincronizaremos tu progreso cuando sea posible.", { type: "info", duration: 3600 });
       }
     }
-    renderSummary(ILMission.get(username, missionMeta.date) || state, false);
+    renderSummary(ILMission.get(username, missionMeta.date) || state, false, true);
    } catch (err) {
     if (window.console) console.error("[Interlanguage] No se pudo cerrar la misión", err);
     const host = $("missionSummary"); const sec = ageExperience.id === "secondary";
@@ -652,13 +465,6 @@
   $("saveAndExit").addEventListener("click", () => { $("exitDialog").close("exit"); location.href = skillMode ? "practicar.html" : "inicio.html"; });
   $("exitDialog").addEventListener("cancel", event => { event.preventDefault(); $("exitDialog").close("continue"); });
   $("exitDialog").addEventListener("close", () => { if ($("exitDialog").returnValue !== "exit") { resumeTimer(); $("closeMission").focus(); } });
-  (function () {
-    const rd = $("rewardDialog"); if (!rd) return;
-    const close = () => { if (rd.close) rd.close(); else rd.removeAttribute("open"); };
-    $("rewardContinue").addEventListener("click", close);
-    rd.addEventListener("click", e => { if (e.target === rd) close(); });
-    rd.addEventListener("cancel", e => { e.preventDefault(); close(); });
-  })();
   addEventListener("beforeunload", () => { if (!reviewMode && !extraMode() && username && missionMeta) ILMission.pause(username, undefined, missionMeta.date); });
 
   (async () => {
@@ -671,6 +477,7 @@
       if (profile.is_admin) { location.href = "admin.html"; return; }
       if (profile.must_change_password) { location.href = "cambiar-clave.html"; return; }
       username = profile.username || ""; stageName = IL_ETAPA.apply(profile); ageExperience = IL_ETAPA.current().config; exerciseExperience = IL_ETAPA.current().exercise;
+      dueAtStart = window.ILMastery ? ILMastery.due(username) : [];
       localizeLessonChrome();
       ILProfileSettings.setActive(username, profile.sex);
       const [placement, progress] = await Promise.all([ILAuth.getPlacement(), ILAuth.getProgress()]);
@@ -701,7 +508,6 @@
         const cachedEvents = await ILAuth.getCachedLearningEvents();
         items = ILPracticeOptions.selectExercises({ exercises:available, cefr:placement && placement.cefr, recentEvents:cachedEvents, limit:exerciseExperience.sessionSize });
         missionMeta = { date:ILMission.today(), unitId:"skill-" + requestedSkill, unitTitle:ILCopy.practiceSkill(requestedSkill, stageName), itemIds:items.map(item => item.id) };
-        skillStartedAt = Date.now();
         const clientSessionKey = [username, missionMeta.date, "extra", missionMeta.unitId].join("|");
         learningEvents = (cachedEvents || []).filter(event => event.client_session_key === clientSessionKey);
         practiceSession = await ILAuth.startPracticeSession({ client_session_key:clientSessionKey, mode:"extra", age_band:stageName,
@@ -714,7 +520,7 @@
       if (!dailyItems.length) { errorState("Contenido no disponible", "Todavía no hay ejercicios preparados para tu nivel hoy."); return; }
       const primaryUnit = unitOf[dailyItems[0].id] || units[0];
       missionMeta = { date: ILMission.today(), unitId: primaryUnit ? primaryUnit.id : "", unitTitle: missionTitle(primaryUnit), itemIds: dailyItems.map(item => item.id) };
-      const clientSessionKey = [username, missionMeta.date, modeName(), missionMeta.unitId || "mission"].join("|");
+      const clientSessionKey = [username, missionMeta.date, modeName(), missionMeta.unitId || "mission"].concat(modeName() === 'daily' ? [] : [params.get('mode') || 'practice']).join("|");
       const cachedEvents = await ILAuth.getCachedLearningEvents();
       learningEvents = (cachedEvents || []).filter(event => event.client_session_key === clientSessionKey);
       practiceSession = await ILAuth.startPracticeSession({ client_session_key:clientSessionKey, mode:modeName(), age_band:stageName,

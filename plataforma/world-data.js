@@ -1,6 +1,6 @@
 /* ============================================================
    Interlanguage HOME · catálogo data-driven de personalización
-   Los desbloqueos dependen del progreso educativo, no de precios.
+   Conserva los desbloqueos educativos; admite propiedad cosmética proyectada.
    ============================================================ */
 (function (root, factory) {
   "use strict";
@@ -105,11 +105,12 @@
     return { level, lessons, start, target, remaining:Math.max(0, target - lessons), percent:Math.min(100, Math.round((lessons - start) / (target - start) * 100)) };
   }
   function worldType(value) { const key = band(value); return key === "eso" ? "space" : (key === "p56" ? "base" : (key === "neutral" ? "neutral" : "garden")); }
-  function context(progress, stamps, value) {
+  function context(progress, stamps, value, owned) {
     return {
       band:band(value), lessons:Math.max(0, Number(progress && progress.lessons) || 0),
       streak:Math.max(0, Number(progress && progress.streak) || 0), worldLevel:worldLevel(progress),
-      stamps:new Set((stamps || []).map(item => typeof item === "string" ? item : item.id).filter(Boolean))
+      stamps:new Set((stamps || []).map(item => typeof item === "string" ? item : item.id).filter(Boolean)),
+      owned:new Set(owned || [])
     };
   }
   function catalogFor(value, category) {
@@ -142,6 +143,7 @@
       : (secondary ? "Progress achieved" : "Progreso conseguido");
   }
   function unlockStatus(item, ctx) {
+    if (ctx.owned && ctx.owned.has(item.id)) return {unlocked:true,current:1,target:1,remaining:0,percent:100,requirement:ctx.band === 'eso' ? 'In your collection' : 'En tu colección'};
     const rule = item.unlock || always; const current = valueFor(rule, ctx); const target = rule.type === "stamp" ? 1 : Number(rule.value) || 0;
     const unlocked = rule.type === "always" || current >= target;
     return { unlocked, current, target, remaining:Math.max(0, target - current), percent:target ? Math.min(100, Math.round(current / target * 100)) : 100, requirement:requirement(item, ctx, ctx.band === "eso") };

@@ -21,6 +21,7 @@
   let progress = {};
   let settings = null;
   let stampIds = [];
+  let rewardOwned = [];
   let activeTab = "avatar";
   let activeFeature = "skin";
   let revealItem = null;
@@ -31,7 +32,7 @@
   const secondary = () => band === "eso";
   const text = (es, en) => secondary() ? en : es;
   const itemName = item => ILWorldData.displayName(item, band);
-  const ctx = () => ILWorldData.context(progress, stampIds, band);
+  const ctx = () => ILWorldData.context(progress, stampIds, band, rewardOwned);
   const random = values => values[Math.floor(Math.random() * values.length)];
 
   function activeItems() {
@@ -170,8 +171,14 @@
     try {
       const profile = await ILAuth.getProfile(); if (!profile) { location.href = "index.html"; return; } if (profile.is_admin) { location.href = "admin.html"; return; }
       username = profile.username || ""; IL_ETAPA.apply(profile); band = IL_ETAPA.current().band; settings = ILProfileSettings.setActive(username, profile.sex);
+      try { rewardOwned=ILRewardStore.get(username).owned; } catch (error) { /* Collection reports storage errors without hiding the editor. */ }
       const loaded = await Promise.all([ILAuth.getProgress(), ILProgressData.load(ILAuth, window.ILMission, { ageMode:IL_ETAPA.current().mode, ageBand:IL_ETAPA.current().band }), ILAuth.listMedals()]); progress = loaded[0] || {}; stampIds = stampList(loaded[1], loaded[2]);
-      localise(); setupTabs(); setupDialog(); $("randomAvatar").addEventListener("click", randomiseAvatar); $("resetAvatar").addEventListener("click", resetAvatar); renderOverview(); selectTab("avatar"); ILLayout.mount(); $("loading").hidden = true; $("app").classList.remove("hidden"); setTimeout(revealNewUnlock, 280);
+      localise(); setupTabs(); setupDialog(); $("randomAvatar").addEventListener("click", randomiseAvatar); $("resetAvatar").addEventListener("click", resetAvatar); renderOverview();
+      const requestedTab=new URLSearchParams(location.search).get('tab');selectTab(requestedTab==='world'?'world':'avatar');
+      ILRewardCollection.mount($('rewardCollection'),{username,band,progress,settings,stamps:stampIds,open:requestedTab==='world',
+        apply:item=>{selectTab('world');applyCatalogItem(item);},changed:()=>{rewardOwned=ILRewardStore.get(username).owned;renderOverview();renderScene(false);renderEditor();}});
+      ILLayout.mount(); $("loading").hidden = true; $("app").classList.remove("hidden");
+      if(requestedTab!=='world')setTimeout(revealNewUnlock, 280);
     } catch (error) { console.error("No se pudo cargar Mi Mundo", error); $("loading").hidden = true; $("errorState").hidden = false; }
   })();
 })();

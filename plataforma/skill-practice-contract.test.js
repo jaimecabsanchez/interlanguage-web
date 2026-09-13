@@ -16,8 +16,10 @@ assert.match(modeBlock, /if \(hasPractice\) \{ location\.replace\("practicar\.ht
 assert.match(modeBlock, /compatible\.some\(exercise => ILPracticeOptions\.SKILLS\.indexOf\(exercise\.habilidad\) !== -1\)/, "solo cuenta alternativas realmente válidas");
 assert.match(modeBlock, /\{ href:"inicio\.html"/, "Inicio solo se ofrece cuando no queda práctica compatible");
 assert.match(lesson, /renderExtraSummary\(sessionTruth\)/, "la práctica por habilidad tiene resumen basado en evidencia");
-assert.match(lesson, /truth\.first_try_correct_count/);
-assert.match(lesson, /Date\.now\(\) - skillStartedAt/);
+assert.match(lesson, /ILSessionEnding\.render/,'el cierre por edad usa evidencia de la sesión');
+const ending=fs.readFileSync(path.join(__dirname,'session-ending.js'),'utf8');
+assert.match(ending,/response_time_ms/,'la duración se deriva de intentos registrados, no de un temporizador inventado');
+assert.match(ending,/daily mission is unchanged/,'el cierre explica el aislamiento de la misión');
 assert.match(lesson, /location\.href = skillMode \? "practicar\.html" : "inicio\.html"/, "salir de una skill vuelve a Practicar");
 
 console.log("skill practice: aislamiento diario, persistencia y retorno seguro comprobados");
