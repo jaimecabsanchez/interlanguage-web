@@ -65,7 +65,7 @@
     <h1>¡Hola de nuevo!</h1>
     <p class="sub">Entra para continuar tu práctica.</p>
 
-    <div class="msg error" id="msg"></div>
+    <div class="msg error" id="msg" role="alert" aria-live="assertive"></div>
 
     <div class="field">
       <label for="username">Usuario</label>
@@ -97,8 +97,8 @@
 <script src="supabase-config.js?v=20260809d"></script>
 <script src="auth-utils.js?v=20260809d"></script>
 <script src="observability.js?v=20260824a"></script>
-<script src="learning-data.js?v=20260824a"></script>
-<script src="auth.js?v=20260912a"></script>
+<script src="learning-data.js?v=20260914a"></script>
+<script src="auth.js?v=20260914a"></script>
 <script src="entry-flow.js?v=20260909a"></script>
 <script src="il-visual.js?v=20260821b"></script>
 <script>
@@ -127,7 +127,10 @@
   })();
 
   // si ya hay sesión, entra directo
-  (async () => { const p = await ILAuth.getProfile(); if (p) location.href = await routeFor(p); })();
+  (async () => { const p = await ILAuth.getProfile(); if (p) location.href = await routeFor(p); })().catch(() => {
+    $("msg").textContent="No hemos podido comprobar tu sesión. Revisa la conexión e inténtalo de nuevo.";
+    $("msg").classList.add("show");
+  });
 
   $("eye").addEventListener("click", () => {
     const i = $("password");
@@ -143,6 +146,7 @@
     e.preventDefault();
     const msg = $("msg"); msg.classList.remove("show");
     const btn = $("submitBtn"); btn.disabled = true; const old = btn.textContent; btn.textContent = "Entrando…";
+    try {
 
     // Segundo paso: ya tenemos la contraseña validada y estamos pidiendo el código 2FA
     if (mfaFactorId) {
@@ -167,6 +171,12 @@
       return;
     }
     location.href = await routeFor(res.profile);
+    } catch (error) {
+      msg.textContent = "No hemos podido conectar. Revisa tu conexión y vuelve a intentarlo.";
+      msg.classList.add("show");
+      btn.disabled = false; btn.textContent = old;
+      if (window.ILObservability) ILObservability.report("network_failure", error, {area:"login"});
+    }
   });
 </script>
 </body>

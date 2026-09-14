@@ -16,9 +16,11 @@
   // sin tener que añadir nada a la dirección. Se puede desactivar con ?demo=0.
   // En un dominio real (Netlify) nunca se activa: producción usa siempre Supabase.
   let forceDemo = false;
+  let localHost = false;
   try {
     const host = location.hostname || "";
     const isLocal = host === "localhost" || host === "127.0.0.1" || host === "" || host.endsWith(".local");
+    localHost = isLocal;
     const qs = new URLSearchParams(location.search);
     // ?demo=1 / ?demo=0 fuerza o desactiva el modo demo en CUALQUIER dominio (enlaces de
     // preview para ver/enseñar la app con "lucia"). La marca de la URL MANDA al instante,
@@ -39,10 +41,10 @@
       }
     } catch (e) { if (decided === null) forceDemo = isLocal; }
   } catch (e) {}
-  const DEMO = noKeys || forceDemo;
+  const DEMO = forceDemo || (noKeys && localHost);
 
   let sb = null;
-  if (!DEMO && window.supabase && window.supabase.createClient) {
+  if (!DEMO && !noKeys && window.supabase && window.supabase.createClient) {
     sb = window.supabase.createClient(CFG.url, KEY);
   }
 
@@ -64,7 +66,11 @@
   function readJson(key, fallback) { try { const value = JSON.parse(localStorage.getItem(key)); return value == null ? fallback : value; } catch (error) { return fallback; } }
   function writeJson(key, value) { try { localStorage.setItem(key, JSON.stringify(value)); return true; } catch (error) { observe("data_unavailable", error, { area:"storage", operation:"write" }); return false; } }
   function appendBounded(key, value, limit) { const rows = readJson(key, []); rows.push(value); writeJson(key, rows.slice(-(limit || 500))); }
-  function queueLearning(kind, payload) { appendBounded(OUTBOX_KEY, { kind, payload, queued_at:new Date().toISOString() }, 500); }
+  function queueLearning(kind, payload) {
+    const queued=readJson(OUTBOX_KEY,[]);
+    queued.push({kind,payload,queued_at:new Date().toISOString()});
+    if(!writeJson(OUTBOX_KEY,queued))throw new Error('learning_queue_storage_unavailable');
+  }
   function eventKey(username) { return EVENT_PREFIX + encodeURIComponent(String(username || "guest").toLowerCase()); }
   function eventUuid() { return window.crypto && window.crypto.randomUUID ? window.crypto.randomUUID() : null; }
 
@@ -113,8 +119,9 @@
         localStorage.setItem(DEMO_SESSION, u);
         return { ok: true, profile: pub(acc) };
       }
+      if (!sb) return {ok:false,error:"No se ha podido cargar el acceso seguro. Revisa la conexión y recarga la página."};
       const { error } = await sb.auth.signInWithPassword({ email: toLoginEmail(identifier), password });
-      if (error) return { ok: false, error: "Usuario o contraseña incorrectos." };
+      if (error) return { ok: false, error: error.name === "AuthRetryableFetchError" || error.status === 0 ? "No hemos podido conectar. Revisa tu conexión y vuelve a intentarlo." : "Usuario o contraseña incorrectos." };
       // ¿Requiere segundo factor (2FA)? (obligatorio para admin con 2FA activado)
       try {
         const { data: aal } = await sb.auth.mfa.getAuthenticatorAssuranceLevel();
@@ -208,13 +215,17 @@
         const u = demoSession(); if (!u) return null;
         return pub(demoLoad().find(a => a.username === u));
       }
-      const { data: { user } } = await sb.auth.getUser();
+      if (!sb) throw new Error("secure_auth_unavailable");
+      const { data: { user }, error: userError } = await sb.auth.getUser();
+      if (userError && userError.name !== "AuthSessionMissingError") throw userError;
       if (!user) return null;
 
       // Fila base en 'users'
-      const { data: urow } = await sb.from("users").select("*").eq("id", user.id).single();
+      const { data: urow, error: profileError } = await sb.from("users").select("*").eq("id", user.id).single();
+      if (profileError) throw profileError;
       // Roles del usuario
-      const { data: roles } = await sb.from("user_roles").select("role_id").eq("user_id", user.id);
+      const { data: roles, error: rolesError } = await sb.from("user_roles").select("role_id").eq("user_id", user.id);
+      if (rolesError) throw rolesError;
       const roleIds = (roles || []).map(r => r.role_id);
       const is_admin = roleIds.includes("admin");
       const is_teacher = roleIds.includes("teacher");
@@ -232,7 +243,8 @@
 
       // Si es alumno, traemos su ficha para el nombre de pila y su id de alumno
       if (is_student || (!is_admin && !is_teacher)) {
-        const { data: st } = await sb.from("students").select("id, first_name, birth_year, level_id, course_ref, sex").eq("user_id", user.id).maybeSingle();
+        const { data: st, error: studentError } = await sb.from("students").select("id, first_name, birth_year, level_id, course_ref, sex").eq("user_id", user.id).maybeSingle();
+        if (studentError) throw studentError;
         if (st) {
           profile.student_id = st.id;
           profile.first_name = st.first_name || "";
@@ -455,10 +467,11 @@
     // Real: solo tiene sentido para alumnos
     if (!prof.student_id) { const p = blankProgress(); p.id = prof.id; p.username = prof.username; p.full_name = prof.full_name; return p; }
     const sid = prof.student_id;
-    const [{ data: state }, { data: streak }] = await Promise.all([
+    const [{ data: state, error: stateError }, { data: streak, error: streakError }] = await Promise.all([
       sb.from("student_state").select("*").eq("student_id", sid).maybeSingle(),
       sb.from("streaks").select("*").eq("student_id", sid).maybeSingle()
     ]);
+    if (stateError || streakError) throw stateError || streakError;
     const p = blankProgress();
     if (state) { p.gems = state.gems; p.xp = state.xp; p.lessons = state.lessons; p.owned = Array.isArray(state.owned) ? state.owned : []; p.hat = state.hat || ""; p.acc = state.acc || ""; }
     if (streak) { p.streak = streak.current; p.best = streak.longest; p.last = streak.last_practice_date || ""; p.freezes = streak.freezes_available; }
@@ -470,10 +483,12 @@
   API._save = async function (p) {
     if (DEMO) { localStorage.setItem(PKEY(p.username), JSON.stringify(p)); return; }
     if (!p.student_id) return;
-    await Promise.all([
+    const responses = await Promise.all([
       sb.from("student_state").upsert({ student_id: p.student_id, gems: p.gems, xp: p.xp, lessons: p.lessons, owned: p.owned, hat: p.hat, acc: p.acc }),
       sb.from("streaks").upsert({ student_id: p.student_id, current: p.streak, longest: p.best, last_practice_date: p.last || null, freezes_available: (p.freezes == null ? 1 : p.freezes) })
     ]);
+    const failure = responses.find(response => response && response.error);
+    if (failure) throw failure.error;
   };
 
   // Medallas ganadas (ids). Best-effort.
@@ -504,6 +519,7 @@
     const Mot = (typeof window !== "undefined" && window.IL_MOTIVACION) || null;
     const p = await this.getProgress(); if (!p) return null;
     const t = today();
+    if (p.last === t) return p; // Skip a daily completion already persisted; concurrent writes still need a server transaction.
     const prevBest = p.best || 0;
 
     // Racha FLEXIBLE (con comodín) si el módulo está cargado
@@ -656,22 +672,9 @@
       observe("data_unavailable", attemptError || sessionError, { area:"progress", operation:"learning_metrics", table:attemptError ? "attempts" : "practice_sessions" });
       return { status:"error", source:"server", sufficient:false, sample:0, period:{ days:14, from } };
     }
-    const groups = {};
-    (attempts || []).filter(row => !row.technical_failure && row.attempt_no > 0).forEach(row => {
-      const key = (row.client_session_key || "session") + "|" + (row.exercise_key || "exercise");
-      if (!groups[key] || row.attempt_no < groups[key].attempt_no) groups[key] = row;
-    });
-    const firstAttempts = Object.values(groups);
-    const sample = firstAttempts.length;
-    const accuracy = sample >= 5 ? Math.round(100 * firstAttempts.filter(row => row.result === "correct" && !row.hint_used).length / sample) : null;
-    const minutes = (sessions || []).reduce((sum, row) => {
-      if (!row.started_at || !row.finished_at) return sum;
-      return sum + Math.max(0, new Date(row.finished_at).getTime() - new Date(row.started_at).getTime());
-    }, 0);
-    return { status:sample ? "available" : "empty", source:"server", sufficient:sample >= 5, sample,
-      period:{ days:14, from, to:new Date().toISOString().slice(0, 10) }, accuracy,
-      minutesWeek:sessions && sessions.length ? Math.round(minutes / 60000) : null,
-      exercises:sample, sessions:(sessions || []).length };
+    const monday=new Date();monday.setDate(monday.getDate()-((monday.getDay()+6)%7));
+    const weekFrom=[monday.getFullYear(),String(monday.getMonth()+1).padStart(2,'0'),String(monday.getDate()).padStart(2,'0')].join('-');
+    return LearningData.projectMetrics(attempts,sessions,{from,weekFrom,to:today()});
   };
 
   // Días con práctica dentro de una ventana (por defecto, últimos ~112 días para el mapa mensual).
@@ -880,7 +883,7 @@
   API.flushLearningOutbox = async function () {
     if (DEMO || !sb) return { ok:true, pending:0 };
     const queued = readJson(OUTBOX_KEY, []); if (!queued.length) return { ok:true, pending:0 };
-    const pending = [];
+    const succeeded = new Set();
     for (const item of queued) {
       let response = { error:new Error("unknown_outbox_item") };
       try {
@@ -895,8 +898,11 @@
             : await finish.eq("student_id", item.payload.student_id).eq("client_session_key", item.payload.client_session_key);
         }
       } catch (error) { response = { error }; }
-      if (response && response.error) pending.push(item);
+      if (response && !response.error) succeeded.add(JSON.stringify(item));
     }
+    // Keep attempts added while requests were in flight; never overwrite them
+    // with the stale snapshot taken at the beginning of this flush.
+    const pending=readJson(OUTBOX_KEY,[]).filter(item=>!succeeded.has(JSON.stringify(item)));
     writeJson(OUTBOX_KEY, pending);
     if (pending.length) observe("network_failure", "Quedan eventos pendientes", { area:"learning", operation:"flush", status:String(pending.length) });
     return { ok:pending.length === 0, pending:pending.length };

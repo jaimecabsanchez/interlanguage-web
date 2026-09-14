@@ -130,8 +130,8 @@
 <script src="age-policy.js?v=20260912a"></script>
 <script src="etapa.js?v=20260824b"></script>
 <script src="observability.js?v=20260824a"></script>
-<script src="learning-data.js?v=20260824a"></script>
-<script src="auth.js?v=20260912a"></script>
+<script src="learning-data.js?v=20260914a"></script>
+<script src="auth.js?v=20260914a"></script>
 <script src="content/mechanics.js?v=20260912a"></script>
 <script src="content/authoring.js?v=20260912a"></script>
 <script src="content/schema.js?v=20260912a"></script>
@@ -581,7 +581,11 @@
         if (!items.length) { location.href = "inicio.html"; return; }
       } else {
         items = dailyItems;
-        if (state.status === "completed") { renderSummary(state, false); return; }
+        if (state.status === "completed") {
+          if (!state.completionRecorded) { index=items.length; await finishMission(); }
+          else renderSummary(state, false);
+          return;
+        }
         const active = ILMission.begin(username, missionMeta);
         index = Math.min(active.currentIndex || 0, items.length - 1);
       }

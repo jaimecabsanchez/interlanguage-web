@@ -8,8 +8,12 @@
 set -u
 URL="${IL_URL:-https://nawfcxhswlxlciulfidd.supabase.co}"
 PUB="${IL_PUB:-sb_publishable_E593ZNBA8aSzo3j7s9zEQA_cYXLZXRj}"
-STU_EMAIL="${IL_STU_EMAIL:-blue-fox-317@alumnos.interlanguage-home.es}"
-STU_PASS="${IL_STU_PASS:-practica2026}"
+STU_EMAIL="${IL_STU_EMAIL:-}"
+STU_PASS="${IL_STU_PASS:-}"
+if [ -z "$STU_EMAIL" ] || [ -z "$STU_PASS" ]; then
+  echo "SKIP: define IL_STU_EMAIL e IL_STU_PASS para una cuenta de pruebas autorizada (no un alumno real)."
+  exit 77
+fi
 
 pass=0; fail=0
 chk(){ if [ "$2" = "$3" ]; then echo "✅ $1"; pass=$((pass+1)); else echo "❌ $1 (esperado '$3', obtenido '$2')"; fail=$((fail+1)); fi; }
@@ -50,10 +54,12 @@ echo; echo "== 4) Un ALUMNO NO puede hacer cosas de administrador =="
 if [ -n "${TOKEN:-}" ]; then
   audit=$(curl -s "$URL/rest/v1/audit_log?select=id&limit=3" -H "apikey: $PUB" -H "Authorization: Bearer $TOKEN" --max-time 20)
   chk "el alumno NO lee la auditoría" "$audit" "[]"
+  if [ "${IL_ALLOW_TEST_WRITES:-0}" = "1" ]; then
   code_grp=$(curl -s -o /dev/null -w "%{http_code}" -X POST "$URL/rest/v1/groups" \
     -H "apikey: $PUB" -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
     -d '{"name":"grupo-no-permitido"}' --max-time 20)
   case "$code_grp" in 401|403) echo "✅ el alumno NO puede crear grupos (HTTP $code_grp)"; pass=$((pass+1));; *) echo "❌ el alumno pudo tocar grupos (HTTP $code_grp)"; fail=$((fail+1));; esac
+  else echo "SKIP: prueba de escritura requiere IL_ALLOW_TEST_WRITES=1 en un entorno de pruebas."; fi
 else
   echo "   (sin sesión de alumno; se omite)"
 fi

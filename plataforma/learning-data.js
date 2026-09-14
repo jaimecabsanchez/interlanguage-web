@@ -13,7 +13,7 @@
   async function activityDays(client, studentId, cutoff) {
     const source = "practice_sessions";
     const response = await client.from(source).select("date, started_at, finished_at")
-      .eq("student_id", studentId).eq("completed", true).gte("date", cutoff).order("date", { ascending:true });
+      .eq("student_id", studentId).eq("completed", true).eq("mode", "daily").gte("date", cutoff).order("date", { ascending:true });
     if (response.error) return failure(response.error, source);
     const days = Array.from(new Set((response.data || []).map(row => row.date || (row.started_at && ymd(row.started_at))).filter(Boolean))).sort();
     return { status:days.length ? "available" : "empty", source, period:{ from:cutoff, to:ymd(new Date()) }, sample:days.length, days };
@@ -44,5 +44,22 @@
     return projectSkills(legacy.data, "mastery");
   }
 
-  return { MIN_SKILL_SAMPLE, activityDays, skillBreakdown, projectSkills };
+  function projectMetrics(attempts,sessions,period) {
+    const valid=(attempts||[]).filter(row=>!row.technical_failure&&row.attempt_no>0);
+    const groups={};
+    valid.filter(row=>row.result==='correct'||row.result==='incorrect').forEach(row=>{
+      const key=(row.client_session_key||'session')+'|'+(row.exercise_key||'exercise');
+      if(!groups[key]||row.attempt_no<groups[key].attempt_no)groups[key]=row;
+    });
+    const first=Object.values(groups),sample=first.length;
+    const activeMs=valid.reduce((sum,row)=>{
+      const d=new Date(row.submitted_at);
+      const day=[d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-');
+      return day>=period.weekFrom&&day<=period.to?sum+Math.max(0,Math.min(300000,Number(row.duration_ms)||0)):sum;
+    },0);
+    return {status:valid.length?'available':'empty',source:'server',sufficient:sample>=5,sample,
+      period:{days:14,from:period.from,to:period.to},accuracy:sample>=5?Math.round(100*first.filter(row=>row.result==='correct'&&!row.hint_used).length/sample):null,
+      minutesWeek:valid.length?Math.round(activeMs/60000):null,exercises:sample,sessions:(sessions||[]).length};
+  }
+  return { MIN_SKILL_SAMPLE, activityDays, skillBreakdown, projectSkills, projectMetrics };
 });
