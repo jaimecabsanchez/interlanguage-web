@@ -67,6 +67,7 @@
       const day = document.createElement("div"); day.className = "week-day is-" + state + (index === today ? " is-today" : "");
       const label = document.createElement("span"); label.className = "week-day__label"; label.textContent = letter;
       const dot = document.createElement("span"); dot.className = "week-day__dot"; dot.innerHTML = completed ? icon("check") : (ageBand === "p34" ? "○" : String(index + 1));
+      dot.setAttribute("role", "img");
       dot.setAttribute("aria-label", DAY_NAMES[index] + ": " + ({ completed: index === today ? "completado, hoy" : "completado", today: "hoy", pending: "pendiente", future: "futuro" })[state]);
       day.append(label, dot); container.appendChild(day);
     });

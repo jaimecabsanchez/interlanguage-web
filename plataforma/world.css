@@ -55,4 +55,12 @@ body[data-stage="eso"] .preview-pane,body[data-stage="eso"] .customise,body[data
 html[data-il-reduce-motion="true"] .world-stage .avatar-idle,html[data-il-reduce-motion="true"] .world-stage .avatar-eye,html[data-il-reduce-motion="true"] .world-stage .world-tree,html[data-il-reduce-motion="true"] .world-flit,html[data-il-reduce-motion="true"] .unlock-dialog__glow{animation:none}
 @media(max-width:760px){.catalog-panel{scroll-margin-top:345px}}
 @media(max-width:760px){.trait-choices.is-base{max-width:none}.trait-choices.is-base .trait-choice{flex-basis:154px}}
+.world-shell{--world-touch:44px}
+body[data-stage="p12"] .world-shell{--world-touch:56px}
+body[data-stage="p34"] .world-shell{--world-touch:52px}
+body[data-stage="p56"] .world-shell{--world-touch:48px}
+.world-shell .feature-nav button,.world-shell .world-tabs button,.world-shell .quick-actions .btn,.world-shell .text-action{min-height:var(--world-touch)}
+.world-shell .trait-range input{height:var(--world-touch)}
+.world-shell .trait-range::before{top:calc(var(--world-touch) / 2 - 4px)}
+.world-shell .trait-marks{top:calc(var(--world-touch) / 2 - 7px)}
 .unlock-dialog__visual::before{content:"";position:absolute;left:50%;top:50%;width:146px;height:146px;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle at 40% 34%,var(--il-primary-soft),var(--il-success-soft));box-shadow:inset 0 0 0 2px color-mix(in srgb,var(--il-primary) 9%,transparent)}.unlock-dialog__visual>*{position:relative;z-index:1}body[data-stage="eso"] .unlock-dialog__visual::before{background:var(--il-surface-secondary);border-radius:var(--il-radius-md);box-shadow:inset 0 0 0 1px var(--il-border)}

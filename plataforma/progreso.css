@@ -338,3 +338,6 @@ body[data-stage="p34"] #panel-stamps .ach-card{justify-content:flex-start}
   body[data-stage="p12"] .passport-stamp,
   body[data-stage="p34"] .passport-stamp{width:60px;height:60px}
 }
+/* Readable secondary text on age-specific tinted surfaces. */
+#progressEyebrow, #learningEyebrow, .next-stamp .ui-label, .reinforce-panel .ui-label, .skills-section .ui-label, .phrases-section .ui-label, .skill-copy span, .skill-row.is-unavailable .skill-value{color:var(--il-text-secondary)}
+#contextualProgressCta{background:var(--il-primary);color:var(--il-on-primary)}

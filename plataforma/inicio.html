@@ -205,6 +205,7 @@
   .reco-card.reco--exam{border-color:color-mix(in srgb,var(--il-focus) 40%,var(--il-border));background:linear-gradient(160deg,color-mix(in srgb,var(--il-focus) 8%,var(--il-surface)),var(--il-surface))}
   .reco-card.reco--exam .reco-card__icon{background:color-mix(in srgb,var(--il-focus) 16%,var(--il-surface));color:var(--il-focus)}
   .reco-card.reco--exam .reco-card__eyebrow,.reco-card.reco--exam .ui-label{color:var(--il-focus)}
+#greetingMessage{color:var(--il-text-secondary)}
 </style>
 <link rel="stylesheet" href="age-mode.css?v=20260823b">
 </head>
@@ -329,8 +330,8 @@
 <script src="content/manifest.js?v=20260912a"></script>
 <script src="contenido.js?v=20260912a"></script>
 <script src="observability.js?v=20260824a"></script>
-<script src="learning-data.js?v=20260824a"></script>
-<script src="auth.js?v=20260912a"></script>
+<script src="learning-data.js?v=20260914a"></script>
+<script src="auth.js?v=20260914a"></script>
 <script src="motor/matriz.js?v=20260912a"></script>
 <script src="motor/session-composer.js?v=20260912a"></script>
 <script src="mission-state.js?v=20260912a"></script>
@@ -492,6 +493,7 @@
       const cell = document.createElement("div"); cell.className = "week-day is-" + state;
       const short = document.createElement("span"); short.className = "week-day__label"; short.textContent = label;
       const dot = document.createElement("span"); dot.className = "week-day__dot";
+      dot.setAttribute("role", "img");
       dot.setAttribute("aria-label", names[index] + ": " + ({ completed: "completado", today: "hoy", pending: "pendiente", future: "futuro" })[state]);
       if (completed) dot.innerHTML = ILIcon("check"); else dot.textContent = index + 1;
       cell.appendChild(short); cell.appendChild(dot); days.appendChild(cell);

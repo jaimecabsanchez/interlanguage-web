@@ -28,6 +28,7 @@
   }
   function renderStamps(items) {
     const host = $("profileStamps"); host.replaceChildren();
+    host.tabIndex=items.length?0:-1;host.setAttribute('role','region');host.setAttribute('aria-label',band==='eso'?'Your achievements':'Tus logros');
     if (!items.length) { const empty = document.createElement("p"); empty.className = "profile-stamps__empty"; empty.textContent = band === "eso" ? "Your first achievement is close." : "Tu primer sello está muy cerca."; host.appendChild(empty); return; }
     items.forEach(item => {
       const card = document.createElement("div"); card.className = "profile-stamp";
