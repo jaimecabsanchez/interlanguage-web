@@ -825,3 +825,6 @@ picture{display:contents;}
   .cookie-accept:hover{background:var(--coral-dark);}
   .cookie-btn:focus-visible{outline:3px solid var(--navy); outline-offset:2px;}
   @media (max-width:600px){ .cookie-banner{padding:16px; gap:12px;} .cookie-actions{width:100%;} .cookie-btn{flex:1;} }
+
+  /* Más aire entre el título y la intro en la subpágina de extraescolar */
+  #view-service-extraescolar .camp-hero-content h1{margin-bottom:20px;}

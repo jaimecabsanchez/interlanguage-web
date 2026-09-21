@@ -476,6 +476,23 @@ window.dataLayer = window.dataLayer || [];
     });
   });
 
+  // Anclas internas dentro de una subpágina (p.ej. "Ver grupos y horarios" -> #extraescolar-clubs,
+  // "Ver cómo es un día" -> #camp-dia): desplázate a la sección SIN cambiar de vista ni tocar el
+  // historial (evita que el popstate/hash devuelva a la home).
+  document.querySelectorAll('.view.service-page a[href^="#"]').forEach(function(link){
+    if (link.hasAttribute('data-jump-service') || link.hasAttribute('data-back') ||
+        link.hasAttribute('data-cta-service') || link.hasAttribute('data-go-destinos')) return;
+    const id = link.getAttribute('href').slice(1);
+    if (!id) return;
+    const target = document.getElementById(id);
+    if (!target || !target.closest('.view.service-page')) return;
+    link.addEventListener('click', function(e){
+      e.preventDefault();
+      const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      target.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+    });
+  });
+
   // carga directa con hash tipo #servicio-campamentos
   (function(){
     const hash = window.location.hash.replace('#','');

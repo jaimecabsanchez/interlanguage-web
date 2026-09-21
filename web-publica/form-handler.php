@@ -8,8 +8,7 @@
  * a la dirección configurada abajo. Devuelve JSON { ok: true } / { ok: false }.
  *
  * ANTES DE PUBLICAR, revisar el bloque CONFIG:
- *   - LEAD_RECIPIENT: a dónde llegan los avisos. Hay una discrepancia sin cerrar
- *     entre "interlanguage.es" y "interlanguagestudies.es" — confirmar la buena.
+ *   - LEAD_RECIPIENT: a dónde llegan los avisos (info@interlanguage.es).
  *   - FROM_ADDRESS: debe ser un buzón/dominio DEL PROPIO HOSTING (Arsys). Si el
  *     From es de otro dominio, el correo se irá a spam o lo rechazarán (SPF/DKIM).
  *
@@ -19,7 +18,7 @@
 
 // ================== CONFIG (revisar antes de publicar) ==================
 const LEAD_RECIPIENT = 'info@interlanguage.es';                 // <-- CONFIRMAR dirección de destino
-const FROM_ADDRESS   = 'no-reply@interlanguagestudies.es';      // <-- debe ser un buzón real del hosting
+const FROM_ADDRESS   = 'no-reply@interlanguage.es';             // <-- debe ser un buzón real del hosting
 const SITE_NAME      = 'Interlanguage Studies';
 // =======================================================================
 
