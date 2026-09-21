@@ -87,6 +87,7 @@ if ($type === 'campamento') {
         'SOLICITUD DE INFORMACIÓN',
         '------------------------',
         'Servicio de interés: ' . field('service'),
+        'Detalle: '             . field('serviceExtra'),
         'Edad/curso alumno: '   . field('studentAge'),
         'Mensaje: '             . field('message'),
         '',

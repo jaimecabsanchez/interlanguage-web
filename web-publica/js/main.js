@@ -585,6 +585,7 @@ window.dataLayer = window.dataLayer || [];
     const payload = new URLSearchParams({
       form_type: 'lead',
       service: service,
+      serviceExtra: (document.getElementById('serviceExtra') && !document.getElementById('serviceExtraWrap').hidden) ? document.getElementById('serviceExtra').value : '',
       studentAge: studentAge,
       message: document.getElementById('message').value,
       fullName: document.getElementById('fullName').value,
@@ -613,3 +614,68 @@ window.dataLayer = window.dataLayer || [];
         setFormError(leadErrEl, 'No hemos podido enviar la solicitud. Inténtalo de nuevo en unos segundos.');
       });
   });
+
+  // Carrusel de testimonios (auto-rotación, respeta reduced-motion y pausa al pasar el ratón)
+  (function(){
+    var car = document.getElementById('testCarousel');
+    if (!car) return;
+    var track = document.getElementById('testTrack');
+    var cards = Array.from(track.children);
+    var dotsWrap = document.getElementById('testDots');
+    if (cards.length < 2) return;
+    var idx = 0, timer = null;
+    cards.forEach(function(_, i){
+      var d = document.createElement('button');
+      d.className = 'test-dot' + (i === 0 ? ' active' : '');
+      d.setAttribute('aria-label', 'Testimonio ' + (i + 1));
+      d.addEventListener('click', function(){ go(i); restart(); });
+      dotsWrap.appendChild(d);
+    });
+    var dots = Array.from(dotsWrap.children);
+    function go(n){
+      idx = (n + cards.length) % cards.length;
+      track.style.transform = 'translateX(-' + (idx * 100) + '%)';
+      dots.forEach(function(d, i){ d.classList.toggle('active', i === idx); });
+    }
+    function start(){
+      var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduce) return;
+      stop(); timer = setInterval(function(){ go(idx + 1); }, 5500);
+    }
+    function stop(){ if (timer) clearInterval(timer); timer = null; }
+    function restart(){ stop(); start(); }
+    car.addEventListener('mouseenter', stop);
+    car.addEventListener('mouseleave', start);
+    start();
+  })();
+
+  // Formulario: adapta la ayuda y los campos al servicio elegido
+  (function(){
+    var sel = document.getElementById('service');
+    if (!sel) return;
+    var help = document.getElementById('serviceHelp');
+    var wrap = document.getElementById('serviceExtraWrap');
+    var extra = document.getElementById('serviceExtra');
+    var extraLabel = document.getElementById('serviceExtraLabel');
+    var ageLabel = document.getElementById('studentAgeLabel');
+    var ageInput = document.getElementById('studentAge');
+    var MAP = {
+      extranjero:  { help:'Programas para jóvenes y adolescentes en Irlanda, Reino Unido y Estados Unidos, desde un verano hasta un curso escolar completo.', label:'Destino que os interesa', opts:['Aún no lo sé','Irlanda','Reino Unido','Estados Unidos'], age:'Edad o curso del alumno/a', ph:'Ej. 15 años / 4º de ESO' },
+      campamentos: { help:'Campamento de verano en inglés, en Madrid, para niños de 3 a 10 años.', label:'¿Qué semanas os interesan?', opts:['Aún no lo sé','Julio completo','Algunas semanas sueltas'], age:'Edad del niño/a', ph:'Ej. 7 años' },
+      extraescolar:{ help:'Clases de inglés en el propio colegio durante el curso, de Infantil a la ESO.', label:'¿Qué días os encajan mejor?', opts:['Cualquiera','Martes y jueves','Lunes y miércoles'], age:'Curso del alumno/a', ph:'Ej. 2º de Primaria' },
+      orientacion: { help:'Contadnos la edad y qué buscáis, y os orientamos sin compromiso.', label:'', opts:[], age:'Edad o curso del alumno/a (opcional)', ph:'Ej. 7 años / 2º de Primaria' }
+    };
+    function apply(){
+      var m = MAP[sel.value];
+      if (!m){ if(help) help.hidden = true; if(wrap) wrap.hidden = true; return; }
+      if (help){ help.textContent = m.help; help.hidden = false; }
+      if (ageLabel) ageLabel.textContent = m.age;
+      if (ageInput) ageInput.placeholder = m.ph;
+      if (m.opts.length){
+        if (extraLabel) extraLabel.textContent = m.label;
+        if (extra) extra.innerHTML = m.opts.map(function(o){ return '<option value="' + o + '">' + o + '</option>'; }).join('');
+        if (wrap) wrap.hidden = false;
+      } else { if (wrap) wrap.hidden = true; if (extra) extra.innerHTML = ''; }
+    }
+    sel.addEventListener('change', apply);
+  })();

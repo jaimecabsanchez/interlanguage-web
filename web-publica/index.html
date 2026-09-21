@@ -39,8 +39,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="preload" href="css/styles.css?v=13" as="style">
-<link rel="stylesheet" href="css/styles.css?v=13">
+<link rel="preload" href="css/styles.css?v=15" as="style">
+<link rel="stylesheet" href="css/styles.css?v=15">
 </head>
 <body>
 <a class="skip-link" href="#main">Saltar al contenido</a>
@@ -269,31 +269,34 @@
       <span class="eyebrow">Lo que dicen las familias</span>
       <h2>Historias de familias que ya han dado el paso</h2>
     </div>
-    <div class="test-grid reveal">
-      <div class="test-card">
-        <div class="test-stars">★★★★★</div>
-        <p class="test-quote">"Apuntamos a Marcos al campamento de Rosales sin saber si aguantaría 3 semanas seguidas de inglés. Salió pidiendo repetir el verano que viene, y en el cole ya nos han comentado que participa más en clase."</p>
-        <div class="test-author">
-          <div class="test-avatar">MP</div>
-          <div><strong>María Pérez</strong><span>Madre de alumno · Campamento de Verano, sede Rosales 2025</span></div>
+    <div class="test-carousel reveal" id="testCarousel">
+      <div class="test-track" id="testTrack">
+        <div class="test-card">
+          <div class="test-stars" aria-label="5 de 5 estrellas">★★★★★</div>
+          <p class="test-quote">"Marcos salió del campamento pidiendo repetir el verano que viene, y en el cole ahora participa mucho más en clase."</p>
+          <div class="test-author">
+            <div class="test-avatar">MP</div>
+            <div><strong>María Pérez</strong><span>Madre de alumno en el campamento de verano</span></div>
+          </div>
+        </div>
+        <div class="test-card">
+          <div class="test-stars" aria-label="5 de 5 estrellas">★★★★★</div>
+          <p class="test-quote">"Mandamos a Lucía un año a Irlanda con 15 años y nos daba respeto. Nos llamaban cada mes para contarnos cómo iba. Volvió con el B2 y mucha más independencia."</p>
+          <div class="test-author">
+            <div class="test-avatar">JG</div>
+            <div><strong>Javier González</strong><span>Padre de alumna, año académico en Irlanda</span></div>
+          </div>
+        </div>
+        <div class="test-card">
+          <div class="test-stars" aria-label="5 de 5 estrellas">★★★★★</div>
+          <p class="test-quote">"Lo que más valoro es que cada trimestre nos mandan un informe real de cada hijo, no una plantilla genérica. Eso se nota."</p>
+          <div class="test-author">
+            <div class="test-avatar">SL</div>
+            <div><strong>Sonia López</strong><span>Madre de alumnos en inglés extraescolar</span></div>
+          </div>
         </div>
       </div>
-      <div class="test-card">
-        <div class="test-stars">★★★★★</div>
-        <p class="test-quote">"Mandar a Lucía un año entero a Irlanda con 15 años nos daba miedo, sobre todo por la familia de acogida. El equipo de Interlanguage nos llamaba cada mes para contarnos cómo iba. Volvió con el B2 y muchísima más independencia."</p>
-        <div class="test-author">
-          <div class="test-avatar">JG</div>
-          <div><strong>Javier González</strong><span>Padre de alumna · Año Académico en Irlanda, curso 2024-25</span></div>
-        </div>
-      </div>
-      <div class="test-card">
-        <div class="test-stars">★★★★★</div>
-        <p class="test-quote">"Nuestros gemelos llevan dos cursos en la extraescolar de los martes y jueves. Lo que más valoro es que cada trimestre nos mandan un informe real de cada uno, no una plantilla genérica."</p>
-        <div class="test-author">
-          <div class="test-avatar">SL</div>
-          <div><strong>Sonia López</strong><span>Madre de alumnos · Inglés Extraescolar, Colegio Montealto</span></div>
-        </div>
-      </div>
+      <div class="test-dots" id="testDots" role="tablist" aria-label="Testimonios"></div>
     </div>
   </div>
 </section>
@@ -391,8 +394,13 @@
             </select>
             <span class="err" id="err-service">Selecciona un servicio.</span>
           </div>
+          <p class="form-service-help" id="serviceHelp" hidden></p>
+          <div class="field full" id="serviceExtraWrap" hidden>
+            <label for="serviceExtra" id="serviceExtraLabel"></label>
+            <select id="serviceExtra" name="serviceExtra"></select>
+          </div>
           <div class="field full">
-            <label for="studentAge">Edad o curso del alumno/a (opcional)</label>
+            <label for="studentAge" id="studentAgeLabel">Edad o curso del alumno/a (opcional)</label>
             <input type="text" id="studentAge" name="studentAge" placeholder="Ej. 7 años / 2º de Primaria">
           </div>
           <div class="field full">
@@ -1234,6 +1242,6 @@
   </div>
 </div>
 
-<script src="js/main.js?v=6" defer></script>
+<script src="js/main.js?v=8" defer></script>
 </body>
 </html>
