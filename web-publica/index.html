@@ -42,8 +42,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="preload" href="css/styles.css?v=21" as="style">
-<link rel="stylesheet" href="css/styles.css?v=21">
+<link rel="preload" href="css/styles.css?v=22" as="style">
+<link rel="stylesheet" href="css/styles.css?v=22">
 </head>
 <body>
 <a class="skip-link" href="#main">Saltar al contenido</a>
@@ -52,7 +52,6 @@
   <nav class="nav container nav--wide">
     <a href="#inicio"><picture><source type="image/webp" srcset="images/icons/logo.webp"><img src="images/icons/logo.png" class="brand-logo" alt="Interlanguage Studies" width="334" height="152"></picture></a>
     <div class="nav-links" id="navLinks">
-      <a href="#servicio-metodologia" data-jump-service="metodologia">Metodología</a>
       <div class="nav-dropdown">
         <button type="button" class="nav-dropdown-trigger" id="servicesTrigger" aria-haspopup="true" aria-expanded="false" aria-controls="servicesMenu">
           Programas <span class="caret" aria-hidden="true">▾</span>
@@ -65,7 +64,7 @@
                 <strong>Campamentos de verano</strong>
                 <span class="mega-badge">Inscripción abierta</span>
               </span>
-              <small>3–10 años · Madrid</small>
+              <small>3–10 años</small>
               <svg class="mega-item-arrow" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </a>
             <a href="#servicio-extraescolar" data-jump-service="extraescolar" class="mega-item">
@@ -74,16 +73,10 @@
               <svg class="mega-item-arrow" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </a>
           </div>
-          <div class="mega-col">
-            <span class="mega-col-title">Internacional</span>
-            <a href="#servicio-extranjero" data-jump-service="extranjero" class="mega-item">
-              <strong>Estudiar en el extranjero</strong>
-              <small>Irlanda · Reino Unido · EE.UU.</small>
-              <svg class="mega-item-arrow" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </a>
-          </div>
         </div>
       </div>
+      <a href="#servicio-extranjero" data-jump-service="extranjero">Estudiar en el extranjero</a>
+      <a href="#por-que">Por qué nosotros</a>
       <a href="#testimonios">Testimonios</a>
       <a href="#contacto" class="nav-cta" data-cta="nav">Reservar una llamada</a>
     </div>
@@ -266,6 +259,54 @@
   </div>
 </section>
 
+<!-- POR QUÉ INTERLANGUAGE -->
+<section class="why-us" id="por-que">
+  <div class="container">
+    <div class="why-us-head reveal">
+      <span class="eyebrow">Por qué confiar en nosotros</span>
+      <h2>30 años acompañando familias</h2>
+    </div>
+    <div class="why-us-grid reveal">
+      <div class="why-us-card">
+        <div class="why-us-icon">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="8" r="3.5"/><path d="M5 20c1-4.5 4-7 7-7s6 2.5 7 7" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <h3>Profesores nativos</h3>
+        <p>El 100% de nuestro equipo es nativo y está formado específicamente en enseñanza a niños y adolescentes.</p>
+      </div>
+      <div class="why-us-card">
+        <div class="why-us-icon">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 4L2 9l10 5 10-5-10-5Z" stroke-linejoin="round"/><path d="M6 12v5c0 1.1 2.7 2.5 6 2.5s6-1.4 6-2.5v-5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <h3>Metodología activa</h3>
+        <p>Aprender jugando, experimentando y viviendo el idioma en cada clase, no memorizar.</p>
+      </div>
+      <div class="why-us-card">
+        <div class="why-us-icon">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 3l2.6 5.6 6.1.6-4.6 4.1 1.4 6-5.5-3.2-5.5 3.2 1.4-6-4.6-4.1 6.1-.6L12 3Z" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <h3>Acompañamiento real</h3>
+        <p>No somos una plataforma. Cada familia tiene un referente que la acompaña en cada etapa.</p>
+      </div>
+      <div class="why-us-card">
+        <div class="why-us-icon">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.5 4 6 4 9s-1.5 6.5-4 9c-2.5-2.5-4-6-4-9s1.5-6.5 4-9Z"/>
+          </svg>
+        </div>
+        <h3>Experiencia global</h3>
+        <p>Programas en Madrid, Irlanda, Reino Unido y Estados Unidos. Desde campamentos hasta años académicos.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- TESTIMONIOS -->
 <section class="testimonials" id="testimonios">
   <div class="container">
@@ -301,60 +342,6 @@
         </div>
       </div>
       <div class="test-dots" id="testDots" role="tablist" aria-label="Testimonios"></div>
-    </div>
-  </div>
-</section>
-
-<!-- FAQ -->
-<section class="faq" id="faq">
-  <div class="container">
-    <div class="cred-head reveal">
-      <span class="eyebrow">Preguntas frecuentes</span>
-      <h2>Lo que más nos preguntáis</h2>
-    </div>
-    <div class="faq-list reveal">
-      <div class="faq-item">
-        <div class="faq-q">
-          <span>¿A partir de qué edad pueden empezar?</span>
-          <span class="faq-plus">+</span>
-        </div>
-        <div class="faq-a"><p>Los campamentos y extraescolares empiezan a los 3 años. Los programas de estudiar en el extranjero suelen recomendarse a partir de los 10-12 años, según el destino.</p></div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q">
-          <span>¿Todos los profesores son realmente nativos?</span>
-          <span class="faq-plus">+</span>
-        </div>
-        <div class="faq-a"><p>Sí, el 100% del claustro es nativo y además está formado específicamente en enseñanza a niños y adolescentes, no solo en hablar el idioma.</p></div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q">
-          <span>¿Cuánto tardáis en responder tras dejar mis datos?</span>
-          <span class="faq-plus">+</span>
-        </div>
-        <div class="faq-a"><p>Menos de 24h laborables. Os contactamos por email o teléfono según lo que indiquéis en el formulario.</p></div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q">
-          <span>¿Puedo combinar varios servicios, como extraescolar y campamento?</span>
-          <span class="faq-plus">+</span>
-        </div>
-        <div class="faq-a"><p>Sí, de hecho es habitual: muchas familias combinan extraescolar durante el curso con el campamento en verano para mantener el ritmo todo el año.</p></div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q">
-          <span>¿Y si mi hijo/a vuelve con el curso perdido?</span>
-          <span class="faq-plus">+</span>
-        </div>
-        <div class="faq-a"><p>Revisamos antes el itinerario académico y trabajamos con colegios que convalidan asignaturas. En los programas de año completo coordinamos con el centro en España para que el curso cuente.</p></div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q">
-          <span>¿Es seguro que se aloje con una familia que no conocemos?</span>
-          <span class="faq-plus">+</span>
-        </div>
-        <div class="faq-a"><p>Las familias anfitrionas pasan un proceso de selección y verificación, y hacéis una videollamada con ellas antes de viajar. Si algo no encaja ya en destino, cambiamos de familia sin coste adicional.</p></div>
-      </div>
     </div>
   </div>
 </section>
