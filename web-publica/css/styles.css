@@ -855,7 +855,14 @@ picture{display:contents;}
   .test-carousel .test-author strong{font-size:.94rem;}
   .test-carousel .test-author span{font-size:.8rem;}
 
-  /* Conmutador de idioma */
-  .lang-switch{display:inline-flex; align-items:center; gap:6px; padding:8px 12px; border-radius:999px; border:1px solid var(--line); color:var(--navy); font-weight:700; font-size:.82rem; text-decoration:none; transition:background .2s;}
-  .lang-switch:hover{background:var(--peach);}
-  .lang-switch svg{width:17px; height:17px;}
+  /* Conmutador de idioma (toggle claro ES | EN) */
+  .lang-switch{display:inline-flex; align-items:center; gap:6px; padding:4px 8px 4px 11px; border-radius:999px; border:1.5px solid var(--navy); font-weight:800; font-size:.8rem; color:var(--navy); line-height:1;}
+  .lang-switch svg{width:16px; height:16px; flex:0 0 auto;}
+  .lang-switch .lang-active{background:var(--navy); color:#fff; padding:4px 9px; border-radius:999px;}
+  .lang-switch a{padding:4px 9px; border-radius:999px; color:var(--navy); text-decoration:none; transition:background .2s;}
+  .lang-switch a:hover{background:var(--peach);}
+
+  /* Conmutador: agrupado a la derecha en escritorio, visible junto al menú en móvil */
+  .nav-links{margin-left:auto;}
+  .lang-switch{margin-left:12px;}
+  @media (max-width:920px){ .lang-switch{margin-left:auto; margin-right:12px;} }
