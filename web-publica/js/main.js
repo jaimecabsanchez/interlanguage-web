@@ -562,7 +562,8 @@ window.dataLayer = window.dataLayer || [];
     document.querySelectorAll('[data-advise]').forEach(function(el){
       el.addEventListener('click', function(e){
         e.preventDefault();
-        showView('view-home');
+        // si ya estamos en la home no saltamos arriba: solo bajamos al formulario
+        showView('view-home', isHomeVisible() ? { keepScroll: true } : undefined);
         const sel = document.getElementById('service');
         if (sel){ sel.value = el.getAttribute('data-advise'); sel.dispatchEvent(new Event('change')); }   // 'change' adapta el formulario
         const extra = document.getElementById('serviceExtra');

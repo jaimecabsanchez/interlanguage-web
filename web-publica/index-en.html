@@ -42,8 +42,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="preload" href="css/styles.css?v=30" as="style">
-<link rel="stylesheet" href="css/styles.css?v=30">
+<link rel="preload" href="css/styles.css?v=33" as="style">
+<link rel="stylesheet" href="css/styles.css?v=33">
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
@@ -237,33 +237,80 @@
 
 <!-- EXPERIENCIAS INTERNACIONALES -->
 <section class="destinos destinos--intl" id="destinos">
-  <div class="container">
-    <div class="intl-layout">
+
+  <div class="intl-hero">
+    <div class="container">
       <div class="intl-copy reveal">
         <span class="eyebrow">International experiences</span>
-        <h2>English is learnt by living it</h2>
-        <p>Academic programmes in Ireland, the United Kingdom and the United States, with support at every step of the way.</p>
-        <ul class="intl-checklist">
-          <li><span class="intl-check-ic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l7 3.5v5c0 4.5-3 7.7-7 9-4-1.3-7-4.5-7-9v-5L12 3Z"/><path d="M9 12l2 2 4-4.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>Verified host family</span></li>
-          <li><span class="intl-check-ic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4.5 8.5 12 5l7.5 3.5v4c0 4.8-3.1 8.2-7.5 10-4.4-1.8-7.5-5.2-7.5-10v-4Z"/><path d="M12 9v6M9 12h6" stroke-linecap="round"/></svg></span><span>International medical insurance</span></li>
+        <h2>English is learnt by living it.</h2>
+        <p class="intl-lead">Academic programmes in Ireland, the United Kingdom and the United States, with personal support before, during and after the experience.</p>
+        <ul class="intl-checklist intl-trust">
+          <li><span class="intl-check-ic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l7 3.5v5c0 4.5-3 7.7-7 9-4-1.3-7-4.5-7-9v-5L12 3Z"/><path d="M9 12l2 2 4-4.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>Selected host families and schools</span></li>
           <li><span class="intl-check-ic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="10" r="3"/><path d="M12 21s6-5.2 6-10.5A6 6 0 0 0 6 10.5C6 15.8 12 21 12 21Z"/></svg></span><span>Local coordinator on site</span></li>
-          <li><span class="intl-check-ic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5V6a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v13.5"/><path d="M4 19.5h13M8 8h6M8 11.5h6" stroke-linecap="round"/></svg></span><span>Academic continuity and recognition</span></li>
+          <li><span class="intl-check-ic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5V6a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v13.5"/><path d="M4 19.5h13M8 8h6M8 11.5h6" stroke-linecap="round"/></svg></span><span>Academic continuity</span></li>
         </ul>
-        <a href="#contacto" class="btn-primary">Talk to a destinations adviser</a>
+        <a href="#contacto" class="btn-primary" data-advise="extranjero" data-cta="intl-asesor">Talk to an international adviser</a>
       </div>
-      <div class="intl-collage reveal">
-        <div class="intl-collage-item intl-collage-item--tall"><picture><source type="image/avif" srcset="images/internacional/uk-golf-480.avif 480w, images/internacional/uk-golf-800.avif 800w, images/internacional/uk-golf-1000.avif 1000w" sizes="(max-width: 700px) 100vw, 50vw"><source type="image/webp" srcset="images/internacional/uk-golf-480.webp 480w, images/internacional/uk-golf-800.webp 800w, images/internacional/uk-golf-1000.webp 1000w" sizes="(max-width: 700px) 100vw, 50vw"><img src="images/internacional/uk-golf.jpg" alt="Two Interlanguage students on a golf course in the United Kingdom" style="object-position:center 40%" width="1000" height="1250" loading="lazy"></picture><span class="intl-collage-label">United Kingdom</span></div>
-        <div class="intl-collage-item"><picture><source type="image/avif" srcset="images/internacional/irlanda-rugby-480.avif 480w, images/internacional/irlanda-rugby-800.avif 800w, images/internacional/irlanda-rugby-1080.avif 1080w" sizes="(max-width: 700px) 100vw, 50vw"><source type="image/webp" srcset="images/internacional/irlanda-rugby-480.webp 480w, images/internacional/irlanda-rugby-800.webp 800w, images/internacional/irlanda-rugby-1080.webp 1080w" sizes="(max-width: 700px) 100vw, 50vw"><img src="images/internacional/irlanda-rugby.jpg" loading="lazy" alt="An Interlanguage student playing rugby in Ireland" width="1080" height="1350"></picture><span class="intl-collage-label">Ireland</span></div>
-        <div class="intl-collage-item"><picture><source type="image/avif" srcset="images/internacional/usa-football-480.avif 480w, images/internacional/usa-football-800.avif 800w, images/internacional/usa-football-929.avif 929w" sizes="(max-width: 700px) 100vw, 50vw"><source type="image/webp" srcset="images/internacional/usa-football-480.webp 480w, images/internacional/usa-football-800.webp 800w, images/internacional/usa-football-929.webp 929w" sizes="(max-width: 700px) 100vw, 50vw"><img src="images/internacional/usa-football.jpg" alt="An American football match at a high school in the United States" width="929" height="1161" loading="lazy"></picture><span class="intl-collage-label">United States</span></div>
-      </div>
-    </div>
-    <div class="dest-process dest-process--intl reveal">
-      <div class="dest-process-step"><span class="dest-process-num">1</span><span>We assess your child's level and academic path with you</span></div>
-      <div class="dest-process-step"><span class="dest-process-num">2</span><span>You choose a destination: Ireland, England or the United States</span></div>
-      <div class="dest-process-step"><span class="dest-process-num">3</span><span>We select the school and host family to suit your child</span></div>
-      <div class="dest-process-step"><span class="dest-process-num">4</span><span>24/7 support throughout the programme</span></div>
     </div>
   </div>
+
+  <div class="intl-light">
+    <div class="container">
+      <div class="intl-dest-grid">
+        <a class="intl-dest-card reveal" href="#servicio-extranjero" data-jump-service="extranjero" data-destino="irlanda">
+          <span class="intl-dest-media"><picture><source type="image/avif" srcset="images/internacional/irlanda-rugby-480.avif 480w, images/internacional/irlanda-rugby-800.avif 800w, images/internacional/irlanda-rugby-1080.avif 1080w" sizes="(max-width: 700px) 100vw, (max-width: 1100px) 45vw, 370px"><source type="image/webp" srcset="images/internacional/irlanda-rugby-480.webp 480w, images/internacional/irlanda-rugby-800.webp 800w, images/internacional/irlanda-rugby-1080.webp 1080w" sizes="(max-width: 700px) 100vw, (max-width: 1100px) 45vw, 370px"><img decoding="async" src="images/internacional/irlanda-rugby.jpg" loading="lazy" alt="An Interlanguage student playing rugby in Ireland" width="1080" height="1350"></picture><span class="intl-dest-scrim"></span></span>
+          <span class="intl-dest-body">
+            <span class="intl-dest-name">Ireland</span>
+            <span class="intl-dest-go">Explore <svg class="intl-arrow" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </span>
+        </a>
+        <a class="intl-dest-card reveal" href="#servicio-extranjero" data-jump-service="extranjero" data-destino="reino-unido">
+          <span class="intl-dest-media"><picture><source type="image/avif" srcset="images/internacional/uk-golf-480.avif 480w, images/internacional/uk-golf-800.avif 800w, images/internacional/uk-golf-1000.avif 1000w" sizes="(max-width: 700px) 100vw, (max-width: 1100px) 45vw, 370px"><source type="image/webp" srcset="images/internacional/uk-golf-480.webp 480w, images/internacional/uk-golf-800.webp 800w, images/internacional/uk-golf-1000.webp 1000w" sizes="(max-width: 700px) 100vw, (max-width: 1100px) 45vw, 370px"><img decoding="async" src="images/internacional/uk-golf.jpg" alt="Two Interlanguage students on a golf course in the United Kingdom" style="object-position:center 40%" width="1000" height="1250" loading="lazy"></picture><span class="intl-dest-scrim"></span></span>
+          <span class="intl-dest-body">
+            <span class="intl-dest-name">United Kingdom</span>
+            <span class="intl-dest-go">Explore <svg class="intl-arrow" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </span>
+        </a>
+        <a class="intl-dest-card reveal" href="#servicio-extranjero" data-jump-service="extranjero" data-destino="estados-unidos">
+          <span class="intl-dest-media"><picture><source type="image/avif" srcset="images/internacional/usa-football-480.avif 480w, images/internacional/usa-football-800.avif 800w, images/internacional/usa-football-929.avif 929w" sizes="(max-width: 700px) 100vw, (max-width: 1100px) 45vw, 370px"><source type="image/webp" srcset="images/internacional/usa-football-480.webp 480w, images/internacional/usa-football-800.webp 800w, images/internacional/usa-football-929.webp 929w" sizes="(max-width: 700px) 100vw, (max-width: 1100px) 45vw, 370px"><img decoding="async" src="images/internacional/usa-football.jpg" alt="An American football match at a high school in the United States" width="929" height="1161" loading="lazy"></picture><span class="intl-dest-scrim"></span></span>
+          <span class="intl-dest-body">
+            <span class="intl-dest-name">United States</span>
+            <span class="intl-dest-go">Explore <svg class="intl-arrow" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </span>
+        </a>
+      </div>
+
+      <div class="intl-proceso">
+        <h3 class="intl-proceso-title reveal">We are with you at every step</h3>
+        <ol class="intl-steps">
+          <li class="intl-step reveal">
+            <span class="intl-step-num">01</span>
+            <h4>We get to know the pupil</h4>
+            <p>English level and academic path.</p>
+          </li>
+          <li class="intl-step reveal">
+            <span class="intl-step-num">02</span>
+            <h4>You choose the destination</h4>
+            <p>Ireland, the United Kingdom or the United States.</p>
+          </li>
+          <li class="intl-step reveal">
+            <span class="intl-step-num">03</span>
+            <h4>We prepare the experience</h4>
+            <p>School and host family selected to suit.</p>
+          </li>
+          <li class="intl-step reveal">
+            <span class="intl-step-num">04</span>
+            <h4>We stay close</h4>
+            <p>24/7 support throughout the programme.</p>
+          </li>
+        </ol>
+        <p class="intl-more reveal">
+          <a href="#servicio-extranjero" data-jump-service="extranjero">See all international programmes <svg class="intl-arrow" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        </p>
+      </div>
+    </div>
+  </div>
+
 </section>
 
 <!-- POR QUÉ INTERLANGUAGE -->
@@ -1035,7 +1082,7 @@
     <a href="#" class="svc-back" data-back>← Back to programmes</a>
     
     <h1>Study abroad</h1>
-    <p class="svc-page-intro">Full-immersion programmes in Ireland, England and the United States, from summer stays to a full academic year, with support at every step.</p>
+    <p class="svc-page-intro">Full-immersion programmes in Ireland, the United Kingdom and the United States, from summer stays to a full academic year, with support at every step.</p>
     <div class="svc-stats">
       <div class="svc-stat"><strong>3</strong><span>destination countries</span></div>
       <div class="svc-stat"><strong>24/7</strong><span>support</span></div>
@@ -1094,9 +1141,9 @@
         <p>From a summer stay to a full academic year.</p>
       </div>
       <div class="ext-prog-grid">
-        <a href="#" class="ext-prog-card" data-programa="verano" data-advise="extranjero" data-advise-note="Type of experience: Summer programme">
+        <a href="#" class="ext-prog-card" data-programa="verano" data-advise="extranjero" data-advise-note="Type of experience: Summer abroad">
           <span class="ext-prog-dur">Summer</span>
-          <h3>Summer programme</h3>
+          <h3>Summer abroad</h3>
           <p>A first immersion away from home, with the reassurance of a short stay.</p>
         </a>
         <a href="#" class="ext-prog-card" data-programa="curso-escolar" data-advise="extranjero" data-advise-note="Type of experience: School term">
@@ -1110,6 +1157,7 @@
           <p>The whole year abroad, coordinated with the school back in Spain.</p>
         </a>
       </div>
+      <p class="ext-prog-hint">Looking for the summer camp in Madrid? <a href="#servicio-campamentos" data-jump-service="campamentos">See summer camps →</a></p>
     </section>
 
     <!-- ===== PROCESS ===== -->
@@ -1118,7 +1166,7 @@
         <span class="eyebrow">How it works</span>
         <h2>The process, step by step</h2>
       </div>
-      <div class="dest-process dest-process--intl">
+      <div class="dest-process">
         <div class="dest-process-step"><span class="dest-process-num">1</span><span>We review their English level and academic pathway with you</span></div>
         <div class="dest-process-step"><span class="dest-process-num">2</span><span>You choose the destination: Ireland, the United Kingdom or the United States</span></div>
         <div class="dest-process-step"><span class="dest-process-num">3</span><span>We select the school and host family to fit</span></div>
@@ -1365,6 +1413,6 @@
   </div>
 </div>
 
-<script src="js/main.js?v=14" defer></script>
+<script src="js/main.js?v=15" defer></script>
 </body>
 </html>
