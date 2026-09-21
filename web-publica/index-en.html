@@ -42,8 +42,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="preload" href="css/styles.css?v=22" as="style">
-<link rel="stylesheet" href="css/styles.css?v=22">
+<link rel="preload" href="css/styles.css?v=23" as="style">
+<link rel="stylesheet" href="css/styles.css?v=23">
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
@@ -1017,6 +1017,107 @@
     </div>
     <p class="camp-gallery-caption">Interlanguage pupils living the experience first hand.</p>
 
+    <!-- ===== CHOOSE BY DESTINATION =====
+         Architecture: each card carries data-destino with its planned slug.
+         The router in main.js already resolves #servicio-<key> -> #view-service-<key>,
+         so adding "#servicio-extranjero-irlanda" later needs NO new code: just add the
+         <div id="view-service-extranjero-irlanda"> and update the card href.
+         We deliberately do not create empty views today. -->
+    <section class="ext-block" id="ext-destinos">
+      <div class="ext-block-head">
+        <span class="eyebrow">Destinations</span>
+        <h2>Where would they like to live the experience?</h2>
+        <p>Three destinations, each with its own school system and local support on the ground.</p>
+      </div>
+      <div class="ext-dest-grid">
+        <a href="#ext-asesoramiento" class="ext-dest-card" data-destino="irlanda">
+          <div class="ext-dest-photo">
+            <picture><source type="image/avif" srcset="images/internacional/irlanda-rugby-480.avif 480w, images/internacional/irlanda-rugby-800.avif 800w, images/internacional/irlanda-rugby-1080.avif 1080w" sizes="(max-width: 700px) 100vw, 33vw"><source type="image/webp" srcset="images/internacional/irlanda-rugby-480.webp 480w, images/internacional/irlanda-rugby-800.webp 800w, images/internacional/irlanda-rugby-1080.webp 1080w" sizes="(max-width: 700px) 100vw, 33vw"><img src="images/internacional/irlanda-rugby.jpg" alt="Interlanguage pupil playing rugby in Ireland" width="1080" height="1350" loading="lazy"></picture>
+          </div>
+          <div class="ext-dest-body">
+            <h3>Ireland</h3>
+            <span class="ext-dest-more">Ask about this destination <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </div>
+        </a>
+        <a href="#ext-asesoramiento" class="ext-dest-card" data-destino="reino-unido">
+          <div class="ext-dest-photo">
+            <picture><source type="image/avif" srcset="images/internacional/uk-golf-480.avif 480w, images/internacional/uk-golf-800.avif 800w, images/internacional/uk-golf-1000.avif 1000w" sizes="(max-width: 700px) 100vw, 33vw"><source type="image/webp" srcset="images/internacional/uk-golf-480.webp 480w, images/internacional/uk-golf-800.webp 800w, images/internacional/uk-golf-1000.webp 1000w" sizes="(max-width: 700px) 100vw, 33vw"><img src="images/internacional/uk-golf.jpg" alt="Two Interlanguage pupils on a golf course in the United Kingdom" style="object-position:center 40%" width="1000" height="1250" loading="lazy"></picture>
+          </div>
+          <div class="ext-dest-body">
+            <h3>United Kingdom</h3>
+            <span class="ext-dest-more">Ask about this destination <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </div>
+        </a>
+        <a href="#ext-asesoramiento" class="ext-dest-card" data-destino="estados-unidos">
+          <div class="ext-dest-photo">
+            <picture><source type="image/avif" srcset="images/internacional/usa-football-480.avif 480w, images/internacional/usa-football-800.avif 800w, images/internacional/usa-football-929.avif 929w" sizes="(max-width: 700px) 100vw, 33vw"><source type="image/webp" srcset="images/internacional/usa-football-480.webp 480w, images/internacional/usa-football-800.webp 800w, images/internacional/usa-football-929.webp 929w" sizes="(max-width: 700px) 100vw, 33vw"><img src="images/internacional/usa-football.jpg" alt="American football match at a high school in the United States" width="929" height="1161" loading="lazy"></picture>
+          </div>
+          <div class="ext-dest-body">
+            <h3>United States</h3>
+            <span class="ext-dest-more">Ask about this destination <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- ===== CHOOSE BY PROGRAMME TYPE =====
+         Same scalability criterion: data-programa holds the planned slug. -->
+    <section class="ext-block" id="ext-programas">
+      <div class="ext-block-head">
+        <span class="eyebrow">Type of experience</span>
+        <h2>How long away?</h2>
+        <p>From a summer stay to a full academic year.</p>
+      </div>
+      <div class="ext-prog-grid">
+        <a href="#ext-asesoramiento" class="ext-prog-card" data-programa="verano">
+          <span class="ext-prog-dur">Summer</span>
+          <h3>Summer programme</h3>
+          <p>A first immersion away from home, with the reassurance of a short stay.</p>
+        </a>
+        <a href="#ext-asesoramiento" class="ext-prog-card" data-programa="curso-escolar">
+          <span class="ext-prog-dur">Term or semester</span>
+          <h3>School term</h3>
+          <p>Enrolment at the host school for part of the academic year.</p>
+        </a>
+        <a href="#ext-asesoramiento" class="ext-prog-card" data-programa="ano-academico">
+          <span class="ext-prog-dur">Full year</span>
+          <h3>Academic year</h3>
+          <p>The whole year abroad, coordinated with the school back in Spain.</p>
+        </a>
+      </div>
+    </section>
+
+    <!-- ===== PROCESS ===== -->
+    <section class="ext-block" id="ext-proceso">
+      <div class="ext-block-head">
+        <span class="eyebrow">How it works</span>
+        <h2>The process, step by step</h2>
+      </div>
+      <div class="dest-process dest-process--intl">
+        <div class="dest-process-step"><span class="dest-process-num">1</span><span>We review their English level and academic pathway with you</span></div>
+        <div class="dest-process-step"><span class="dest-process-num">2</span><span>You choose the destination: Ireland, the United Kingdom or the United States</span></div>
+        <div class="dest-process-step"><span class="dest-process-num">3</span><span>We select the school and host family to fit</span></div>
+        <div class="dest-process-step"><span class="dest-process-num">4</span><span>24/7 support throughout the programme</span></div>
+      </div>
+    </section>
+
+    <!-- ===== ENGLISH LEVEL =====
+         INTEGRATION POINT for "English Profile / Passport".
+         Status: NO implementation exists in this repository (see PROJECT_CONTEXT).
+         Today the level step is handled by the adviser's review (step 1 of the process).
+         To plug the product in later, replace the CTA below with its entry point,
+         keeping the #ext-nivel container and the data-level-entry hook. -->
+    <section class="ext-block" id="ext-nivel">
+      <div class="ext-level" data-level-entry="pending">
+        <div class="ext-level-copy">
+          <span class="eyebrow">English level</span>
+          <h2>Before choosing a destination, we look at their level</h2>
+          <p>The starting point is always the same: we review your child's English level and academic pathway with you, so that destination and duration genuinely fit and the year abroad adds up.</p>
+        </div>
+        <a href="#ext-asesoramiento" class="btn-outline">Review their level with an adviser</a>
+      </div>
+    </section>
+
     <div class="svc-objection-block">
       <h2>What is daily life like?</h2>
       <p>Each morning with the host family, breakfast and off to school like everyone else. Lessons in English, after-school activities in the afternoon and weekends with the family or other international students. They live like a local student, with the full routine.</p>
@@ -1041,8 +1142,6 @@
       "Sending Lucía to Ireland for a whole year at 15 frightened us, especially the host family. The Interlanguage team called us every month to tell us how she was doing. She came back with a B2 and so much more independence."
       <div class="camp-testimonial-author">Javier González<span>Father of a pupil · Academic Year in Ireland, 2024-25</span></div>
     </blockquote>
-
-    <a href="#" class="svc-destinos-link" data-go-destinos>See the 3 destinations with photos →</a>
 
     <div class="svc-price-block">
       <h2>What the price includes</h2>
@@ -1073,6 +1172,7 @@
       <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c1-4.5 4-7 7-7s6 2.5 7 7" stroke-linecap="round"/></svg>
       <span><strong>Who it's for:</strong> families who want to give their children a real immersion experience, beyond the classroom.</span>
     </div>
+    <div id="ext-asesoramiento"></div>
     <a href="#" class="btn-primary svc-page-cta" data-cta-service="extranjero">Talk to a destinations adviser</a>
   </div>
 </div>
