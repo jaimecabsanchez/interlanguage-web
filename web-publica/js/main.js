@@ -634,7 +634,13 @@ window.dataLayer = window.dataLayer || [];
     var dots = Array.from(dotsWrap.children);
     function go(n){
       idx = (n + cards.length) % cards.length;
-      track.style.transform = 'translateX(-' + (idx * 100) + '%)';
+      var cw = cards[0].getBoundingClientRect().width;
+      var gap = parseFloat(getComputedStyle(track).columnGap) || 16;
+      var shift = idx * (cw + gap) - (car.clientWidth - cw) / 2;
+      var maxShift = Math.max(0, track.scrollWidth - car.clientWidth);
+      shift = Math.max(0, Math.min(shift, maxShift));
+      track.style.transform = 'translateX(-' + shift + 'px)';
+      cards.forEach(function(c, i){ c.classList.toggle('is-active', i === idx); });
       dots.forEach(function(d, i){ d.classList.toggle('active', i === idx); });
     }
     function start(){
@@ -646,6 +652,8 @@ window.dataLayer = window.dataLayer || [];
     function restart(){ stop(); start(); }
     car.addEventListener('mouseenter', stop);
     car.addEventListener('mouseleave', start);
+    go(0);
+    window.addEventListener('resize', function(){ go(idx); });
     start();
   })();
 

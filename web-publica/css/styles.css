@@ -843,3 +843,19 @@ picture{display:contents;}
   .form-service-help{grid-column:1/-1; margin:-2px 0 4px; padding:11px 14px; background:#eef4fb; border-left:3px solid var(--teal); border-radius:10px; color:var(--teal-dark); font-size:.86rem; line-height:1.5;}
   .form-service-help[hidden]{display:none;}
   #serviceExtraWrap[hidden]{display:none;}
+
+  /* Testimonios v2: tarjetas más pequeñas, elegantes y juntas (activa centrada, vecinas atenuadas) */
+  .test-carousel{max-width:960px; padding:6px 0;}
+  .test-track{gap:16px;}
+  .test-carousel .test-card{min-width:0; flex:0 0 min(430px, 86vw); padding:22px 24px; gap:11px; border-radius:18px; border:1px solid var(--line); box-shadow:0 6px 18px rgba(38,52,74,.05); opacity:.5; transition:opacity .45s ease, transform .45s ease;}
+  .test-carousel .test-card.is-active{opacity:1;}
+  .test-carousel .test-quote{font-size:.92rem;}
+  .test-carousel .test-stars{font-size:.98rem;}
+  .test-carousel .test-avatar{width:38px; height:38px; font-size:.82rem;}
+  .test-carousel .test-author strong{font-size:.94rem;}
+  .test-carousel .test-author span{font-size:.8rem;}
+
+  /* Conmutador de idioma */
+  .lang-switch{display:inline-flex; align-items:center; gap:6px; padding:8px 12px; border-radius:999px; border:1px solid var(--line); color:var(--navy); font-weight:700; font-size:.82rem; text-decoration:none; transition:background .2s;}
+  .lang-switch:hover{background:var(--peach);}
+  .lang-switch svg{width:17px; height:17px;}
