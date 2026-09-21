@@ -60,6 +60,13 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL) || $name === '' || field('rgpd') 
     exit;
 }
 
+// Campamento: sede, semanas y nombre del alumno/a también son obligatorios (el formulario web ya los exige).
+if ($type === 'campamento' && (field('sede') === '' || field('semanas') === '' || field('alumnoNombre') === '')) {
+    http_response_code(422);
+    echo json_encode(['ok' => false, 'error' => 'validation']);
+    exit;
+}
+
 // Cuerpo del email según el tipo de formulario.
 if ($type === 'campamento') {
     $subject = 'Nueva inscripción campamento — ' . oneline($name);
@@ -69,9 +76,10 @@ if ($type === 'campamento') {
         'Sede: '                 . field('sede'),
         'Semanas: '              . field('semanas'),
         'Comedor: '              . field('comedor'),
-        'Total estimado: '       . field('total') . ' €',
+        'Total estimado: '       . (field('total') !== '' ? field('total') . ' €' : 'a confirmar'),
         '',
         'ALUMNO/A: '             . field('alumnoNombre') . ' ' . field('alumnoApellidos'),
+        'Edad/curso: '           . field('alumnoEdad'),
         'Colegio: '              . field('colegio'),
         'Alergias/necesidades: ' . field('alergias'),
         '',

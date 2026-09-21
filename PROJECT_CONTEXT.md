@@ -45,7 +45,7 @@ Repo multiproyecto. **La web pública es el foco de estas tareas: `web-publica/`
 - **Usar siempre los tokens; no colores hardcodeados nuevos.**
 - Responsive por `@media` (breakpoints ~960/900/600/480px).
 - **Cache-busting manual:** al cambiar `.css`/`.js` subir el `?v=N` en AMBAS páginas
-  (actual: `styles.css?v=21`, `main.js?v=9`). Necesario porque `_headers` marca css/js/images como `immutable`.
+  (actual: `styles.css?v=30`, `main.js?v=14`). Necesario porque `_headers` marca css/js/images como `immutable`.
 - Reemplazar una imagen: **renombrar el archivo** (p. ej. `hero-campus-2`) porque `/images/*` es inmutable en caché.
 
 ## Fotografías / assets
@@ -82,16 +82,29 @@ Repo multiproyecto. **La web pública es el foco de estas tareas: `web-publica/`
 
 ## Línea "Estudiar en el extranjero" (hub)
 - Vive en `#view-service-extranjero` (ES) y su espejo en `index-en.html`. Secciones propias:
-  `#ext-destinos`, `#ext-programas`, `#ext-proceso`, `#ext-nivel`, ancla `#ext-asesoramiento`.
+  `#ext-destinos`, `#ext-programas`, `#ext-proceso`, `#ext-nivel` (orden: intro, cifras, destinos, tipos, proceso, nivel, galería, dudas).
 - Destinos reales: Irlanda, Reino Unido, Estados Unidos. Tipos: verano, curso escolar, año académico.
 - **Escalabilidad de rutas:** el router de `main.js` ya resuelve `#servicio-<key>` → `#view-service-<key>`.
   Para abrir una URL propia de destino/programa basta con añadir `<div id="view-service-extranjero-irlanda">`
-  y cambiar el `href` de la tarjeta (`data-destino` / `data-programa` guardan el slug previsto). Sin código nuevo.
+  y cambiar la tarjeta de `data-advise` a `data-jump-service` (`data-destino` / `data-programa` guardan el slug previsto). Sin código nuevo.
+- Hoy las tarjetas (`data-advise="extranjero"`) llevan al formulario de contacto con servicio y destino ya elegidos (handler en `main.js`).
 - **Passport / English Profile: NO existe en este repo.** (El `passport-stamp` de `plataforma/` es
   gamificación del alumno, otra cosa). `Student Fit Profile`: tampoco existe, no se ha construido.
   Punto de integración preparado: contenedor `#ext-nivel` con `data-level-entry="pending"`.
   Pendiente para integrarlo: definir dónde vive el producto (repo/URL), qué devuelve (nivel CEFR),
   y sustituir el CTA "Revisar el nivel con un asesor" por su punto de entrada real.
+
+## Línea "Campamentos" (`#view-service-campamentos`, ES + espejo EN)
+- Orden: hero+ficha (edad, fechas, sedes, precio, CTA) → `#camp-fechas` → `#camp-que` → `#camp-dia`
+  → `#camp-precio` → `#camp-faq` → `#form-campamentos` (inscripción) → puente a internacional.
+- **Precios: fuente única = tarjetas `#camp-precio` (`data-pack-weeks` = nº de semanas, importe en `<strong>`)
+  y `[data-comedor-price]`.** `main.js` los lee de ahí; total = pack(n) + comedor × n. Si falta un importe
+  NO calcula: muestra "A confirmar" y envía `total` vacío. Nunca duplicar importes en JS.
+- Formulario `#campForm`, 3 pasos (sede+semanas → alumno/a → tutor/a+RGPD): validación con `.err` junto al campo
+  (mensajes en el HTML), resumen `[data-camp-summary]`/`[data-sum]`, textos ES/EN en `data-l-*` del `<form>`.
+- `form-handler.php` (`form_type=campamento`): añade `alumnoEdad`; 422 si falta sede/semanas/alumno.
+- Pendiente de confirmar por negocio (no corregir sin dato): rango de edad (3-10 vs Talent Juniors 8-16),
+  año de las fechas (22 jun–24 jul), horario/recogida sin comedor, "Desde 160€/semana" vs packs, qué incluye el precio.
 
 ---
 

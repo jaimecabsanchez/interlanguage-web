@@ -296,116 +296,209 @@ window.dataLayer = window.dataLayer || [];
     });
   });
 
-  // ---- formulario de inscripción al campamento ----
+  // ---- formulario de inscripción al campamento (3 pasos) ----
+  // Precios: se leen de la sección "Precio" del HTML (.camp-price-card[data-pack-weeks] y [data-comedor-price]),
+  // que es la única fuente. Si falta un importe fiable NO se calcula el total (se muestra "a confirmar").
+  // Textos localizados (ES/EN): atributos data-l-* del propio <form id="campForm">.
   (function(){
-    const weekPrices = { 1:160, 2:240, 3:340, 4:430, 5:530 };
-    const weekCheckboxes = document.querySelectorAll('.camp-week');
-    const comedorCheckbox = document.getElementById('campComedor');
-    const totalWeeksEl = document.getElementById('campTotalWeeks');
-    const totalDetailEl = document.getElementById('campTotalDetail');
-    const totalAmountEl = document.getElementById('campTotalAmount');
-    if (!weekCheckboxes.length) return;
+    const campForm = document.getElementById('campForm');
+    if (!campForm) return;
+    const $ = function(id){ return document.getElementById(id); };
+    const L = campForm.dataset;
+    const lang = (document.documentElement.lang || 'es').slice(0, 2);
+    const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const scrollOpts = function(block){ return { behavior: reduceMotion ? 'auto' : 'smooth', block: block }; };
+    const steps = Array.from(campForm.querySelectorAll('.form-step'));
+    const weekChecks = Array.from(campForm.querySelectorAll('.camp-week'));
+    const sede = $('campSede');
+    const comedor = $('campComedor');
+    const stepLabel = $('campFormStepLabel');
+    const progressBar = $('campFormProgressBar');
+    const msgEl = $('campFormMsg');
+    const errEl = $('campFormErrorMsg');
+    const submitBtn = $('campSubmitBtn');
+    let current = 1;
+    const attempted = {};   // pasos en los que ya se intentó avanzar (a partir de ahí se valida en vivo)
 
-    function updateTotal(){
-      const checked = Array.from(weekCheckboxes).filter(function(c){ return c.checked; });
-      const n = checked.length;
-      const basePrice = weekPrices[n] || 0;
-      const comedorPrice = comedorCheckbox.checked ? 52 * n : 0;
-      const total = basePrice + comedorPrice;
+    // ---- precios ----
+    function euros(txt){ const d = String(txt).replace(/[^\d]/g, ''); return d ? parseInt(d, 10) : NaN; }   // importes en euros enteros
+    const packPrice = {};
+    document.querySelectorAll('[data-pack-weeks]').forEach(function(el){
+      const strong = el.querySelector('strong');
+      const p = strong ? euros(strong.textContent) : NaN;
+      if (p > 0) packPrice[parseInt(el.getAttribute('data-pack-weeks'), 10)] = p;
+    });
+    const comedorEl = document.querySelector('[data-comedor-price]');
+    const comedorWeek = comedorEl ? euros(comedorEl.textContent) : NaN;
+    function money(n){ return lang === 'en' ? '€' + n : n + '€'; }
+    // el importe del comedor que se ve en el formulario y en las FAQ sale del mismo dato
+    if (comedorWeek > 0) document.querySelectorAll('[data-fill-comedor]').forEach(function(el){ el.textContent = '+' + money(comedorWeek); });
 
-      totalWeeksEl.textContent = n + (n === 1 ? ' semana seleccionada' : ' semanas seleccionadas');
-      if (n === 0){
-        totalDetailEl.textContent = 'Selecciona al menos una semana';
-      } else {
-        const weekNums = checked.map(function(c){ return c.value; }).sort().join(', ');
-        totalDetailEl.textContent = 'Semana(s) ' + weekNums + (comedorCheckbox.checked ? ' · con comedor' : ' · sin comedor');
+    function state(){
+      const picked = weekChecks.filter(function(c){ return c.checked; });
+      const n = picked.length;
+      let base = null, extra = 0, total = null;
+      if (n > 0 && packPrice[n]){
+        base = packPrice[n];
+        if (comedor.checked){
+          if (comedorWeek > 0) extra = comedorWeek * n; else base = null;   // sin precio de comedor fiable: no inventamos el total
+        }
+        if (base !== null) total = base + extra;
       }
-      totalAmountEl.textContent = total + '€';
+      return { picked: picked, n: n, base: base, extra: extra, total: total };
+    }
+    function weeksWord(n){ return n === 1 ? L.lWeekOne : L.lWeekMany; }
+    function setAll(key, text){
+      campForm.querySelectorAll('[data-sum="' + key + '"]').forEach(function(el){ el.textContent = text; });
+    }
+    // resumen de la inscripción (se actualiza solo al elegir sede, semanas o comedor)
+    function render(){
+      const s = state();
+      const comedorTxt = comedor.checked ? L.lWithComedor : L.lWithoutComedor;
+      const weeksTxt = s.n ? s.picked.map(function(c){
+        const small = c.parentNode.querySelector('small');
+        return L.lWeek + ' ' + c.value + (small ? ' · ' + small.textContent : '');
+      }).join('\n') : L.lNone;   // una semana por línea (dd con white-space:pre-line)
+      let totalTxt, note;
+      if (s.n === 0){ totalTxt = L.lPickTotal; note = L.lHint; }
+      else if (s.total === null){ totalTxt = L.lTbc; note = L.lTbcNote; }
+      else {
+        totalTxt = money(s.total);
+        note = s.n + ' ' + weeksWord(s.n) + ': ' + money(s.base) +
+          (comedor.checked ? ' + ' + L.lComedor + ' ' + s.n + ' × ' + money(comedorWeek) + ' = ' + money(s.extra) : '');
+      }
+      setAll('sede', sede.value || L.lNone);
+      setAll('weeks', weeksTxt);
+      setAll('comedor', comedorTxt);
+      setAll('total', totalTxt);
+      setAll('breakdown', note);
+      setAll('line', (sede.value || L.lNone) + '\n' + [s.n ? s.n + ' ' + weeksWord(s.n) : L.lNone, comedorTxt, totalTxt].join(' · '));
+      campForm.querySelectorAll('[data-sum="comedor-note"]').forEach(function(el){ el.hidden = !comedor.checked; });
+      campForm.querySelectorAll('[data-camp-summary]').forEach(function(el){ el.classList.toggle('is-empty', s.total === null); });
     }
 
-    weekCheckboxes.forEach(function(c){ c.addEventListener('change', updateTotal); });
-    comedorCheckbox.addEventListener('change', updateTotal);
-    updateTotal();
+    // ---- validación (mensaje junto al campo; los valores nunca se borran) ----
+    const RE_EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    function validTel(v){ return /^\+?\d{8,15}$/.test(v.replace(/[\s().-]/g, '')); }
+    function filled(id){ return $(id).value.trim() !== ''; }
+    function rule(step, id, ok, extra){ return Object.assign({ step: step, id: id, control: $(id), ok: ok }, extra || {}); }
+    const rules = [
+      rule(1, 'campSede', function(){ return filled('campSede'); }),
+      rule(1, 'campWeeks', function(){ return weekChecks.some(function(c){ return c.checked; }); },
+           { control: campForm.querySelector('.camp-weeks'), focusEl: weekChecks[0] }),
+      rule(2, 'campAlumnoNombre', function(){ return filled('campAlumnoNombre'); }),
+      rule(2, 'campAlumnoApellidos', function(){ return filled('campAlumnoApellidos'); }),
+      rule(2, 'campColegio', function(){ return filled('campColegio'); }),
+      rule(3, 'campTutor', function(){ return filled('campTutor'); }),
+      rule(3, 'campEmail', function(){ return RE_EMAIL.test($('campEmail').value.trim()); }),
+      rule(3, 'campTelefono', function(){ return validTel($('campTelefono').value.trim()); }),
+      rule(3, 'campRgpd', function(){ return $('campRgpd').checked; })
+    ];
+    function showing(r){ const e = $('err-' + r.id); return !!e && e.classList.contains('show'); }
+    function paint(r, bad){
+      const e = $('err-' + r.id);
+      if (e) e.classList.toggle('show', bad);
+      r.control.classList.toggle('invalid', bad);
+      if (r.control.tagName !== 'DIV') r.control.setAttribute('aria-invalid', bad ? 'true' : 'false');
+    }
+    function check(r){ const bad = !r.ok(); paint(r, bad); return !bad; }
+    function validateStep(n){
+      attempted[n] = true;
+      return rules.filter(function(r){ return r.step === n; }).filter(function(r){ return !check(r); });
+    }
+    rules.forEach(function(r){
+      (r.id === 'campWeeks' ? weekChecks : [r.control]).forEach(function(t){
+        ['input', 'change'].forEach(function(evt){
+          t.addEventListener(evt, function(){ if (attempted[r.step] || showing(r)) check(r); });
+        });
+      });
+    });
+    ['campEmail', 'campTelefono'].forEach(function(id){   // formato: avisa al salir del campo (si no está vacío)
+      const el = $(id);
+      el.addEventListener('blur', function(){
+        if (el.value.trim()) check(rules.filter(function(r){ return r.id === id; })[0]);
+      });
+    });
 
-    const campForm = document.getElementById('campForm');
-    const campFormMsg = document.getElementById('campFormMsg');
-    const campErrEl = document.getElementById('campFormErrorMsg');
+    // ---- pasos ----
+    function goTo(n, opts){
+      current = n;
+      steps.forEach(function(s){ s.classList.toggle('active', +s.dataset.step === n); });
+      progressBar.style.width = (n / steps.length * 100) + '%';
+      stepLabel.textContent = stepLabel.getAttribute('data-label-' + n);
+      if (opts && opts.silent) return;
+      stepLabel.scrollIntoView(scrollOpts('start'));     // el paso nuevo empieza arriba, también en móvil
+      stepLabel.focus({ preventScroll: true });
+    }
+    function focusFirstBad(bad){
+      const el = bad[0].focusEl || bad[0].control;
+      el.scrollIntoView(scrollOpts('center'));
+      el.focus({ preventScroll: true });
+    }
+    function next(){
+      const bad = validateStep(current);
+      if (bad.length){ focusFirstBad(bad); return; }
+      goTo(current + 1);
+    }
+    $('campStep1NextBtn').addEventListener('click', next);
+    $('campStep2NextBtn').addEventListener('click', next);
+    $('campStep2BackBtn').addEventListener('click', function(){ goTo(1); });
+    $('campStep3BackBtn').addEventListener('click', function(){ goTo(2); });
+    campForm.querySelectorAll('[data-goto-step]').forEach(function(b){
+      b.addEventListener('click', function(){ goTo(parseInt(b.getAttribute('data-goto-step'), 10)); });
+    });
+    weekChecks.forEach(function(c){ c.addEventListener('change', render); });
+    comedor.addEventListener('change', render);
+    sede.addEventListener('change', render);
 
-    // navegación de pasos del formulario de inscripción
-    (function(){
-      const steps = Array.from(campForm.querySelectorAll('.form-step'));
-      const progressBar = document.getElementById('campFormProgressBar');
-      const stepLabel = document.getElementById('campFormStepLabel');
-      const labels = {
-        1: 'Paso 1 de 3 · Elegid sede y semanas',
-        2: 'Paso 2 de 3 · Datos del alumno/a',
-        3: 'Paso 3 de 3 · Vuestros datos de contacto'
-      };
-      function goToStep(n){
-        steps.forEach(function(s){ s.classList.toggle('active', +s.dataset.step === n); });
-        progressBar.style.width = (n / steps.length * 100) + '%';
-        stepLabel.textContent = labels[n];
+    // ---- envío ----
+    function showSent(){
+      const holder = campForm.querySelector('[data-sent-recap]');
+      const src = steps[steps.length - 1].querySelector('[data-camp-summary]');
+      if (holder && src){
+        const clone = src.cloneNode(true);   // copia congelada del resumen enviado
+        clone.querySelectorAll('button').forEach(function(b){ b.remove(); });
+        clone.querySelectorAll('[data-sum]').forEach(function(el){ el.removeAttribute('data-sum'); });
+        clone.querySelectorAll('[aria-live]').forEach(function(el){ el.removeAttribute('aria-live'); });
+        holder.textContent = '';
+        holder.appendChild(clone);
       }
-
-      const sedeSelect = document.getElementById('campSede');
-      const step1NextBtn = document.getElementById('campStep1NextBtn');
-      function updateStep1NextState(){
-        const anyWeek = Array.from(weekCheckboxes).some(function(c){ return c.checked; });
-        step1NextBtn.disabled = !(sedeSelect.value && anyWeek);
-      }
-      sedeSelect.addEventListener('change', updateStep1NextState);
-      weekCheckboxes.forEach(function(c){ c.addEventListener('change', updateStep1NextState); });
-      updateStep1NextState();
-      step1NextBtn.addEventListener('click', function(){ goToStep(2); });
-
-      const nombreInput = document.getElementById('campAlumnoNombre');
-      const apellidosInput = document.getElementById('campAlumnoApellidos');
-      const colegioSelect = document.getElementById('campColegio');
-      const step2NextBtn = document.getElementById('campStep2NextBtn');
-      function updateStep2NextState(){
-        step2NextBtn.disabled = !(nombreInput.value.trim() && apellidosInput.value.trim() && colegioSelect.value);
-      }
-      [nombreInput, apellidosInput].forEach(function(el){ el.addEventListener('input', updateStep2NextState); });
-      colegioSelect.addEventListener('change', updateStep2NextState);
-      updateStep2NextState();
-      step2NextBtn.addEventListener('click', function(){ goToStep(3); });
-
-      document.getElementById('campStep2BackBtn').addEventListener('click', function(){ goToStep(1); });
-      document.getElementById('campStep3BackBtn').addEventListener('click', function(){ goToStep(2); });
-    })();
-
+      campForm.classList.add('is-sent');
+      msgEl.classList.add('show');
+      msgEl.scrollIntoView(scrollOpts('center'));
+      msgEl.focus({ preventScroll: true });
+    }
     campForm.addEventListener('submit', function(e){
       e.preventDefault();
-      const checked = Array.from(weekCheckboxes).filter(function(c){ return c.checked; });
-      if (checked.length === 0 || !campForm.checkValidity()){
-        campForm.reportValidity();
-        return;
+      if (current < steps.length){ next(); return; }   // Intro en los pasos 1 y 2 avanza; no envía
+      for (let n = 1; n <= steps.length; n++){
+        const bad = validateStep(n);
+        if (bad.length){ if (n !== current) goTo(n, { silent: true }); focusFirstBad(bad); return; }
       }
-      const n = checked.length;
-      const total = (weekPrices[n] || 0) + (comedorCheckbox.checked ? 52 * n : 0);
-      const val = function(id){ var el = document.getElementById(id); return el ? el.value : ''; };
+      const s = state();
+      const val = function(id){ const el = $(id); return el ? el.value : ''; };
       const payload = new URLSearchParams({
         form_type: 'campamento',
         sede: val('campSede'),
-        semanas: checked.map(function(c){ return c.value; }).join(', '),
-        comedor: comedorCheckbox.checked ? 'Sí' : 'No',
-        total: String(total),
+        semanas: s.picked.map(function(c){ return c.value; }).join(', '),
+        comedor: comedor.checked ? 'Sí' : 'No',
+        total: s.total !== null ? String(s.total) : '',
         alumnoNombre: val('campAlumnoNombre'),
         alumnoApellidos: val('campAlumnoApellidos'),
+        alumnoEdad: val('campAlumnoEdad'),
         colegio: val('campColegio'),
         alergias: val('campAlergias'),
         fullName: val('campTutor'),
         email: val('campEmail'),
         phone: val('campTelefono'),
         comentarios: val('campComentarios'),
-        rgpd: document.getElementById('campRgpd').checked ? '1' : '',
+        rgpd: $('campRgpd').checked ? '1' : '',
         website: val('campHp')
       });
 
-      const btn = document.getElementById('campSubmitBtn');
-      const prevLabel = btn.textContent;
-      setFormError(campErrEl, '');
-      btn.disabled = true; btn.textContent = 'Enviando…';
+      const prevLabel = submitBtn.textContent;
+      setFormError(errEl, '');
+      submitBtn.disabled = true; submitBtn.textContent = L.lSending;
 
       fetch(FORM_ENDPOINT, { method: 'POST', body: payload })
         .then(function(r){ if (!r.ok) throw new Error('http'); return r.json(); })
@@ -413,20 +506,22 @@ window.dataLayer = window.dataLayer || [];
           if (!res || !res.ok) throw new Error('resp');
           pushEvent('lead_generado', {
             servicio: 'campamentos',
-            semanas: checked.map(function(c){ return c.value; }).join(','),
-            comedor: comedorCheckbox.checked,
-            total: total
+            semanas: s.picked.map(function(c){ return c.value; }).join(','),
+            comedor: comedor.checked,
+            total: s.total
           });
           pushEvent('formulario_enviado', { servicio: 'campamentos-inscripcion' });
-          campFormMsg.classList.add('show');
-          campForm.querySelectorAll('input, select, textarea, button').forEach(function(el){ el.disabled = true; });
-          campFormMsg.scrollIntoView({ behavior:'smooth', block:'center' });
+          showSent();
         })
-        .catch(function(){
-          btn.disabled = false; btn.textContent = prevLabel;
-          setFormError(campErrEl, 'No hemos podido enviar la inscripción. Inténtalo de nuevo en unos segundos.');
+        .catch(function(){   // los valores siguen en el formulario: solo se reactiva el botón
+          submitBtn.disabled = false; submitBtn.textContent = prevLabel;
+          setFormError(errEl, L.lSendError);
+          errEl.scrollIntoView(scrollOpts('center'));
         });
     });
+
+    goTo(1, { silent: true });
+    render();
   })();
 
   // enlace "Ver los 3 destinos con fotos" dentro de la subpágina de extranjero
@@ -457,6 +552,34 @@ window.dataLayer = window.dataLayer || [];
       pushEvent('clic_cta', { cta_id: 'solicitar-info-desde-' + key });
     });
   });
+
+  // "Estudiar en el extranjero": tarjetas de destino / tipo de programa y CTAs de asesoramiento.
+  // Llevan al formulario de contacto con el servicio (y el destino) ya elegidos; los destinos son los
+  // mismos de #serviceExtra. Cuando exista una página propia de destino/programa, basta con cambiar la
+  // tarjeta de data-advise a data-jump-service="extranjero-<destino>" (el router ya lo resuelve).
+  (function(){
+    const DESTINOS = { 'irlanda': 'Irlanda', 'reino-unido': 'Reino Unido', 'estados-unidos': 'Estados Unidos' };
+    document.querySelectorAll('[data-advise]').forEach(function(el){
+      el.addEventListener('click', function(e){
+        e.preventDefault();
+        showView('view-home');
+        const sel = document.getElementById('service');
+        if (sel){ sel.value = el.getAttribute('data-advise'); sel.dispatchEvent(new Event('change')); }   // 'change' adapta el formulario
+        const extra = document.getElementById('serviceExtra');
+        const destino = DESTINOS[el.getAttribute('data-destino')];
+        if (extra && destino) extra.value = destino;
+        const note = el.getAttribute('data-advise-note');
+        const msg = document.getElementById('message');
+        if (msg && note && !msg.value.trim()) msg.value = note;
+        const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        requestAnimationFrame(function(){
+          const target = document.getElementById('contacto');
+          if (target) target.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+        });
+        pushEvent('clic_cta', { cta_id: 'extranjero-' + (el.getAttribute('data-destino') || el.getAttribute('data-programa') || 'asesor') });
+      });
+    });
+  })();
 
   // cualquier enlace interno (#ancla) dentro de la home: si estamos en una subpágina, vuelve a home primero
   document.querySelectorAll('a[href^="#"]').forEach(function(link){

@@ -42,8 +42,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="preload" href="css/styles.css?v=23" as="style">
-<link rel="stylesheet" href="css/styles.css?v=23">
+<link rel="preload" href="css/styles.css?v=30" as="style">
+<link rel="stylesheet" href="css/styles.css?v=30">
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
@@ -450,14 +450,28 @@
   <div class="container camp-hero-grid">
     <div class="camp-hero-content">
       <a href="#" class="svc-back" data-back>← Back to programmes</a>
-      <span class="eyebrow">TalenTalk® Method · Since 2002</span>
+      <span class="eyebrow">Summer camp · TalenTalk® Method since 2002</span>
       <span class="svc-page-tag">Our flagship</span>
       <h1>Where every summer they discover a new talent</h1>
       <p class="svc-page-intro">Daily challenges in English, with 100% native monitors, based on the 8 multiple intelligences. Age-based groups, in Madrid. Places sell out every summer.</p>
-      <ul class="camp-hero-facts">
-        <li>Ages 3–10</li>
-        <li>From €160/week</li>
-      </ul>
+      <div class="camp-quickfacts camp-quickfacts--hero">
+        <div class="camp-quickfact">
+          <div class="camp-quickfact-ic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c1-4.5 4-7 7-7s6 2.5 7 7" stroke-linecap="round"/></svg></div>
+          <div><strong>3-10</strong><span>Age range</span></div>
+        </div>
+        <div class="camp-quickfact">
+          <div class="camp-quickfact-ic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18" stroke-linecap="round"/></svg></div>
+          <div><strong>22 Jun – 24 Jul</strong><span>Dates</span></div>
+        </div>
+        <div class="camp-quickfact">
+          <div class="camp-quickfact-ic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6.4-7-11.5A7 7 0 0112 2a7 7 0 017 7.5C19 14.6 12 21 12 21z" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="9.5" r="2.5"/></svg></div>
+          <div><strong>Madrid</strong><span>Rosales and Chamartín</span></div>
+        </div>
+        <a href="#camp-precio" class="camp-quickfact is-price" aria-label="From €160 per week. See prices">
+          <div class="camp-quickfact-ic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2 20 10a2 2 0 010 2.8L13.8 19a2 2 0 01-2.8 0L3 11V3h8z" stroke-linejoin="round"/><circle cx="7" cy="7" r="1.2" fill="currentColor" stroke="none"/></svg></div>
+          <div><strong>From €160</strong><span>Per week</span></div>
+        </a>
+      </div>
       <div class="svc-page-cta-row">
         <a href="#form-campamentos" class="btn-primary svc-page-cta">Book a place</a>
         <a href="#camp-dia" class="btn-outline">See what a day looks like</a>
@@ -467,50 +481,34 @@
   </div>
 </section>
 
-<section class="camp-section bg-white">
+<!-- FECHAS Y SEDES -->
+<section class="camp-section bg-white" id="camp-fechas">
   <div class="container">
-    <div class="camp-quickfacts reveal">
-      <div class="camp-quickfact">
-        <div class="camp-quickfact-ic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c1-4.5 4-7 7-7s6 2.5 7 7" stroke-linecap="round"/></svg></div>
-        <div><strong>3-10</strong><span>Age range</span></div>
-      </div>
-      <div class="camp-quickfact">
-        <div class="camp-quickfact-ic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18" stroke-linecap="round"/></svg></div>
-        <div><strong>22 Jun – 24 Jul</strong><span>Dates</span></div>
-      </div>
-      <div class="camp-quickfact">
-        <div class="camp-quickfact-ic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6.4-7-11.5A7 7 0 0112 2a7 7 0 017 7.5C19 14.6 12 21 12 21z" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="9.5" r="2.5"/></svg></div>
-        <div><strong>Madrid</strong><span>2 sites</span></div>
-      </div>
-      <div class="camp-quickfact">
-        <div class="camp-quickfact-ic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.5 4 6 4 9s-1.5 6.5-4 9c-2.5-2.5-4-6-4-9s1.5-6.5 4-9z"/></svg></div>
-        <div><strong>100%</strong><span>Native teachers</span></div>
-      </div>
-      <div class="camp-quickfact is-price">
-        <div class="camp-quickfact-ic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2 20 10a2 2 0 010 2.8L13.8 19a2 2 0 01-2.8 0L3 11V3h8z" stroke-linejoin="round"/><circle cx="7" cy="7" r="1.2" fill="currentColor" stroke="none"/></svg></div>
-        <div><strong>From €160</strong><span>Per week</span></div>
-      </div>
+    <div class="camp-section-head reveal">
+      <h2>Dates and sites</h2>
     </div>
-    <span class="camp-open-note"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>Pupils from other schools are welcome, you don't need to attend Sagrado Corazón</span>
-    <div class="svc-page-cta-row" style="margin-top:26px; margin-bottom:0;">
-      <a href="#form-campamentos" class="btn-outline">Check availability</a>
+    <div class="camp-info-grid reveal">
+      <div class="camp-info-card">
+        <h3>Dates</h3>
+        <p class="camp-info-big">22 Jun – 24 Jul</p>
+        <p>5 weeks. Choose any you like: they don't have to be consecutive.</p>
+      </div>
+      <div class="camp-info-card">
+        <h3>Sites</h3>
+        <p class="camp-info-big">Madrid</p>
+        <p>Sagrado Corazón Rosales and Sagrado Corazón Chamartín.</p>
+        <span class="camp-open-note"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>Pupils from other schools are welcome, you don't need to attend Sagrado Corazón</span>
+      </div>
     </div>
   </div>
 </section>
 
-<section class="camp-section bg-cream" id="camp-dia">
+<!-- QUÉ HACEN -->
+<section class="camp-section bg-cream" id="camp-que">
   <div class="container">
-    <div class="camp-day-media reveal"><picture><source type="image/avif" srcset="images/campamentos/taller-cocina-grupo-480.avif 480w, images/campamentos/taller-cocina-grupo-800.avif 800w, images/campamentos/taller-cocina-grupo-1086.avif 1086w" sizes="(max-width: 700px) 100vw, 50vw"><source type="image/webp" srcset="images/campamentos/taller-cocina-grupo-480.webp 480w, images/campamentos/taller-cocina-grupo-800.webp 800w, images/campamentos/taller-cocina-grupo-1086.webp 1086w" sizes="(max-width: 700px) 100vw, 50vw"><img src="images/campamentos/taller-cocina-grupo.jpg" alt="Group cooking workshop" width="1086" height="1448" loading="lazy"></picture></div>
     <div class="camp-section-head reveal">
-      <h2>A day at TalenTalk</h2>
+      <h2>What they do at camp</h2>
       <p>8 different challenges, a discovery each day, and each one works on a different intelligence.</p>
-    </div>
-    <div class="day-timeline reveal">
-      <div class="day-step"><span class="day-step-ic">1</span><span>Arrival and assembly</span></div>
-      <div class="day-step"><span class="day-step-ic">2</span><span>Snack and challenge of the day</span></div>
-      <div class="day-step"><span class="day-step-ic">3</span><span>Water games</span></div>
-      <div class="day-step"><span class="day-step-ic">4</span><span>Special activity</span></div>
-      <div class="day-step"><span class="day-step-ic">5</span><span>Lunch and pick-up</span></div>
     </div>
     <div class="challenge-grid reveal">
       <div class="challenge-chip c1"><strong>Eureka! Challenge</strong><span>Small scientific discoveries</span></div>
@@ -523,6 +521,45 @@
       <div class="challenge-chip c4"><strong>Olimpic Challenge</strong><span>Sport, water and outdoor games</span></div>
     </div>
     <p class="svc-schedule-tagline">And a surprise challenge every day.</p>
+    <div class="camp-subhead reveal">
+      <h3>Age-based groups</h3>
+      <p>Two different formats, each designed for the right stage.</p>
+    </div>
+    <div class="age-groups reveal">
+      <div class="age-card">
+        <div class="age-card-media"><picture><source type="image/avif" srcset="images/campamentos/taller-cocina-limones-480.avif 480w, images/campamentos/taller-cocina-limones-800.avif 800w, images/campamentos/taller-cocina-limones-1122.avif 1122w" sizes="(max-width: 700px) 100vw, 50vw"><source type="image/webp" srcset="images/campamentos/taller-cocina-limones-480.webp 480w, images/campamentos/taller-cocina-limones-800.webp 800w, images/campamentos/taller-cocina-limones-1122.webp 1122w" sizes="(max-width: 700px) 100vw, 50vw"><img src="images/campamentos/taller-cocina-limones.jpg" alt="Cooking workshop, squeezing lemons" width="1122" height="1402" loading="lazy"></picture></div>
+        <div class="age-card-body">
+          <span class="age-range">Talent Starters · ages 3-8</span>
+          <h3>The youngest</h3>
+          <p>Guided play, a gentle pace and first steps in each intelligence, in age-based groups.</p>
+        </div>
+      </div>
+      <div class="age-card">
+        <div class="age-card-media"><picture><source type="image/avif" srcset="images/campamentos/taller-manualidades-480.avif 480w, images/campamentos/taller-manualidades-800.avif 800w, images/campamentos/taller-manualidades-1089.avif 1089w" sizes="(max-width: 700px) 100vw, 50vw"><source type="image/webp" srcset="images/campamentos/taller-manualidades-480.webp 480w, images/campamentos/taller-manualidades-800.webp 800w, images/campamentos/taller-manualidades-1089.webp 1089w" sizes="(max-width: 700px) 100vw, 50vw"><img src="images/campamentos/taller-manualidades.jpg" alt="Arts and crafts workshop at the camp" width="1089" height="1445" loading="lazy"></picture></div>
+        <div class="age-card-body">
+          <span class="age-range">Talent Juniors · ages 8-16</span>
+          <h3>More independence</h3>
+          <p>Each day they choose between several challenges, in groups organised by age and level.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CÓMO ES UN DÍA -->
+<section class="camp-section bg-white" id="camp-dia">
+  <div class="container">
+    <div class="camp-day-media reveal"><picture><source type="image/avif" srcset="images/campamentos/taller-cocina-grupo-480.avif 480w, images/campamentos/taller-cocina-grupo-800.avif 800w, images/campamentos/taller-cocina-grupo-1086.avif 1086w" sizes="(max-width: 700px) 100vw, 50vw"><source type="image/webp" srcset="images/campamentos/taller-cocina-grupo-480.webp 480w, images/campamentos/taller-cocina-grupo-800.webp 800w, images/campamentos/taller-cocina-grupo-1086.webp 1086w" sizes="(max-width: 700px) 100vw, 50vw"><img src="images/campamentos/taller-cocina-grupo.jpg" alt="Group cooking workshop" width="1086" height="1448" loading="lazy"></picture></div>
+    <div class="camp-section-head reveal">
+      <h2>A day at TalenTalk</h2>
+    </div>
+    <div class="day-timeline reveal">
+      <div class="day-step"><span class="day-step-ic">1</span><span>Arrival and assembly</span></div>
+      <div class="day-step"><span class="day-step-ic">2</span><span>Snack and challenge of the day</span></div>
+      <div class="day-step"><span class="day-step-ic">3</span><span>Water games</span></div>
+      <div class="day-step"><span class="day-step-ic">4</span><span>Special activity</span></div>
+      <div class="day-step"><span class="day-step-ic">5</span><span>Lunch and pick-up</span></div>
+    </div>
     <details class="svc-schedule-details">
       <summary>See the full timetable, hour by hour</summary>
       <div class="schedule-list">
@@ -579,56 +616,43 @@
   </div>
 </section>
 
-<section class="camp-section bg-white">
+<!-- PRECIO
+     Fuente única de precios: estas tarjetas (data-pack-weeks = nº de semanas) y el precio del comedor
+     (data-comedor-price). main.js lee los importes de aquí para calcular el total del resumen. -->
+<section class="camp-section bg-cream" id="camp-precio">
   <div class="container">
     <div class="camp-section-head reveal">
-      <h2>Age-based groups</h2>
-      <p>Two different formats, each designed for the right stage.</p>
+      <h2>Price</h2>
+      <p>The total price depends on the number of weeks you choose, whether or not they are consecutive.</p>
     </div>
-    <div class="age-groups reveal">
-      <div class="age-card">
-        <div class="age-card-media"><picture><source type="image/avif" srcset="images/campamentos/taller-cocina-limones-480.avif 480w, images/campamentos/taller-cocina-limones-800.avif 800w, images/campamentos/taller-cocina-limones-1122.avif 1122w" sizes="(max-width: 700px) 100vw, 50vw"><source type="image/webp" srcset="images/campamentos/taller-cocina-limones-480.webp 480w, images/campamentos/taller-cocina-limones-800.webp 800w, images/campamentos/taller-cocina-limones-1122.webp 1122w" sizes="(max-width: 700px) 100vw, 50vw"><img src="images/campamentos/taller-cocina-limones.jpg" alt="Cooking workshop, squeezing lemons" width="1122" height="1402" loading="lazy"></picture></div>
-        <div class="age-card-body">
-          <span class="age-range">Talent Starters · ages 3-8</span>
-          <h3>The youngest</h3>
-          <p>Guided play, a gentle pace and first steps in each intelligence, in age-based groups.</p>
-        </div>
-      </div>
-      <div class="age-card">
-        <div class="age-card-media"><picture><source type="image/avif" srcset="images/campamentos/taller-manualidades-480.avif 480w, images/campamentos/taller-manualidades-800.avif 800w, images/campamentos/taller-manualidades-1089.avif 1089w" sizes="(max-width: 700px) 100vw, 50vw"><source type="image/webp" srcset="images/campamentos/taller-manualidades-480.webp 480w, images/campamentos/taller-manualidades-800.webp 800w, images/campamentos/taller-manualidades-1089.webp 1089w" sizes="(max-width: 700px) 100vw, 50vw"><img src="images/campamentos/taller-manualidades.jpg" alt="Arts and crafts workshop at the camp" width="1089" height="1445" loading="lazy"></picture></div>
-        <div class="age-card-body">
-          <span class="age-range">Talent Juniors · ages 8-16</span>
-          <h3>More independence</h3>
-          <p>Each day they choose between several challenges, in groups organised by age and level.</p>
-        </div>
-      </div>
+    <div class="camp-price-grid reveal">
+      <div class="camp-price-card" data-pack-weeks="1"><span>1 week</span><strong>€160</strong></div>
+      <div class="camp-price-card" data-pack-weeks="2"><span>2 weeks</span><strong>€240</strong></div>
+      <div class="camp-price-card" data-pack-weeks="3"><span>3 weeks</span><strong>€340</strong></div>
+      <div class="camp-price-card" data-pack-weeks="4"><span>4 weeks</span><strong>€430</strong></div>
+      <div class="camp-price-card" data-pack-weeks="5"><span>5 weeks</span><strong>€530</strong></div>
+    </div>
+    <p class="camp-price-extra reveal"><strong>Lunch service</strong> (optional): <strong data-comedor-price>+€52</strong> per week, minimum 25 children enrolled.</p>
+    <div class="svc-page-cta-row" style="margin-top:28px; margin-bottom:0;">
+      <a href="#form-campamentos" class="btn-primary svc-page-cta">Book a place</a>
     </div>
   </div>
 </section>
 
-<section class="camp-section bg-mint">
+<!-- PREGUNTAS FRECUENTES + testimonio -->
+<section class="camp-section bg-white" id="camp-faq">
   <div class="container">
+    <div class="camp-section-head reveal">
+      <h2>Frequently asked questions</h2>
+    </div>
     <div class="camp-why-layout reveal">
       <div class="camp-why-media"><picture><source type="image/avif" srcset="images/campamentos/grupo-campamento-juntos-480.avif 480w, images/campamentos/grupo-campamento-juntos-800.avif 800w, images/campamentos/grupo-campamento-juntos-1200.avif 1200w, images/campamentos/grupo-campamento-juntos-1448.avif 1448w" sizes="(max-width: 700px) 100vw, 50vw"><source type="image/webp" srcset="images/campamentos/grupo-campamento-juntos-480.webp 480w, images/campamentos/grupo-campamento-juntos-800.webp 800w, images/campamentos/grupo-campamento-juntos-1200.webp 1200w, images/campamentos/grupo-campamento-juntos-1448.webp 1448w" sizes="(max-width: 700px) 100vw, 50vw"><img src="images/campamentos/grupo-campamento-juntos.jpg" alt="The camp group celebrating together" width="1448" height="1086" loading="lazy"></picture></div>
-      <div class="svc-why-grid" style="margin-bottom:0;">
-        <div class="svc-why-card">
-          <h3>Why children love it</h3>
-          <ul>
-            <li>Water games every day, the most eagerly awaited activity.</li>
-            <li>Different challenges every day: art, music, science, sport and more.</li>
-            <li>A surprise challenge that changes each day.</li>
-            <li>They make new friends every summer.</li>
-          </ul>
-        </div>
-        <div class="svc-why-card tranquilidad">
-          <h3>Why it reassures families</h3>
-          <ul>
-            <li>100% native monitors, trained to work with children.</li>
-            <li>The TalenTalk® Method, with over 20 years behind it, since 2002.</li>
-            <li>A detailed hour-by-hour timetable, no surprises.</li>
-            <li>Two sites in Madrid: Sagrado Corazón Rosales and Chamartín.</li>
-          </ul>
-        </div>
+      <div class="camp-faq">
+        <details class="camp-faq-item"><summary>Do we need to be pupils at Sagrado Corazón?</summary><p>No. Pupils from other schools are welcome.</p></details>
+        <details class="camp-faq-item"><summary>Do we have to sign up for every week?</summary><p>No. You can choose any weeks you like, consecutive or not.</p></details>
+        <details class="camp-faq-item"><summary>How does the lunch service work?</summary><p>It's an optional service at <span data-fill-comedor>+€52</span> per week, with a minimum of 25 children enrolled.</p></details>
+        <details class="camp-faq-item"><summary>Who leads the activities?</summary><p>100% native monitors, trained to work with children.</p></details>
+        <details class="camp-faq-item"><summary>When is the place confirmed?</summary><p>Once you send the enrolment, we confirm the place within 24 hours.</p></details>
       </div>
       <blockquote class="camp-testimonial">
         "We signed Marcos up for the Rosales camp not knowing whether he'd last 3 weeks straight of English. He left asking to come back next summer, and at school they've already told us he takes part more in class."
@@ -638,100 +662,84 @@
   </div>
 </section>
 
-<section class="camp-section bg-white">
+<!-- INSCRIPCIÓN -->
+<section class="camp-section bg-off" id="camp-inscripcion">
   <div class="container">
-    <div class="camp-section-head reveal">
-      <h2>What a day at camp with us is like</h2>
-    </div>
-    <div class="camp-gallery mosaic reveal">
-      <div class="camp-gallery-item"><picture><source type="image/avif" srcset="images/campamentos/ninos-pintando-480.avif 480w, images/campamentos/ninos-pintando-800.avif 800w, images/campamentos/ninos-pintando-1086.avif 1086w" sizes="(max-width: 700px) 100vw, 50vw"><source type="image/webp" srcset="images/campamentos/ninos-pintando-480.webp 480w, images/campamentos/ninos-pintando-800.webp 800w, images/campamentos/ninos-pintando-1086.webp 1086w" sizes="(max-width: 700px) 100vw, 50vw"><img src="images/campamentos/ninos-pintando.jpg" alt="Children painting at the camp" width="1086" height="1448" loading="lazy"></picture></div>
-      <div class="camp-gallery-item"><picture><source type="image/avif" srcset="images/campamentos/taller-manualidades-480.avif 480w, images/campamentos/taller-manualidades-800.avif 800w, images/campamentos/taller-manualidades-1089.avif 1089w" sizes="(max-width: 700px) 100vw, 50vw"><source type="image/webp" srcset="images/campamentos/taller-manualidades-480.webp 480w, images/campamentos/taller-manualidades-800.webp 800w, images/campamentos/taller-manualidades-1089.webp 1089w" sizes="(max-width: 700px) 100vw, 50vw"><img src="images/campamentos/taller-manualidades.jpg" alt="Arts and crafts workshop at the camp" width="1089" height="1445" loading="lazy"></picture></div>
-      <div class="camp-gallery-item"><picture><source type="image/avif" srcset="images/campamentos/taller-cocina-limones-480.avif 480w, images/campamentos/taller-cocina-limones-800.avif 800w, images/campamentos/taller-cocina-limones-1122.avif 1122w" sizes="(max-width: 700px) 100vw, 50vw"><source type="image/webp" srcset="images/campamentos/taller-cocina-limones-480.webp 480w, images/campamentos/taller-cocina-limones-800.webp 800w, images/campamentos/taller-cocina-limones-1122.webp 1122w" sizes="(max-width: 700px) 100vw, 50vw"><img src="images/campamentos/taller-cocina-limones.jpg" alt="Cooking workshop, squeezing lemons" width="1122" height="1402" loading="lazy"></picture></div>
-      <div class="camp-gallery-item"><picture><source type="image/avif" srcset="images/campamentos/taller-cocina-grupo-480.avif 480w, images/campamentos/taller-cocina-grupo-800.avif 800w, images/campamentos/taller-cocina-grupo-1086.avif 1086w" sizes="(max-width: 700px) 100vw, 50vw"><source type="image/webp" srcset="images/campamentos/taller-cocina-grupo-480.webp 480w, images/campamentos/taller-cocina-grupo-800.webp 800w, images/campamentos/taller-cocina-grupo-1086.webp 1086w" sizes="(max-width: 700px) 100vw, 50vw"><img src="images/campamentos/taller-cocina-grupo.jpg" alt="Group cooking workshop" width="1086" height="1448" loading="lazy"></picture></div>
-      <div class="camp-gallery-item"><picture><source type="image/avif" srcset="images/campamentos/grupo-campamento-juntos-480.avif 480w, images/campamentos/grupo-campamento-juntos-800.avif 800w, images/campamentos/grupo-campamento-juntos-1200.avif 1200w, images/campamentos/grupo-campamento-juntos-1448.avif 1448w" sizes="(max-width: 700px) 100vw, 50vw"><source type="image/webp" srcset="images/campamentos/grupo-campamento-juntos-480.webp 480w, images/campamentos/grupo-campamento-juntos-800.webp 800w, images/campamentos/grupo-campamento-juntos-1200.webp 1200w, images/campamentos/grupo-campamento-juntos-1448.webp 1448w" sizes="(max-width: 700px) 100vw, 50vw"><img src="images/campamentos/grupo-campamento-juntos.jpg" alt="The camp group celebrating together" width="1448" height="1086" loading="lazy"></picture></div>
-    </div>
-  </div>
-</section>
-
-<!-- PUENTE A INTERNACIONAL -->
-<section class="camp-section cross-sell-band">
-  <div class="container cross-sell">
-    <div class="cross-sell-text">
-      <span class="cross-sell-eyebrow">And later on?</span>
-      <p>From summer camp in Madrid to spending a summer, or a whole school year, abroad. We support families at every stage of the journey.</p>
-    </div>
-    <a href="#servicio-extranjero" data-jump-service="extranjero" class="cross-sell-cta">Discover international experiences →</a>
-  </div>
-</section>
-
-<section class="camp-section bg-off">
-  <div class="container">
-    <div class="audience-row svc-page-audience">
-      <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c1-4.5 4-7 7-7s6 2.5 7 7" stroke-linecap="round"/></svg>
-      <span><strong>Who it's for:</strong> families who want their children to speak English through play, in a safe and welcoming setting.</span>
-    </div>
-    <a href="#form-campamentos" class="btn-primary svc-page-cta">Enrol my child</a>
     <div class="camp-form-wrap" id="form-campamentos">
       <span class="eyebrow">Enrolment</span>
       <h2 class="svc-schedule-title">Enrol your child in the camp</h2>
       <p class="svc-schedule-intro">Choose the weeks that suit you, they don't have to be consecutive. Fill in the form and we'll confirm the place within 24 hours.</p>
 
       <span class="camp-form-microcopy">✓ 3 quick steps, under 2 minutes</span>
-      <form id="campForm" class="camp-form" action="form-handler.php" method="POST" novalidate>
+      <form id="campForm" class="camp-form" action="form-handler.php" method="POST" novalidate data-l-none="Not chosen" data-l-pick-total="Choose weeks" data-l-hint="Choose a site and weeks to see the total." data-l-week="Week" data-l-week-one="week" data-l-week-many="weeks" data-l-with-comedor="With lunch service" data-l-without-comedor="No lunch service" data-l-comedor="lunch" data-l-tbc="To be confirmed" data-l-tbc-note="We can't calculate the total automatically: we'll confirm it with the place." data-l-send-error="We couldn't send the enrolment. Your details are still here: please try again in a few seconds or email us at info@interlanguage.es." data-l-sending="Sending…">
         <input type="text" name="website" id="campHp" class="hp-field" tabindex="-1" autocomplete="off" aria-hidden="true">
         <div class="camp-form-grid">
           <div class="form-progress">
             <div class="form-progress-bar" id="campFormProgressBar"></div>
           </div>
-          <div class="form-step-label" id="campFormStepLabel">Step 1 of 3 · Choose site and weeks</div>
+          <div class="form-step-label" id="campFormStepLabel" tabindex="-1" data-label-1="Step 1 of 3 · Site and weeks" data-label-2="Step 2 of 3 · Child's details" data-label-3="Step 3 of 3 · Parent or guardian details">Step 1 of 3 · Site and weeks</div>
+          <p class="camp-req-note">* Required fields</p>
 
           <div class="form-step active" data-step="1">
             <div class="field full">
-              <label for="campSede">Site</label>
-              <select id="campSede" required>
+              <label for="campSede">Site <span class="req" aria-hidden="true">*</span></label>
+              <select id="campSede" name="sede" required autocomplete="off" aria-describedby="err-campSede">
                 <option value="">Select a site</option>
                 <option>Sagrado Corazón Rosales</option>
                 <option>Sagrado Corazón Chamartín</option>
               </select>
+              <span class="err" id="err-campSede" role="alert">Please select a site.</span>
             </div>
-            <div class="field full">
-              <label>Number of weeks <span class="camp-note">* you can choose any individual weeks, they don't have to be consecutive</span></label>
+            <div class="field full" id="campWeeksField" role="group" aria-labelledby="campWeeksLabel" aria-describedby="err-campWeeks">
+              <span class="camp-label" id="campWeeksLabel">Weeks <span class="req" aria-hidden="true">*</span> <span class="camp-note">Choose any weeks you like, they don't have to be consecutive</span></span>
               <div class="camp-weeks">
-                <label class="camp-week-chip"><input type="checkbox" class="camp-week" value="1" data-price="160"><span>Week 1<br><small>22–26 Jun</small></span></label>
-                <label class="camp-week-chip"><input type="checkbox" class="camp-week" value="2" data-price="240"><span>Week 2<br><small>29 Jun–3 Jul</small></span></label>
-                <label class="camp-week-chip"><input type="checkbox" class="camp-week" value="3" data-price="340"><span>Week 3<br><small>6–10 Jul</small></span></label>
-                <label class="camp-week-chip"><input type="checkbox" class="camp-week" value="4" data-price="430"><span>Week 4<br><small>13–17 Jul</small></span></label>
-                <label class="camp-week-chip"><input type="checkbox" class="camp-week" value="5" data-price="530"><span>Week 5<br><small>20–24 Jul</small></span></label>
+                <label class="camp-week-chip"><input type="checkbox" class="camp-week" value="1"><span>Week 1<br><small>22–26 Jun</small></span></label>
+                <label class="camp-week-chip"><input type="checkbox" class="camp-week" value="2"><span>Week 2<br><small>29 Jun–3 Jul</small></span></label>
+                <label class="camp-week-chip"><input type="checkbox" class="camp-week" value="3"><span>Week 3<br><small>6–10 Jul</small></span></label>
+                <label class="camp-week-chip"><input type="checkbox" class="camp-week" value="4"><span>Week 4<br><small>13–17 Jul</small></span></label>
+                <label class="camp-week-chip"><input type="checkbox" class="camp-week" value="5"><span>Week 5<br><small>20–24 Jul</small></span></label>
               </div>
+              <span class="err" id="err-campWeeks" role="alert">Please choose at least one week.</span>
             </div>
             <div class="field full">
               <label class="camp-comedor-row">
                 <input type="checkbox" id="campComedor">
-                <span>Lunch service <small>(+€52/week, minimum 25 children enrolled)</small></span>
+                <span>Lunch service <small>(<span data-fill-comedor>+€52</span>/week, minimum 25 children enrolled)</small></span>
               </label>
             </div>
-            <div class="camp-total-box">
-              <div>
-                <strong id="campTotalWeeks">0 weeks selected</strong>
-                <span id="campTotalDetail">Select at least one week</span>
-              </div>
-              <div class="camp-total-amount" id="campTotalAmount">0€</div>
-            </div>
+            <div class="camp-summary" data-camp-summary>
+        <div class="camp-summary-head"><strong>Your enrolment</strong></div>
+        <dl class="camp-summary-list">
+          <div><dt>Site</dt><dd data-sum="sede">Not chosen</dd></div>
+          <div><dt>Weeks</dt><dd data-sum="weeks">Not chosen</dd></div>
+          <div><dt>Lunch</dt><dd data-sum="comedor">No lunch service</dd></div>
+        </dl>
+        <div class="camp-summary-total"><span>Total</span><strong data-sum="total" aria-live="polite">Choose weeks</strong></div>
+        <p class="camp-summary-note" data-sum="breakdown">Choose a site and weeks to see the total.</p>
+        <p class="camp-summary-note" data-sum="comedor-note" hidden>Lunch service requires a minimum of 25 children enrolled.</p>
+      </div>
             <button type="button" class="submit-btn" id="campStep1NextBtn">Continue →</button>
           </div>
 
           <div class="form-step" data-step="2">
+            <div class="camp-recap" data-camp-recap><span data-sum="line">Not chosen</span><button type="button" class="camp-link-btn" data-goto-step="1">Change</button></div>
             <div class="field">
-              <label for="campAlumnoNombre">Child's first name</label>
-              <input type="text" id="campAlumnoNombre" required>
+              <label for="campAlumnoNombre">Child's first name <span class="req" aria-hidden="true">*</span></label>
+              <input type="text" id="campAlumnoNombre" name="alumnoNombre" required autocomplete="off" autocapitalize="words" enterkeyhint="next" aria-describedby="err-campAlumnoNombre">
+              <span class="err" id="err-campAlumnoNombre" role="alert">Please enter the child's first name.</span>
             </div>
             <div class="field">
-              <label for="campAlumnoApellidos">Child's surname</label>
-              <input type="text" id="campAlumnoApellidos" required>
+              <label for="campAlumnoApellidos">Child's surname <span class="req" aria-hidden="true">*</span></label>
+              <input type="text" id="campAlumnoApellidos" name="alumnoApellidos" required autocomplete="off" autocapitalize="words" enterkeyhint="next" aria-describedby="err-campAlumnoApellidos">
+              <span class="err" id="err-campAlumnoApellidos" role="alert">Please enter the child's surname.</span>
             </div>
             <div class="field full">
-              <label for="campColegio">Current school</label>
-              <select id="campColegio" required>
+              <label for="campAlumnoEdad">Child's age or year group (optional)</label>
+              <input type="text" id="campAlumnoEdad" name="alumnoEdad" autocomplete="off" enterkeyhint="next" placeholder="e.g. 7 years old / Year 2 of Primary">
+            </div>
+            <div class="field full">
+              <label for="campColegio">Current school <span class="req" aria-hidden="true">*</span></label>
+              <select id="campColegio" name="colegio" required autocomplete="off" aria-describedby="err-campColegio">
                 <option value="">Select a school</option>
                 <option>Sagrado Corazón Rosales</option>
                 <option>Sagrado Corazón Chamartín</option>
@@ -744,10 +752,11 @@
                 <option>Colegio Brains</option>
                 <option>Otro</option>
               </select>
+              <span class="err" id="err-campColegio" role="alert">Please select the current school.</span>
             </div>
             <div class="field full">
               <label for="campAlergias">Allergies or special needs</label>
-              <textarea id="campAlergias" placeholder="Optional"></textarea>
+              <textarea id="campAlergias" name="alergias" rows="3" placeholder="Optional"></textarea>
             </div>
             <div class="form-step-actions">
               <button type="button" class="step-back-btn" id="campStep2BackBtn">← Back</button>
@@ -757,25 +766,42 @@
 
           <div class="form-step" data-step="3">
             <div class="field full">
-              <label for="campTutor">Parent or guardian's name</label>
-              <input type="text" id="campTutor" required>
+              <label for="campTutor">Parent or guardian's name <span class="req" aria-hidden="true">*</span></label>
+              <input type="text" id="campTutor" name="fullName" required autocomplete="name" autocapitalize="words" enterkeyhint="next" aria-describedby="err-campTutor">
+              <span class="err" id="err-campTutor" role="alert">Please enter the parent or guardian's name.</span>
             </div>
             <div class="field">
-              <label for="campEmail">Contact email</label>
-              <input type="email" id="campEmail" required>
+              <label for="campEmail">Contact email <span class="req" aria-hidden="true">*</span></label>
+              <input type="email" id="campEmail" name="email" required autocomplete="email" inputmode="email" autocapitalize="off" spellcheck="false" enterkeyhint="next" aria-describedby="err-campEmail">
+              <span class="err" id="err-campEmail" role="alert">Please enter a valid email address, e.g. name@example.com.</span>
             </div>
             <div class="field">
-              <label for="campTelefono">Contact phone</label>
-              <input type="tel" id="campTelefono" required placeholder="+34 600 000 000">
+              <label for="campTelefono">Contact phone <span class="req" aria-hidden="true">*</span></label>
+              <input type="tel" id="campTelefono" name="phone" required autocomplete="tel" inputmode="tel" enterkeyhint="done" placeholder="+34 600 000 000" aria-describedby="err-campTelefono">
+              <span class="err" id="err-campTelefono" role="alert">Please enter a valid phone number, e.g. +34 600 000 000.</span>
             </div>
             <div class="field full">
               <label for="campComentarios">Comments</label>
-              <textarea id="campComentarios" placeholder="Optional"></textarea>
+              <textarea id="campComentarios" name="comentarios" rows="3" placeholder="Optional"></textarea>
             </div>
-            <div class="checkbox-row">
-              <input type="checkbox" id="campRgpd" required>
-              <label for="campRgpd">I accept the <a href="legal.html#privacidad" target="_blank" rel="noopener" style="color:var(--teal-dark); font-weight:700;">privacy policy</a> and agree to receive information from Interlanguage Studies.</label>
+            <div class="field full">
+              <div class="checkbox-row">
+                <input type="checkbox" id="campRgpd" name="rgpd" required aria-describedby="err-campRgpd">
+                <label for="campRgpd">I accept the <a href="legal.html#privacidad" target="_blank" rel="noopener" style="color:var(--teal-dark); font-weight:700;">privacy policy</a> and agree to receive information from Interlanguage Studies.</label>
+              </div>
+              <span class="err" id="err-campRgpd" role="alert">You need to accept the privacy policy to send the enrolment.</span>
             </div>
+            <div class="camp-summary" data-camp-summary>
+        <div class="camp-summary-head"><strong>Your enrolment</strong><button type="button" class="camp-link-btn" data-goto-step="1">Change</button></div>
+        <dl class="camp-summary-list">
+          <div><dt>Site</dt><dd data-sum="sede">Not chosen</dd></div>
+          <div><dt>Weeks</dt><dd data-sum="weeks">Not chosen</dd></div>
+          <div><dt>Lunch</dt><dd data-sum="comedor">No lunch service</dd></div>
+        </dl>
+        <div class="camp-summary-total"><span>Total</span><strong data-sum="total" aria-live="polite">Choose weeks</strong></div>
+        <p class="camp-summary-note" data-sum="breakdown">Choose a site and weeks to see the total.</p>
+        <p class="camp-summary-note" data-sum="comedor-note" hidden>Lunch service requires a minimum of 25 children enrolled.</p>
+      </div>
             <div class="form-step-actions">
               <button type="button" class="step-back-btn" id="campStep3BackBtn">← Back</button>
               <button type="submit" class="btn-primary camp-submit" id="campSubmitBtn">Send enrolment</button>
@@ -783,10 +809,21 @@
           </div>
 
           <div class="form-error" id="campFormErrorMsg" role="alert" hidden></div>
-          <div class="form-msg" id="campFormMsg">✓ Thank you. We've received the enrolment and will confirm the place within 24 hours.</div>
+          <div class="form-msg" id="campFormMsg" role="status" tabindex="-1">✓ Thank you. We've received the enrolment and will confirm the place within 24 hours.<div class="camp-sent-recap" data-sent-recap></div></div>
         </div>
       </form>
     </div>
+  </div>
+</section>
+
+<!-- PUENTE A INTERNACIONAL -->
+<section class="camp-section cross-sell-band">
+  <div class="container cross-sell">
+    <div class="cross-sell-text">
+      <span class="cross-sell-eyebrow">And later on?</span>
+      <p>From summer camp in Madrid to spending a summer, or a whole school year, abroad. We support families at every stage of the journey.</p>
+    </div>
+    <a href="#servicio-extranjero" data-jump-service="extranjero" class="cross-sell-cta">Discover international experiences →</a>
   </div>
 </section>
 
@@ -1004,24 +1041,12 @@
       <div class="svc-stat"><strong>24/7</strong><span>support</span></div>
       <div class="svc-stat"><strong>10-12+</strong><span>years, depending on the destination</span></div>
     </div>
-    <ul class="svc-page-highlights">
-<li>Three destinations: Ireland, England and the United States</li>
-<li>Summer camp, a school term or a full academic year</li>
-<li>A school and host family selected to suit your child</li>
-<li>Support throughout the whole process, not just at enrolment</li>
-    </ul>
-
-    <div class="dest-page-gallery">
-      <div class="camp-gallery-item"><picture><source type="image/avif" srcset="images/internacional/extranjero-alumnas-480.avif 480w, images/internacional/extranjero-alumnas-800.avif 800w, images/internacional/extranjero-alumnas-1122.avif 1122w" sizes="(max-width: 700px) 100vw, 50vw"><source type="image/webp" srcset="images/internacional/extranjero-alumnas-480.webp 480w, images/internacional/extranjero-alumnas-800.webp 800w, images/internacional/extranjero-alumnas-1122.webp 1122w" sizes="(max-width: 700px) 100vw, 50vw"><img src="images/internacional/extranjero-alumnas.jpg" loading="lazy" alt="Interlanguage students during their academic year abroad" width="1122" height="1402"></picture></div>
-      <div class="camp-gallery-item"><picture><source type="image/avif" srcset="images/internacional/extranjero-grupo-480.avif 480w, images/internacional/extranjero-grupo-800.avif 800w, images/internacional/extranjero-grupo-1200.avif 1200w, images/internacional/extranjero-grupo-1448.avif 1448w" sizes="(max-width: 700px) 100vw, 50vw"><source type="image/webp" srcset="images/internacional/extranjero-grupo-480.webp 480w, images/internacional/extranjero-grupo-800.webp 800w, images/internacional/extranjero-grupo-1200.webp 1200w, images/internacional/extranjero-grupo-1448.webp 1448w" sizes="(max-width: 700px) 100vw, 50vw"><img src="images/internacional/extranjero-grupo.jpg" loading="lazy" alt="A group of Interlanguage students abroad" width="1448" height="1086"></picture></div>
-    </div>
-    <p class="camp-gallery-caption">Interlanguage pupils living the experience first hand.</p>
 
     <!-- ===== CHOOSE BY DESTINATION =====
          Architecture: each card carries data-destino with its planned slug.
          The router in main.js already resolves #servicio-<key> -> #view-service-<key>,
          so adding "#servicio-extranjero-irlanda" later needs NO new code: just add the
-         <div id="view-service-extranjero-irlanda"> and update the card href.
+         <div id="view-service-extranjero-irlanda"> and switch the card from data-advise to data-jump-service="extranjero-irlanda".
          We deliberately do not create empty views today. -->
     <section class="ext-block" id="ext-destinos">
       <div class="ext-block-head">
@@ -1030,7 +1055,7 @@
         <p>Three destinations, each with its own school system and local support on the ground.</p>
       </div>
       <div class="ext-dest-grid">
-        <a href="#ext-asesoramiento" class="ext-dest-card" data-destino="irlanda">
+        <a href="#" class="ext-dest-card" data-destino="irlanda" data-advise="extranjero">
           <div class="ext-dest-photo">
             <picture><source type="image/avif" srcset="images/internacional/irlanda-rugby-480.avif 480w, images/internacional/irlanda-rugby-800.avif 800w, images/internacional/irlanda-rugby-1080.avif 1080w" sizes="(max-width: 700px) 100vw, 33vw"><source type="image/webp" srcset="images/internacional/irlanda-rugby-480.webp 480w, images/internacional/irlanda-rugby-800.webp 800w, images/internacional/irlanda-rugby-1080.webp 1080w" sizes="(max-width: 700px) 100vw, 33vw"><img src="images/internacional/irlanda-rugby.jpg" alt="Interlanguage pupil playing rugby in Ireland" width="1080" height="1350" loading="lazy"></picture>
           </div>
@@ -1039,7 +1064,7 @@
             <span class="ext-dest-more">Ask about this destination <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
           </div>
         </a>
-        <a href="#ext-asesoramiento" class="ext-dest-card" data-destino="reino-unido">
+        <a href="#" class="ext-dest-card" data-destino="reino-unido" data-advise="extranjero">
           <div class="ext-dest-photo">
             <picture><source type="image/avif" srcset="images/internacional/uk-golf-480.avif 480w, images/internacional/uk-golf-800.avif 800w, images/internacional/uk-golf-1000.avif 1000w" sizes="(max-width: 700px) 100vw, 33vw"><source type="image/webp" srcset="images/internacional/uk-golf-480.webp 480w, images/internacional/uk-golf-800.webp 800w, images/internacional/uk-golf-1000.webp 1000w" sizes="(max-width: 700px) 100vw, 33vw"><img src="images/internacional/uk-golf.jpg" alt="Two Interlanguage pupils on a golf course in the United Kingdom" style="object-position:center 40%" width="1000" height="1250" loading="lazy"></picture>
           </div>
@@ -1048,7 +1073,7 @@
             <span class="ext-dest-more">Ask about this destination <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
           </div>
         </a>
-        <a href="#ext-asesoramiento" class="ext-dest-card" data-destino="estados-unidos">
+        <a href="#" class="ext-dest-card" data-destino="estados-unidos" data-advise="extranjero">
           <div class="ext-dest-photo">
             <picture><source type="image/avif" srcset="images/internacional/usa-football-480.avif 480w, images/internacional/usa-football-800.avif 800w, images/internacional/usa-football-929.avif 929w" sizes="(max-width: 700px) 100vw, 33vw"><source type="image/webp" srcset="images/internacional/usa-football-480.webp 480w, images/internacional/usa-football-800.webp 800w, images/internacional/usa-football-929.webp 929w" sizes="(max-width: 700px) 100vw, 33vw"><img src="images/internacional/usa-football.jpg" alt="American football match at a high school in the United States" width="929" height="1161" loading="lazy"></picture>
           </div>
@@ -1069,17 +1094,17 @@
         <p>From a summer stay to a full academic year.</p>
       </div>
       <div class="ext-prog-grid">
-        <a href="#ext-asesoramiento" class="ext-prog-card" data-programa="verano">
+        <a href="#" class="ext-prog-card" data-programa="verano" data-advise="extranjero" data-advise-note="Type of experience: Summer programme">
           <span class="ext-prog-dur">Summer</span>
           <h3>Summer programme</h3>
           <p>A first immersion away from home, with the reassurance of a short stay.</p>
         </a>
-        <a href="#ext-asesoramiento" class="ext-prog-card" data-programa="curso-escolar">
+        <a href="#" class="ext-prog-card" data-programa="curso-escolar" data-advise="extranjero" data-advise-note="Type of experience: School term">
           <span class="ext-prog-dur">Term or semester</span>
           <h3>School term</h3>
           <p>Enrolment at the host school for part of the academic year.</p>
         </a>
-        <a href="#ext-asesoramiento" class="ext-prog-card" data-programa="ano-academico">
+        <a href="#" class="ext-prog-card" data-programa="ano-academico" data-advise="extranjero" data-advise-note="Type of experience: Academic year">
           <span class="ext-prog-dur">Full year</span>
           <h3>Academic year</h3>
           <p>The whole year abroad, coordinated with the school back in Spain.</p>
@@ -1114,9 +1139,15 @@
           <h2>Before choosing a destination, we look at their level</h2>
           <p>The starting point is always the same: we review your child's English level and academic pathway with you, so that destination and duration genuinely fit and the year abroad adds up.</p>
         </div>
-        <a href="#ext-asesoramiento" class="btn-outline">Review their level with an adviser</a>
+        <a href="#" class="btn-outline" data-advise="extranjero" data-advise-note="I would like an adviser to review my English level.">Review their level with an adviser</a>
       </div>
     </section>
+
+    <div class="dest-page-gallery">
+      <div class="camp-gallery-item"><picture><source type="image/avif" srcset="images/internacional/extranjero-alumnas-480.avif 480w, images/internacional/extranjero-alumnas-800.avif 800w, images/internacional/extranjero-alumnas-1122.avif 1122w" sizes="(max-width: 700px) 100vw, 50vw"><source type="image/webp" srcset="images/internacional/extranjero-alumnas-480.webp 480w, images/internacional/extranjero-alumnas-800.webp 800w, images/internacional/extranjero-alumnas-1122.webp 1122w" sizes="(max-width: 700px) 100vw, 50vw"><img src="images/internacional/extranjero-alumnas.jpg" loading="lazy" alt="Interlanguage students during their academic year abroad" width="1122" height="1402"></picture></div>
+      <div class="camp-gallery-item"><picture><source type="image/avif" srcset="images/internacional/extranjero-grupo-480.avif 480w, images/internacional/extranjero-grupo-800.avif 800w, images/internacional/extranjero-grupo-1200.avif 1200w, images/internacional/extranjero-grupo-1448.avif 1448w" sizes="(max-width: 700px) 100vw, 50vw"><source type="image/webp" srcset="images/internacional/extranjero-grupo-480.webp 480w, images/internacional/extranjero-grupo-800.webp 800w, images/internacional/extranjero-grupo-1200.webp 1200w, images/internacional/extranjero-grupo-1448.webp 1448w" sizes="(max-width: 700px) 100vw, 50vw"><img src="images/internacional/extranjero-grupo.jpg" loading="lazy" alt="A group of Interlanguage students abroad" width="1448" height="1086"></picture></div>
+    </div>
+    <p class="camp-gallery-caption">Interlanguage pupils living the experience first hand.</p>
 
     <div class="svc-objection-block">
       <h2>What is daily life like?</h2>
@@ -1172,8 +1203,7 @@
       <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c1-4.5 4-7 7-7s6 2.5 7 7" stroke-linecap="round"/></svg>
       <span><strong>Who it's for:</strong> families who want to give their children a real immersion experience, beyond the classroom.</span>
     </div>
-    <div id="ext-asesoramiento"></div>
-    <a href="#" class="btn-primary svc-page-cta" data-cta-service="extranjero">Talk to a destinations adviser</a>
+    <a href="#" class="btn-primary svc-page-cta" data-advise="extranjero">Talk to a destinations adviser</a>
   </div>
 </div>
 
@@ -1335,6 +1365,6 @@
   </div>
 </div>
 
-<script src="js/main.js?v=9" defer></script>
+<script src="js/main.js?v=14" defer></script>
 </body>
 </html>

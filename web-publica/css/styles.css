@@ -666,6 +666,111 @@ picture{display:contents;}
   .camp-total-box span{font-size:.8rem; color:rgba(255,255,255,.65);}
   .camp-total-amount{font-family:var(--font-display); font-weight:800; font-size:2rem; color:#FFD98A;}
   .camp-submit{grid-column:1/-1; width:100%; margin-top:6px;}
+
+  /* ---------- CAMPAMENTOS: ficha en el hero, fechas/sedes, precio, FAQ ---------- */
+  #view-service-campamentos .camp-section[id]{scroll-margin-top:84px;}
+  .camp-hero-content h1{margin-bottom:14px;}
+  .camp-hero-content .svc-page-intro{margin-bottom:22px;}
+  .camp-quickfacts--hero{display:grid; grid-template-columns:1fr 1fr; margin:0 0 26px; border:1px solid var(--line);}
+  .camp-quickfacts--hero .camp-quickfact{min-width:0; padding:16px; border-right:1px solid var(--line); border-bottom:1px solid var(--line); color:inherit; text-decoration:none;}
+  .camp-quickfacts--hero .camp-quickfact:nth-child(2n){border-right:none;}
+  .camp-quickfacts--hero .camp-quickfact:nth-last-child(-n+2){border-bottom:none;}
+  a.camp-quickfact.is-price{transition:filter .15s ease;}
+  a.camp-quickfact.is-price:hover, a.camp-quickfact.is-price:focus-visible{filter:brightness(1.18);}
+  @media (max-width:600px){
+    .camp-hero{padding:24px 20px 40px;}
+    .camp-hero-content .svc-back{margin-bottom:12px;}
+    .camp-hero-content h1{margin-bottom:12px;}
+    .camp-hero-content .svc-page-intro{font-size:1rem; line-height:1.55; margin-bottom:18px;}
+    .camp-quickfacts--hero{margin-bottom:20px;}
+    .camp-quickfacts--hero .camp-quickfact{padding:14px;}
+    .camp-quickfacts--hero .camp-quickfact-ic{display:none;}
+    .camp-quickfacts--hero .camp-quickfact strong{font-size:.98rem;}
+    .camp-quickfacts--hero .camp-quickfact span{font-size:.7rem;}
+  }
+  .camp-info-grid{display:grid; grid-template-columns:1fr 1fr; gap:20px;}
+  @media (max-width:700px){ .camp-info-grid{grid-template-columns:1fr;} }
+  .camp-info-card{background:var(--off); border:1px solid var(--line); border-radius:22px; padding:26px;}
+  .camp-info-card h3{font-size:.76rem; font-weight:800; text-transform:uppercase; letter-spacing:.07em; color:var(--coral-dark);}
+  .camp-info-big{font-family:var(--font-display); font-weight:800; font-size:1.55rem; color:var(--navy); line-height:1.2; margin:8px 0;}
+  .camp-info-card p:not(.camp-info-big){color:var(--ink-soft); font-size:.98rem; line-height:1.6;}
+  .camp-info-card .camp-open-note{margin-top:14px; border-radius:14px; align-items:flex-start; line-height:1.4;}
+  .camp-info-card .camp-open-note svg{margin-top:2px;}
+  .camp-subhead{margin:44px 0 20px; max-width:640px;}
+  .camp-subhead h3{font-size:1.3rem; margin-bottom:6px;}
+  .camp-subhead p{color:var(--ink-soft); font-size:1rem; line-height:1.6;}
+  .camp-price-grid{display:grid; grid-template-columns:repeat(5,1fr); gap:12px;}
+  @media (max-width:820px){ .camp-price-grid{grid-template-columns:repeat(3,1fr);} }
+  @media (max-width:480px){ .camp-price-grid{grid-template-columns:repeat(2,1fr);} .camp-price-card:last-child:nth-child(odd){grid-column:1/-1;} }
+  .camp-price-card{background:#fff; border:1px solid var(--line); border-radius:16px; padding:18px 12px; text-align:center; box-shadow:0 6px 16px rgba(22,41,74,.05);}
+  .camp-price-card span{display:block; font-size:.78rem; font-weight:700; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-soft); margin-bottom:6px;}
+  .camp-price-card strong{display:block; font-family:var(--font-display); font-weight:800; font-size:1.7rem; color:var(--navy); line-height:1.1;}
+  .camp-price-extra{margin-top:18px; max-width:640px; font-size:.98rem; color:var(--ink-soft); line-height:1.6;}
+  .camp-price-extra strong{color:var(--navy);}
+  #camp-faq .camp-why-media{aspect-ratio:4/3.4;}
+  @media (max-width:860px){ #camp-faq .camp-why-media{aspect-ratio:16/9;} }
+  .camp-faq{border-top:1px solid var(--line);}
+  .camp-faq-item{border-bottom:1px solid var(--line);}
+  .camp-faq-item summary{display:flex; align-items:center; gap:14px; min-height:52px; padding:12px 2px; cursor:pointer; list-style:none; font-family:var(--font-display); font-weight:700; font-size:1rem; color:var(--navy);}
+  .camp-faq-item summary::-webkit-details-marker{display:none;}
+  .camp-faq-item summary::after{content:'+'; margin-left:auto; flex:none; font-size:1.5rem; font-weight:500; line-height:1; color:var(--coral-dark); transition:transform .2s ease;}
+  .camp-faq-item[open] summary::after{transform:rotate(45deg);}
+  .camp-faq-item p{padding:0 2px 18px; max-width:560px; color:var(--ink-soft); font-size:.98rem; line-height:1.6;}
+
+  /* ---------- CAMPAMENTOS: formulario en 3 pasos (validación junto al campo, resumen, móvil) ---------- */
+  #camp-inscripcion .camp-form-wrap{margin-top:0;}
+  .camp-form .req{color:var(--coral-dark); font-weight:800;}
+  .camp-label{display:block; font-size:.8rem; font-weight:700; color:var(--navy); margin-bottom:6px;}
+  .camp-req-note{grid-column:1/-1; margin:-2px 0 0; font-size:.76rem; color:var(--ink-soft);}
+  .camp-form .form-step{grid-template-columns:1fr 1fr; gap:16px;}
+  .camp-form-grid .field input, .camp-form-grid .field select, .camp-form-grid .field textarea{font-size:16px;}   /* 16px evita el zoom automático de iOS al enfocar */
+  .camp-form .form-step-label{scroll-margin-top:100px; outline:none;}
+  .camp-form .field .err{min-height:0; margin-top:2px; font-size:.8rem; font-weight:600;}
+  .camp-form .field input.invalid, .camp-form .field select.invalid, .camp-form .field textarea.invalid{border-color:var(--coral-dark); background:#fff3f0;}
+  .camp-weeks.invalid .camp-week-chip{border-color:var(--coral-dark);}
+  .camp-week-chip{display:flex; align-items:center; justify-content:center; min-height:64px;}
+  .camp-week-chip:has(input:focus-visible){outline:3px solid var(--coral); outline-offset:2px;}
+  @media (max-width:460px){ .camp-weeks .camp-week-chip:last-child:nth-child(odd){grid-column:1/-1;} }
+  .camp-form-grid .field .camp-comedor-row{display:flex; align-items:flex-start; gap:12px; min-height:48px; margin-bottom:0; font-size:.92rem;}
+  .camp-form .camp-comedor-row input{margin-top:1px;}
+  .camp-form .camp-note{color:var(--ink-soft);}
+  .camp-form .camp-comedor-row input, .camp-form .checkbox-row input{width:22px; height:22px; flex:none;}
+  .camp-form-grid .field .checkbox-row{align-items:flex-start; gap:12px; margin-top:0;}
+  .camp-form-grid .field .checkbox-row label{display:block; margin:0; font-size:.88rem; font-weight:500; line-height:1.45; color:var(--ink-soft);}
+  .camp-form .step-back-btn{min-height:48px; min-width:88px;}
+  .camp-form .submit-btn, .camp-form .camp-submit{min-height:52px;}
+  .camp-form .form-step-actions .camp-submit{flex:1; width:auto; margin-top:0;}
+  .camp-summary{grid-column:1/-1; background:var(--navy); border-radius:16px; padding:18px 20px; color:#fff;}
+  .camp-summary-head{display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:10px;}
+  .camp-summary-head strong{font-family:var(--font-display); font-size:1.02rem; color:#fff;}
+  .camp-summary-list{display:grid; gap:8px; margin:0 0 12px;}
+  .camp-summary-list > div{display:flex; align-items:baseline; justify-content:space-between; gap:12px; font-size:.9rem;}
+  .camp-summary-list dt{flex:none; color:rgba(255,255,255,.65);}
+  .camp-summary-list dd{min-width:0; margin:0; text-align:right; font-weight:700; color:#fff; overflow-wrap:anywhere; white-space:pre-line;}
+  .camp-summary-total{display:flex; align-items:baseline; justify-content:space-between; gap:12px; padding-top:12px; border-top:1px solid rgba(255,255,255,.18);}
+  .camp-summary-total span{font-size:.9rem; color:rgba(255,255,255,.65);}
+  .camp-summary-total strong{font-family:var(--font-display); font-weight:800; font-size:1.9rem; line-height:1.1; color:#FFD98A;}
+  .camp-summary.is-empty .camp-summary-total strong{font-size:1rem; font-weight:700; color:rgba(255,255,255,.75);}
+  .camp-summary-note{margin:8px 0 0; font-size:.78rem; line-height:1.4; color:rgba(255,255,255,.7);}
+  .camp-summary-note:empty, .camp-summary-note[hidden]{display:none;}
+  .camp-link-btn{min-height:44px; padding:8px 4px; background:none; color:var(--coral-dark); font-size:.85rem; font-weight:800; text-decoration:underline; cursor:pointer;}
+  .camp-summary .camp-link-btn{color:#FFD98A;}
+  .camp-recap span{white-space:pre-line; line-height:1.35; padding:6px 0;}
+  .camp-recap{grid-column:1/-1; display:flex; align-items:center; justify-content:space-between; gap:10px; padding:4px 14px; background:var(--off); border:1px solid var(--line); border-radius:14px; font-size:.86rem; font-weight:700; color:var(--navy);}
+  .camp-form.is-sent .form-progress, .camp-form.is-sent .form-step-label, .camp-form.is-sent .camp-req-note, .camp-form.is-sent .form-step{display:none !important;}
+  .camp-sent-recap{margin-top:14px;}
+  .camp-sent-recap .camp-summary{text-align:left;}
+  @media (max-width:600px){
+    .camp-form .form-step{grid-template-columns:1fr;}
+    .camp-form-grid .field input, .camp-form-grid .field select, .camp-form-grid .field textarea{min-height:48px;}
+    .camp-form-grid .field textarea{min-height:88px;}
+    .camp-form .form-step-actions{flex-direction:column-reverse; align-items:stretch; gap:8px;}
+    .camp-summary{padding:16px;}
+    .camp-summary-list > div{flex-direction:column; align-items:flex-start; gap:2px;}
+    .camp-summary-list dt{font-size:.74rem; text-transform:uppercase; letter-spacing:.05em;}
+    .camp-summary-list dd{text-align:left;}
+    .camp-summary-total strong{font-size:1.7rem;}
+  }
   .svc-destinos-link{display:inline-block; margin-bottom:26px; font-size:.9rem; font-weight:700; color:var(--teal-dark); text-decoration:none;}
   .svc-destinos-link:hover{text-decoration:underline;}
 
