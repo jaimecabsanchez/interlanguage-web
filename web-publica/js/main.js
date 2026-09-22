@@ -243,7 +243,7 @@ window.dataLayer = window.dataLayer || [];
 
   // ---- navegación SPA: home <-> subpáginas de servicio ----
   const allViews = Array.from(document.querySelectorAll('.view'));
-  const homeAnchors = ['inicio','servicios','destinos','testimonios','faq','contacto'];
+  const homeAnchors = ['inicio','servicios','progresion','destinos','por-que','contacto'];   // ids reales de las secciones de view-home
 
   function showView(viewId, opts){
     opts = opts || {};
