@@ -45,7 +45,7 @@ Repo multiproyecto. **La web pública es el foco de estas tareas: `web-publica/`
 - **Usar siempre los tokens; no colores hardcodeados nuevos.**
 - Responsive por `@media` (breakpoints ~960/900/600/480px).
 - **Cache-busting manual:** al cambiar `.css`/`.js` subir el `?v=N` en AMBAS páginas
-  (actual: `styles.css?v=33`, `main.js?v=15`). Necesario porque `_headers` marca css/js/images como `immutable`.
+  (actual: `styles.css?v=37`, `main.js?v=15`). Necesario porque `_headers` marca css/js/images como `immutable`.
 - Reemplazar una imagen: **renombrar el archivo** (p. ej. `hero-campus-2`) porque `/images/*` es inmutable en caché.
 
 ## Fotografías / assets
@@ -82,15 +82,20 @@ Repo multiproyecto. **La web pública es el foco de estas tareas: `web-publica/`
 
 ## Línea "Estudiar en el extranjero" (hub)
 - Vive en `#view-service-extranjero` (ES) y su espejo en `index-en.html`. Secciones propias:
-  `#ext-destinos`, `#ext-programas`, `#ext-proceso`, `#ext-nivel` (orden: intro, cifras, destinos, tipos, proceso, nivel, galería, dudas).
-- Destinos reales: Irlanda, Reino Unido, Estados Unidos. Tipos: verano, curso escolar, año académico.
+  `#ext-destinos`, `#ext-duraciones`, `#ext-proceso`, `#ext-dudas` (orden: hero partido, destinos,
+  duraciones comparables, proceso, banda de fotos, dudas en acordeón y cierre con CTA).
+- Destinos reales: Irlanda, Reino Unido, Estados Unidos. Edad: 10 a 18 años aprox.
+- Duraciones reales: 2 a 4 semanas, trimestre, semestre y curso completo. Entrada normalmente en septiembre.
+- **No publicar:** precio, paquetes (en desarrollo), acreditaciones (no hay), nº de familias ni el "incluye/no incluye".
+  Tampoco reutilizar los "30 años" ni las "1.000 familias" de la línea de inglés como trayectoria internacional.
+- **Testimonios: no hay ninguno real.** Se retiraron todos (eran inventados). El carrusel `#testCarousel` sigue en CSS/JS.
 - **Escalabilidad de rutas:** el router de `main.js` ya resuelve `#servicio-<key>` → `#view-service-<key>`.
   Para abrir una URL propia de destino/programa basta con añadir `<div id="view-service-extranjero-irlanda">`
   y cambiar la tarjeta de `data-advise` a `data-jump-service` (`data-destino` / `data-programa` guardan el slug previsto). Sin código nuevo.
 - Hoy las tarjetas (`data-advise="extranjero"`) llevan al formulario de contacto con servicio y destino ya elegidos (handler en `main.js`).
 - **Passport / English Profile: NO existe en este repo.** (El `passport-stamp` de `plataforma/` es
   gamificación del alumno, otra cosa). `Student Fit Profile`: tampoco existe, no se ha construido.
-  Punto de integración preparado: contenedor `#ext-nivel` con `data-level-entry="pending"`.
+  Punto de integración preparado: el paso 01 del proceso lleva `data-level-entry="pending"`.
   Pendiente para integrarlo: definir dónde vive el producto (repo/URL), qué devuelve (nivel CEFR),
   y sustituir el CTA "Revisar el nivel con un asesor" por su punto de entrada real.
 
