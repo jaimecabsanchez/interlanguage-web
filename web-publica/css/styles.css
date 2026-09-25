@@ -120,7 +120,7 @@ picture{display:contents;}
   @media (max-width:960px){ .hero-text{text-align:center;} }
   .hero .eyebrow{color:#B43F26; background:#fff; border:1.5px solid rgba(255,107,74,.35); display:inline-block; padding:7.5px 17px; border-radius:100px; margin-bottom:22px; font-weight:800; box-shadow:0 4px 14px rgba(255,107,74,.12);}
   .hero h1{font-size:clamp(2.3rem,4.4vw,3.5rem); font-weight:800; color:var(--navy); margin-bottom:20px; line-height:1.08;}
-  .hero h1 span{color:var(--coral-dark);}
+  .hero h1 span{color:var(--coral-dark); display:block;}
   .hero p.lead{font-size:1.12rem; color:var(--ink-soft); max-width:480px; margin:0 0 32px;}
   @media (max-width:960px){ .hero p.lead{margin:0 auto 32px;} }
   .hero-ctas{display:flex; gap:16px; flex-wrap:wrap;}
