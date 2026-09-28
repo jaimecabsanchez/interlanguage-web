@@ -10,3 +10,14 @@
 # ============================================================
 [build]
   publish = "web-publica"
+
+# ------------------------------------------------------------
+#  form-handler.php es el receptor PHP para hosting Arsys. Netlify NO ejecuta PHP:
+#  sin esta regla el navegador descargaría el código fuente. Se responde con la 404.
+#  (Si el envío de formularios se traslada a otro servicio, esta regla sigue siendo correcta.)
+# ------------------------------------------------------------
+[[redirects]]
+  from = "/form-handler.php"
+  to = "/404.html"
+  status = 404
+  force = true

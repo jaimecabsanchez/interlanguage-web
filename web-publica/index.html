@@ -5,17 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Interlanguage Studies · 30 años formando el inglés de vuestros hijos</title>
 <meta name="description" content="Campamentos de verano, extraescolares, estudios en el extranjero y especialidades en inglés. 30 años de experiencia educativa en España.">
-<!-- Dominio oficial: https://www.interlanguage.es -->
-<link rel="canonical" href="https://www.interlanguage.es/">
-<link rel="alternate" hreflang="es" href="https://www.interlanguage.es/">
-<link rel="alternate" hreflang="en" href="https://www.interlanguage.es/index-en.html">
-<link rel="alternate" hreflang="x-default" href="https://www.interlanguage.es/">
+<!-- Dominio oficial: https://interlanguage.es (sin www: www redirige aquí con 301) -->
+<link rel="canonical" href="https://interlanguage.es/">
+<link rel="alternate" hreflang="es" href="https://interlanguage.es/">
+<link rel="alternate" hreflang="en" href="https://interlanguage.es/index-en.html">
+<link rel="alternate" hreflang="x-default" href="https://interlanguage.es/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Interlanguage Studies">
 <meta property="og:title" content="Interlanguage Studies · 30 años formando el inglés de vuestros hijos">
 <meta property="og:description" content="Campamentos de verano, extraescolares, estudios en el extranjero y especialidades en inglés. 30 años de experiencia educativa en España.">
-<meta property="og:url" content="https://www.interlanguage.es/">
-<meta property="og:image" content="https://www.interlanguage.es/images/og-image.jpg">
+<meta property="og:url" content="https://interlanguage.es/">
+<meta property="og:image" content="https://interlanguage.es/images/og-image.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Estudiantes de Interlanguage en un campus internacional">
@@ -23,7 +23,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Interlanguage Studies · 30 años formando el inglés de vuestros hijos">
 <meta name="twitter:description" content="Campamentos de verano, extraescolares, estudios en el extranjero y especialidades en inglés. 30 años de experiencia educativa en España.">
-<meta name="twitter:image" content="https://www.interlanguage.es/images/og-image.jpg">
+<meta name="twitter:image" content="https://interlanguage.es/images/og-image.jpg">
 <link rel="icon" type="image/png" sizes="32x32" href="images/icons/favicon-32.png">
 <link rel="icon" type="image/png" sizes="192x192" href="images/icons/favicon-192.png">
 <link rel="apple-touch-icon" sizes="180x180" href="images/icons/favicon-180.png">
@@ -31,19 +31,43 @@
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "EducationalOrganization",
-  "name": "Interlanguage Studies",
-  "url": "https://www.interlanguage.es/",
-  "logo": "https://www.interlanguage.es/images/icons/logo-2.png",
-  "description": "Campamentos de verano, extraescolares, estudios en el extranjero y especialidades en inglés. 30 años de experiencia educativa en España."
+  "@graph": [
+    {
+      "@type": "EducationalOrganization",
+      "@id": "https://interlanguage.es/#organization",
+      "name": "Interlanguage Studies",
+      "url": "https://interlanguage.es/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://interlanguage.es/images/icons/logo-2.png"
+      },
+      "image": "https://interlanguage.es/images/og-image.jpg",
+      "description": "Campamentos de verano, extraescolares, estudios en el extranjero y especialidades en inglés. 30 años de experiencia educativa en España.",
+      "email": "info@interlanguage.es",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Madrid",
+        "addressCountry": "ES"
+      }
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://interlanguage.es/#website",
+      "url": "https://interlanguage.es/",
+      "name": "Interlanguage Studies",
+      "inLanguage": "es-ES",
+      "publisher": {
+        "@id": "https://interlanguage.es/#organization"
+      }
+    }
+  ]
 }
 </script>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="preload" href="css/styles.css?v=44" as="style">
-<link rel="stylesheet" href="css/styles.css?v=44">
+<link rel="preload" href="fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/plus-jakarta-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="css/styles.css?v=45" as="style">
+<link rel="stylesheet" href="css/styles.css?v=45">
 </head>
 <body>
 <a class="skip-link" href="#main">Saltar al contenido</a>
@@ -80,7 +104,7 @@
       <a href="#contacto" class="nav-cta" data-cta="nav">Reservar una llamada</a>
     </div>
     <div class="lang-switch" aria-label="Idioma"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.5 4 6 4 9s-1.5 6.5-4 9c-2.5-2.5-4-6-4-9s1.5-6.5 4-9Z"/></svg><span class="lang-active">ES</span><span class="lang-sep" aria-hidden="true">/</span><a href="index-en.html" hreflang="en" aria-label="Switch to English">EN</a></div>
-    <button class="nav-toggle" id="navToggle" aria-label="Abrir menú">☰</button>
+    <button type="button" class="nav-toggle" id="navToggle" aria-label="Menú" aria-expanded="false" aria-controls="navLinks">☰</button>
   </nav>
 </header>
 
@@ -454,7 +478,7 @@
 
 </div>
 
-<div id="view-service-campamentos" class="view service-page" hidden>
+<div id="view-service-campamentos" class="view service-page" data-title="Campamentos de verano en inglés en Madrid" hidden>
 
 <section class="camp-hero">
   <div class="container camp-hero-grid">
@@ -577,7 +601,7 @@
         <div class="schedule-dot c1"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 3v2M12 19v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M3 12h2M19 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4" stroke-linecap="round"/></svg></div>
         <div class="schedule-time">9:15 – 10:30</div>
         <div class="schedule-body">
-          <h4>Asamblea de la mañana</h4>
+          <h3>Asamblea de la mañana</h3>
           <p>Booklet de inglés, storytelling y arts &amp; crafts</p>
         </div>
       </div>
@@ -585,7 +609,7 @@
         <div class="schedule-dot c2"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M12 8c-3 0-5 2.5-5 6s2 7 4 7c1 0 1.5-.5 2-.5s1 .5 2 .5c2 0 5-3.5 5-7-2 0-3-1-3-3" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 8c0-2 1-3.5 2.5-4" stroke-linecap="round"/></svg></div>
         <div class="schedule-time">10:30 – 11:10</div>
         <div class="schedule-body">
-          <h4>Snack y preparación</h4>
+          <h3>Snack y preparación</h3>
           <p>Merienda y cambio de ropa para los juegos de agua</p>
         </div>
       </div>
@@ -593,7 +617,7 @@
         <div class="schedule-dot c3"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M12 3c3 4 6 7.5 6 11a6 6 0 01-12 0c0-3.5 3-7 6-11z" stroke-linejoin="round"/></svg></div>
         <div class="schedule-time">11:10 – 11:40</div>
         <div class="schedule-body">
-          <h4>Juegos de agua</h4>
+          <h3>Juegos de agua</h3>
           <p>La actividad más esperada del día</p>
         </div>
       </div>
@@ -601,7 +625,7 @@
         <div class="schedule-dot c4"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M8 4L4 7l2 3 2-1v11h8V9l2 1 2-3-4-3-2 2h-2z" stroke-linejoin="round"/></svg></div>
         <div class="schedule-time">11:40 – 12:00</div>
         <div class="schedule-body">
-          <h4>Cambio de ropa</h4>
+          <h3>Cambio de ropa</h3>
           <p>Nos secamos y nos preparamos para seguir</p>
         </div>
       </div>
@@ -609,7 +633,7 @@
         <div class="schedule-dot c1"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M12 3a9 6.5 0 000 13c1 0 1.5-.7 1.5-1.5S13 13 13.5 13H16a4 4 0 004-4c0-3.5-3.5-6-8-6z" stroke-linejoin="round"/><circle cx="8" cy="10" r=".8" fill="#fff" stroke="none"/><circle cx="12" cy="7.5" r=".8" fill="#fff" stroke="none"/><circle cx="16" cy="9" r=".8" fill="#fff" stroke="none"/></svg></div>
         <div class="schedule-time">12:00 – 13:00</div>
         <div class="schedule-body">
-          <h4>Actividad especial</h4>
+          <h3>Actividad especial</h3>
           <p>Teatro, deporte o experimentos, según el día</p>
         </div>
       </div>
@@ -617,7 +641,7 @@
         <div class="schedule-dot c2"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="4" y="9" width="16" height="11" rx="2"/><path d="M9 9V6a3 3 0 016 0v3" stroke-linecap="round"/></svg></div>
         <div class="schedule-time">13:00 – 14:30</div>
         <div class="schedule-body">
-          <h4>Comida y tiempo de relax</h4>
+          <h3>Comida y tiempo de relax</h3>
           <p>Almuerzo y descanso antes de la recogida</p>
         </div>
       </div>
@@ -836,7 +860,7 @@
 
 </div>
 
-<div id="view-service-extraescolar" class="view service-page" hidden>
+<div id="view-service-extraescolar" class="view service-page" data-title="Inglés extraescolar en el colegio" hidden>
 
 <!-- 1 · HERO -->
 <section class="camp-hero">
@@ -1000,27 +1024,12 @@
     <div class="camp-section-head reveal">
       <h2>Preguntas frecuentes</h2>
     </div>
-    <div class="faq-list reveal">
-      <div class="faq-item">
-        <div class="faq-q"><span>¿Para qué edades es el programa?</span><span class="faq-plus">+</span></div>
-        <div class="faq-a"><p>Desde Educación Infantil hasta la ESO. Cada etapa tiene su propio club, con objetivos y dinámicas adaptadas a su edad.</p></div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q"><span>¿Cómo se organizan los grupos?</span><span class="faq-plus">+</span></div>
-        <div class="faq-a"><p>Por etapa educativa, en grupos reducidos que se abren desde 8 alumnos, para que todos tengan tiempo real de hablar.</p></div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q"><span>¿Los profesores son realmente nativos?</span><span class="faq-plus">+</span></div>
-        <div class="faq-a"><p>Sí, el 100% del claustro es nativo y está formado específicamente para enseñar a niños y jóvenes, no solo para hablar el idioma.</p></div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q"><span>¿Cuándo empiezan y terminan las clases?</span><span class="faq-plus">+</span></div>
-        <div class="faq-a"><p>El programa va de octubre a mayo, siguiendo el calendario escolar, en horario de tarde dentro del propio colegio.</p></div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q"><span>¿Cuánto cuesta y qué incluye?</span><span class="faq-plus">+</span></div>
-        <div class="faq-a"><p>En el Colegio Sagrado Corazón, 65€ al mes más 35€ anuales de material. Si tu colegio es otro, escríbenos y te confirmamos las condiciones.</p></div>
-      </div>
+    <div class="camp-faq faq-list reveal">
+      <details class="camp-faq-item"><summary>¿Para qué edades es el programa?</summary><p>Desde Educación Infantil hasta la ESO. Cada etapa tiene su propio club, con objetivos y dinámicas adaptadas a su edad.</p></details>
+      <details class="camp-faq-item"><summary>¿Cómo se organizan los grupos?</summary><p>Por etapa educativa, en grupos reducidos que se abren desde 8 alumnos, para que todos tengan tiempo real de hablar.</p></details>
+      <details class="camp-faq-item"><summary>¿Los profesores son realmente nativos?</summary><p>Sí, el 100% del claustro es nativo y está formado específicamente para enseñar a niños y jóvenes, no solo para hablar el idioma.</p></details>
+      <details class="camp-faq-item"><summary>¿Cuándo empiezan y terminan las clases?</summary><p>El programa va de octubre a mayo, siguiendo el calendario escolar, en horario de tarde dentro del propio colegio.</p></details>
+      <details class="camp-faq-item"><summary>¿Cuánto cuesta y qué incluye?</summary><p>En el Colegio Sagrado Corazón, 65€ al mes más 35€ anuales de material. Si tu colegio es otro, escríbenos y te confirmamos las condiciones.</p></details>
     </div>
 
     <div class="final-cta reveal">
@@ -1033,7 +1042,7 @@
 
 </div>
 
-<div id="view-service-extranjero" class="view service-page" hidden>
+<div id="view-service-extranjero" class="view service-page" data-title="Estudiar en Irlanda, Reino Unido o Estados Unidos" hidden>
 
   <!-- HERO: texto y foto en paralelo, sin banner a sangre -->
   <section class="ext-hero">
@@ -1200,7 +1209,7 @@
 
 </div>
 
-<div id="view-service-especialidades" class="view service-page" hidden>
+<div id="view-service-especialidades" class="view service-page" data-title="Especialidades en inglés" hidden>
   <div class="svc-page-banner"><picture><source type="image/avif" srcset="images/campamentos/taller-manualidades-480.avif 480w, images/campamentos/taller-manualidades-800.avif 800w, images/campamentos/taller-manualidades-1089.avif 1089w" sizes="(max-width: 700px) 100vw, 50vw"><source type="image/webp" srcset="images/campamentos/taller-manualidades-480.webp 480w, images/campamentos/taller-manualidades-800.webp 800w, images/campamentos/taller-manualidades-1089.webp 1089w" sizes="(max-width: 700px) 100vw, 50vw"><img src="images/campamentos/taller-manualidades.jpg" alt="Niños haciendo un proyecto creativo en inglés durante Especialidades" width="1089" height="1445" loading="lazy"></picture></div>
   <div class="container svc-page-body">
     <a href="#" class="svc-back" data-back>← Volver a servicios</a>
@@ -1227,7 +1236,7 @@
   </div>
 </div>
 
-<div id="view-service-metodologia" class="view service-page" hidden>
+<div id="view-service-metodologia" class="view service-page" data-title="Quiénes somos y cómo trabajamos" hidden>
   <section class="camp-hero">
     <div class="container camp-hero-grid">
       <div class="camp-hero-content">
@@ -1324,7 +1333,7 @@
       <p>30 años formando el inglés de generaciones de familias españolas, desde los campamentos de verano hasta los estudios en el extranjero.</p>
     </div>
     <div class="footer-col">
-      <h4>Navegación</h4>
+      <h3>Navegación</h3>
       <ul>
         <li><a href="#servicio-metodologia" data-jump-service="metodologia">Por qué nosotros</a></li>
         <li><a href="#servicios">Servicios</a></li>
@@ -1332,7 +1341,7 @@
       </ul>
     </div>
     <div class="footer-col">
-      <h4>Servicios</h4>
+      <h3>Servicios</h3>
       <ul>
         <li><a href="#servicios">Campamentos de verano</a></li>
         <li><a href="#servicios">Inglés extraescolar</a></li>
@@ -1341,7 +1350,7 @@
       </ul>
     </div>
     <div class="footer-col">
-      <h4>Contacto</h4>
+      <h3>Contacto</h3>
       <ul>
         <li><a href="mailto:info@interlanguage.es">info@interlanguage.es</a></li>
         <li><a href="#contacto">Formulario de contacto</a></li>
@@ -1368,6 +1377,6 @@
   </div>
 </div>
 
-<script src="js/main.js?v=16" defer></script>
+<script src="js/main.js?v=17" defer></script>
 </body>
 </html>

@@ -1,0 +1,6 @@
+# Interlanguage Studies · https://interlanguage.es
+User-agent: *
+Allow: /
+Disallow: /form-handler.php
+
+Sitemap: https://interlanguage.es/sitemap.xml

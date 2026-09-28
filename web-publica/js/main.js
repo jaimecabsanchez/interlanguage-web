@@ -1,4 +1,44 @@
 window.dataLayer = window.dataLayer || [];
+  // Textos que genera el JS. La web es ES/EN: el idioma se lee de <html lang>.
+  var LANG = (document.documentElement.lang || 'es').slice(0, 2) === 'en' ? 'en' : 'es';
+  var I18N = {
+    es: {
+      brand: 'Interlanguage Studies',
+      steps: { 1: 'Paso 1 de 2 · ¿Qué os interesa?', 2: 'Paso 2 de 2 · ¿Cómo os contactamos?' },
+      sending: 'Enviando…',
+      leadError: 'No hemos podido enviar la solicitud. Tus datos siguen aquí: inténtalo de nuevo en unos segundos o escríbenos a info@interlanguage.es.',
+      captions: {
+        nativos:  { tag: 'Profesores nativos', text: 'Formados específicamente para enseñar a niños — no solo para hablar el idioma.' },
+        haciendo: { tag: 'Aprender haciendo', text: 'El inglés como herramienta para crear, no como examen que aprobar.' },
+        ritmo:    { tag: 'Cada alumno tiene su ritmo', text: 'Grupos pequeños para que nadie se quede atrás ni se aburra.' }
+      },
+      serviceMap: {
+        extranjero:  { help:'Programas para jóvenes y adolescentes en Irlanda, Reino Unido y Estados Unidos, desde un verano hasta un curso escolar completo.', label:'Destino que os interesa', opts:[['Aún no lo sé','Aún no lo sé'],['Irlanda','Irlanda'],['Reino Unido','Reino Unido'],['Estados Unidos','Estados Unidos']], age:'Edad o curso del alumno/a', ph:'Ej. 15 años / 4º de ESO' },
+        campamentos: { help:'Campamento de verano en inglés, en Madrid, para niños de 3 a 10 años.', label:'¿Qué semanas os interesan?', opts:[['Aún no lo sé','Aún no lo sé'],['Julio completo','Julio completo'],['Algunas semanas sueltas','Algunas semanas sueltas']], age:'Edad del niño/a', ph:'Ej. 7 años' },
+        extraescolar:{ help:'Clases de inglés en el propio colegio durante el curso, de Infantil a la ESO.', label:'¿Qué días os encajan mejor?', opts:[['Cualquiera','Cualquiera'],['Martes y jueves','Martes y jueves'],['Lunes y miércoles','Lunes y miércoles']], age:'Curso del alumno/a', ph:'Ej. 2º de Primaria' },
+        orientacion: { help:'Contadnos la edad y qué buscáis, y os orientamos sin compromiso.', label:'', opts:[], age:'Edad o curso del alumno/a (opcional)', ph:'Ej. 7 años / 2º de Primaria' }
+      }
+    },
+    en: {
+      brand: 'Interlanguage Studies',
+      steps: { 1: 'Step 1 of 2 · What are you interested in?', 2: 'Step 2 of 2 · How can we reach you?' },
+      sending: 'Sending…',
+      leadError: "We couldn't send your request. Your details are still here: please try again in a few seconds or email us at info@interlanguage.es.",
+      captions: {
+        nativos:  { tag: 'Native teachers', text: 'Specifically trained to teach children, not just to speak the language.' },
+        haciendo: { tag: 'Learning by doing', text: 'English as a tool to create with, not an exam to pass.' },
+        ritmo:    { tag: 'Every pupil has their own pace', text: 'Small groups so nobody gets left behind or bored.' }
+      },
+      /* el valor (1.º) es el que llega al equipo y no cambia con el idioma; el texto (2.º) es lo que ve la familia */
+      serviceMap: {
+        extranjero:  { help:'Programmes for teenagers in Ireland, the United Kingdom and the United States, from one summer to a full school year.', label:'Which destination are you interested in?', opts:[['Aún no lo sé','Not sure yet'],['Irlanda','Ireland'],['Reino Unido','United Kingdom'],['Estados Unidos','United States']], age:"Pupil's age or year group", ph:'e.g. 15 years old' },
+        campamentos: { help:'Summer camp in English, in Madrid, for children aged 3 to 10.', label:'Which weeks are you interested in?', opts:[['Aún no lo sé','Not sure yet'],['Julio completo','All of July'],['Algunas semanas sueltas','A few separate weeks']], age:"Child's age", ph:'e.g. 7 years old' },
+        extraescolar:{ help:'English classes at school during the school year, from Early Years to Secondary.', label:'Which days suit you best?', opts:[['Cualquiera','Any'],['Martes y jueves','Tuesday and Thursday'],['Lunes y miércoles','Monday and Wednesday']], age:"Pupil's year group", ph:'e.g. Year 2 of Primary' },
+        orientacion: { help:"Tell us their age and what you're looking for, and we'll guide you with no commitment.", label:'', opts:[], age:"Pupil's age or year group (optional)", ph:'e.g. 7 years old / Year 2 of Primary' }
+      }
+    }
+  };
+  var T = I18N[LANG];
   // Consentimiento de cookies: sin 'accepted' NO se envía analítica (consent-first).
   var IL_CONSENT = null;
   try { IL_CONSENT = localStorage.getItem('il_cookie_consent'); } catch (e) {}
@@ -59,98 +99,28 @@ window.dataLayer = window.dataLayer || [];
     onScroll();
   })();
 
-  // carrusel automático de fotos del hero — con progreso, pausa al hover y swipe táctil
-  (function(){
-    const frame = document.getElementById('heroCarousel');
-    if (!frame) return;
-    const slides = Array.from(frame.querySelectorAll('.hero-slide'));
-    const dotsWrap = document.getElementById('heroDots');
-    let current = 0;
-    let timer = null;
-    let paused = false;
-    const DURATION = 3200;
-    const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    let playing = false;
-
-    slides.forEach(function(_, i){
-      const dot = document.createElement('div');
-      dot.className = 'hero-slide-dot' + (i === 0 ? ' active' : '');
-      const fill = document.createElement('span');
-      fill.className = 'fill';
-      dot.appendChild(fill);
-      dotsWrap.appendChild(dot);
-    });
-    const dots = Array.from(dotsWrap.children);
-
-    function goTo(i){
-      slides[current].classList.remove('active');
-      slides[i].classList.add('active');
-      current = i;
-      dots.forEach(function(d, idx){
-        d.classList.remove('active','done');
-        if (idx < current) d.classList.add('done');
-      });
-      void dots[current].offsetWidth; // fuerza reflow para reiniciar la animación
-      dots[current].classList.add('active');
-    }
-
-    function start(){
-      stop();
-      timer = setInterval(function(){ if (!paused) goTo((current + 1) % slides.length); }, DURATION);
-    }
-    function stop(){ if (timer) clearInterval(timer); timer = null; }
-
-    const playBtn = document.getElementById('heroPlayPause');
-    const ICON_PAUSE = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>';
-    const ICON_PLAY = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>';
-    function setPlaying(on){
-      playing = on;
-      if (on){ paused = false; start(); } else { paused = true; stop(); }
-      if (playBtn){
-        playBtn.setAttribute('aria-label', on ? 'Pausar la presentación' : 'Reproducir la presentación');
-        playBtn.innerHTML = on ? ICON_PAUSE : ICON_PLAY;
-      }
-    }
-    if (playBtn) playBtn.addEventListener('click', function(){ setPlaying(!playing); });
-
-    dots[0].classList.add('active');
-    // Con reduced-motion no arranca solo: el usuario lo reproduce si quiere.
-    setPlaying(!reduceMotion);
-
-    // pausa al pasar el ratón, reanuda al salir
-    frame.addEventListener('mouseenter', function(){ paused = true; });
-    frame.addEventListener('mouseleave', function(){ paused = false; });
-
-    dots.forEach(function(dot, i){
-      dot.addEventListener('click', function(){ goTo(i); if (playing) start(); });
-    });
-
-    // flechas de anterior / siguiente
-    const prevBtn = document.getElementById('heroPrev');
-    const nextBtn = document.getElementById('heroNext');
-    if (prevBtn) prevBtn.addEventListener('click', function(){ goTo((current - 1 + slides.length) % slides.length); if (playing) start(); });
-    if (nextBtn) nextBtn.addEventListener('click', function(){ goTo((current + 1) % slides.length); if (playing) start(); });
-
-    // deslizar con el dedo en móvil
-    let touchStartX = null;
-    frame.addEventListener('touchstart', function(e){ touchStartX = e.touches[0].clientX; }, { passive:true });
-    frame.addEventListener('touchend', function(e){
-      if (touchStartX === null) return;
-      const diff = e.changedTouches[0].clientX - touchStartX;
-      if (Math.abs(diff) > 40){
-        if (diff < 0) goTo((current + 1) % slides.length);
-        else goTo((current - 1 + slides.length) % slides.length);
-        if (playing) start();
-      }
-      touchStartX = null;
-    }, { passive:true });
-  })();
-
-
   const navToggle = document.getElementById('navToggle');
   const navLinks = document.getElementById('navLinks');
-  navToggle.addEventListener('click', function(){ navLinks.classList.toggle('open'); });
-  navLinks.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', function(){ navLinks.classList.remove('open'); }); });
+  // El menú fijo gana una sombra suave en cuanto se hace scroll (separa la barra del contenido).
+  (function(){
+    var bar = document.querySelector('header.site');
+    if (!bar) return;
+    function onScroll(){ bar.classList.toggle('is-scrolled', window.scrollY > 8); }
+    window.addEventListener('scroll', onScroll, { passive:true });
+    onScroll();
+  })();
+
+  // Menú móvil: el botón anuncia si está abierto (aria-expanded) y Escape lo cierra.
+  function setNav(open){
+    navLinks.classList.toggle('open', open);
+    navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  }
+  function closeNav(){ setNav(false); }
+  navToggle.addEventListener('click', function(){ setNav(!navLinks.classList.contains('open')); });
+  navLinks.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', closeNav); });
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape' && navLinks.classList.contains('open')){ closeNav(); navToggle.focus(); }
+  });
 
   // "Nuestro método": al pasar el ratón o el foco por un pilar, cambia la foto y el texto superpuesto
   (function(){
@@ -158,11 +128,7 @@ window.dataLayer = window.dataLayer || [];
     const frame = document.querySelector('.method-photo-frame');
     const caption = document.getElementById('methodCaption');
     if (!pillars.length || !frame) return;
-    const captions = {
-      nativos:  { tag: 'Profesores nativos', text: 'Formados específicamente para enseñar a niños — no solo para hablar el idioma.' },
-      haciendo: { tag: 'Aprender haciendo', text: 'El inglés como herramienta para crear, no como examen que aprobar.' },
-      ritmo:    { tag: 'Cada alumno tiene su ritmo', text: 'Grupos pequeños para que nadie se quede atrás ni se aburra.' }
-    };
+    const captions = T.captions;
     function activate(id){
       pillars.forEach(function(p){ p.classList.toggle('is-active', p.dataset.target === id); });
       frame.querySelectorAll('img').forEach(function(img){ img.classList.toggle('is-shown', img.dataset.id === id); });
@@ -226,24 +192,11 @@ window.dataLayer = window.dataLayer || [];
   }, { threshold: 0.15 });
   revealEls.forEach(function(el){ revealObserver.observe(el); });
 
-  // FAQ acordeón
-  document.querySelectorAll('.faq-item').forEach(function(item){
-    const q = item.querySelector('.faq-q');
-    const a = item.querySelector('.faq-a');
-    q.addEventListener('click', function(){
-      const isOpen = item.classList.contains('open');
-      document.querySelectorAll('.faq-item.open').forEach(function(openItem){
-        if (openItem !== item){ openItem.classList.remove('open'); openItem.querySelector('.faq-a').style.maxHeight = null; }
-      });
-      if (isOpen){ item.classList.remove('open'); a.style.maxHeight = null; }
-      else{ item.classList.add('open'); a.style.maxHeight = a.scrollHeight + 'px'; }
-    });
-  });
-
-
   // ---- navegación SPA: home <-> subpáginas de servicio ----
   const allViews = Array.from(document.querySelectorAll('.view'));
   const homeAnchors = ['inicio','servicios','progresion','destinos','por-que','contacto'];   // ids reales de las secciones de view-home
+
+  const HOME_TITLE = document.title;
 
   function showView(viewId, opts){
     opts = opts || {};
@@ -252,6 +205,21 @@ window.dataLayer = window.dataLayer || [];
     document.querySelectorAll('.svc-card2').forEach(function(c){
       c.classList.toggle('active', viewId === 'view-service-' + c.dataset.service);
     });
+    announceView(viewId, opts);
+  }
+
+  // Cada vista es una "página" para la persona que navega: cambia el título de la pestaña (y del historial)
+  // y, en las subpáginas, el foco pasa al h1 para que el lector de pantalla anuncie el cambio.
+  // { silent:true } (carga inicial) no mueve el foco.
+  function announceView(viewId, opts){
+    const view = document.getElementById(viewId);
+    const h1 = view && view.querySelector('h1');
+    const name = view && (view.getAttribute('data-title') || (h1 && h1.textContent.replace(/\s+/g, ' ').trim()));
+    document.title = (viewId === 'view-home' || !name) ? HOME_TITLE : name + ' · ' + T.brand;
+    if (viewId !== 'view-home' && h1 && !opts.silent){
+      h1.setAttribute('tabindex', '-1');
+      h1.focus({ preventScroll: true });
+    }
   }
 
   function isHomeVisible(){
@@ -279,7 +247,7 @@ window.dataLayer = window.dataLayer || [];
     link.addEventListener('click', function(e){
       e.preventDefault();
       goToServicePage(link.getAttribute('data-jump-service'));
-      navLinks.classList.remove('open');
+      closeNav();
     });
   });
 
@@ -591,7 +559,7 @@ window.dataLayer = window.dataLayer || [];
       if (!isHomeVisible()){
         e.preventDefault();
         showView('view-home');
-        navLinks.classList.remove('open');
+        closeNav();
         requestAnimationFrame(function(){
           const target = document.getElementById(targetId);
           if (target) target.scrollIntoView({ behavior:'auto', block:'start' });
@@ -623,7 +591,7 @@ window.dataLayer = window.dataLayer || [];
     if (hash.indexOf('servicio-') === 0){
       const key = hash.replace('servicio-','');
       if (document.getElementById('view-service-' + key)){
-        showView('view-service-' + key);
+        showView('view-service-' + key, { silent: true });
       }
     }
   })();
@@ -676,7 +644,7 @@ window.dataLayer = window.dataLayer || [];
     const backBtn = document.getElementById('stepBackBtn');
     if (!steps.length || !nextBtn) return;
     let current = 1;
-    const labels = { 1:'Paso 1 de 2 · ¿Qué os interesa?', 2:'Paso 2 de 2 · ¿Cómo os contactamos?' };
+    const labels = T.steps;
 
     function goToStep(n){
       steps.forEach(function(s){ s.classList.toggle('active', +s.dataset.step === n); });
@@ -721,7 +689,7 @@ window.dataLayer = window.dataLayer || [];
 
     const prevLabel = submitBtn.textContent;
     setFormError(leadErrEl, '');
-    submitBtn.disabled = true; submitBtn.textContent = 'Enviando…';
+    submitBtn.disabled = true; submitBtn.textContent = T.sending;
 
     fetch(FORM_ENDPOINT, { method: 'POST', body: payload })
       .then(function(r){ if (!r.ok) throw new Error('http'); return r.json(); })
@@ -735,51 +703,9 @@ window.dataLayer = window.dataLayer || [];
       })
       .catch(function(){
         submitBtn.disabled = false; submitBtn.textContent = prevLabel;
-        setFormError(leadErrEl, 'No hemos podido enviar la solicitud. Inténtalo de nuevo en unos segundos.');
+        setFormError(leadErrEl, T.leadError);
       });
   });
-
-  // Carrusel de testimonios (auto-rotación, respeta reduced-motion y pausa al pasar el ratón)
-  (function(){
-    var car = document.getElementById('testCarousel');
-    if (!car) return;
-    var track = document.getElementById('testTrack');
-    var cards = Array.from(track.children);
-    var dotsWrap = document.getElementById('testDots');
-    if (cards.length < 2) return;
-    var idx = 0, timer = null;
-    cards.forEach(function(_, i){
-      var d = document.createElement('button');
-      d.className = 'test-dot' + (i === 0 ? ' active' : '');
-      d.setAttribute('aria-label', 'Testimonio ' + (i + 1));
-      d.addEventListener('click', function(){ go(i); restart(); });
-      dotsWrap.appendChild(d);
-    });
-    var dots = Array.from(dotsWrap.children);
-    function go(n){
-      idx = (n + cards.length) % cards.length;
-      var cw = cards[0].getBoundingClientRect().width;
-      var gap = parseFloat(getComputedStyle(track).columnGap) || 16;
-      var shift = idx * (cw + gap) - (car.clientWidth - cw) / 2;
-      var maxShift = Math.max(0, track.scrollWidth - car.clientWidth);
-      shift = Math.max(0, Math.min(shift, maxShift));
-      track.style.transform = 'translateX(-' + shift + 'px)';
-      cards.forEach(function(c, i){ c.classList.toggle('is-active', i === idx); });
-      dots.forEach(function(d, i){ d.classList.toggle('active', i === idx); });
-    }
-    function start(){
-      var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      if (reduce) return;
-      stop(); timer = setInterval(function(){ go(idx + 1); }, 5500);
-    }
-    function stop(){ if (timer) clearInterval(timer); timer = null; }
-    function restart(){ stop(); start(); }
-    car.addEventListener('mouseenter', stop);
-    car.addEventListener('mouseleave', start);
-    go(0);
-    window.addEventListener('resize', function(){ go(idx); });
-    start();
-  })();
 
   // Formulario: adapta la ayuda y los campos al servicio elegido
   (function(){
@@ -791,12 +717,7 @@ window.dataLayer = window.dataLayer || [];
     var extraLabel = document.getElementById('serviceExtraLabel');
     var ageLabel = document.getElementById('studentAgeLabel');
     var ageInput = document.getElementById('studentAge');
-    var MAP = {
-      extranjero:  { help:'Programas para jóvenes y adolescentes en Irlanda, Reino Unido y Estados Unidos, desde un verano hasta un curso escolar completo.', label:'Destino que os interesa', opts:['Aún no lo sé','Irlanda','Reino Unido','Estados Unidos'], age:'Edad o curso del alumno/a', ph:'Ej. 15 años / 4º de ESO' },
-      campamentos: { help:'Campamento de verano en inglés, en Madrid, para niños de 3 a 10 años.', label:'¿Qué semanas os interesan?', opts:['Aún no lo sé','Julio completo','Algunas semanas sueltas'], age:'Edad del niño/a', ph:'Ej. 7 años' },
-      extraescolar:{ help:'Clases de inglés en el propio colegio durante el curso, de Infantil a la ESO.', label:'¿Qué días os encajan mejor?', opts:['Cualquiera','Martes y jueves','Lunes y miércoles'], age:'Curso del alumno/a', ph:'Ej. 2º de Primaria' },
-      orientacion: { help:'Contadnos la edad y qué buscáis, y os orientamos sin compromiso.', label:'', opts:[], age:'Edad o curso del alumno/a (opcional)', ph:'Ej. 7 años / 2º de Primaria' }
-    };
+    var MAP = T.serviceMap;
     function apply(){
       var m = MAP[sel.value];
       if (!m){ if(help) help.hidden = true; if(wrap) wrap.hidden = true; return; }
@@ -805,7 +726,7 @@ window.dataLayer = window.dataLayer || [];
       if (ageInput) ageInput.placeholder = m.ph;
       if (m.opts.length){
         if (extraLabel) extraLabel.textContent = m.label;
-        if (extra) extra.innerHTML = m.opts.map(function(o){ return '<option value="' + o + '">' + o + '</option>'; }).join('');
+        if (extra) extra.innerHTML = m.opts.map(function(o){ return '<option value="' + o[0] + '">' + o[1] + '</option>'; }).join('');
         if (wrap) wrap.hidden = false;
       } else { if (wrap) wrap.hidden = true; if (extra) extra.innerHTML = ''; }
     }

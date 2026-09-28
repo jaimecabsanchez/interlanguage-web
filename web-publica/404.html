@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Página no encontrada · Interlanguage Studies</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#16294A">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/icons/favicon-32.png">
+<!-- Esta página la sirve Netlify en CUALQUIER ruta inexistente (p. ej. /foo/bar), por eso aquí las rutas son
+     absolutas (/css, /fonts…). Es la única excepción a la regla de rutas relativas de web-publica/AGENTS.md. -->
+<link rel="preload" href="/fonts/plus-jakarta-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/css/styles.css?v=45">
+<style>
+  .nf{min-height:100vh; display:flex; flex-direction:column; background:linear-gradient(180deg, var(--off) 0%, var(--peach) 100%);}
+  .nf-top{padding:22px 24px;}
+  .nf-top img{height:52px; width:auto;}
+  .nf-main{flex:1; display:flex; align-items:center; justify-content:center; padding:24px 24px 88px; text-align:center;}
+  .nf-box{max-width:560px;}
+  .nf-box .nf-code{font-family:var(--font-display); font-weight:800; font-size:clamp(5rem,20vw,9rem); line-height:.9; letter-spacing:-.04em; color:var(--coral-dark); margin:0 0 8px; max-width:none;}
+  .nf-box h1{font-size:clamp(1.7rem,4vw,2.3rem); margin:0 0 14px;}
+  .nf-box p{color:var(--ink-soft); font-size:1.05rem; margin:0 auto 28px; max-width:460px;}
+  .nf-actions{display:flex; gap:14px; justify-content:center; flex-wrap:wrap;}
+  .nf-box .nf-en{margin:32px 0 0; max-width:none; font-size:.9rem; color:var(--ink-soft);}
+  .nf-en a{color:var(--navy); font-weight:700;}
+</style>
+</head>
+<body>
+<div class="nf">
+  <header class="nf-top">
+    <a href="/" aria-label="Interlanguage Studies · Inicio"><picture><source type="image/webp" srcset="/images/icons/logo-2.webp"><img src="/images/icons/logo-2.png" alt="Interlanguage Studies" width="334" height="152"></picture></a>
+  </header>
+  <main class="nf-main" id="main">
+    <div class="nf-box">
+      <p class="nf-code" aria-hidden="true">404</p>
+      <h1>Esta página no existe</h1>
+      <p>Puede que el enlace esté anticuado o que la dirección tenga un error. Vuelve al inicio o cuéntanos qué buscabas y te ayudamos.</p>
+      <div class="nf-actions">
+        <a href="/" class="btn-primary">Volver al inicio</a>
+        <a href="mailto:info@interlanguage.es" class="btn-outline">Escribirnos</a>
+      </div>
+      <p class="nf-en" lang="en">This page doesn't exist. <a href="/index-en.html">Go to the English site</a>.</p>
+    </div>
+  </main>
+</div>
+</body>
+</html>

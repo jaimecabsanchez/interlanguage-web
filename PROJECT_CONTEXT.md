@@ -19,7 +19,8 @@ Repo multiproyecto. **La web pública es el foco de estas tareas: `web-publica/`
 ## web-publica/ — archivos principales
 - `index.html` — sitio ES completo (~1246 líneas). SPA por vistas (ver Rutas).
 - `index-en.html` — sitio EN, traducción profesional (misma estructura).
-- `legal.html` — aviso legal / privacidad / cookies (~101 líneas).
+- `legal.html` — aviso legal / privacidad / cookies. **Tiene datos pendientes** (`[RAZÓN SOCIAL]`, `[CIF]`, `[DOMICILIO SOCIAL]`, `[CORREO DE CONTACTO]`): completarlos con un asesor legal antes de promocionar la web.
+- `404.html`, `robots.txt`, `sitemap.xml`, `fonts/` (fuentes autoalojadas).
 - `css/styles.css` — **única hoja de estilos** (~866 líneas).
 - `js/main.js` — **único JS** (~689 líneas).
 - `form-handler.php` — receptor de formularios (envía email; solo funciona en Arsys).
@@ -45,7 +46,7 @@ Repo multiproyecto. **La web pública es el foco de estas tareas: `web-publica/`
 - **Usar siempre los tokens; no colores hardcodeados nuevos.**
 - Responsive por `@media` (breakpoints ~960/900/600/480px).
 - **Cache-busting manual:** al cambiar `.css`/`.js` subir el `?v=N` en AMBAS páginas
-  (actual: `styles.css?v=40`, `main.js?v=16`). Necesario porque `_headers` marca css/js/images como `immutable`.
+  (actual: `styles.css?v=45`, `main.js?v=17`). Necesario porque `_headers` marca css/js/images como `immutable`.
 - Reemplazar una imagen: **renombrar el archivo** (p. ej. `hero-campus-2`) porque `/images/*` es inmutable en caché.
 
 ## Fotografías / assets
@@ -61,6 +62,7 @@ Repo multiproyecto. **La web pública es el foco de estas tareas: `web-publica/`
 - Ambos con `action="form-handler.php"` (POST). Validación en `main.js` + en el PHP.
 - `form-handler.php`: honeypot `website`, valida email/nombre/rgpd, envía email a `info@interlanguage.es`
   (`FROM_ADDRESS = no-reply@interlanguage.es`). **Solo funciona desplegado en Arsys (PHP), no en Netlify.**
+  ⚠ Con la web publicada en Netlify (`interlanguage.es` responde con `server: Netlify`) **los dos formularios devuelven 404 y muestran el aviso de error: no llega ninguna solicitud.** `netlify.toml` redirige `/form-handler.php` a la 404 para no servir su código fuente. Decisión pendiente: Netlify Forms, endpoint PHP en Arsys con CORS, u otro servicio.
 
 ## Datos / configuración
 - No hay base de datos ni backend propio en la web pública (los datos comerciales están escritos en el HTML).
@@ -88,7 +90,7 @@ Repo multiproyecto. **La web pública es el foco de estas tareas: `web-publica/`
 - Duraciones reales: 2 a 4 semanas, trimestre, semestre y curso completo. Entrada normalmente en septiembre.
 - **No publicar:** precio, paquetes (en desarrollo), acreditaciones (no hay), nº de familias ni el "incluye/no incluye".
   Tampoco reutilizar los "30 años" ni las "1.000 familias" de la línea de inglés como trayectoria internacional.
-- **Testimonios: no hay ninguno real.** Se retiraron todos (eran inventados). El carrusel `#testCarousel` sigue en CSS/JS.
+- **Testimonios: no hay ninguno real.** Se retiraron todos (eran inventados). El código del carrusel (`#testCarousel`) y el del carrusel del hero se han eliminado de `main.js`.
 - **Escalabilidad de rutas:** el router de `main.js` ya resuelve `#servicio-<key>` → `#view-service-<key>`.
   Para abrir una URL propia de destino/programa basta con añadir `<div id="view-service-extranjero-irlanda">`
   y cambiar la tarjeta de `data-advise` a `data-jump-service` (`data-destino` / `data-programa` guardan el slug previsto). Sin código nuevo.
