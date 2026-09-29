@@ -6,7 +6,7 @@ import os
 BASE = '/Users/jaimecabellosanchez/Desktop/interlanguage-web/web-publica/images/'
 PHOTOS = {  # carpeta/base : (nativas existentes)
   'campamentos/grupo-celebrando': 1020,
-  'programas/profesor-ritmo':     1200,
+  'programas/profesor-ritmo-en':  1200,
   'programas/avanzar-clase':      1200,
   'internacional/vivirlo-colegio':1000,
 }

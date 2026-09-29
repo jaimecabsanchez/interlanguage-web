@@ -37,7 +37,7 @@ Repo multiproyecto. **La web pública es el foco de estas tareas: `web-publica/`
 ## Componentes reutilizables (patrones ya existentes — reutilizar)
 - Imágenes responsive: `<picture>` AVIF → WebP → JPG con `srcset` (480/800/1200/…w) + `object-fit:cover`.
 - Carrusel de testimonios: `#testCarousel` / `#testTrack` / `#testDots` (respeta `prefers-reduced-motion`).
-- Formulario adaptativo: `#serviceExtra`, `#serviceHelp`, `#studentAgeLabel` (cambian según el servicio).
+- Formulario de consulta `#leadForm`: servicio en tarjetas (`input[name=service]`) y bloque `#leadCtx` con los campos que aplican a cada servicio (`data-ctx`); API `window.ilLead` para preseleccionarlo desde otros CTA.
 - Marcos de foto (`.hero-photo-frame`, `.camp-hero-media`, etc.) con `aspect-ratio` + `object-fit:cover`.
 - Botones `.btn-primary` / `.btn-outline`, `.eyebrow`, colecciones tipo collage (`.intl-collage-item`).
 
@@ -46,7 +46,7 @@ Repo multiproyecto. **La web pública es el foco de estas tareas: `web-publica/`
 - **Usar siempre los tokens; no colores hardcodeados nuevos.**
 - Responsive por `@media` (breakpoints ~960/900/600/480px).
 - **Cache-busting manual:** al cambiar `.css`/`.js` subir el `?v=N` en AMBAS páginas
-  (actual: `styles.css?v=45`, `main.js?v=17`). Necesario porque `_headers` marca css/js/images como `immutable`.
+  (actual: `styles.css?v=46`, `main.js?v=18`). Necesario porque `_headers` marca css/js/images como `immutable`.
 - Reemplazar una imagen: **renombrar el archivo** (p. ej. `hero-campus-2`) porque `/images/*` es inmutable en caché.
 
 ## Fotografías / assets
@@ -57,8 +57,8 @@ Repo multiproyecto. **La web pública es el foco de estas tareas: `web-publica/`
 - Formatos por imagen: `.avif` + `.webp` + `.jpg` en varios anchos.
 
 ## Formularios existentes
-- `#leadForm` — solicitud de información.
-- `#campForm` — inscripción a campamento de verano.
+- `#leadForm` — consulta (2 pasos: qué os interesa → cómo os contactamos).
+- `#campForm` — inscripción a campamento de verano (una página, 3 bloques y resumen fijo).
 - Ambos con `action="form-handler.php"` (POST). Validación en `main.js` + en el PHP.
 - `form-handler.php`: honeypot `website`, valida email/nombre/rgpd, envía email a `info@interlanguage.es`
   (`FROM_ADDRESS = no-reply@interlanguage.es`). **Solo funciona desplegado en Arsys (PHP), no en Netlify.**
@@ -86,7 +86,7 @@ Repo multiproyecto. **La web pública es el foco de estas tareas: `web-publica/`
 - Vive en `#view-service-extranjero` (ES) y su espejo en `index-en.html`. Secciones propias:
   `#ext-destinos`, `#ext-duraciones`, `#ext-proceso`, `#ext-dudas` (orden: hero partido, destinos,
   duraciones comparables, proceso, banda de fotos, dudas en acordeón y cierre con CTA).
-- Destinos reales: Irlanda, Reino Unido, Estados Unidos. Edad: 10 a 18 años aprox.
+- Destinos reales: Reino Unido, Irlanda, Estados Unidos (**siempre en ese orden**). Edad: 10 a 18 años aprox.
 - Duraciones reales: 2 a 4 semanas, trimestre, semestre y curso completo. Entrada normalmente en septiembre.
 - **No publicar:** precio, paquetes (en desarrollo), acreditaciones (no hay), nº de familias ni el "incluye/no incluye".
   Tampoco reutilizar los "30 años" ni las "1.000 familias" de la línea de inglés como trayectoria internacional.
@@ -107,7 +107,7 @@ Repo multiproyecto. **La web pública es el foco de estas tareas: `web-publica/`
 - **Precios: fuente única = tarjetas `#camp-precio` (`data-pack-weeks` = nº de semanas, importe en `<strong>`)
   y `[data-comedor-price]`.** `main.js` los lee de ahí; total = pack(n) + comedor × n. Si falta un importe
   NO calcula: muestra "A confirmar" y envía `total` vacío. Nunca duplicar importes en JS.
-- Formulario `#campForm`, 3 pasos (sede+semanas → alumno/a → tutor/a+RGPD): validación con `.err` junto al campo
+- Formulario `#campForm`, una sola página con 3 bloques (sede+semanas → alumno/a → tutor/a+RGPD) y resumen fijo: validación con `.err` junto al campo
   (mensajes en el HTML), resumen `[data-camp-summary]`/`[data-sum]`, textos ES/EN en `data-l-*` del `<form>`.
 - `form-handler.php` (`form_type=campamento`): añade `alumnoEdad`; 422 si falta sede/semanas/alumno.
 - Pendiente de confirmar por negocio (no corregir sin dato): rango de edad (3-10 vs Talent Juniors 8-16),
