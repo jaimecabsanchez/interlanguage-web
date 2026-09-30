@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Genera la escalera de tamaños intermedios (AVIF + WebP) de las fotos del mosaico del hero y de las tarjetas de «Nuestros programas».
+# Genera la escalera de tamaños intermedios (AVIF + WebP) de la foto del hero y de las tarjetas de «Nuestros programas».
 # Igual que generar-variantes-age-path.py: se remuestrea siempre desde el JPG original con Lanczos y las
 # variantes nativas ya existentes se reutilizan. Los `sizes` de web-publica/index*.html declaran ~1,55x el
 # ancho real de cada tarjeta (ver web-publica/AGENTS.md, "Nitidez en Retina").
