@@ -1,67 +1,34 @@
 #!/usr/bin/env python3
 # Genera la escalera de tamaños de la foto del hero de la home (AVIF + WebP + JPG de respaldo).
-# Origen: images/internacional/hero-campus-2.jpg (1448 x 1086, con bloques de compresión), espejada para que los
-# alumnos queden a la derecha y el texto del hero a la izquierda.
-#  1. Reescalado 4x con el modelo de super-resolución de Apple (scripts/superresolucion-macos.swift, macOS 26+):
-#     devuelve un máster de 5792 px con detalle real y sin bloques. Se guarda en scripts/_cache/ (no se sube a git).
-#     Si no hay macOS 26, se usa el respaldo clásico (Lanczos + máscara de enfoque suave) y la foto queda más blanda.
-#  2. Cada ancho (640 a 3840) se reduce desde el máster con Lanczos. Así el navegador casi nunca amplía la foto
-#     (la ampliación es lo que más la ablanda) y la recibe a 1:1 o reducida.
-#  3. NO añadir enfoque fuerte: con una máscara de enfoque de 45 % el pelo salía "pintado", con halos claros y las
-#     caras pastosas (02-10-2026, el usuario lo vio al instante). Solo un toque mínimo (14 %) con el radio escalado al
-#     ancho. Tampoco grano: se ve como ruido digital y la compresión lo convierte en manchas.
-#  4. AVIF 4:4:4 (conserva los bordes finos de corbatas y faldas) y WebP con calidad alta. Sin filtros de color.
-import os, subprocess, sys
-from PIL import Image, ImageFilter, ImageOps
+# Origen: scripts/fuentes/hero-arco-origen.png (2033 x 773, panorámica de ChatGPT: alumnos a la derecha y espacio
+# libre a la izquierda para el texto del hero). Elegida por el usuario el 02-10-2026.
+#  - SIN reescalado con IA y SIN enfoque: cambian las caras (pelo «pintado», halos) y el usuario quiere que no cambien.
+#    Solo se reduce desde el original con Lanczos; el ancho mayor es el nativo (2033), sin ampliar.
+#  - Único retoque: saturación −12 % y contraste −3 %, porque el original sale demasiado saturado (piel anaranjada,
+#    verdes chillones). No afecta a la forma de las caras. Si se quiere la foto tal cual, poner GRADE = None.
+#  - AVIF 4:4:4 (conserva los bordes finos de corbatas y faldas) y WebP con calidad alta.
+import os
+from PIL import Image, ImageEnhance
 import pillow_avif  # noqa: F401  (registra el codificador AVIF en Pillow < 11.3)
 
-Image.MAX_IMAGE_PIXELS = None
 HERE = os.path.dirname(os.path.abspath(__file__))
 BASE = os.path.join(HERE, '..', 'web-publica', 'images', 'internacional') + '/'
-CACHE = os.path.join(HERE, '_cache') + '/'
-ORIGEN = BASE + 'hero-campus-2.jpg'
-MASTER = CACHE + 'hero-4x.png'
-# Nombre base de los archivos. Si cambias la foto, cambia el nombre (hd, hd2…): _headers marca las imágenes como
+ORIGEN = HERE + '/fuentes/hero-arco-origen.png'
+# Nombre base de los archivos. Si cambias la foto o el retoque, cambia el nombre: _headers marca las imágenes como
 # immutable y con el mismo nombre quien ya visitó la web seguiría viendo la anterior.
-NOMBRE = 'hero-colegio-hd4'
-WIDTHS = (640, 960, 1280, 1448, 1920, 2560, 2880, 3840)
+NOMBRE = 'hero-arco'
+GRADE = (0.88, 0.97)   # (saturación, contraste)
+WIDTHS = (640, 960, 1280, 1600, 2033)
 
-def master_ia():
-    """Devuelve el máster 4x o None si no se puede generar (sin macOS 26 / sin Swift)."""
-    if os.path.exists(MASTER) and os.path.getmtime(MASTER) >= os.path.getmtime(ORIGEN):
-        return Image.open(MASTER).convert('RGB')
-    os.makedirs(CACHE, exist_ok=True)
-    tool = CACHE + 'sr'
-    try:
-        subprocess.run(['swiftc', '-O', HERE + '/superresolucion-macos.swift', '-o', tool], check=True)
-        subprocess.run([tool, ORIGEN, MASTER], check=True)
-        return Image.open(MASTER).convert('RGB')
-    except Exception as e:  # noqa: BLE001
-        print('Sin super-resolución (%s): se usa el respaldo clásico' % e, file=sys.stderr)
-        return None
-
-ia = master_ia()
-original = Image.open(ORIGEN).convert('RGB')
-src = ImageOps.mirror(ia if ia is not None else original)
-NATIVE = original.width  # 1448: resolución real del original
+src = Image.open(ORIGEN).convert('RGB')
+if GRADE:
+    src = ImageEnhance.Contrast(ImageEnhance.Color(src).enhance(GRADE[0])).enhance(GRADE[1])
 
 for w in WIDTHS:
-    h = round(src.height * w / src.width)
-    if ia is not None:
-        im = src.resize((w, h), Image.LANCZOS, reducing_gap=3.0)
-        im = im.filter(ImageFilter.UnsharpMask(radius=max(0.5, 0.7 * w / 1920), percent=14, threshold=2))
-        qa, qw = (78, 90) if w <= 1920 else (72, 88)
-    else:  # respaldo: el original solo da 1448 px reales
-        im = src.resize((w, h), Image.LANCZOS)
-        if w > NATIVE:
-            im = im.filter(ImageFilter.UnsharpMask(radius=1.2, percent=35, threshold=2))
-        qa, qw = (72, 87) if w <= NATIVE else (66, 82)
-    im.save('%s%s-%d.avif' % (BASE, NOMBRE, w), quality=qa, speed=4, subsampling='4:4:4')
-    im.save('%s%s-%d.webp' % (BASE, NOMBRE, w), quality=qw, method=6)
+    im = src if w >= src.width else src.resize((w, round(src.height * w / src.width)), Image.LANCZOS)
+    im.save('%s%s-%d.avif' % (BASE, NOMBRE, w), quality=82, speed=4, subsampling='4:4:4')
+    im.save('%s%s-%d.webp' % (BASE, NOMBRE, w), quality=90, method=6)
     print(w, 'ok')
 
-fallback = src.resize((1448, round(src.height * 1448 / src.width)), Image.LANCZOS, reducing_gap=3.0)
-if ia is not None:
-    fallback = fallback.filter(ImageFilter.UnsharpMask(radius=0.5, percent=14, threshold=2))
-fallback.save(BASE + NOMBRE + '.jpg', quality=90, progressive=True, optimize=True)
+src.resize((1600, round(src.height * 1600 / src.width)), Image.LANCZOS).save(BASE + NOMBRE + '.jpg', quality=90, progressive=True, optimize=True)
 print(NOMBRE + '.jpg ok')
