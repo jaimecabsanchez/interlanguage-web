@@ -12,3 +12,6 @@ archivo/backup/
 node_modules/
 dist/
 *.log
+
+# caché del reescalado con IA (se regenera con scripts/generar-hero-colegio.py)
+scripts/_cache/

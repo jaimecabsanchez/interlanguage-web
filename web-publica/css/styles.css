@@ -27,6 +27,7 @@ picture{display:contents;}
     --font-display:'Fraunces', Georgia, 'Times New Roman', serif;
     --font-body:'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
     --header-h:93px;                   /* alto de la cabecera fija: 58 px de logo + 2x16 de aire + 3 de línea de acento */
+    --facts-h:96px;                    /* alto de la franja de datos bajo el hero: así portada y datos caben en la primera pantalla */
     --field-line:rgba(22,41,74,.22);   /* borde de campos y tarjetas de elección */
     --r-btn:5px;                       /* botones y etiquetas */
     --r-card:8px;                      /* tarjetas, paneles y fotos */
@@ -137,15 +138,15 @@ picture{display:contents;}
 
   /* ---------- HERO (dirección P «Colegio · serifa»): foto a sangre, titular con serifa y velo marino translúcido de izquierda a derecha ---------- */
   .hero{position:relative; isolation:isolate; overflow:hidden; background:var(--navy); color:#fff;
-    height:clamp(520px, 50vw, 780px); height:clamp(520px, min(50vw, calc(100svh - var(--header-h))), 780px);   /* la 1.ª línea es el respaldo para navegadores sin unidades svh */
-    display:flex; align-items:flex-end;}
+    height:clamp(500px, 44vw, 720px); height:clamp(500px, min(44vw, calc(100svh - var(--header-h) - var(--facts-h))), 720px);   /* la 1.ª línea es el respaldo para navegadores sin unidades svh */
+    display:flex; align-items:center;}   /* el texto va centrado en vertical (ligeramente por encima, ver .hero-inner), no pegado abajo */
   .hero-media{position:absolute; inset:0; z-index:-1;}
-  .hero-media img{width:100%; height:100%; object-fit:cover; object-position:50% 66%; display:block;}   /* la foto va ya espejada: los alumnos a la derecha, el texto a la izquierda */
+  .hero-media img{width:100%; height:100%; object-fit:cover; object-position:50% 50%; display:block;}   /* la foto va ya espejada: los alumnos a la derecha, el texto a la izquierda */
   .hero-veil{position:absolute; inset:0; background:   /* velo marino translúcido de izquierda a derecha: lee el texto y deja las caras limpias */
     linear-gradient(90deg, rgba(22,41,74,.84) 0%, rgba(22,41,74,.68) 30%, rgba(22,41,74,.34) 54%, rgba(22,41,74,.08) 78%, rgba(22,41,74,0) 100%),
     linear-gradient(0deg, rgba(22,41,74,.30) 0%, rgba(22,41,74,0) 46%),
     rgba(22,41,74,.05);}
-  .hero-inner{width:100%; padding-top:40px; padding-bottom:clamp(40px,5.2vw,68px);}
+  .hero-inner{width:100%; padding-top:0; padding-bottom:clamp(16px,3.2vw,52px);}   /* más aire debajo que encima: el titular queda en el tercio superior-central */
   .hero-text{max-width:620px; text-align:left;}
   .hero .eyebrow{display:flex; align-items:center; gap:14px; margin-bottom:20px; color:rgba(255,255,255,.88); font-size:.76rem; letter-spacing:.16em;}
   .hero .eyebrow::before{content:""; width:32px; height:1.5px; background:currentColor; flex:none;}
@@ -161,11 +162,13 @@ picture{display:contents;}
   .hero .btn-primary{background:var(--accent); box-shadow:0 14px 30px -10px rgba(5,12,28,.55);}
   .btn-outline{text-decoration:none; background:#fff; color:var(--navy); padding:14px 26px; border-radius:var(--r-btn); font-weight:700; border:1.5px solid var(--line); transition:background .15s ease, color .15s ease, border-color .15s ease;}
   @media (hover:hover){ .btn-outline:hover{background:var(--navy); color:#fff; border-color:var(--navy);} }
-  /* Datos de confianza: una fila de texto sencillo bajo la portada */
+  /* Datos de confianza: una fila bajo la portada, cada dato con su icono de línea (burdeos) */
   .trust{background:var(--ivory); border-bottom:1px solid var(--line);}
   .hero-facts{list-style:none; margin:0; padding:26px 0; display:grid; grid-template-columns:repeat(4,minmax(0,1fr));}
-  .hero-facts li{padding:0 24px; border-left:1px solid var(--line); font-size:.95rem; line-height:1.45; font-weight:600; color:var(--navy);}
+  .hero-facts li{display:flex; align-items:center; gap:14px; padding:0 24px; border-left:1px solid var(--line); font-size:.95rem; line-height:1.4; font-weight:600; color:var(--navy);}
+  .fact-ico{flex:none; width:34px; height:34px; color:var(--accent); fill:none; stroke:currentColor; stroke-width:1.5; stroke-linecap:round; stroke-linejoin:round;}
   .hero-facts li:first-child{padding-left:0; border-left:0;}
+  @media (max-width:1200px){ .hero-facts{grid-template-columns:.85fr .75fr 1fr 1.35fr;} .hero-facts li{padding:0 16px; gap:11px;} .fact-ico{width:28px; height:28px;} }   /* que «Programas en Reino Unido, Irlanda y Estados Unidos» no pase de 2 líneas */
   /* Tableta y móvil: la foto arriba (entera, sin recortar a los alumnos) y el texto debajo, sobre marino */
   @media (max-width:1024px){
     .hero{height:auto; display:block;}
@@ -177,7 +180,8 @@ picture{display:contents;}
     .hero-text{max-width:640px;}
     .hero h1{font-size:clamp(2.3rem,8vw,3.6rem);}
     .hero-facts{grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px 28px; padding:28px 0;}
-    .hero-facts li{padding:0; border-left:0;}
+    .hero-facts li{padding:0; border-left:0; align-items:flex-start;}
+    .fact-ico{width:30px; height:30px;}
   }
   @media (max-width:600px){
     :root{--header-h:72px;}
@@ -191,7 +195,8 @@ picture{display:contents;}
     .hero-ctas{display:grid; grid-template-columns:1fr; gap:18px; width:100%; justify-items:start;}
     .hero-ctas .btn-primary{width:100%; justify-content:space-between;}
     .hero-facts{gap:16px 18px; padding:24px 0;}
-    .hero-facts li{font-size:.86rem;}
+    .hero-facts li{font-size:.86rem; gap:11px;}
+    .fact-ico{width:26px; height:26px;}
   }
   @media (max-width:360px){
     .hero-facts{grid-template-columns:1fr;}
