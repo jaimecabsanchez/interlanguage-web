@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Genera la escalera de tamaños intermedios (AVIF + WebP) de la foto del hero y de las tarjetas de «Nuestros programas».
+# Genera la escalera de tamaños intermedios (AVIF + WebP) de las fotos sueltas de la home (tarjetas de destino y extranjero).
 # Igual que generar-variantes-age-path.py: se remuestrea siempre desde el JPG original con Lanczos y las
 # variantes nativas ya existentes se reutilizan. Los `sizes` de web-publica/index*.html declaran ~1,55x el
 # ancho real de cada tarjeta (ver web-publica/AGENTS.md, "Nitidez en Retina").
@@ -8,7 +8,7 @@ import pillow_avif  # noqa: F401  (registra el codificador AVIF en Pillow < 11.3
 
 BASE = '/Users/jaimecabellosanchez/Desktop/interlanguage-web/web-publica/images/'
 PHOTOS = {  # carpeta/base : anchura nativa
-    'internacional/hero-campus-2': 1448,
+    # (la foto del hero ya no sale de aquí: ver generar-hero-colegio.py)
     'internacional/irlanda-rugby': 1080,
     'internacional/extranjero-lab': 1200,
 }

@@ -42,11 +42,11 @@ Repo multiproyecto. **La web pública es el foco de estas tareas: `web-publica/`
 - Botones `.btn-primary` / `.btn-outline`, `.eyebrow`, colecciones tipo collage (`.intl-collage-item`).
 
 ## Sistema de estilos
-- Un solo `css/styles.css` con **tokens de color en `:root`** (`--navy`, `--coral`, `--coral-dark`, `--ink-soft`, `--line`, …).
+- Un solo `css/styles.css` con **tokens de color en `:root`** (paleta «Colegio»: `--navy`, `--forest`, `--accent` burdeos, `--ivory`, `--stone`, `--ink-soft`, `--line`, …; ver `web-publica/AGENTS.md`).
 - **Usar siempre los tokens; no colores hardcodeados nuevos.**
 - Responsive por `@media` (breakpoints ~960/900/600/480px).
 - **Cache-busting manual:** al cambiar `.css`/`.js` subir el `?v=N` en AMBAS páginas
-  (actual: `styles.css?v=48`, `main.js?v=18`). Necesario porque `_headers` marca css/js/images como `immutable`.
+  (actual: `styles.css?v=49`, `main.js?v=18`). Necesario porque `_headers` marca css/js/images como `immutable`.
 - Reemplazar una imagen: **renombrar el archivo** (p. ej. `hero-campus-2`) porque `/images/*` es inmutable en caché.
 
 ## Fotografías / assets
