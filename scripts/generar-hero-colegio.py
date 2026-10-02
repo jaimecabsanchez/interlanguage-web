@@ -5,9 +5,12 @@
 #  1. Reescalado 4x con el modelo de super-resolución de Apple (scripts/superresolucion-macos.swift, macOS 26+):
 #     devuelve un máster de 5792 px con detalle real y sin bloques. Se guarda en scripts/_cache/ (no se sube a git).
 #     Si no hay macOS 26, se usa el respaldo clásico (Lanczos + máscara de enfoque suave) y la foto queda más blanda.
-#  2. Cada ancho (640 a 3840) se reduce desde el máster con Lanczos y una máscara de enfoque muy suave. Así el
-#     navegador casi nunca amplía la foto (la ampliación es lo que más la ablanda) y la recibe a 1:1 o reducida.
-#  3. AVIF 4:4:4 (conserva los bordes finos de corbatas y faldas) y WebP con calidad alta. Sin filtros de color.
+#  2. Cada ancho (640 a 3840) se reduce desde el máster con Lanczos. Así el navegador casi nunca amplía la foto
+#     (la ampliación es lo que más la ablanda) y la recibe a 1:1 o reducida.
+#  3. NO añadir enfoque fuerte: con una máscara de enfoque de 45 % el pelo salía "pintado", con halos claros y las
+#     caras pastosas (02-10-2026, el usuario lo vio al instante). Solo un toque mínimo (14 %) con el radio escalado al
+#     ancho. Tampoco grano: se ve como ruido digital y la compresión lo convierte en manchas.
+#  4. AVIF 4:4:4 (conserva los bordes finos de corbatas y faldas) y WebP con calidad alta. Sin filtros de color.
 import os, subprocess, sys
 from PIL import Image, ImageFilter, ImageOps
 import pillow_avif  # noqa: F401  (registra el codificador AVIF en Pillow < 11.3)
@@ -20,7 +23,7 @@ ORIGEN = BASE + 'hero-campus-2.jpg'
 MASTER = CACHE + 'hero-4x.png'
 # Nombre base de los archivos. Si cambias la foto, cambia el nombre (hd, hd2…): _headers marca las imágenes como
 # immutable y con el mismo nombre quien ya visitó la web seguiría viendo la anterior.
-NOMBRE = 'hero-colegio-hd3'
+NOMBRE = 'hero-colegio-hd4'
 WIDTHS = (640, 960, 1280, 1448, 1920, 2560, 2880, 3840)
 
 def master_ia():
@@ -46,8 +49,8 @@ for w in WIDTHS:
     h = round(src.height * w / src.width)
     if ia is not None:
         im = src.resize((w, h), Image.LANCZOS, reducing_gap=3.0)
-        im = im.filter(ImageFilter.UnsharpMask(radius=1.3, percent=45, threshold=2))
-        qa, qw = (70, 86) if w <= 1920 else (64, 82)
+        im = im.filter(ImageFilter.UnsharpMask(radius=max(0.5, 0.7 * w / 1920), percent=14, threshold=2))
+        qa, qw = (78, 90) if w <= 1920 else (72, 88)
     else:  # respaldo: el original solo da 1448 px reales
         im = src.resize((w, h), Image.LANCZOS)
         if w > NATIVE:
@@ -59,6 +62,6 @@ for w in WIDTHS:
 
 fallback = src.resize((1448, round(src.height * 1448 / src.width)), Image.LANCZOS, reducing_gap=3.0)
 if ia is not None:
-    fallback = fallback.filter(ImageFilter.UnsharpMask(radius=1.3, percent=45, threshold=2))
-fallback.save(BASE + NOMBRE + '.jpg', quality=88, progressive=True, optimize=True)
+    fallback = fallback.filter(ImageFilter.UnsharpMask(radius=0.5, percent=14, threshold=2))
+fallback.save(BASE + NOMBRE + '.jpg', quality=90, progressive=True, optimize=True)
 print(NOMBRE + '.jpg ok')
