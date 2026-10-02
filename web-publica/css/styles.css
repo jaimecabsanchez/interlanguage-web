@@ -138,19 +138,17 @@ picture{display:contents;}
 
   /* ---------- HERO (dirección P «Colegio · serifa»): foto a sangre, titular con serifa y velo marino translúcido de izquierda a derecha ---------- */
   .hero{position:relative; isolation:isolate; overflow:hidden; background:var(--navy); color:#fff;
-    height:clamp(500px, 44vw, 720px); height:clamp(500px, min(44vw, calc(100svh - var(--header-h) - var(--facts-h))), 720px);   /* la 1.ª línea es el respaldo para navegadores sin unidades svh */
+    height:clamp(500px, 38.5vw, 720px); height:clamp(500px, min(38.5vw, calc(100svh - var(--header-h) - var(--facts-h))), 720px);   /* 38,5vw ≈ proporción de la foto (2,63:1): se ve entera, sin recortar a los alumnos */   /* la 1.ª línea es el respaldo para navegadores sin unidades svh */
     display:flex; align-items:center;}   /* el texto va centrado en vertical (ligeramente por encima, ver .hero-inner), no pegado abajo */
   .hero-media{position:absolute; inset:0; z-index:-1;}
-  .hero-media img{width:100%; height:100%; object-fit:cover; object-position:50% 50%; display:block;}   /* la foto va ya espejada: los alumnos a la derecha, el texto a la izquierda */
-  .hero-veil{position:absolute; inset:0; background:   /* velo marino translúcido de izquierda a derecha: lee el texto y deja las caras limpias */
-    linear-gradient(90deg, rgba(22,41,74,.84) 0%, rgba(22,41,74,.68) 30%, rgba(22,41,74,.34) 54%, rgba(22,41,74,.08) 78%, rgba(22,41,74,0) 100%),
-    linear-gradient(0deg, rgba(22,41,74,.30) 0%, rgba(22,41,74,0) 46%),
-    rgba(22,41,74,.05);}
+  .hero-media img{width:100%; height:100%; object-fit:cover; object-position:80% 50%; display:block;}   /* la foto va ya espejada: los alumnos a la derecha, el texto a la izquierda */
+  .hero-veil{position:absolute; inset:0; background:   /* velo marino translúcido de izquierda a derecha: lee el texto sobre el césped y deja los alumnos limpios */
+    linear-gradient(90deg, rgba(22,41,74,.78) 0%, rgba(22,41,74,.68) 24%, rgba(22,41,74,.48) 46%, rgba(22,41,74,.18) 62%, rgba(22,41,74,.04) 78%, rgba(22,41,74,0) 100%);}
   .hero-inner{width:100%; padding-top:0; padding-bottom:clamp(16px,3.2vw,52px);}   /* más aire debajo que encima: el titular queda en el tercio superior-central */
   .hero-text{max-width:620px; text-align:left;}
   .hero .eyebrow{display:flex; align-items:center; gap:14px; margin-bottom:20px; color:rgba(255,255,255,.88); font-size:.76rem; letter-spacing:.16em;}
   .hero .eyebrow::before{content:""; width:32px; height:1.5px; background:currentColor; flex:none;}
-  .hero h1{font-size:clamp(2.6rem,5.3vw,4.9rem); font-weight:600; line-height:1.03; letter-spacing:-.012em; color:var(--ivory); margin-bottom:22px;}
+  .hero h1{font-size:clamp(2.6rem,5vw,4.6rem); font-weight:600; line-height:1.03; letter-spacing:-.012em; color:var(--ivory); margin-bottom:22px;}
   .hero h1 em{display:block; font-style:italic; font-weight:500; color:color-mix(in srgb, var(--forest) 18%, #fff);}
   .hero p.lead{font-size:clamp(1.02rem,1.45vw,1.22rem); line-height:1.55; font-weight:500; color:rgba(255,255,255,.95); max-width:31em; margin:0 0 30px;}
   .hero-ctas{display:flex; align-items:center; gap:28px; flex-wrap:wrap;}
@@ -172,8 +170,8 @@ picture{display:contents;}
   /* Tableta y móvil: la foto arriba (entera, sin recortar a los alumnos) y el texto debajo, sobre marino */
   @media (max-width:1024px){
     .hero{height:auto; display:block;}
-    .hero-media{position:relative; z-index:0; aspect-ratio:4/3; max-height:62vh; width:100%;}
-    .hero-media img{object-position:50% 55%;}
+    .hero-media{position:relative; z-index:0; aspect-ratio:7/4; max-height:62vh; width:100%;}
+    .hero-media img{object-position:100% 50%;}   /* la foto es panorámica: en vertical se queda con los alumnos de la derecha */
     .hero-media::after{content:""; position:absolute; left:0; right:0; bottom:0; height:46%; background:linear-gradient(180deg, rgba(22,41,74,0) 0%, rgba(22,41,74,.7) 55%, var(--navy) 100%);}
     .hero-veil{display:none;}
     .hero-inner{padding-top:6px; padding-bottom:44px; position:relative; margin-top:-34px;}

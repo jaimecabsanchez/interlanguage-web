@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # Genera la escalera de tamaños de la foto del hero de la home (AVIF + WebP + JPG de respaldo).
-# Origen: images/internacional/hero-campus-2.jpg (1448 x 1086, con bloques de compresión), espejada para que los
-# alumnos queden a la derecha y el texto del hero a la izquierda.
+# Origen: scripts/fuentes/hero-arco-origen.jpg (2033 x 773, panorámica de ChatGPT: alumnos a la derecha y espacio libre a la
+# izquierda para el texto del hero). Ya no se espeja. Máx. 1920 px de entrada para el modelo: se reduce antes.
 #  1. Reescalado 4x con el modelo de super-resolución de Apple (scripts/superresolucion-macos.swift, macOS 26+):
 #     devuelve un máster de 5792 px con detalle real y sin bloques. Se guarda en scripts/_cache/ (no se sube a git).
 #     Si no hay macOS 26, se usa el respaldo clásico (Lanczos + máscara de enfoque suave) y la foto queda más blanda.
@@ -16,12 +16,12 @@ Image.MAX_IMAGE_PIXELS = None
 HERE = os.path.dirname(os.path.abspath(__file__))
 BASE = os.path.join(HERE, '..', 'web-publica', 'images', 'internacional') + '/'
 CACHE = os.path.join(HERE, '_cache') + '/'
-ORIGEN = BASE + 'hero-campus-2.jpg'
-MASTER = CACHE + 'hero-4x.png'
+ORIGEN = HERE + '/fuentes/hero-arco-origen.jpg'
+MASTER = CACHE + 'hero-arco-4x.png'
 # Nombre base de los archivos. Si cambias la foto, cambia el nombre (hd, hd2…): _headers marca las imágenes como
 # immutable y con el mismo nombre quien ya visitó la web seguiría viendo la anterior.
-NOMBRE = 'hero-colegio-hd'
-WIDTHS = (640, 960, 1280, 1448, 1920, 2560, 2880, 3840)
+NOMBRE = 'hero-colegio-hd2'
+WIDTHS = (640, 960, 1280, 1600, 1920, 2560, 3840)
 
 def master_ia():
     """Devuelve el máster 4x o None si no se puede generar (sin macOS 26 / sin Swift)."""
@@ -31,7 +31,12 @@ def master_ia():
     tool = CACHE + 'sr'
     try:
         subprocess.run(['swiftc', '-O', HERE + '/superresolucion-macos.swift', '-o', tool], check=True)
-        subprocess.run([tool, ORIGEN, MASTER], check=True)
+        peq = CACHE + 'entrada.png'
+        o = Image.open(ORIGEN).convert('RGB')
+        if o.width > 1920:
+            o = o.resize((1920, round(o.height * 1920 / o.width)), Image.LANCZOS)
+        o.save(peq)
+        subprocess.run([tool, peq, MASTER], check=True)
         return Image.open(MASTER).convert('RGB')
     except Exception as e:  # noqa: BLE001
         print('Sin super-resolución (%s): se usa el respaldo clásico' % e, file=sys.stderr)
@@ -39,8 +44,8 @@ def master_ia():
 
 ia = master_ia()
 original = Image.open(ORIGEN).convert('RGB')
-src = ImageOps.mirror(ia if ia is not None else original)
-NATIVE = original.width  # 1448: resolución real del original
+src = ia if ia is not None else original  # sin espejar
+NATIVE = original.width  # resolución real del original
 
 for w in WIDTHS:
     h = round(src.height * w / src.width)
@@ -57,7 +62,7 @@ for w in WIDTHS:
     im.save('%s%s-%d.webp' % (BASE, NOMBRE, w), quality=qw, method=6)
     print(w, 'ok')
 
-fallback = src.resize((1448, round(src.height * 1448 / src.width)), Image.LANCZOS, reducing_gap=3.0)
+fallback = src.resize((1920, round(src.height * 1920 / src.width)), Image.LANCZOS, reducing_gap=3.0)
 if ia is not None:
     fallback = fallback.filter(ImageFilter.UnsharpMask(radius=0.8, percent=28, threshold=2))
 fallback.save(BASE + NOMBRE + '.jpg', quality=88, progressive=True, optimize=True)
