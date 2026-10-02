@@ -140,19 +140,17 @@ picture{display:contents;}
   .hero{position:relative; isolation:isolate; overflow:hidden; background:var(--navy); color:#fff;
     height:clamp(500px, 44vw, 720px); height:clamp(500px, min(44vw, calc(100svh - var(--header-h) - var(--facts-h))), 720px);   /* la 1.ª línea es el respaldo para navegadores sin unidades svh */
     display:flex; align-items:center;}   /* el texto va centrado en vertical (ligeramente por encima, ver .hero-inner), no pegado abajo */
-  .hero-media{position:absolute; top:0; right:0; bottom:0; width:min(80%, 1500px); z-index:-1;   /* la foto ocupa la derecha (≈1:1 con su resolución: nítida) y se funde con el marino de la izquierda */
-    -webkit-mask-image:linear-gradient(90deg, transparent 0, rgba(0,0,0,.05) 6%, rgba(0,0,0,.22) 14%, rgba(0,0,0,.55) 26%, rgba(0,0,0,.88) 40%, #000 52%); mask-image:linear-gradient(90deg, transparent 0, rgba(0,0,0,.05) 6%, rgba(0,0,0,.22) 14%, rgba(0,0,0,.55) 26%, rgba(0,0,0,.88) 40%, #000 52%);}
-  .hero-media img{width:100%; height:100%; object-fit:cover; object-position:50% 50%; display:block;}   /* la foto va ya espejada: los alumnos a la derecha, el texto a la izquierda */
-  .hero-veil{position:absolute; inset:0; background:   /* velo marino translúcido de izquierda a derecha, sutil: el azul sólido solo queda tras el texto */
-    linear-gradient(90deg, rgba(22,41,74,.30) 0%, rgba(22,41,74,.14) 55%, rgba(22,41,74,0) 100%),
-    linear-gradient(0deg, rgba(22,41,74,.22) 0%, rgba(22,41,74,0) 40%);}
+  .hero-media{position:absolute; inset:0; z-index:-1;}
+  .hero-media img{width:100%; height:100%; object-fit:cover; object-position:50% 58%; display:block;}   /* la foto va ya espejada: los alumnos a la derecha, el texto a la izquierda */
+  .hero-veil{position:absolute; inset:0; background:   /* velo marino translúcido de izquierda a derecha, sutil: la foto se ve entera, también a la izquierda */
+    linear-gradient(90deg, rgba(22,41,74,.62) 0%, rgba(22,41,74,.54) 26%, rgba(22,41,74,.38) 46%, rgba(22,41,74,.14) 64%, rgba(22,41,74,.03) 80%, rgba(22,41,74,0) 100%);}
   .hero-inner{width:100%; padding-top:0; padding-bottom:clamp(16px,3.2vw,52px);}   /* más aire debajo que encima: el titular queda en el tercio superior-central */
-  .hero-text{max-width:620px; text-align:left;}
+  .hero-text{max-width:620px; text-align:left; text-shadow:0 1px 2px rgba(10,22,44,.22), 0 2px 22px rgba(10,22,44,.42);}   /* ayuda a leer sobre la foto sin oscurecerla */
   .hero .eyebrow{display:flex; align-items:center; gap:14px; margin-bottom:20px; color:rgba(255,255,255,.88); font-size:.76rem; letter-spacing:.16em;}
   .hero .eyebrow::before{content:""; width:32px; height:1.5px; background:currentColor; flex:none;}
   .hero h1{font-size:clamp(2.6rem,5vw,4.6rem); font-weight:600; line-height:1.03; letter-spacing:-.012em; color:var(--ivory); margin-bottom:22px;}
   .hero h1 em{display:block; font-style:italic; font-weight:500; color:color-mix(in srgb, var(--forest) 18%, #fff);}
-  .hero p.lead{font-size:clamp(1.02rem,1.45vw,1.22rem); line-height:1.55; font-weight:500; color:rgba(255,255,255,.95); max-width:31em; margin:0 0 30px;}
+  .hero p.lead{font-size:clamp(1.02rem,1.45vw,1.22rem); line-height:1.55; font-weight:500; color:rgba(255,255,255,.95); max-width:26em; text-wrap:balance; margin:0 0 30px;}
   .hero-ctas{display:flex; align-items:center; gap:28px; flex-wrap:wrap;}
   .hero-link{color:#fff; font-weight:700; font-size:1rem; text-decoration:none; border-bottom:2px solid rgba(255,255,255,.75); padding-bottom:3px; transition:border-color .15s ease;}
   @media (hover:hover){ .hero-link:hover{border-bottom-color:#fff;} }
