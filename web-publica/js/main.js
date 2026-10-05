@@ -151,9 +151,88 @@ window.dataLayer = window.dataLayer || [];
 
   const HOME_TITLE = document.title;
 
+  // El contacto (#contacto) es una sola sección y vive en la home. En «Estudiar en el extranjero» se coloca al final de esa página, ya
+  // orientado a ese programa: pedir orientación no saca a la familia de ella y la vista, el título y la URL siguen coincidiendo.
+  // Al salir de la página vuelve a su sitio en la home.
+  const contactSection = document.getElementById('contacto');
+  const contactSlot = document.getElementById('ext-contacto-slot');
+  const contactHome = contactSection ? document.createComment('contacto') : null;
+  if (contactHome) contactSection.parentNode.insertBefore(contactHome, contactSection);
+  function isExtVisible(){
+    const v = document.getElementById('view-service-extranjero');
+    return !!v && !v.hidden;
+  }
+  function placeContact(viewId){
+    if (!contactSection || !contactSlot) return;
+    const inExt = viewId === 'view-service-extranjero';
+    if (inExt && contactSection.parentNode !== contactSlot) contactSlot.appendChild(contactSection);
+    if (!inExt && contactSection.parentNode === contactSlot) contactHome.parentNode.insertBefore(contactSection, contactHome.nextSibling);
+    contactSection.classList.toggle('contact--ext', inExt);
+    if (window.ilLead) window.ilLead.lock(inExt);   // en la carga directa el formulario aún no existe: se sincroniza al final de su bloque
+  }
+  // «Estudiar en el extranjero» tiene una dirección por destino (#servicio-extranjero-irlanda): abre la página y despliega ese destino.
+  // Las direcciones antiguas (#servicio-extranjero) siguen funcionando.
+  const EXT_SLUGS = ['reino-unido', 'irlanda', 'estados-unidos'];
+  function resolveService(key){
+    const m = /^extranjero-(.+)$/.exec(key);
+    if (m) return EXT_SLUGS.indexOf(m[1]) !== -1 ? { view: 'extranjero', slug: m[1] } : null;
+    return document.getElementById('view-service-' + key) ? { view: key, slug: null } : null;
+  }
+  function extHash(slug){ return '#servicio-extranjero' + (slug ? '-' + slug : ''); }
+  function reduceMotion(){ return !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches); }
+  // despliega el detalle de un destino (los de la página se cierran entre sí) y, si se pide, baja hasta él
+  function openExtDetail(slug, scroll){
+    const d = document.getElementById('ext-det-' + slug);
+    if (!d) return;
+    d.open = true;
+    if (scroll) requestAnimationFrame(function(){ d.scrollIntoView({ behavior: scroll === 'smooth' && !reduceMotion() ? 'smooth' : 'auto', block: 'start' }); });
+  }
+
+  // contexto de la consulta: destino y duración elegidos, y vuelta al punto de la página desde el que se pidió
+  let extOrigin = null;
+  function showExtContext(){
+    const bar = document.getElementById('extContext');
+    if (!bar || !window.ilLead) return;
+    const c = window.ilLead.getContext();
+    const parts = [c.destino, c.duracion].filter(Boolean);
+    bar.hidden = !parts.length;
+    document.getElementById('extContextText').textContent = parts.join(' · ');
+    document.getElementById('extContextBack').textContent = c.destino ? bar.getAttribute('data-label-backto') + ' ' + c.destino : bar.getAttribute('data-label-back');
+  }
+  // lleva a la familia al formulario de esta página (en pantallas estrechas, a la tarjeta, para no pasar antes por el texto de contacto)
+  function scrollToExtContact(){
+    if (!contactSection) return;
+    const card = contactSection.querySelector('.lead-card');
+    const target = window.innerWidth >= 900 || !card ? contactSection : card;
+    target.scrollIntoView({ behavior: reduceMotion() ? 'auto' : 'smooth', block: 'start' });
+    const first = document.getElementById('leadAge');
+    if (first && first.offsetParent !== null) first.focus({ preventScroll: true });
+  }
+  function openExtContact(origin){
+    if (!contactSection) return;
+    extOrigin = origin || null;
+    showExtContext();
+    // el formulario tiene su propia entrada de historial: «Atrás» devuelve al punto de la página desde el que se pidió, no a la home
+    if (!(history.state && history.state.extForm)){
+      history.replaceState(Object.assign({}, history.state, { y: window.scrollY }), '');
+      history.pushState({ view: 'service-extranjero', extForm: true }, '', location.href);
+    }
+    scrollToExtContact();
+  }
+  (function(){
+    const back = document.getElementById('extContextBack');
+    if (!back) return;
+    back.addEventListener('click', function(e){
+      e.preventDefault();
+      if (history.state && history.state.extForm) history.back();
+      else if (extOrigin) extOrigin.scrollIntoView({ behavior: 'auto', block: 'center' });
+    });
+  })();
+
   function showView(viewId, opts){
     opts = opts || {};
     allViews.forEach(function(v){ v.hidden = (v.id !== viewId); });
+    placeContact(viewId);
     if (!opts.keepScroll){ window.scrollTo({ top: 0, behavior: 'auto' }); }
     document.querySelectorAll('.svc-card2').forEach(function(c){
       c.classList.toggle('active', viewId === 'view-service-' + c.dataset.service);
@@ -181,10 +260,13 @@ window.dataLayer = window.dataLayer || [];
   }
 
   function goToServicePage(key){
-    showView('view-service-' + key);
+    const r = resolveService(key);
+    if (!r) return;
+    showView('view-service-' + r.view);
+    if (r.slug) openExtDetail(r.slug, 'smooth');
     pushEvent('clic_cta', { cta_id: 'servicio-subpagina-' + key });
     // pushState (no replaceState): así el botón "atrás" del navegador vuelve a la home.
-    history.pushState({ view: 'service-' + key }, '', '#servicio-' + key);
+    history.pushState({ view: 'service-' + r.view }, '', '#servicio-' + key);
   }
 
   // tarjetas de servicio en la home
@@ -504,23 +586,45 @@ window.dataLayer = window.dataLayer || [];
     document.querySelectorAll('[data-advise]').forEach(function(el){
       el.addEventListener('click', function(e){
         e.preventDefault();
-        // si ya estamos en la home no saltamos arriba: solo bajamos al formulario
-        showView('view-home', isHomeVisible() ? { keepScroll: true } : undefined);
+        const inExt = !!el.closest('#view-service-extranjero');
+        // en la página de extranjero el contacto está al final de la propia página; desde la home se baja al de la home
+        if (!inExt) showView('view-home', isHomeVisible() ? { keepScroll: true } : undefined);
         if (window.ilLead){
           window.ilLead.select(el.getAttribute('data-advise'));
           const destino = DESTINOS[el.getAttribute('data-destino')];
           if (destino) window.ilLead.setDestination(destino);
           window.ilLead.setNote(el.getAttribute('data-advise-note'));
         }
-        const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        requestAnimationFrame(function(){
-          const target = document.getElementById('contacto');
-          if (target) target.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
-        });
-        pushEvent('clic_cta', { cta_id: 'extranjero-' + (el.getAttribute('data-destino') || el.getAttribute('data-programa') || 'asesor') });
+        if (inExt) openExtContact(el);
+        else {
+          const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+          requestAnimationFrame(function(){
+            const target = document.getElementById('contacto');
+            if (target) target.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+          });
+        }
+        pushEvent('clic_cta', { cta_id: el.getAttribute('data-cta') || ('extranjero-' + (el.getAttribute('data-destino') || el.getAttribute('data-programa') || 'asesor')) });
       });
     });
   })();
+
+  // «Conocer X» en las fichas de destino: despliega el detalle de ese destino
+  document.querySelectorAll('[data-ext-detail]').forEach(function(a){
+    a.addEventListener('click', function(e){
+      e.preventDefault();
+      openExtDetail(a.getAttribute('data-ext-detail'), 'smooth');
+      pushEvent('clic_cta', { cta_id: a.getAttribute('data-cta') || ('extranjero-conocer-' + a.getAttribute('data-ext-detail')) });
+    });
+  });
+  // la dirección refleja el destino desplegado (replaceState: no ensucia el historial); al cerrarlo vuelve a #servicio-extranjero
+  document.querySelectorAll('.ext-det').forEach(function(d){
+    d.addEventListener('toggle', function(){
+      if (!isExtVisible()) return;
+      const h = extHash(d.getAttribute('data-destino'));
+      if (d.open) history.replaceState(history.state, '', h);
+      else if (location.hash === h) history.replaceState(history.state, '', extHash(''));
+    });
+  });
 
   // cualquier enlace interno (#ancla) dentro de la home: si estamos en una subpágina, vuelve a home primero
   document.querySelectorAll('a[href^="#"]').forEach(function(link){
@@ -530,6 +634,11 @@ window.dataLayer = window.dataLayer || [];
     link.addEventListener('click', function(e){
       if (!isHomeVisible()){
         e.preventDefault();
+        if (targetId === 'contacto' && isExtVisible()){   // en «Estudiar en el extranjero» el contacto está en la propia página
+          if (window.ilLead) window.ilLead.select('extranjero');
+          openExtContact(); closeNav();
+          return;
+        }
         showView('view-home');
         closeNav();
         requestAnimationFrame(function(){
@@ -557,29 +666,41 @@ window.dataLayer = window.dataLayer || [];
     });
   });
 
-  // carga directa con hash tipo #servicio-campamentos
+  // carga directa con hash tipo #servicio-campamentos o #servicio-extranjero-irlanda
   (function(){
     const hash = window.location.hash.replace('#','');
     if (hash.indexOf('servicio-') === 0){
-      const key = hash.replace('servicio-','');
-      if (document.getElementById('view-service-' + key)){
-        showView('view-service-' + key, { silent: true });
+      const r = resolveService(hash.replace('servicio-',''));
+      if (r){
+        showView('view-service-' + r.view, { silent: true });
+        if (r.slug) openExtDetail(r.slug, 'auto');
       }
     }
   })();
 
-  // Sincroniza la vista con el historial: el botón atrás/adelante restaura la vista correcta.
-  function syncViewFromHash(){
+  // Sincroniza la vista con el historial: el botón atrás/adelante restaura la vista correcta. En «Estudiar en el extranjero»
+  // devuelve además al punto de la página desde el que se abrió el formulario (y no a la home).
+  function syncViewFromHash(e){
     const h = (window.location.hash || '').replace('#','');
+    const st = (e && e.state) || {};
     if (h.indexOf('servicio-') === 0){
-      const key = h.replace('servicio-','');
-      if (document.getElementById('view-service-' + key)){ showView('view-service-' + key); return; }
+      const r = resolveService(h.replace('servicio-',''));
+      if (r){
+        const same = r.view === 'extranjero' && isExtVisible();
+        showView('view-service-' + r.view, same ? { keepScroll: true, silent: true } : undefined);
+        if (r.slug) openExtDetail(r.slug, false);
+        if (same && typeof st.y === 'number'){
+          window.scrollTo({ top: st.y, behavior: 'auto' });
+          if (extOrigin) extOrigin.focus({ preventScroll: true });
+        } else if (same && st.extForm) scrollToExtContact();
+        return;
+      }
     }
     showView('view-home');
   }
   window.addEventListener('popstate', syncViewFromHash);
 
-  document.querySelectorAll('[data-cta]:not([data-cta-service])').forEach(function(el){   // los que llevan data-cta-service ya lo miden arriba
+  document.querySelectorAll('[data-cta]:not([data-cta-service]):not([data-advise]):not([data-ext-detail])').forEach(function(el){   // los que llevan data-cta-service o data-advise ya lo miden arriba
     el.addEventListener('click', function(){ pushEvent('clic_cta', { cta_id: el.getAttribute('data-cta'), cta_text: el.textContent.trim() }); });
   });
 
@@ -777,9 +898,42 @@ window.dataLayer = window.dataLayer || [];
         }
         const m = $('message');
         if (m && !m.value.trim()) m.value = text;
+      },
+      // destino y duración que hay elegidos (texto visible en el idioma de la página), para el aviso «Consulta sobre…»
+      getContext: function(){
+        return {
+          destino: dest && dest.value !== DUNNO ? optText(dest) : '',
+          duracion: dur && dur.value !== DUNNO ? optText(dur) : ''
+        };
+      },
+      // Modo «Estudiar en el extranjero» (el contacto colocado al final de esa página): el servicio queda fijo y las edades son las del programa
+      // (data-ext-min / data-ext-max del selector). Al salir se restaura lo que había elegido antes.
+      lock: function(on){
+        on = !!on;
+        if (on === locked) return;
+        locked = on;
+        form.classList.toggle('is-locked', on);
+        const keep = age.value;
+        if (on){
+          prevService = service();
+          const min = +age.getAttribute('data-ext-min') || 0, max = +age.getAttribute('data-ext-max') || 99;
+          Array.from(age.options).forEach(function(o){ if (o.value !== '' && (+o.value < min || +o.value > max)) o.remove(); });
+          const ext = radios.filter(function(x){ return x.value === 'extranjero'; })[0];
+          if (ext) ext.checked = true;
+        } else {
+          age.innerHTML = ageOptions;
+          const back = radios.filter(function(x){ return x.value === prevService; })[0];
+          if (back) back.checked = true; else radios.forEach(function(x){ x.checked = false; });
+        }
+        if (Array.from(age.options).some(function(o){ return o.value === keep; })) age.value = keep;
+        showCtx();
+        goTo(1, { silent: true });
       }
     };
+    let locked = false, prevService = '';
+    const ageOptions = age.innerHTML;   // la lista completa de edades, para restaurarla al salir del modo extranjero
 
     showCtx();
     goTo(1, { silent: true });
+    window.ilLead.lock(isExtVisible());   // carga directa de #servicio-extranjero: el formulario se crea después del router
   })();
