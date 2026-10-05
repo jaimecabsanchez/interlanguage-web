@@ -2,6 +2,8 @@
 
 Documento interno (no se publica: Netlify solo sirve `web-publica/`). Estado a 05-10-2026, versión de revisión sin publicar.
 
+**Decisiones de Jaime del 05-10-2026:** se aplican los cambios propuestos (los atributos de las guías se publican tal cual, sin nombrar colegios), **se mantiene Estados Unidos** y **Irlanda es de 10 a 18 años**.
+
 La página `#servicio-extranjero` solo pinta lo confirmado. Todo lo demás está aquí, sin rellenar y sin aparecer como hecho en la web.
 
 ## De dónde sale la información
@@ -22,7 +24,7 @@ La página `#servicio-extranjero` solo pinta lo confirmado. Todo lo demás está
 |---|---|---|
 | **Reino Unido** | La guía UK tiene centros activos en **Inglaterra** (cuatro) y **Escocia** (dos). | **Se llama «Reino Unido»** y se dice «Inglaterra» o «Escocia» solo para un centro o zona concretos. **Corrijo la decisión anterior de usar «Inglaterra»**: se tomó sin haber visto las guías y se quedaba corta. |
 | **Irlanda** | La guía de Irlanda tiene centros activos de secundaria, con internado y de día con familia anfitriona. | Se mantiene. |
-| **Estados Unidos** | **No hay ningún documento de programas.** El checklist habla de «UK, Irlanda o ambos» y el informe lo menciona solo en general. | Se mantiene la tarjeta, el titular y un bloque breve que remite a la orientación, porque el encargo pide tres países. **Confirmar o retirar.** |
+| **Estados Unidos** | **No hay ningún documento de programas.** El checklist habla de «UK, Irlanda o ambos» y el informe lo menciona solo en general. | Se mantiene la tarjeta, el titular y un bloque breve que remite a la orientación, porque el encargo pide tres países. **Mantenido por decisión de Jaime (05-10-2026).** Sigue sin dato alguno que publicar. |
 
 Para cambiar el nombre del Reino Unido o quitar Estados Unidos: textos de la vista en `index.html` e `index-en.html`, selector `#leadDest` y `DESTINOS` de `js/main.js`.
 
@@ -32,7 +34,7 @@ Sin nombres de colegios; las referencias son páginas de cada guía.
 
 | Criterio | Reino Unido (guía UK) | Irlanda (guía Irlanda) |
 |---|---|---|
-| Edad y curso | Rangos de edad y «boarding desde Year 5 / Year 7»: pp. 3, 5, 6, 7, 11 | **Sin dato**: la guía no da edades. Solo «secundaria» |
+| Edad y curso | Rangos de edad y «boarding desde Year 5 / Year 7»: pp. 3, 5, 6, 7, 11 | **10 a 18 años, dato de Jaime (05-10-2026)**: la guía no da edades. El curso concreto se confirma con cada colegio |
 | Duración | Curso completo habitual; trimestres limitados en uno, ninguna estancia corta en otro: pp. 5, 10 | **Sin dato** |
 | Tipo de colegio | Independientes mixtos, Inglaterra y Escocia: pp. 3 a 11 | Secundaria; tradición religiosa; mixtos, uno solo de chicos y uno solo de chicas: pp. 4, 5, 7 a 15 |
 | Alojamiento | Full, weekly, flexi; actividades de fin de semana; guardian exigido en dos: pp. 5, 6, 7, 10, 11 | 5, 5½ y 7 días; día con familia anfitriona; fines de semana cerrados: pp. 5 a 8, 11, 13, 14 |
@@ -58,7 +60,7 @@ El único dato de sistema educativo general es que Inglaterra y Escocia tienen s
 |---|---|---|
 | 1 | Cabecera | Hecho |
 | 2 | Respaldo verificable | Hecho, mínimo (trayectoria en inglés en España, profesorado, contacto) |
-| 3 | Destinos | Hecho; ficha de edades, duración y alojamiento solo con lo confirmado (Reino Unido tres filas, Irlanda una, Estados Unidos ninguna) |
+| 3 | Destinos | Hecho; ficha de edades, duración y alojamiento solo con lo confirmado (Reino Unido tres filas, Irlanda dos: edades y alojamiento; Estados Unidos ninguna) |
 | 4 | Comparación | **Hecho para Reino Unido e Irlanda** (6 criterios y ampliación). Falta Estados Unidos |
 | 5 | Modalidades y duración | **Retirado**: la duración vive en la comparación y en «Programas» del detalle |
 | 6 | Alojamiento y vida escolar | Dentro de la comparación y del detalle por destino |
@@ -68,17 +70,17 @@ El único dato de sistema educativo general es que Inglaterra y Escocia tienen s
 | 10 | Preguntas frecuentes | Hecho (5) |
 | 11 | Contacto específico | Hecho: formulario en la misma página, con país y programa conservados y vuelta al punto de origen |
 
-Detalle por destino: Reino Unido completo (menos «acompañamiento»), Irlanda con tres apartados que remiten al colegio, Estados Unidos solo un bloque breve. No se han creado páginas nuevas: cada destino tiene su dirección `#servicio-extranjero-<destino>` y las antiguas siguen funcionando.
+Detalle por destino: Reino Unido completo (menos «acompañamiento»), Irlanda con dos apartados que remiten al colegio (duración y acceso; las edades, 10 a 18, constan en «Programas»), Estados Unidos solo un bloque breve. No se han creado páginas nuevas: cada destino tiene su dirección `#servicio-extranjero-<destino>` y las antiguas siguen funcionando.
 
 ## Datos que faltan
 
 **Confirmar antes de publicar**
-- Que los atributos de las guías se pueden publicar tal cual y que se mantienen para el próximo curso (la guía pide reconfirmarlos).
-- Si se pueden nombrar colegios y qué relación hay con cada uno (la reunión con Longridge no cerró acuerdo y el checklist lista el contrato B2B como pendiente).
-- Estados Unidos: si existe programa y con qué colegios o proveedores.
+- Que los atributos de las guías se mantienen para el próximo curso (Jaime autorizó publicarlos tal cual el 05-10-2026; la guía pide reconfirmarlos antes de proponer una plaza).
+- Si se pueden nombrar colegios y qué relación hay con cada uno (la reunión con Longridge no cerró acuerdo y el checklist lista el contrato B2B como pendiente). **Siguen sin nombrarse.**
+- Estados Unidos: qué programa existe y con qué colegios o proveedores. La página lo mantiene con un bloque breve; falta todo el contenido.
 - Si el Reino Unido incluye Gales o Irlanda del Norte (hoy solo Inglaterra y Escocia).
 
-**Irlanda:** edades por colegio, duraciones disponibles, fechas de inicio, apoyo de inglés, si el Transition Year se ofrece a internacionales.
+**Irlanda:** curso concreto por colegio dentro del tramo de 10 a 18 años, duraciones disponibles, fechas de inicio, apoyo de inglés, si el Transition Year se ofrece a internacionales.
 
 **Reino Unido:** qué colegios admiten trimestres y cuántas plazas, fechas 2027/28, equivalencia del curso escocés.
 
@@ -95,9 +97,9 @@ Detalle por destino: Reino Unido completo (menos «acompañamiento»), Irlanda c
 ## Decisiones tomadas por mí, reversibles
 
 1. «Reino Unido» y no «Inglaterra» (arriba).
-2. Estados Unidos se mantiene con un bloque breve; sin comparación ni detalle.
+2. Estados Unidos se mantiene con un bloque breve; sin comparación ni detalle. Confirmado por Jaime.
 3. Se retira «Modalidades y duración».
-4. Edades 10 a 18 en el formulario de esta página.
+4. Edades 10 a 18 en el formulario de esta página (para Irlanda, ahora confirmadas por Jaime; Reino Unido sigue «de primaria a 18 años, según el colegio», que sale de la guía).
 5. Trato de «tú» en los textos nuevos.
 6. Los tres últimos criterios de la comparación van en una ampliación desplegable.
 7. «Presupuesto» aparece como fila porque lo pide el encargo, con el texto «no hay precios comparables publicados».
