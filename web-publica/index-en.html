@@ -68,8 +68,8 @@
 <link rel="preload" href="fonts/fraunces-italic-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/plus-jakarta-sans-wght-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" as="image" type="image/avif" fetchpriority="high" imagesrcset="images/internacional/hero-arco-640.avif 640w, images/internacional/hero-arco-960.avif 960w, images/internacional/hero-arco-1280.avif 1280w, images/internacional/hero-arco-1600.avif 1600w, images/internacional/hero-arco-2033.avif 2033w" imagesizes="100vw">
-<link rel="preload" href="css/styles.css?v=64" as="style">
-<link rel="stylesheet" href="css/styles.css?v=64">
+<link rel="preload" href="css/styles.css?v=65" as="style">
+<link rel="stylesheet" href="css/styles.css?v=65">
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
@@ -328,58 +328,24 @@
 
 </section>
 
-<!-- POR QUÉ INTERLANGUAGE -->
-<section class="why-us" id="por-que">
-  <div class="container">
-    <div class="why-us-head reveal">
-      <span class="eyebrow">Why families trust us</span>
-      <h2>30 years supporting families</h2>
-    </div>
-    <div class="why-us-story reveal">
-      <div class="why-us-story-copy">
-        <span class="eyebrow">Our story</span>
-        <h3>We have grown with families while staying close to them.</h3>
-        <p>We began in Madrid with English classes and summer camps. Over the years, we expanded our programmes to support children and young people from their first steps in English to experiences abroad.</p>
-        <p>More than 30 years on, we still believe in getting to know each pupil, listening to their family and learning English by living it.</p>
-        <a href="#servicio-metodologia" data-jump-service="metodologia">Get to know how we work <span aria-hidden="true">→</span></a>
+<!-- WHY US (short version; the full one is #view-service-metodologia).
+     TEAM PHOTO: when it arrives, paste the <figure class="team-photo"> (template in web-publica/AGENTS.md) as the
+     first child of .why-grid, before .why-copy. The layout rearranges itself with :has(). -->
+<section class="why-us" id="por-que" aria-labelledby="por-que-t">
+  <div class="container why-grid">
+    <div class="why-copy">
+      <div class="why-head reveal">
+        <span class="eyebrow">Why us</span>
+        <h2 id="por-que-t">We look after every pupil, <em>one by one</em></h2>
+        <p>We are the Interlanguage team. For over 30 years we have been teaching English to children and young people in Madrid, and we always work the same way: we get to know each pupil, listen to their family and follow their progress closely.</p>
       </div>
-    </div>
-    <div class="why-us-grid reveal">
-      <div class="why-us-card">
-        <div class="why-us-icon">
-          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="12" cy="8" r="3.5"/><path d="M5 20c1-4.5 4-7 7-7s6 2.5 7 7" stroke-linecap="round"/>
-          </svg>
-        </div>
-        <h3>Native teachers</h3>
-        <p>Every member of our team is a native speaker, trained specifically to teach children and teenagers.</p>
-      </div>
-      <div class="why-us-card">
-        <div class="why-us-icon">
-          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M12 4L2 9l10 5 10-5-10-5Z" stroke-linejoin="round"/><path d="M6 12v5c0 1.1 2.7 2.5 6 2.5s6-1.4 6-2.5v-5" stroke-linecap="round"/>
-          </svg>
-        </div>
-        <h3>Active methodology</h3>
-        <p>Children learn by playing, experimenting and living the language in every lesson, not by memorising it.</p>
-      </div>
-      <div class="why-us-card">
-        <div class="why-us-icon">
-          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M12 3l2.6 5.6 6.1.6-4.6 4.1 1.4 6-5.5-3.2-5.5 3.2 1.4-6-4.6-4.1 6.1-.6L12 3Z" stroke-linejoin="round"/>
-          </svg>
-        </div>
-        <h3>Real support</h3>
-        <p>We're not a platform. Every family has one point of contact who stays with them at every stage.</p>
-      </div>
-      <div class="why-us-card">
-        <div class="why-us-icon">
-          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.5 4 6 4 9s-1.5 6.5-4 9c-2.5-2.5-4-6-4-9s1.5-6.5 4-9Z"/>
-          </svg>
-        </div>
-        <h3>Global experience</h3>
-        <p>Programmes in Madrid, the United Kingdom, Ireland and the United States, from summer camps to full academic years.</p>
+      <div class="why-body reveal">
+        <ul class="why-points">
+          <li><strong>Small groups</strong> so everyone gets real time to speak.</li>
+          <li><strong>Progress tracking</strong>, year after year.</li>
+          <li><strong>One point of contact</strong> who stays with your family at every stage.</li>
+        </ul>
+        <a class="why-link" href="#servicio-metodologia" data-jump-service="metodologia">See how we work <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
       </div>
     </div>
   </div>
@@ -1248,91 +1214,76 @@
   </div>
 </div>
 
-<div id="view-service-metodologia" class="view service-page" data-title="Who we are and how we work" hidden>
-  <section class="camp-hero">
-    <div class="container camp-hero-grid">
-      <div class="camp-hero-content">
+<div id="view-service-metodologia" class="view service-page" data-title="Why us" hidden>
+
+  <!-- 1 · WHO WE ARE. TEAM PHOTO: when it arrives, paste the <figure class="team-photo"> (template in
+       web-publica/AGENTS.md) after .who-hero-copy; the hero switches to two columns by itself with :has(). -->
+  <section class="who-hero">
+    <div class="container who-hero-grid">
+      <div class="who-hero-copy">
         <a href="#" class="svc-back" data-back>← Back to home</a>
-        <span class="eyebrow">About us</span>
-        <h1>Thirty years growing alongside the families who trust us</h1>
-        <p class="svc-page-intro">Interlanguage Studies has been teaching English to children and young people in Madrid for over 30 years, with the same idea from the start: a language isn't memorised, it's lived. We started with classes and summer camps, and have grown alongside the families who placed their trust in us at every new stage.</p>
-        <div class="camp-quickfacts">
-          <div class="camp-quickfact">
-            <div class="camp-quickfact-ic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l2.6 5.6 6.1.6-4.6 4.1 1.4 6-5.5-3.2-5.5 3.2 1.4-6-4.6-4.1 6.1-.6L12 3Z" stroke-linejoin="round"/></svg></div>
-            <div><strong>30+</strong><span>Years teaching English</span></div>
-          </div>
-          <div class="camp-quickfact">
-            <div class="camp-quickfact-ic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c1-4.5 4-7 7-7s6 2.5 7 7" stroke-linecap="round"/></svg></div>
-            <div><strong>1,000+</strong><span>Families who trust us</span></div>
-          </div>
-          <div class="camp-quickfact">
-            <div class="camp-quickfact-ic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20v-4M12 20V10M20 20V4" stroke-linecap="round"/></svg></div>
-            <div><strong>3–18</strong><span>Years old, a programme for every age</span></div>
-          </div>
-        </div>
+        <span class="eyebrow">Why us</span>
+        <h1>We look after every pupil, <em>one by one</em></h1>
+        <p class="who-lead">We are the Interlanguage team. For over 30 years we have been teaching English in Madrid, and we always work the same way: we get to know each pupil, listen to their family and follow their progress closely.</p>
+        <a href="#contacto" class="btn-primary" data-cta-service="orientacion" data-cta="porque-hero">Book a call <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
       </div>
-      <div class="camp-hero-media"><picture><source type="image/avif" srcset="images/campamentos/taller-cocina-grupo-480.avif 480w, images/campamentos/taller-cocina-grupo-800.avif 800w, images/campamentos/taller-cocina-grupo-1086.avif 1086w" sizes="(max-width: 700px) 100vw, 50vw"><source type="image/webp" srcset="images/campamentos/taller-cocina-grupo-480.webp 480w, images/campamentos/taller-cocina-grupo-800.webp 800w, images/campamentos/taller-cocina-grupo-1086.webp 1086w" sizes="(max-width: 700px) 100vw, 50vw"><img src="images/campamentos/taller-cocina-grupo.jpg" alt="Interlanguage pupils in a group cooking workshop" width="1086" height="1448" loading="lazy"></picture></div>
     </div>
   </section>
-  <section class="methodology">
-  <div class="container">
-    <div class="method-layout">
-      <div class="method-copy reveal">
-        <span class="eyebrow">The Interlanguage method</span>
-        <h2>English is learnt by living it.</h2>
-        <p class="method-intro">More than 30 years have taught us that a language isn't memorised: it's used.</p>
-        <p class="method-intro">The same team and the same method support every pupil at every stage: what keeps a family with us for years isn't a one-off programme, but a way of teaching that stays consistent from age 3 to studying abroad.</p>
+
+  <!-- 2 · HOW WE LOOK AFTER EACH PUPIL (only facts already published on the site) -->
+  <section class="who-section">
+    <div class="container">
+      <div class="who-sec-head reveal">
+        <span class="eyebrow">How we do it</span>
+        <h2>Four things we look after in every pupil</h2>
+        <p>No two pupils are the same, so we don't treat them as if they were.</p>
       </div>
-      <div class="method-photo-col reveal">
-        <div class="method-photo-frame">
-          <picture><source type="image/avif" srcset="images/programas/profesor-ritmo-en-480.avif 480w, images/programas/profesor-ritmo-en-800.avif 800w, images/programas/profesor-ritmo-en-1200.avif 1200w, images/programas/profesor-ritmo-en-1207.avif 1207w" sizes="(max-width: 700px) 100vw, 50vw"><source type="image/webp" srcset="images/programas/profesor-ritmo-en-480.webp 480w, images/programas/profesor-ritmo-en-800.webp 800w, images/programas/profesor-ritmo-en-1200.webp 1200w, images/programas/profesor-ritmo-en-1207.webp 1207w" sizes="(max-width: 700px) 100vw, 50vw"><img src="images/programas/profesor-ritmo-en.jpg" class="is-shown" data-id="nativos" alt="A teacher guiding a rhythm activity with their pupils" width="1207" height="1086" loading="lazy"></picture>
-          <picture><source type="image/avif" srcset="images/campamentos/taller-manualidades-480.avif 480w, images/campamentos/taller-manualidades-800.avif 800w, images/campamentos/taller-manualidades-1089.avif 1089w" sizes="(max-width: 700px) 100vw, 50vw"><source type="image/webp" srcset="images/campamentos/taller-manualidades-480.webp 480w, images/campamentos/taller-manualidades-800.webp 800w, images/campamentos/taller-manualidades-1089.webp 1089w" sizes="(max-width: 700px) 100vw, 50vw"><img src="images/campamentos/taller-manualidades.jpg" data-id="haciendo" alt="Children in an arts and crafts workshop during an Interlanguage Studies activity" width="1089" height="1445" loading="lazy"></picture>
-          <picture><source type="image/avif" srcset="images/internacional/extranjero-kayak-480.avif 480w, images/internacional/extranjero-kayak-800.avif 800w, images/internacional/extranjero-kayak-1200.avif 1200w, images/internacional/extranjero-kayak-1448.avif 1448w" sizes="(max-width: 700px) 100vw, 50vw"><source type="image/webp" srcset="images/internacional/extranjero-kayak-480.webp 480w, images/internacional/extranjero-kayak-800.webp 800w, images/internacional/extranjero-kayak-1200.webp 1200w, images/internacional/extranjero-kayak-1448.webp 1448w" sizes="(max-width: 700px) 100vw, 50vw"><img src="images/internacional/extranjero-kayak.jpg" loading="lazy" data-id="ritmo" alt="Interlanguage students kayaking abroad" width="1448" height="1086"></picture>
-          <div class="method-photo-scrim"></div>
-          <div class="method-photo-caption" id="methodCaption">
-            <span class="tag">Native teachers</span>
-            <p>Specifically trained to teach children, not just to speak the language.</p>
-          </div>
-        </div>
-      </div>
-      <div class="method-principles reveal" id="methodPrinciples">
-      <button type="button" class="method-principle is-active" data-target="nativos">
-        <span class="method-principle-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3 3 8l9 5 9-5-9-5Z"/><path d="M7 11.5V16c0 1.1 2.24 2 5 2s5-.9 5-2v-4.5"/><path d="M21 8v6"/></svg></span>
-        <span class="method-principle-body">
-          <h3>Native teachers</h3>
-          <p>Truly native. Trained to teach children, not just to speak the language.</p>
-        </span>
-      </button>
-      <button type="button" class="method-principle" data-target="haciendo">
-        <span class="method-principle-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.3h6c0-1.1.4-1.8 1-2.3A7 7 0 0 0 12 2Z"/></svg></span>
-        <span class="method-principle-body">
-          <h3>Learning by doing</h3>
-          <p>They learn by speaking, not memorising. English as a tool, not an exam.</p>
-        </span>
-      </button>
-      <button type="button" class="method-principle" data-target="ritmo">
-        <span class="method-principle-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h4l2-7 4 14 2-7h6"/></svg></span>
-        <span class="method-principle-body">
-          <h3>Every pupil has their own pace.</h3>
-          <p>We track their progress and keep families close to the process.</p>
-        </span>
-      </button>
-      </div>
+      <ol class="who-ones">
+        <li class="reveal"><span class="who-n" aria-hidden="true">1</span><h3>First, getting to know the pupil</h3><p>Before suggesting anything, we talk to you and get to know the pupil: their level of English, their character and their interests.</p></li>
+        <li class="reveal"><span class="who-n" aria-hidden="true">2</span><h3>Groups built for speaking</h3><p>We work in small groups so that everyone gets real time to speak English.</p></li>
+        <li class="reveal"><span class="who-n" aria-hidden="true">3</span><h3>We follow their progress</h3><p>We follow their progress year after year and keep you close to the process.</p></li>
+        <li class="reveal"><span class="who-n" aria-hidden="true">4</span><h3>One point of contact</h3><p>Every family has one person who stays with them at every stage. If you need anything, you know who to talk to.</p></li>
+      </ol>
     </div>
-    <div class="method-authority reveal">
-      <strong class="method-authority-num">30+</strong>
-      <div>
-        <span class="method-authority-label">Years teaching English</span>
-        <p>More than three decades working with pupils, families and schools.</p>
+  </section>
+
+  <!-- 3 · WHO WE ARE: track record and how we teach -->
+  <section class="who-section who-section--alt">
+    <div class="container who-about">
+      <div class="who-about-copy reveal">
+        <span class="eyebrow">Who we are</span>
+        <h2>More than 30 years teaching English in Madrid</h2>
+        <p>We began with English classes and summer camps. Over the years we have expanded our programmes to support children and young people from their first steps in English to experiences abroad, always with the same idea: a language isn't memorised, it's lived.</p>
       </div>
+      <ul class="who-facts reveal">
+        <li><strong>100% native teachers</strong><span>Trained specifically to teach children and young people, not just to speak the language.</span></li>
+        <li><strong>They learn by speaking</strong><span>English as a tool, not an exam to pass.</span></li>
+        <li><strong>From age 3 to 18</strong><span>A programme for every stage, with the same method.</span></li>
+      </ul>
     </div>
-  </div>
-</section>
+  </section>
+
+  <!-- 4 · HOW WE HELP YOU CHOOSE -->
+  <section class="who-section">
+    <div class="container who-pick">
+      <div class="who-sec-head reveal">
+        <span class="eyebrow">We help you choose</span>
+        <h2>You don't need to know which programme you need</h2>
+        <p>Tell us your child's age and what you're looking for. We'll explain which options fit and why, with no commitment.</p>
+      </div>
+      <ul class="who-routes reveal">
+        <li><a href="#servicio-campamentos" data-jump-service="campamentos"><strong>Summer camps</strong><span>Ages 3–10 · Madrid</span><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></a></li>
+        <li><a href="#servicio-extraescolar" data-jump-service="extraescolar"><strong>After-school English</strong><span>Early Years to Secondary · at school</span><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></a></li>
+        <li><a href="#servicio-extranjero" data-jump-service="extranjero"><strong>Study abroad</strong><span>Ages 10–18 · United Kingdom, Ireland and the United States</span><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></a></li>
+      </ul>
+    </div>
+  </section>
+
   <section class="ext-cierre">
     <div class="container ext-cierre-inner reveal">
-      <h2>Shall we talk about your case?</h2>
-      <p>Tell us your child's age and level. We'll tell you honestly which programme fits best.</p>
-      <a href="#contacto" class="btn-primary" data-cta="metodologia-contacto">Talk to us →</a>
+      <h2>Shall we talk about your child?</h2>
+      <p>Tell us their age, level and what you're looking for. Someone from the team will get in touch with you, with no commitment.</p>
+      <a href="#contacto" class="btn-primary" data-cta-service="orientacion" data-cta="porque-cierre">Book a call</a>
     </div>
   </section>
 </div>
@@ -1389,6 +1340,6 @@
   </div>
 </div>
 
-<script src="js/main.js?v=18" defer></script>
+<script src="js/main.js?v=19" defer></script>
 </body>
 </html>

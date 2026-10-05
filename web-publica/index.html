@@ -68,8 +68,8 @@
 <link rel="preload" href="fonts/fraunces-italic-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/plus-jakarta-sans-wght-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" as="image" type="image/avif" fetchpriority="high" imagesrcset="images/internacional/hero-arco-640.avif 640w, images/internacional/hero-arco-960.avif 960w, images/internacional/hero-arco-1280.avif 1280w, images/internacional/hero-arco-1600.avif 1600w, images/internacional/hero-arco-2033.avif 2033w" imagesizes="100vw">
-<link rel="preload" href="css/styles.css?v=64" as="style">
-<link rel="stylesheet" href="css/styles.css?v=64">
+<link rel="preload" href="css/styles.css?v=65" as="style">
+<link rel="stylesheet" href="css/styles.css?v=65">
 </head>
 <body>
 <a class="skip-link" href="#main">Saltar al contenido</a>
@@ -328,58 +328,24 @@
 
 </section>
 
-<!-- POR QUÉ INTERLANGUAGE -->
-<section class="why-us" id="por-que">
-  <div class="container">
-    <div class="why-us-head reveal">
-      <span class="eyebrow">Por qué confiar en nosotros</span>
-      <h2>30 años acompañando familias</h2>
-    </div>
-    <div class="why-us-story reveal">
-      <div class="why-us-story-copy">
-        <span class="eyebrow">Nuestra historia</span>
-        <h3>Crecimos con las familias, sin perder la cercanía.</h3>
-        <p>Empezamos en Madrid con clases de inglés y campamentos de verano. Con los años, ampliamos nuestros programas para acompañar a niños y jóvenes desde sus primeros pasos con el idioma hasta sus experiencias en el extranjero.</p>
-        <p>Más de 30 años después, seguimos creyendo en lo mismo: conocer a cada alumno, escuchar a su familia y aprender inglés viviéndolo.</p>
-        <a href="#servicio-metodologia" data-jump-service="metodologia">Conoce mejor cómo trabajamos <span aria-hidden="true">→</span></a>
+<!-- POR QUÉ NOSOTROS (versión corta; la completa es #view-service-metodologia).
+     FOTO DEL EQUIPO: cuando llegue, pegar el <figure class="team-photo"> (plantilla en web-publica/AGENTS.md) como
+     primer hijo de .why-grid, antes de .why-copy. La maqueta se reorganiza sola con :has(). -->
+<section class="why-us" id="por-que" aria-labelledby="por-que-t">
+  <div class="container why-grid">
+    <div class="why-copy">
+      <div class="why-head reveal">
+        <span class="eyebrow">Por qué nosotros</span>
+        <h2 id="por-que-t">Nos ocupamos de cada alumno, <em>uno por uno</em></h2>
+        <p>Somos el equipo de Interlanguage. Llevamos más de 30 años enseñando inglés a niños y jóvenes en Madrid, y trabajamos siempre igual: conocemos a cada alumno, escuchamos a su familia y seguimos de cerca cómo avanza.</p>
       </div>
-    </div>
-    <div class="why-us-grid reveal">
-      <div class="why-us-card">
-        <div class="why-us-icon">
-          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="12" cy="8" r="3.5"/><path d="M5 20c1-4.5 4-7 7-7s6 2.5 7 7" stroke-linecap="round"/>
-          </svg>
-        </div>
-        <h3>Profesores nativos</h3>
-        <p>El 100% de nuestro equipo es nativo y está formado específicamente en enseñanza a niños y adolescentes.</p>
-      </div>
-      <div class="why-us-card">
-        <div class="why-us-icon">
-          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M12 4L2 9l10 5 10-5-10-5Z" stroke-linejoin="round"/><path d="M6 12v5c0 1.1 2.7 2.5 6 2.5s6-1.4 6-2.5v-5" stroke-linecap="round"/>
-          </svg>
-        </div>
-        <h3>Metodología activa</h3>
-        <p>Aprender jugando, experimentando y viviendo el idioma en cada clase, no memorizar.</p>
-      </div>
-      <div class="why-us-card">
-        <div class="why-us-icon">
-          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M12 3l2.6 5.6 6.1.6-4.6 4.1 1.4 6-5.5-3.2-5.5 3.2 1.4-6-4.6-4.1 6.1-.6L12 3Z" stroke-linejoin="round"/>
-          </svg>
-        </div>
-        <h3>Acompañamiento real</h3>
-        <p>No somos una plataforma. Cada familia tiene un referente que la acompaña en cada etapa.</p>
-      </div>
-      <div class="why-us-card">
-        <div class="why-us-icon">
-          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.5 4 6 4 9s-1.5 6.5-4 9c-2.5-2.5-4-6-4-9s1.5-6.5 4-9Z"/>
-          </svg>
-        </div>
-        <h3>Experiencia global</h3>
-        <p>Programas en Madrid, Reino Unido, Irlanda y Estados Unidos. Desde campamentos hasta años académicos.</p>
+      <div class="why-body reveal">
+        <ul class="why-points">
+          <li><strong>Grupos reducidos</strong> para que todos tengan tiempo real de hablar.</li>
+          <li><strong>Seguimiento</strong> de su evolución, curso a curso.</li>
+          <li><strong>Una persona de referencia</strong> que acompaña a tu familia en cada etapa.</li>
+        </ul>
+        <a class="why-link" href="#servicio-metodologia" data-jump-service="metodologia">Conoce cómo trabajamos <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
       </div>
     </div>
   </div>
@@ -1248,91 +1214,76 @@
   </div>
 </div>
 
-<div id="view-service-metodologia" class="view service-page" data-title="Quiénes somos y cómo trabajamos" hidden>
-  <section class="camp-hero">
-    <div class="container camp-hero-grid">
-      <div class="camp-hero-content">
+<div id="view-service-metodologia" class="view service-page" data-title="Por qué nosotros" hidden>
+
+  <!-- 1 · QUIÉNES SOMOS. FOTO DEL EQUIPO: cuando llegue, pegar el <figure class="team-photo"> (plantilla en
+       web-publica/AGENTS.md) después de .who-hero-copy; el hero pasa solo a dos columnas con :has(). -->
+  <section class="who-hero">
+    <div class="container who-hero-grid">
+      <div class="who-hero-copy">
         <a href="#" class="svc-back" data-back>← Volver al inicio</a>
-        <span class="eyebrow">Quiénes somos</span>
-        <h1>Treinta años creciendo junto a las familias que confían en nosotros</h1>
-        <p class="svc-page-intro">Interlanguage Studies lleva más de 30 años enseñando inglés a niños y jóvenes en Madrid, con la misma idea desde el principio: un idioma no se memoriza, se vive. Empezamos con clases y campamentos de verano, y hemos ido creciendo junto a las familias que nos daban su confianza en cada nueva etapa.</p>
-        <div class="camp-quickfacts">
-          <div class="camp-quickfact">
-            <div class="camp-quickfact-ic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l2.6 5.6 6.1.6-4.6 4.1 1.4 6-5.5-3.2-5.5 3.2 1.4-6-4.6-4.1 6.1-.6L12 3Z" stroke-linejoin="round"/></svg></div>
-            <div><strong>30+</strong><span>Años enseñando inglés</span></div>
-          </div>
-          <div class="camp-quickfact">
-            <div class="camp-quickfact-ic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c1-4.5 4-7 7-7s6 2.5 7 7" stroke-linecap="round"/></svg></div>
-            <div><strong>1.000+</strong><span>Familias que confían en nosotros</span></div>
-          </div>
-          <div class="camp-quickfact">
-            <div class="camp-quickfact-ic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20v-4M12 20V10M20 20V4" stroke-linecap="round"/></svg></div>
-            <div><strong>3–18</strong><span>Años, un programa para cada edad</span></div>
-          </div>
-        </div>
+        <span class="eyebrow">Por qué nosotros</span>
+        <h1>Nos ocupamos de cada alumno, <em>uno por uno</em></h1>
+        <p class="who-lead">Somos el equipo de Interlanguage. Llevamos más de 30 años enseñando inglés en Madrid y trabajamos siempre igual: conocemos a cada alumno, escuchamos a su familia y seguimos de cerca cómo avanza.</p>
+        <a href="#contacto" class="btn-primary" data-cta-service="orientacion" data-cta="porque-hero">Reservar una llamada <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
       </div>
-      <div class="camp-hero-media"><picture><source type="image/avif" srcset="images/campamentos/taller-cocina-grupo-480.avif 480w, images/campamentos/taller-cocina-grupo-800.avif 800w, images/campamentos/taller-cocina-grupo-1086.avif 1086w" sizes="(max-width: 700px) 100vw, 50vw"><source type="image/webp" srcset="images/campamentos/taller-cocina-grupo-480.webp 480w, images/campamentos/taller-cocina-grupo-800.webp 800w, images/campamentos/taller-cocina-grupo-1086.webp 1086w" sizes="(max-width: 700px) 100vw, 50vw"><img src="images/campamentos/taller-cocina-grupo.jpg" alt="Alumnos de Interlanguage en un taller de cocina en grupo" width="1086" height="1448" loading="lazy"></picture></div>
     </div>
   </section>
-  <section class="methodology">
-  <div class="container">
-    <div class="method-layout">
-      <div class="method-copy reveal">
-        <span class="eyebrow">El método Interlanguage</span>
-        <h2>El inglés se aprende viviéndolo.</h2>
-        <p class="method-intro">Más de 30 años nos han enseñado que un idioma no se memoriza: se utiliza.</p>
-        <p class="method-intro">Un mismo equipo y un mismo método acompañan a cada alumno en todas las etapas: lo que hace que una familia siga con nosotros durante años no es un programa suelto, sino una forma de enseñar que se mantiene desde los 3 años hasta el extranjero.</p>
+
+  <!-- 2 · CÓMO CUIDAMOS A CADA ALUMNO (solo hechos ya publicados en la web) -->
+  <section class="who-section">
+    <div class="container">
+      <div class="who-sec-head reveal">
+        <span class="eyebrow">Cómo lo hacemos</span>
+        <h2>Cuatro cosas que cuidamos en cada alumno</h2>
+        <p>No hay dos alumnos iguales, así que no los tratamos como si lo fueran.</p>
       </div>
-      <div class="method-photo-col reveal">
-        <div class="method-photo-frame">
-          <picture><source type="image/avif" srcset="images/programas/profesor-ritmo-en-480.avif 480w, images/programas/profesor-ritmo-en-800.avif 800w, images/programas/profesor-ritmo-en-1200.avif 1200w, images/programas/profesor-ritmo-en-1207.avif 1207w" sizes="(max-width: 700px) 100vw, 50vw"><source type="image/webp" srcset="images/programas/profesor-ritmo-en-480.webp 480w, images/programas/profesor-ritmo-en-800.webp 800w, images/programas/profesor-ritmo-en-1200.webp 1200w, images/programas/profesor-ritmo-en-1207.webp 1207w" sizes="(max-width: 700px) 100vw, 50vw"><img src="images/programas/profesor-ritmo-en.jpg" class="is-shown" data-id="nativos" alt="Profesor guiando una actividad de ritmo con sus alumnos" width="1207" height="1086" loading="lazy"></picture>
-          <picture><source type="image/avif" srcset="images/campamentos/taller-manualidades-480.avif 480w, images/campamentos/taller-manualidades-800.avif 800w, images/campamentos/taller-manualidades-1089.avif 1089w" sizes="(max-width: 700px) 100vw, 50vw"><source type="image/webp" srcset="images/campamentos/taller-manualidades-480.webp 480w, images/campamentos/taller-manualidades-800.webp 800w, images/campamentos/taller-manualidades-1089.webp 1089w" sizes="(max-width: 700px) 100vw, 50vw"><img src="images/campamentos/taller-manualidades.jpg" data-id="haciendo" alt="Niños en un taller de manualidades durante una actividad de Interlanguage Studies" width="1089" height="1445" loading="lazy"></picture>
-          <picture><source type="image/avif" srcset="images/internacional/extranjero-kayak-480.avif 480w, images/internacional/extranjero-kayak-800.avif 800w, images/internacional/extranjero-kayak-1200.avif 1200w, images/internacional/extranjero-kayak-1448.avif 1448w" sizes="(max-width: 700px) 100vw, 50vw"><source type="image/webp" srcset="images/internacional/extranjero-kayak-480.webp 480w, images/internacional/extranjero-kayak-800.webp 800w, images/internacional/extranjero-kayak-1200.webp 1200w, images/internacional/extranjero-kayak-1448.webp 1448w" sizes="(max-width: 700px) 100vw, 50vw"><img src="images/internacional/extranjero-kayak.jpg" loading="lazy" data-id="ritmo" alt="Estudiantes de Interlanguage haciendo kayak en el extranjero" width="1448" height="1086"></picture>
-          <div class="method-photo-scrim"></div>
-          <div class="method-photo-caption" id="methodCaption">
-            <span class="tag">Profesores nativos</span>
-            <p>Formados específicamente para enseñar a niños, no solo para hablar el idioma.</p>
-          </div>
-        </div>
-      </div>
-      <div class="method-principles reveal" id="methodPrinciples">
-      <button type="button" class="method-principle is-active" data-target="nativos">
-        <span class="method-principle-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3 3 8l9 5 9-5-9-5Z"/><path d="M7 11.5V16c0 1.1 2.24 2 5 2s5-.9 5-2v-4.5"/><path d="M21 8v6"/></svg></span>
-        <span class="method-principle-body">
-          <h3>Profesores nativos</h3>
-          <p>Nativos de verdad. Formados para enseñar a niños, no solo para hablar el idioma.</p>
-        </span>
-      </button>
-      <button type="button" class="method-principle" data-target="haciendo">
-        <span class="method-principle-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.3h6c0-1.1.4-1.8 1-2.3A7 7 0 0 0 12 2Z"/></svg></span>
-        <span class="method-principle-body">
-          <h3>Aprender haciendo</h3>
-          <p>Aprenden hablando, no memorizando. El inglés como herramienta, no como examen.</p>
-        </span>
-      </button>
-      <button type="button" class="method-principle" data-target="ritmo">
-        <span class="method-principle-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h4l2-7 4 14 2-7h6"/></svg></span>
-        <span class="method-principle-body">
-          <h3>Cada alumno tiene su ritmo.</h3>
-          <p>Seguimos su evolución y mantenemos a las familias cerca del proceso.</p>
-        </span>
-      </button>
-      </div>
+      <ol class="who-ones">
+        <li class="reveal"><span class="who-n" aria-hidden="true">1</span><h3>Primero, conocer al alumno</h3><p>Antes de proponerte nada, hablamos contigo y conocemos al alumno: su nivel de inglés, su carácter y sus intereses.</p></li>
+        <li class="reveal"><span class="who-n" aria-hidden="true">2</span><h3>Grupos pensados para hablar</h3><p>Trabajamos con grupos reducidos para que todos tengan tiempo real de hablar en inglés.</p></li>
+        <li class="reveal"><span class="who-n" aria-hidden="true">3</span><h3>Seguimos cómo avanza</h3><p>Seguimos su evolución curso a curso y te mantenemos cerca del proceso.</p></li>
+        <li class="reveal"><span class="who-n" aria-hidden="true">4</span><h3>Una persona de referencia</h3><p>Cada familia tiene un referente que la acompaña en cada etapa. Si necesitas algo, sabes con quién hablar.</p></li>
+      </ol>
     </div>
-    <div class="method-authority reveal">
-      <strong class="method-authority-num">30+</strong>
-      <div>
-        <span class="method-authority-label">Años enseñando inglés</span>
-        <p>Más de tres décadas trabajando con alumnos, familias y colegios.</p>
+  </section>
+
+  <!-- 3 · QUIÉNES SOMOS: trayectoria y forma de enseñar -->
+  <section class="who-section who-section--alt">
+    <div class="container who-about">
+      <div class="who-about-copy reveal">
+        <span class="eyebrow">Quiénes somos</span>
+        <h2>Más de 30 años enseñando inglés en Madrid</h2>
+        <p>Empezamos con clases de inglés y campamentos de verano. Con los años hemos ampliado los programas para acompañar a niños y jóvenes desde sus primeros pasos con el idioma hasta sus experiencias en el extranjero, siempre con la misma idea: un idioma no se memoriza, se vive.</p>
       </div>
+      <ul class="who-facts reveal">
+        <li><strong>Profesores 100 % nativos</strong><span>Formados específicamente para enseñar a niños y jóvenes, no solo para hablar el idioma.</span></li>
+        <li><strong>Aprenden hablando</strong><span>El inglés como herramienta, no como un examen que aprobar.</span></li>
+        <li><strong>De los 3 a los 18 años</strong><span>Un programa para cada etapa, con el mismo método.</span></li>
+      </ul>
     </div>
-  </div>
-</section>
+  </section>
+
+  <!-- 4 · CÓMO AYUDAMOS A ELEGIR -->
+  <section class="who-section">
+    <div class="container who-pick">
+      <div class="who-sec-head reveal">
+        <span class="eyebrow">Te ayudamos a elegir</span>
+        <h2>No hace falta que sepas qué programa necesitas</h2>
+        <p>Cuéntanos la edad de tu hijo o hija y qué buscáis. Te explicamos qué opciones encajan y por qué, sin compromiso.</p>
+      </div>
+      <ul class="who-routes reveal">
+        <li><a href="#servicio-campamentos" data-jump-service="campamentos"><strong>Campamentos de verano</strong><span>3–10 años · Madrid</span><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></a></li>
+        <li><a href="#servicio-extraescolar" data-jump-service="extraescolar"><strong>Inglés extraescolar</strong><span>De Infantil a la ESO · en el colegio</span><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></a></li>
+        <li><a href="#servicio-extranjero" data-jump-service="extranjero"><strong>Estudiar en el extranjero</strong><span>10–18 años · Reino Unido, Irlanda y Estados Unidos</span><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></a></li>
+      </ul>
+    </div>
+  </section>
+
   <section class="ext-cierre">
     <div class="container ext-cierre-inner reveal">
-      <h2>¿Hablamos de vuestro caso?</h2>
-      <p>Contadnos la edad y el nivel de vuestro hijo o hija. Os contamos con franqueza qué programa encaja mejor.</p>
-      <a href="#contacto" class="btn-primary" data-cta="metodologia-contacto">Hablar con nosotros →</a>
+      <h2>¿Hablamos de tu hijo o tu hija?</h2>
+      <p>Cuéntanos su edad, su nivel y qué buscáis. Una persona del equipo se pone en contacto contigo, sin compromiso.</p>
+      <a href="#contacto" class="btn-primary" data-cta-service="orientacion" data-cta="porque-cierre">Reservar una llamada</a>
     </div>
   </section>
 </div>
@@ -1389,6 +1340,6 @@
   </div>
 </div>
 
-<script src="js/main.js?v=18" defer></script>
+<script src="js/main.js?v=19" defer></script>
 </body>
 </html>

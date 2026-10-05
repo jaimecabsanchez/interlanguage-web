@@ -6,22 +6,12 @@ window.dataLayer = window.dataLayer || [];
     es: {
       brand: 'Interlanguage Studies',
       sending: 'Enviando…',
-      leadError: 'No hemos podido enviar la solicitud. Tus datos siguen aquí: inténtalo de nuevo en unos segundos o escríbenos a info@interlanguage.es.',
-      captions: {
-        nativos:  { tag: 'Profesores nativos', text: 'Formados específicamente para enseñar a niños — no solo para hablar el idioma.' },
-        haciendo: { tag: 'Aprender haciendo', text: 'El inglés como herramienta para crear, no como examen que aprobar.' },
-        ritmo:    { tag: 'Cada alumno tiene su ritmo', text: 'Grupos pequeños para que nadie se quede atrás ni se aburra.' }
-      }
+      leadError: 'No hemos podido enviar la solicitud. Tus datos siguen aquí: inténtalo de nuevo en unos segundos o escríbenos a info@interlanguage.es.'
     },
     en: {
       brand: 'Interlanguage Studies',
       sending: 'Sending…',
-      leadError: "We couldn't send your request. Your details are still here: please try again in a few seconds or email us at info@interlanguage.es.",
-      captions: {
-        nativos:  { tag: 'Native teachers', text: 'Specifically trained to teach children, not just to speak the language.' },
-        haciendo: { tag: 'Learning by doing', text: 'English as a tool to create with, not an exam to pass.' },
-        ritmo:    { tag: 'Every pupil has their own pace', text: 'Small groups so nobody gets left behind or bored.' }
-      }
+      leadError: "We couldn't send your request. Your details are still here: please try again in a few seconds or email us at info@interlanguage.es."
     }
   };
   var T = I18N[LANG];
@@ -107,29 +97,6 @@ window.dataLayer = window.dataLayer || [];
   document.addEventListener('keydown', function(e){
     if (e.key === 'Escape' && navLinks.classList.contains('open')){ closeNav(); navToggle.focus(); }
   });
-
-  // "Nuestro método": al pasar el ratón o el foco por un pilar, cambia la foto y el texto superpuesto
-  (function(){
-    const pillars = document.querySelectorAll('#methodPrinciples .method-principle');
-    const frame = document.querySelector('.method-photo-frame');
-    const caption = document.getElementById('methodCaption');
-    if (!pillars.length || !frame) return;
-    const captions = T.captions;
-    function activate(id){
-      pillars.forEach(function(p){ p.classList.toggle('is-active', p.dataset.target === id); });
-      frame.querySelectorAll('img').forEach(function(img){ img.classList.toggle('is-shown', img.dataset.id === id); });
-      const c = captions[id];
-      if (c && caption){
-        caption.querySelector('.tag').textContent = c.tag;
-        caption.querySelector('p').textContent = c.text;
-      }
-    }
-    pillars.forEach(function(p){
-      p.addEventListener('mouseenter', function(){ activate(p.dataset.target); });
-      p.addEventListener('focus', function(){ activate(p.dataset.target); });
-      p.addEventListener('click', function(){ activate(p.dataset.target); });
-    });
-  })();
 
   // desplegable "Servicios": hover con margen de tiempo + click + teclado
   (function(){
@@ -524,7 +491,7 @@ window.dataLayer = window.dataLayer || [];
         const target = document.getElementById('contacto');
         if (target) target.scrollIntoView({ behavior:'smooth', block:'start' });
       });
-      pushEvent('clic_cta', { cta_id: 'solicitar-info-desde-' + key });
+      pushEvent('clic_cta', { cta_id: btn.getAttribute('data-cta') || 'solicitar-info-desde-' + key });
     });
   });
 
@@ -612,7 +579,7 @@ window.dataLayer = window.dataLayer || [];
   }
   window.addEventListener('popstate', syncViewFromHash);
 
-  document.querySelectorAll('[data-cta]').forEach(function(el){
+  document.querySelectorAll('[data-cta]:not([data-cta-service])').forEach(function(el){   // los que llevan data-cta-service ya lo miden arriba
     el.addEventListener('click', function(){ pushEvent('clic_cta', { cta_id: el.getAttribute('data-cta'), cta_text: el.textContent.trim() }); });
   });
 
