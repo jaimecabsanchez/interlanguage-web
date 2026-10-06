@@ -32,7 +32,8 @@ FOTOS = [
     ('ext-esc-campus', 'hero-campus-2.jpg',      None, ESC_W,  1448, None),   # escena «Vivir»
     ('ext-uk-colegio', 'vivirlo-colegio.jpg',    None, CARD_W, 1000, None),   # fila del Reino Unido
     ('ext-ie-alumnas', 'extranjero-alumnas.jpg', 0.22, CARD_W, 1000, 'ext-ie-alumnas.jpg'),   # fila de Irlanda
-    ('ext-us-football', 'usa-football.jpg',      0.45, CARD_W, 1000, 'ext-us-football.jpg'),  # fila de Estados Unidos
+    ('ext-us-aula',   'usa-aula.jpg',         None, CARD_W, 1000, None),   # tarjeta y fila de Estados Unidos (foto de aula 4:3 aportada por Jaime, reducida a 1000 px en usa-aula.jpg)
+    ('usa-aula-v',    'usa-aula-vertical.jpg', None, (480, 800), 1000, None),   # tarjeta de Estados Unidos de la portada (4:5, recorte de la foto de aula; en móvil usa ext-us-aula 16:10)
     ('ext-duo-rugby', 'irlanda-rugby.jpg',       None, DUO_W,  1080, None),   # escena «Practicar» (izquierda)
     ('ext-duo-golf', 'uk-golf.jpg',              None, DUO_W,  1000, None),   # escena «Practicar» (derecha)
 ]

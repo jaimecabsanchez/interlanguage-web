@@ -368,6 +368,24 @@ picture{display:contents;}
   .ext-ic{width:24px; height:24px; flex:none; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round;}
   .ext-nb{white-space:nowrap;}
 
+  /* Review: recognise destinations, compare, then explore school conditions. */
+  .ext-index{background:var(--white); border-bottom:1px solid var(--line);}
+  .ext-index .container{display:flex; flex-wrap:wrap; gap:4px 32px; padding-block:12px;}
+  .ext-index a{display:inline-flex; align-items:center; min-height:44px; color:var(--navy); font-size:.9375rem; font-weight:700; text-decoration:none;}
+  .ext-options{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:24px;}
+  .ext-option{display:flex; flex-direction:column; border:1px solid var(--line); border-radius:var(--r-card); overflow:hidden; color:var(--navy); text-decoration:none; background:var(--ivory);}
+  .ext-option-photo{display:block; aspect-ratio:4/3; overflow:hidden;}
+  .ext-option-photo img{display:block; width:100%; height:100%; object-fit:cover;}
+  .ext-option-copy{display:flex; flex-direction:column; flex:1; padding:24px;}
+  .ext-option h3{font-size:1.75rem; line-height:1.15; margin:0 0 12px;}
+  .ext-option p{color:var(--ext-t2); font-size:1rem; line-height:1.6; margin:0 0 16px;}
+  .ext-option-go{display:flex; align-items:center; gap:12px; font-family:var(--font-body); font-weight:700; color:var(--accent); margin-top:auto; min-height:44px;}
+  .ext-option-go svg{width:20px; height:20px;}
+  #view-service-extranjero .contact-point a{display:inline-flex; align-items:center; min-height:44px; color:var(--ivory); text-underline-offset:4px;}
+  @media (hover:hover){.ext-option:hover .ext-option-go, .ext-index a:hover{text-decoration:underline; text-underline-offset:5px;}}
+  @media (max-width:899px){.ext-options{grid-template-columns:minmax(0,1fr);}.ext-option{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);}.ext-option-photo{height:100%; aspect-ratio:auto;}}
+  @media (max-width:560px){.ext-index .container{gap:0 24px;}.ext-option{display:flex;}.ext-option-photo{height:auto; aspect-ratio:4/3;}.ext-option-copy{padding:20px;}}
+
   /* 1 · Cabecera a sangre: la misma foto y el mismo velo suave que la portada; en móvil, la foto arriba y el texto debajo sobre marino */
   .ext-hero{position:relative; isolation:isolate; overflow:hidden; background:var(--navy); color:#fff;}
   .ext-hero-media{position:absolute; inset:0; z-index:-2;}

@@ -1,161 +1,57 @@
-# Estudiar en el extranjero: pendientes internos
+# Estudiar en el extranjero — revisión y confirmaciones
 
-Documento interno (no se publica: Netlify solo sirve `web-publica/`). Estado a 06-10-2026, versión de revisión sin publicar.
+Estado: 06-10-2026. Primera fase en rama local `codex/revision-extranjero-familias`, sin push ni despliegue. Este documento es interno: Netlify publica únicamente `web-publica/`.
 
-**Decisiones de Jaime del 05-10-2026:** se aplican los cambios propuestos (los atributos de las guías se publican tal cual, sin nombrar colegios), **se mantiene Estados Unidos** y **Irlanda es de 10 a 18 años**.
+## Fuentes revisadas
 
-**Decisión del 06-10-2026:** la estructura de la página es la **opción B «Escenas»** (las otras dos, A «Mosaico» y C «Un destino cada vez», quedan como maqueta en `docs/revision-estructuras/`, fuera de git), con el estilo actual de la web.
+- `Downloads/Colegios UK.pdf`, «Colegios y programas del Reino Unido», septiembre de 2026 (13 páginas).
+- `Downloads/Colegios Irlanda.pdf`, septiembre de 2026 (16 páginas).
+- `Downloads/Interlanguage_Checklist_Lanzamiento_Study_Abroad_2026.pdf` (19 páginas). Es un plan pendiente, no prueba de servicios operativos.
+- Decisiones de Jaime registradas en este repositorio: Irlanda 10–18 y mantener Estados Unidos (05-10-2026), estructura de escenas (06-10-2026), trayectoria de enseñanza de inglés en España y profesores nativos.
 
-La página `#servicio-extranjero` solo pinta lo confirmado. Todo lo demás está aquí, sin rellenar y sin aparecer como hecho en la web.
+Solo atributos descriptivos de centros ACTIVO. No se publican nombres, tarifas de terceros, comisiones, notas comerciales, información oral de reuniones ni centros en transición/reconfirmación/cerrados. Un producto existente en un país no demuestra que Interlanguage lo ofrezca.
 
-## De dónde sale la información
+## Coherencia resuelta
 
-| Fuente | Qué es | Uso |
-|---|---|---|
-| Encargo de Jaime | Interlanguage ofrece estudios en el extranjero para familias con hijos en edad escolar; 30 años enseñando inglés en España con profesores nativos | Cabecera y respaldo |
-| `Downloads/Colegios Irlanda.pdf` y `Downloads/Colegios UK.pdf` (guías internas, sep 2026) | Fichas de colegios de la cartera con estado (ACTIVO, transición, reconfirmar, cerrado, no comercializar) y fuente base (web del colegio, GOV.UK, ISI) | **Comparación y detalle de Reino Unido e Irlanda** |
-| `Interlanguage_Checklist_Lanzamiento_Study_Abroad_2026.pdf` | Plan previo al lanzamiento: países iniciales UK e Irlanda; las 18 prioridades y el «gate» de 10 puntos están en «Pendiente» | Contexto: por qué no se publican seguro, guardian, protocolo, precios |
-| `Resumen_Reunion_Longridge…pdf`, Q&A de Longridge, Partner Pack | Reunión informal con un colegio, sin acuerdo cerrado («puntos que conviene confirmar por escrito»); presentación para partners | No se usa para nada público |
-| `ASTEX`, `EF`, `AE IDIOMAS`, `Informe_Estrategico…` | Documentos de competidores y estudio de mercado confidencial | No se usan: no son nuestra oferta |
+| Dato | Fuente y decisión |
+|---|---|
+| Reino Unido | Centros activos en Inglaterra y Escocia. Se conserva «Reino Unido». |
+| Colegio frente a internado | UK p. 3: preparatorio 4–13, internado internacional 7–13. P. 5: internado desde Year 5. Pp. 7 y 11: desde Year 7. Resumen «desde 7 según colegio», comparador 7–18 según centro; detalle explica límites. No convertir Year en edades españolas. |
+| Irlanda | 10–18 por decisión de Jaime. Curso concreto depende del colegio. La guía no acredita secundaria a los 10–11; sigue pendiente concretarlo. |
+| Formulario | UK 7–18, Irlanda 10–18, «Otra edad» para consultas fuera del rango sin prometer admisión. Para Estados Unidos/destino sin elegir el selector recoge consultas, no elegibilidad. Curso actual opcional viaja en `serviceExtra`. |
+| Duración UK | P. 5: short stays de 1–2 terms limitados; p. 10: normalmente curso completo. Selector y CTA distinguen 1 trimestre, 2 trimestres y curso completo solo para UK. |
+| Duración Irlanda/Estados Unidos | Sin oferta acreditada: «Quiero que me aconsejen»; preferencias libres en el mensaje. Retirados 2–4 semanas y semestre del selector académico. |
+| Alojamiento UK | Internado full/weekly/flexi según centro. Detalle conserva apertura y guardian exigido por algunos; no se atribuye este servicio a Interlanguage. |
+| Alojamiento Irlanda | Internado de 5, 5½ o 7 días, o colegio de día con familia anfitriona. Algunos internados cierran fines de semana. |
+| Regreso académico | Retirada la afirmación universal de que toda vuelta exige convalidación. Remisión a requisitos oficiales para el caso concreto, sin garantía ni promesa de gestionar el trámite. |
 
-**Regla de publicación aplicada a las guías.** Solo centros en estado ACTIVO y solo atributos descriptivos (tipo de colegio, alojamiento, admisión, vida escolar, zona). Quedan fuera: nombres de colegios, precios, comisiones, cualquier nota comercial («punto clave», «lo que puede atraer a una familia», «operativa Interlanguage»), todo lo marcado «reconfirmar», «transición» o «actualización», y lo cerrado o no comercializable. La propia guía dice que cada punto hay que reconfirmarlo antes de proponer una plaza, por eso la comparación lo avisa.
+## Implementación
 
-## Alcance real: Reino Unido, Irlanda y Estados Unidos
+Cabecera breve → índice → tarjetas de reconocimiento → comparación → detalles → escenas de vida cotidiana → orientación → presupuesto → FAQ → formulario. Se retiran notas internas, repeticiones y «Sin esto no proponemos nada». Presupuesto concentrado con factores y posibles gastos a comprobar; no se promete cifra en la primera llamada. ES y EN equivalentes.
 
-| Destino | Qué consta | Decisión |
-|---|---|---|
-| **Reino Unido** | La guía UK tiene centros activos en **Inglaterra** (cuatro) y **Escocia** (dos). | **Se llama «Reino Unido»** y se dice «Inglaterra» o «Escocia» solo para un centro o zona concretos. **Corrijo la decisión anterior de usar «Inglaterra»**: se tomó sin haber visto las guías y se quedaba corta. |
-| **Irlanda** | La guía de Irlanda tiene centros activos de secundaria, con internado y de día con familia anfitriona. | Se mantiene. |
-| **Estados Unidos** | **No hay ningún documento de programas.** El checklist habla de «UK, Irlanda o ambos» y el informe lo menciona solo en general. | Se mantiene la fila, el titular y un bloque breve que remite a la orientación, porque el encargo pide tres países. **Mantenido por decisión de Jaime (05-10-2026).** Sigue sin dato alguno que publicar. |
+En accesos de la home se retiran coordinador local, 24/7, «sin perder el curso», plazo de 24 horas del bloque internacional y duraciones sin respaldo. El buscador 7–10 permite consultar UK desde 7 e Irlanda desde 10. No se añade equipo ni testimonios sin materiales autorizados.
 
-Para cambiar el nombre del Reino Unido o quitar Estados Unidos: textos de la vista en `index.html` e `index-en.html`, selector `#leadDest` y `DESTINOS` de `js/main.js`.
+## Confirmaciones agrupadas
 
-## Qué se publica en la comparación y de qué parte de las guías sale
+1. **Oferta y admisión:** programa concreto de Estados Unidos; Irlanda: curso de entrada (especialmente 10–11), duración, incorporación y apoyo de inglés; UK: centros/plazas de uno y dos trimestres, calendario vigente y equivalencia del curso escocés. Reconfirmar atributos de guías antes de cada propuesta.
+2. **Presupuesto y servicio:** tarifa de Interlanguage, inclusiones/exclusiones, pago/cancelación y alcance del acompañamiento antes/durante/después. Responsable en destino, guardian, seguro, emergencias y seguimiento siguen pendientes en el checklist; no se publican como incluidos.
+3. **Material y respaldo:** autorizaciones de imagen de menores, procedencia y uso de fotos; fotografía de internado/familia anfitriona; equipo identificado y testimonios con consentimiento. Documentación corporativa y relación con colegios antes de ampliar respaldo.
+4. **Entrega de consultas:** decidir/configurar backend compatible con Netlify y verificar recepción real. Bloquea publicar como formulario operativo.
 
-Sin nombres de colegios; las referencias son páginas de cada guía.
+## Fotografías
 
-| Criterio | Reino Unido (guía UK) | Irlanda (guía Irlanda) |
-|---|---|---|
-| Edad y curso | Rangos de edad y «boarding desde Year 5 / Year 7»: pp. 3, 5, 6, 7, 11 | **10 a 18 años, dato de Jaime (05-10-2026)**: la guía no da edades. El curso concreto se confirma con cada colegio |
-| Duración | Curso completo habitual; trimestres limitados en uno, ninguna estancia corta en otro: pp. 5, 10 | **Sin dato** |
-| Tipo de colegio | Independientes mixtos, Inglaterra y Escocia: pp. 3 a 11 | Secundaria; tradición religiosa; mixtos, uno solo de chicos y uno solo de chicas: pp. 4, 5, 7 a 15 |
-| Alojamiento | Full, weekly, flexi; actividades de fin de semana; guardian exigido en dos: pp. 5, 6, 7, 10, 11 | 5, 5½ y 7 días; día con familia anfitriona; fines de semana cerrados: pp. 5 a 8, 11, 13, 14 |
-| Nivel de inglés y acceso | Sin examen, informes, entrevista, jornada de prueba, valoración de inglés, EAL: pp. 3, 5, 6, 10, 11 | **Sin dato**: «revisar nivel de inglés con cada colegio» |
-| Vida escolar | Actividades de tardes y fines de semana; golf e hípica: pp. 5, 6, 7, 11 | Deporte de equipo, música y cultura: pp. 4, 5, 10 |
-| Zona (ampliación) | Suroeste y norte de Inglaterra, este de Escocia | Dublín y condados del sur, oeste y noroeste |
-| Continuidad (ampliación) | IB en Sixth Form (p. 11) y «equivalencia del curso escocés» a revisar (p. 7) | **Sin dato** |
-| Presupuesto (ampliación) | **Sin datos comparables** | **Sin datos comparables** |
+Reutilizadas variantes AVIF/WebP/JPEG aprobadas sin generar ni retocar. «Vivir» muestra campus, no alojamiento, y sigue provisional. Irlanda muestra un viaje y Estados Unidos un aula con bandera (foto aportada por Jaime el 06-10-2026, `usa-aula.jpg`; tiene aspecto de imagen generada, origen y derechos por confirmar); no se usan como prueba de colegios colaboradores o modalidades. La cabecera `hero-arco-3` tiene origen generado/composición de cabezas documentados en AGENTS.md; no presentarla como alumnos propios o experiencia real. Publicación previa no acredita derechos de imagen.
 
-El único dato de sistema educativo general es que Inglaterra y Escocia tienen sistemas distintos, con su propio currículo y exámenes (verificado en fuentes públicas). Va en una línea aparte y rotulada «información general», fuera de «nuestra oferta». El trámite de homologación o convalidación en España se remite al Ministerio de Educación con su enlace oficial, sin afirmar quién lo hace.
+## Bloqueo de envío
 
-## Qué se ha dejado fuera a propósito
+`leadForm` y `main.js` envían a `form-handler.php`. Netlify sirve archivos estáticos y no ejecuta PHP; la ruta publicada devuelve 404. El servidor local tampoco ejecuta PHP. No se despliega ni se simula un éxito. Se hace clicable `mailto:info@interlanguage.es` para contacto directo. La migración del backend afectaría a otros formularios y requiere configurar la recepción real.
 
-- **Transition Year**: la guía lo cita en tres colegios irlandeses como «gancho comercial según la edad». No consta que se ofrezca a alumnos internacionales ni a qué edades.
-- **Programas J-1 e internados «de prestigio»**: solo aparecen en el estudio de mercado.
-- **Estancias cortas y programas de verano** (el programa de inglés de Londres, la colocación en colegios de Brighton, los campamentos): la guía los marca como producto distinto del colegio, en reconfirmación o reestructurados. Por eso se retiró el bloque «Modalidades» con «2 a 4 semanas» y «semestre»: no había dato que lo respaldara.
-- **Datos de la reunión con un colegio** (tarifas semanales, comisión del 10 al 15 %, actividades concretas, política de móviles): son orales y confidenciales.
-- **Acompañamiento propio** (guardian, coordinador, seguimiento, seguro): el checklist los marca como pendientes.
+## Fuera del alcance
 
-## Estado de la página
+Pendiente revisar cifras generales de familias, trayectoria del pie/meta/JSON-LD, cruces antiguos de campamentos/extraescolar y plazos del formulario general. Su texto publicado no acredita servicios internacionales.
 
-| # | Bloque | Estado |
-|---|---|---|
-| 1 | Cabecera | Hecho: a sangre, como la portada (misma foto y velo). Respaldo mínimo bajo las acciones (30 años enseñando inglés en España, profesorado nativo, Madrid). Pendiente de aprobación |
-| 2 | Idea general | Hecho: franja de cuatro datos (10 a 18 años, 3 destinos, duración, alojamiento) |
-| 3 | La experiencia | Hecho: tres escenas (estudiar, vivir, practicar) con la marca de qué destino lo ofrece. **La foto de «Vivir» es provisional** |
-| 4 | Destinos y detalle | Hecho: tres filas que se despliegan con el detalle. Lo no confirmado dice «a concretar» (Reino Unido, tres datos; Irlanda, dos; Estados Unidos, ninguno) |
-| 5 | Comparación | **Hecho para Reino Unido e Irlanda** (6 criterios y ampliación). Falta Estados Unidos |
-| 6 | Modalidades y duración | **Sin bloque propio**: la duración vive en la comparación y en «Programas» del detalle (Reino Unido, con filas compactas y su acción) |
-| 7 | Acompañamiento | Parcial: «Cómo te orientamos», en tres pasos. Falta el acompañamiento durante y después |
-| 8 | Experiencias reales | Pendiente |
-| 9 | Presupuesto | Hecho, sin precios |
-| 10 | Preguntas frecuentes | Hecho (5) |
-| 11 | Contacto específico | Hecho: formulario en la misma página sobre marino, con país y programa conservados y vuelta al punto de origen |
+## Vista previa
 
-Detalle por destino: Reino Unido completo (menos «acompañamiento»), Irlanda con dos apartados que remiten al colegio (duración y acceso; las edades, 10 a 18, constan en «Programas»), Estados Unidos solo un bloque breve. No se han creado páginas nuevas: cada destino tiene su dirección `#servicio-extranjero-<destino>` y las antiguas siguen funcionando.
+`http://localhost:8752/web-publica/index.html#servicio-extranjero`
 
-## Estructura «Escenas» y fotografías (06-10-2026)
-
-Jaime pidió una página «más dinámica y más visual» con el mismo estilo de la web y eligió, de tres estructuras, la B. El orden es: cabecera a sangre → franja de cuatro datos → «La experiencia» en tres escenas → destinos (filas con detalle) → comparación → cómo te orientamos → presupuesto → preguntas → contacto. Reglas y componentes en `web-publica/AGENTS.md`.
-
-### Fotografías (solo recursos ya aprobados, sin filtros)
-
-| Dónde | Foto usada (archivo de origen) | Valoración | Qué falta |
-|---|---|---|---|
-| Cabecera | Cinco alumnos con uniforme ante un arco de piedra (`hero-arco-3`, la de la portada) | La misma de la home: coherente y ya retocada con el cuidado de las cabezas | Nada |
-| Escena «Estudiar» | Alumnos con bata en un laboratorio (`extranjero-lab`) | Se ve bien una clase, pero **no consta en qué país se hizo** | Una foto de aula del Reino Unido o de Irlanda, si existe |
-| Escena «Vivir» | Cinco alumnos con uniforme por un camino de campus (`hero-campus-2`) | **Provisional**: muestra el campus, no un internado ni una familia anfitriona | **Una foto de internado, de habitación o de familia anfitriona** |
-| Escena «Practicar» | Rugby (`irlanda-rugby`) y golf (`uk-golf`) | Las dos constan en las guías (deporte de equipo en Irlanda; golf en el Reino Unido) | Nada |
-| Fila Reino Unido | Cuatro alumnos con uniforme ante un edificio de piedra (`vivirlo-colegio`) | Buena | Una foto de aula o internado del Reino Unido |
-| Fila Irlanda | Cuatro alumnas sonriendo (`extranjero-alumnas`, recorte 4:3; el rótulo «.ie» indica que es Irlanda) | Cercana y natural, pero es de un viaje, no de un colegio irlandés | **Una foto de colegio irlandés** (aula, internado, uniforme) |
-| Fila Estados Unidos | Partido de fútbol americano nocturno (`usa-football`, recorte 4:3) | Es la única que hay; es un partido, sin alumnos identificables | **Una foto de vida escolar en Estados Unidos** |
-
-Las fotos de las tres filas son decorativas (`alt=""`): van dentro de la fila, que ya se llama como el destino. El resto lleva texto alternativo que solo describe lo que se ve. Sigue pendiente la autorización de imagen de los menores que aparecen en cualquiera de ellas.
-
-### Decisiones de diseño de esta fase (reversibles)
-
-1. El respaldo deja de ser una sección aparte y pasa a tres líneas bajo las acciones de la cabecera (sin la dirección de correo, que ya está en el contacto).
-2. Las tres tarjetas de destino se sustituyen por **filas desplegables con el detalle dentro**: desaparece el «Pedir orientación sobre X» suelto de la tarjeta; sigue en el detalle de cada destino y en la cabecera. Los eventos son `ext-conocer-<destino>` al abrir una fila a mano.
-3. Lo no confirmado dice «a concretar» con un chip de borde discontinuo (Irlanda: duración; Estados Unidos: las tres filas), para que los tres destinos tengan la misma estructura sin presentar nada como hecho.
-4. **Token nuevo `--blue`** (#2B4E80) como acento de Estados Unidos: con la luminosidad del burdeos y el verde, para que los tres pesen igual.
-5. Las escenas repiten en parte lo que dicen la comparación y el detalle (internado, familia anfitriona, actividades), pero como explicación visual; el dato largo sigue en cada destino.
-6. El héroe es a sangre solo desde 1200 px: por debajo se apila (foto arriba y texto sobre marino) porque el texto sobre la foto taparía las caras de los alumnos.
-7. El texto de las celdas del comparador es breve (máx. 24 palabras) y lleva la idea en negrita; lo que se quitó (preparatorio de 4 a 13 años, apoyo de inglés EAL, tradición religiosa) sigue en el detalle de cada destino.
-8. Cambios en `js/main.js` (v24): `jumpScroll()` para los saltos que deben ser inmediatos, evento al abrir una fila y traer la fila abierta a la vista.
-9. **Fotografías y testimonios reales**: no se ha construido el bloque; no hay testimonios con consentimiento ni fotos con autorización de imagen.
-10. Se eliminaron los archivos `ext-hero-campus-*` y `ext-alo-rugby-*` (de la composición anterior, sin uso); siguen en el historial de git.
-
-## Datos que faltan
-
-**Confirmar antes de publicar**
-- Que los atributos de las guías se mantienen para el próximo curso (Jaime autorizó publicarlos tal cual el 05-10-2026; la guía pide reconfirmarlos antes de proponer una plaza).
-- Si se pueden nombrar colegios y qué relación hay con cada uno (la reunión con Longridge no cerró acuerdo y el checklist lista el contrato B2B como pendiente). **Siguen sin nombrarse.**
-- Estados Unidos: qué programa existe y con qué colegios o proveedores. La página lo mantiene con un bloque breve; falta todo el contenido.
-- Si el Reino Unido incluye Gales o Irlanda del Norte (hoy solo Inglaterra y Escocia).
-
-**Irlanda:** curso concreto por colegio dentro del tramo de 10 a 18 años, duraciones disponibles, fechas de inicio, apoyo de inglés, si el Transition Year se ofrece a internacionales.
-
-**Reino Unido:** qué colegios admiten trimestres y cuántas plazas, fechas 2027/28, equivalencia del curso escocés.
-
-**Presupuesto (ambos):** precio o «desde» por modalidad, qué incluye y qué no, pago y cancelación. Hay tarifas de colegios en las guías y en la reunión, pero son de terceros y no se publican.
-
-**Acompañamiento (ambos):** guardian (quién lo hace: la reunión sugiere que Interlanguage podría), coordinador, seguro, protocolo de emergencias, seguimiento a la familia, cambio de familia.
-
-**Experiencias reales:** testimonios con consentimiento por escrito; autorización de imagen de las fotos con menores; qué fotos son de alumnos propios.
-
-**Respaldo:** razón social, CIF, domicilio, régimen aplicable a la venta de estos programas (a confirmar con la asesoría).
-
-**Contacto:** persona asesora, teléfono o WhatsApp, plazo real de respuesta, edades del selector (10 a 18, tomado de lo ya publicado).
-
-## Decisiones tomadas por mí, reversibles
-
-1. «Reino Unido» y no «Inglaterra» (arriba).
-2. Estados Unidos se mantiene con un bloque breve; sin comparación ni detalle. Confirmado por Jaime.
-3. Se retira «Modalidades y duración».
-4. Edades 10 a 18 en el formulario de esta página (para Irlanda, ahora confirmadas por Jaime; Reino Unido sigue «de primaria a 18 años, según el colegio», que sale de la guía).
-5. Trato de «tú» en los textos nuevos.
-6. Los tres últimos criterios de la comparación van en una ampliación desplegable.
-7. «Presupuesto» aparece como fila porque lo pide el encargo, con el texto «no hay precios comparables publicados».
-
-## Lo que sigue publicado fuera de esta página (no se ha tocado)
-
-| Dónde | Texto | Problema |
-|---|---|---|
-| Home, bloque Experiencias internacionales (`#destinos`) | «Colegios de nuestra cartera», «Un coordinador en destino», «Sin perder el curso», «acompañamiento 24/7», «Respuesta en menos de 24 h», edades 10 a 18 | La cartera ya está documentada, pero coordinador, 24/7, convalidación y plazo no constan |
-| Home, hero y «Un programa para cada etapa» | «Más de 1.000 familias acompañadas»; «Desde dos semanas hasta un curso completo… acompañamiento antes, durante y después» | Cifra sin fuente; duración y acompañamiento sin confirmar |
-| Home, buscador por edad | El tramo 7–10 no ofrece extranjero; el 15–18 omite las dos semanas | Contradice «desde 10 años» y la duración documentada |
-| Pie, meta y JSON-LD | «30 años formando el inglés… hasta los estudios en el extranjero» | Presenta la trayectoria en inglés como trayectoria en estancias |
-| Home, cruces con campamentos y Conócenos | «Muchas de estas familias siguen con nosotros cuando sus hijos dan el salto a estudiar en el extranjero» | No consta ninguna familia que ya haya ido |
-| Formulario compartido | «Respuesta en menos de 24 h», «vuestra solicitud» | Plazo sin confirmar; voz «vosotros» |
-| Banner de cookies | Botones de 40 px de alto | Zona táctil por debajo de 44 px |
-
-## Bloqueante que sigue abierto
-
-**El formulario no entrega los envíos.** `form-handler.php` es PHP y en Netlify da 404. Todo el flujo termina en un mensaje de error hasta decidir cómo entregar (por ejemplo Netlify Forms).
-
-## Cuando lleguen los datos
-
-1. Actualizar esta tabla con lo confirmado.
-2. Añadir el dato como chip (`.ext-chip`) en la fila de cada destino (siempre el mismo chip en los tres, o «a concretar» con `is-tbc`) y la celda en la comparación y en el detalle. Si es una duración de Irlanda o Estados Unidos, usar las filas compactas `.ext-dur` de «Programas», como en el Reino Unido.
-3. Para un tercer destino en la comparación: una columna más (`th` y `td[data-label]`); en móvil se apila sola.
-4. Subir `?v=` de `styles.css` y `main.js` en `index.html`, `index-en.html`, `legal.html` y `404.html`.
+Servidor: `python3 -m http.server 8752` desde la raíz, sin build ni dependencias nuevas.
