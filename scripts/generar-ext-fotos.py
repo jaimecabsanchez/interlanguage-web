@@ -24,6 +24,7 @@ BASE = os.path.join(HERE, '..', 'web-publica', 'images', 'internacional') + '/'
 
 CARD_W = (400, 710, 790)              # + el nativo del recorte (máx. 1000): filas de destino (230 px de ancho en escritorio, a todo el ancho en móvil)
 ESC_W = (480, 590, 780, 960, 1180)    # + el nativo: foto de una escena (584 px de ancho en escritorio >= 1328 px)
+GAL_W = (360, 520, 720)                # + el nativo (máx. 1000): galería «Más actividades» (de 163 px en móvil a unos 450 px en escritorio)
 DUO_W = (290, 430, 580, 870)          # + el nativo: dúo de fotos verticales 4:5 de una escena (285 px de ancho cada una en escritorio)
 
 # nombre de salida, JPG de origen, recorte 4:3 (fracción vertical del sobrante; None = sin recortar), escalera, ancho máximo, JPG de respaldo que se crea (None = ya existe)
@@ -36,6 +37,17 @@ FOTOS = [
     ('usa-aula-v',    'usa-aula-vertical.jpg', None, (480, 800), 1000, None),   # tarjeta de Estados Unidos de la portada (4:5, recorte de la foto de aula; en móvil usa ext-us-aula 16:10)
     ('ext-duo-rugby', 'irlanda-rugby.jpg',       None, DUO_W,  1080, None),   # escena «Practicar» (izquierda)
     ('ext-duo-golf', 'uk-golf.jpg',              None, DUO_W,  1000, None),   # escena «Practicar» (derecha)
+    # galería «Más actividades que pueden formar parte de su día» (10 fotos aportadas por Jaime el 06-10-2026; el JPG de origen ya está reducido a 1000 px)
+    ('ext-gal-cocina', 'gal-cocina.jpg', None, GAL_W, 1000, None),
+    ('ext-gal-robotica', 'gal-robotica.jpg', None, GAL_W, 1000, None),
+    ('ext-gal-equitacion', 'gal-equitacion.jpg', None, GAL_W, 1000, None),
+    ('ext-gal-orquesta', 'gal-orquesta.jpg', None, GAL_W, 1000, None),
+    ('ext-gal-piano', 'gal-piano.jpg', None, GAL_W, 1000, None),
+    ('ext-gal-arte', 'gal-arte.jpg', None, GAL_W, 1000, None),
+    ('ext-gal-ciencias', 'gal-ciencias.jpg', None, GAL_W, 1000, None),
+    ('ext-gal-teatro', 'gal-teatro.jpg', None, GAL_W, 1000, None),
+    ('ext-gal-remo', 'gal-remo.jpg', None, GAL_W, 1000, None),
+    ('ext-gal-tenis', 'gal-tenis.jpg', None, GAL_W, 1000, None),
 ]
 
 for nombre, origen, cy, anchos, tope, respaldo in FOTOS:
