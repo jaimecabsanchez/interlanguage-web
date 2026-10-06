@@ -181,11 +181,22 @@ window.dataLayer = window.dataLayer || [];
   function extHash(slug){ return '#servicio-extranjero' + (slug ? '-' + slug : ''); }
   function reduceMotion(){ return !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches); }
   // despliega el detalle de un destino (los de la página se cierran entre sí) y, si se pide, baja hasta él
+  // «auto» obedece a html{scroll-behavior:smooth} y anima: en saltos que deben ser inmediatos (restaurar la posición, ir a un destino al cargar)
+  // se desactiva un instante, porque en una página larga la animación tarda más que la propia navegación
+  function jumpScroll(fn){
+    const root = document.documentElement, prev = root.style.scrollBehavior;
+    root.style.scrollBehavior = 'auto';
+    fn();
+    root.style.scrollBehavior = prev;
+  }
   function openExtDetail(slug, scroll){
     const d = document.getElementById('ext-det-' + slug);
     if (!d) return;
     d.open = true;
-    if (scroll) requestAnimationFrame(function(){ d.scrollIntoView({ behavior: scroll === 'smooth' && !reduceMotion() ? 'smooth' : 'auto', block: 'start' }); });
+    if (scroll) requestAnimationFrame(function(){
+      if (scroll === 'smooth' && !reduceMotion()) { d.scrollIntoView({ behavior: 'smooth', block: 'start' }); return; }
+      jumpScroll(function(){ d.scrollIntoView({ block: 'start' }); });
+    });
   }
 
   // contexto de la consulta: destino y duración elegidos, y vuelta al punto de la página desde el que se pidió
@@ -225,7 +236,7 @@ window.dataLayer = window.dataLayer || [];
     back.addEventListener('click', function(e){
       e.preventDefault();
       if (history.state && history.state.extForm) history.back();
-      else if (extOrigin) extOrigin.scrollIntoView({ behavior: 'auto', block: 'center' });
+      else if (extOrigin) jumpScroll(function(){ extOrigin.scrollIntoView({ block: 'center' }); });
     });
   })();
 
@@ -690,7 +701,7 @@ window.dataLayer = window.dataLayer || [];
         showView('view-service-' + r.view, same ? { keepScroll: true, silent: true } : undefined);
         if (r.slug) openExtDetail(r.slug, false);
         if (same && typeof st.y === 'number'){
-          window.scrollTo({ top: st.y, behavior: 'auto' });
+          jumpScroll(function(){ window.scrollTo(0, st.y); });
           if (extOrigin) extOrigin.focus({ preventScroll: true });
         } else if (same && st.extForm) scrollToExtContact();
         return;
