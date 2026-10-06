@@ -449,6 +449,32 @@ picture{display:contents;}
   .ext-dot{width:10px; height:10px; border-radius:50%; background:var(--c,var(--accent)); flex:none;}
   .ext-dot--tbc{background:none; border:1.5px dashed var(--c,var(--accent));}
 
+  /* 2b · Galería «Más actividades»: filas justificadas (misma altura, ancho proporcional a cada foto, sin recortes en escritorio) */
+  .ext-gal{margin-top:84px; padding-top:64px; border-top:1px solid var(--line);}
+  .ext-gal-head{max-width:700px; margin:0 auto 12px; text-align:center;}
+  .ext-gal-head h3{font-size:clamp(1.5rem,2.3vw,2rem); line-height:1.16; color:var(--navy); text-wrap:balance; margin:0;}
+  .ext-gal-head p{margin:14px auto 0; font-size:1.0625rem; line-height:1.62; color:var(--ext-t2); max-width:60ch;}
+  .ext-gal-grupo{margin-top:40px;}
+  .ext-gal-t{display:flex; align-items:center; gap:14px; margin:0 0 14px; font-family:var(--font-body); font-size:.75rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-soft);}
+  .ext-gal-t::after{content:''; flex:1; height:1px; background:var(--line);}
+  .ext-gal-fila{display:flex; gap:14px; align-items:flex-start;}
+  .ext-gal-it{margin:0; flex:var(--ar) 1 0; min-width:0;}
+  .ext-gal-it img{display:block; width:100%; height:auto; aspect-ratio:var(--ar); object-fit:cover; object-position:var(--pos,50% 50%); border-radius:var(--r-card); background:var(--stone);}
+  .ext-gal-it figcaption{margin-top:8px; font-size:.875rem; font-weight:600; line-height:1.3; color:var(--navy);}
+  @media (max-width:999px){
+    .ext-gal{margin-top:56px; padding-top:48px;}
+    .ext-gal-grupo{margin-top:32px;}
+    .ext-gal-fila{display:grid; grid-template-columns:repeat(3,minmax(0,1fr));}
+    .ext-gal-fila--4{grid-template-columns:repeat(2,minmax(0,1fr));}
+    .ext-gal-it img{aspect-ratio:4/3;}
+  }
+  @media (max-width:599px){
+    .ext-gal-fila, .ext-gal-fila--4{grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px 10px;}
+    .ext-gal-fila--3 .ext-gal-it:first-child{grid-column:1/-1;}
+    .ext-gal-fila--3 .ext-gal-it:first-child img{aspect-ratio:16/10;}
+    .ext-gal-it figcaption{font-size:.8125rem;}
+  }
+
   /* 3 · Destinos: tres filas que se despliegan con el detalle de cada uno (misma estructura en todos). El acento va en el botón, el nombre de la zona y la barra del detalle */
   .ext-filas{border-top:1px solid color-mix(in srgb, var(--navy) 30%, transparent);}
   .ext-det{--c:var(--accent); border-bottom:1px solid var(--line); scroll-margin-top:calc(var(--header-h) + 8px);}
