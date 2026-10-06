@@ -629,10 +629,21 @@ window.dataLayer = window.dataLayer || [];
   });
   // la dirección refleja el destino desplegado (replaceState: no ensucia el historial); al cerrarlo vuelve a #servicio-extranjero
   document.querySelectorAll('.ext-det').forEach(function(d){
+    const sm = d.querySelector('summary');
+    if (sm) sm.addEventListener('click', function(){
+      if (!d.open) pushEvent('clic_cta', { cta_id: 'ext-conocer-' + d.getAttribute('data-destino') });
+    });
     d.addEventListener('toggle', function(){
       if (!isExtVisible()) return;
       const h = extHash(d.getAttribute('data-destino'));
-      if (d.open) history.replaceState(history.state, '', h);
+      if (d.open) {
+        history.replaceState(history.state, '', h);
+        // acordeón exclusivo: al cerrarse la fila abierta antes, la nueva puede quedar fuera de pantalla; se trae a la vista si hace falta
+        requestAnimationFrame(function(){
+          const r = d.getBoundingClientRect();
+          if (r.top < 0 || r.top > window.innerHeight * 0.55) d.scrollIntoView({ behavior: reduceMotion() ? 'auto' : 'smooth', block: 'start' });
+        });
+      }
       else if (location.hash === h) history.replaceState(history.state, '', extHash(''));
     });
   });

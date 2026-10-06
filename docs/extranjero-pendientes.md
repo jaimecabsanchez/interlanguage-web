@@ -1,8 +1,10 @@
 # Estudiar en el extranjero: pendientes internos
 
-Documento interno (no se publica: Netlify solo sirve `web-publica/`). Estado a 05-10-2026, versión de revisión sin publicar.
+Documento interno (no se publica: Netlify solo sirve `web-publica/`). Estado a 06-10-2026, versión de revisión sin publicar.
 
 **Decisiones de Jaime del 05-10-2026:** se aplican los cambios propuestos (los atributos de las guías se publican tal cual, sin nombrar colegios), **se mantiene Estados Unidos** y **Irlanda es de 10 a 18 años**.
+
+**Decisión del 06-10-2026:** la estructura de la página es la **opción B «Escenas»** (las otras dos, A «Mosaico» y C «Un destino cada vez», quedan como maqueta en `docs/revision-estructuras/`, fuera de git), con el estilo actual de la web.
 
 La página `#servicio-extranjero` solo pinta lo confirmado. Todo lo demás está aquí, sin rellenar y sin aparecer como hecho en la web.
 
@@ -24,7 +26,7 @@ La página `#servicio-extranjero` solo pinta lo confirmado. Todo lo demás está
 |---|---|---|
 | **Reino Unido** | La guía UK tiene centros activos en **Inglaterra** (cuatro) y **Escocia** (dos). | **Se llama «Reino Unido»** y se dice «Inglaterra» o «Escocia» solo para un centro o zona concretos. **Corrijo la decisión anterior de usar «Inglaterra»**: se tomó sin haber visto las guías y se quedaba corta. |
 | **Irlanda** | La guía de Irlanda tiene centros activos de secundaria, con internado y de día con familia anfitriona. | Se mantiene. |
-| **Estados Unidos** | **No hay ningún documento de programas.** El checklist habla de «UK, Irlanda o ambos» y el informe lo menciona solo en general. | Se mantiene la tarjeta, el titular y un bloque breve que remite a la orientación, porque el encargo pide tres países. **Mantenido por decisión de Jaime (05-10-2026).** Sigue sin dato alguno que publicar. |
+| **Estados Unidos** | **No hay ningún documento de programas.** El checklist habla de «UK, Irlanda o ambos» y el informe lo menciona solo en general. | Se mantiene la fila, el titular y un bloque breve que remite a la orientación, porque el encargo pide tres países. **Mantenido por decisión de Jaime (05-10-2026).** Sigue sin dato alguno que publicar. |
 
 Para cambiar el nombre del Reino Unido o quitar Estados Unidos: textos de la vista en `index.html` e `index-en.html`, selector `#leadDest` y `DESTINOS` de `js/main.js`.
 
@@ -58,49 +60,50 @@ El único dato de sistema educativo general es que Inglaterra y Escocia tienen s
 
 | # | Bloque | Estado |
 |---|---|---|
-| 1 | Cabecera | Rediseñada (cabecera dividida); pendiente de aprobación |
-| 2 | Respaldo verificable | Hecho, mínimo (trayectoria en inglés en España, profesorado, contacto) |
-| 3 | Destinos | Rediseñado (tarjetas 4:3 idénticas); pendiente de aprobación. Ficha de edades, duración y alojamiento: lo no confirmado dice «a concretar» (Reino Unido tres datos, Irlanda dos, Estados Unidos ninguno) |
-| 4 | Comparación | **Hecho para Reino Unido e Irlanda** (6 criterios y ampliación); arranque rediseñado y pendiente de aprobación. Falta Estados Unidos |
-| 5 | Modalidades y duración | **Sin bloque propio**: la duración vive en la comparación y en «Programas» del detalle (Reino Unido, con filas compactas y su acción) |
-| 6 | Alojamiento y vida escolar | **Hecho** (imagen y texto, por formato) y también en la comparación y el detalle. Foto provisional |
-| 7 | Acompañamiento | Parcial: «Cómo te orientamos», en tres pasos numerados. Falta el acompañamiento durante y después |
+| 1 | Cabecera | Hecho: a sangre, como la portada (misma foto y velo). Respaldo mínimo bajo las acciones (30 años enseñando inglés en España, profesorado nativo, Madrid). Pendiente de aprobación |
+| 2 | Idea general | Hecho: franja de cuatro datos (10 a 18 años, 3 destinos, duración, alojamiento) |
+| 3 | La experiencia | Hecho: tres escenas (estudiar, vivir, practicar) con la marca de qué destino lo ofrece. **La foto de «Vivir» es provisional** |
+| 4 | Destinos y detalle | Hecho: tres filas que se despliegan con el detalle. Lo no confirmado dice «a concretar» (Reino Unido, tres datos; Irlanda, dos; Estados Unidos, ninguno) |
+| 5 | Comparación | **Hecho para Reino Unido e Irlanda** (6 criterios y ampliación). Falta Estados Unidos |
+| 6 | Modalidades y duración | **Sin bloque propio**: la duración vive en la comparación y en «Programas» del detalle (Reino Unido, con filas compactas y su acción) |
+| 7 | Acompañamiento | Parcial: «Cómo te orientamos», en tres pasos. Falta el acompañamiento durante y después |
 | 8 | Experiencias reales | Pendiente |
-| 9 | Presupuesto | Hecho, sin precios; los tres factores en una fila tipográfica |
+| 9 | Presupuesto | Hecho, sin precios |
 | 10 | Preguntas frecuentes | Hecho (5) |
 | 11 | Contacto específico | Hecho: formulario en la misma página sobre marino, con país y programa conservados y vuelta al punto de origen |
 
 Detalle por destino: Reino Unido completo (menos «acompañamiento»), Irlanda con dos apartados que remiten al colegio (duración y acceso; las edades, 10 a 18, constan en «Programas»), Estados Unidos solo un bloque breve. No se han creado páginas nuevas: cada destino tiene su dirección `#servicio-extranjero-<destino>` y las antiguas siguen funcionando.
 
-## Dirección visual: primera composición (05-10-2026)
+## Estructura «Escenas» y fotografías (06-10-2026)
 
-Rediseñada **toda la página** (cabecera, tarjetas, comparador, alojamiento con imagen, detalle por destino, pasos numerados, presupuesto, preguntas y cierre de contacto), sin publicar y pendiente de aprobación. Reglas y componentes en `web-publica/AGENTS.md`.
+Jaime pidió una página «más dinámica y más visual» con el mismo estilo de la web y eligió, de tres estructuras, la B. El orden es: cabecera a sangre → franja de cuatro datos → «La experiencia» en tres escenas → destinos (filas con detalle) → comparación → cómo te orientamos → presupuesto → preguntas → contacto. Reglas y componentes en `web-publica/AGENTS.md`.
 
 ### Fotografías (solo recursos ya aprobados, sin filtros)
 
 | Dónde | Foto usada (archivo de origen) | Valoración | Qué falta |
 |---|---|---|---|
-| Cabecera | Cinco alumnos con uniforme por un camino de campus (`hero-campus-2`, la antigua foto de la home) | Escena escolar amplia que funciona en escritorio y en móvil. Es de la misma familia que la de la home y que la del Reino Unido | Alternativa aprobada: el laboratorio (`extranjero-lab`), pero no consta en qué país se hizo |
-| Reino Unido | Cuatro alumnos con uniforme ante un edificio de piedra (`vivirlo-colegio`, ya 4:3) | La mejor del conjunto; se parece a la de la cabecera | Una foto de aula o de internado del Reino Unido. Alternativa aprobada: golf (`uk-golf`), que sí consta en la guía |
-| Irlanda | Cuatro alumnas sonriendo (`extranjero-alumnas`, recorte 4:3; el rótulo «.ie» indica que es Irlanda) | Cercana y natural, pero es de un viaje, no de un colegio irlandés | **Una foto de colegio irlandés** (aula, internado, uniforme). Se descartó el castillo con bandera: es un monumento, no un colegio |
-| Estados Unidos | Partido de fútbol americano nocturno (`usa-football`, recorte 4:3) | Es la única que hay; es un partido, sin alumnos identificables | **Una foto de vida escolar en Estados Unidos** (aula, campus, convivencia) |
-| Alojamiento y vida escolar | Un alumno golpeando un balón de rugby (`irlanda-rugby`, vertical 4:5) | **Provisional**: es vida escolar en Irlanda (el texto cita el deporte de equipo), no un alojamiento | **Una foto de internado, de habitación o de familia anfitriona** |
+| Cabecera | Cinco alumnos con uniforme ante un arco de piedra (`hero-arco-3`, la de la portada) | La misma de la home: coherente y ya retocada con el cuidado de las cabezas | Nada |
+| Escena «Estudiar» | Alumnos con bata en un laboratorio (`extranjero-lab`) | Se ve bien una clase, pero **no consta en qué país se hizo** | Una foto de aula del Reino Unido o de Irlanda, si existe |
+| Escena «Vivir» | Cinco alumnos con uniforme por un camino de campus (`hero-campus-2`) | **Provisional**: muestra el campus, no un internado ni una familia anfitriona | **Una foto de internado, de habitación o de familia anfitriona** |
+| Escena «Practicar» | Rugby (`irlanda-rugby`) y golf (`uk-golf`) | Las dos constan en las guías (deporte de equipo en Irlanda; golf en el Reino Unido) | Nada |
+| Fila Reino Unido | Cuatro alumnos con uniforme ante un edificio de piedra (`vivirlo-colegio`) | Buena | Una foto de aula o internado del Reino Unido |
+| Fila Irlanda | Cuatro alumnas sonriendo (`extranjero-alumnas`, recorte 4:3; el rótulo «.ie» indica que es Irlanda) | Cercana y natural, pero es de un viaje, no de un colegio irlandés | **Una foto de colegio irlandés** (aula, internado, uniforme) |
+| Fila Estados Unidos | Partido de fútbol americano nocturno (`usa-football`, recorte 4:3) | Es la única que hay; es un partido, sin alumnos identificables | **Una foto de vida escolar en Estados Unidos** |
 
-Las cuatro llevan texto alternativo que solo describe lo que se ve. Sigue pendiente la autorización de imagen de los menores que aparecen en cualquiera de ellas.
+Las fotos de las tres filas son decorativas (`alt=""`): van dentro de la fila, que ya se llama como el destino. El resto lleva texto alternativo que solo describe lo que se ve. Sigue pendiente la autorización de imagen de los menores que aparecen en cualquiera de ellas.
 
 ### Decisiones de diseño de esta fase (reversibles)
 
-1. La cabecera usa la foto del campus, no las cuatro alumnas de antes (que pasan a la tarjeta de Irlanda).
-2. Las tarjetas llevan **un solo enlace** («Conocer X», que cubre toda la tarjeta). El «Pedir orientación sobre X» queda en el detalle de cada destino y en la cabecera. Dejaron de existir los eventos `ext-destino-*`.
-3. Las filas sin dato confirmado dicen «a concretar» en un tono más apagado (Irlanda: duración; Estados Unidos: las tres), para que las tres tarjetas tengan la misma estructura sin presentar nada como hecho.
-4. **Token nuevo `--blue`** (#2B4E80) como acento de Estados Unidos: el marino de la web pesa mucho más que el burdeos y el verde, y con este azul los tres tienen la misma luminosidad.
-5. Se quitó «Sin compromiso» de la cabecera para que no compita con las acciones.
-6. El texto de las celdas del comparador se acortó (máx. 24 palabras); lo que se quitó (preparatorio de 4 a 13 años, apoyo de inglés EAL, tradición religiosa) sigue en el detalle de cada destino.
-7. Un cambio de comportamiento en `js/main.js` (v23): al abrir directamente la dirección de un destino y al volver del formulario el desplazamiento es instantáneo; con `scroll-behavior:smooth` en `html` hasta «auto» animaba, y en una página más larga no daba tiempo a terminar.
-8. Nuevo bloque **Alojamiento y vida escolar** entre el comparador y el detalle, organizado por formato (internado, familia anfitriona, día a día) y no por país, solo con hechos de las guías. Repite en parte la fila «Alojamiento» del comparador, pero como explicación.
-9. **Filas compactas de duración**: viven dentro de «Programas» del Reino Unido (curso completo; uno o dos trimestres), cada una con su acción. No hay un bloque aparte porque con lo confirmado solo habría dos filas y repetiría la fila «Duración» del comparador. Con duraciones de Irlanda y Estados Unidos se añaden con el mismo componente.
-10. **Fotografías y testimonios reales**: no se ha construido el bloque; no hay testimonios con consentimiento ni fotos con autorización de imagen.
-11. Los fondos de los bloques se alternan (marfil y blanco) hasta el contacto sobre marino.
+1. El respaldo deja de ser una sección aparte y pasa a tres líneas bajo las acciones de la cabecera (sin la dirección de correo, que ya está en el contacto).
+2. Las tres tarjetas de destino se sustituyen por **filas desplegables con el detalle dentro**: desaparece el «Pedir orientación sobre X» suelto de la tarjeta; sigue en el detalle de cada destino y en la cabecera. Los eventos son `ext-conocer-<destino>` al abrir una fila a mano.
+3. Lo no confirmado dice «a concretar» con un chip de borde discontinuo (Irlanda: duración; Estados Unidos: las tres filas), para que los tres destinos tengan la misma estructura sin presentar nada como hecho.
+4. **Token nuevo `--blue`** (#2B4E80) como acento de Estados Unidos: con la luminosidad del burdeos y el verde, para que los tres pesen igual.
+5. Las escenas repiten en parte lo que dicen la comparación y el detalle (internado, familia anfitriona, actividades), pero como explicación visual; el dato largo sigue en cada destino.
+6. El héroe es a sangre solo desde 1200 px: por debajo se apila (foto arriba y texto sobre marino) porque el texto sobre la foto taparía las caras de los alumnos.
+7. El texto de las celdas del comparador es breve (máx. 24 palabras) y lleva la idea en negrita; lo que se quitó (preparatorio de 4 a 13 años, apoyo de inglés EAL, tradición religiosa) sigue en el detalle de cada destino.
+8. Cambios en `js/main.js` (v24): `jumpScroll()` para los saltos que deben ser inmediatos, evento al abrir una fila y traer la fila abierta a la vista.
+9. **Fotografías y testimonios reales**: no se ha construido el bloque; no hay testimonios con consentimiento ni fotos con autorización de imagen.
+10. Se eliminaron los archivos `ext-hero-campus-*` y `ext-alo-rugby-*` (de la composición anterior, sin uso); siguen en el historial de git.
 
 ## Datos que faltan
 
@@ -153,6 +156,6 @@ Las cuatro llevan texto alternativo que solo describe lo que se ve. Sigue pendie
 ## Cuando lleguen los datos
 
 1. Actualizar esta tabla con lo confirmado.
-2. Añadir la fila en `dl.ext-ficha` de cada tarjeta (siempre la misma fila en los tres destinos) y la celda en la comparación y en el detalle.
+2. Añadir el dato como chip (`.ext-chip`) en la fila de cada destino (siempre el mismo chip en los tres, o «a concretar» con `is-tbc`) y la celda en la comparación y en el detalle. Si es una duración de Irlanda o Estados Unidos, usar las filas compactas `.ext-dur` de «Programas», como en el Reino Unido.
 3. Para un tercer destino en la comparación: una columna más (`th` y `td[data-label]`); en móvil se apila sola.
 4. Subir `?v=` de `styles.css` y `main.js` en `index.html`, `index-en.html`, `legal.html` y `404.html`.

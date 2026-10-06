@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Genera las fotos de «Estudiar en el extranjero» (cabecera y tarjetas de destino): escalera de anchos AVIF + WebP.
+# Genera las fotos de «Estudiar en el extranjero» (escenas y filas de destino): escalera de anchos AVIF + WebP.
 #
 #   pip install pillow          (Pillow 11.3 o más: trae AVIF propio; con una versión anterior, pip install pillow-avif-plugin)
 #   python3 scripts/generar-ext-fotos.py
@@ -8,8 +8,10 @@
 # enfoque y SIN filtros de color: solo recortes 4:3 en las tarjetas y reducción con Lanczos (ver «Nitidez en Retina» en
 # web-publica/AGENTS.md). Los anchos de cada escalera caen en el tamaño pintado exacto (1x y 2x) de los dos casos más
 # habituales, para que el navegador elija un archivo nítido:
-#   - tarjetas (392 px de ancho en escritorio >= 1280 px): 400 (1x), 790 (2x), 710 (móvil 2x, 344 px) y el nativo (móvil 3x);
-#   - cabecera (la mitad de la ventana): 720 (1440 px, 1x), 960 (1920 px, 1x), 800 (móvil 2x), 1200 (móvil 3x) y el nativo (1440 px, 2x).
+#   - filas de destino (230 px en escritorio; a todo el ancho en móvil): 400 (1x), 710 (2x y móvil 2x), 790 y el nativo (móvil 3x);
+#   - escena con una foto (584 px en escritorio >= 1328 px): 590 (1x) y 1180 (2x), más peldaños para anchos intermedios;
+#   - escena con dos fotos 4:5 (285 px cada una): 290 (1x), 580 (2x) y 430/870 para anchos intermedios.
+# El héroe a sangre usa la panorámica de la portada (hero-arco-3-*, ver generar-hero-colegio.py): no se genera aquí.
 # Si cambias una foto o un recorte, cambia el nombre: _headers marca las imágenes como immutable y con el mismo nombre quien
 # ya visitó la web seguiría viendo la anterior.
 import os
@@ -20,16 +22,19 @@ if not features.check('avif'):
 HERE = os.path.dirname(os.path.abspath(__file__))
 BASE = os.path.join(HERE, '..', 'web-publica', 'images', 'internacional') + '/'
 
-CARD_W = (400, 710, 790)          # + el ancho nativo del recorte (máx. 1000)
-HERO_W = (400, 720, 800, 960, 1200)   # + el nativo (1448)
+CARD_W = (400, 710, 790)              # + el nativo del recorte (máx. 1000): filas de destino (230 px de ancho en escritorio, a todo el ancho en móvil)
+ESC_W = (480, 590, 780, 960, 1180)    # + el nativo: foto de una escena (584 px de ancho en escritorio >= 1328 px)
+DUO_W = (290, 430, 580, 870)          # + el nativo: dúo de fotos verticales 4:5 de una escena (285 px de ancho cada una en escritorio)
 
 # nombre de salida, JPG de origen, recorte 4:3 (fracción vertical del sobrante; None = sin recortar), escalera, ancho máximo, JPG de respaldo que se crea (None = ya existe)
 FOTOS = [
-    ('ext-hero-campus', 'hero-campus-2.jpg',      None, HERO_W, 1448, None),
-    ('ext-uk-colegio',  'vivirlo-colegio.jpg',    None, CARD_W, 1000, None),
-    ('ext-ie-alumnas',  'extranjero-alumnas.jpg', 0.22, CARD_W, 1000, 'ext-ie-alumnas.jpg'),
-    ('ext-us-football', 'usa-football.jpg',       0.45, CARD_W, 1000, 'ext-us-football.jpg'),
-    ('ext-alo-rugby',   'irlanda-rugby.jpg',      None, (420, 710, 860), 1080, None),   # bloque «Alojamiento y vida escolar» (420 px de ancho en escritorio)
+    ('ext-esc-lab',    'extranjero-lab.jpg',    None, ESC_W,  1200, None),   # escena «Estudiar»
+    ('ext-esc-campus', 'hero-campus-2.jpg',      None, ESC_W,  1448, None),   # escena «Vivir»
+    ('ext-uk-colegio', 'vivirlo-colegio.jpg',    None, CARD_W, 1000, None),   # fila del Reino Unido
+    ('ext-ie-alumnas', 'extranjero-alumnas.jpg', 0.22, CARD_W, 1000, 'ext-ie-alumnas.jpg'),   # fila de Irlanda
+    ('ext-us-football', 'usa-football.jpg',      0.45, CARD_W, 1000, 'ext-us-football.jpg'),  # fila de Estados Unidos
+    ('ext-duo-rugby', 'irlanda-rugby.jpg',       None, DUO_W,  1080, None),   # escena «Practicar» (izquierda)
+    ('ext-duo-golf', 'uk-golf.jpg',              None, DUO_W,  1000, None),   # escena «Practicar» (derecha)
 ]
 
 for nombre, origen, cy, anchos, tope, respaldo in FOTOS:
