@@ -40,7 +40,7 @@ En accesos de la home se retiran coordinador local, 24/7, «sin perder el curso�
 
 ## Fotografías
 
-Reutilizadas variantes AVIF/WebP/JPEG aprobadas sin generar ni retocar. «Vivir» muestra campus, no alojamiento, y sigue provisional. Irlanda muestra un viaje y Estados Unidos un partido; no se usan como prueba de colegios colaboradores o modalidades. La cabecera `hero-arco-3` tiene origen generado/composición de cabezas documentados en AGENTS.md; no presentarla como alumnos propios o experiencia real. Publicación previa no acredita derechos de imagen.
+Reutilizadas variantes AVIF/WebP/JPEG aprobadas sin generar ni retocar. «Vivir» muestra campus, no alojamiento, y sigue provisional. Irlanda muestra un viaje y Estados Unidos un aula con bandera (foto aportada por Jaime el 06-10-2026, `usa-aula.jpg`; tiene aspecto de imagen generada, origen y derechos por confirmar); no se usan como prueba de colegios colaboradores o modalidades. La cabecera `hero-arco-3` tiene origen generado/composición de cabezas documentados en AGENTS.md; no presentarla como alumnos propios o experiencia real. Publicación previa no acredita derechos de imagen.
 
 ## Bloqueo de envío
 
