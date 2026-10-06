@@ -6,11 +6,23 @@ window.dataLayer = window.dataLayer || [];
     es: {
       brand: 'Interlanguage Studies',
       sending: 'Enviando…',
+      otherAge: 'Otra edad',
+      durationUK: 'Un trimestre o dos, solo en algunos colegios y según las plazas disponibles.',
+      durationOther: 'La duración se consulta con cada colegio. Puedes indicar tus fechas preferidas en el mensaje.',
+      ageUK: 'Internado desde 7 años en un centro preparatorio; otros colegios empiezan más adelante. Si eliges otra edad, indícala en el mensaje.',
+      ageIreland: 'De 10 a 18 años. El curso de entrada depende del colegio. Si eliges otra edad, indícala en el mensaje.',
+      ageOther: 'La edad de admisión depende del destino y del colegio. Si eliges otra edad, indícala en el mensaje.',
       leadError: 'No hemos podido enviar la solicitud. Tus datos siguen aquí: inténtalo de nuevo en unos segundos o escríbenos a info@interlanguage.es.'
     },
     en: {
       brand: 'Interlanguage Studies',
       sending: 'Sending…',
+      otherAge: 'Another age',
+      durationUK: 'One or two terms are available only at some schools, subject to places.',
+      durationOther: 'The length is checked with each school. You can include your preferred dates in the message.',
+      ageUK: 'Boarding from age 7 at one preparatory school; other schools start later. If you select another age, include it in your message.',
+      ageIreland: 'Ages 10 to 18. The entry year depends on the school. If you select another age, include it in your message.',
+      ageOther: 'Admission age depends on the destination and school. If you select another age, include it in your message.',
       leadError: "We couldn't send your request. Your details are still here: please try again in a few seconds or email us at info@interlanguage.es."
     }
   };
@@ -759,12 +771,41 @@ window.dataLayer = window.dataLayer || [];
       const s = service();
       ctx.hidden = !s;
       form.querySelectorAll('[data-ctx]').forEach(function(el){ el.hidden = el.getAttribute('data-ctx') !== s; });
+      syncAbroadFields();
     }
+    // Destination conditions apply to enquiries from this page and from the home.
+    // Unknown durations are never presented as available programmes.
+    const ageOptions = age.innerHTML;
+    const durationOptions = dur.innerHTML;
+    function syncAbroadFields(){
+      const abroad = service() === 'extranjero';
+      const keepAge = age.value, keepDuration = dur.value;
+      age.innerHTML = ageOptions;
+      if (abroad){
+        const min = dest.value === 'Irlanda' ? 10 : +age.getAttribute('data-ext-min');
+        const max = +age.getAttribute('data-ext-max');
+        Array.from(age.options).forEach(function(o){ if (o.value && (+o.value < min || +o.value > max)) o.remove(); });
+        age.add(new Option(T.otherAge, 'Otra edad'));
+      }
+      age.value = Array.from(age.options).some(function(o){ return o.value === keepAge; }) ? keepAge : (keepAge && abroad ? 'Otra edad' : '');
+      dur.innerHTML = durationOptions;
+      if (dest.value !== 'Reino Unido'){
+        Array.from(dur.options).forEach(function(o){ if (o.value !== DUNNO) o.remove(); });
+      }
+      dur.value = Array.from(dur.options).some(function(o){ return o.value === keepDuration; }) ? keepDuration : DUNNO;
+      const hint = $('hint-leadDur');
+      if (hint) hint.textContent = dest.value === 'Reino Unido' ? T.durationUK : T.durationOther;
+      const ageHint = $('hint-leadAge');
+      if (ageHint) ageHint.textContent = dest.value === 'Reino Unido' ? T.ageUK : dest.value === 'Irlanda' ? T.ageIreland : T.ageOther;
+      if (isExtVisible()) showExtContext();
+    }
+    dest.addEventListener('change', syncAbroadFields);
+    dur.addEventListener('change', function(){ if (isExtVisible()) showExtContext(); });
     function optText(sel){ return sel.options[sel.selectedIndex] ? sel.options[sel.selectedIndex].text : ''; }
     function detail(){
       const s = service();
       if (s === 'extraescolar') return school.value.trim() ? 'Colegio: ' + school.value.trim() : '';
-      if (s === 'extranjero') return 'Destino: ' + dest.value + ' · Duración: ' + dur.value;
+      if (s === 'extranjero') return 'Destino: ' + dest.value + ' · Duración: ' + dur.value + ($('leadCourse') && $('leadCourse').value.trim() ? ' · Curso actual: ' + $('leadCourse').value.trim() : '');
       return '';
     }
     function recap(){
@@ -775,6 +816,7 @@ window.dataLayer = window.dataLayer || [];
       if (s === 'extranjero'){
         if (dest.value !== DUNNO) parts.push(optText(dest));
         if (dur.value !== DUNNO) parts.push(optText(dur));
+        if ($('leadCourse') && $('leadCourse').value.trim()) parts.push($('leadCourse').value.trim());
       }
       return parts.filter(Boolean).join(' · ');
     }
@@ -868,7 +910,7 @@ window.dataLayer = window.dataLayer || [];
         form_type: 'lead',
         service: s,
         serviceExtra: detail(),
-        studentAge: age.value ? age.value + ' años' : '',
+        studentAge: age.value === 'Otra edad' ? 'Otra edad (ver mensaje)' : age.value ? age.value + ' años' : '',
         message: $('message').value,
         fullName: $('fullName').value,
         email: $('email').value,
@@ -908,9 +950,9 @@ window.dataLayer = window.dataLayer || [];
         goTo(1, { silent: true });
       },
       setDestination: function(name){
-        if (dest && name){ dest.value = name; }
+        if (dest && name){ dest.value = name; syncAbroadFields(); }
       },
-      // "Duración: 2 a 4 semanas" preselecciona la duración; cualquier otra nota va al mensaje
+      // A confirmed duration preselects the field; other notes go in the message.
       setNote: function(text){
         if (!text) return;
         const d = /^Duración:\s*(.+)$/.exec(text);
@@ -938,8 +980,6 @@ window.dataLayer = window.dataLayer || [];
         const keep = age.value;
         if (on){
           prevService = service();
-          const min = +age.getAttribute('data-ext-min') || 0, max = +age.getAttribute('data-ext-max') || 99;
-          Array.from(age.options).forEach(function(o){ if (o.value !== '' && (+o.value < min || +o.value > max)) o.remove(); });
           const ext = radios.filter(function(x){ return x.value === 'extranjero'; })[0];
           if (ext) ext.checked = true;
         } else {
@@ -953,7 +993,6 @@ window.dataLayer = window.dataLayer || [];
       }
     };
     let locked = false, prevService = '';
-    const ageOptions = age.innerHTML;   // la lista completa de edades, para restaurarla al salir del modo extranjero
 
     showCtx();
     goTo(1, { silent: true });
