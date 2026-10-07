@@ -369,7 +369,7 @@ picture{display:contents;}
 
   .ext-options{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:24px;}
   .ext-option{display:flex; flex-direction:column; border:1px solid var(--line); border-radius:var(--r-card); overflow:hidden; color:var(--navy); text-decoration:none; background:var(--ivory);}
-  .ext-option-photo{display:block; aspect-ratio:4/3; overflow:hidden;}
+  .ext-option-photo{display:block; aspect-ratio:3/2; overflow:hidden;}
   .ext-option-photo img{display:block; width:100%; height:100%; object-fit:cover;}
   .ext-option-copy{display:flex; flex-direction:column; flex:1; padding:24px;}
   .ext-option h3{font-size:1.75rem; line-height:1.15; margin:0 0 12px;}
@@ -384,7 +384,7 @@ picture{display:contents;}
   #view-service-extranjero .contact-point a{display:inline-flex; align-items:center; min-height:44px; color:var(--ivory); text-underline-offset:4px;}
   @media (hover:hover){.ext-option:hover .ext-option-go{text-decoration:underline; text-underline-offset:5px;}}
   @media (max-width:899px){.ext-options{grid-template-columns:minmax(0,1fr);}.ext-option{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);}.ext-option-photo{height:100%; aspect-ratio:auto;}.ext-option-copy{border-top:0; border-left:3px solid var(--c);}}
-  @media (max-width:560px){.ext-option{display:flex;}.ext-option-photo{height:auto; aspect-ratio:4/3;}.ext-option-copy{padding:20px; border-top:3px solid var(--c); border-left:0;}}
+  @media (max-width:560px){.ext-option{display:flex;}.ext-option-photo{height:auto; aspect-ratio:3/2;}.ext-option-copy{padding:20px; border-top:3px solid var(--c); border-left:0;}}
 
   /* 1 · Cabecera a sangre: la misma foto y el mismo velo suave que la portada; en móvil, la foto arriba y el texto debajo sobre marino */
   .ext-hero{position:relative; isolation:isolate; overflow:hidden; background:var(--navy); color:#fff;}
@@ -431,31 +431,35 @@ picture{display:contents;}
   .ext-esc-txt h3{font-size:clamp(1.65rem,2.6vw,2.25rem); line-height:1.12; letter-spacing:-.012em; margin:0 0 12px;}
   .ext-esc-txt > p{font-size:1.0625rem; line-height:1.65; color:var(--ext-t2); max-width:46ch;}
 
-  /* 2b · Fotos de cada escena: filas justificadas (misma altura, ancho proporcional a cada foto, sin recortes en escritorio) */
-  .ext-esc-mas{grid-column:1/-1; margin-top:-28px;}
-  .ext-esc-mas .ext-gal-grupo:first-child{margin-top:0;}
+  /* 2b · Fotos de cada escena: una sola fila que se desplaza (flechas, arrastre o teclado) y, si el visitante no pide menos movimiento, avanza sola despacio; se detiene al pasar el ratón, al tocar o con el botón de pausa */
+  .ext-carr{--h:220px; grid-column:1/-1; margin-top:-28px; min-width:0;}
+  .ext-carr-bar{display:flex; align-items:center; gap:14px; margin:0 0 14px;}
+  .ext-carr-t{display:flex; align-items:center; gap:14px; flex:1; min-width:0; margin:0; font-family:var(--font-body); font-size:.75rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-soft);}
+  .ext-carr-t::after{content:''; flex:1; height:1px; background:var(--line);}
+  .ext-carr-pause{display:inline-flex; align-items:center; gap:8px; flex:none; min-height:40px; padding:0 16px 0 12px; border:1.5px solid rgba(22,41,74,.28); border-radius:999px; background:#fff; color:var(--navy); font:700 .8125rem/1 var(--font-body); cursor:pointer; transition:border-color .15s ease, color .15s ease;}
+  .ext-carr-pause svg{width:14px; height:14px;}
+  .ext-carr-pause[hidden]{display:none;}
+  .ext-carr-pause:focus-visible, .ext-carr-nav:focus-visible{outline:3px solid var(--accent); outline-offset:2px;}
+  .ext-carr-pause .ic-play{display:none;}
+  .ext-carr-pause[data-paused="true"] .ic-pause{display:none;}
+  .ext-carr-pause[data-paused="true"] .ic-play{display:block;}
+  .ext-carr-stage{position:relative;}
+  .ext-carr-track{position:relative; display:flex; gap:14px; overflow-x:auto; scrollbar-width:none; -webkit-overflow-scrolling:touch; overscroll-behavior-x:contain; padding-bottom:2px; -webkit-mask-image:linear-gradient(90deg,transparent,#000 36px,#000 calc(100% - 36px),transparent); mask-image:linear-gradient(90deg,transparent,#000 36px,#000 calc(100% - 36px),transparent);}
+  .ext-carr-track::-webkit-scrollbar{display:none;}
+  .ext-carr-track:focus-visible{outline:3px solid var(--accent); outline-offset:4px; border-radius:var(--r-card);}
+  .ext-carr-it{flex:none; margin:0;}
+  .ext-carr-it img{display:block; height:var(--h); width:auto; aspect-ratio:var(--ar); border-radius:var(--r-card); background:var(--stone);}
+  .ext-carr-it figcaption{margin-top:8px; font-size:.875rem; font-weight:600; line-height:1.3; color:var(--navy);}
+  /* flechas sobre la fila, a media altura de las fotos; solo con ratón (en pantallas táctiles se desliza) y solo si hay JavaScript */
+  .ext-carr-nav{position:absolute; top:calc(var(--h) / 2); z-index:2; transform:translateY(-50%); display:none; place-items:center; width:44px; height:44px; padding:0; border:0; border-radius:50%; background:rgba(255,255,255,.95); color:var(--navy); box-shadow:0 2px 8px -2px rgba(22,41,74,.45); cursor:pointer; transition:background .15s ease, color .15s ease;}
+  .ext-carr-nav--prev{left:8px;}
+  .ext-carr-nav--next{right:8px;}
+  .ext-carr-nav svg{width:20px; height:20px;}
+  @media (hover:hover){ .ext-carr.is-js .ext-carr-nav{display:grid;} .ext-carr-nav:hover{background:#fff; color:var(--accent);} .ext-carr-pause:hover{border-color:var(--accent); color:var(--accent);} }
+  .ext-carr:not(.is-js) .ext-carr-pause{display:none;}
+  @media (max-width:899px){ .ext-carr{--h:190px;} }
+  @media (max-width:599px){ .ext-carr{--h:160px;} .ext-carr-pause{min-height:36px; padding:0 14px 0 10px;} .ext-carr-it figcaption{font-size:.8125rem;} }
   .ext-esc-nota{max-width:60ch; margin:44px auto 0; text-align:center; font-size:.9375rem; line-height:1.55; color:var(--ink-soft);}
-  .ext-gal-grupo{margin-top:40px;}
-  .ext-gal-t{display:flex; align-items:center; gap:14px; margin:0 0 14px; font-family:var(--font-body); font-size:.75rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-soft);}
-  .ext-gal-t::after{content:''; flex:1; height:1px; background:var(--line);}
-  .ext-gal-fila{display:flex; gap:14px; align-items:flex-start;}
-  .ext-gal-it{margin:0; flex:var(--ar) 1 0; min-width:0;}
-  .ext-gal-fila + .ext-gal-fila{margin-top:20px;}
-  /* una fila con menos fotos que su vecina (--k = proporción de sus anchos) conserva la misma altura de foto y se queda a la izquierda */
-  @media (min-width:1000px){ .ext-gal-fila[style*="--k"]{max-width:calc((100% - 28px) * var(--k) + (var(--n) - 1) * 14px);} }
-  .ext-gal-it img{display:block; width:100%; height:auto; aspect-ratio:var(--ar); object-fit:cover; object-position:var(--pos,50% 50%); border-radius:var(--r-card); background:var(--stone);}
-  .ext-gal-it figcaption{margin-top:8px; font-size:.875rem; font-weight:600; line-height:1.3; color:var(--navy);}
-  @media (max-width:999px){
-    .ext-gal-grupo{margin-top:32px;}
-    .ext-gal-fila{display:grid; grid-template-columns:repeat(3,minmax(0,1fr));}
-    .ext-gal-it img{aspect-ratio:4/3;}
-  }
-  @media (max-width:599px){
-    .ext-gal-fila{grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px 10px;}
-    .ext-gal-fila--3 .ext-gal-it:first-child{grid-column:1/-1;}
-    .ext-gal-fila--3 .ext-gal-it:first-child img{aspect-ratio:16/10;}
-    .ext-gal-it figcaption{font-size:.8125rem;}
-  }
 
   .ext-link{display:inline-flex; align-items:center; gap:8px; min-height:44px; margin-top:0; font-size:.96875rem; font-weight:700; color:var(--accent); text-decoration:none;}
   .ext-link svg{width:15px; height:15px; flex:none; transition:transform .2s ease;}
@@ -529,7 +533,7 @@ picture{display:contents;}
 
   @media (max-width:1100px){
     .ext-esc{gap:44px;}
-    .ext-esc-mas{margin-top:-14px;}
+    .ext-carr{margin-top:-14px;}
     .ext-cmp-c0{width:170px;}
     .ext-steps{grid-template-columns:repeat(2,minmax(0,1fr));}
     .ext-cmp tbody td{padding:20px 18px;}
@@ -549,7 +553,7 @@ picture{display:contents;}
     .ext-head{margin-bottom:30px;}
     .ext-escenas{gap:48px;}
     .ext-esc{grid-template-columns:minmax(0,1fr); gap:22px;}
-    .ext-esc-mas{margin-top:0;}
+    .ext-carr{margin-top:0;}
     .ext-esc--flip .ext-esc-media{order:0;}
     .ext-esc-media--duo .ext-esc-ph:last-child{margin-top:18px;}
     /* filas de destino: foto y texto, y el botón debajo a todo el ancho */

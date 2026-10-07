@@ -5,7 +5,7 @@
 #   python3 scripts/generar-ext-fotos.py
 #
 # Origen: los JPG originales de web-publica/images/internacional/ (los mismos que ya usa la home). SIN reescalado con IA, SIN
-# enfoque y SIN filtros de color: solo recortes 4:3 en las tarjetas y reducción con Lanczos (ver «Nitidez en Retina» en
+# enfoque y SIN filtros de color: solo recortes (3:2 en las tarjetas de destino) y reducción con Lanczos (ver «Nitidez en Retina» en
 # web-publica/AGENTS.md). Los anchos de cada escalera caen en el tamaño pintado exacto (1x y 2x) de los dos casos más
 # habituales, para que el navegador elija un archivo nítido:
 #   - filas de destino (230 px en escritorio; a todo el ancho en móvil): 400 (1x), 710 (2x y móvil 2x), 790 y el nativo (móvil 3x);
@@ -31,8 +31,8 @@ DUO_W = (290, 430, 580, 870)          # + el nativo: dúo de fotos verticales 4:
 FOTOS = [
     ('ext-esc-lab',    'extranjero-lab.jpg',    None, ESC_W,  1200, None),   # escena «Estudiar»
     ('ext-esc-campus', 'hero-campus-2.jpg',      None, ESC_W,  1448, None),   # escena «Vivir»
-    ('ext-uk-colegio', 'vivirlo-colegio.jpg',    None, CARD_W, 1000, None),   # fila del Reino Unido
-    ('ext-ie-alumnas', 'extranjero-alumnas.jpg', 0.22, CARD_W, 1000, 'ext-ie-alumnas.jpg'),   # fila de Irlanda
+    ('ext-uk-balcon', 'uk-balcon.jpg',          None, CARD_W, 1000, None),   # tarjeta del Reino Unido (foto aportada por Jaime el 07-10-2026, recorte 3:2 a 1200 px en uk-balcon.jpg)
+    ('ext-ie-escalera', 'ie-escalera.jpg',      None, CARD_W, 1000, None),   # tarjeta de Irlanda (foto aportada por Jaime el 07-10-2026, recorte 3:2 a 1200 px en ie-escalera.jpg)
     ('ext-us-aula',   'usa-aula.jpg',         None, CARD_W, 1000, None),   # tarjeta y fila de Estados Unidos (foto de aula 4:3 aportada por Jaime, reducida a 1000 px en usa-aula.jpg)
     ('usa-aula-v',    'usa-aula-vertical.jpg', None, (480, 800), 1000, None),   # tarjeta de Estados Unidos de la portada (4:5, recorte de la foto de aula; en móvil usa ext-us-aula 16:10)
     ('ext-duo-rugby', 'irlanda-rugby.jpg',       None, DUO_W,  1080, None),   # escena «Practicar» (izquierda)
