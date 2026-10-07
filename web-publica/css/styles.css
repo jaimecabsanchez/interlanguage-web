@@ -440,16 +440,18 @@ picture{display:contents;}
   .ext-gal-t::after{content:''; flex:1; height:1px; background:var(--line);}
   .ext-gal-fila{display:flex; gap:14px; align-items:flex-start;}
   .ext-gal-it{margin:0; flex:var(--ar) 1 0; min-width:0;}
+  .ext-gal-fila + .ext-gal-fila{margin-top:20px;}
+  /* una fila con menos fotos que su vecina (--k = proporción de sus anchos) conserva la misma altura de foto y se queda a la izquierda */
+  @media (min-width:1000px){ .ext-gal-fila[style*="--k"]{max-width:calc((100% - 28px) * var(--k) + (var(--n) - 1) * 14px);} }
   .ext-gal-it img{display:block; width:100%; height:auto; aspect-ratio:var(--ar); object-fit:cover; object-position:var(--pos,50% 50%); border-radius:var(--r-card); background:var(--stone);}
   .ext-gal-it figcaption{margin-top:8px; font-size:.875rem; font-weight:600; line-height:1.3; color:var(--navy);}
   @media (max-width:999px){
     .ext-gal-grupo{margin-top:32px;}
     .ext-gal-fila{display:grid; grid-template-columns:repeat(3,minmax(0,1fr));}
-    .ext-gal-fila--4{grid-template-columns:repeat(2,minmax(0,1fr));}
     .ext-gal-it img{aspect-ratio:4/3;}
   }
   @media (max-width:599px){
-    .ext-gal-fila, .ext-gal-fila--4{grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px 10px;}
+    .ext-gal-fila{grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px 10px;}
     .ext-gal-fila--3 .ext-gal-it:first-child{grid-column:1/-1;}
     .ext-gal-fila--3 .ext-gal-it:first-child img{aspect-ratio:16/10;}
     .ext-gal-it figcaption{font-size:.8125rem;}
