@@ -25,10 +25,12 @@ BASE = os.path.join(HERE, '..', 'web-publica', 'images', 'internacional') + '/'
 CARD_W = (400, 710, 790)              # + el nativo del recorte (máx. 1000): filas de destino (230 px de ancho en escritorio, a todo el ancho en móvil)
 ESC_W = (480, 590, 780, 960, 1180)    # + el nativo: foto de una escena (584 px de ancho en escritorio >= 1328 px)
 GAL_W = (360, 520, 720)                # + el nativo (máx. 1000): galería «Más actividades» (de 163 px en móvil a unos 450 px en escritorio)
+HERO_W = (640, 960, 1280, 1600)       # + el nativo (máx. 1916): cabecera a sangre de «Estudiar en el extranjero» (de 390 px en móvil a 1920 px en escritorio)
 DUO_W = (290, 430, 580, 870)          # + el nativo: dúo de fotos verticales 4:5 de una escena (285 px de ancho cada una en escritorio)
 
 # nombre de salida, JPG de origen, recorte 4:3 (fracción vertical del sobrante; None = sin recortar), escalera, ancho máximo, JPG de respaldo que se crea (None = ya existe)
 FOTOS = [
+    ('ext-hero-castillo', 'hero-castillo.jpg', None, HERO_W, 1916, None),   # cabecera de «Estudiar en el extranjero» (foto aportada por Jaime el 07-10-2026, 1916 px)
     ('ext-esc-lab',    'extranjero-lab.jpg',    None, ESC_W,  1200, None),   # escena «Estudiar»
     ('ext-esc-campus', 'hero-campus-2.jpg',      None, ESC_W,  1448, None),   # escena «Vivir»
     ('ext-uk-balcon', 'uk-balcon.jpg',          None, CARD_W, 1000, None),   # tarjeta del Reino Unido (foto aportada por Jaime el 07-10-2026, recorte 3:2 a 1200 px en uk-balcon.jpg)
