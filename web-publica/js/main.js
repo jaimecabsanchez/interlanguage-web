@@ -424,6 +424,7 @@ window.dataLayer = window.dataLayer || [];
     function showing(r){ const e = $('err-' + r.id); return !!e && e.classList.contains('show'); }
     function paint(r, bad){
       const e = $('err-' + r.id);
+      if (e && bad && r.msg) e.textContent = r.msg();
       if (e) e.classList.toggle('show', bad);
       r.control.classList.toggle('invalid', bad);
       if (r.group) r.control.classList.toggle('invalid-group', bad);
@@ -720,6 +721,10 @@ window.dataLayer = window.dataLayer || [];
     const radios = Array.from(form.querySelectorAll('input[name="service"]'));
     const ctx = $('leadCtx');
     const age = $('leadAge'), school = $('leadSchool'), dest = $('leadDest'), dur = $('leadDur');
+    const course = $('leadCourse'), start = $('leadStart'), studentName = $('leadStudentName'), currentSchool = $('leadCurrentSchool'), english = $('leadEnglish');
+    const serviceSet = $('leadServiceSet'), picked = $('leadPicked'), pickedText = $('leadPickedText'), pickedChange = $('leadPickedChange');
+    const prefRadios = Array.from(form.querySelectorAll('input[name="contactPreference"]'));
+    const phone = $('phone'), phoneReq = $('phoneReq'), phoneOpt = $('phoneOpt');
     const steps = Array.from(form.querySelectorAll('.form-step'));
     const inds = Array.from(form.querySelectorAll('.lead-steps-item'));
     const nextBtn = $('stepNextBtn'), backBtn = $('stepBackBtn'), submitBtn = $('submitBtn');
@@ -737,11 +742,21 @@ window.dataLayer = window.dataLayer || [];
       const s = c && c.closest('label') && c.closest('label').querySelector('strong');
       return s ? s.textContent : '';
     }
+    // «Estudiar en el extranjero» es la consulta con más campos: al elegirla, las cuatro tarjetas se recogen en una línea («Estudiar en el extranjero · Cambiar»)
+    // para que el formulario no se haga largo. «Cambiar» las vuelve a abrir; en la página de extranjero (modo fijo) no se muestran ni se recogen.
+    let pickerOpen = false;
+    function syncPicker(){
+      const collapsed = service() === 'extranjero' && !locked && !pickerOpen;
+      serviceSet.hidden = collapsed;
+      picked.hidden = !collapsed;
+      if (collapsed) pickedText.textContent = serviceLabel();
+    }
     // muestra solo los campos del servicio elegido
     function showCtx(){
       const s = service();
       ctx.hidden = !s;
       form.querySelectorAll('[data-ctx]').forEach(function(el){ el.hidden = el.getAttribute('data-ctx') !== s; });
+      syncPicker();
       syncAbroadFields();
     }
     // Destination conditions apply to enquiries from this page and from the home.
@@ -776,7 +791,17 @@ window.dataLayer = window.dataLayer || [];
     function detail(){
       const s = service();
       if (s === 'extraescolar') return school.value.trim() ? 'Colegio: ' + school.value.trim() : '';
-      if (s === 'extranjero') return 'Destino: ' + dest.value + ' · Duración: ' + dur.value + ($('leadCourse') && $('leadCourse').value.trim() ? ' · Curso actual: ' + $('leadCourse').value.trim() : '');
+      if (s === 'extranjero'){
+        // los valores de las opciones van siempre en español: es lo que llega al equipo
+        const bits = [];
+        if (start.value) bits.push('Inicio: ' + start.value);
+        bits.push('Destino: ' + dest.value, 'Duración: ' + dur.value);
+        if (course.value) bits.push('Curso actual: ' + course.value);
+        if (studentName.value.trim()) bits.push('Alumno/a: ' + studentName.value.trim());
+        if (currentSchool.value.trim()) bits.push('Colegio actual: ' + currentSchool.value.trim());
+        if (english.value) bits.push('Nivel de inglés: ' + english.value);
+        return bits.join(' · ');
+      }
       return '';
     }
     function recap(){
@@ -787,7 +812,8 @@ window.dataLayer = window.dataLayer || [];
       if (s === 'extranjero'){
         if (dest.value !== DUNNO) parts.push(optText(dest));
         if (dur.value !== DUNNO) parts.push(optText(dur));
-        if ($('leadCourse') && $('leadCourse').value.trim()) parts.push($('leadCourse').value.trim());
+        if (course.value) parts.push(optText(course));
+        if (start.value && start.value !== 'Aún no lo sabemos') parts.push(optText(start));
       }
       return parts.filter(Boolean).join(' · ');
     }
@@ -795,14 +821,30 @@ window.dataLayer = window.dataLayer || [];
     // ---- validación (mensaje junto al campo; los valores nunca se borran) ----
     const RE_EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     function validTel(v){ return /^\+?\d{8,15}$/.test(v.replace(/[\s().-]/g, '')); }
+    function pref(){
+      const c = prefRadios.filter(function(r){ return r.checked; })[0];
+      return c ? c.value : '';
+    }
+    function needPhone(){ return pref() === 'Por teléfono'; }
+    // el asterisco y «(opcional)» del teléfono siguen a la preferencia de contacto
+    function syncPhoneReq(){
+      const need = needPhone();
+      phoneReq.hidden = !need;
+      phoneOpt.hidden = need;
+      phone.required = need;
+      phone.setAttribute('aria-required', need ? 'true' : 'false');
+    }
     function rule(step, id, ok, extra){ return Object.assign({ step: step, id: id, control: $(id), ok: ok }, extra || {}); }
     const rules = [
       rule(1, 'service', function(){ return !!service(); }, { control: form.querySelector('.choice-grid'), group: true, focusEl: radios[0] }),
       rule(1, 'leadAge', function(){ return age.value !== ''; }, { applies: function(){ return !!service(); } }),
+      rule(1, 'leadCourse', function(){ return course.value !== ''; }, { applies: function(){ return service() === 'extranjero'; } }),
+      rule(1, 'leadStart', function(){ return start.value !== ''; }, { applies: function(){ return service() === 'extranjero'; } }),
       rule(1, 'leadSchool', function(){ return school.value.trim() !== ''; }, { applies: function(){ return service() === 'extraescolar'; } }),
       rule(2, 'fullName', function(){ return $('fullName').value.trim() !== ''; }),
       rule(2, 'email', function(){ return RE_EMAIL.test($('email').value.trim()); }),
-      rule(2, 'phone', function(){ return validTel($('phone').value.trim()); }),
+      rule(2, 'phone', function(){ const v = phone.value.trim(); return needPhone() ? validTel(v) : (v === '' || validTel(v)); },
+        { msg: function(){ return phone.getAttribute(needPhone() && !phone.value.trim() ? 'data-err-req' : 'data-err-fmt'); } }),
       rule(2, 'rgpd', function(){ return $('rgpd').checked; })
     ];
     const byId = {};
@@ -837,7 +879,21 @@ window.dataLayer = window.dataLayer || [];
     radios.forEach(function(r){
       r.addEventListener('change', function(){
         showCtx();
-        [byId.leadAge, byId.leadSchool].forEach(function(x){ if (attempted[1]) check(x); else paint(x, false); });
+        [byId.leadAge, byId.leadSchool, byId.leadCourse, byId.leadStart].forEach(function(x){ if (attempted[1]) check(x); else paint(x, false); });
+      });
+      // un clic en una tarjeta (aunque ya estuviera elegida) vuelve a recoger o abrir la lista según el servicio
+      r.addEventListener('click', function(){ pickerOpen = false; showCtx(); });
+    });
+    pickedChange.addEventListener('click', function(){
+      pickerOpen = true;
+      showCtx();
+      const r = radios.filter(function(x){ return x.checked; })[0];
+      if (r){ serviceSet.scrollIntoView(scrollOpts('nearest')); r.focus({ preventScroll: true }); }
+    });
+    prefRadios.forEach(function(r){
+      r.addEventListener('change', function(){
+        syncPhoneReq();
+        if (attempted[2] || showing(byId.phone)) check(byId.phone);
       });
     });
 
@@ -852,7 +908,8 @@ window.dataLayer = window.dataLayer || [];
       if (n === 2) recapEl.textContent = recap();
       if (opts && opts.silent) return;
       form.closest('.form-card').scrollIntoView(scrollOpts('start'));
-      const first = n === 2 ? $('fullName') : (radios.filter(function(r){ return r.checked; })[0] || radios[0]);
+      const cardsHidden = serviceSet.hidden || form.classList.contains('is-locked');
+      const first = n === 2 ? $('fullName') : (cardsHidden ? age : (radios.filter(function(r){ return r.checked; })[0] || radios[0]));
       if (first) first.focus({ preventScroll: true });
     }
     function focusFirstBad(bad){
@@ -886,6 +943,7 @@ window.dataLayer = window.dataLayer || [];
         fullName: $('fullName').value,
         email: $('email').value,
         phone: $('phone').value,
+        contactPreference: pref(),
         rgpd: $('rgpd').checked ? '1' : '',
         website: ($('leadHp') || {}).value || ''
       });
@@ -917,6 +975,7 @@ window.dataLayer = window.dataLayer || [];
         const r = radios.filter(function(x){ return x.value === value; })[0];
         if (!r) return;
         r.checked = true;
+        pickerOpen = false;
         showCtx();
         goTo(1, { silent: true });
       },
@@ -947,6 +1006,7 @@ window.dataLayer = window.dataLayer || [];
         on = !!on;
         if (on === locked) return;
         locked = on;
+        pickerOpen = false;
         form.classList.toggle('is-locked', on);
         const keep = age.value;
         if (on){
@@ -965,6 +1025,7 @@ window.dataLayer = window.dataLayer || [];
     };
     let locked = false, prevService = '';
 
+    syncPhoneReq();
     showCtx();
     goTo(1, { silent: true });
     window.ilLead.lock(isExtVisible());   // carga directa de #servicio-extranjero: el formulario se crea después del router

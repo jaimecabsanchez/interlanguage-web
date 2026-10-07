@@ -99,10 +99,11 @@ if ($type === 'campamento') {
         'Edad/curso alumno: '   . field('studentAge'),
         'Mensaje: '             . field('message'),
         '',
-        'CONTACTO',
+        'CONTACTO (padre, madre o tutor/a)',
         'Nombre: '    . $name,
         'Email: '     . $email,
         'Teléfono: '  . $phone,
+        'Prefiere que le contacten: ' . (field('contactPreference') !== '' ? field('contactPreference') : 'sin indicar'),
     ];
 }
 $body = implode("\n", $lines) . "\n\n— Enviado automáticamente desde el formulario de la web.";

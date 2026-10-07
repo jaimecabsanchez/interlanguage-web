@@ -33,6 +33,12 @@ Cabecera con «Año escolar» y los tres países destacados → tarjetas de dest
 
 En accesos de la home se retiran coordinador local, 24/7, «sin perder el curso», plazo de 24 horas del bloque internacional y duraciones sin respaldo. El buscador 7–10 permite consultar UK desde 7 e Irlanda desde 10. No se añade equipo ni testimonios sin materiales autorizados.
 
+## Portada y formulario de consulta (07-10-2026)
+
+A petición de Jaime: nuevo subtítulo de la cabecera de la portada («Desde estudiar en Reino Unido, Irlanda y Estados Unidos hasta nuestra especialización en campamentos y extraescolares de inglés»; él escribió «Inglaterra», se mantiene «Reino Unido»); camino por edades con Descubrir 3–9, Crecer 9–12 (él pidió «la edad correcta» y se encadena con el nuevo tramo anterior), Avanzar 12–17 y Vivirlo 10–18, con sus textos y tres líneas con tick (profesores nativos, seguimiento curso a curso y método TalenTalk®). Formulario: texto de la izquierda, cuatro tarjetas iguales sin separador «o», recogida en una línea al elegir «Estudiar en el extranjero», campos nuevos del paso 1 (curso en desplegable, inicio, destino y duración, datos opcionales del alumno/a) y paso 2 reordenado con preferencia de contacto (el teléfono solo es obligatorio si piden llamada). La opción neutra de destino y de duración (valor «Aún no lo sé») pasa a llamarse «Estamos abiertos a opciones» y «Necesitamos orientación» en lugar de añadir una segunda opción equivalente.
+
+Como Jaime sustituyó «Respuesta en menos de 24 h» por «Os responderemos personalmente», se retiró también la promesa de 24 horas del aviso bajo el botón y del mensaje de envío (decisión mía, reversible). Del alumno/a solo se pide el nombre, sin apellidos. **Sigue pendiente la entrega real de los envíos** (`form-handler.php` da 404 en Netlify): hasta resolverlo, el formulario no llega al equipo.
+
 ## Confirmaciones agrupadas
 
 1. **Oferta y admisión:** programa concreto de Estados Unidos; Irlanda: curso de entrada (especialmente 10–11), duración, incorporación y apoyo de inglés; UK: centros/plazas de uno y dos trimestres, calendario vigente y equivalencia del curso escocés. Reconfirmar atributos de guías antes de cada propuesta.
