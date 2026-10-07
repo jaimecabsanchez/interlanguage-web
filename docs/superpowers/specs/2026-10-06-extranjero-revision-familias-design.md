@@ -25,3 +25,5 @@ Dudas y límites: `docs/extranjero-pendientes.md`. El encargo autoriza implement
 ## Verificación realizada
 
 Los cinco tests exigidos por AGENTS pasan (100 comprobaciones). Sintaxis JS y `git diff --check` correctos. Auditoría HTML con biblioteca estándar: IDs únicos, recursos de imagen existentes, anclas, tres tarjetas y tres escenas en ES/EN, sin frases internas prohibidas. Navegador: 320/768/1024/1440 px sin desbordamiento horizontal; acción principal visible a 320×740; consola sin errores. Comprobados por teclado el detalle, consulta de dos trimestres UK, resumen con edad 7 y curso, vuelta con foco al CTA, cambio a Irlanda/Estados Unidos y retirada de duraciones no documentadas. Acceso directo a Irlanda en EN y restauración del selector 3–18 para extraescolar. No se ha enviado el formulario: el endpoint real devuelve 404.
+
+> Actualización 07-10-2026: las tarjetas ya no llaman a `openExtDetail` ni existe la sección «Las condiciones de cada destino». Las tarjetas abren el formulario con el destino y las direcciones por destino bajan a su tarjeta. Estado vigente en `docs/extranjero-pendientes.md` y `web-publica/AGENTS.md`.
