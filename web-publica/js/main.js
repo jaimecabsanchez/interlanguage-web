@@ -182,7 +182,7 @@ window.dataLayer = window.dataLayer || [];
     contactSection.classList.toggle('contact--ext', inExt);
     if (window.ilLead) window.ilLead.lock(inExt);   // en la carga directa el formulario aún no existe: se sincroniza al final de su bloque
   }
-  // «Estudiar en el extranjero» tiene una dirección por destino (#servicio-extranjero-irlanda): abre la página y despliega ese destino.
+  // «Estudiar en el extranjero» tiene una dirección por destino (#servicio-extranjero-irlanda): abre la página y lleva a la tarjeta de ese destino.
   // Las direcciones antiguas (#servicio-extranjero) siguen funcionando.
   const EXT_SLUGS = ['reino-unido', 'irlanda', 'estados-unidos'];
   function resolveService(key){
@@ -190,9 +190,7 @@ window.dataLayer = window.dataLayer || [];
     if (m) return EXT_SLUGS.indexOf(m[1]) !== -1 ? { view: 'extranjero', slug: m[1] } : null;
     return document.getElementById('view-service-' + key) ? { view: key, slug: null } : null;
   }
-  function extHash(slug){ return '#servicio-extranjero' + (slug ? '-' + slug : ''); }
   function reduceMotion(){ return !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches); }
-  // despliega el detalle de un destino (los de la página se cierran entre sí) y, si se pide, baja hasta él
   // «auto» obedece a html{scroll-behavior:smooth} y anima: en saltos que deben ser inmediatos (restaurar la posición, ir a un destino al cargar)
   // se desactiva un instante, porque en una página larga la animación tarda más que la propia navegación
   function jumpScroll(fn){
@@ -201,13 +199,13 @@ window.dataLayer = window.dataLayer || [];
     fn();
     root.style.scrollBehavior = prev;
   }
-  function openExtDetail(slug, scroll){
-    const d = document.getElementById('ext-det-' + slug);
-    if (!d) return;
-    d.open = true;
-    if (scroll) requestAnimationFrame(function(){
-      if (scroll === 'smooth' && !reduceMotion()) { d.scrollIntoView({ behavior: 'smooth', block: 'start' }); return; }
-      jumpScroll(function(){ d.scrollIntoView({ block: 'start' }); });
+  // baja hasta la tarjeta de un destino (sección «Destinos»); «scroll» es 'smooth' o 'auto' (inmediato)
+  function showExtDestino(slug, scroll){
+    const card = document.querySelector('#ext-opciones .ext-option[data-destino="' + slug + '"]');
+    if (!card) return;
+    requestAnimationFrame(function(){
+      if (scroll === 'smooth' && !reduceMotion()) { card.scrollIntoView({ behavior: 'smooth', block: 'start' }); return; }
+      jumpScroll(function(){ card.scrollIntoView({ block: 'start' }); });
     });
   }
 
@@ -286,7 +284,7 @@ window.dataLayer = window.dataLayer || [];
     const r = resolveService(key);
     if (!r) return;
     showView('view-service-' + r.view);
-    if (r.slug) openExtDetail(r.slug, 'smooth');
+    if (r.slug) showExtDestino(r.slug, 'smooth');
     pushEvent('clic_cta', { cta_id: 'servicio-subpagina-' + key });
     // pushState (no replaceState): así el botón "atrás" del navegador vuelve a la home.
     history.pushState({ view: 'service-' + r.view }, '', '#servicio-' + key);
@@ -631,35 +629,6 @@ window.dataLayer = window.dataLayer || [];
     });
   })();
 
-  // «Conocer X» en las fichas de destino: despliega el detalle de ese destino
-  document.querySelectorAll('[data-ext-detail]').forEach(function(a){
-    a.addEventListener('click', function(e){
-      e.preventDefault();
-      openExtDetail(a.getAttribute('data-ext-detail'), 'smooth');
-      pushEvent('clic_cta', { cta_id: a.getAttribute('data-cta') || ('extranjero-conocer-' + a.getAttribute('data-ext-detail')) });
-    });
-  });
-  // la dirección refleja el destino desplegado (replaceState: no ensucia el historial); al cerrarlo vuelve a #servicio-extranjero
-  document.querySelectorAll('.ext-det').forEach(function(d){
-    const sm = d.querySelector('summary');
-    if (sm) sm.addEventListener('click', function(){
-      if (!d.open) pushEvent('clic_cta', { cta_id: 'ext-conocer-' + d.getAttribute('data-destino') });
-    });
-    d.addEventListener('toggle', function(){
-      if (!isExtVisible()) return;
-      const h = extHash(d.getAttribute('data-destino'));
-      if (d.open) {
-        history.replaceState(history.state, '', h);
-        // acordeón exclusivo: al cerrarse la fila abierta antes, la nueva puede quedar fuera de pantalla; se trae a la vista si hace falta
-        requestAnimationFrame(function(){
-          const r = d.getBoundingClientRect();
-          if (r.top < 0 || r.top > window.innerHeight * 0.55) d.scrollIntoView({ behavior: reduceMotion() ? 'auto' : 'smooth', block: 'start' });
-        });
-      }
-      else if (location.hash === h) history.replaceState(history.state, '', extHash(''));
-    });
-  });
-
   // cualquier enlace interno (#ancla) dentro de la home: si estamos en una subpágina, vuelve a home primero
   document.querySelectorAll('a[href^="#"]').forEach(function(link){
     if (link.hasAttribute('data-jump-service') || link.hasAttribute('data-back') || link.hasAttribute('data-cta-service')) return;
@@ -707,7 +676,7 @@ window.dataLayer = window.dataLayer || [];
       const r = resolveService(hash.replace('servicio-',''));
       if (r){
         showView('view-service-' + r.view, { silent: true });
-        if (r.slug) openExtDetail(r.slug, 'auto');
+        if (r.slug) showExtDestino(r.slug, 'auto');
       }
     }
   })();
@@ -722,9 +691,11 @@ window.dataLayer = window.dataLayer || [];
       if (r){
         const same = r.view === 'extranjero' && isExtVisible();
         showView('view-service-' + r.view, same ? { keepScroll: true, silent: true } : undefined);
-        if (r.slug) openExtDetail(r.slug, false);
         if (same && typeof st.y === 'number'){
-          jumpScroll(function(){ window.scrollTo(0, st.y); });
+          // si el formulario se acaba de abrir, su desplazamiento suave puede seguir en marcha: «instant» lo cancela y se repite un fotograma después
+          const back = function(){ jumpScroll(function(){ window.scrollTo({ top: st.y, left: 0, behavior: 'instant' }); }); };
+          back();
+          requestAnimationFrame(back);
           if (extOrigin) extOrigin.focus({ preventScroll: true });
         } else if (same && st.extForm) scrollToExtContact();
         return;
@@ -734,7 +705,7 @@ window.dataLayer = window.dataLayer || [];
   }
   window.addEventListener('popstate', syncViewFromHash);
 
-  document.querySelectorAll('[data-cta]:not([data-cta-service]):not([data-advise]):not([data-ext-detail])').forEach(function(el){   // los que llevan data-cta-service o data-advise ya lo miden arriba
+  document.querySelectorAll('[data-cta]:not([data-cta-service]):not([data-advise])').forEach(function(el){   // los que llevan data-cta-service o data-advise ya lo miden arriba
     el.addEventListener('click', function(){ pushEvent('clic_cta', { cta_id: el.getAttribute('data-cta'), cta_text: el.textContent.trim() }); });
   });
 
