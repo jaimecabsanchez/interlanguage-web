@@ -20,7 +20,9 @@ Solo atributos descriptivos de centros ACTIVO. No se publican nombres, tarifas d
 | Irlanda | 10–18 por decisión de Jaime. Curso concreto depende del colegio. La guía no acredita secundaria a los 10–11; sigue pendiente concretarlo. |
 | Formulario | UK 7–18, Irlanda 10–18, «Otra edad» para consultas fuera del rango sin prometer admisión. Para Estados Unidos/destino sin elegir el selector recoge consultas, no elegibilidad. Curso actual opcional viaja en `serviceExtra`. |
 | Duración UK | P. 5: short stays de 1–2 terms limitados; p. 10: normalmente curso completo. Selector y CTA distinguen 1 trimestre, 2 trimestres y curso completo solo para UK. |
-| Duración Irlanda/Estados Unidos | Sin oferta acreditada: «Quiero que me aconsejen»; preferencias libres en el mensaje. Retirados 2–4 semanas y semestre del selector académico. |
+| Duración Irlanda | Curso completo y trimestres, confirmado por Jaime el 08-10-2026. La disponibilidad se confirma con cada centro. El formulario mantiene la consulta de preferencias en el mensaje. |
+| Duración Estados Unidos | Sin oferta acreditada: consulta y preferencias libres en el mensaje. Retirados 2–4 semanas y semestre del selector académico. |
+| Antelación recomendada | Un curso escolar, confirmado por Jaime el 08-10-2026, porque las plazas pueden agotarse. Las consultas posteriores se valoran con las plazas disponibles, sin prometer una opción. |
 | Alojamiento UK | Internado full/weekly/flexi según centro. Detalle conserva apertura y guardian exigido por algunos; no se atribuye este servicio a Interlanguage. |
 | Alojamiento Irlanda | Internado de 5, 5½ o 7 días, o colegio de día con familia anfitriona. Algunos internados cierran fines de semana. |
 | Regreso académico | Retirada la afirmación universal de que toda vuelta exige convalidación. Remisión a requisitos oficiales para el caso concreto, sin garantía ni promesa de gestionar el trámite. |
@@ -45,7 +47,7 @@ Como Jaime sustituyó «Respuesta en menos de 24 h» por «Os responderemos pers
 
 **Proceso revisado el 08-10-2026:** cuatro etapas: primera orientación, propuesta de servicio (alcance, honorarios y condiciones), selección y solicitud tras aceptar la propuesta, y preparación y acompañamiento acordados. Sustituye los seis pasos anteriores en ES y EN; la rejilla pasa a dos columnas en escritorio y una por debajo de 900 px. La web no fija importes ni declara gratuita la orientación inicial. Siguen pendientes las tarifas y el detalle operativo de los servicios indicados a continuación.
 
-1. **Oferta y admisión:** programa concreto de Estados Unidos; Irlanda: curso de entrada (especialmente 10–11), duración, incorporación y apoyo de inglés; UK: centros/plazas de uno y dos trimestres, calendario vigente y equivalencia del curso escocés. Reconfirmar atributos de guías antes de cada propuesta.
+1. **Oferta y admisión:** programa concreto de Estados Unidos; Irlanda: curso de entrada (especialmente 10–11), incorporación y apoyo de inglés; UK: centros/plazas de uno y dos trimestres, calendario vigente y equivalencia del curso escocés. Reconfirmar atributos de guías antes de cada propuesta.
 2. **Presupuesto y servicio:** tarifa de Interlanguage, inclusiones/exclusiones, pago/cancelación y alcance del acompañamiento antes/durante/después. Responsable en destino, guardian, seguro, emergencias y seguimiento siguen pendientes en el checklist; no se publican como incluidos.
 3. **Material y respaldo:** autorizaciones de imagen de menores, procedencia y uso de fotos; fotografía de internado/familia anfitriona; equipo identificado y testimonios con consentimiento. Documentación corporativa y relación con colegios antes de ampliar respaldo.
 4. **Entrega de consultas:** decidir/configurar backend compatible con Netlify y verificar recepción real. Bloquea publicar como formulario operativo.
