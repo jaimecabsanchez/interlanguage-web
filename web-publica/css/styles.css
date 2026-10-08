@@ -442,20 +442,17 @@ picture{display:contents;}
   .ext-esc-txt h3{font-size:clamp(1.65rem,2.6vw,2.25rem); line-height:1.12; letter-spacing:-.012em; margin:0 0 12px;}
   .ext-esc-txt > p{font-size:1.0625rem; line-height:1.65; color:var(--ext-t2); max-width:46ch;}
 
-  /* 2b · Fotos de cada escena: desplazamiento manual con flechas, deslizamiento o teclado; reproducción automática opcional */
+  /* 2b · Fotos de cada escena: tira manual con flechas, deslizamiento o teclado */
   .ext-carr{--h:220px; grid-column:1/-1; margin-top:-28px; min-width:0;}
   .ext-carr-bar{display:flex; align-items:center; gap:14px; margin:0 0 14px;}
   .ext-carr-t{display:flex; align-items:center; gap:14px; flex:1; min-width:0; margin:0; font-family:var(--font-body); font-size:.75rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-soft);}
   .ext-carr-t::after{content:''; flex:1; height:1px; background:var(--line);}
-  .ext-carr-pause{display:inline-flex; align-items:center; gap:8px; flex:none; min-height:40px; padding:0 16px 0 12px; border:1.5px solid rgba(22,41,74,.28); border-radius:999px; background:#fff; color:var(--navy); font:700 .8125rem/1 var(--font-body); cursor:pointer; transition:border-color .15s ease, color .15s ease;}
-  .ext-carr-pause svg{width:14px; height:14px;}
-  .ext-carr-pause[hidden]{display:none;}
-  .ext-carr-pause:focus-visible, .ext-carr-nav:focus-visible{outline:3px solid var(--accent); outline-offset:2px;}
-  .ext-carr-pause .ic-play{display:none;}
-  .ext-carr-pause[data-paused="true"] .ic-pause{display:none;}
-  .ext-carr-pause[data-paused="true"] .ic-play{display:block;}
+  .ext-carr-nav:focus-visible{outline:3px solid var(--accent); outline-offset:2px;}
   .ext-carr-stage{position:relative;}
-  .ext-carr-track{position:relative; display:flex; gap:14px; overflow-x:auto; scrollbar-width:none; -webkit-overflow-scrolling:touch; overscroll-behavior-x:contain; padding-bottom:2px; -webkit-mask-image:linear-gradient(90deg,transparent,#000 36px,#000 calc(100% - 36px),transparent); mask-image:linear-gradient(90deg,transparent,#000 36px,#000 calc(100% - 36px),transparent);}
+  .ext-carr-track{position:relative; display:flex; gap:14px; overflow-x:auto; scrollbar-width:none; -webkit-overflow-scrolling:touch; overscroll-behavior-x:contain; padding-bottom:2px;}
+  .ext-carr[data-prev="true"] .ext-carr-track{-webkit-mask-image:linear-gradient(90deg,transparent,#000 36px); mask-image:linear-gradient(90deg,transparent,#000 36px);}
+  .ext-carr[data-next="true"] .ext-carr-track{-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 36px),transparent); mask-image:linear-gradient(90deg,#000 calc(100% - 36px),transparent);}
+  .ext-carr[data-prev="true"][data-next="true"] .ext-carr-track{-webkit-mask-image:linear-gradient(90deg,transparent,#000 36px,#000 calc(100% - 36px),transparent); mask-image:linear-gradient(90deg,transparent,#000 36px,#000 calc(100% - 36px),transparent);}
   .ext-carr-track::-webkit-scrollbar{display:none;}
   .ext-carr-track:focus-visible{outline:3px solid var(--accent); outline-offset:4px; border-radius:var(--r-card);}
   .ext-carr-it{flex:none; margin:0;}
@@ -466,10 +463,10 @@ picture{display:contents;}
   .ext-carr-nav--prev{left:8px;}
   .ext-carr-nav--next{right:8px;}
   .ext-carr-nav svg{width:20px; height:20px;}
-  @media (hover:hover){ .ext-carr.is-js .ext-carr-nav{display:grid;} .ext-carr-nav:hover{background:#fff; color:var(--accent);} .ext-carr-pause:hover{border-color:var(--accent); color:var(--accent);} }
-  .ext-carr:not(.is-js) .ext-carr-pause{display:none;}
+  .ext-carr-nav:disabled{visibility:hidden;}
+  @media (hover:hover){ .ext-carr.is-js .ext-carr-nav{display:grid;} .ext-carr-nav:hover{background:#fff; color:var(--accent);} }
   @media (max-width:899px){ .ext-carr{--h:190px;} }
-  @media (max-width:599px){ .ext-carr{--h:160px;} .ext-carr-pause{min-height:36px; padding:0 14px 0 10px;} .ext-carr-it figcaption{font-size:.8125rem;} }
+  @media (max-width:599px){ .ext-carr{--h:160px;} .ext-carr-it figcaption{font-size:.8125rem;} }
   .ext-esc-nota{max-width:60ch; margin:44px auto 0; text-align:center; font-size:.9375rem; line-height:1.55; color:var(--ink-soft);}
 
   .ext-link{display:inline-flex; align-items:center; gap:8px; min-height:44px; margin-top:0; font-size:.96875rem; font-weight:700; color:var(--accent); text-decoration:none;}

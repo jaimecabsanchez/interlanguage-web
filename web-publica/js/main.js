@@ -1031,111 +1031,31 @@ window.dataLayer = window.dataLayer || [];
     window.ilLead.lock(isExtVisible());   // carga directa de #servicio-extranjero: el formulario se crea después del router
   })();
 
-  // ---- fotos de actividades de «Estudiar en el extranjero»: desplazamiento manual por defecto ----
-  // Flechas, deslizamiento y teclado funcionan sin activar la reproducción. El botón permite iniciar el movimiento automático;
-  // entonces se pausa con el ratón, el foco del teclado, los controles, la pestaña oculta o la fila fuera de pantalla.
-  // Las copias enlazan el final con el principio. Con «reducir movimiento» solo se ofrece el desplazamiento manual.
+  // ---- fotos de actividades: una tira manual, sin bucle ni reproducción automática ----
   (function(){
-    var SPEED = 34, QUIET_MS = 6000;   // px por segundo; espera tras tocar o usar un control
     var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    function mod(a, n){ return ((a % n) + n) % n; }
     document.querySelectorAll('[data-carr]').forEach(function(root){
       var track = root.querySelector('.ext-carr-track');
       var prev = root.querySelector('[data-dir="-1"]'), next = root.querySelector('[data-dir="1"]');
-      var pauseBtn = root.querySelector('.ext-carr-pause');
       if (!track) return;
       root.classList.add('is-js');
-      var items = Array.prototype.slice.call(track.children);   // las fotos reales; las copias llevan .is-clone
-      var userPaused = true, hover = false, focused = false, visible = false, lastTouch = -1e9;
-      var P = 0, K = 0, builtW = 0, pos = null, settleT = 0, raf = 0, last = 0;
-      function now(){ return window.performance && performance.now ? performance.now() : Date.now(); }
-      function touch(){ lastTouch = now(); }
-      function copies(){
-        var f = document.createDocumentFragment();
-        items.forEach(function(el){
-          var c = el.cloneNode(true);
-          c.classList.add('is-clone');
-          c.setAttribute('aria-hidden', 'true');
-          f.appendChild(c);
-        });
-        return f;
-      }
-      // Monta K copias delante y detrás; la posición vive siempre en [K·P, (K+1)·P) y al salir se desplaza P (visualmente idéntico)
-      function build(){
-        var w = track.clientWidth;
-        if (!w || items.length < 2) return;
-        var phase = P ? mod(track.scrollLeft - K * P, P) / P : 0;
-        Array.prototype.slice.call(track.querySelectorAll('.is-clone')).forEach(function(el){ track.removeChild(el); });
-        var gap = parseFloat(getComputedStyle(track).columnGap) || 14;
-        var first = items[0], lastEl = items[items.length - 1];
-        P = lastEl.offsetLeft + lastEl.offsetWidth - first.offsetLeft + gap;
-        K = Math.max(1, Math.ceil(2 * w / P));
-        for (var i = 0; i < K; i++){ track.insertBefore(copies(), track.firstChild); track.appendChild(copies()); }
-        builtW = w;
-        pos = null;
-        track.scrollLeft = K * P + phase * P;
-      }
-      function wrap(){
-        if (!P) return;
-        var x = track.scrollLeft, lo = K * P;
-        if (x >= lo + P){ track.scrollLeft = x - P; pos = null; }
-        else if (x < lo){ track.scrollLeft = x + P; pos = null; }
+      function update(){
+        var max = Math.max(0, track.scrollWidth - track.clientWidth);
+        var hasPrev = track.scrollLeft > 1, hasNext = track.scrollLeft < max - 1;
+        root.setAttribute('data-prev', hasPrev ? 'true' : 'false');
+        root.setAttribute('data-next', hasNext ? 'true' : 'false');
+        if (prev) prev.disabled = !hasPrev;
+        if (next) next.disabled = !hasNext;
       }
       function go(dir){
-        touch();
         track.scrollBy({ left: dir * track.clientWidth * 0.85, behavior: reduce ? 'auto' : 'smooth' });
       }
       if (prev) prev.addEventListener('click', function(){ go(-1); });
       if (next) next.addEventListener('click', function(){ go(1); });
-      track.addEventListener('scroll', function(){ clearTimeout(settleT); settleT = setTimeout(wrap, 160); }, { passive: true });
-      ['pointerdown', 'touchstart', 'touchmove', 'wheel', 'keydown'].forEach(function(evt){ track.addEventListener(evt, touch, { passive: true }); });
-      // el ratón pausa; el toque no (en pantallas táctiles el «hover» se queda pegado)
-      root.addEventListener('pointerenter', function(e){ if (e.pointerType === 'mouse') hover = true; });
-      root.addEventListener('pointerleave', function(e){ if (e.pointerType === 'mouse') hover = false; });
-      // solo el foco del teclado pausa: tras pulsar una flecha con el ratón la fila debe seguir
-      root.addEventListener('focusin', function(e){
-        var kb = true;
-        try { kb = e.target.matches(':focus-visible'); } catch (err) {}
-        focused = kb;
-      });
-      root.addEventListener('focusout', function(){ focused = false; });
-      if (pauseBtn){
-        var label = pauseBtn.querySelector('span');
-        pauseBtn.addEventListener('click', function(){
-          userPaused = !userPaused;
-          pauseBtn.setAttribute('data-paused', userPaused ? 'true' : 'false');
-          pauseBtn.setAttribute('aria-label', pauseBtn.getAttribute(userPaused ? 'data-a-play' : 'data-a-pause'));
-          if (label) label.textContent = pauseBtn.getAttribute(userPaused ? 'data-l-play' : 'data-l-pause');
-          if (userPaused) stop(); else sync();
-        });
-        if (reduce) pauseBtn.hidden = true;   // sin movimiento automático no hay nada que pausar
-      }
-      function frame(t){
-        raf = requestAnimationFrame(frame);
-        var dt = Math.max(0, Math.min(50, t - last));
-        last = t;
-        if (reduce || !P || userPaused || hover || focused || document.hidden || t - lastTouch < QUIET_MS){ pos = null; return; }
-        if (pos === null || Math.abs(track.scrollLeft - pos) > 2) pos = track.scrollLeft;
-        pos += SPEED * dt / 1000;
-        if (pos >= K * P + P) pos -= P;
-        track.scrollLeft = pos;
-      }
-      function start(){ if (!raf && !reduce && !userPaused){ last = now(); raf = requestAnimationFrame(frame); } }
-      function stop(){ if (raf){ cancelAnimationFrame(raf); raf = 0; } pos = null; }
-      function sync(){
-        if (!visible){ stop(); return; }
-        if (!P) build();
-        start();
-      }
-      if ('IntersectionObserver' in window){
-        new IntersectionObserver(function(entries){ visible = entries[0].isIntersecting; sync(); }, { threshold: 0.2 }).observe(root);
-      } else { visible = true; sync(); }
-      // la vista de extranjero está oculta hasta que se abre; al mostrarse o cambiar de ancho se vuelve a montar
-      if ('ResizeObserver' in window) new ResizeObserver(function(){
-        var w = track.clientWidth;
-        if (!w) return;
-        if (!P) { if (visible) sync(); else build(); }
-        else if (Math.abs(w - builtW) > 1) build();
-      }).observe(track);
+      track.addEventListener('scroll', update, { passive: true });
+      track.querySelectorAll('img').forEach(function(img){ img.addEventListener('load', update); });
+      if ('ResizeObserver' in window) new ResizeObserver(update).observe(track);
+      else window.addEventListener('resize', update);
+      update();
     });
   })();
