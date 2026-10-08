@@ -1059,27 +1059,34 @@ picture{display:contents;}
     .intl-dest-card:hover .intl-arrow{transform:translateX(4px);}
   }
 
-  /* proceso de acompañamiento: cuatro pasos con lo que nos diferencia a la vista */
-  .intl-proceso{margin-top:76px;}
-  .intl-proceso-head{max-width:640px; margin:0 0 34px;}
-  .intl-proceso-title{font-size:clamp(1.5rem,2.6vw,2.1rem); color:var(--navy); margin:0 0 8px;}
-  .intl-proceso-head p{color:var(--ink-soft); font-size:1.05rem; line-height:1.55; margin:0;}
-  .intl-steps{list-style:none; display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:22px; margin:0; padding:0;}
-  .intl-step{position:relative; display:flex; flex-direction:column; gap:8px; background:#fff; border:1px solid var(--line); border-radius:var(--r-card); padding:24px 22px 22px; box-shadow:0 8px 22px rgba(22,41,74,.06);}
-  .intl-step-num{display:flex; align-items:center; gap:10px; margin-bottom:6px;}
-  .intl-step-num svg{flex:none; width:46px; height:46px; padding:12px; border-radius:50%; background:rgba(122,35,52,.12); color:var(--accent);}
-  .intl-step-num b{font-family:var(--font-display); font-weight:600; font-size:1.1rem; letter-spacing:.02em; color:var(--accent);}
-  .intl-step h4{font-size:1.06rem; color:var(--navy); margin:0; line-height:1.25;}
-  .intl-step p{font-size:.93rem; color:var(--ink-soft); line-height:1.55; margin:0 0 8px;}
-  .intl-step-tag{margin-top:auto; align-self:flex-start; font-size:.72rem; font-weight:700; letter-spacing:.03em; color:var(--navy); background:var(--stone); padding:5px 12px; border-radius:var(--r-btn);}
-  @media (min-width:901px){
-    .intl-step:not(:last-child)::after{content:''; position:absolute; top:46px; left:calc(100% + 1px); width:20px; height:2px; background:var(--field-line);}
+  /* acompañamiento internacional: mensaje personal y recorrido compartido */
+  #destinos .intl-proceso{position:relative; display:grid; grid-template-columns:minmax(0,.82fr) minmax(0,1fr); gap:clamp(36px,6vw,84px); align-items:center; margin-top:clamp(52px,6vw,78px);}
+  #destinos .intl-proceso-copy{min-width:0;}
+  #destinos .intl-proceso-eyebrow{display:block; margin-bottom:14px;}
+  #destinos .intl-proceso-title{max-width:none; font-size:clamp(2rem,3.35vw,2.8rem); line-height:1.08; color:var(--navy); margin:0 0 18px; text-wrap:balance;}
+  #destinos .intl-proceso-title em{color:var(--accent); font-weight:500;}
+  #destinos .intl-proceso-copy > p{max-width:40ch; color:var(--ink-soft); font-size:1rem; line-height:1.68; margin:0;}
+  #destinos .intl-proceso-actions{display:flex; flex-direction:column; align-items:flex-start; gap:8px; margin-top:24px;}
+  #destinos .intl-proceso .btn-primary{min-height:48px; padding:13px 20px; border-radius:var(--r-btn); background:var(--accent); color:#fff; box-shadow:none; transition:background-color .15s ease, color .15s ease;}
+  #destinos .intl-proceso .btn-primary svg{transition:none;}
+  #destinos .intl-proceso .btn-primary:focus-visible,
+  #destinos .intl-more a:focus-visible{outline:3px solid var(--accent); outline-offset:4px;}
+  #destinos .intl-proceso-note{color:var(--ink-soft); font-size:.82rem; line-height:1.45;}
+  #destinos .intl-proceso-points{position:relative; min-width:0;}
+  #destinos .intl-steps{position:relative; display:grid; grid-template-columns:minmax(0,1fr); list-style:none; gap:0; margin:0; padding:0;}
+  #destinos .intl-step{display:grid; grid-template-columns:10px minmax(0,1fr); align-items:start; column-gap:18px; padding:16px 0 18px;}
+  #destinos .intl-step-dot{position:relative; z-index:1; width:8px; height:8px; margin-top:7px; border-radius:50%; background:var(--accent);}
+  #destinos .intl-step h4{font-size:1.2rem; line-height:1.25; color:var(--navy); margin:0 0 5px;}
+  #destinos .intl-step p{max-width:46ch; color:var(--ink-soft); font-size:.96rem; line-height:1.6; margin:0;}
+  #destinos .intl-step-line{position:absolute; z-index:0; top:27px; bottom:27px; left:3px; width:1px; background:color-mix(in srgb,var(--accent) 38%,var(--line)); pointer-events:none;}
+  #destinos .intl-more{margin:8px 0 0 28px;}
+  #destinos .intl-more a{display:inline-flex; align-items:center; gap:8px; min-height:44px; color:var(--navy); font-size:.9rem; font-weight:700; text-decoration:none; text-underline-offset:4px;}
+  #destinos .intl-more .intl-arrow{color:var(--accent);}
+  @media (hover:hover){
+    #destinos .intl-proceso .btn-primary:hover{transform:none; background:var(--accent-dark); box-shadow:none;}
+    #destinos .intl-proceso .btn-primary:hover svg{transform:none;}
+    #destinos .intl-more a:hover{text-decoration:underline;}
   }
-  .intl-more{margin:36px 0 0;}
-  .intl-more a{display:inline-flex; align-items:center; gap:8px; min-height:44px; font-size:.95rem; font-weight:700;
-    color:var(--navy); text-decoration:none;}                 /* navy: el coral sobre crema no llega a AA */
-  .intl-more .intl-arrow{color:var(--accent);}
-  @media (hover:hover){ .intl-more a:hover{text-decoration:underline;} }
 
   /* entrada en viewport: reutiliza .reveal, algo más corta que la global */
   #destinos .reveal{transform:translateY(14px); transition-duration:.5s;}
@@ -1089,19 +1096,13 @@ picture{display:contents;}
     transition-timing-function:ease; transition-delay:var(--sd,0ms), 0ms, 0ms;}
   #destinos .intl-dest-card:nth-child(2){--sd:70ms;}
   #destinos .intl-dest-card:nth-child(3){--sd:140ms;}
-  #destinos .intl-step{transition-delay:var(--sd,0ms);}
-  #destinos .intl-step:nth-child(2){--sd:60ms;}
-  #destinos .intl-step:nth-child(3){--sd:120ms;}
-  #destinos .intl-step:nth-child(4){--sd:180ms;}
-  @media (prefers-reduced-motion: reduce){ #destinos .reveal, #destinos .intl-dest-card, #destinos .intl-step{transition-delay:0ms !important;} }
+  @media (prefers-reduced-motion: reduce){ #destinos .reveal, #destinos .intl-dest-card{transition-delay:0ms !important;} }
 
   @media (max-width:900px){
     .intl-hero{padding:72px 0 136px;}
     .intl-dest-grid{grid-template-columns:1fr; gap:18px; margin-top:-96px;}
     .intl-dest-media{aspect-ratio:16/10;}
     .intl-dest-card:nth-child(n){--sd:0ms;}
-    .intl-steps{grid-template-columns:1fr 1fr; gap:18px;}
-    .intl-proceso{margin-top:60px;}
   }
   @media (max-width:600px){
     .intl-hero{padding:56px 0 136px;}
@@ -1109,8 +1110,23 @@ picture{display:contents;}
     #destinos .intl-benefits{margin-bottom:28px;}
     #destinos .btn-primary{display:block; width:100%; text-align:center;}
     .intl-dest-name{font-size:1.28rem;}
-    .intl-steps{grid-template-columns:1fr; gap:14px;}
-    .intl-step{padding:20px 18px 18px;}
+  }
+
+  @media (max-width:760px){
+    #destinos .intl-proceso{grid-template-columns:minmax(0,1fr); gap:22px; margin-top:50px;}
+    #destinos .intl-proceso-title{max-width:14ch; font-size:clamp(2rem,8vw,2.45rem); margin-bottom:14px;}
+    #destinos .intl-proceso-copy > p{max-width:54ch; font-size:.96rem;}
+    #destinos .intl-proceso-actions{margin-top:18px;}
+    #destinos .intl-steps{max-width:620px;}
+    #destinos .intl-step{padding:12px 0 14px; column-gap:15px;}
+    #destinos .intl-step h4{font-size:1.12rem;}
+    #destinos .intl-step p{font-size:.92rem;}
+    #destinos .intl-step-line{top:23px; bottom:23px;}
+    #destinos .intl-more{margin:4px 0 0 25px;}
+  }
+  @media (max-width:600px){
+    #destinos .intl-proceso{margin-top:42px; gap:16px;}
+    #destinos .intl-proceso .btn-primary{width:100%; justify-content:center; text-align:center;}
   }
 
   /* ---------- PROGRESIÓN DE EDADES: “crecemos con cada alumno” (las fotos suben como una escalera de los 3 a los 18 años) ---------- */
