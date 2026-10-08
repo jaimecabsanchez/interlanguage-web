@@ -556,7 +556,6 @@ window.dataLayer = window.dataLayer || [];
     if (!root) return;
     const btns = Array.from(root.querySelectorAll('.age-btn'));
     const panels = Array.from(root.querySelectorAll('.finder-panel'));
-    const hint = document.getElementById('finderHint');
     const talk = document.getElementById('finderTalk');
     btns.forEach(function(b){
       b.addEventListener('click', function(){
@@ -564,7 +563,6 @@ window.dataLayer = window.dataLayer || [];
         const wasOn = b.getAttribute('aria-pressed') === 'true';   // un segundo clic la desmarca
         btns.forEach(function(x){ x.setAttribute('aria-pressed', (x === b && !wasOn) ? 'true' : 'false'); });
         panels.forEach(function(p){ p.hidden = wasOn || p.id !== 'finder-' + key; });
-        hint.hidden = !wasOn;
         talk.hidden = wasOn;
         if (!wasOn) pushEvent('clic_cta', { cta_id: 'buscador-edad-' + key });
       });
