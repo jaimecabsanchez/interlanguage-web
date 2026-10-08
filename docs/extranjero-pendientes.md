@@ -45,6 +45,8 @@ Como Jaime sustituyó «Respuesta en menos de 24 h» por «Os responderemos pers
 
 ## Confirmaciones agrupadas
 
+**Lectura y navegación revisadas el 08-10-2026:** los carruseles empiezan en modo manual. «Reproducir» permite activar el movimiento automático y «Pausar» lo detiene; se conservan las flechas, el deslizamiento, el teclado y el respeto a `prefers-reduced-motion`. Estudiar, Vivir y Practicar llevan directamente a las filas de admisión, alojamiento y actividades del comparador, respectivamente, sin cambiar de vista.
+
 **Tarjetas revisadas el 08-10-2026:** Reino Unido e Irlanda pasan a artículos con un resumen de edades, alojamiento y duración. «Ver opciones» abre información adicional mediante `details` en la misma tarjeta; «Pedir orientación» conserva el destino seleccionado en el formulario. Estados Unidos ofrece solo la consulta, sin modalidades ni edades sin confirmar. Se conserva el comparador y las direcciones que llevan a cada tarjeta; no se añade un estado al router.
 
 **Proceso revisado el 08-10-2026:** cuatro etapas: primera orientación, propuesta de servicio (alcance, honorarios y condiciones), selección y solicitud tras aceptar la propuesta, y preparación y acompañamiento acordados. Sustituye los seis pasos anteriores en ES y EN; la rejilla pasa a dos columnas en escritorio y una por debajo de 900 px. La web no fija importes ni declara gratuita la orientación inicial. Siguen pendientes las tarifas y el detalle operativo de los servicios indicados a continuación.

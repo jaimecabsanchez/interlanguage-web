@@ -1031,11 +1031,10 @@ window.dataLayer = window.dataLayer || [];
     window.ilLead.lock(isExtVisible());   // carga directa de #servicio-extranjero: el formulario se crea después del router
   })();
 
-  // ---- fotos de actividades de «Estudiar en el extranjero»: una fila que se desplaza sola ----
-  // La fila avanza despacio y sin fin (se duplican las fotos para que el final enlace con el principio), de modo que se entiende a primera
-  // vista que hay más. Sigue siendo una fila desplazable normal: flechas a los lados (con ratón), deslizamiento en pantallas táctiles y teclado
-  // (la fila es enfocable). Se detiene con el ratón encima, con el foco del teclado dentro, al tocarla o usar los controles (y unos segundos
-  // después), con la pestaña oculta o fuera de pantalla, y siempre se puede pausar con el botón (WCAG 2.2.2). Con «reducir movimiento» no avanza sola.
+  // ---- fotos de actividades de «Estudiar en el extranjero»: desplazamiento manual por defecto ----
+  // Flechas, deslizamiento y teclado funcionan sin activar la reproducción. El botón permite iniciar el movimiento automático;
+  // entonces se pausa con el ratón, el foco del teclado, los controles, la pestaña oculta o la fila fuera de pantalla.
+  // Las copias enlazan el final con el principio. Con «reducir movimiento» solo se ofrece el desplazamiento manual.
   (function(){
     var SPEED = 34, QUIET_MS = 6000;   // px por segundo; espera tras tocar o usar un control
     var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -1047,7 +1046,7 @@ window.dataLayer = window.dataLayer || [];
       if (!track) return;
       root.classList.add('is-js');
       var items = Array.prototype.slice.call(track.children);   // las fotos reales; las copias llevan .is-clone
-      var userPaused = false, hover = false, focused = false, visible = false, lastTouch = -1e9;
+      var userPaused = true, hover = false, focused = false, visible = false, lastTouch = -1e9;
       var P = 0, K = 0, builtW = 0, pos = null, settleT = 0, raf = 0, last = 0;
       function now(){ return window.performance && performance.now ? performance.now() : Date.now(); }
       function touch(){ lastTouch = now(); }
@@ -1107,6 +1106,7 @@ window.dataLayer = window.dataLayer || [];
           pauseBtn.setAttribute('data-paused', userPaused ? 'true' : 'false');
           pauseBtn.setAttribute('aria-label', pauseBtn.getAttribute(userPaused ? 'data-a-play' : 'data-a-pause'));
           if (label) label.textContent = pauseBtn.getAttribute(userPaused ? 'data-l-play' : 'data-l-pause');
+          if (userPaused) stop(); else sync();
         });
         if (reduce) pauseBtn.hidden = true;   // sin movimiento automático no hay nada que pausar
       }
@@ -1120,7 +1120,7 @@ window.dataLayer = window.dataLayer || [];
         if (pos >= K * P + P) pos -= P;
         track.scrollLeft = pos;
       }
-      function start(){ if (!raf && !reduce){ last = now(); raf = requestAnimationFrame(frame); } }
+      function start(){ if (!raf && !reduce && !userPaused){ last = now(); raf = requestAnimationFrame(frame); } }
       function stop(){ if (raf){ cancelAnimationFrame(raf); raf = 0; } pos = null; }
       function sync(){
         if (!visible){ stop(); return; }

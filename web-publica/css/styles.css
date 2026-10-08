@@ -442,7 +442,7 @@ picture{display:contents;}
   .ext-esc-txt h3{font-size:clamp(1.65rem,2.6vw,2.25rem); line-height:1.12; letter-spacing:-.012em; margin:0 0 12px;}
   .ext-esc-txt > p{font-size:1.0625rem; line-height:1.65; color:var(--ext-t2); max-width:46ch;}
 
-  /* 2b · Fotos de cada escena: una sola fila que se desplaza (flechas, arrastre o teclado) y, si el visitante no pide menos movimiento, avanza sola despacio; se detiene al pasar el ratón, al tocar o con el botón de pausa */
+  /* 2b · Fotos de cada escena: desplazamiento manual con flechas, deslizamiento o teclado; reproducción automática opcional */
   .ext-carr{--h:220px; grid-column:1/-1; margin-top:-28px; min-width:0;}
   .ext-carr-bar{display:flex; align-items:center; gap:14px; margin:0 0 14px;}
   .ext-carr-t{display:flex; align-items:center; gap:14px; flex:1; min-width:0; margin:0; font-family:var(--font-body); font-size:.75rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-soft);}
@@ -496,6 +496,7 @@ picture{display:contents;}
   .ext-cmp td strong{display:block; font-size:1.0625rem; line-height:1.35;}
   .ext-cmp-s{display:block; margin-top:5px; font-size:.875rem; line-height:1.5; color:var(--ink-soft);}
   .ext-cmp-more{margin-top:26px;}
+  .ext-cmp tr[id]{scroll-margin-top:calc(var(--header-h) + 16px);}
   .ext-cmp-more summary{display:flex; align-items:center; justify-content:space-between; gap:12px; min-height:60px; padding:0 22px; cursor:pointer; list-style:none; border:1.5px dashed color-mix(in srgb, var(--navy) 28%, transparent); border-radius:var(--r-card); font-weight:700; font-size:1.03125rem; color:var(--navy);}
   .ext-cmp-more summary::-webkit-details-marker{display:none;}
   .ext-cmp-more summary::after{content:'+'; font-size:1.6rem; font-weight:500; line-height:1; color:var(--accent); transition:transform .2s ease;}
