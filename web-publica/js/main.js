@@ -12,7 +12,17 @@ window.dataLayer = window.dataLayer || [];
       ageUK: 'Internado desde 7 años en un centro preparatorio; otros colegios empiezan más adelante. Si eliges otra edad, indícala en el mensaje.',
       ageIreland: 'De 10 a 18 años. El curso de entrada depende del colegio. Si eliges otra edad, indícala en el mensaje.',
       ageOther: 'La edad de admisión depende del destino y del colegio. Si eliges otra edad, indícala en el mensaje.',
-      leadError: 'No hemos podido enviar la solicitud. Tus datos siguen aquí: inténtalo de nuevo en unos segundos o escríbenos a info@interlanguage.es.'
+      leadError: 'No hemos podido enviar la solicitud. Tus datos siguen aquí: inténtalo de nuevo en unos segundos o escríbenos a info@interlanguage.es.',
+      callTz: '(hora de Madrid)',
+      callPick: 'Elige un día y una hora para la llamada.',
+      callConfirming: 'Confirmando…',
+      callTaken: 'Esa hora acaba de ocuparse. Elige otra: tus datos siguen aquí.',
+      callDayFull: 'Ese día ya no admite más llamadas. Elige otro día: tus datos siguen aquí.',
+      callTooMany: 'Ya tienes llamadas reservadas con este teléfono. Si necesitas otra hora, cancela una desde el enlace de tu correo.',
+      callRate: 'Has hecho varios intentos seguidos. Espera unos minutos y vuelve a intentarlo.',
+      callFailed: 'No hemos podido confirmar la llamada. Tu hora y tus datos siguen aquí: vuelve a intentarlo (no se duplicará la reserva).',
+      callMailSent: 'Te hemos enviado un correo con estos datos y el enlace para cancelar.',
+      callMailNo: 'Guarda estos datos: si necesitas cancelar, usa el enlace de abajo.'
     },
     en: {
       brand: 'Interlanguage Studies',
@@ -23,7 +33,17 @@ window.dataLayer = window.dataLayer || [];
       ageUK: 'Boarding from age 7 at one preparatory school; other schools start later. If you select another age, include it in your message.',
       ageIreland: 'Ages 10 to 18. The entry year depends on the school. If you select another age, include it in your message.',
       ageOther: 'Admission age depends on the destination and school. If you select another age, include it in your message.',
-      leadError: "We couldn't send your request. Your details are still here: please try again in a few seconds or email us at info@interlanguage.es."
+      leadError: "We couldn't send your request. Your details are still here: please try again in a few seconds or email us at info@interlanguage.es.",
+      callTz: '(Madrid time)',
+      callPick: 'Choose a day and a time for the call.',
+      callConfirming: 'Confirming…',
+      callTaken: 'That time has just been taken. Please choose another: your details are still here.',
+      callDayFull: 'That day is now full. Please choose another day: your details are still here.',
+      callTooMany: 'You already have calls booked with this phone number. If you need another time, cancel one from the link in your email.',
+      callRate: 'You have made several attempts in a row. Please wait a few minutes and try again.',
+      callFailed: "We couldn't confirm the call. Your time and details are still here: please try again (it won't be booked twice).",
+      callMailSent: 'We have emailed you these details and the link to cancel.',
+      callMailNo: 'Keep these details: if you need to cancel, use the link below.'
     }
   };
   var T = I18N[LANG];
@@ -254,7 +274,7 @@ window.dataLayer = window.dataLayer || [];
     opts = opts || {};
     allViews.forEach(function(v){ v.hidden = (v.id !== viewId); });
     placeContact(viewId);
-    if (!opts.keepScroll){ window.scrollTo({ top: 0, behavior: 'auto' }); }
+    if (!opts.keepScroll){ jumpScroll(function(){ window.scrollTo({ top: 0, left: 0, behavior: 'instant' }); }); }   // al cambiar de página se llega arriba de golpe (con «auto» el desplazamiento suave de la hoja de estilos desde el pie de la home duraba más de un segundo)
     document.querySelectorAll('.svc-card2').forEach(function(c){
       c.classList.toggle('active', viewId === 'view-service-' + c.dataset.service);
     });
@@ -727,6 +747,15 @@ window.dataLayer = window.dataLayer || [];
     const inds = Array.from(form.querySelectorAll('.lead-steps-item'));
     const nextBtn = $('stepNextBtn'), backBtn = $('stepBackBtn'), submitBtn = $('submitBtn');
     const msgEl = $('formMsg'), errEl = $('formErrorMsg'), recapEl = $('leadRecap');
+    // Reserva de llamada (paso 3): solo si la reserva está activa (js/reserva-llamada.js con su dirección en el HTML)
+    // y la familia prefiere que la llamemos. Si no, el formulario sigue igual que siempre.
+    const CB = window.ilCallBooking;
+    const callStep = $('callStep');
+    const callOn = !!(CB && CB.enabled && callStep);
+    const callInd = form.querySelector('.lead-steps-item[data-ind="3"]');
+    const stepsList = $('leadSteps');
+    const callErr = $('callError'), callConfirm = $('callConfirmBtn'), callSummary = $('callSummary'), callDone = $('callDone');
+    let picker = null, bookKey = null, booking = false;
     const DUNNO = 'Aún no lo sé';
     const attempted = {};   // pasos en los que ya se intentó avanzar (a partir de ahí se valida en vivo)
     let current = 1;
@@ -761,9 +790,11 @@ window.dataLayer = window.dataLayer || [];
     // Unknown durations are never presented as available programmes.
     const ageOptions = age.innerHTML;
     const durationOptions = dur.innerHTML;
+    const durField = dur.closest('.field'), durLabel = durField.querySelector('label');
+    let savedDuration = DUNNO;   // última duración que la familia eligió de verdad en el desplegable
     function syncAbroadFields(){
       const abroad = service() === 'extranjero';
-      const keepAge = age.value, keepDuration = dur.value;
+      const keepAge = age.value;
       age.innerHTML = ageOptions;
       if (abroad){
         const min = dest.value === 'Irlanda' ? 10 : +age.getAttribute('data-ext-min');
@@ -776,7 +807,13 @@ window.dataLayer = window.dataLayer || [];
       if (dest.value !== 'Reino Unido'){
         Array.from(dur.options).forEach(function(o){ if (o.value !== DUNNO) o.remove(); });
       }
-      dur.value = Array.from(dur.options).some(function(o){ return o.value === keepDuration; }) ? keepDuration : DUNNO;
+      // la duración elegida se recuerda: si se pasa un momento a un destino sin trimestres y se vuelve a Reino Unido, no se pierde (el valor que se envía sigue siendo el que ofrece el destino actual)
+      dur.value = Array.from(dur.options).some(function(o){ return o.value === savedDuration; }) ? savedDuration : DUNNO;
+      // con una sola opción («Necesitamos orientación») el desplegable no aporta nada: se muestra solo el título del campo y la ayuda; el valor sigue en el campo oculto
+      const onlyOne = dur.options.length < 2;
+      dur.hidden = onlyOne;
+      durField.classList.toggle('is-note', onlyOne);
+      if (onlyOne) durLabel.removeAttribute('for'); else durLabel.setAttribute('for', 'leadDur');
       const hint = $('hint-leadDur');
       if (hint) hint.textContent = dest.value === 'Reino Unido' ? T.durationUK : T.durationOther;
       const ageHint = $('hint-leadAge');
@@ -784,9 +821,10 @@ window.dataLayer = window.dataLayer || [];
       if (isExtVisible()) showExtContext();
     }
     dest.addEventListener('change', syncAbroadFields);
-    dur.addEventListener('change', function(){ if (isExtVisible()) showExtContext(); });
+    dur.addEventListener('change', function(){ savedDuration = dur.value; if (isExtVisible()) showExtContext(); });
     function optText(sel){ return sel.options[sel.selectedIndex] ? sel.options[sel.selectedIndex].text : ''; }
-    function detail(){
+    // forCall = para el evento de Google Calendar: sin el nombre ni el colegio actual del alumno
+    function detail(forCall){
       const s = service();
       if (s === 'extraescolar') return school.value.trim() ? 'Colegio: ' + school.value.trim() : '';
       if (s === 'extranjero'){
@@ -795,8 +833,8 @@ window.dataLayer = window.dataLayer || [];
         if (start.value) bits.push('Inicio: ' + start.value);
         bits.push('Destino: ' + dest.value, 'Duración: ' + dur.value);
         if (course.value) bits.push('Curso actual: ' + course.value);
-        if (studentName.value.trim()) bits.push('Alumno/a: ' + studentName.value.trim());
-        if (currentSchool.value.trim()) bits.push('Colegio actual: ' + currentSchool.value.trim());
+        if (!forCall && studentName.value.trim()) bits.push('Alumno/a: ' + studentName.value.trim());
+        if (!forCall && currentSchool.value.trim()) bits.push('Colegio actual: ' + currentSchool.value.trim());
         if (english.value) bits.push('Nivel de inglés: ' + english.value);
         return bits.join(' · ');
       }
@@ -891,6 +929,7 @@ window.dataLayer = window.dataLayer || [];
     prefRadios.forEach(function(r){
       r.addEventListener('change', function(){
         syncPhoneReq();
+        syncCall();
         if (attempted[2] || showing(byId.phone)) check(byId.phone);
       });
     });
@@ -904,10 +943,16 @@ window.dataLayer = window.dataLayer || [];
         if (i + 1 === n) li.setAttribute('aria-current', 'step'); else li.removeAttribute('aria-current');
       });
       if (n === 2) recapEl.textContent = recap();
+      if (n === 3){
+        renderSummary();
+        // al volver al paso 3 se comprueba otra vez que la hora elegida sigue libre
+        if (picker && picker.status() !== 'loading') picker.refresh().then(renderSummary);
+        else ensurePicker();
+      }
       if (opts && opts.silent) return;
       form.closest('.form-card').scrollIntoView(scrollOpts('start'));
       const cardsHidden = serviceSet.hidden || form.classList.contains('is-locked');
-      const first = n === 2 ? $('fullName') : (cardsHidden ? age : (radios.filter(function(r){ return r.checked; })[0] || radios[0]));
+      const first = n === 3 ? $('callTitle') : n === 2 ? $('fullName') : (cardsHidden ? age : (radios.filter(function(r){ return r.checked; })[0] || radios[0]));
       if (first) first.focus({ preventScroll: true });
     }
     function focusFirstBad(bad){
@@ -923,20 +968,152 @@ window.dataLayer = window.dataLayer || [];
     });
     backBtn.addEventListener('click', function(){ goTo(1); });
 
+    // ---- reserva de llamada ----
+    function wantsCall(){ return callOn && needPhone(); }
+    function syncCall(){
+      const on = wantsCall();
+      if (callInd) callInd.hidden = !on;
+      if (stepsList) stepsList.classList.toggle('has-call', on);
+      const label = submitBtn.getAttribute(on ? 'data-label-call' : 'data-label-send');
+      if (label && !submitBtn.disabled) submitBtn.textContent = label;
+      if (on) ensurePicker();   // los horarios se piden ya, para que el paso 3 aparezca sin esperas
+    }
+    function ensurePicker(){
+      if (picker || !callOn) return;
+      picker = CB.mount($('callPicker'), {
+        onChange: function(slot){ if (slot) setFormError(callErr, ''); renderSummary(); },   // el aviso de «hora ocupada» se queda hasta que eligen otra
+        // sin horarios (reserva sin configurar o fallo de Google): no hay nada que confirmar; queda enviar la consulta sin hora
+        onState: function(state){
+          const off = state === 'off' || state === 'error';
+          callConfirm.hidden = off;
+          callStep.classList.toggle('call-unavailable', off);
+          if (off) callSummary.hidden = true;
+        }
+      });
+      picker.load();
+    }
+    function renderSummary(){
+      const slot = picker && picker.selected();
+      callSummary.hidden = !slot;
+      if (!slot) return;
+      $('callSumConsult').textContent = recap();
+      $('callSumDate').textContent = CB.longDate(slot.date);
+      $('callSumTime').textContent = slot.time + ' ' + T.callTz;
+      $('callSumPhone').textContent = phone.value.trim();
+    }
+    function newKey(){
+      if (window.crypto && crypto.randomUUID) return crypto.randomUUID();
+      const b = crypto.getRandomValues(new Uint8Array(16));
+      b[6] = (b[6] & 15) | 64; b[8] = (b[8] & 63) | 128;
+      const h = Array.prototype.map.call(b, function(x){ return (x + 256).toString(16).slice(1); }).join('');
+      return h.slice(0, 8) + '-' + h.slice(8, 12) + '-' + h.slice(12, 16) + '-' + h.slice(16, 20) + '-' + h.slice(20);
+    }
+    // La misma clave para los reintentos y dobles clics de una misma reserva (el servidor no la duplica);
+    // si cambian la hora o los datos de contacto, es otra reserva y lleva otra clave.
+    function keyFor(slot){
+      const fp = [slot.start, phone.value.trim(), $('email').value.trim(), $('fullName').value.trim()].join('|');
+      if (!bookKey || bookKey.fp !== fp) bookKey = { fp: fp, key: newKey() };
+      return bookKey.key;
+    }
+    function studentAgeText(){ return age.value === 'Otra edad' ? 'Otra edad (ver mensaje)' : age.value ? age.value + ' años' : ''; }
+    function callPayload(slot){
+      return {
+        idempotencyKey: keyFor(slot), slotStart: slot.start, lang: LANG, website: ($('leadHp') || {}).value || '',
+        contact: { fullName: $('fullName').value.trim(), email: $('email').value.trim(), phone: phone.value.trim(), rgpd: $('rgpd').checked },
+        consult: { service: service(), serviceLabel: serviceLabel(), studentAge: studentAgeText(), serviceExtra: detail(false), callContext: detail(true), message: $('message').value }
+      };
+    }
+    function confirmCall(){
+      if (booking) return;   // doble clic: la primera petición sigue en marcha
+      setFormError(callErr, '');
+      const slot = picker && picker.selected();
+      if (!slot){ setFormError(callErr, T.callPick); if (picker) picker.focus(); return; }
+      const bad1 = validateStep(1);
+      if (bad1.length){ goTo(1, { silent: true }); focusFirstBad(bad1); return; }
+      const bad2 = validateStep(2);
+      if (bad2.length){ goTo(2, { silent: true }); focusFirstBad(bad2); return; }
+      booking = true;
+      const label = callConfirm.textContent;
+      callConfirm.disabled = true; callConfirm.textContent = T.callConfirming;
+      let tries = 0;
+      function done(msg){
+        booking = false; callConfirm.disabled = false; callConfirm.textContent = label;
+        if (msg) setFormError(callErr, msg);
+      }
+      (function attempt(){
+        CB.api.book(callPayload(slot)).then(function(res){
+          const b = res.body || {};
+          const st = b.status;
+          if (res.http === 200 && st === 'confirmed' && b.booking){ booking = false; callConfirm.disabled = false; callConfirm.textContent = label; showBooked(b); return; }
+          if (res.http === 202 && tries++ < 6){ setTimeout(attempt, 1500); return; }      // otra petición igual está terminando
+          if (st === 'expired_key' && tries++ < 2){ bookKey = null; attempt(); return; }
+          if (st === 'slot_taken' || st === 'day_full' || (st === 'invalid' && (b.fields || []).indexOf('slotStart') !== -1)){
+            done(st === 'day_full' ? T.callDayFull : T.callTaken);
+            picker.clear();
+            picker.refresh();
+            return;
+          }
+          if (st === 'invalid' && (b.fields || []).some(function(f){ return ['fullName', 'email', 'phone', 'rgpd'].indexOf(f) !== -1; })){
+            done('');
+            goTo(2, { silent: true });
+            const bad = validateStep(2);
+            if (bad.length) focusFirstBad(bad);
+            return;
+          }
+          if (st === 'too_many'){ done(T.callTooMany); return; }
+          if (st === 'rate_limited'){ done(T.callRate); return; }
+          done(T.callFailed);   // nunca se da por reservada sin la confirmación del servidor
+        });
+      })();
+    }
+    function showBooked(r){
+      const b = r.booking;
+      form.classList.add('is-sent');
+      $('callDoneDate').textContent = CB.longDate(b.date);
+      $('callDoneTime').textContent = b.time + ' ' + T.callTz;
+      $('callDonePhone').textContent = b.phone;
+      const fam = r.email && r.email.family;
+      const mail = $('callDoneMail');
+      mail.hidden = !(fam === 'sent' || fam === 'failed' || fam === 'pending_config');
+      mail.textContent = fam === 'sent' ? T.callMailSent : T.callMailNo;
+      $('callCancelLink').href = r.cancelUrl || '#';
+      callDone.hidden = false;
+      callDone.scrollIntoView(scrollOpts('center'));
+      callDone.focus({ preventScroll: true });
+      pushEvent('llamada_reservada', { servicio: service() });
+    }
+    if (callOn){
+      $('callBackBtn').addEventListener('click', function(){ goTo(2); });
+      callConfirm.addEventListener('click', confirmCall);
+      // sin hora fija: la consulta se envía como siempre, con la preferencia «por teléfono»
+      $('callNoTimeBtn').addEventListener('click', function(){
+        const bad1 = validateStep(1);
+        if (bad1.length){ goTo(1, { silent: true }); focusFirstBad(bad1); return; }
+        const bad2 = validateStep(2);
+        if (bad2.length){ goTo(2, { silent: true }); focusFirstBad(bad2); return; }
+        sendLead($('callNoTimeBtn'));
+      });
+    }
+
     // ---- envío ----
     form.addEventListener('submit', function(e){
       e.preventDefault();
       if (current === 1){ nextBtn.click(); return; }   // Intro en el paso 1 avanza; no envía
+      if (current === 3){ confirmCall(); return; }      // Intro en el paso 3 confirma la llamada
       const bad1 = validateStep(1);
       if (bad1.length){ goTo(1, { silent: true }); focusFirstBad(bad1); return; }
       const bad2 = validateStep(2);
       if (bad2.length){ focusFirstBad(bad2); return; }
+      if (wantsCall()){ goTo(3); pushEvent('clic_cta', { cta_id: 'form-paso-llamada' }); return; }
+      sendLead(submitBtn);
+    });
+    function sendLead(btn){
       const s = service();
       const payload = new URLSearchParams({
         form_type: 'lead',
         service: s,
         serviceExtra: detail(),
-        studentAge: age.value === 'Otra edad' ? 'Otra edad (ver mensaje)' : age.value ? age.value + ' años' : '',
+        studentAge: studentAgeText(),
         message: $('message').value,
         fullName: $('fullName').value,
         email: $('email').value,
@@ -946,9 +1123,10 @@ window.dataLayer = window.dataLayer || [];
         website: ($('leadHp') || {}).value || ''
       });
 
-      const prevLabel = submitBtn.textContent;
-      setFormError(errEl, '');
-      submitBtn.disabled = true; submitBtn.textContent = T.sending;
+      const prevLabel = btn.textContent;
+      const errBox = btn === submitBtn ? errEl : callErr;
+      setFormError(errBox, '');
+      btn.disabled = true; btn.textContent = T.sending;
 
       fetch(FORM_ENDPOINT, { method: 'POST', body: payload })
         .then(function(r){ if (!r.ok) throw new Error('http'); return r.json(); })
@@ -962,10 +1140,10 @@ window.dataLayer = window.dataLayer || [];
           msgEl.focus({ preventScroll: true });
         })
         .catch(function(){
-          submitBtn.disabled = false; submitBtn.textContent = prevLabel;
-          setFormError(errEl, T.leadError);
+          btn.disabled = false; btn.textContent = prevLabel;
+          setFormError(errBox, T.leadError);
         });
-    });
+    }
 
     // API para el resto de la página (CTA de las subpáginas, tarjetas de destino…): dejan el formulario ya orientado
     window.ilLead = {
@@ -986,7 +1164,7 @@ window.dataLayer = window.dataLayer || [];
         const d = /^Duración:\s*(.+)$/.exec(text);
         if (d && dur){
           const opt = Array.from(dur.options).filter(function(o){ return o.value === d[1]; })[0];
-          if (opt){ dur.value = opt.value; return; }
+          if (opt){ dur.value = opt.value; savedDuration = opt.value; return; }
         }
         const m = $('message');
         if (m && !m.value.trim()) m.value = text;
@@ -1024,6 +1202,7 @@ window.dataLayer = window.dataLayer || [];
     let locked = false, prevService = '';
 
     syncPhoneReq();
+    syncCall();
     showCtx();
     goTo(1, { silent: true });
     window.ilLead.lock(isExtVisible());   // carga directa de #servicio-extranjero: el formulario se crea después del router

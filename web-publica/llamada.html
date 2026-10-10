@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tu llamada · Interlanguage Studies</title>
+<!-- Página del enlace de cancelación que llega por correo. No se indexa y no envía el enlace secreto a otras webs. -->
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<!-- La misma dirección que en index.html e index-en.html (vacía = reserva de llamadas desactivada) -->
+<meta name="il-llamadas-endpoint" content="">
+<link rel="icon" type="image/png" sizes="32x32" href="images/icons/favicon-32.png">
+<meta name="theme-color" content="#16294A">
+<link rel="preload" href="fonts/fraunces-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/plus-jakarta-sans-wght-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="css/styles.css?v=95">
+<style>
+  .call-page-top{padding:14px 24px; background:var(--white); border-bottom:1px solid var(--line);}
+  .call-page-top img{height:46px; width:auto;}
+  .call-page-top .in{max-width:620px; margin:0 auto;}
+  .call-page{max-width:620px; margin:0 auto; padding:40px 20px 80px;}
+  .call-page-card{display:grid; gap:18px; padding:30px; background:#fff; border:1px solid var(--line); border-radius:var(--r-card); box-shadow:0 18px 40px -26px rgba(4,10,24,.45);}
+  .call-page-card h1{font-size:clamp(1.6rem,4vw,2rem); line-height:1.15;}
+  .call-page-text{color:var(--ink); font-size:1rem; line-height:1.55;}
+  .call-page-text.is-ok{color:var(--forest-dark); font-weight:700;}
+  .call-page-links{display:flex; flex-wrap:wrap; gap:6px 18px; font-size:.92rem;}
+  .call-page-links a{color:var(--accent); font-weight:700;}
+  .call-page .call-done-list{border-top:0; padding-top:0;}
+  @media (max-width:520px){ .call-page{padding:24px 16px 60px;} .call-page-card{padding:22px 18px;} }
+</style>
+</head>
+<body>
+<header class="call-page-top">
+  <div class="in"><a href="index.html" id="cpHome" aria-label="Interlanguage Studies · Inicio"><picture><source type="image/webp" srcset="images/icons/logo-3.webp"><img src="images/icons/logo-3.png" alt="Interlanguage Studies" width="556" height="180"></picture></a></div>
+</header>
+<main class="call-page" id="main">
+  <div class="call-page-card">
+    <h1 id="cpTitle" tabindex="-1">Tu llamada</h1>
+    <p class="call-page-text" id="cpText" role="status">Cargando…</p>
+    <dl class="call-done-list" id="cpList" hidden>
+      <div><dt id="cpDateL">Fecha</dt><dd id="cpDate"></dd></div>
+      <div><dt id="cpTimeL">Hora</dt><dd id="cpTime"></dd></div>
+      <div><dt id="cpDurL">Duración</dt><dd id="cpDur"></dd></div>
+      <div><dt id="cpPhoneL">Teléfono</dt><dd id="cpPhone"></dd></div>
+    </dl>
+    <div class="form-error" id="cpError" role="alert" hidden></div>
+    <button type="button" class="submit-btn" id="cpCancel" hidden>Cancelar la llamada</button>
+    <p class="call-page-links"><a href="index.html#contacto" id="cpBook">Reservar otra hora</a><a href="index.html" id="cpBack">Volver a la web</a></p>
+  </div>
+</main>
+<script src="js/reserva-llamada.js?v=1" defer></script>
+<script src="js/llamada.js?v=2" defer></script>
+</body>
+</html>

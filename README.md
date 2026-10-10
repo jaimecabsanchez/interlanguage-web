@@ -58,7 +58,7 @@ plataforma/
 supabase/
 ├── schema.sql         ← modelo de datos (estado actual)
 ├── migrations/        ← cambios de BD versionados (se aplican en orden)
-└── functions/         ← Edge Functions (lógica de servidor: alta de alumnos, etc.)
+└── functions/         ← Edge Functions (lógica de servidor: alta de alumnos, informes y la reserva de llamadas de la web)
 ```
 
 **Ver en local:** doble clic en `Ver-plataforma.command` (arranca el servidor y abre el login en modo demo).

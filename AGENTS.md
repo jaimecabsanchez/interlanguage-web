@@ -40,6 +40,10 @@ node plataforma/motor/pedagogia.test.js
 node plataforma/motor/motivacion.test.js
 node plataforma/motor/matriz.test.js
 
+# Reserva de llamadas de la web (Edge Function call-booking). Necesita Node 22.6+ (tipos de TS) y, para las de base
+# de datos, un Postgres local de pruebas: ver supabase/tests/llamadas/README.md. No van en el CI (Node 20).
+node --test supabase/tests/llamadas/unit.test.mjs
+
 # Ver en el navegador (sirve la raíz):
 python3 -m http.server 8752
 #  · Plataforma: http://localhost:8752/plataforma/index.html?demo=1   (login lucia / home1234)

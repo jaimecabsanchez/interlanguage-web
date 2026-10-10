@@ -10,6 +10,9 @@
 # Si algún día se añade analítica (Google Tag Manager, Analytics, Meta…), un vídeo incrustado o el envío de
 # formularios a otro dominio (p. ej. el PHP en Arsys), hay que abrir aquí ese dominio en script-src /
 # connect-src / img-src / frame-src / form-action, o el navegador lo bloqueará.
+# Reserva de llamadas: al poner la dirección de la función en <meta name="il-llamadas-endpoint"> (index.html,
+# index-en.html y llamada.html), añade su dominio aquí: connect-src 'self' https://TU-PROYECTO.supabase.co
+# (ver supabase/functions/call-booking/DEPLOY.md, paso 8). Mientras esté vacía no hace falta.
 /*
   Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
   X-Content-Type-Options: nosniff
