@@ -8,6 +8,7 @@ window.dataLayer = window.dataLayer || [];
       sending: 'Enviando…',
       otherAge: 'Otra edad',
       durationUK: 'Un trimestre o dos, solo en algunos colegios y según las plazas disponibles.',
+      durationIreland: 'Curso completo o trimestres. Las fechas y las plazas se confirman con cada colegio.',
       durationOther: 'La duración se consulta con cada colegio. Puedes indicar tus fechas preferidas en el mensaje.',
       ageUK: 'Internado desde 7 años en un centro preparatorio; otros colegios empiezan más adelante. Si eliges otra edad, indícala en el mensaje.',
       ageIreland: 'De 10 a 18 años. El curso de entrada depende del colegio. Si eliges otra edad, indícala en el mensaje.',
@@ -29,6 +30,7 @@ window.dataLayer = window.dataLayer || [];
       sending: 'Sending…',
       otherAge: 'Another age',
       durationUK: 'One or two terms are available only at some schools, subject to places.',
+      durationIreland: 'A full school year or terms. Dates and places are confirmed with each school.',
       durationOther: 'The length is checked with each school. You can include your preferred dates in the message.',
       ageUK: 'Boarding from age 7 at one preparatory school; other schools start later. If you select another age, include it in your message.',
       ageIreland: 'Ages 10 to 18. The entry year depends on the school. If you select another age, include it in your message.',
@@ -86,7 +88,7 @@ window.dataLayer = window.dataLayer || [];
   function setFormError(el, text){ if (!el) return; el.textContent = text || ''; el.hidden = !text; }
   var FORM_ENDPOINT = 'form-handler.php';
 
-  // barra sticky de conversión: aparece tras el hero, se oculta en el formulario de contacto
+  // Una sola invitación a contactar: se recoge si ya hay otra visible o se abre el menú.
   (function(){
     const bar = document.getElementById('stickyCta');
     if (!bar) return;
@@ -94,16 +96,27 @@ window.dataLayer = window.dataLayer || [];
     function onScroll(){
       // solo en la home
       const home = document.getElementById('view-home');
-      if (home && home.hidden){ bar.classList.remove('show'); return; }
-      const scrolled = window.scrollY > 700;
+      if (!home || home.hidden){ bar.classList.remove('show'); bar.inert = true; bar.setAttribute('aria-hidden', 'true'); return; }
+      const hero = home && home.querySelector('.hero');
+      const scrolled = hero && hero.getBoundingClientRect().bottom <= 0;
       let atContact = false;
       if (contacto){
         const rect = contacto.getBoundingClientRect();
         atContact = rect.top < window.innerHeight && rect.bottom > 0;
       }
-      bar.classList.toggle('show', scrolled && !atContact);
+      const menuOpen = document.getElementById('navLinks').classList.contains('open');
+      const visibleAction = Array.from(home.querySelectorAll('.btn-primary[href="#contacto"], .btn-primary[data-advise], .btn-primary[data-cta-service]')).some(function(a){
+        const r = a.getBoundingClientRect();
+        return r.width > 0 && r.top >= 0 && r.bottom <= window.innerHeight;
+      });
+      const show = !!scrolled && !atContact && !menuOpen && !visibleAction;
+      bar.classList.toggle('show', show);
+      bar.inert = !show;
+      bar.setAttribute('aria-hidden', show ? 'false' : 'true');
     }
     window.addEventListener('scroll', onScroll, { passive:true });
+    window.addEventListener('resize', onScroll, { passive:true });
+    document.addEventListener('il:navigation', onScroll);
     onScroll();
   })();
 
@@ -122,25 +135,27 @@ window.dataLayer = window.dataLayer || [];
   function setNav(open){
     navLinks.classList.toggle('open', open);
     navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    document.dispatchEvent(new Event('il:navigation'));
   }
   function closeNav(){ setNav(false); }
   navToggle.addEventListener('click', function(){ setNav(!navLinks.classList.contains('open')); });
   navLinks.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', closeNav); });
+  document.addEventListener('click', function(e){
+    if (navLinks.classList.contains('open') && !e.target.closest('header.site')) closeNav();
+  });
   document.addEventListener('keydown', function(e){
     if (e.key === 'Escape' && navLinks.classList.contains('open')){ closeNav(); navToggle.focus(); }
   });
 
-  // desplegable "Servicios": hover con margen de tiempo + click + teclado
+  // Un gesto, un estado: clic, toque y teclado abren el mismo desplegable.
+  // El hover/focus previo no debe consumir el primer clic ni reabrirlo después de Escape.
   (function(){
     const dropdown = document.querySelector('.nav-dropdown');
     if (!dropdown) return;
     const trigger = document.getElementById('servicesTrigger');
     const menu = document.getElementById('servicesMenu');
-    let closeTimer = null;
-
     function isOpen(){ return dropdown.classList.contains('open'); }
     function openMenu(){
-      clearTimeout(closeTimer);
       dropdown.classList.add('open');
       trigger.setAttribute('aria-expanded', 'true');
       menu.setAttribute('aria-hidden', 'false');
@@ -150,13 +165,8 @@ window.dataLayer = window.dataLayer || [];
       trigger.setAttribute('aria-expanded', 'false');
       menu.setAttribute('aria-hidden', 'true');
     }
-    function scheduleClose(){ closeTimer = setTimeout(closeMenu, 200); }
-
-    dropdown.addEventListener('mouseenter', openMenu);
-    dropdown.addEventListener('mouseleave', scheduleClose);
-    dropdown.addEventListener('focusin', openMenu);
     dropdown.addEventListener('focusout', function(e){
-      if (!dropdown.contains(e.relatedTarget)) scheduleClose();
+      if (!dropdown.contains(e.relatedTarget)) closeMenu();
     });
     trigger.addEventListener('click', function(){
       if (isOpen()) closeMenu(); else openMenu();
@@ -165,8 +175,30 @@ window.dataLayer = window.dataLayer || [];
       if (isOpen() && !dropdown.contains(e.target)) closeMenu();
     });
     dropdown.addEventListener('keydown', function(e){
-      if (e.key === 'Escape'){ closeMenu(); trigger.focus(); }
+      if (e.key === 'Escape' && isOpen()){
+        e.preventDefault(); e.stopPropagation(); closeMenu(); trigger.focus();
+      }
+      if (e.target === trigger && (e.key === 'ArrowDown' || e.key === 'ArrowUp')){
+        e.preventDefault(); openMenu();
+        const links = menu.querySelectorAll('a');
+        const link = e.key === 'ArrowUp' ? links[links.length - 1] : links[0];
+        if (link) link.focus();
+      }
     });
+    menu.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', closeMenu); });
+    new MutationObserver(function(){ if (!navLinks.classList.contains('open') && window.matchMedia('(max-width:920px)').matches) closeMenu(); }).observe(navLinks, { attributes:true, attributeFilter:['class'] });
+  })();
+
+  // Cambiar de idioma conserva la página o el destino, sin trasladar datos personales.
+  (function(){
+    const link = document.querySelector('.lang-switch a');
+    if (!link) return;
+    const base = link.getAttribute('href').split('#')[0];
+    function sync(){ link.setAttribute('href', base + window.location.hash); }
+    link.addEventListener('click', sync);
+    window.addEventListener('hashchange', sync);
+    window.addEventListener('popstate', sync);
+    sync();
   })();
 
   const revealEls = document.querySelectorAll('.reveal');
@@ -279,6 +311,7 @@ window.dataLayer = window.dataLayer || [];
       c.classList.toggle('active', viewId === 'view-service-' + c.dataset.service);
     });
     announceView(viewId, opts);
+    document.dispatchEvent(new Event('il:navigation'));
   }
 
   // Cada vista es una "página" para la persona que navega: cambia el título de la pestaña (y del historial)
@@ -804,7 +837,7 @@ window.dataLayer = window.dataLayer || [];
       }
       age.value = Array.from(age.options).some(function(o){ return o.value === keepAge; }) ? keepAge : (keepAge && abroad ? 'Otra edad' : '');
       dur.innerHTML = durationOptions;
-      if (dest.value !== 'Reino Unido'){
+      if (dest.value !== 'Reino Unido' && dest.value !== 'Irlanda'){
         Array.from(dur.options).forEach(function(o){ if (o.value !== DUNNO) o.remove(); });
       }
       // la duración elegida se recuerda: si se pasa un momento a un destino sin trimestres y se vuelve a Reino Unido, no se pierde (el valor que se envía sigue siendo el que ofrece el destino actual)
@@ -815,7 +848,7 @@ window.dataLayer = window.dataLayer || [];
       durField.classList.toggle('is-note', onlyOne);
       if (onlyOne) durLabel.removeAttribute('for'); else durLabel.setAttribute('for', 'leadDur');
       const hint = $('hint-leadDur');
-      if (hint) hint.textContent = dest.value === 'Reino Unido' ? T.durationUK : T.durationOther;
+      if (hint) hint.textContent = dest.value === 'Reino Unido' ? T.durationUK : dest.value === 'Irlanda' ? T.durationIreland : T.durationOther;
       const ageHint = $('hint-leadAge');
       if (ageHint) ageHint.textContent = dest.value === 'Reino Unido' ? T.ageUK : dest.value === 'Irlanda' ? T.ageIreland : T.ageOther;
       if (isExtVisible()) showExtContext();
@@ -869,18 +902,18 @@ window.dataLayer = window.dataLayer || [];
       phoneOpt.hidden = need;
       phone.required = need;
       phone.setAttribute('aria-required', need ? 'true' : 'false');
+      phone.closest('.field').hidden = !need;
     }
     function rule(step, id, ok, extra){ return Object.assign({ step: step, id: id, control: $(id), ok: ok }, extra || {}); }
     const rules = [
       rule(1, 'service', function(){ return !!service(); }, { control: form.querySelector('.choice-grid'), group: true, focusEl: radios[0] }),
       rule(1, 'leadAge', function(){ return age.value !== ''; }, { applies: function(){ return !!service(); } }),
-      rule(1, 'leadCourse', function(){ return course.value !== ''; }, { applies: function(){ return service() === 'extranjero'; } }),
       rule(1, 'leadStart', function(){ return start.value !== ''; }, { applies: function(){ return service() === 'extranjero'; } }),
       rule(1, 'leadSchool', function(){ return school.value.trim() !== ''; }, { applies: function(){ return service() === 'extraescolar'; } }),
       rule(2, 'fullName', function(){ return $('fullName').value.trim() !== ''; }),
       rule(2, 'email', function(){ return RE_EMAIL.test($('email').value.trim()); }),
       rule(2, 'phone', function(){ const v = phone.value.trim(); return needPhone() ? validTel(v) : (v === '' || validTel(v)); },
-        { msg: function(){ return phone.getAttribute(needPhone() && !phone.value.trim() ? 'data-err-req' : 'data-err-fmt'); } }),
+        { applies: needPhone, msg: function(){ return phone.getAttribute(needPhone() && !phone.value.trim() ? 'data-err-req' : 'data-err-fmt'); } }),
       rule(2, 'rgpd', function(){ return $('rgpd').checked; })
     ];
     const byId = {};
@@ -915,7 +948,7 @@ window.dataLayer = window.dataLayer || [];
     radios.forEach(function(r){
       r.addEventListener('change', function(){
         showCtx();
-        [byId.leadAge, byId.leadSchool, byId.leadCourse, byId.leadStart].forEach(function(x){ if (attempted[1]) check(x); else paint(x, false); });
+        [byId.leadAge, byId.leadSchool, byId.leadStart].forEach(function(x){ if (attempted[1]) check(x); else paint(x, false); });
       });
       // un clic en una tarjeta (aunque ya estuviera elegida) vuelve a recoger o abrir la lista según el servicio
       r.addEventListener('click', function(){ pickerOpen = false; showCtx(); });
@@ -1117,7 +1150,7 @@ window.dataLayer = window.dataLayer || [];
         message: $('message').value,
         fullName: $('fullName').value,
         email: $('email').value,
-        phone: $('phone').value,
+        phone: needPhone() ? phone.value : '',
         contactPreference: pref(),
         rgpd: $('rgpd').checked ? '1' : '',
         website: ($('leadHp') || {}).value || ''
