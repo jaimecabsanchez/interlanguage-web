@@ -9,6 +9,7 @@ window.dataLayer = window.dataLayer || [];
       otherAge: 'Otra edad',
       durationUK: 'Un trimestre o dos, solo en algunos colegios y según las plazas disponibles.',
       durationIreland: 'Curso completo o trimestres. Las fechas y las plazas se confirman con cada colegio.',
+      termsIreland: 'Estancia por trimestres',
       durationOther: 'La duración se consulta con cada colegio. Puedes indicar tus fechas preferidas en el mensaje.',
       ageUK: 'Internado desde 7 años en un centro preparatorio; otros colegios empiezan más adelante. Si eliges otra edad, indícala en el mensaje.',
       ageIreland: 'De 10 a 18 años. El curso de entrada depende del colegio. Si eliges otra edad, indícala en el mensaje.',
@@ -23,7 +24,9 @@ window.dataLayer = window.dataLayer || [];
       callRate: 'Has hecho varios intentos seguidos. Espera unos minutos y vuelve a intentarlo.',
       callFailed: 'No hemos podido confirmar la llamada. Tu hora y tus datos siguen aquí: vuelve a intentarlo (no se duplicará la reserva).',
       callMailSent: 'Te hemos enviado un correo con estos datos y el enlace para cancelar.',
-      callMailNo: 'Guarda estos datos: si necesitas cancelar, usa el enlace de abajo.'
+      callMailNo: 'Guarda estos datos: si necesitas cancelar, usa el enlace de abajo.',
+      cmpMore: 'Ver matices',
+      cmpLess: 'Ocultar'
     },
     en: {
       brand: 'Interlanguage Studies',
@@ -31,6 +34,7 @@ window.dataLayer = window.dataLayer || [];
       otherAge: 'Another age',
       durationUK: 'One or two terms are available only at some schools, subject to places.',
       durationIreland: 'A full school year or terms. Dates and places are confirmed with each school.',
+      termsIreland: 'Term-based stay',
       durationOther: 'The length is checked with each school. You can include your preferred dates in the message.',
       ageUK: 'Boarding from age 7 at one preparatory school; other schools start later. If you select another age, include it in your message.',
       ageIreland: 'Ages 10 to 18. The entry year depends on the school. If you select another age, include it in your message.',
@@ -45,7 +49,9 @@ window.dataLayer = window.dataLayer || [];
       callRate: 'You have made several attempts in a row. Please wait a few minutes and try again.',
       callFailed: "We couldn't confirm the call. Your time and details are still here: please try again (it won't be booked twice).",
       callMailSent: 'We have emailed you these details and the link to cancel.',
-      callMailNo: 'Keep these details: if you need to cancel, use the link below.'
+      callMailNo: 'Keep these details: if you need to cancel, use the link below.',
+      cmpMore: 'Details',
+      cmpLess: 'Hide'
     }
   };
   var T = I18N[LANG];
@@ -109,7 +115,9 @@ window.dataLayer = window.dataLayer || [];
         const r = a.getBoundingClientRect();
         return r.width > 0 && r.top >= 0 && r.bottom <= window.innerHeight;
       });
-      const show = !!scrolled && !atContact && !menuOpen && !visibleAction;
+      const footer = document.querySelector('footer');
+      const atFooter = footer && footer.getBoundingClientRect().top < window.innerHeight;
+      const show = window.matchMedia('(max-width:1024px)').matches && !!scrolled && !atContact && !atFooter && !menuOpen && !visibleAction;
       bar.classList.toggle('show', show);
       bar.inert = !show;
       bar.setAttribute('aria-hidden', show ? 'false' : 'true');
@@ -149,6 +157,8 @@ window.dataLayer = window.dataLayer || [];
 
   // Un gesto, un estado: clic, toque y teclado abren el mismo desplegable.
   // El hover/focus previo no debe consumir el primer clic ni reabrirlo después de Escape.
+  // En el menú compacto (≤1024 px) el botón no se muestra y los programas se ven directamente (lo hace la hoja de estilos);
+  // cerrado, el panel queda con visibility:hidden, así que no se anuncia ni recibe el foco: no hace falta aria-hidden.
   (function(){
     const dropdown = document.querySelector('.nav-dropdown');
     if (!dropdown) return;
@@ -158,12 +168,10 @@ window.dataLayer = window.dataLayer || [];
     function openMenu(){
       dropdown.classList.add('open');
       trigger.setAttribute('aria-expanded', 'true');
-      menu.setAttribute('aria-hidden', 'false');
     }
     function closeMenu(){
       dropdown.classList.remove('open');
       trigger.setAttribute('aria-expanded', 'false');
-      menu.setAttribute('aria-hidden', 'true');
     }
     dropdown.addEventListener('focusout', function(e){
       if (!dropdown.contains(e.relatedTarget)) closeMenu();
@@ -186,7 +194,7 @@ window.dataLayer = window.dataLayer || [];
       }
     });
     menu.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', closeMenu); });
-    new MutationObserver(function(){ if (!navLinks.classList.contains('open') && window.matchMedia('(max-width:920px)').matches) closeMenu(); }).observe(navLinks, { attributes:true, attributeFilter:['class'] });
+    new MutationObserver(function(){ if (!navLinks.classList.contains('open') && window.matchMedia('(max-width:1024px)').matches) closeMenu(); }).observe(navLinks, { attributes:true, attributeFilter:['class'] });
   })();
 
   // Cambiar de idioma conserva la página o el destino, sin trasladar datos personales.
@@ -405,9 +413,9 @@ window.dataLayer = window.dataLayer || [];
     });
     const comedorEl = document.querySelector('[data-comedor-price]');
     const comedorWeek = comedorEl ? euros(comedorEl.textContent) : NaN;
-    function money(n){ return lang === 'en' ? '€' + n : n + '€'; }
+    function money(n){ return lang === 'en' ? '€' + n : n + '\u00a0€'; }   // «160 €» con espacio de no separación (en inglés, «€160»)
     // el importe del comedor que se ve en el formulario y en las FAQ sale del mismo dato
-    if (comedorWeek > 0) document.querySelectorAll('[data-fill-comedor]').forEach(function(el){ el.textContent = '+' + money(comedorWeek); });
+    if (comedorWeek > 0) document.querySelectorAll('[data-fill-comedor]').forEach(function(el){ el.textContent = money(comedorWeek); });
 
     function sedeValue(){
       const c = sedeInputs.filter(function(i){ return i.checked; })[0];
@@ -563,6 +571,7 @@ window.dataLayer = window.dataLayer || [];
         phone: val('campTelefono'),
         comentarios: val('campComentarios'),
         rgpd: $('campRgpd').checked ? '1' : '',
+        comunicaciones: $('campNews') && $('campNews').checked ? 'Sí' : 'No',   // casilla aparte y opcional: gestionar la inscripción no implica recibir novedades
         website: val('campHp')
       });
 
@@ -837,10 +846,14 @@ window.dataLayer = window.dataLayer || [];
       }
       age.value = Array.from(age.options).some(function(o){ return o.value === keepAge; }) ? keepAge : (keepAge && abroad ? 'Otra edad' : '');
       dur.innerHTML = durationOptions;
+      if (dest.value === 'Irlanda'){
+        Array.from(dur.options).forEach(function(o){ if (o.value === 'Un trimestre' || o.value === 'Dos trimestres') o.remove(); });
+        dur.add(new Option(T.termsIreland, 'Trimestres'), 1);
+      }
       if (dest.value !== 'Reino Unido' && dest.value !== 'Irlanda'){
         Array.from(dur.options).forEach(function(o){ if (o.value !== DUNNO) o.remove(); });
       }
-      // la duración elegida se recuerda: si se pasa un momento a un destino sin trimestres y se vuelve a Reino Unido, no se pierde (el valor que se envía sigue siendo el que ofrece el destino actual)
+      // Se recuerda la preferencia, pero solo se envían opciones del destino actual.
       dur.value = Array.from(dur.options).some(function(o){ return o.value === savedDuration; }) ? savedDuration : DUNNO;
       // con una sola opción («Necesitamos orientación») el desplegable no aporta nada: se muestra solo el título del campo y la ayuda; el valor sigue en el campo oculto
       const onlyOne = dur.options.length < 2;
@@ -1048,12 +1061,14 @@ window.dataLayer = window.dataLayer || [];
       if (!bookKey || bookKey.fp !== fp) bookKey = { fp: fp, key: newKey() };
       return bookKey.key;
     }
+    function wantsNews(){ const n = $('leadNews'); return !!(n && n.checked); }
     function studentAgeText(){ return age.value === 'Otra edad' ? 'Otra edad (ver mensaje)' : age.value ? age.value + ' años' : ''; }
     function callPayload(slot){
       return {
         idempotencyKey: keyFor(slot), slotStart: slot.start, lang: LANG, website: ($('leadHp') || {}).value || '',
         contact: { fullName: $('fullName').value.trim(), email: $('email').value.trim(), phone: phone.value.trim(), rgpd: $('rgpd').checked },
-        consult: { service: service(), serviceLabel: serviceLabel(), studentAge: studentAgeText(), serviceExtra: detail(false), callContext: detail(true), message: $('message').value }
+        // la preferencia de recibir novedades llega al equipo con la consulta (no va al evento del calendario)
+        consult: { service: service(), serviceLabel: serviceLabel(), studentAge: studentAgeText(), serviceExtra: [detail(false), wantsNews() ? 'Acepta recibir información: Sí' : ''].filter(Boolean).join(' · '), callContext: detail(true), message: $('message').value }
       };
     }
     function confirmCall(){
@@ -1153,6 +1168,7 @@ window.dataLayer = window.dataLayer || [];
         phone: needPhone() ? phone.value : '',
         contactPreference: pref(),
         rgpd: $('rgpd').checked ? '1' : '',
+        comunicaciones: wantsNews() ? 'Sí' : 'No',   // casilla aparte y opcional: responder a la consulta no implica recibir novedades
         website: ($('leadHp') || {}).value || ''
       });
 
@@ -1239,6 +1255,49 @@ window.dataLayer = window.dataLayer || [];
     showCtx();
     goTo(1, { silent: true });
     window.ilLead.lock(isExtVisible());   // carga directa de #servicio-extranjero: el formulario se crea después del router
+  })();
+
+  // ---- «Estudiar en el extranjero»: comparación con dos velocidades e índice de la página ----
+  // En móvil (la hoja de estilos decide cuándo se ve el botón) cada criterio muestra primero el dato de los dos países, uno junto al otro;
+  // «Ver matices» despliega la explicación de esa fila. En escritorio los matices se ven siempre y el botón no aparece.
+  (function(){
+    document.querySelectorAll('#ext-comparar tbody tr').forEach(function(tr){
+      const th = tr.querySelector('th');
+      if (!th || !tr.querySelector('.ext-cmp-s')) return;
+      const name = th.textContent.replace(/\s+/g, ' ').trim();
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'ext-cmp-tg';
+      btn.setAttribute('aria-expanded', 'false');
+      const label = document.createElement('span');
+      const ctx = document.createElement('span');
+      ctx.className = 'sr-only';
+      ctx.textContent = ' — ' + name;
+      label.textContent = T.cmpMore;
+      btn.appendChild(label); btn.appendChild(ctx);
+      btn.addEventListener('click', function(){
+        const open = tr.classList.toggle('is-open');
+        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+        label.textContent = open ? T.cmpLess : T.cmpMore;
+      });
+      th.appendChild(btn);
+      tr.classList.add('has-tg');
+    });
+    // Ejemplo razonado: en móvil los criterios empiezan recogidos (se ve la lista de sus nombres); en escritorio, abiertos
+    const caso = document.querySelectorAll('.ext-caso-criterios');
+    if (window.matchMedia && window.matchMedia('(max-width:899px)').matches) caso.forEach(function(d){ d.open = false; });
+    // El índice «En esta página» lleva la sombra de barra fija solo cuando ya está pegado bajo el menú
+    const toc = document.querySelector('.ext-toc');
+    if (!toc) return;
+    function stuck(){
+      if (toc.offsetParent === null) return;   // la página no está a la vista
+      const top = parseFloat(getComputedStyle(toc).top) || 0;
+      toc.classList.toggle('is-stuck', toc.getBoundingClientRect().top <= top + 1 && window.scrollY > 0);
+    }
+    window.addEventListener('scroll', stuck, { passive: true });
+    window.addEventListener('resize', stuck, { passive: true });
+    document.addEventListener('il:navigation', stuck);
+    stuck();
   })();
 
   // ---- fotos de actividades: una tira manual, sin bucle ni reproducción automática ----

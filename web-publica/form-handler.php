@@ -88,6 +88,7 @@ if ($type === 'campamento') {
         'Email: '     . $email,
         'Teléfono: '  . $phone,
         'Comentarios: ' . field('comentarios'),
+        'Acepta recibir información: ' . (field('comunicaciones') === 'Sí' ? 'Sí' : 'No'),
     ];
 } else {
     $subject = 'Nueva solicitud web — ' . oneline($name);
@@ -104,6 +105,7 @@ if ($type === 'campamento') {
         'Email: '     . $email,
         'Teléfono: '  . $phone,
         'Prefiere que le contacten: ' . (field('contactPreference') !== '' ? field('contactPreference') : 'sin indicar'),
+        'Acepta recibir información: ' . (field('comunicaciones') === 'Sí' ? 'Sí' : 'No'),
     ];
 }
 $body = implode("\n", $lines) . "\n\n— Enviado automáticamente desde el formulario de la web.";

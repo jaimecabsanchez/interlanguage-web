@@ -69,8 +69,8 @@
 <link rel="preload" href="fonts/fraunces-italic-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/plus-jakarta-sans-wght-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" as="image" type="image/avif" fetchpriority="high" imagesrcset="images/internacional/hero-arco-3-640.avif 640w, images/internacional/hero-arco-3-960.avif 960w, images/internacional/hero-arco-3-1280.avif 1280w, images/internacional/hero-arco-3-1600.avif 1600w, images/internacional/hero-arco-3-2000.avif 2000w" imagesizes="100vw">
-<link rel="preload" href="css/styles.css?v=96" as="style">
-<link rel="stylesheet" href="css/styles.css?v=96">
+<link rel="preload" href="css/styles.css?v=98" as="style">
+<link rel="stylesheet" href="css/styles.css?v=98">
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
@@ -80,17 +80,14 @@
     <a href="#inicio"><picture><source type="image/webp" srcset="images/icons/logo-3.webp"><img src="images/icons/logo-3.png" class="brand-logo" alt="Interlanguage Studies" width="556" height="180"></picture></a>
     <div class="nav-links" id="navLinks">
       <div class="nav-dropdown">
-        <button type="button" class="nav-dropdown-trigger" id="servicesTrigger" aria-haspopup="true" aria-expanded="false" aria-controls="servicesMenu">
+        <button type="button" class="nav-dropdown-trigger" id="servicesTrigger" aria-expanded="false" aria-controls="servicesMenu">
           Programmes <span class="caret" aria-hidden="true">▾</span>
         </button>
-        <div class="nav-dropdown-menu mega" id="servicesMenu" aria-hidden="true">
+        <div class="nav-dropdown-menu mega" id="servicesMenu">
           <div class="mega-col">
             <span class="mega-col-title">In Madrid</span>
-            <a href="#servicio-campamentos" data-jump-service="campamentos" class="mega-item mega-item--camp">
-              <span class="mega-item-top">
-                <strong>Summer camps</strong>
-                <span class="mega-badge">Now enrolling</span>
-              </span>
+            <a href="#servicio-campamentos" data-jump-service="campamentos" class="mega-item">
+              <strong>Summer camps</strong>
               <small>Ages 3–10</small>
               <svg class="mega-item-arrow" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </a>
@@ -146,7 +143,7 @@
 <section class="trust" aria-label="Interlanguage in numbers">
   <div class="container">
     <ul class="hero-facts">
-      <li><svg class="fact-ico" aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="9" r="5.5"/><path d="M8.6 13.6 7 21.5l5-2.8 5 2.8-1.6-7.9"/><path d="m10 9 1.5 1.5L14.2 7.6"/></svg><span>30+ years of experience</span></li>
+      <li><svg class="fact-ico" aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="9" r="5.5"/><path d="M8.6 13.6 7 21.5l5-2.8 5 2.8-1.6-7.9"/><path d="m10 9 1.5 1.5L14.2 7.6"/></svg><span>More than 30 years of experience</span></li>
       <li><svg class="fact-ico" aria-hidden="true" viewBox="0 0 24 24"><path d="M4.5 4.5h15a1.5 1.5 0 0 1 1.5 1.5v9a1.5 1.5 0 0 1-1.5 1.5H11l-4.5 3.5V16.5h-2A1.5 1.5 0 0 1 3 15V6a1.5 1.5 0 0 1 1.5-1.5z"/><path d="M7.5 9.2h9M7.5 12.6h5.5"/></svg><span>Native teachers</span></li>
       <li><svg class="fact-ico" aria-hidden="true" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.3"/><path d="M2.8 20v-1.2a5.2 5.2 0 0 1 5.2-5.2h2a5.2 5.2 0 0 1 5.2 5.2V20"/><path d="M15.6 4.9a3.3 3.3 0 0 1 0 6.2M18.4 13.9a5.2 5.2 0 0 1 2.8 4.9V20"/></svg><span>More than 1,000 families supported</span></li>
       <li><svg class="fact-ico" aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.5 2.5 3.8 5.5 3.8 9s-1.3 6.5-3.8 9c-2.5-2.5-3.8-5.5-3.8-9S9.5 5.5 12 3z"/></svg><span>Programmes in the United Kingdom, Ireland and the United States</span></li>
@@ -164,24 +161,7 @@
       </div>
       <p>During the school year, in summer or abroad. Explore our programmes.</p>
     </div>
-    <div class="svc-index">
-      <a href="#servicio-extranjero" class="svc-card2" data-service="extranjero" aria-label="Explore destinations">
-        <span class="svc-photo"><picture><source type="image/avif" srcset="images/internacional/vivirlo-colegio-300.avif 300w, images/internacional/vivirlo-colegio-380.avif 380w, images/internacional/vivirlo-colegio-470.avif 470w, images/internacional/vivirlo-colegio-580.avif 580w, images/internacional/vivirlo-colegio-710.avif 710w, images/internacional/vivirlo-colegio-860.avif 860w, images/internacional/vivirlo-colegio-1000.avif 1000w" sizes="(min-width:1200px) 397px, (min-width:961px) calc((100vw - 88px) / 3), (min-width:641px) calc((100vw - 68px) / 2), calc(100vw - 48px)"><source type="image/webp" srcset="images/internacional/vivirlo-colegio-300.webp 300w, images/internacional/vivirlo-colegio-380.webp 380w, images/internacional/vivirlo-colegio-470.webp 470w, images/internacional/vivirlo-colegio-580.webp 580w, images/internacional/vivirlo-colegio-710.webp 710w, images/internacional/vivirlo-colegio-860.webp 860w, images/internacional/vivirlo-colegio-1000.webp 1000w" sizes="(min-width:1200px) 397px, (min-width:961px) calc((100vw - 88px) / 3), (min-width:641px) calc((100vw - 68px) / 2), calc(100vw - 48px)"><img src="images/internacional/vivirlo-colegio.jpg" alt="Students on the grounds of a UK school" width="1000" height="750" loading="lazy"></picture></span>
-        <span class="svc-t"><h3>Study abroad</h3><span class="svc-desc">A school that suits your child and an experience that helps them grow.</span><span class="svc-tags"><span class="svc-tag">United Kingdom and Ireland</span><span class="svc-tag">Ask us about the US</span></span></span>
-        <span class="svc-more">Explore destinations <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-      </a>
-      <a href="#servicio-extraescolar" class="svc-card2" data-service="extraescolar" aria-label="Discover the classes">
-        <span class="svc-photo"><picture><source type="image/avif" srcset="images/programas/avanzar-clase-300.avif 300w, images/programas/avanzar-clase-380.avif 380w, images/programas/avanzar-clase-470.avif 470w, images/programas/avanzar-clase-580.avif 580w, images/programas/avanzar-clase-710.avif 710w, images/programas/avanzar-clase-860.avif 860w, images/programas/avanzar-clase-1030.avif 1030w, images/programas/avanzar-clase-1200.avif 1200w" sizes="(min-width:1200px) 397px, (min-width:961px) calc((100vw - 88px) / 3), (min-width:641px) calc((100vw - 68px) / 2), calc(100vw - 48px)"><source type="image/webp" srcset="images/programas/avanzar-clase-300.webp 300w, images/programas/avanzar-clase-380.webp 380w, images/programas/avanzar-clase-470.webp 470w, images/programas/avanzar-clase-580.webp 580w, images/programas/avanzar-clase-710.webp 710w, images/programas/avanzar-clase-860.webp 860w, images/programas/avanzar-clase-1030.webp 1030w, images/programas/avanzar-clase-1200.webp 1200w" sizes="(min-width:1200px) 397px, (min-width:961px) calc((100vw - 88px) / 3), (min-width:641px) calc((100vw - 68px) / 2), calc(100vw - 48px)"><img src="images/programas/avanzar-clase.jpg" alt="Students in a classroom with their teacher" width="1200" height="900" loading="lazy"></picture></span>
-        <span class="svc-t"><h3>After-school English</h3><span class="svc-desc">To help them use English with more ease and confidence, year by year.</span><span class="svc-tags"><span class="svc-tag">Native teachers</span><span class="svc-tag">Small groups</span></span></span>
-        <span class="svc-more">Discover the classes <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-      </a>
-      <a href="#servicio-campamentos" class="svc-card2" data-service="campamentos" aria-label="See the camp">
-        <span class="svc-photo"><picture><source type="image/avif" srcset="images/campamentos/grupo-campamento-juntos-480.avif 480w, images/campamentos/grupo-campamento-juntos-800.avif 800w, images/campamentos/grupo-campamento-juntos-1200.avif 1200w, images/campamentos/grupo-campamento-juntos-1448.avif 1448w" sizes="(min-width:1200px) 397px, (min-width:961px) calc((100vw - 88px) / 3), (min-width:641px) calc((100vw - 68px) / 2), calc(100vw - 48px)"><source type="image/webp" srcset="images/campamentos/grupo-campamento-juntos-480.webp 480w, images/campamentos/grupo-campamento-juntos-800.webp 800w, images/campamentos/grupo-campamento-juntos-1200.webp 1200w, images/campamentos/grupo-campamento-juntos-1448.webp 1448w" sizes="(min-width:1200px) 397px, (min-width:961px) calc((100vw - 88px) / 3), (min-width:641px) calc((100vw - 68px) / 2), calc(100vw - 48px)"><img src="images/campamentos/grupo-campamento-juntos.jpg" alt="Children together during a summer camp activity" width="1448" height="1086" loading="lazy"></picture></span>
-        <span class="svc-t"><h3>Summer camps</h3><span class="svc-desc">Games, workshops and new friends, with English every day.</span><span class="svc-tags"><span class="svc-tag">Ages 3–10</span><span class="svc-tag">Madrid</span></span></span>
-        <span class="svc-more">See the camp <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-      </a>
-    </div>
-<div class="svc-finder" id="svcFinder">
+    <div class="svc-finder" id="svcFinder">
       <div class="svc-finder-head">
         <h3>What options are there for their age?</h3>
       </div>
@@ -191,10 +171,51 @@
         <p class="finder-talk" id="finderTalk" hidden>Would you rather we advise you? <a href="#contacto" data-cta="finder-llamada">Ask for guidance, no obligation →</a></p>
       </div>
     </div>
+    <div class="svc-index">
+      <a href="#servicio-extranjero" class="svc-card2" data-service="extranjero">
+        <span class="svc-photo"><picture><source type="image/avif" srcset="images/internacional/vivirlo-colegio-300.avif 300w, images/internacional/vivirlo-colegio-380.avif 380w, images/internacional/vivirlo-colegio-470.avif 470w, images/internacional/vivirlo-colegio-580.avif 580w, images/internacional/vivirlo-colegio-710.avif 710w, images/internacional/vivirlo-colegio-860.avif 860w, images/internacional/vivirlo-colegio-1000.avif 1000w" sizes="(min-width:1280px) 616px, (min-width:961px) calc(51.667vw - 45.467px), (min-width:641px) calc(51.667vw - 39.267px), calc(155vw - 74.4px)"><source type="image/webp" srcset="images/internacional/vivirlo-colegio-300.webp 300w, images/internacional/vivirlo-colegio-380.webp 380w, images/internacional/vivirlo-colegio-470.webp 470w, images/internacional/vivirlo-colegio-580.webp 580w, images/internacional/vivirlo-colegio-710.webp 710w, images/internacional/vivirlo-colegio-860.webp 860w, images/internacional/vivirlo-colegio-1000.webp 1000w" sizes="(min-width:1280px) 616px, (min-width:961px) calc(51.667vw - 45.467px), (min-width:641px) calc(51.667vw - 39.267px), calc(155vw - 74.4px)"><img src="images/internacional/vivirlo-colegio.jpg" alt="Students on the grounds of a UK school" width="1000" height="750" loading="lazy"></picture></span>
+        <div class="svc-t"><span class="svc-meta">From age 7, depending on the school</span><h3>Study abroad</h3><span class="svc-desc">A school that suits your child and an experience that helps them grow.</span><span class="svc-notes">United Kingdom and Ireland · United States on request</span></div>
+        <span class="svc-more">Explore destinations <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </a>
+      <a href="#servicio-extraescolar" class="svc-card2" data-service="extraescolar">
+        <span class="svc-photo"><picture><source type="image/avif" srcset="images/programas/avanzar-clase-300.avif 300w, images/programas/avanzar-clase-380.avif 380w, images/programas/avanzar-clase-470.avif 470w, images/programas/avanzar-clase-580.avif 580w, images/programas/avanzar-clase-710.avif 710w, images/programas/avanzar-clase-860.avif 860w, images/programas/avanzar-clase-1030.avif 1030w, images/programas/avanzar-clase-1200.avif 1200w" sizes="(min-width:1280px) 616px, (min-width:961px) calc(51.667vw - 45.467px), (min-width:641px) calc(51.667vw - 39.267px), calc(155vw - 74.4px)"><source type="image/webp" srcset="images/programas/avanzar-clase-300.webp 300w, images/programas/avanzar-clase-380.webp 380w, images/programas/avanzar-clase-470.webp 470w, images/programas/avanzar-clase-580.webp 580w, images/programas/avanzar-clase-710.webp 710w, images/programas/avanzar-clase-860.webp 860w, images/programas/avanzar-clase-1030.webp 1030w, images/programas/avanzar-clase-1200.webp 1200w" sizes="(min-width:1280px) 616px, (min-width:961px) calc(51.667vw - 45.467px), (min-width:641px) calc(51.667vw - 39.267px), calc(155vw - 74.4px)"><img src="images/programas/avanzar-clase.jpg" alt="Students in a classroom with their teacher" width="1200" height="900" loading="lazy"></picture></span>
+        <div class="svc-t"><span class="svc-meta">Early Years to Secondary, at school</span><h3>After-school English</h3><span class="svc-desc">To help them use English with more ease and confidence, year by year.</span><span class="svc-notes">Native teachers · Small groups</span></div>
+        <span class="svc-more">Discover the classes <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </a>
+      <a href="#servicio-campamentos" class="svc-card2" data-service="campamentos">
+        <span class="svc-photo"><picture><source type="image/avif" srcset="images/campamentos/grupo-campamento-juntos-480.avif 480w, images/campamentos/grupo-campamento-juntos-800.avif 800w, images/campamentos/grupo-campamento-juntos-1200.avif 1200w, images/campamentos/grupo-campamento-juntos-1448.avif 1448w" sizes="(min-width:1280px) 616px, (min-width:961px) calc(51.667vw - 45.467px), (min-width:641px) calc(51.667vw - 39.267px), calc(155vw - 74.4px)"><source type="image/webp" srcset="images/campamentos/grupo-campamento-juntos-480.webp 480w, images/campamentos/grupo-campamento-juntos-800.webp 800w, images/campamentos/grupo-campamento-juntos-1200.webp 1200w, images/campamentos/grupo-campamento-juntos-1448.webp 1448w" sizes="(min-width:1280px) 616px, (min-width:961px) calc(51.667vw - 45.467px), (min-width:641px) calc(51.667vw - 39.267px), calc(155vw - 74.4px)"><img src="images/campamentos/grupo-campamento-juntos.jpg" alt="Children together during a summer camp activity" width="1448" height="1086" loading="lazy"></picture></span>
+        <div class="svc-t"><span class="svc-meta">Ages 3 to 10, in Madrid</span><h3>Summer camps</h3><span class="svc-desc">Games, workshops and new friends, with English every day.</span><span class="svc-notes">Native monitors · Age-based groups</span></div>
+        <span class="svc-more">See the camp <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </a>
+    </div>
+
   </div>
 </section>
 
 <!-- PROGRESIÓN DE EDADES -->
+<!-- WHY US (short version; the full one is #view-service-metodologia).
+     TEAM PHOTO: when it arrives, paste the <figure class="team-photo"> (template in web-publica/AGENTS.md) as the
+     first child of .why-grid, before .why-copy. The layout rearranges itself with :has(). -->
+<section class="why-us" id="por-que" aria-labelledby="por-que-t">
+  <div class="container why-grid">
+    <div class="why-copy">
+      <div class="why-head reveal">
+        <span class="eyebrow">Why us</span>
+        <h2 id="por-que-t">We look after every pupil, <em>one by one</em></h2>
+        <p>We are the Interlanguage team. For over 30 years we have been teaching English to children and young people in Madrid, and we always work the same way: we get to know each pupil, listen to their family and follow their progress closely.</p>
+      </div>
+      <div class="why-body reveal">
+        <ul class="why-points">
+          <li><strong>Small groups</strong> so everyone gets real time to speak.</li>
+          <li><strong>Progress tracking</strong>, year after year.</li>
+          <li><strong>One point of contact</strong> who stays with your family at every stage.</li>
+        </ul>
+        <a class="why-link" href="#servicio-metodologia" data-jump-service="metodologia">See how we work <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="age-path" id="progresion">
   <div class="container">
     <div class="age-path-head reveal">
@@ -218,13 +239,9 @@
     <div class="container">
       <div class="intl-copy reveal">
         <span class="eyebrow">International experiences</span>
-        <h2>English is learnt by living it.</h2>
+        <h2>English is learnt by living it</h2>
         <p class="intl-lead">Explore schools in the United Kingdom and Ireland, and ask us if you are interested in the United States. Compare ages, lengths of stay and accommodation before deciding.</p>
-        <ul class="intl-benefits">
-          <li><span class="intl-check-ic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l7 3.5v5c0 4.5-3 7.7-7 9-4-1.3-7-4.5-7-9v-5L12 3Z"/><path d="M9 12l2 2 4-4.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><strong>A school that fits</strong><span>Their school year, English level and interests help guide the choice.</span></div></li>
-          <li><span class="intl-check-ic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="10" r="3"/><path d="M12 21s6-5.2 6-10.5A6 6 0 0 0 6 10.5C6 15.8 12 21 12 21Z"/></svg></span><div><strong>Accommodation matters</strong><span>Boarding in the United Kingdom; boarding or a host family in Ireland, depending on the school.</span></div></li>
-          <li><span class="intl-check-ic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5V6a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v13.5"/><path d="M4 19.5h13M8 8h6M8 11.5h6" stroke-linecap="round"/></svg></span><div><strong>Their stage of education</strong><span>The entry year and their return to education are considered for each pupil.</span></div></li>
-        </ul>
+
         <a href="#contacto" class="btn-primary" data-advise="extranjero" data-cta="intl-asesor">Talk to an international adviser</a>
       </div>
     </div>
@@ -251,7 +268,7 @@
           <span class="intl-dest-media"><picture><source type="image/avif" media="(max-width: 900px)" srcset="images/internacional/ext-us-aula-400.avif 400w, images/internacional/ext-us-aula-710.avif 710w, images/internacional/ext-us-aula-790.avif 790w, images/internacional/ext-us-aula-1000.avif 1000w" sizes="100vw"><source type="image/webp" media="(max-width: 900px)" srcset="images/internacional/ext-us-aula-400.webp 400w, images/internacional/ext-us-aula-710.webp 710w, images/internacional/ext-us-aula-790.webp 790w, images/internacional/ext-us-aula-1000.webp 1000w" sizes="100vw"><source type="image/avif" srcset="images/internacional/usa-aula-v-480.avif 480w, images/internacional/usa-aula-v-800.avif 800w, images/internacional/usa-aula-v-869.avif 869w" sizes="(max-width: 1100px) 45vw, 370px"><source type="image/webp" srcset="images/internacional/usa-aula-v-480.webp 480w, images/internacional/usa-aula-v-800.webp 800w, images/internacional/usa-aula-v-869.webp 869w" sizes="(max-width: 1100px) 45vw, 370px"><img decoding="async" src="images/internacional/usa-aula-vertical.jpg" alt="A classroom in a US high school: the teacher explains at the whiteboard and a student raises a hand" width="869" height="1086" loading="lazy"></picture><span class="intl-dest-scrim"></span></span>
           <span class="intl-dest-body">
             <span class="intl-dest-name">United States</span>
-            <span class="intl-dest-go">Explore <svg class="intl-arrow" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span class="intl-dest-go">Enquire <svg class="intl-arrow" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
           </span>
         </a>
       </div>
@@ -259,7 +276,7 @@
       <div class="intl-proceso">
         <div class="intl-proceso-copy">
           <span class="eyebrow intl-proceso-eyebrow">Every pupil, their own path</span>
-          <h3 class="intl-proceso-title">The right destination starts with <em>your child.</em></h3>
+          <h3 class="intl-proceso-title">The right destination starts with <em>your child</em></h3>
           <p>Before we recommend a school, we want to know what they enjoy, how they learn and what they hope to get from the experience.</p>
           <div class="intl-proceso-actions">
             <a class="btn-primary" href="#contacto" data-advise="extranjero" data-cta="intl-proceso-orientacion">Let’s talk about their next step</a>
@@ -290,28 +307,7 @@
 
 </section>
 
-<!-- WHY US (short version; the full one is #view-service-metodologia).
-     TEAM PHOTO: when it arrives, paste the <figure class="team-photo"> (template in web-publica/AGENTS.md) as the
-     first child of .why-grid, before .why-copy. The layout rearranges itself with :has(). -->
-<section class="why-us" id="por-que" aria-labelledby="por-que-t">
-  <div class="container why-grid">
-    <div class="why-copy">
-      <div class="why-head reveal">
-        <span class="eyebrow">Why us</span>
-        <h2 id="por-que-t">We look after every pupil, <em>one by one</em></h2>
-        <p>We are the Interlanguage team. For over 30 years we have been teaching English to children and young people in Madrid, and we always work the same way: we get to know each pupil, listen to their family and follow their progress closely.</p>
-      </div>
-      <div class="why-body reveal">
-        <ul class="why-points">
-          <li><strong>Small groups</strong> so everyone gets real time to speak.</li>
-          <li><strong>Progress tracking</strong>, year after year.</li>
-          <li><strong>One point of contact</strong> who stays with your family at every stage.</li>
-        </ul>
-        <a class="why-link" href="#servicio-metodologia" data-jump-service="metodologia">See how we work <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-      </div>
-    </div>
-  </div>
-</section>
+
 
 <!-- CONTACTO -->
 <section class="contact" id="contacto">
@@ -320,20 +316,6 @@
       <span class="eyebrow"><span class="ct-def">Contact</span><span class="ct-ext">Guidance</span></span>
       <h2><span class="ct-def">Shall we talk?</span><span class="ct-ext">Tell us what you are looking for</span></h2>
       <p><span class="ct-def">Tell us what you are looking for and we will help you find the best option for your child.</span><span class="ct-ext">With their age, school year and what interests you, we guide you on destination and option. It is a conversation, with no obligation.</span></p>
-      <div class="contact-points">
-        <div class="contact-point">
-          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M3 6l9 7 9-7" stroke-linecap="round" stroke-linejoin="round"/><rect x="3" y="5" width="18" height="14" rx="2"/></svg>
-          <div><strong><a href="mailto:info@interlanguage.es">info@interlanguage.es</a></strong><span class="ct-def">We will reply to you personally</span><span class="ct-ext">We will reply to you personally</span></div>
-        </div>
-        <div class="contact-point">
-          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="8" r="3.6"/><path d="M5 20.2c0-3.9 3.1-6.4 7-6.4s7 2.5 7 6.4" stroke-linecap="round"/></svg>
-          <div><strong>Personalised attention</strong></div>
-        </div>
-        <div class="contact-point">
-          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M20 6 9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <div><strong>No obligation</strong></div>
-        </div>
-      </div>
     </div>
 
     <div class="form-card lead-card reveal">
@@ -370,7 +352,7 @@
               <span class="err" id="err-leadAge" role="alert">Please tell us the pupil's age.</span>
             </div>
 
-            <p class="lead-note" data-ctx="campamentos" hidden>Already know which weeks you want? <a href="#form-campamentos" data-goto-camp-form>Book a place in the enrolment form</a> (under 2 minutes). If you would rather ask us something first, carry on here.</p>
+            <p class="lead-note" data-ctx="campamentos" hidden>Already know which weeks you want? <a href="#form-campamentos" data-goto-camp-form>Request a place in the enrolment form</a> (under two minutes). If you would rather ask us something first, carry on here.</p>
 
             <div class="field" data-ctx="extraescolar" hidden>
               <label for="leadSchool">Pupil's school <span class="req" aria-hidden="true">*</span></label>
@@ -416,9 +398,9 @@
         <div class="form-step" data-step="2">
           <div class="lead-recap"><div><span class="lead-recap-label">Your enquiry</span><strong id="leadRecap"></strong></div><button type="button" class="camp-link-btn" id="stepBackBtn">Change</button></div>
           <div class="field">
-            <label for="fullName">Full name of parent or guardian <span class="req" aria-hidden="true">*</span></label>
+            <label for="fullName">Name of parent or guardian <span class="req" aria-hidden="true">*</span></label>
             <input type="text" id="fullName" name="fullName" required autocomplete="name" autocapitalize="words" aria-describedby="err-fullName">
-            <span class="err" id="err-fullName" role="alert">Please enter the parent's or guardian's full name.</span>
+            <span class="err" id="err-fullName" role="alert">Please enter the parent's or guardian's name.</span>
           </div>
           <div class="field">
             <label for="email">Email <span class="req" aria-hidden="true">*</span></label>
@@ -438,12 +420,16 @@
             <label for="message">What would you like to achieve with this experience? <span class="opt">(optional)</span></label>
             <textarea id="message" name="message" rows="4" placeholder="Improve their English, gain independence, study a school year abroad… You can also tell us your questions and the best time to contact you"></textarea>
           </div>
-          <div class="field">
+          <div class="field lead-consent">
             <div class="checkbox-row">
               <input type="checkbox" id="rgpd" name="rgpd" required aria-describedby="err-rgpd">
-              <label for="rgpd">I accept the <a href="legal.html#privacidad" target="_blank" rel="noopener">privacy policy</a> and agree to receive information from Interlanguage Studies.</label>
+              <label for="rgpd">I have read the <a href="legal.html#privacidad" target="_blank" rel="noopener">privacy policy</a> and agree to my details being used to reply to this enquiry. <span class="req" aria-hidden="true">*</span></label>
             </div>
-            <span class="err" id="err-rgpd" role="alert">You need to accept the privacy policy to send your enquiry.</span>
+            <span class="err" id="err-rgpd" role="alert">Please tick this box so that we can reply to your enquiry.</span>
+            <div class="checkbox-row">
+              <input type="checkbox" id="leadNews" name="comunicaciones" value="Sí">
+              <label for="leadNews">I would like to receive information about Interlanguage programmes and news. <span class="opt">Optional; I can unsubscribe at any time.</span></label>
+            </div>
           </div>
           <button type="submit" class="submit-btn" id="submitBtn" data-cta="submit-form" data-label-send="Send enquiry" data-label-call="Choose a day and time">Send enquiry</button>
           <p class="lead-reassure"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8.2 12.4l2.6 2.6 5-5.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="ct-def">We will reply to you personally. No obligation.</span><span class="ct-ext">No obligation.</span></p>
@@ -472,7 +458,7 @@
         </div>
 
         <div class="form-error" id="formErrorMsg" role="alert" hidden></div>
-        <div class="form-msg" id="formMsg" role="status" tabindex="-1"><span class="ct-def">✓ Thank you. We have received your request and will contact you personally.</span><span class="ct-ext">✓ Thank you. We've received your enquiry.</span></div>
+        <div class="form-msg" id="formMsg" role="status" tabindex="-1"><span class="ct-def">✓ Thank you. We have received your enquiry: a member of our team will review it and contact you.</span><span class="ct-ext">✓ Thank you. We have received your enquiry: a member of our team will review it and contact you.</span></div>
             </form>
       <div class="call-done" id="callDone" role="status" tabindex="-1" hidden>
         <p class="call-done-title"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Your call is booked. We will call you on the number you gave us.</span></p>
@@ -486,6 +472,16 @@
         <p class="call-done-cancel"><a id="callCancelLink" href="#">Cancel the call</a> <span>If you can't take the call, cancel it and book another time.</span></p>
       </div>
     </div>
+    <div class="contact-next-wrap reveal">
+      <h3 class="contact-next-t">What happens to your enquiry</h3>
+      <ol class="contact-next">
+        <li><strong>A member of our team reads it</strong><span>It goes to the Interlanguage team in Madrid and is reviewed by someone who knows the programmes.</span></li>
+        <li><strong>We contact you the way you prefer</strong><span>By phone or by email, to understand your situation and answer your questions.</span></li>
+        <li><strong>We guide you, with no obligation</strong><span>We explain which options fit and why. The decision is yours.</span></li>
+      </ol>
+      <p class="contact-data">We only use your details to reply to this enquiry. Receiving news is optional and is chosen separately, at the end of the form.</p>
+      <p class="contact-mail">Prefer to write to us? <a href="mailto:info@interlanguage.es">info@interlanguage.es</a></p>
+    </div>
   </div>
 </section>
 
@@ -497,30 +493,31 @@
   <div class="container camp-hero-grid">
     <div class="camp-hero-content">
       <a href="#" class="svc-back" data-back>← Back to programmes</a>
-      <span class="eyebrow">Summer camp · TalenTalk® Method since 2002</span>
-      <span class="svc-page-tag">Our flagship</span>
+      <span class="eyebrow">Summer camp in Madrid</span>
+
       <h1>Where every summer they discover a new talent</h1>
-      <p class="svc-page-intro">Daily challenges in English, with 100% native monitors, based on the 8 multiple intelligences. Age-based groups, in Madrid. Places sell out every summer.</p>
+      <p class="svc-page-intro">Daily challenges in English based on the eight multiple intelligences, with 100% native monitors and age-based groups. Using the TalenTalk® method, which we have applied since 2002.</p>
       <div class="camp-quickfacts camp-quickfacts--hero">
         <div class="camp-quickfact">
           <div class="camp-quickfact-ic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c1-4.5 4-7 7-7s6 2.5 7 7" stroke-linecap="round"/></svg></div>
-          <div><strong>3–10</strong><span>Age range</span></div>
+          <div><strong>Ages 3–10</strong><span>Age-based groups</span></div>
         </div>
         <div class="camp-quickfact">
           <div class="camp-quickfact-ic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18" stroke-linecap="round"/></svg></div>
-          <div><strong>22 Jun – 24 Jul</strong><span>Dates</span></div>
+          <div><strong>22&nbsp;June – 24&nbsp;July</strong><span>Published dates</span></div>
         </div>
         <div class="camp-quickfact">
           <div class="camp-quickfact-ic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6.4-7-11.5A7 7 0 0112 2a7 7 0 017 7.5C19 14.6 12 21 12 21z" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="9.5" r="2.5"/></svg></div>
           <div><strong>Madrid</strong><span>Rosales and Chamartín</span></div>
         </div>
-        <a href="#camp-precio" class="camp-quickfact is-price" aria-label="From €160 per week. See prices">
+        <a href="#camp-precio" class="camp-quickfact is-price" aria-label="One week: 160 euros. See fees by duration">
           <div class="camp-quickfact-ic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2 20 10a2 2 0 010 2.8L13.8 19a2 2 0 01-2.8 0L3 11V3h8z" stroke-linejoin="round"/><circle cx="7" cy="7" r="1.2" fill="currentColor" stroke="none"/></svg></div>
-          <div><strong>From €160</strong><span>Per week</span></div>
+          <div><strong>€160</strong><span>One week</span></div>
         </a>
       </div>
+      <p class="camp-season-note">Ask about dates, fees and availability for the next edition before requesting a place.</p>
       <div class="svc-page-cta-row">
-        <a href="#form-campamentos" class="btn-primary svc-page-cta">Book a place</a>
+        <a href="#form-campamentos" class="btn-primary svc-page-cta">Request a place</a>
         <a href="#camp-dia" class="btn-outline">See what a day looks like</a>
       </div>
     </div>
@@ -537,8 +534,8 @@
     <div class="camp-info-grid reveal">
       <div class="camp-info-card">
         <h3>Dates</h3>
-        <p class="camp-info-big">22 Jun – 24 Jul</p>
-        <p>5 weeks. Choose any you like: they don't have to be consecutive.</p>
+        <p class="camp-info-big">22 June to 24 July</p>
+        <p>Five weeks. Choose any you like; they don't have to be consecutive.</p>
       </div>
       <div class="camp-info-card">
         <h3>Sites</h3>
@@ -555,7 +552,7 @@
   <div class="container">
     <div class="camp-section-head reveal">
       <h2>What they do at camp</h2>
-      <p>8 different challenges, a discovery each day, and each one works on a different intelligence.</p>
+      <p>Eight different challenges, a discovery each day; each challenge works on a different intelligence.</p>
     </div>
     <div class="challenge-grid reveal">
       <div class="challenge-chip c1"><strong>Eureka! Challenge</strong><span>Small scientific discoveries</span></div>
@@ -576,17 +573,17 @@
       <div class="age-card">
         <div class="age-card-media"><picture><source type="image/avif" srcset="images/campamentos/taller-cocina-limones-480.avif 480w, images/campamentos/taller-cocina-limones-800.avif 800w, images/campamentos/taller-cocina-limones-1122.avif 1122w" sizes="(max-width: 700px) 100vw, 50vw"><source type="image/webp" srcset="images/campamentos/taller-cocina-limones-480.webp 480w, images/campamentos/taller-cocina-limones-800.webp 800w, images/campamentos/taller-cocina-limones-1122.webp 1122w" sizes="(max-width: 700px) 100vw, 50vw"><img src="images/campamentos/taller-cocina-limones.jpg" alt="Cooking workshop, squeezing lemons" width="1122" height="1402" loading="lazy"></picture></div>
         <div class="age-card-body">
-          <span class="age-range">Talent Starters · ages 3–8</span>
           <h3>The youngest</h3>
+          <span class="age-range">Talent Starters</span>
           <p>Guided play, a gentle pace and first steps in each intelligence, in age-based groups.</p>
         </div>
       </div>
       <div class="age-card">
         <div class="age-card-media"><picture><source type="image/avif" srcset="images/campamentos/taller-manualidades-480.avif 480w, images/campamentos/taller-manualidades-800.avif 800w, images/campamentos/taller-manualidades-1089.avif 1089w" sizes="(max-width: 700px) 100vw, 50vw"><source type="image/webp" srcset="images/campamentos/taller-manualidades-480.webp 480w, images/campamentos/taller-manualidades-800.webp 800w, images/campamentos/taller-manualidades-1089.webp 1089w" sizes="(max-width: 700px) 100vw, 50vw"><img src="images/campamentos/taller-manualidades.jpg" alt="Arts and crafts workshop at the camp" width="1089" height="1445" loading="lazy"></picture></div>
         <div class="age-card-body">
-          <span class="age-range">Talent Juniors · ages 8–16</span>
-          <h3>More independence</h3>
-          <p>Each day they choose between several challenges, in groups organised by age and level.</p>
+          <h3>The older ones</h3>
+          <span class="age-range">Talent Juniors</span>
+          <p>More independence: each day they choose between several challenges, in groups organised by age and level.</p>
         </div>
       </div>
     </div>
@@ -669,7 +666,7 @@
 <section class="camp-section bg-cream" id="camp-precio">
   <div class="container">
     <div class="camp-section-head reveal">
-      <h2>Price</h2>
+      <h2>Fees by duration</h2>
       <p>The total price depends on the number of weeks you choose, whether or not they are consecutive.</p>
     </div>
     <div class="camp-price-grid reveal">
@@ -679,9 +676,9 @@
       <div class="camp-price-card" data-pack-weeks="4"><span>4 weeks</span><strong>€430</strong></div>
       <div class="camp-price-card" data-pack-weeks="5"><span>5 weeks</span><strong>€530</strong></div>
     </div>
-    <p class="camp-price-extra reveal"><strong>Lunch service</strong> (optional): <strong data-comedor-price>+€52</strong> per week, minimum 25 children enrolled.</p>
+    <p class="camp-price-extra reveal"><strong>Optional lunch service:</strong> <span data-comedor-price>€52</span> per week, with a minimum of 25 children enrolled.</p>
     <div class="svc-page-cta-row" style="margin-top:28px; margin-bottom:0;">
-      <a href="#form-campamentos" class="btn-primary svc-page-cta">Book a place</a>
+      <a href="#form-campamentos" class="btn-primary svc-page-cta">Request a place</a>
     </div>
   </div>
 </section>
@@ -697,9 +694,9 @@
       <div class="camp-faq">
         <details class="camp-faq-item"><summary>Do we need to be pupils at Sagrado Corazón?</summary><p>No. Pupils from other schools are welcome.</p></details>
         <details class="camp-faq-item"><summary>Do we have to sign up for every week?</summary><p>No. You can choose any weeks you like, consecutive or not.</p></details>
-        <details class="camp-faq-item"><summary>How does the lunch service work?</summary><p>It's an optional service at <span data-fill-comedor>+€52</span> per week, with a minimum of 25 children enrolled.</p></details>
+        <details class="camp-faq-item"><summary>How does the lunch service work?</summary><p>It's an optional service at <span data-fill-comedor>€52</span> per week, with a minimum of 25 children enrolled.</p></details>
         <details class="camp-faq-item"><summary>Who leads the activities?</summary><p>100% native monitors, trained to work with children.</p></details>
-        <details class="camp-faq-item"><summary>When is the place confirmed?</summary><p>Once you send the enrolment, we confirm the place within 24 hours.</p></details>
+        <details class="camp-faq-item"><summary>When is the place confirmed?</summary><p>We check availability at your chosen site and for your selected weeks, then contact you personally. Sending the form does not confirm a place.</p></details>
       </div>
 
     </div>
@@ -713,8 +710,8 @@
       <div class="camp-form-head">
         <span class="eyebrow">Enrolment</span>
         <h2 class="svc-schedule-title">Enrol your child in the camp</h2>
-        <p class="svc-schedule-intro">Choose the weeks that suit you, they don't have to be consecutive. Fill in the form and we'll confirm the place within 24 hours.</p>
-        <ul class="camp-form-chips"><li><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2" stroke-linecap="round"/></svg>Under 2 minutes</li><li><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>Confirmation within 24 hours</li></ul>
+        <p class="svc-schedule-intro">Choose the weeks that suit you, they don't have to be consecutive. Fill in the form and we will check availability personally before confirming a place.</p>
+        <ul class="camp-form-chips"><li><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2" stroke-linecap="round"/></svg>Under two minutes</li><li><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>Personal confirmation of availability</li></ul>
       </div>
       <form id="campForm" class="camp-form" action="form-handler.php" method="POST" novalidate data-l-none="Not chosen" data-l-pick-total="Choose weeks" data-l-hint="Choose a site and weeks to see the total." data-l-week="Week" data-l-week-one="week" data-l-week-many="weeks" data-l-with-comedor="With lunch service" data-l-without-comedor="No lunch service" data-l-comedor="lunch" data-l-tbc="To be confirmed" data-l-tbc-note="We can't calculate the total automatically: we'll confirm it with the place." data-l-send-error="We couldn't send the enrolment. Your details are still here: please try again in a few seconds or email us at info@interlanguage.es." data-l-sending="Sending…" data-l-review="Please check the highlighted fields to send the enrolment.">
         <input type="text" name="website" id="campHp" class="hp-field" tabindex="-1" autocomplete="off" aria-hidden="true">
@@ -752,7 +749,7 @@
               <label class="cf-switch">
                 <input type="checkbox" id="campComedor">
                 <span class="cf-switch-track" aria-hidden="true"></span>
-                <span class="cf-switch-tx"><strong>Lunch service</strong> <small>(<span data-fill-comedor>+€52</span>/week, minimum 25 children enrolled)</small></span>
+                <span class="cf-switch-tx"><strong>Lunch service</strong> <small><span data-fill-comedor>€52</span> per week; minimum of 25 children enrolled</small></span>
               </label>
             </section>
 
@@ -771,7 +768,7 @@
                 </div>
                 <div class="field">
                   <label for="campAlumnoEdad">Child's age or year group (optional)</label>
-                  <input type="text" id="campAlumnoEdad" name="alumnoEdad" autocomplete="off" enterkeyhint="next" placeholder="e.g. 7 years old / Year 2 of Primary">
+                  <input type="text" id="campAlumnoEdad" name="alumnoEdad" autocomplete="off" enterkeyhint="next" placeholder="e.g. 7 years old or Year 2 of Primary">
                 </div>
                 <div class="field">
                   <label for="campColegio">Current school <span class="req" aria-hidden="true">*</span></label>
@@ -813,9 +810,13 @@
                 <div class="field full">
                   <div class="checkbox-row">
                     <input type="checkbox" id="campRgpd" name="rgpd" required aria-describedby="err-campRgpd">
-                    <label for="campRgpd">I accept the <a href="legal.html#privacidad" target="_blank" rel="noopener">privacy policy</a> and agree to receive information from Interlanguage Studies.</label>
+                    <label for="campRgpd">I have read the <a href="legal.html#privacidad" target="_blank" rel="noopener">privacy policy</a> and agree to my details being used to process this enrolment. <span class="req" aria-hidden="true">*</span></label>
                   </div>
-                  <span class="err" id="err-campRgpd" role="alert">You need to accept the privacy policy to send the enrolment.</span>
+                  <span class="err" id="err-campRgpd" role="alert">Please tick this box so that we can process the enrolment.</span>
+                  <div class="checkbox-row">
+                    <input type="checkbox" id="campNews" name="comunicaciones" value="Sí">
+                    <label for="campNews">I would like to receive information about Interlanguage programmes and news. <span class="opt">Optional; I can unsubscribe at any time.</span></label>
+                  </div>
                 </div>
               </div>
             </section>
@@ -834,12 +835,12 @@
               <p class="camp-summary-note" data-sum="comedor-note" hidden>Lunch service requires a minimum of 25 children enrolled.</p>
             </div>
             <div class="form-error" id="campFormErrorMsg" role="alert" hidden></div>
-            <button type="submit" class="btn-primary camp-submit" id="campSubmitBtn">Send enrolment</button>
-            <p class="camp-side-note">Once you send the enrolment, we confirm the place within 24 hours.</p>
+            <button type="submit" class="btn-primary camp-submit" id="campSubmitBtn">Send request</button>
+            <p class="camp-side-note">We check availability at your chosen site and for your selected weeks, then contact you personally. Sending the form does not confirm a place.</p>
           </aside>
         </div>
 
-        <div class="form-msg" id="campFormMsg" role="status" tabindex="-1">✓ Thank you. We've received the enrolment and will confirm the place within 24 hours.<div class="camp-sent-recap" data-sent-recap></div></div>
+        <div class="form-msg" id="campFormMsg" role="status" tabindex="-1">✓ Thank you. We have received your request. We will check availability and contact you to confirm a place.<div class="camp-sent-recap" data-sent-recap></div></div>
       </form>
     </div>
   </div>
@@ -865,19 +866,13 @@
   <div class="container camp-hero-grid">
     <div class="camp-hero-content">
       <a href="#" class="svc-back" data-back>← Back to programmes</a>
-      <span class="eyebrow">TalenTalk® · After-school English at school</span>
-      <h1>After-school English to speak, take part and gain confidence</h1>
-      <p class="svc-page-intro">From Early Years to Secondary, at your child's own school and with native teachers in small groups. A continuous programme so every pupil gains real fluency and level speaking English.</p>
+      <span class="eyebrow">At school · Early Years to Secondary</span>
+      <h1>After-school English to build confidence</h1>
+      <p class="svc-page-intro">Classes with native teachers in small groups, throughout the school year. So that every pupil gains fluency and level speaking English.</p>
       <div class="svc-page-cta-row">
         <a href="#" class="btn-primary svc-page-cta" data-cta-service="extraescolar">Ask about places for the year</a>
-        <a href="#extraescolar-clubs" class="btn-outline">See groups and timetables</a>
+        <a href="#extraescolar-clubs" class="btn-outline">See groups by age</a>
       </div>
-      <ul class="hero-trust">
-        <li>100% native teachers</li>
-        <li>Small groups</li>
-        <li>At your child's own school</li>
-        <li>From Early Years to Secondary</li>
-      </ul>
     </div>
     <div class="camp-hero-media"><picture><source type="image/avif" srcset="images/programas/profesor-ritmo-en-480.avif 480w, images/programas/profesor-ritmo-en-800.avif 800w, images/programas/profesor-ritmo-en-1200.avif 1200w, images/programas/profesor-ritmo-en-1207.avif 1207w" sizes="(max-width: 900px) 100vw, 45vw"><source type="image/webp" srcset="images/programas/profesor-ritmo-en-480.webp 480w, images/programas/profesor-ritmo-en-800.webp 800w, images/programas/profesor-ritmo-en-1200.webp 1200w, images/programas/profesor-ritmo-en-1207.webp 1207w" sizes="(max-width: 900px) 100vw, 45vw"><img src="images/programas/profesor-ritmo-en.jpg" alt="A native Interlanguage teacher leading a speaking activity with their pupils" width="1207" height="1086" style="object-position:center 38%" loading="lazy"></picture></div>
   </div>
@@ -889,7 +884,7 @@
     <div class="camp-quickfacts reveal">
       <div class="camp-quickfact">
         <div class="camp-quickfact-ic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c1-4.5 4-7 7-7s6 2.5 7 7" stroke-linecap="round"/></svg></div>
-        <div><strong>Early Years to Secondary</strong><span>A club for each age</span></div>
+        <div><strong>Early Years to Secondary</strong><span>A club for each stage</span></div>
       </div>
       <div class="camp-quickfact">
         <div class="camp-quickfact-ic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18" stroke-linecap="round"/></svg></div>
@@ -897,7 +892,7 @@
       </div>
       <div class="camp-quickfact">
         <div class="camp-quickfact-ic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2" stroke-linecap="round"/></svg></div>
-        <div><strong>4:30 – 5:25 pm</strong><span>In the afternoon, at school</span></div>
+        <div><strong>4:30–5:25 pm</strong><span>In the afternoon, at school</span></div>
       </div>
       <div class="camp-quickfact">
         <div class="camp-quickfact-ic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="9" r="3"/><path d="M2.5 19c0-3.3 2.9-5.5 6.5-5.5s6.5 2.2 6.5 5.5" stroke-linecap="round"/><circle cx="17.5" cy="10" r="2.2"/></svg></div>
@@ -905,11 +900,11 @@
       </div>
       <div class="camp-quickfact is-price">
         <div class="camp-quickfact-ic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2 20 10a2 2 0 010 2.8L13.8 19a2 2 0 01-2.8 0L3 11V3h8z" stroke-linejoin="round"/><circle cx="7" cy="7" r="1.2" fill="currentColor" stroke="none"/></svg></div>
-        <div><strong>€65/month</strong><span>+ €35 materials per year</span></div>
+        <div><strong>€65/month</strong><span>Plus €35 a year for materials</span></div>
       </div>
     </div>
     <!-- [DATO PENDIENTE] Confirmar si el horario y el precio son iguales en todos los colegios donde se imparte el extraescolar. De momento se acota al Colegio Sagrado Corazón, que es lo que confirma el folleto. -->
-    <p class="quickfacts-note">Timetable and fees for the programme at Colegio Sagrado Corazón.</p>
+    <p class="quickfacts-note"><strong>Colegio Sagrado Corazón</strong> · Timetable and fees for this school. Ask about the conditions at your child’s school.</p>
   </div>
 </section>
 
@@ -954,25 +949,25 @@
     </div>
     <div class="club-grid reveal">
       <div class="club-card">
-        <span class="club-age">Early Years</span>
-        <h3>Club Fun TalenTalk</h3>
+        <h3 class="club-stage">Early Years</h3>
+        <span class="club-name">Club Fun TalenTalk</span>
         <p>Through play, building listening skills and their first conversations.</p>
       </div>
       <div class="club-card">
-        <span class="club-age">Years 1 and 2 of Primary</span>
-        <h3>Club TalenTalk Walkers</h3>
+        <h3 class="club-stage">Years 1 and 2 of Primary</h3>
+        <span class="club-name">Club TalenTalk Walkers</span>
         <p>Lively role-play, short dialogues, stories and songs.</p>
       </div>
       <div class="club-card">
-        <span class="club-age">Years 3 to 6 of Primary</span>
-        <h3>Club TalenTalk Prime</h3>
+        <h3 class="club-stage">Years 3 to 6 of Primary</h3>
+        <span class="club-name">Club TalenTalk Prime</span>
         <p>Focused projects that enrich their communication skills.</p>
       </div>
       <div class="club-card">
-        <span class="club-age">ESO</span>
-        <h3>Club TalenTalk Senior Challenge</h3>
+        <h3 class="club-stage">ESO</h3>
+        <span class="club-name">Club TalenTalk Senior Challenge</span>
         <p>Real-life situations and active practice to boost their level.</p>
-        <span class="club-exams"><span>KET</span><span>PET</span><span>FCE</span><span>CAE</span></span>
+        <p class="club-exams">Cambridge exams: KET, PET, FCE and CAE.</p>
       </div>
     </div>
   </div>
@@ -994,10 +989,10 @@
       <div class="ideal-block reveal">
         <h2>Ideal for families who…</h2>
         <ul>
-          <li>Want their child to <strong>speak</strong> more English, not memorise more.</li>
-          <li>Are looking for <strong>continuity</strong> all year round, not one-off classes.</li>
-          <li>Value <strong>small groups</strong> and close attention.</li>
-          <li>Prefer an activity <strong>at their own school</strong>.</li>
+          <li>Want their child to speak more English, not memorise more.</li>
+          <li>Are looking for continuity all year round, not one-off classes.</li>
+          <li>Value small groups and close attention.</li>
+          <li>Prefer an activity at their own school.</li>
         </ul>
       </div>
     </div>
@@ -1025,7 +1020,7 @@
     <div class="camp-faq faq-list reveal">
       <details class="camp-faq-item"><summary>What ages is the programme for?</summary><p>From Early Years to Secondary. Each stage has its own club, with goals and activities suited to their age.</p></details>
       <details class="camp-faq-item"><summary>How are the groups organised?</summary><p>By school stage, in small groups that open from 8 pupils, so everyone gets real time to speak.</p></details>
-      <details class="camp-faq-item"><summary>Are the teachers really native speakers?</summary><p>Yes. 100% of our teaching staff are native speakers, specifically trained to teach children and young people, not just to speak the language.</p></details>
+      <details class="camp-faq-item"><summary>Are the teachers really native speakers?</summary><p>Yes. All our teaching staff are native speakers, specifically trained to teach children and young people, not just to speak the language.</p></details>
       <details class="camp-faq-item"><summary>When do classes start and finish?</summary><p>The programme runs from October to May, following the school calendar, in the afternoon at your child's own school.</p></details>
       <details class="camp-faq-item"><summary>How much does it cost and what's included?</summary><p>At Colegio Sagrado Corazón, €65 a month plus €35 a year for materials. If your school is a different one, get in touch and we'll confirm the terms.</p></details>
     </div>
@@ -1055,19 +1050,29 @@
       <div class="ext-hero-text">
         <span class="eyebrow">School year abroad</span>
         <h1 id="ext-h1">Study abroad, <em>at a school that fits your child</em></h1>
-        <ul class="ext-hero-paises" aria-label="Countries with a school year abroad"><li>United Kingdom</li><li>Ireland</li><li>United States</li></ul>
+        <ul class="ext-hero-paises" aria-label="Destinations and enquiries"><li>United Kingdom</li><li>Ireland</li><li>United States <span class="ext-hero-status">· Enquire</span></li></ul>
         <p class="ext-hero-lead">Tell us your child's age, school year and what you're looking for. We guide you through destinations, programme types and next steps.</p>
         <div class="ext-hero-cta">
-          <a href="#" class="btn-primary" data-advise="extranjero" data-cta="ext-hero">Request guidance <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+          <a href="#" class="btn-primary" data-advise="extranjero" data-cta="ext-hero">Ask for guidance <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
           <a href="#ext-comparar" class="ext-hero-link" data-cta="ext-hero-comparar">Compare destinations</a>
         </div>
       </div>
     </div>
   </section>
 
-
-
-
+  <nav class="ext-toc" aria-label="On this page">
+    <div class="container ext-toc-in">
+      <span class="ext-toc-t" aria-hidden="true">On this page</span>
+      <ul class="ext-toc-list">
+        <li><a href="#ext-opciones">Destinations</a></li>
+        <li><a href="#ext-comparar">Compare</a></li>
+        <li><a href="#ext-experiencia">Daily life</a></li>
+        <li><a href="#ext-orientacion">How we work</a></li>
+        <li><a href="#ext-presupuesto">Budget</a></li>
+        <li><a href="#ext-dudas">Questions</a></li>
+      </ul>
+    </div>
+  </nav>
 
   <section class="ext-section ext-section--alt" id="ext-opciones" aria-labelledby="ext-opciones-t"><div class="container"><div class="ext-head"><span class="eyebrow">Destinations</span><h2 id="ext-opciones-t">Start with the setting you imagine</h2><p>Explore the type of school, then compare the conditions. If several destinations interest you, we will advise you so you can make the best decision.</p></div><div class="ext-options">      <article class="ext-option" data-destino="reino-unido" aria-labelledby="ext-card-reino-unido">
         <span class="ext-option-photo"><picture><source type="image/avif" srcset="images/internacional/ext-uk-balcon-400.avif 400w, images/internacional/ext-uk-balcon-710.avif 710w, images/internacional/ext-uk-balcon-790.avif 790w, images/internacional/ext-uk-balcon-1000.avif 1000w" sizes="(min-width:1280px) 395px, (min-width:900px) calc((100vw - 96px) / 3), calc(100vw - 48px)"><source type="image/webp" srcset="images/internacional/ext-uk-balcon-400.webp 400w, images/internacional/ext-uk-balcon-710.webp 710w, images/internacional/ext-uk-balcon-790.webp 790w, images/internacional/ext-uk-balcon-1000.webp 1000w" sizes="(min-width:1280px) 395px, (min-width:900px) calc((100vw - 96px) / 3), calc(100vw - 48px)"><img src="images/internacional/uk-balcon.jpg" alt="" width="1200" height="800" loading="lazy" decoding="async"></picture></span>
@@ -1077,7 +1082,7 @@
           <dl class="ext-option-facts">
             <div><dt>Age</dt><dd>7–18, depending on the school</dd></div>
             <div><dt>Accommodation</dt><dd>Boarding</dd></div>
-            <div><dt>Length of stay</dt><dd>Full school year; 1 or 2 terms at some schools</dd></div>
+            <div><dt>Length of stay</dt><dd>Full school year; one or two terms at some schools</dd></div>
           </dl>
           <div class="ext-option-actions">
           <details class="ext-option-details">
@@ -1130,12 +1135,12 @@
         <table class="ext-cmp">
           <caption class="sr-only">Comparison of the United Kingdom and Ireland by criteria</caption>
           <colgroup><col class="ext-cmp-c0"><col><col></colgroup>
-          <thead><tr><th scope="col"><span class="sr-only">Criterion</span></th><th scope="col"><span class="ext-cmp-hd"><span class="ext-cmp-ph"><picture><source type="image/avif" srcset="images/internacional/ext-uk-balcon-400.avif" ><source type="image/webp" srcset="images/internacional/ext-uk-balcon-400.webp"><img src="images/internacional/vivirlo-colegio.jpg" alt="" width="50" height="50" loading="lazy" decoding="async"></picture></span><span><strong>United Kingdom</strong><small>England and Scotland</small></span></span></th><th scope="col"><span class="ext-cmp-hd"><span class="ext-cmp-ph"><picture><source type="image/avif" srcset="images/internacional/ext-ie-escalera-400.avif" ><source type="image/webp" srcset="images/internacional/ext-ie-escalera-400.webp"><img src="images/internacional/ext-ie-escalera.jpg" alt="" width="50" height="50" loading="lazy" decoding="async"></picture></span><span><strong>Ireland</strong><small>Dublin and several counties</small></span></span></th></tr></thead>
+          <thead><tr><th scope="col"><span class="sr-only">Criterion</span></th><th scope="col"><span class="ext-cmp-hd"><span class="ext-cmp-ph"><picture><source type="image/avif" srcset="images/internacional/ext-uk-balcon-400.avif" ><source type="image/webp" srcset="images/internacional/ext-uk-balcon-400.webp"><img src="images/internacional/vivirlo-colegio.jpg" alt="" width="50" height="50" loading="lazy" decoding="async"></picture></span><span><strong>United Kingdom</strong><small>England and Scotland</small></span></span></th><th scope="col"><span class="ext-cmp-hd"><span class="ext-cmp-ph"><picture><source type="image/avif" srcset="images/internacional/ext-ie-escalera-400.avif" ><source type="image/webp" srcset="images/internacional/ext-ie-escalera-400.webp"><img src="images/internacional/ie-escalera.jpg" alt="" width="50" height="50" loading="lazy" decoding="async"></picture></span><span><strong>Ireland</strong><small>Dublin and several counties</small></span></span></th></tr></thead>
           <tbody>
-          <tr><th scope="row"><span class="ext-cmp-row"><svg class="ext-ic" aria-hidden="true" focusable="false"><use href="#ext-i-user"/></svg><span>Age and school year</span></span></th><td data-label="United Kingdom"><strong>Ages 7 to 18</strong><span class="ext-cmp-s">Boarding from age 7 at one preparatory school; other schools start in later school years.</span></td><td data-label="Ireland"><strong>Ages 10 to 18</strong><span class="ext-cmp-s">In secondary school. The exact school year is confirmed with each school.</span></td></tr>
-          <tr><th scope="row"><span class="ext-cmp-row"><svg class="ext-ic" aria-hidden="true" focusable="false"><use href="#ext-i-cal"/></svg><span>Length of stay</span></span></th><td data-label="United Kingdom"><strong>Full school year</strong><span class="ext-cmp-s">The usual option. There are also schools that accept 1 or 2 terms, with limited places.</span></td><td data-label="Ireland"><strong>Full school year or terms</strong><span class="ext-cmp-s">Availability for each length of stay is confirmed with the school.</span></td></tr>
-          <tr><th scope="row"><span class="ext-cmp-row"><svg class="ext-ic" aria-hidden="true" focusable="false"><use href="#ext-i-school"/></svg><span>Type of school</span></span></th><td data-label="United Kingdom"><strong>Independent and co-educational</strong><span class="ext-cmp-s">Boarders and day pupils, in England and Scotland.</span></td><td data-label="Ireland"><strong>Secondary</strong><span class="ext-cmp-s">Boarding or day. Most are co-educational; some are boys only or girls only.</span></td></tr>
+          <tr><th scope="row"><span class="ext-cmp-row"><svg class="ext-ic" aria-hidden="true" focusable="false"><use href="#ext-i-user"/></svg><span>Age and school year</span></span></th><td data-label="United Kingdom"><strong>Ages 7 to 18</strong><span class="ext-cmp-s">From age 7 at one prep school; other schools admit later years.</span></td><td data-label="Ireland"><strong>Ages 10 to 18</strong><span class="ext-cmp-s">In secondary school. The exact school year is confirmed with each school.</span></td></tr>
           <tr id="ext-cmp-alojamiento"><th scope="row"><span class="ext-cmp-row"><svg class="ext-ic" aria-hidden="true" focusable="false"><use href="#ext-i-bed"/></svg><span>Accommodation</span></span></th><td data-label="United Kingdom"><strong>Boarding</strong><span class="ext-cmp-s">At the school itself. Opening days and weekends depend on the school.</span></td><td data-label="Ireland"><strong>Boarding or host family</strong><span class="ext-cmp-s">Boarding of 5, 5½ or 7 days, or a day school with a host family. Some boarding schools close at weekends.</span></td></tr>
+          <tr><th scope="row"><span class="ext-cmp-row"><svg class="ext-ic" aria-hidden="true" focusable="false"><use href="#ext-i-cal"/></svg><span>Length of stay</span></span></th><td data-label="United Kingdom"><strong>Full school year</strong><span class="ext-cmp-s">The usual option. There are also schools that accept one or two terms, with limited places.</span></td><td data-label="Ireland"><strong>Full school year or terms</strong><span class="ext-cmp-s">Availability for each length of stay is confirmed with the school.</span></td></tr>
+          <tr><th scope="row"><span class="ext-cmp-row"><svg class="ext-ic" aria-hidden="true" focusable="false"><use href="#ext-i-school"/></svg><span>Type of school</span></span></th><td data-label="United Kingdom"><strong>Independent and co-educational</strong><span class="ext-cmp-s">Boarders and day pupils, in England and Scotland.</span></td><td data-label="Ireland"><strong>Secondary</strong><span class="ext-cmp-s">Boarding or day. Most are co-educational; some are boys only or girls only.</span></td></tr>
           <tr id="ext-cmp-admision"><th scope="row"><span class="ext-cmp-row"><svg class="ext-ic" aria-hidden="true" focusable="false"><use href="#ext-i-chat"/></svg><span>English level and admission</span></span></th><td data-label="United Kingdom"><strong>Reports, interviews or assessments</strong><span class="ext-cmp-s">This may include a taster day or an English assessment; each school sets its requirements.</span></td><td data-label="Ireland"><strong>Reviewed with each school</strong><span class="ext-cmp-s">Before a place is proposed.</span></td></tr>
           <tr id="ext-cmp-actividades"><th scope="row"><span class="ext-cmp-row"><svg class="ext-ic" aria-hidden="true" focusable="false"><use href="#ext-i-ball"/></svg><span>School life and activities</span></span></th><td data-label="United Kingdom"><strong>Evening and weekend activities</strong><span class="ext-cmp-s">For boarders at several schools. They vary a lot from one school to another.</span></td><td data-label="Ireland"><strong>Team sport, music or culture</strong><span class="ext-cmp-s">They vary from one school to another.</span></td></tr>
           </tbody>
@@ -1204,12 +1209,43 @@
         <p>We start by discussing your situation. Before personalised work begins, we present a proposal so you know what you are signing up for.</p>
       </div>
       <ol class="ext-steps">
-        <li class="ext-step"><div class="ext-step-top"><span class="ext-step-ico"><svg class="ext-ic" aria-hidden="true" focusable="false"><use href="#ext-i-chat"/></svg></span><span class="ext-step-num" aria-hidden="true">1</span></div><h3>Initial guidance</h3><p>We discuss your child's age, school year, English level and goals to guide you on destinations and programme types.</p></li>
-        <li class="ext-step"><div class="ext-step-top"><span class="ext-step-ico"><svg class="ext-ic" aria-hidden="true" focusable="false"><use href="#ext-i-doc"/></svg></span><span class="ext-step-num" aria-hidden="true">2</span></div><h3>Service proposal</h3><p>You receive a proposal setting out the scope of work, fees and terms. You decide whether to go ahead.</p></li>
-        <li class="ext-step"><div class="ext-step-top"><span class="ext-step-ico"><svg class="ext-ic" aria-hidden="true" focusable="false"><use href="#ext-i-compass"/></svg></span><span class="ext-step-num" aria-hidden="true">3</span></div><h3>School selection and application</h3><p>Once you accept the proposal, personalised school selection begins. We explain why the schools fit and help with documents and applications, as agreed.</p></li>
-        <li class="ext-step"><div class="ext-step-top"><span class="ext-step-ico"><svg class="ext-ic" aria-hidden="true" focusable="false"><use href="#ext-i-house"/></svg></span><span class="ext-step-num" aria-hidden="true">4</span></div><h3>Preparation and support</h3><p>We guide you through the practical preparations and prepare your child for arrival. Contact with the family during the stay is set out in the proposal.</p></li>
+        <li class="ext-step"><span class="ext-step-num" aria-hidden="true">1</span><h3>Initial guidance</h3><p>We discuss your child's age, school year, English level and goals to guide you on destinations and programme types.</p></li>
+        <li class="ext-step"><span class="ext-step-num" aria-hidden="true">2</span><h3>Service proposal</h3><p>You receive a proposal setting out the scope of work, fees and terms. You decide whether to go ahead.</p></li>
+        <li class="ext-step"><span class="ext-step-num" aria-hidden="true">3</span><h3>School selection and application</h3><p>Once you accept the proposal, personalised school selection begins. We explain why the schools fit and help with documents and applications, as agreed.</p></li>
+        <li class="ext-step"><span class="ext-step-num" aria-hidden="true">4</span><h3>Preparation and support</h3><p>We guide you through the practical preparations and prepare your child for arrival. Contact with the family during the stay is set out in the proposal.</p></li>
       </ol>
       <p class="ext-steps-note">The exact scope of each step depends on the programme and is set out in the proposal.</p>
+      <article class="ext-caso" aria-labelledby="ext-caso-t">
+        <div class="ext-caso-head">
+          <p class="ext-caso-label">Illustrative example · Not a real case</p>
+          <h3 id="ext-caso-t">How we reason a choice</h3>
+          <p>This is how we approach the school selection in step 3, using an invented profile. No school names or prices: every case is studied with its own details.</p>
+        </div>
+        <div class="ext-caso-perfil">
+          <h4>Starting point</h4>
+          <ul>
+            <li>Aged 13, in 2nd year of ESO (Spain)</li>
+            <li>Intermediate level of English</li>
+            <li>Enjoys team sports and music</li>
+            <li>Has never spent a long period away from home</li>
+            <li>The family is unsure between one term and a full school year</li>
+          </ul>
+        </div>
+        <details class="ext-caso-criterios" open>
+          <summary><h4>What we weigh up</h4><span class="ext-caso-hint">Age, accommodation, length of stay, school life, English and admission</span></summary>
+          <dl>
+            <div><dt>Age and school year</dt><dd>At 13 they can go to the UK or Ireland. The year of entry is confirmed with each school.</dd></div>
+            <div><dt>Accommodation</dt><dd>For a first stay away, we consider whether boarding suits them better or, in Ireland, a day school with a host family. Ireland also has 5- or 5½-day boarding: we look at what each option means at weekends.</dd></div>
+            <div><dt>Length of stay</dt><dd>One term or a full school year. In the UK only some schools accept terms, with limited places; in Ireland it is confirmed with each school.</dd></div>
+            <div><dt>School life</dt><dd>That team sports and music are part of their day-to-day life, because what schools offer varies a great deal.</dd></div>
+            <div><dt>English and admission</dt><dd>Whether English support would help, which costs extra at some schools, and what each admission requires: reports, an interview, a level test or a guardian in the UK.</dd></div>
+          </dl>
+        </details>
+        <div class="ext-caso-result">
+          <h4>What the family receives</h4>
+          <p>A reasoned selection of schools: why each one fits, what its admission requires and what is still to be confirmed. If an option does not suit your child, we tell you.</p>
+        </div>
+      </article>
       <div class="ext-dif">
         <h3>What sets us apart</h3>
         <ul class="ext-dif-list"><li><svg class="ext-ic" aria-hidden="true" focusable="false"><use href="#ext-i-user"/></svg><strong>The pupil comes first</strong><span>We start with their age, English level and interests; the school comes after.</span></li><li><svg class="ext-ic" aria-hidden="true" focusable="false"><use href="#ext-i-school"/></svg><strong>A selection of schools</strong><span>We work with a selection of schools and explain what each one is like, with no endless catalogues.</span></li><li><svg class="ext-ic" aria-hidden="true" focusable="false"><use href="#ext-i-compass"/></svg><strong>We tell you what does not fit</strong><span>If a school is not the best option for your child, we explain why, clearly.</span></li><li><svg class="ext-ic" aria-hidden="true" focusable="false"><use href="#ext-i-book"/></svg><strong>Experience in English</strong><span>Over 30 years teaching English in Spain, with 100% native teachers in our classes.</span></li></ul>
@@ -1261,7 +1297,7 @@
   <div class="svc-page-banner"><picture><source type="image/avif" srcset="images/campamentos/taller-manualidades-480.avif 480w, images/campamentos/taller-manualidades-800.avif 800w, images/campamentos/taller-manualidades-1089.avif 1089w" sizes="(max-width: 700px) 100vw, 50vw"><source type="image/webp" srcset="images/campamentos/taller-manualidades-480.webp 480w, images/campamentos/taller-manualidades-800.webp 800w, images/campamentos/taller-manualidades-1089.webp 1089w" sizes="(max-width: 700px) 100vw, 50vw"><img src="images/campamentos/taller-manualidades.jpg" alt="Children working on a creative project in English during Specialities" width="1089" height="1445" loading="lazy"></picture></div>
   <div class="container svc-page-body">
     <a href="#" class="svc-back" data-back>← Back to programmes</a>
-    
+
     <h1>English specialities</h1>
     <p class="svc-page-intro">Themed programmes that use a specific passion (drama, music or science) as a vehicle for practising English, for children who already have a foundation and want to take it further.</p>
     <!-- PLACEHOLDER: cifras orientativas, sustituir por datos reales -->
@@ -1294,8 +1330,8 @@
         <a href="#" class="svc-back" data-back>← Back to home</a>
         <span class="eyebrow">Why us</span>
         <h1>We look after every pupil, <em>one by one</em></h1>
-        <p class="who-lead">We are the Interlanguage team. For over 30 years we have been teaching English in Madrid, and we always work the same way: we get to know each pupil, listen to their family and follow their progress closely.</p>
-        <a href="#contacto" class="btn-primary" data-cta-service="orientacion" data-cta="porque-hero">Ask for guidance <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <div class="who-hero-intro"><p class="who-lead">We are the Interlanguage team. For over 30 years we have been teaching English in Madrid, and we always work the same way: we get to know each pupil, listen to their family and follow their progress closely.</p>
+        <a href="#contacto" class="btn-primary" data-cta-service="orientacion" data-cta="porque-hero">Ask for guidance <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div>
       </div>
     </div>
   </section>
@@ -1344,7 +1380,7 @@
       <ul class="who-routes reveal">
         <li><a href="#servicio-campamentos" data-jump-service="campamentos"><strong>Summer camps</strong><span>Ages 3–10 · Madrid</span><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></a></li>
         <li><a href="#servicio-extraescolar" data-jump-service="extraescolar"><strong>After-school English</strong><span>Early Years to Secondary · at school</span><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></a></li>
-        <li><a href="#servicio-extranjero" data-jump-service="extranjero"><strong>Study abroad</strong><span>Ages 10–18 · United Kingdom, Ireland and the United States</span><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></a></li>
+        <li><a href="#servicio-extranjero" data-jump-service="extranjero"><strong>Study abroad</strong><span>UK from age 7; Ireland from age 10 · United States: enquire</span><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></a></li>
       </ul>
     </div>
   </section>
@@ -1379,7 +1415,6 @@
         <li><a href="#servicio-campamentos" data-jump-service="campamentos">Summer camps</a></li>
         <li><a href="#servicio-extraescolar" data-jump-service="extraescolar">After-school English</a></li>
         <li><a href="#servicio-extranjero" data-jump-service="extranjero">Study abroad</a></li>
-        <li><a href="#servicio-especialidades" data-jump-service="especialidades">English specialities</a></li>
       </ul>
     </div>
     <div class="footer-col">
@@ -1411,6 +1446,6 @@
 </div>
 
 <script src="js/reserva-llamada.js?v=1" defer></script>
-<script src="js/main.js?v=37" defer></script>
+<script src="js/main.js?v=39" defer></script>
 </body>
 </html>
