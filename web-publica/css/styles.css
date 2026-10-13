@@ -1,11 +1,11 @@
 picture{display:contents;}
 
   /* Fuentes autoalojadas (variables, subconjuntos latin y latin-ext): sin peticiones a Google → más rápido y sin transferir la IP del visitante (RGPD).
-     Titulares: Fraunces (serifa con eje de tamaño óptico, redonda y cursiva). Texto e interfaz: Plus Jakarta Sans. */
-  @font-face{font-family:'Fraunces'; font-style:normal; font-weight:500 700; font-display:swap; src:url(../fonts/fraunces-latin-ext.woff2) format('woff2'); unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;}
-  @font-face{font-family:'Fraunces'; font-style:normal; font-weight:500 700; font-display:swap; src:url(../fonts/fraunces-latin.woff2) format('woff2'); unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;}
-  @font-face{font-family:'Fraunces'; font-style:italic; font-weight:500 700; font-display:swap; src:url(../fonts/fraunces-italic-latin-ext.woff2) format('woff2'); unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;}
-  @font-face{font-family:'Fraunces'; font-style:italic; font-weight:500 700; font-display:swap; src:url(../fonts/fraunces-italic-latin.woff2) format('woff2'); unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;}
+     Titulares: Newsreader (serifa editorial con eje de tamaño óptico; redonda 500–700 y cursiva 500, recortadas a lo que usa la web). Texto e interfaz: Plus Jakarta Sans. */
+  @font-face{font-family:'Newsreader'; font-style:normal; font-weight:500 700; font-display:swap; src:url(../fonts/newsreader-latin-ext.woff2) format('woff2'); unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;}
+  @font-face{font-family:'Newsreader'; font-style:normal; font-weight:500 700; font-display:swap; src:url(../fonts/newsreader-latin.woff2) format('woff2'); unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;}
+  @font-face{font-family:'Newsreader'; font-style:italic; font-weight:500 700; font-display:swap; src:url(../fonts/newsreader-italic-latin-ext.woff2) format('woff2'); unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;}
+  @font-face{font-family:'Newsreader'; font-style:italic; font-weight:500 700; font-display:swap; src:url(../fonts/newsreader-italic-latin.woff2) format('woff2'); unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;}
   @font-face{font-family:'Plus Jakarta Sans'; font-style:normal; font-weight:400 800; font-display:swap; src:url(../fonts/plus-jakarta-sans-wght-latin-ext.woff2) format('woff2'); unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;}
   @font-face{font-family:'Plus Jakarta Sans'; font-style:normal; font-weight:400 800; font-display:swap; src:url(../fonts/plus-jakarta-sans-wght-latin.woff2) format('woff2'); unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;}
 
@@ -24,7 +24,7 @@ picture{display:contents;}
     --ink:#15233B;
     --ink-soft:#5A6577;
     --line:rgba(22,41,74,.1);
-    --font-display:'Fraunces', Georgia, 'Times New Roman', serif;
+    --font-display:'Newsreader', Georgia, 'Times New Roman', serif;
     --font-body:'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
     --header-h:93px;                   /* alto de la cabecera fija: 58 px de logo + 2x16 de aire + 3 de línea de acento */
     --facts-h:96px;                    /* alto de la franja de datos bajo el hero: así portada y datos caben en la primera pantalla */
