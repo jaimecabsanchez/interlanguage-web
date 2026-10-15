@@ -399,8 +399,6 @@ window.dataLayer = window.dataLayer || [];
     const msgEl = $('campFormMsg');
     const errEl = $('campFormErrorMsg');
     const submitBtn = $('campSubmitBtn');
-    const blocks = Array.from(campForm.querySelectorAll('.cf-block'));
-    const progress = Array.from(campForm.querySelectorAll('.cf-progress li'));
     let attempted = false;   // tras el primer intento de envío se valida en vivo
 
     // ---- precios ----
@@ -492,20 +490,12 @@ window.dataLayer = window.dataLayer || [];
       else r.control.setAttribute('aria-invalid', bad ? 'true' : 'false');
     }
     function check(r){ const bad = !r.ok(); paint(r, bad); return !bad; }
-    // marca cada bloque (y su paso en la barra de progreso) como hecho cuando todos sus campos obligatorios son válidos
-    function updateBlocks(){
-      blocks.forEach(function(b, i){
-        const done = b.getAttribute('data-rules').split(' ').every(function(id){ return byId[id].ok(); });
-        b.classList.toggle('is-done', done);
-        if (progress[i]) progress[i].classList.toggle('is-done', done);
-      });
-    }
-    function anyChange(){ render(); updateBlocks(); }
+    function anyChange(){ render(); }
     rules.forEach(function(r){
       const targets = r.id === 'campWeeks' ? weekChecks : r.id === 'campSede' ? sedeInputs : [r.control];
       targets.forEach(function(t){
         ['input', 'change'].forEach(function(evt){
-          t.addEventListener(evt, function(){ if (attempted || showing(r)) check(r); updateBlocks(); });
+          t.addEventListener(evt, function(){ if (attempted || showing(r)) check(r); });
         });
       });
     });
@@ -516,14 +506,6 @@ window.dataLayer = window.dataLayer || [];
     weekChecks.forEach(function(c){ c.addEventListener('change', anyChange); });
     sedeInputs.forEach(function(c){ c.addEventListener('change', anyChange); });
     comedor.addEventListener('change', anyChange);
-    // la barra de progreso lleva a cada bloque sin cambiar el hash ni la vista
-    campForm.querySelectorAll('.cf-progress a').forEach(function(a){
-      a.addEventListener('click', function(e){
-        e.preventDefault();
-        const t = document.getElementById(a.getAttribute('href').slice(1));
-        if (t) t.scrollIntoView(scrollOpts('start'));
-      });
-    });
 
     function focusFirstBad(bad){
       const el = bad[0].focusEl || bad[0].control;
