@@ -1246,9 +1246,6 @@ window.dataLayer = window.dataLayer || [];
       th.appendChild(btn);
       tr.classList.add('has-tg');
     });
-    // Ejemplo razonado: en móvil los criterios empiezan recogidos (se ve la lista de sus nombres); en escritorio, abiertos
-    const caso = document.querySelectorAll('.ext-caso-criterios');
-    if (window.matchMedia && window.matchMedia('(max-width:899px)').matches) caso.forEach(function(d){ d.open = false; });
     // El índice «En esta página» lleva la sombra de barra fija solo cuando ya está pegado bajo el menú
     const toc = document.querySelector('.ext-toc');
     if (!toc) return;
