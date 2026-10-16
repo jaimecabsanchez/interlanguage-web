@@ -594,25 +594,6 @@ window.dataLayer = window.dataLayer || [];
     });
   });
 
-  // buscador por edad de "Nuestros programas": muestra los programas que encajan y enlaza a cada uno
-  (function(){
-    const root = document.getElementById('svcFinder');
-    if (!root) return;
-    const btns = Array.from(root.querySelectorAll('.age-btn'));
-    const panels = Array.from(root.querySelectorAll('.finder-panel'));
-    const talk = document.getElementById('finderTalk');
-    btns.forEach(function(b){
-      b.addEventListener('click', function(){
-        const key = b.getAttribute('data-age');
-        const wasOn = b.getAttribute('aria-pressed') === 'true';   // un segundo clic la desmarca
-        btns.forEach(function(x){ x.setAttribute('aria-pressed', (x === b && !wasOn) ? 'true' : 'false'); });
-        panels.forEach(function(p){ p.hidden = wasOn || p.id !== 'finder-' + key; });
-        talk.hidden = wasOn;
-        if (!wasOn) pushEvent('clic_cta', { cta_id: 'buscador-edad-' + key });
-      });
-    });
-  })();
-
   // enlace "Ver los 3 destinos con fotos" dentro de la subpágina de extranjero
   document.querySelectorAll('[data-go-destinos]').forEach(function(link){
     link.addEventListener('click', function(e){
