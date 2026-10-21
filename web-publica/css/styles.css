@@ -1109,8 +1109,8 @@ picture{display:contents;}
   .intl-dest-media{display:block; position:relative; aspect-ratio:4/5; border-radius:var(--r-card); overflow:hidden; background:var(--navy);}
   .intl-dest-media img{width:100%; height:100%; object-fit:cover; display:block; transition:transform .45s ease;}
   .intl-dest-media::after{content:''; position:absolute; inset:0; background:var(--navy); opacity:0; transition:opacity .2s ease;}
-  .intl-dest-scrim{position:absolute; inset:0; background:linear-gradient(180deg, rgba(22,41,74,0) 40%, rgba(22,41,74,.8) 100%);}
-  .intl-dest-body{position:absolute; left:0; right:0; bottom:0; display:flex; flex-direction:column; gap:7px; padding:20px 22px;}
+  .intl-dest-scrim{position:absolute; inset:0; background:linear-gradient(180deg, rgba(22,41,74,0) 55%, rgba(22,41,74,.38) 100%);}
+  .intl-dest-body{position:absolute; left:0; right:0; bottom:0; display:flex; flex-direction:column; gap:7px; padding:16px 22px 18px; background:rgba(22,41,74,.55); -webkit-backdrop-filter:blur(3px); backdrop-filter:blur(3px);}   /* etiqueta translúcida marino, como el velo de la cabecera: se lee bien sin tapar la foto */
   .intl-dest-name{font-family:var(--font-display); font-weight:600; font-size:1.42rem; line-height:1.15; color:#fff;}
   .intl-dest-go{display:inline-flex; align-items:center; gap:7px; font-size:.85rem; font-weight:700; color:rgba(255,255,255,.94);}
   .intl-arrow{width:15px; height:15px; flex:none; transition:transform .2s ease;}
@@ -1167,6 +1167,7 @@ picture{display:contents;}
     .intl-hero{padding:52px 0 132px;}
     .intl-dest-grid{grid-template-columns:1fr; gap:18px; margin-top:-96px;}
     .intl-dest-media{aspect-ratio:16/10;}
+    .intl-dest-body{flex-direction:row; align-items:center; justify-content:space-between; gap:12px; padding:12px 18px;}   /* en móvil la etiqueta es una banda baja: el título y «Explorar» en una línea */
     .intl-dest-card:nth-child(n){--sd:0ms;}
   }
   @media (max-width:600px){
