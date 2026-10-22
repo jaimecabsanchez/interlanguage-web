@@ -419,7 +419,7 @@ picture{display:contents;}
   .ext-hero{position:relative; isolation:isolate; overflow:hidden; background:var(--navy); color:#fff;}
   .ext-hero-media{position:absolute; inset:0; z-index:-2;}
   .ext-hero-media img{width:100%; height:100%; object-fit:cover; object-position:100% 50%; display:block;}
-  .ext-hero-veil{position:absolute; inset:0; z-index:-1; background:linear-gradient(90deg, rgba(22,41,74,.9) 0%, rgba(22,41,74,.86) 32%, rgba(22,41,74,.68) 43%, rgba(22,41,74,.24) 52%, rgba(22,41,74,0) 61%);}
+  .ext-hero-veil{position:absolute; inset:0; z-index:-1; background:linear-gradient(90deg, rgba(22,41,74,.78) 0%, rgba(22,41,74,.73) 31%, rgba(22,41,74,.55) 42.5%, rgba(22,41,74,.18) 51.5%, rgba(22,41,74,0) 59.5%);}   /* velo intermedio: el colegio se ve y el texto sigue legible */
   .ext-hero-in{display:flex; flex-direction:column; justify-content:center; min-height:clamp(540px, 40vw, 700px); padding-block:10px 48px;}
   .ext-hero-text{max-width:520px;}
   .ext-hero .svc-back{align-self:flex-start; padding:11px 0; margin:0 0 6px; color:rgba(255,255,255,.88); font-weight:600;}   /* área táctil de 44 px */
@@ -555,19 +555,22 @@ picture{display:contents;}
 
   /* 5 · Cómo trabajamos: cuatro pasos en una línea abierta (número, título y frase; sin tarjetas ni iconos), un ejemplo razonado
      claramente identificado como ilustrativo y, debajo, qué nos diferencia (panel marino) */
-  .ext-steps{list-style:none; display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:0 32px; margin:0; padding:0;}
-  .ext-step{padding:18px 0 0; border-top:2px solid color-mix(in srgb, var(--navy) 85%, transparent);}
-  .ext-step-num{display:block; margin-bottom:10px; font-family:var(--font-display); font-weight:600; font-size:1.875rem; line-height:1; color:var(--accent); font-variant-numeric:lining-nums;}
-  .ext-step h3{font-size:1.25rem; line-height:1.2; margin:0 0 8px;}
-  .ext-step p{font-size:1rem; line-height:1.5; color:var(--ext-t2); margin:0; max-width:30ch;}
-  /* Alcance del servicio: lo que puede incluir, en una lista corta (el detalle va en la propuesta) */
-  .ext-alcance{margin-top:36px; padding-top:24px; border-top:1px solid var(--line);}
-  .ext-alcance h3{font-size:clamp(1.3rem,1.9vw,1.55rem); line-height:1.2; margin:0 0 14px;}
-  .ext-alcance-list{list-style:none; margin:0; padding:0; display:flex; flex-wrap:wrap; gap:10px 12px;}
-  .ext-alcance-list li{position:relative; padding:9px 16px 9px 38px; border:1px solid var(--line); border-radius:100px; background:var(--white); font-size:.95rem; font-weight:600; line-height:1.3; color:var(--navy);}
-  .ext-alcance-list li::before{content:''; position:absolute; left:16px; top:50%; width:10px; height:5px; margin-top:-4px; border-left:2px solid var(--accent); border-bottom:2px solid var(--accent); transform:rotate(-45deg);}
-  .ext-alcance-note{margin:12px 0 0; font-size:.88rem; line-height:1.5; color:var(--ink-soft);}
   /* Caso ilustrativo: tres columnas conectadas (punto de partida → lo que contrastamos → lo que recibe la familia), con poco texto */
+  /* Cómo trabajamos: línea de tiempo con los cuatro pasos y, bajo cada uno, lo que incluye */
+  .ext-tl{list-style:none; margin:0; padding:0; position:relative; display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:0 32px;}
+  .ext-tl::before{content:''; position:absolute; left:19px; right:0; top:19px; height:2px; background:linear-gradient(90deg,var(--accent),var(--navy));}
+  .ext-tl-step{position:relative; padding-top:62px;}
+  .ext-tl-dot{position:absolute; top:0; left:0; width:40px; height:40px; border-radius:50%; background:var(--navy); color:#fff; display:grid; place-items:center; font-family:var(--font-display); font-weight:600; font-size:1.1rem; font-variant-numeric:lining-nums;}
+  .ext-tl-step:first-child .ext-tl-dot{background:var(--accent);}
+  .ext-tl-step h3{font-size:1.3rem; line-height:1.2; margin:0 0 10px;}
+  .ext-tl-step > p{margin:0 0 22px; min-height:3.1em; max-width:26ch; font-size:1rem; line-height:1.55; color:var(--ext-t2);}   /* dos líneas reservadas: las listas de los cuatro pasos empiezan a la misma altura */
+  .ext-tl-step ul{list-style:none; margin:0; padding:20px 0 0; border-top:1px solid var(--line); display:grid; gap:12px;}
+  .ext-tl-step li{position:relative; padding-left:24px; font-size:.95rem; font-weight:600; line-height:1.4; color:var(--navy);}
+  .ext-tl-step li::before{content:''; position:absolute; left:2px; top:.5em; width:10px; height:5px; border-left:2px solid var(--accent); border-bottom:2px solid var(--accent); transform:rotate(-45deg);}
+  .ext-tl-step li.opt{font-weight:500; color:var(--ink-soft);}
+  .ext-tl-note{margin:30px 0 0; max-width:60ch; font-size:.9rem; line-height:1.55; color:var(--ink-soft);}
+  .ext-tl-cta{display:flex; align-items:center; flex-wrap:wrap; gap:16px 24px; margin-top:44px; padding-top:28px; border-top:1px solid var(--line);}
+  .ext-tl-cta p{margin:0; font-family:var(--font-display); font-weight:600; font-size:1.35rem; line-height:1.2; color:var(--navy);}
   .ext-caso{margin-top:40px; padding:32px 36px 34px; background:var(--ivory); border:1px solid var(--line); border-radius:var(--r-card);}
   .ext-caso-label{display:inline-block; margin:0 0 10px; padding-left:12px; border-left:3px solid var(--accent); font-size:.88rem; font-weight:700; line-height:1.4; color:var(--navy);}
   .ext-caso-head h3{font-size:clamp(1.45rem,2.3vw,1.85rem); line-height:1.15; margin:0 0 22px;}
@@ -598,13 +601,6 @@ picture{display:contents;}
   .ext-caso-detalle dd{margin:0; font-size:.92rem; line-height:1.5; color:var(--ext-t2);}
   .ext-caso-metodo{margin:12px 0 0; padding:12px 14px; background:var(--white); border-left:3px solid var(--accent); border-radius:0 var(--r-sm) var(--r-sm) 0; font-size:.92rem; line-height:1.5; color:var(--ink);}
   .ext-caso-metodo strong{color:var(--navy);}
-  .ext-dif{margin-top:32px; padding:32px 44px 36px; background:var(--navy); color:#fff; border-radius:var(--r-card);}
-  .ext-dif h3{font-size:clamp(1.45rem,2.2vw,1.8rem); line-height:1.15; color:#fff; margin:0 0 22px;}
-  .ext-dif-list{list-style:none; display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:22px 48px; margin:0 0 26px; padding:0;}
-  .ext-dif-list li{display:grid; grid-template-columns:auto minmax(0,1fr); gap:4px 16px; align-items:start;}
-  .ext-dif-list .ext-ic{grid-row:1 / 3; width:30px; height:30px; margin-top:2px; color:var(--accent-soft); stroke-width:1.6;}
-  .ext-dif-list strong{font-family:var(--font-display); font-weight:600; font-size:1.25rem; line-height:1.25; color:#fff;}
-  .ext-dif-list span{font-size:1rem; line-height:1.58; color:rgba(255,255,255,.88); max-width:46ch;}
 
   /* 6 · Presupuesto: sin precios; los tres factores en una fila tipográfica */
   .ext-budget{display:grid; grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr); gap:0 76px; align-items:start;}
@@ -623,13 +619,16 @@ picture{display:contents;}
   #view-service-extranjero .ext-faq .camp-faq-item p{padding:0 56px 24px 0; max-width:62ch; font-size:1.03125rem; line-height:1.65; color:var(--ext-t2);}
 
   @media (max-width:1100px){
+    .ext-tl{grid-template-columns:repeat(2,minmax(0,1fr)); gap:40px 32px;}
+    .ext-tl::before{display:none;}
+    .ext-tl-step{padding-top:56px;}
+    .ext-tl-step:nth-child(1)::after,.ext-tl-step:nth-child(3)::after{content:''; position:absolute; top:19px; left:48px; right:-32px; height:2px; background:linear-gradient(90deg,var(--accent),var(--navy)); opacity:.5;}
     .ext-caso-flow{grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:28px 40px;}
     .ext-caso-result{grid-column:1 / -1;}
     .ext-caso-col + .ext-caso-col::before{display:none;}
     .ext-esc{gap:44px;}
     .ext-carr{margin-top:-14px;}
     .ext-cmp-c0{width:170px;}
-    .ext-steps{grid-template-columns:repeat(2,minmax(0,1fr)); gap:28px 32px;}
   }
   @media (max-width:1199px){
     /* cabecera: foto arriba a todo el ancho y texto debajo sobre marino (como la portada en móvil); a partir de 1200 px el texto no pisa las caras de la foto */
@@ -668,14 +667,6 @@ picture{display:contents;}
     .ext-cmp td strong{font-size:.96875rem;}
     .ext-cmp-s{font-size:.875rem; line-height:1.5;}
     .ext-cmp-more summary{min-height:64px;}
-    .ext-steps{grid-template-columns:minmax(0,1fr); gap:0;}
-    .ext-step{display:grid; grid-template-columns:2.4rem minmax(0,1fr); column-gap:10px; padding:16px 0 18px; border-top:1px solid color-mix(in srgb, var(--ink) 20%, transparent);}
-    .ext-step-num{grid-row:1 / span 2; margin:0; font-size:1.7rem;}
-    .ext-step h3{font-size:1.15rem; margin:2px 0 6px;}
-    .ext-step p{font-size:.97rem; line-height:1.55;}
-    .ext-dif{margin-top:28px; padding:28px 22px 30px;}
-    .ext-dif-list{grid-template-columns:minmax(0,1fr); gap:22px; margin-bottom:28px;}
-    .ext-dif-cta{width:100%; justify-content:space-between;}
     .ext-budget{grid-template-columns:minmax(0,1fr); gap:24px;}
   }
   @media (max-width:700px){
@@ -683,7 +674,18 @@ picture{display:contents;}
     .ext-caso-flow{grid-template-columns:minmax(0,1fr); gap:30px 0;}
     .ext-caso-result{grid-column:auto;}
     .ext-caso-col + .ext-caso-col::before{display:block; left:8px; top:-22px; transform:rotate(135deg);}   /* flecha hacia abajo entre bloques */
-    .ext-alcance{margin-top:28px;}
+  }
+  @media (max-width:700px){
+    .ext-tl{grid-template-columns:minmax(0,1fr); gap:0;}
+    .ext-tl::before{display:block; left:19px; right:auto; top:20px; bottom:40px; width:2px; height:auto; background:linear-gradient(180deg,var(--accent),var(--navy));}
+    .ext-tl-step,.ext-tl-step:nth-child(n){padding:0 0 34px 64px;}
+    .ext-tl-step::after{display:none!important;}
+    .ext-tl-step:last-child{padding-bottom:6px;}
+    .ext-tl-step h3{margin-top:6px; font-size:1.25rem;}
+    .ext-tl-step > p{max-width:none; min-height:0; margin-bottom:18px;}
+    .ext-tl-note{margin-top:22px;}
+    .ext-tl-cta{margin-top:34px;}
+    .ext-tl-cta .btn-primary{width:100%; justify-content:space-between;}
   }
   @media (max-width:560px){
     .ext-hero h1{font-size:clamp(1.75rem,8vw,2.05rem); margin-bottom:16px;}
