@@ -418,21 +418,23 @@ picture{display:contents;}
   /* 1 · Cabecera a sangre: la misma foto y el mismo velo suave que la portada; en móvil, la foto arriba y el texto debajo sobre marino */
   .ext-hero{position:relative; isolation:isolate; overflow:hidden; background:var(--navy); color:#fff;}
   .ext-hero-media{position:absolute; inset:0; z-index:-2;}
-  .ext-hero-media img{width:100%; height:100%; object-fit:cover; object-position:100% 50%; display:block;}
-  .ext-hero-veil{position:absolute; inset:0; z-index:-1; background:linear-gradient(90deg, rgba(22,41,74,.78) 0%, rgba(22,41,74,.73) 31%, rgba(22,41,74,.55) 42.5%, rgba(22,41,74,.18) 51.5%, rgba(22,41,74,0) 59.5%);}   /* velo intermedio: el colegio se ve y el texto sigue legible */
-  .ext-hero-in{display:flex; flex-direction:column; justify-content:center; min-height:clamp(540px, 40vw, 700px); padding-block:10px 48px;}
-  .ext-hero-text{max-width:520px;}
+  .ext-hero-media img{width:100%; height:100%; object-fit:cover; object-position:100% 100%; display:block;}   /* se enseña la parte baja de la foto: los alumnos y el camino */
+  .ext-hero-veil{display:none;}   /* sin velo: el texto va en un panel translúcido y la foto se ve limpia */
+  .ext-hero-in{display:flex; flex-direction:column; justify-content:center; min-height:clamp(600px, 42vw, 680px); padding-block:10px 48px;}
+  .ext-hero-text{width:fit-content; max-width:760px; background:rgba(22,41,74,.68); -webkit-backdrop-filter:blur(3px); backdrop-filter:blur(3px); padding:34px 42px 38px; border:1px solid rgba(255,255,255,.14); border-radius:var(--r-card);}   /* panel marino translúcido */
   .ext-hero .svc-back{align-self:flex-start; padding:11px 0; margin:0 0 6px; color:rgba(255,255,255,.88); font-weight:600;}   /* área táctil de 44 px */
+  @media (min-width:1200px){ .ext-hero .svc-back{padding:11px 16px; margin-bottom:14px; background:rgba(22,41,74,.62); border-radius:100px; font-size:.92rem; color:#fff;} }   /* sobre la foto, en una píldora para que se lea */
   @media (hover:hover){ .ext-hero .svc-back:hover{color:#fff;} }
-  .ext-hero .eyebrow{display:block; margin-bottom:14px; color:var(--accent-soft);}
-  .ext-hero h1{font-size:clamp(2rem,3vw,2.7rem); line-height:1.08; letter-spacing:-.018em; margin:0 0 16px; color:#fff; text-wrap:balance; text-shadow:0 1px 14px rgba(8,16,34,.35);}
-  .ext-hero h1 em{font-style:italic; font-weight:500;}
-  @media (min-width:900px){ html[lang="en"] .ext-hero h1{font-size:clamp(1.9rem,2.7vw,2.45rem);} }   /* el titular en inglés es más largo: así también cabe en tres líneas */
-  .ext-hero-lead{font-size:1.0625rem; line-height:1.55; color:rgba(255,255,255,.94); max-width:25em; margin:0 0 26px; text-shadow:0 1px 10px rgba(8,16,34,.4);}
-  .ext-hero-paises{list-style:none; display:flex; flex-wrap:wrap; gap:8px 22px; margin:0 0 18px; padding:0;}   /* los tres países, uno al lado de otro */
-  .ext-hero-paises li{padding-left:12px; border-left:3px solid var(--accent-soft); font-family:var(--font-display); font-weight:600; font-size:clamp(1.2rem,1.65vw,1.4rem); line-height:1.2; letter-spacing:-.012em; color:#fff; text-shadow:0 1px 12px rgba(8,16,34,.4);}
+  .ext-hero .eyebrow{display:block; margin-bottom:16px; color:var(--accent-soft); font-size:.86rem; letter-spacing:.16em;}
+  .ext-hero h1{font-size:clamp(2.4rem,3.7vw,3.4rem); line-height:1.05; letter-spacing:-.018em; margin:0 0 22px; color:#fff; text-wrap:balance;}
+  .ext-hero h1 em{font-style:italic; font-weight:500; display:block;}   /* dos líneas: «Estudiar en el extranjero,» / «con un colegio que encaje» */
+  @media (min-width:900px){ html[lang="en"] .ext-hero h1{font-size:clamp(2.2rem,3.2vw,3rem);} }   /* el titular en inglés es más largo */
+  .ext-hero-lead{font-size:clamp(1.1rem,1.4vw,1.25rem); line-height:1.55; color:rgba(255,255,255,.95); max-width:27em; margin:0 0 28px;}
+  .ext-hero-paises{list-style:none; display:flex; flex-wrap:wrap; gap:10px 26px; margin:0 0 20px; padding:0;}   /* los tres países, uno al lado de otro */
+  .ext-hero-paises li{padding-left:12px; border-left:3px solid var(--accent-soft); font-family:var(--font-display); font-weight:600; font-size:clamp(1.3rem,1.8vw,1.6rem); line-height:1.2; letter-spacing:-.012em; color:#fff;}
   .ext-hero-cta{display:flex; flex-wrap:wrap; align-items:center; gap:6px 28px;}
-  .ext-hero-link{display:inline-flex; align-items:center; min-height:48px; font-size:1rem; font-weight:700; color:#fff; text-decoration:underline; text-decoration-thickness:1.5px; text-underline-offset:7px; text-decoration-color:rgba(255,255,255,.55); transition:text-decoration-color .2s ease;}
+  .ext-hero-cta .btn-primary{padding:17px 30px 17px 32px; font-size:1.1rem;}
+  .ext-hero-link{display:inline-flex; align-items:center; min-height:48px; font-size:1.1rem; font-weight:700; color:#fff; text-decoration:underline; text-decoration-thickness:1.5px; text-underline-offset:7px; text-decoration-color:rgba(255,255,255,.55); transition:text-decoration-color .2s ease;}
   @media (hover:hover){ .ext-hero-link:hover{text-decoration-color:#fff;} }
 
 
@@ -635,10 +637,14 @@ picture{display:contents;}
     .ext-hero-media{position:relative; inset:auto; z-index:auto; height:clamp(210px,40vw,360px);}
     .ext-hero-veil{display:none;}
     .ext-hero-in{min-height:0; padding-block:12px 40px;}
-    .ext-hero-text{max-width:760px;}
-    .ext-hero h1{font-size:clamp(1.8rem,5.2vw,2.6rem); text-shadow:none;}
-    .ext-hero-lead{text-shadow:none; max-width:36em;}
-    .ext-hero-paises li{text-shadow:none;}
+    .ext-hero-text{width:auto; max-width:760px; background:none; -webkit-backdrop-filter:none; backdrop-filter:none; padding:0; border:0; border-radius:0;}
+    .ext-hero h1{font-size:clamp(2.2rem,5.6vw,3.2rem);}
+    .ext-hero h1 em{display:inline;}
+    html[lang="en"] .ext-hero h1{font-size:clamp(2.1rem,5.2vw,3rem);}
+    .ext-hero-lead{max-width:36em;}
+    .ext-hero-paises li{font-size:1.3rem;}
+    .ext-hero-cta .btn-primary{padding:15px 24px 15px 26px; font-size:1.05rem;}
+    .ext-hero-link{font-size:1.05rem;}
   }
   @media (max-width:899px){
     .ext-section{padding:56px 0;}
@@ -688,11 +694,11 @@ picture{display:contents;}
     .ext-tl-cta .btn-primary{width:100%; justify-content:space-between;}
   }
   @media (max-width:560px){
-    .ext-hero h1{font-size:clamp(1.75rem,8vw,2.05rem); margin-bottom:16px;}
-    html[lang="en"] .ext-hero h1{font-size:clamp(1.65rem,7.5vw,1.95rem);}   /* el titular en inglés es más largo */
-    .ext-hero-lead{font-size:1rem; line-height:1.55; margin-bottom:22px;}
-    .ext-hero-paises{flex-direction:row; gap:6px 14px; margin-bottom:16px;}
-    .ext-hero-paises li{font-size:1.02rem; padding-left:9px; border-left-width:2px; text-shadow:none;}
+    .ext-hero h1{font-size:clamp(2.1rem,9.6vw,2.5rem); margin-bottom:18px;}
+    html[lang="en"] .ext-hero h1{font-size:clamp(1.95rem,8.8vw,2.3rem);}   /* el titular en inglés es más largo */
+    .ext-hero-lead{font-size:1.1rem; line-height:1.55; margin-bottom:22px;}
+    .ext-hero-paises{flex-direction:row; gap:6px 12px; margin-bottom:16px;}
+    .ext-hero-paises li{font-size:1.04rem; padding-left:9px; border-left-width:2px;}
     .ext-hero-cta{flex-direction:column; align-items:stretch; gap:2px;}
     .ext-hero-cta .btn-primary{width:100%; justify-content:space-between;}
     .ext-hero-link{justify-content:center;}

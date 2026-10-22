@@ -21,3 +21,26 @@
   to = "/404.html"
   status = 404
   force = true
+
+# ------------------------------------------------------------
+#  Archivos internos que NO deben verse desde internet (Netlify publica toda la carpeta web-publica/).
+#  AGENTS.md son las notas de trabajo para los asistentes (dudas sobre fotos, pendientes comerciales...);
+#  images/nuevas/ son borradores de fotos sin publicar. Siguen en el proyecto, pero se responde 404.
+# ------------------------------------------------------------
+[[redirects]]
+  from = "/AGENTS.md"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/agents.md"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/images/nuevas/*"
+  to = "/404.html"
+  status = 404
+  force = true
