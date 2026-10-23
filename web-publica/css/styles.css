@@ -1128,6 +1128,17 @@ picture{display:contents;}
     .intl-dest-card:hover .intl-arrow{transform:translateX(4px);}
   }
 
+  /* información de cada destino: aparece al pasar el cursor o al enfocar con teclado (escritorio); en móvil la tarjeta queda como estaba */
+  .dst-info{display:grid; grid-template-rows:0fr; opacity:0; transition:grid-template-rows .55s cubic-bezier(.2,.6,.2,1), opacity .4s ease;}
+  .dst-info-in{min-height:0; overflow:hidden; display:flex; flex-direction:column; gap:6px;}
+  .dst-tag{display:block; margin-top:2px; font-size:.95rem; line-height:1.4; font-weight:500; color:rgba(255,255,255,.95);}
+  .dst-li{position:relative; display:block; padding-left:20px; font-size:.9rem; font-weight:600; line-height:1.35; color:#fff;}
+  .dst-li::before{content:""; position:absolute; left:0; top:.62em; width:11px; height:1.5px; background:var(--accent-soft);}
+  .dst-li:last-child{margin-bottom:6px;}
+  @media (hover:hover) and (min-width:901px){ .intl-dest-card:hover .dst-info, .intl-dest-card:focus-visible .dst-info{grid-template-rows:1fr; opacity:1;} }
+  @media (prefers-reduced-motion:reduce){ .dst-info{transition:none;} }
+  @media (max-width:900px){ .dst-info{display:none;} }
+
   /* acompañamiento internacional: mensaje personal y recorrido compartido */
   #destinos .intl-proceso{position:relative; display:grid; grid-template-columns:minmax(0,.82fr) minmax(0,1fr); gap:clamp(36px,6vw,84px); align-items:center; margin-top:clamp(36px,4vw,56px); padding-bottom:56px;}
   #destinos .intl-proceso-copy{min-width:0;}

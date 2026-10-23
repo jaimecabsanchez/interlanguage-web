@@ -9,8 +9,8 @@ h = h.replace("<head>", '<head>\n<meta name="robots" content="noindex,nofollow">
 h = re.sub(r'<link rel="canonical"[^>]*>\n?', '', h)
 import time
 VER = int(time.time())
-h = h.replace('<link rel="stylesheet" href="css/styles.css?v=119">',
-              '<link rel="stylesheet" href="css/styles.css?v=119">\n<link rel="stylesheet" href="css/preview-home.css?v=@VER@">', 1).replace('@VER@', str(VER))
+h = h.replace('<link rel="stylesheet" href="css/styles.css?v=120">',
+              '<link rel="stylesheet" href="css/styles.css?v=120">\n<link rel="stylesheet" href="css/preview-home.css?v=@VER@">', 1).replace('@VER@', str(VER))
 # la foto del hero ocupa ~72 % del ancho
 h = re.sub(r'(<div class="hero-media">.*?</div>)', lambda m: m.group(1).replace('sizes="100vw"', 'sizes="(min-width:1025px) 72vw, 100vw"'), h, count=1, flags=re.S)
 
@@ -102,19 +102,7 @@ crece = f"""<section class="growth" id="progresion">
 </section>"""
 m2 = re.search(r'<section class="age-path" id="progresion">.*?</section>', h, flags=re.S)
 h = h.replace(m2.group(0), crece, 1)
-# ---------- «El inglés se aprende viviéndolo»: solo se añade la información al pasar el cursor ----------
-INFO = {
-  "reino-unido": ("Tradición académica y vida de campus", ["Internados y vida escolar", "Actividades y deporte", "Tradición académica"]),
-  "irlanda": ("Inmersión y convivencia local", ["Internados o familias anfitrionas", "Inmersión en el idioma", "Vida escolar y cultura local"]),
-  "estados-unidos": ("Actividades y nuevas oportunidades", ["Materias y actividades", "Deporte y vida escolar", "Opciones bajo consulta"]),
-}
-def con_info(m):
-    clave = re.search(r'data-destino="([^"]+)"', m.group(0)).group(1)
-    frase, puntos = INFO[clave]
-    lis = "".join(f'<span class="dst-li">{p}</span>' for p in puntos)
-    info = f'<span class="dst-info"><span class="dst-info-in"><span class="dst-tag">{frase}</span>{lis}</span></span>'
-    return re.sub(r'(<span class="intl-dest-name">[^<]*</span>)', lambda n: n.group(1) + info, m.group(0), count=1)
-h = re.sub(r'<a class="intl-dest-card reveal".*?</a>', con_info, h, flags=re.S)
+# (la información de los destinos al pasar el cursor ya está en la home real: index.html + styles.css)
 
 h = h.replace('</body>', '<script src="js/preview-home.js?v=@VER@" defer></script>\n</body>', 1)
 h = h.replace("</body>", '<span class="preview-tag" aria-hidden="true">Vista previa</span>\n</body>', 1)
