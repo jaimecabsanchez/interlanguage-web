@@ -65,9 +65,12 @@ window.dataLayer = window.dataLayer || [];
   window.addEventListener('DOMContentLoaded', function(){ pushEvent('pagina_cargada', { page_path: window.location.pathname }); });
 
   // Aviso de cookies: se muestra si aún no hay decisión; al aceptar, activa la analítica.
+  // Mientras la web no cargue ninguna herramienta de analítica, no hay nada que aceptar: el aviso no aparece.
+  // Al instalar una (y abrirla en la CSP de _headers), pon ANALYTICS_ENABLED a true y revisa el texto del aviso y de legal.html.
+  var ANALYTICS_ENABLED = false;
   (function(){
     var banner = document.getElementById('cookieBanner');
-    if (!banner) return;
+    if (!banner || !ANALYTICS_ENABLED) return;
     function persist(v){ try { localStorage.setItem('il_cookie_consent', v); } catch (e) {} IL_CONSENT = v; }
     if (IL_CONSENT !== 'accepted' && IL_CONSENT !== 'rejected'){ banner.hidden = false; }
     var accept = document.getElementById('cookieAccept');
@@ -199,11 +202,11 @@ window.dataLayer = window.dataLayer || [];
 
   // Cambiar de idioma conserva la página o el destino, sin trasladar datos personales.
   (function(){
-    const link = document.querySelector('.lang-switch a');
-    if (!link) return;
-    const base = link.getAttribute('href').split('#')[0];
-    function sync(){ link.setAttribute('href', base + window.location.hash); }
-    link.addEventListener('click', sync);
+    const links = document.querySelectorAll('.lang-switch a, .nav-lang a');   // el de la cabecera y el del menú del móvil
+    if (!links.length) return;
+    const base = links[0].getAttribute('href').split('#')[0];
+    function sync(){ links.forEach(function(link){ link.setAttribute('href', base + window.location.hash); }); }
+    links.forEach(function(link){ link.addEventListener('click', sync); });
     window.addEventListener('hashchange', sync);
     window.addEventListener('popstate', sync);
     sync();

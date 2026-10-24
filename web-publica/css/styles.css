@@ -377,7 +377,7 @@ picture{display:contents;}
   #view-service-extranjero .contact--ext .lead-pill span{min-height:52px; border-radius:var(--r-sm);}
   @media (max-width:900px){#view-service-extranjero .contact--ext .contact-grid{grid-template-columns:minmax(0,1fr); gap:40px;}}
   @media (max-width:600px){#view-service-extranjero .contact--ext .form-card.lead-card{padding:24px 18px 22px;}}
-  @media (max-width:400px){#view-service-extranjero .contact--ext #leadDest{font-size:.9375rem; padding-right:36px; background-position:right 10px center;}}
+  @media (max-width:400px){#view-service-extranjero .contact--ext #leadDest{padding-right:36px; background-position:right 10px center;}}   /* 16 px: con menos, iOS amplía la página al tocar el campo */
   #view-service-extranjero .reveal{opacity:1; transform:none; transition:none;}   /* el contacto, al colocarse aquí, trae .reveal: sin retraso */
   .ext-sprite{position:absolute; width:0; height:0; overflow:hidden;}
   .ext-ic{width:24px; height:24px; flex:none; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round;}
@@ -1061,9 +1061,9 @@ picture{display:contents;}
     .cf-block{grid-template-columns:minmax(0,1fr); gap:14px; padding:28px 0;}
   }
   @media (max-width:600px){
-    #camp-inscripcion.camp-section{padding:40px 12px;}
+    #camp-inscripcion.camp-section{padding:40px 16px;}   /* 16 px: el formulario gana ancho sin pegarse al borde */
     #camp-inscripcion .container{padding:0;}
-    .camp-form-wrap{padding:22px 14px;}
+    .camp-form-wrap{padding:22px 16px;}
     .cf-block{padding:24px 0;}
   }
   @media (max-width:700px){
@@ -1570,3 +1570,143 @@ picture{display:contents;}
   .lang-switch a{color:var(--ink-soft); text-decoration:none; transition:color .18s; display:inline-flex; align-items:center; justify-content:center; min-width:44px; min-height:44px;}   /* blanco táctil y contraste AA */
   @media (hover:hover){ .lang-switch a:hover{color:var(--accent);} }
   @media (max-width:1024px){ .lang-switch{margin-left:auto; margin-right:14px; padding-left:0; border-left:none;} }
+
+  /* ---------- PULIDO MÓVIL (24-10-2026) ----------
+     Correcciones de la revisión en móvil. Casi todo va dentro de media queries: en escritorio solo cambian el margen del pie
+     (que en pantallas estrechas no existía) y el fondo del cierre de «Por qué nosotros» (sin él, su botón marfil no se veía). */
+
+  /* pie: margen lateral (antes el texto tocaba el borde en móvil) */
+  footer{padding-left:24px; padding-right:24px;}
+
+  /* cierre de «Por qué nosotros»: banda marina, como los demás cierres oscuros, para que se vea su botón marfil */
+  .ext-cierre{background:var(--navy); color:#fff; padding:72px 0;}
+  .ext-cierre h2{color:#fff; font-size:clamp(1.7rem,3vw,2.3rem); line-height:1.15; margin-bottom:12px; text-wrap:balance;}
+  .ext-cierre p{color:rgba(255,255,255,.86); font-size:1.05rem; line-height:1.6; max-width:34em; margin:0 0 26px;}
+  .ext-cierre :focus-visible{outline-color:#fff;}
+
+  @media (max-width:1024px){
+    /* menú: fondo atenuado detrás, la página no se desplaza y la barra inferior se esconde mientras está abierto */
+    html:has(.nav-links.open){overflow:hidden;}
+    body::after{content:""; position:fixed; left:0; right:0; bottom:0; top:var(--header-h); z-index:190; background:rgba(14,27,50,.5); opacity:0; visibility:hidden; transition:opacity .25s ease, visibility .25s ease;}
+    body:has(.nav-links.open)::after{opacity:1; visibility:visible;}
+    html:has(.nav-links.open) .sticky-cta{transform:translateY(100%);}
+    .nav-links{padding:6px 24px 24px; gap:0;}
+    .nav-links > a:not(.nav-cta), .nav-links .mega-item{min-height:58px; padding-right:28px; border-bottom:1px solid var(--line); font-size:1.04rem; opacity:1;
+      background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%237A2334' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m9 6 6 6-6 6'/%3E%3C/svg%3E") no-repeat right 2px center/16px 16px;}
+    .nav-links .mega-item strong{font-size:1.04rem;}
+    .nav-links > a:not(.nav-cta)::after{display:none;}   /* el subrayado animado es solo para escritorio */
+    .nav-links .mega-col{gap:0;}
+    .nav-links .nav-cta{margin-top:20px; min-height:52px; justify-content:center; font-size:1rem;}
+    /* icono de menú dibujado (el carácter ☰ cambia según el sistema) que se convierte en una X al abrirse */
+    .nav-toggle{position:relative; width:44px; height:44px; padding:0; border:0; font-size:0; color:var(--navy); cursor:pointer;
+      background:linear-gradient(currentColor,currentColor) no-repeat center/22px 2px; transition:background-size .2s ease;}
+    .nav-toggle::before, .nav-toggle::after{content:""; position:absolute; left:50%; top:50%; width:22px; height:2px; margin:-1px 0 0 -11px; border-radius:2px; background:currentColor; transition:transform .25s ease;}
+    .nav-toggle::before{transform:translateY(-7px);}
+    .nav-toggle::after{transform:translateY(7px);}
+    .nav-toggle[aria-expanded="true"]{background-size:0 2px;}
+    .nav-toggle[aria-expanded="true"]::before{transform:rotate(45deg);}
+    .nav-toggle[aria-expanded="true"]::after{transform:rotate(-45deg);}
+    .nav-toggle:focus-visible{outline:3px solid var(--accent); outline-offset:2px; border-radius:var(--r-sm);}
+  }
+
+  @media (max-width:600px){
+    /* tipografía mínima legible */
+    .hero .eyebrow{font-size:.72rem; letter-spacing:.1em; gap:10px;}
+    .hero .eyebrow::before{width:16px;}
+    /* áreas táctiles de 44 px */
+    .hero-link{display:inline-flex; align-items:center; min-height:44px; padding-bottom:0; border-bottom:0; text-decoration:underline; text-decoration-thickness:2px; text-underline-offset:7px; text-decoration-color:rgba(255,255,255,.75);}
+    .svc-back{min-height:44px; margin-bottom:8px;}
+    /* botones de cabecera de cada programa: a todo el ancho, como en la portada y en «Estudiar en el extranjero» */
+    .svc-page-cta-row{flex-direction:column; gap:12px; margin-bottom:32px;}
+    .svc-page-cta-row > .btn-primary, .svc-page-cta-row > .btn-outline{display:flex; width:100%; justify-content:center; text-align:center; min-height:52px; align-items:center;}
+    .ext-cierre{padding:52px 0;}
+    .ext-cierre .btn-primary{display:flex; width:100%; justify-content:center;}
+    /* barra inferior: respeta la zona del indicador de inicio del iPhone */
+    .sticky-cta-inner{padding:10px 16px calc(10px + env(safe-area-inset-bottom, 0px));}
+    .sticky-cta-btn{min-height:48px; display:flex; align-items:center; justify-content:center;}
+    /* pie: dos columnas, enlaces con área táctil y menos altura total */
+    footer{padding-top:44px;}
+    .footer-grid{grid-template-columns:1fr 1fr; gap:28px 20px;}
+    .footer-grid > :first-child, .footer-grid > :last-child{grid-column:1 / -1;}
+    .footer-col ul{gap:0;}
+    .footer-col li{min-height:40px; display:flex; align-items:center;}
+    .footer-col a{display:inline-flex; align-items:center; min-height:40px;}
+    .footer-bottom{margin-top:28px; flex-direction:column; gap:6px;}
+    .footer-bottom > div{display:flex; flex-wrap:wrap; gap:0 20px;}
+    .footer-bottom a{margin-left:0; display:inline-flex; align-items:center; min-height:40px;}
+  }
+
+  /* ---------- PULIDO MÓVIL, 2.ª pasada (25-10-2026) ---------- */
+  html{-webkit-text-size-adjust:100%; text-size-adjust:100%;}   /* iOS no agranda el texto al girar el móvil */
+  a, button, summary, label{-webkit-tap-highlight-color:transparent;}   /* sin el recuadro gris del sistema al tocar: cada elemento tiene su propia respuesta */
+  .cross-sell-cta svg{flex:none; width:16px; height:16px;}
+  .svc-schedule-details summary::after{content:'+'; font-size:1.5rem; font-weight:500; line-height:1; color:var(--accent);}   /* mismo signo que las preguntas frecuentes */
+  .svc-schedule-details[open] summary::after{transform:rotate(45deg);}
+
+  /* respuesta al toque en pantallas táctiles: el botón o la tarjeta se hunde un poco */
+  @media (hover:none){
+    .btn-primary, .btn-outline, .sticky-cta-btn, .cross-sell-cta, .nav-cta, .svc-card2, .intl-dest-card, .choice-card, .mega-item, .nav-links > a{transition:transform .12s ease, opacity .12s ease, background-color .15s ease;}
+    .btn-primary:active, .btn-outline:active, .sticky-cta-btn:active, .cross-sell-cta:active, .nav-cta:active{transform:scale(.98);}
+    .svc-card2:active, .intl-dest-card:active, .choice-card:active{transform:scale(.99);}
+    .mega-item:active, .nav-links > a:not(.nav-cta):active{opacity:.6;}
+  }
+
+  @media (max-width:600px){
+    /* barra inferior translúcida: deja intuir la página y usa el botón principal (burdeos) de toda la web */
+    .sticky-cta{background:rgba(250,248,242,.84); -webkit-backdrop-filter:saturate(1.6) blur(14px); backdrop-filter:saturate(1.6) blur(14px); border-top:1px solid rgba(22,41,74,.1);}
+    .sticky-cta-btn{background:var(--accent); color:#fff; font-size:.98rem; border-radius:var(--r-btn);}
+    .sticky-cta :focus-visible{outline-color:var(--accent);}
+    /* tarjetas de programas: el nombre manda sobre la edad */
+    section.services .svc-t h3{font-size:1.42rem;}
+    section.services .svc-t{gap:8px;}
+    /* entrada de secciones más corta: al desplazarse rápido no quedan huecos */
+    .reveal{transform:translateY(12px); transition-duration:.45s;}
+    /* pie: la columna de servicios es más ancha para que «Campamentos de verano» quepa en una línea */
+    .footer-grid{grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);}
+  }
+  @supports not ((-webkit-backdrop-filter:blur(1px)) or (backdrop-filter:blur(1px))){
+    @media (max-width:600px){ .sticky-cta{background:var(--ivory);} }
+  }
+  @media (max-width:400px){
+    .hero .eyebrow::before{display:none;}   /* en pantallas estrechas el rótulo cabe en una línea sin la raya */
+    .hero .eyebrow{letter-spacing:.08em;}
+  }
+
+  /* ---------- PULIDO MÓVIL, 3.ª pasada (25-10-2026) ---------- */
+  /* destinos de «Estudiar en el extranjero»: el desplegable va en marino y solo «Pedir orientación» en burdeos (una acción principal por tarjeta) */
+  #view-service-extranjero .ext-option-details summary.btn-primary{color:var(--navy);}
+  #view-service-extranjero .ext-option-details .ext-option-toggle{color:var(--accent);}
+  @media (hover:hover){ #view-service-extranjero .ext-option-details summary.btn-primary:hover{color:var(--accent);} }
+
+  /* aviso de cookies (si se activa la analítica): «Rechazar» y «Aceptar» con el mismo peso, como pide la AEPD */
+  .cookie-btn.cookie-reject, .cookie-btn.cookie-accept{background:#fff; color:var(--navy); border:1.5px solid var(--navy);}
+  @media (hover:hover){ .cookie-btn.cookie-reject:hover, .cookie-btn.cookie-accept:hover{background:var(--navy); color:#fff;} }
+
+  /* idioma y correo dentro del menú: solo en el móvil, donde salen de la cabecera */
+  .nav-extra{display:none;}
+  @media (max-width:600px){
+    .lang-switch{display:none;}
+    .nav-extra{display:flex; flex-direction:column; gap:2px; margin-top:20px; padding-top:16px; border-top:1px solid var(--line);}
+    .nav-lang{display:flex; align-items:center; gap:4px; min-height:44px; font-size:.95rem; font-weight:700;}
+    .nav-lang svg{width:17px; height:17px; flex:none; margin-right:6px; color:var(--navy);}
+    .nav-lang .lang-active{color:var(--navy);}
+    .nav-lang a{display:inline-flex; align-items:center; min-height:44px; color:var(--ink-soft); font-weight:600; text-decoration:none; opacity:1;}
+    .nav-lang > :nth-child(2)::after{content:"·"; margin:0 10px; color:var(--ink-soft); font-weight:400;}   /* separador solo entre los dos idiomas */
+    .nav-mail{display:inline-flex; align-items:center; gap:10px; min-height:44px; color:var(--navy); font-size:.95rem; font-weight:600; text-decoration:none; opacity:1;}
+    .nav-mail svg{width:17px; height:17px; flex:none;}
+  }
+
+  @media (max-width:760px){
+    /* «Crecemos con cada alumno»: barras más finas, el color se lee igual y pesa menos */
+    .age-path-seg{width:5px;}
+    .age-path-steps li, .age-path-steps li:nth-child(n){padding-left:24px;}
+  }
+  @media (max-width:860px){
+    /* campamentos: el título va antes que la foto */
+    #camp-dia .container{display:flex; flex-direction:column;}
+    #camp-dia .camp-section-head{order:-1;}
+    #camp-dia .camp-day-media{margin-bottom:28px;}
+    .camp-why-media{order:2;}
+  }
+  @media (max-width:600px){ .checkbox-row input{width:24px; height:24px; margin-top:0;} }   /* casillas de privacidad: 24 px, el mínimo de WCAG 2.5.8 sin contar la etiqueta */
+
