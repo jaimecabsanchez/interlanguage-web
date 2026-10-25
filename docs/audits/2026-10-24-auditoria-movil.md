@@ -65,7 +65,27 @@ Lo que queda pendiente son decisiones de contenido o de estructura (sección 2).
 
 Comprobado en todas las páginas (ES y EN) a 320, 360, 390, 430, 820, 1024 y 1440 px: sin desbordes y sin errores. Elementos táctiles de menos de 40 px: 0 en portada, Extraescolar, Por qué nosotros y Especialidades; 1 en «Estudiar en el extranjero» y 3 en Campamentos. Son enlaces dentro de un texto y las casillas, admitidos.
 
-## 2 bis. Más mejoras propuestas (piden decisión o cambiar textos)
+## 1 quater. Fallo de funcionamiento en el iPhone, corregido (25-10-2026; `main.js` v=44)
+
+**Fallo:** en Safari para iPhone, «Explorar programas», «Pedir orientación» y cualquier enlace a una sección de la portada no hacían nada visible. La página bajaba y el código la volvía a subir.
+
+**Causa:** al tocar un enlace `#seccion`, Safari lanza `popstate` después del desplazamiento. `syncViewFromHash` respondía mostrando otra vez la portada, y eso la subía arriba del todo. En Chrome el orden es otro, por eso no se veía al probar en Chrome.
+
+**Corrección:** si ya estás en la portada, el router no hace nada y deja que el navegador lleve a la sección. Si vienes de otra página con el botón atrás, muestra la portada y baja a la sección.
+
+**Comprobado en WebKit (motor de Safari, iPhone 13):**
+- **Pulsación de cada elemento:** 217 elementos pulsables en 9 páginas o vistas. Todos responden, salvo «Saltar al contenido», que solo es para teclado.
+- **Recorridos completos (44 comprobaciones):**
+  - menú (abrir, cerrar con la X o tocando fuera, cada enlace) y botón atrás;
+  - hero, barra inferior y tarjetas de programas y destinos;
+  - formulario de la portada (validación, paso 2, «Cambiar»; sin enviar);
+  - formulario de campamentos (sede, semanas, resumen);
+  - anclas de Campamentos y Extraescolar y «Volver a servicios»;
+  - «Estudiar en el extranjero»: barra de secciones, «Ver matices» y «Ver más criterios»;
+  - cambio de idioma conservando la página;
+  - pie y aviso legal.
+- **Escritorio:** comprobado también en Chrome y Safari.
+ Más mejoras propuestas (piden decisión o cambiar textos)
 
 - **Datos de confianza de la portada:** «Orientación personalizada para estudiar en el extranjero» ocupa 4 líneas y las otras dos o tres. Propuesta: «Orientación para estudiar fuera».
 - **Destinos en «Estudiar en el extranjero»:** cada tarjeta tiene «Ver opciones…» y «Pedir orientación», dos enlaces burdeos seguidos. Mejor dejar uno por tarjeta.

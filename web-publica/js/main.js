@@ -728,7 +728,13 @@ window.dataLayer = window.dataLayer || [];
         return;
       }
     }
+    // Ya en la portada: un enlace a una sección (#servicios, #contacto…) o atrás/adelante entre secciones lo resuelve el navegador.
+    // Volver a mostrar la portada la subía arriba del todo; en Safari (iPhone) el evento llega después del desplazamiento
+    // y los botones «Explorar programas» o «Pedir orientación» parecían no hacer nada.
+    if (isHomeVisible()) return;
     showView('view-home');
+    const target = h && document.getElementById(h);
+    if (target && target.closest('#view-home')) requestAnimationFrame(function(){ jumpScroll(function(){ target.scrollIntoView({ block: 'start' }); }); });
   }
   window.addEventListener('popstate', syncViewFromHash);
 
