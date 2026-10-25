@@ -10,6 +10,8 @@
 # Si algún día se añade analítica (Google Tag Manager, Analytics, Meta…), un vídeo incrustado o el envío de
 # formularios a otro dominio (p. ej. el PHP en Arsys), hay que abrir aquí ese dominio en script-src /
 # connect-src / img-src / frame-src / form-action, o el navegador lo bloqueará.
+# El único script en línea permitido es el de arranque de index.html / index-en.html (hash sha256 en script-src).
+# Si cambias una sola letra de ese script, el navegador lo bloqueará: recalcula el hash (ver comentario junto al script).
 # Reserva de llamadas: al poner la dirección de la función en <meta name="il-llamadas-endpoint"> (index.html,
 # index-en.html y llamada.html), añade su dominio aquí: connect-src 'self' https://TU-PROYECTO.supabase.co
 # (ver supabase/functions/call-booking/DEPLOY.md, paso 8). Mientras esté vacía no hace falta.
@@ -20,7 +22,7 @@
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=(), interest-cohort=()
   Cross-Origin-Opener-Policy: same-origin
-  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; form-action 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; upgrade-insecure-requests
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'sha256-JT7A8530kYr0Cds1xDWDy4zks93exOumNlY29CLtlQw='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; form-action 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; upgrade-insecure-requests
 
 # --- Caché: assets versionados (inmutables) ---
 /images/*

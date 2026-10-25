@@ -706,6 +706,7 @@ window.dataLayer = window.dataLayer || [];
         if (r.slug) showExtDestino(r.slug, 'auto');
       }
     }
+    document.documentElement.removeAttribute('data-boot');   // ya enrutado: la vista la controlan los atributos hidden (ver el script de arranque del <head>)
   })();
 
   // Sincroniza la vista con el historial: el botón atrás/adelante restaura la vista correcta. En «Estudiar en el extranjero»
