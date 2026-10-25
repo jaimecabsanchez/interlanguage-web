@@ -94,6 +94,34 @@ Comprobado en todas las páginas (ES y EN) a 320, 360, 390, 430, 820, 1024 y 144
 - **Campamentos:** en «Un día en TalenTalk» y en «Preguntas frecuentes» la foto aparece antes del título o entre el título y la lista. Conviene que el título vaya primero.
 - **Formulario de campamentos:** la tarjeta queda a 12 px del borde y el resto de la página a 24 px. Igualarlo a 16 px.
 
+## 1 quinquies. Cuarta pasada (25-10-2026; `styles.css` v=125, `main.js` v=45)
+
+| # | Detalle | Corrección |
+|---|---|---|
+| 30 | Un enlace directo a un programa (compartido por WhatsApp, por ejemplo) descargaba también la foto grande y las tarjetas de la portada, que no se ven: 250–380 KB de más que competían con la foto de la página. | Script de arranque en el `<head>`, admitido por la CSP mediante su hash: muestra esa página desde el primer momento y solo precarga la foto de la portada cuando se abre la portada. |
+| 31 | En el móvil, la cabecera de «Estudiar en el extranjero» se descargaba a 1672 px. | `sizes` corregido: se descarga a 1280 px, sin pérdida visible. |
+| 32 | La política de cookies hablaba de analítica y de un aviso que ya no existen. | Reescrita: la web solo usa almacenamiento técnico (el enlace para cancelar una llamada, que se borra al cerrar la pestaña). |
+| 33 | En el formulario, el icono de «Os responderemos personalmente» quedaba separado del texto cuando la frase ocupaba dos líneas. | Icono pegado al texto. |
+
+**Entrada directa** con 4G lenta simulada (servidor local sin compresión; en producción va más rápido):
+- «Estudiar en el extranjero»: LCP de 8,1 a 5,7 s.
+- Campamentos: 3,5 s.
+- Portada: 4,0 s.
+
+**El móvil en horizontal** (iPhone 13, 750 × 342) se revisó sin desbordes.
+
+**Pruebas en WebKit (iPhone 13):** 45/45 recorridos correctos. Todos los elementos pulsables responden, salvo «Saltar al contenido», que es solo para teclado, y los «Ver matices» de «Ver más criterios», que empiezan ocultos y funcionan al abrir el desplegable (11/11).
+
+### Bloqueante: los formularios no llegan al equipo
+
+En producción, `form-handler.php` responde 404: Netlify no ejecuta PHP. Al enviar una consulta, la familia ve «No hemos podido enviar la solicitud…» y sus datos se conservan, pero **ninguna consulta llega**. Afecta a los dos formularios: el de la portada y «Estudiar en el extranjero», y la inscripción del campamento.
+
+Hace falta elegir un receptor:
+- **Netlify Forms:** lo más rápido. Plan gratuito de 100 envíos al mes. Los avisos por correo se configuran en el panel.
+- **Función de Supabase:** ya hay proyecto. Necesita Resend para avisar por correo.
+
+En los dos casos hay que nombrar al proveedor en la política de privacidad.
+
 ## 2. Pendiente: decisiones de contenido o estructura
 
 Ordenado por impacto.

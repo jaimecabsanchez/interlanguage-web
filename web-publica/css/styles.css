@@ -1714,3 +1714,7 @@ picture{display:contents;}
      momento y la portada no se pinta, así que no se descargan sus fotos. main.js quita la marca al terminar de enrutar. */
   html[data-boot="campamentos"] #view-home, html[data-boot="extraescolar"] #view-home, html[data-boot="extranjero"] #view-home, html[data-boot="metodologia"] #view-home, html[data-boot="especialidades"] #view-home{display:none !important;}
   html[data-boot="campamentos"] #view-service-campamentos, html[data-boot="extraescolar"] #view-service-extraescolar, html[data-boot="extranjero"] #view-service-extranjero, html[data-boot="metodologia"] #view-service-metodologia, html[data-boot="especialidades"] #view-service-especialidades{display:block !important;}
+  /* «Os responderemos personalmente…»: el icono va pegado al texto también cuando la frase ocupa dos líneas */
+  .lead-reassure{display:block; text-wrap:balance;}
+  .lead-reassure svg{display:inline-block; vertical-align:-3px; margin-right:6px;}
+
