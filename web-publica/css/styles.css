@@ -1712,9 +1712,42 @@ picture{display:contents;}
 
   /* enlace directo a un programa (#servicio-…): el script de arranque marca <html data-boot>. Esa página se ve desde el primer
      momento y la portada no se pinta, así que no se descargan sus fotos. main.js quita la marca al terminar de enrutar. */
-  html[data-boot="campamentos"] #view-home, html[data-boot="extraescolar"] #view-home, html[data-boot="extranjero"] #view-home, html[data-boot="metodologia"] #view-home, html[data-boot="especialidades"] #view-home{display:none !important;}
-  html[data-boot="campamentos"] #view-service-campamentos, html[data-boot="extraescolar"] #view-service-extraescolar, html[data-boot="extranjero"] #view-service-extranjero, html[data-boot="metodologia"] #view-service-metodologia, html[data-boot="especialidades"] #view-service-especialidades{display:block !important;}
+  html[data-boot="campamentos"] #view-home, html[data-boot="extraescolar"] #view-home, html[data-boot="extranjero"] #view-home, html[data-boot="metodologia"] #view-home, html[data-boot="especialidades"] #view-home, html[data-boot="verano"] #view-home{display:none !important;}
+  html[data-boot="campamentos"] #view-service-campamentos, html[data-boot="extraescolar"] #view-service-extraescolar, html[data-boot="extranjero"] #view-service-extranjero, html[data-boot="metodologia"] #view-service-metodologia, html[data-boot="especialidades"] #view-service-especialidades, html[data-boot="verano"] #view-service-verano-extranjero{display:block !important;}
   /* «Os responderemos personalmente…»: el icono va pegado al texto también cuando la frase ocupa dos líneas */
   .lead-reassure{display:block; text-wrap:balance;}
   .lead-reassure svg{display:inline-block; vertical-align:-3px; margin-right:6px;}
+
+  /* ---------- CAMPAMENTOS EN EL EXTRANJERO (#view-service-verano-extranjero) ---------- */
+  /* texto provisional: se ve resaltado hasta que se sustituye por el dato real (y se quita el <mark>) */
+  mark.fill{background:#FFF1B8; color:inherit; padding:0 .15em; border-radius:3px; box-decoration-break:clone; -webkit-box-decoration-break:clone; outline:1px dashed #C9A227; outline-offset:1px;}
+  .vext-dest-grid{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:22px;}
+  .vext-dest{display:flex; flex-direction:column; overflow:hidden; background:var(--white); border:1px solid var(--line); border-radius:var(--r-card);}
+  .vext-dest-media{aspect-ratio:16/10; overflow:hidden; background:var(--stone);}
+  .vext-dest-media picture, .vext-dest-media img{display:block; width:100%; height:100%; object-fit:cover;}
+  .vext-dest-body{display:flex; flex-direction:column; gap:6px; padding:20px 22px 24px;}
+  .vext-dest-place{font-size:.8rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--accent);}
+  .vext-dest-body h3{font-size:1.3rem; line-height:1.2; color:var(--navy); margin:0;}
+  .vext-dest-body p{margin:4px 0 0; color:var(--ink-soft); line-height:1.55;}
+  .vext-note{margin:18px 0 0; font-size:.9rem; color:var(--ink-soft);}
+  .vext-price-grid{grid-template-columns:repeat(3,minmax(0,1fr));}
+  .vext-noinc ul li::before{content:"–" !important; color:var(--ink-soft) !important; background:none !important; border:0 !important; transform:none !important; width:auto !important; height:auto !important; font-weight:700;}
+  .vext-steps{list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:22px;}
+  .vext-steps li{display:flex; flex-direction:column; gap:12px; padding:22px; background:var(--white); border:1px solid var(--line); border-radius:var(--r-card);}
+  .vext-step-n{display:grid; place-items:center; width:36px; height:36px; border-radius:50%; background:var(--navy); color:#fff; font-family:var(--font-display); font-weight:600;}
+  .vext-steps h3{font-size:1.1rem; line-height:1.25; color:var(--navy); margin:0 0 4px;}
+  .vext-steps p{margin:0; color:var(--ink-soft); line-height:1.5; font-size:.95rem;}
+  @media (max-width:1024px){ .vext-steps{grid-template-columns:repeat(2,minmax(0,1fr));} }
+  @media (max-width:900px){ .vext-dest-grid{grid-template-columns:1fr; max-width:560px;} }
+  @media (max-width:600px){
+    .vext-steps{grid-template-columns:1fr; gap:12px;}
+    .vext-steps li{flex-direction:row; align-items:flex-start; gap:14px; padding:18px;}
+    .vext-step-n{flex:none;}
+    .vext-price-grid{grid-template-columns:1fr 1fr;}
+  }
+  /* menú del móvil: con dos grupos de programas, cada uno lleva su rótulo */
+  @media (max-width:1024px){
+    .nav-links .mega-col-title{display:block; padding:16px 0 2px; font-size:.72rem; letter-spacing:.12em;}
+    .nav-links .mega-col:first-child .mega-col-title{padding-top:6px;}
+  }
 

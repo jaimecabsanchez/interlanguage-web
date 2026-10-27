@@ -9,8 +9,8 @@ h = h.replace("<head>", '<head>\n<meta name="robots" content="noindex,nofollow">
 h = re.sub(r'<link rel="canonical"[^>]*>\n?', '', h)
 import time
 VER = int(time.time())
-h = h.replace('<link rel="stylesheet" href="css/styles.css?v=125">',
-              '<link rel="stylesheet" href="css/styles.css?v=125">\n<link rel="stylesheet" href="css/preview-home.css?v=@VER@">', 1).replace('@VER@', str(VER))
+h = h.replace('<link rel="stylesheet" href="css/styles.css?v=126">',
+              '<link rel="stylesheet" href="css/styles.css?v=126">\n<link rel="stylesheet" href="css/preview-home.css?v=@VER@">', 1).replace('@VER@', str(VER))
 # la foto del hero ocupa ~72 % del ancho
 h = re.sub(r'(<div class="hero-media">.*?</div>)', lambda m: m.group(1).replace('sizes="100vw"', 'sizes="(min-width:1025px) 72vw, 100vw"'), h, count=1, flags=re.S)
 
