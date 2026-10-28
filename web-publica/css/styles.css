@@ -1843,3 +1843,40 @@ picture{display:contents;}
     .vext-price-grid{grid-template-columns:1fr 1fr;}
   }
 
+
+  /* ============================================================
+     FICHA DEL PROGRAMA y ajustes de «claridad y coherencia» (24-10-2026)
+     ============================================================ */
+  /* Todas las páginas de programa abren con la misma ficha .camp-quickfacts (para quién, dónde, cuándo, experiencia, qué incluye y precio o forma de presupuestar).
+     En la cabecera va en dos columnas (--hero); en «Año o trimestre escolar en el extranjero», cuya cabecera es una foto a sangre, va en una banda de tres (--band). */
+  .ext-ficha{background:var(--ivory); padding:32px 0 8px;}
+  .camp-quickfacts--band{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); margin:0; border:1px solid var(--line);}
+  .camp-quickfacts--band .camp-quickfact{min-width:0; padding:18px 20px; border-right:1px solid var(--line); border-bottom:1px solid var(--line);}
+  .camp-quickfacts--band .camp-quickfact:nth-child(3n){border-right:none;}
+  .camp-quickfacts--band .camp-quickfact:nth-last-child(-n+3){border-bottom:none;}
+  .camp-quickfacts--hero:has(+ .camp-season-note), .camp-quickfacts--hero:has(+ .quickfacts-note){margin-bottom:12px;}
+  .camp-hero-content .quickfacts-note{max-width:58ch; margin:0 0 20px; line-height:1.55;}
+  @media (max-width:760px){
+    .ext-ficha{padding:24px 0 4px;}
+    .camp-quickfacts--band{grid-template-columns:1fr 1fr;}
+    .camp-quickfacts--band .camp-quickfact{padding:14px;}
+    .camp-quickfacts--band .camp-quickfact:nth-child(3n){border-right:1px solid var(--line);}
+    .camp-quickfacts--band .camp-quickfact:nth-child(2n){border-right:none;}
+    .camp-quickfacts--band .camp-quickfact:nth-last-child(-n+3){border-bottom:1px solid var(--line);}
+    .camp-quickfacts--band .camp-quickfact:nth-last-child(-n+2){border-bottom:none;}
+    .camp-quickfacts--band .camp-quickfact-ic{display:none;}
+    .camp-quickfacts--band .camp-quickfact strong{font-size:.98rem;}
+    .camp-quickfacts--band .camp-quickfact span{font-size:.8rem;}
+  }
+  /* detalles secundarios plegados (nunca costes, condiciones ni seguridad): ejemplos de excursiones y actividades de noche */
+  .vx-more{margin-top:10px;}
+  .vx-more .vx-nights, .vx-more .vx-trips{margin-top:14px;}
+  .vx-more .vext-note{margin-top:14px;}
+  /* con los nombres completos de los cuatro programas el desplegable necesita más ancho (dos columnas de ~250 px) */
+  @media (min-width:1025px){ .nav-dropdown-menu.mega{min-width:496px;} }   /* desde el borde del botón «Programas» quedan ~516 px hasta el margen derecho a 1025 px: no pasar de ahí */
+  /* los nombres completos hacen que la línea de programas ocupe dos o tres líneas: se reserva el mismo alto en las tres etapas para que sus filetes queden alineados */
+  @media (min-width:1025px){ .age-path-steps .age-path-prog{min-height:calc(11px + 2.9em);} }
+  @media (min-width:761px) and (max-width:1024px){ .age-path-steps .age-path-prog{min-height:calc(11px + 4.35em);} }
+  .camp-quickfact span{display:block;}   /* en línea, el interlineado de la caja (1,7) separaba las líneas de un dato que ocupa dos */
+  /* el botón del puente («Ver año o trimestre escolar en el extranjero») es largo: en pantallas estrechas el texto baja de línea en vez de salirse */
+  @media (max-width:640px){ .cross-sell-cta{white-space:normal; text-align:left; justify-content:space-between; line-height:1.3;} }

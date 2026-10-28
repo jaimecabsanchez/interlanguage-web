@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Página «Campamentos en el extranjero» (#servicio-verano-extranjero) en index.html e index-en.html.
+"""Página «Campamentos de verano en el extranjero» (#servicio-verano-extranjero) en index.html e index-en.html.
 
 Contenido: programa de verano en internados de Escocia e Inglaterra (datos del folleto 2027 y de la guía previa al viaje
 del proveedor). No se nombra al proveedor ni se usan sus fotos ni su marca.
@@ -50,12 +50,12 @@ ELEC_IMG = {   # fotos propias de actividades (con consentimiento; no se asocian
 
 T = {
  'es': dict(
-  title="Campamentos de verano en el extranjero", back="← Volver a servicios", eyebrow="Campamento de verano · Escocia e Inglaterra",
+  title="Campamentos de verano en el extranjero", back="← Volver a servicios", eyebrow="Campamentos de verano en el extranjero",
   h1="Un verano para vivir el inglés fuera de casa",
   intro="De una a cuatro semanas en internados británicos, con clases de inglés cada mañana, tardes a elegir, excursiones y alumnos de más de 20 países.",
-  qf=[('edad','8–17 años','Según el colegio'), ('lugar','Escocia e Inglaterra','4 internados'), ('fecha','27 jun. – 15 ago. 2027','De 1 a 4 semanas'), ('precio',F('Desde … €'),'Por semana')],
+  qf=[('edad','8–17 años','Según el colegio'), ('fecha','De 1 a 4 semanas','27 jun. – 15 ago. 2027'), ('casa','Internados de Escocia e Inglaterra','Pensión completa'), ('escudo','Equipo 24 h','En la residencia, con los alumnos'), ('avion','Recogida en el aeropuerto','Traslado con coste aparte'), ('precio',F('Desde … €'),'Por semana')],
   note="Fechas de 2027. Las plazas de cada colegio son limitadas.",
-  cta="Pedir información", cta2="Ver cómo es un día",
+  cta="Pedir orientación", cta2="Ver cómo es un día",
   alt="Niños con casco y chaleco salvavidas levantan los brazos, riendo, en una canoa roja sobre un lago",
   stats=[('15 h','de inglés a la semana'), ('2','excursiones de día completo cada semana'), ('+20','nacionalidades en el campus'), ('24 h','equipo de cuidado en la residencia')],
   stats_note="Programas acreditados por el British Council.",
@@ -97,18 +97,18 @@ T = {
   inc_h="Qué incluye", inc=['15 horas de inglés a la semana y materiales','Actividad de tarde y programa de noches','Dos excursiones de día completo a la semana','Alojamiento, pensión completa, ropa de cama y wifi','Lavandería semanal en estancias de 2 semanas o más','Pack de bienvenida','Certificado y ceremonia de graduación', F('Orientación y gestión de la reserva con Interlanguage')],
   noinc_h="Qué no incluye", noinc=['Vuelos', 'Traslado desde el aeropuerto ('+F('… € por trayecto')+')', 'Seguro médico y de viaje (obligatorio; se puede contratar con el campamento)', 'Actividades de tarde con suplemento', 'Dinero de bolsillo', 'Fianza de la tarjeta de la habitación ('+F('… €')+', se devuelve)'],
   grad_h="Graduación y camiseta de recuerdo", grad_p="El último día reciben su certificado en una ceremonia de graduación y diseñan su propia camiseta, firmada por los amigos que han hecho.",
-  seg_h="Acompañamiento y seguridad", seg_p="Lo que más preocupa a una familia, explicado claramente.",
-  seg=[('Llegada', 'Les esperan en la salida del aeropuerto y los llevan al colegio. En la residencia les reciben su equipo y su compañero de habitación.'),
-       ('En la residencia', 'Un equipo vive con los alumnos las 24 horas. Guarda su pasaporte, su dinero y sus medicinas, y les da la medicación a su hora.'),
-       ('Móviles', 'No se usan en clase, en las actividades, en las comidas ni por la noche. El equipo los guarda; la familia puede pedir otra cosa por escrito.'),
-       ('Normas claras', 'Sin alcohol, tabaco ni vapeo. Chicos y chicas solo coinciden en las zonas comunes. Tolerancia cero con el acoso.'),
+  seg_h="Alojamiento, cuidado y contacto con casa", seg_p="Lo que más preocupa a una familia, explicado claramente.",
+  seg=[('En la residencia', 'Habitación individual o compartida, con baños compartidos y limpieza diaria. Un equipo vive con los alumnos las 24 horas, guarda su pasaporte, su dinero y sus medicinas, y les da la medicación a su hora.'),
+       ('Llegada y traslados', 'Les esperan en la salida del aeropuerto y los llevan al colegio en minibús desde Edimburgo, Heathrow o Gatwick. El traslado tiene un coste aparte.'),
        ('El viaje', F('Cómo viajan: vuelo en grupo desde Madrid con un monitor de Interlanguage, o solos como menor no acompañado.')),
-       ('Contacto con casa', F('Cómo y cuándo pueden hablar con vosotros durante el campamento.'))],
+       ('Contacto con casa', F('Cómo y cuándo pueden hablar con vosotros durante el campamento.')),
+       ('Móviles', 'No se usan en clase, en las actividades, en las comidas ni por la noche. El equipo los guarda; la familia puede pedir otra cosa por escrito.'),
+       ('Normas claras', 'Sin alcohol, tabaco ni vapeo. Chicos y chicas solo coinciden en las zonas comunes. Tolerancia cero con el acoso.')],
   money_h="Dinero de bolsillo recomendado", money=[('8 a 10 años','25 – 35 £'),('11 a 14 años','35 – 50 £'),('15 a 17 años','50 – 60 £')], money_u="por semana",
   money_note="Hay tienda en el campus y tiempo para compras en las excursiones. El equipo guarda el dinero.",
   bag_h="Qué llevar", bag=['Pasaporte en vigor y ETA (autorización para entrar en el Reino Unido)','Autorización de los padres para viajar','Toallas, también para la piscina','Ropa de deporte, chubasquero y un conjunto arreglado para las noches','Bañador y calzado que se pueda mojar','Adaptador de enchufe británico (tipo G)'],
   bag_note="Mejor sin objetos caros. Si toma medicinas o tiene alergias, avisadnos antes.",
-  pre_h="Precios", pre_p="El precio depende de las semanas. Las estancias empiezan en domingo (en miércoles en Inglaterra).",
+  pre_h="Semanas y precios", pre_p="Se puede ir de una a cuatro semanas, y el precio depende de cuántas. Las estancias empiezan en domingo (en miércoles en Inglaterra); las fechas de cada colegio están más abajo.",
   pre=[('1 semana', F('… €')), ('2 semanas', F('… €')), ('3 semanas', F('… €')), ('4 semanas', F('… €'))],
   pre_note="Noche extra: "+F('… €')+", según disponibilidad. Suplementos de tarde: hípica, aventura, golf, descubrir el país y más inglés.",
   res_h="Cómo se reserva", res=[('Nos contáis qué buscáis', 'Edad, nivel de inglés, fechas y lo que le gusta.'), ('Os proponemos colegio y fechas', 'Con el precio cerrado y lo que incluye.'), ('Reserváis la plaza', 'Con una señal del '+F('10 %')+'; el resto, antes del '+F('15 de mayo de 2027')+'.'), ('Preparamos la salida', 'Documentación, maleta y vuelos, para que viaje tranquilo.')],
@@ -123,15 +123,15 @@ T = {
        ('¿Cómo llegan desde el aeropuerto?', 'Hay traslados en minibús desde Edimburgo, Heathrow y Gatwick, con coste aparte. Les esperan en la salida con un cartel.'),
        ('¿Cuándo hay que reservar?', 'Cuanto antes: las plazas son limitadas y el pago completo es antes del '+F('15 de mayo de 2027')+'.')],
   fin_h="¿Le buscamos su campamento?", fin_p="Contadnos su edad, su nivel y qué fechas tenéis en mente, y os proponemos el colegio que mejor encaja. La orientación es gratuita.",
-  cross_e="¿Y después del verano?", cross_p="Si el campamento le engancha, el siguiente paso puede ser un trimestre o un curso escolar en el extranjero.", cross_a="Estudiar en el extranjero",
-  note_adv="Interés: campamento de verano en el extranjero"),
+  cross_e="¿Y después del verano?", cross_p="Si el campamento le engancha, el siguiente paso puede ser un trimestre o un curso escolar en el extranjero.", cross_a="Ver año o trimestre escolar en el extranjero",
+  trip_sum="Ver ejemplos de excursiones", night_sum="Ver las actividades de noche"),
  'en': dict(
-  title="Summer camps abroad", back="← Back to programmes", eyebrow="Summer camp · Scotland and England",
+  title="Summer camps abroad", back="← Back to programmes", eyebrow="Summer camps abroad",
   h1="A summer living English away from home",
   intro="One to four weeks at British boarding schools, with English lessons every morning, afternoons of their choice, excursions and students from more than 20 countries.",
-  qf=[('edad','Ages 8–17','Depending on the school'), ('lugar','Scotland and England','4 boarding schools'), ('fecha','27 Jun – 15 Aug 2027','1 to 4 weeks'), ('precio',F('From … €'),'Per week')],
+  qf=[('edad','Ages 8–17','Depending on the school'), ('fecha','1 to 4 weeks','27 Jun – 15 Aug 2027'), ('casa','Boarding schools in Scotland and England','Full board'), ('escudo','Team on duty 24 h','In the boarding house, with the students'), ('avion','Airport pick-up','Transfer at extra cost'), ('precio',F('From … €'),'Per week')],
   note="2027 dates. Places at each school are limited.",
-  cta="Ask for information", cta2="See a typical day",
+  cta="Ask for guidance", cta2="See a typical day",
   alt="Children in helmets and life jackets raise their arms, laughing, in a red canoe on a lake",
   stats=[('15 h','of English a week'), ('2','full-day excursions every week'), ('20+','nationalities on campus'), ('24 h','residential care team')],
   stats_note="British Council accredited programmes.",
@@ -173,18 +173,18 @@ T = {
   inc_h="What is included", inc=['15 hours of English a week and materials','Afternoon activity and evening programme','Two full-day excursions a week','Accommodation, full board, bedding and Wi-Fi','Weekly laundry for stays of 2 weeks or more','Welcome pack','Certificate and graduation ceremony', F('Guidance and booking management with Interlanguage')],
   noinc_h="What is not included", noinc=['Flights', 'Airport transfer ('+F('… € each way')+')', 'Medical and travel insurance (compulsory; can be arranged with the camp)', 'Afternoon activities with a supplement', 'Pocket money', 'Room key card deposit ('+F('… €')+', refundable)'],
   grad_h="Graduation and a keepsake T-shirt", grad_p="On the last day they receive their certificate at a graduation ceremony and design their own T-shirt, signed by the friends they have made.",
-  seg_h="Supervision and safety", seg_p="What matters most to families, explained clearly.",
-  seg=[('Arrival', 'Staff meet them at airport arrivals and take them to school. At the boarding house their team and room-mate welcome them.'),
-       ('In the boarding house', 'A team lives with the students 24 hours a day. They look after passports, money and medicines, and give medication on time.'),
-       ('Phones', 'Not used in lessons, activities, meals or overnight. Staff keep them safe; families can request otherwise in writing.'),
-       ('Clear rules', 'No alcohol, smoking or vaping. Boys and girls only mix in common areas. Zero tolerance of bullying.'),
+  seg_h="Accommodation, care and keeping in touch", seg_p="What matters most to families, explained clearly.",
+  seg=[('In the boarding house', 'Single or shared rooms, with shared bathrooms cleaned daily. A team lives with the students 24 hours a day, looks after passports, money and medicines, and gives medication on time.'),
+       ('Arrival and transfers', 'Staff meet them at airport arrivals and take them to school by minibus from Edinburgh, Heathrow or Gatwick. The transfer costs extra.'),
        ('The journey', F('How they travel: group flight from Madrid with an Interlanguage leader, or alone as an unaccompanied minor.')),
-       ('Keeping in touch', F('How and when they can talk to you during the camp.'))],
+       ('Keeping in touch', F('How and when they can talk to you during the camp.')),
+       ('Phones', 'Not used in lessons, activities, meals or overnight. Staff keep them safe; families can request otherwise in writing.'),
+       ('Clear rules', 'No alcohol, smoking or vaping. Boys and girls only mix in common areas. Zero tolerance of bullying.')],
   money_h="Recommended pocket money", money=[('Ages 8 to 10','£25 – 35'),('Ages 11 to 14','£35 – 50'),('Ages 15 to 17','£50 – 60')], money_u="per week",
   money_note="There is a tuck shop on campus and time for shopping on excursions. Staff keep the money safe.",
   bag_h="What to pack", bag=['Valid passport and ETA (UK entry authorisation)','Parental consent to travel','Towels, including one for swimming','Sportswear, a rain jacket and a smart outfit for evenings','Swimwear and shoes that can get wet','UK plug adapter (type G)'],
   bag_note="Best to leave expensive items at home. If they take medicine or have allergies, let us know beforehand.",
-  pre_h="Prices", pre_p="The price depends on the number of weeks. Stays start on Sunday (Wednesday in England).",
+  pre_h="Weeks and prices", pre_p="Stays last from one to four weeks, and the price depends on how many. They start on Sunday (Wednesday in England); each school’s dates are further down.",
   pre=[('1 week', F('… €')), ('2 weeks', F('… €')), ('3 weeks', F('… €')), ('4 weeks', F('… €'))],
   pre_note="Extra night: "+F('… €')+", subject to availability. Afternoon supplements: horse riding, adventure, golf, discover the country and extra English.",
   res_h="How to book", res=[('Tell us what you are looking for', 'Age, English level, dates and interests.'), ('We suggest a school and dates', 'With a fixed price and what it includes.'), ('You book the place', 'With a '+F('10%')+' deposit; the rest by '+F('15 May 2027')+'.'), ('We prepare the departure', 'Paperwork, packing and flights, so they travel with peace of mind.')],
@@ -199,13 +199,13 @@ T = {
        ('How do they get from the airport?', 'Minibus transfers run from Edinburgh, Heathrow and Gatwick, at extra cost. Staff wait at arrivals with a sign.'),
        ('When should we book?', 'As soon as possible: places are limited and full payment is due by '+F('15 May 2027')+'.')],
   fin_h="Shall we find their camp?", fin_p="Tell us their age, their level and the dates you have in mind, and we will suggest the school that fits best. Our guidance is free.",
-  cross_e="And after the summer?", cross_p="If they love the camp, the next step could be a term or a school year abroad.", cross_a="Study abroad",
-  note_adv="Interest: summer camp abroad"),
+  cross_e="And after the summer?", cross_p="If they love the camp, the next step could be a term or a school year abroad.", cross_a="See school year or term abroad",
+  trip_sum="See example excursions", night_sum="See the evening activities"),
 }
 
 def vista(t):
     hero = pic('campamento-extranjero-canoa', [470, 710, 1030, 1536], 1536, 864, t['alt'], '(max-width:900px) 100vw, 50vw')
-    adv = f'data-advise="extranjero" data-advise-note="{t["note_adv"]}"'
+    adv = 'data-advise="verano-extranjero"'
     qf = "".join(f'\n        <div class="camp-quickfact"><div class="camp-quickfact-ic">{IC[i]}</div><div><strong>{a}</strong><span>{b}</span></div></div>' for i, a, b in t['qf'])
     stats = "".join(f'<li><strong>{n}</strong><span>{l}</span></li>' for n, l in t['stats'])
     why = "".join(f'\n      <div class="pillar-card"><span class="pillar-ic">{IC[i]}</span><h3>{h}</h3><p>{p}</p></div>' for i, h, p in t['why'])
@@ -261,7 +261,24 @@ def vista(t):
   </div>
 </section>
 
-<section class="camp-section bg-cream">
+<section class="camp-section bg-white" id="vext-precio">
+  <div class="container">
+    <div class="camp-section-head reveal"><h2>{t['pre_h']}</h2><p>{t['pre_p']}</p></div>
+    <div class="camp-price-grid vext-price-grid reveal">{pre}
+    </div>
+    <p class="camp-price-extra reveal">{t['pre_note']}</p>
+  </div>
+</section>
+
+<section class="camp-section bg-cream" id="vext-cuidado">
+  <div class="container">
+    <div class="camp-section-head reveal"><h2>{t['seg_h']}</h2><p>{t['seg_p']}</p></div>
+    <div class="club-grid vx-seg reveal">{seg}
+    </div>
+  </div>
+</section>
+
+<section class="camp-section bg-white">
   <div class="container">
     <div class="camp-section-head reveal"><h2>{t['why_h']}</h2><p>{t['why_p']}</p></div>
     <div class="pillar-grid reveal">{why}
@@ -269,7 +286,7 @@ def vista(t):
   </div>
 </section>
 
-<section class="camp-section bg-white">
+<section class="camp-section bg-cream">
   <div class="container">
     <div class="camp-section-head reveal"><h2>{t['prog_h']}</h2><p>{t['prog_p']}</p></div>
     <div class="vx-progs reveal">{progs}
@@ -278,7 +295,7 @@ def vista(t):
   </div>
 </section>
 
-<section class="camp-section bg-cream" id="vext-destinos">
+<section class="camp-section bg-white" id="vext-destinos">
   <div class="container">
     <div class="camp-section-head reveal"><h2>{t['camp_h']}</h2><p>{t['camp_p']}</p></div>
     <div class="vx-camps reveal">{camps}
@@ -287,7 +304,7 @@ def vista(t):
   </div>
 </section>
 
-<section class="camp-section bg-white">
+<section class="camp-section bg-cream">
   <div class="container">
     <div class="camp-section-head reveal"><h2>{t['elec_h']}</h2><p>{t['elec_p']}</p></div>
     <div class="vx-elecs reveal">{elec}
@@ -295,7 +312,7 @@ def vista(t):
   </div>
 </section>
 
-<section class="camp-section bg-cream" id="vext-dia">
+<section class="camp-section bg-white" id="vext-dia">
   <div class="container">
     <div class="camp-section-head reveal"><h2>{t['day_h']}</h2><p>{t['day_p']}</p></div>
     <div class="vx-days reveal">
@@ -303,16 +320,20 @@ def vista(t):
       <div class="vx-day vx-day--we"><h3>{t['we']}</h3><ol class="vx-tl">{tl(t['wke'])}</ol></div>
     </div>
     <p class="vext-note reveal">{t['day_note']}</p>
-    <div class="vx-nights reveal"><h3>{IC['estrella']}{t['night_h']}</h3><ul class="vx-tags vx-tags--lg">{night}</ul></div>
+    <details class="svc-schedule-details vx-more reveal"><summary>{t['night_sum']}</summary>
+      <div class="vx-nights"><h3>{IC['estrella']}{t['night_h']}</h3><ul class="vx-tags vx-tags--lg">{night}</ul></div>
+    </details>
   </div>
 </section>
 
-<section class="camp-section bg-white">
+<section class="camp-section bg-cream">
   <div class="container">
     <div class="camp-section-head reveal"><h2>{t['trip_h']}</h2><p>{t['trip_p']}</p></div>
-    <div class="vx-trips reveal">{trips}
-    </div>
-    <p class="vext-note reveal">{t['trip_note']}</p>
+    <details class="svc-schedule-details vx-more reveal"><summary>{t['trip_sum']}</summary>
+      <div class="vx-trips">{trips}
+      </div>
+      <p class="vext-note">{t['trip_note']}</p>
+    </details>
   </div>
 </section>
 
@@ -328,27 +349,10 @@ def vista(t):
 
 <section class="camp-section bg-white">
   <div class="container">
-    <div class="camp-section-head reveal"><h2>{t['seg_h']}</h2><p>{t['seg_p']}</p></div>
-    <div class="club-grid vx-seg reveal">{seg}
-    </div>
-  </div>
-</section>
-
-<section class="camp-section bg-cream">
-  <div class="container">
     <div class="vx-prep reveal">
       <div class="vx-money"><h2>{t['money_h']}</h2><ul>{money}</ul><p class="vx-money-u">{t['money_u']}</p><p class="vext-note">{t['money_note']}</p></div>
       <div class="ideal-block vx-bag"><h2>{t['bag_h']}</h2><ul>{bag}</ul><p class="vext-note">{t['bag_note']}</p></div>
     </div>
-  </div>
-</section>
-
-<section class="camp-section bg-white" id="vext-precio">
-  <div class="container">
-    <div class="camp-section-head reveal"><h2>{t['pre_h']}</h2><p>{t['pre_p']}</p></div>
-    <div class="camp-price-grid vext-price-grid reveal">{pre}
-    </div>
-    <p class="camp-price-extra reveal">{t['pre_note']}</p>
   </div>
 </section>
 

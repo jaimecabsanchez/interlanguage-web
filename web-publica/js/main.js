@@ -209,6 +209,7 @@ window.dataLayer = window.dataLayer || [];
     links.forEach(function(link){ link.addEventListener('click', sync); });
     window.addEventListener('hashchange', sync);
     window.addEventListener('popstate', sync);
+    document.addEventListener('il:url', sync);   // el router cambia la dirección con pushState, que no avisa: así el enlace (y «copiar enlace» o abrir en otra pestaña) ya apunta al programa que se ve
     sync();
   })();
 
@@ -344,19 +345,45 @@ window.dataLayer = window.dataLayer || [];
     return home && !home.hidden;
   }
 
+  // La pantalla, la dirección y el título van siempre juntos: toda navegación que cambia de vista deja su entrada en el historial
+  // (pushState, para que «Atrás» vuelva a donde estaba la familia) y avisa con «il:url», porque pushState no dispara ningún evento.
+  function setUrl(hash, state, replace){
+    const url = location.pathname + location.search + (hash ? '#' + hash : '');
+    if (location.pathname + location.search + location.hash === url) return;
+    history[replace ? 'replaceState' : 'pushState'](state || null, '', url);
+    document.dispatchEvent(new Event('il:url'));
+  }
+
   function goToServicePage(key){
     const r = resolveService(key);
     if (!r) return;
+    const same = location.hash === '#servicio-' + key && !isHomeVisible();
     showView('view-service-' + r.view);
     if (r.slug) showExtDestino(r.slug, 'smooth');
     pushEvent('clic_cta', { cta_id: 'servicio-subpagina-' + key });
-    // pushState (no replaceState): así el botón "atrás" del navegador vuelve a la home.
-    history.pushState({ view: 'service-' + r.view }, '', '#servicio-' + key);
+    if (!same) setUrl('servicio-' + key, { view: 'service-' + r.view });
   }
+
+  // Desde una subpágina a la portada o a una de sus secciones: cambia la pantalla, la dirección y el título, y baja a la sección.
+  // 'inicio' es la portada sin ancla (dirección limpia). Si ya se está en la portada solo se desplaza.
+  function goHome(anchor, opts){
+    opts = opts || {};
+    if (!isHomeVisible()) showView('view-home');
+    setUrl(anchor === 'inicio' ? '' : anchor, { view: 'home' });
+    requestAnimationFrame(function(){
+      if (anchor === 'inicio'){ window.scrollTo({ top: 0, left: 0, behavior: opts.smooth && !reduceMotion() ? 'smooth' : 'auto' }); return; }
+      const target = document.getElementById(anchor);
+      if (target) target.scrollIntoView({ behavior: opts.smooth && !reduceMotion() ? 'smooth' : 'auto', block: 'start' });
+    });
+  }
+
+  // un clic con Ctrl/Cmd/Mayús (abrir en otra pestaña o ventana) lo resuelve el navegador
+  function plainClick(e){ return !(e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button > 0); }
 
   // tarjetas de servicio en la home
   document.querySelectorAll('.svc-card2[data-service]').forEach(function(card){
     card.addEventListener('click', function(e){
+      if (!plainClick(e)) return;
       e.preventDefault();
       goToServicePage(card.dataset.service);
     });
@@ -365,22 +392,27 @@ window.dataLayer = window.dataLayer || [];
   // enlaces del desplegable "Servicios" del menú
   document.querySelectorAll('[data-jump-service]').forEach(function(link){
     link.addEventListener('click', function(e){
+      if (!plainClick(e)) return;
       e.preventDefault();
       goToServicePage(link.getAttribute('data-jump-service'));
       closeNav();
     });
   });
 
+  // el logotipo vuelve a la portada, arriba y con la dirección limpia (antes cambiaba la pantalla pero dejaba #servicio-… en la barra)
+  const logoLink = document.querySelector('header.site .nav > a[href="#inicio"]');
+  if (logoLink) logoLink.addEventListener('click', function(e){
+    if (!plainClick(e)) return;
+    e.preventDefault();
+    goHome('inicio', { smooth: isHomeVisible() });
+    closeNav();
+  });
+
   // botón "volver" dentro de cada subpágina
   document.querySelectorAll('[data-back]').forEach(function(link){
     link.addEventListener('click', function(e){
       e.preventDefault();
-      showView('view-home');
-      history.replaceState(null, '', '#servicios');
-      requestAnimationFrame(function(){
-        const target = document.getElementById('servicios');
-        if (target) target.scrollIntoView({ behavior:'auto', block:'start' });
-      });
+      goHome('servicios');
     });
   });
 
@@ -601,12 +633,7 @@ window.dataLayer = window.dataLayer || [];
   document.querySelectorAll('[data-go-destinos]').forEach(function(link){
     link.addEventListener('click', function(e){
       e.preventDefault();
-      showView('view-home');
-      history.replaceState(null, '', '#destinos');
-      requestAnimationFrame(function(){
-        const target = document.getElementById('destinos');
-        if (target) target.scrollIntoView({ behavior:'auto', block:'start' });
-      });
+      goHome('destinos');
     });
   });
 
@@ -615,12 +642,8 @@ window.dataLayer = window.dataLayer || [];
     btn.addEventListener('click', function(e){
       e.preventDefault();
       const key = btn.getAttribute('data-cta-service');
-      showView('view-home');
+      goHome('contacto', { smooth: true });
       if (window.ilLead) window.ilLead.select(key);
-      requestAnimationFrame(function(){
-        const target = document.getElementById('contacto');
-        if (target) target.scrollIntoView({ behavior:'smooth', block:'start' });
-      });
       pushEvent('clic_cta', { cta_id: btn.getAttribute('data-cta') || 'solicitar-info-desde-' + key });
     });
   });
@@ -636,7 +659,7 @@ window.dataLayer = window.dataLayer || [];
         e.preventDefault();
         const inExt = !!el.closest('#view-service-extranjero');
         // en la página de extranjero el contacto está al final de la propia página; desde la home se baja al de la home
-        if (!inExt) showView('view-home', isHomeVisible() ? { keepScroll: true } : undefined);
+        if (!inExt) goHome('contacto', { smooth: true });
         if (window.ilLead){
           window.ilLead.select(el.getAttribute('data-advise'));
           const destino = DESTINOS[el.getAttribute('data-destino')];
@@ -644,13 +667,6 @@ window.dataLayer = window.dataLayer || [];
           window.ilLead.setNote(el.getAttribute('data-advise-note'));
         }
         if (inExt) openExtContact(el);
-        else {
-          const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-          requestAnimationFrame(function(){
-            const target = document.getElementById('contacto');
-            if (target) target.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
-          });
-        }
         pushEvent('clic_cta', { cta_id: el.getAttribute('data-cta') || ('extranjero-' + (el.getAttribute('data-destino') || el.getAttribute('data-programa') || 'asesor')) });
       });
     });
@@ -658,23 +674,19 @@ window.dataLayer = window.dataLayer || [];
 
   // cualquier enlace interno (#ancla) dentro de la home: si estamos en una subpágina, vuelve a home primero
   document.querySelectorAll('a[href^="#"]').forEach(function(link){
-    if (link.hasAttribute('data-jump-service') || link.hasAttribute('data-back') || link.hasAttribute('data-cta-service')) return;
+    if (link.hasAttribute('data-jump-service') || link.hasAttribute('data-back') || link.hasAttribute('data-cta-service') || link === logoLink) return;
     const targetId = link.getAttribute('href').slice(1);
     if (!homeAnchors.includes(targetId)) return;
     link.addEventListener('click', function(e){
-      if (!isHomeVisible()){
+      if (!isHomeVisible() && plainClick(e)){
         e.preventDefault();
         if (targetId === 'contacto' && isExtVisible()){   // en «Estudiar en el extranjero» el contacto está en la propia página
           if (window.ilLead) window.ilLead.select('extranjero');
           openExtContact(); closeNav();
           return;
         }
-        showView('view-home');
+        goHome(targetId);
         closeNav();
-        requestAnimationFrame(function(){
-          const target = document.getElementById(targetId);
-          if (target) target.scrollIntoView({ behavior:'auto', block:'start' });
-        });
       }
     });
   });
@@ -704,7 +716,7 @@ window.dataLayer = window.dataLayer || [];
       if (r){
         showView('view-service-' + r.view, { silent: true });
         if (r.slug) showExtDestino(r.slug, 'auto');
-      }
+      } else setUrl('', null, true);
     }
     document.documentElement.removeAttribute('data-boot');   // ya enrutado: la vista la controlan los atributos hidden (ver el script de arranque del <head>)
   })();
@@ -728,6 +740,7 @@ window.dataLayer = window.dataLayer || [];
         } else if (same && st.extForm) scrollToExtContact();
         return;
       }
+      setUrl('', null, true);   // dirección de un programa que no existe: se limpia y se muestra la portada, para que dirección y pantalla coincidan
     }
     // Ya en la portada: un enlace a una sección (#servicios, #contacto…) o atrás/adelante entre secciones lo resuelve el navegador.
     // Volver a mostrar la portada la subía arriba del todo; en Safari (iPhone) el evento llega después del desplazamiento
@@ -809,15 +822,16 @@ window.dataLayer = window.dataLayer || [];
     let savedDuration = DUNNO;   // última duración que la familia eligió de verdad en el desplegable
     function syncAbroadFields(){
       const abroad = service() === 'extranjero';
+      const campAbroad = service() === 'verano-extranjero';   // campamentos de verano fuera: 8–17 años (data-camp-min / data-camp-max)
       const keepAge = age.value;
       age.innerHTML = ageOptions;
-      if (abroad){
-        const min = dest.value === 'Irlanda' ? 10 : +age.getAttribute('data-ext-min');
-        const max = +age.getAttribute('data-ext-max');
+      if (abroad || campAbroad){
+        const min = campAbroad ? +age.getAttribute('data-camp-min') : dest.value === 'Irlanda' ? 10 : +age.getAttribute('data-ext-min');
+        const max = campAbroad ? +age.getAttribute('data-camp-max') : +age.getAttribute('data-ext-max');
         Array.from(age.options).forEach(function(o){ if (o.value && (+o.value < min || +o.value > max)) o.remove(); });
         age.add(new Option(T.otherAge, 'Otra edad'));
       }
-      age.value = Array.from(age.options).some(function(o){ return o.value === keepAge; }) ? keepAge : (keepAge && abroad ? 'Otra edad' : '');
+      age.value = Array.from(age.options).some(function(o){ return o.value === keepAge; }) ? keepAge : (keepAge && (abroad || campAbroad) ? 'Otra edad' : '');
       dur.innerHTML = durationOptions;
       if (dest.value === 'Irlanda'){
         Array.from(dur.options).forEach(function(o){ if (o.value === 'Un trimestre' || o.value === 'Dos trimestres') o.remove(); });
