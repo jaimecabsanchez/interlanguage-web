@@ -2,7 +2,7 @@
 # Genera las fotos de «Estudiar en el extranjero» (escenas y filas de destino): escalera de anchos AVIF + WebP.
 #
 #   pip install pillow          (Pillow 11.3 o más: trae AVIF propio; con una versión anterior, pip install pillow-avif-plugin)
-#   python3 scripts/generar-ext-fotos.py
+#   python3 scripts/generar-ext-fotos.py [nombre ...]      (sin nombres, las genera todas)
 #
 # Origen: los JPG originales de web-publica/images/internacional/ (los mismos que ya usa la home). SIN reescalado con IA, SIN
 # enfoque y SIN filtros de color: solo recortes (3:2 en las tarjetas de destino) y reducción con Lanczos (ver «Nitidez en Retina» en
@@ -14,7 +14,7 @@
 # El héroe a sangre usa la panorámica de la portada (hero-arco-3-*, ver generar-hero-colegio.py): no se genera aquí.
 # Si cambias una foto o un recorte, cambia el nombre: _headers marca las imágenes como immutable y con el mismo nombre quien
 # ya visitó la web seguiría viendo la anterior.
-import os
+import os, sys
 from PIL import Image, features
 if not features.check('avif'):
     import pillow_avif  # noqa: F401
@@ -37,6 +37,7 @@ FOTOS = [
     ('ext-ie-escalera', 'ie-escalera.jpg',      None, CARD_W, 1000, None),   # tarjeta de Irlanda (foto aportada por Jaime el 07-10-2026, recorte 3:2 a 1200 px en ie-escalera.jpg)
     ('ext-us-aula',   'usa-aula.jpg',         None, CARD_W, 1000, None),   # tarjeta y fila de Estados Unidos (foto de aula 4:3 aportada por Jaime, reducida a 1000 px en usa-aula.jpg)
     ('usa-aula-v',    'usa-aula-vertical.jpg', None, (480, 800), 1000, None),   # tarjeta de Estados Unidos de la portada (4:5, recorte de la foto de aula; en móvil usa ext-us-aula 16:10)
+    ('ext-ca-campus', 'ca-campus-vertical.jpg', 0.35, CARD_W, 1000, 'ca-campus-ext.jpg'),   # fila de Canadá (29-10-2026): recorte 4:3 de la foto vertical de la portada, con la bandera, la entrada y los alumnos
     ('ext-duo-rugby', 'irlanda-rugby.jpg',       None, DUO_W,  1080, None),   # escena «Practicar» (izquierda)
     ('ext-duo-golf', 'uk-golf.jpg',              None, DUO_W,  1000, None),   # escena «Practicar» (derecha)
     # galería «Más actividades que pueden formar parte de su día» (10 fotos aportadas por Jaime el 06-10-2026; el JPG de origen ya está reducido a 1000 px)
@@ -53,6 +54,7 @@ FOTOS = [
 ]
 
 for nombre, origen, cy, anchos, tope, respaldo in FOTOS:
+    if len(sys.argv) > 1 and nombre not in sys.argv[1:]: continue
     src = Image.open(BASE + origen).convert('RGB')
     if cy is not None:   # recorte 4:3 a partir de una foto vertical
         ch = round(src.width * 3 / 4)

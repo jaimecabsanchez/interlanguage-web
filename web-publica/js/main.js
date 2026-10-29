@@ -248,7 +248,7 @@ window.dataLayer = window.dataLayer || [];
   }
   // «Estudiar en el extranjero» tiene una dirección por destino (#servicio-extranjero-irlanda): abre la página y lleva a la tarjeta de ese destino.
   // Las direcciones antiguas (#servicio-extranjero) siguen funcionando.
-  const EXT_SLUGS = ['reino-unido', 'irlanda', 'estados-unidos'];
+  const EXT_SLUGS = ['reino-unido', 'irlanda', 'estados-unidos', 'canada'];
   function resolveService(key){
     const m = /^extranjero-(.+)$/.exec(key);
     if (m) return EXT_SLUGS.indexOf(m[1]) !== -1 ? { view: 'extranjero', slug: m[1] } : null;
@@ -267,9 +267,11 @@ window.dataLayer = window.dataLayer || [];
   function showExtDestino(slug, scroll){
     const card = document.querySelector('#ext-opciones .ext-option[data-destino="' + slug + '"]');
     if (!card) return;
+    // en tres columnas, las tarjetas compactas (Estados Unidos, Canadá) comparten columna: se baja a la fila, no a cada tarjeta
+    const target = card.parentNode.classList.contains('ext-option-pair') && window.matchMedia('(min-width:900px)').matches ? card.parentNode : card;
     requestAnimationFrame(function(){
-      if (scroll === 'smooth' && !reduceMotion()) { card.scrollIntoView({ behavior: 'smooth', block: 'start' }); return; }
-      jumpScroll(function(){ card.scrollIntoView({ block: 'start' }); });
+      if (scroll === 'smooth' && !reduceMotion()) { target.scrollIntoView({ behavior: 'smooth', block: 'start' }); return; }
+      jumpScroll(function(){ target.scrollIntoView({ block: 'start' }); });
     });
   }
 
@@ -653,7 +655,7 @@ window.dataLayer = window.dataLayer || [];
   // mismos de #leadDest. Cuando exista una página propia de destino/programa, basta con cambiar la
   // tarjeta de data-advise a data-jump-service="extranjero-<destino>" (el router ya lo resuelve).
   (function(){
-    const DESTINOS = { 'reino-unido': 'Reino Unido', 'irlanda': 'Irlanda', 'estados-unidos': 'Estados Unidos' };
+    const DESTINOS = { 'reino-unido': 'Reino Unido', 'irlanda': 'Irlanda', 'estados-unidos': 'Estados Unidos', 'canada': 'Canadá' };
     document.querySelectorAll('[data-advise]').forEach(function(el){
       el.addEventListener('click', function(e){
         e.preventDefault();
