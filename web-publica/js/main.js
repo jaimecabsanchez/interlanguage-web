@@ -267,11 +267,9 @@ window.dataLayer = window.dataLayer || [];
   function showExtDestino(slug, scroll){
     const card = document.querySelector('#ext-opciones .ext-option[data-destino="' + slug + '"]');
     if (!card) return;
-    // en tres columnas, las tarjetas compactas (Estados Unidos, Canadá) comparten columna: se baja a la fila, no a cada tarjeta
-    const target = card.parentNode.classList.contains('ext-option-pair') && window.matchMedia('(min-width:900px)').matches ? card.parentNode : card;
     requestAnimationFrame(function(){
-      if (scroll === 'smooth' && !reduceMotion()) { target.scrollIntoView({ behavior: 'smooth', block: 'start' }); return; }
-      jumpScroll(function(){ target.scrollIntoView({ block: 'start' }); });
+      if (scroll === 'smooth' && !reduceMotion()) { card.scrollIntoView({ behavior: 'smooth', block: 'start' }); return; }
+      jumpScroll(function(){ card.scrollIntoView({ block: 'start' }); });
     });
   }
 

@@ -1883,35 +1883,38 @@ picture{display:contents;}
   /* el botón del puente («Ver año o trimestre escolar en el extranjero») es largo: en pantallas estrechas el texto baja de línea en vez de salirse */
   @media (max-width:640px){ .cross-sell-cta{white-space:normal; text-align:left; justify-content:space-between; line-height:1.3;} }
 
-/* 29-10-2026 · Canadá como cuarto destino, sin saturar. Portada: cuatro tarjetas en una fila. «Estudiar en el extranjero»: Reino Unido e Irlanda
-   conservan su tarjeta con datos; Estados Unidos y Canadá («opciones bajo consulta», sin datos propios) comparten la tercera columna en dos tarjetas
-   compactas que suman el mismo alto, así que la fila no crece ni se llena de espacio vacío. El azul de «bajo consulta» es el de Estados Unidos. */
-.ext-option-pair{display:grid; grid-template-rows:repeat(2,minmax(0,1fr)); gap:24px; min-width:0; scroll-margin-top:calc(var(--header-h) + var(--toc-h, 0px) + 16px);}
-.ext-option.ext-option--compact:nth-child(n){--c:var(--blue);}
-.ext-option--compact .ext-option-photo{aspect-ratio:auto; height:112px;}
-.ext-option--compact .ext-option-copy{padding:16px 22px 6px;}
-.ext-option--compact h3{font-size:1.5rem; margin:0 0 8px;}
-.ext-option--compact .ext-option-status{margin:0 0 8px;}
-.ext-option--compact p{font-size:.97rem; line-height:1.5; margin:0 0 8px;}
-.ext-option--compact .ext-option-go{min-height:40px;}
-.ext-option[data-destino="estados-unidos"] .ext-option-photo img{object-position:50% 34%;}
+/* 29-10-2026 · Canadá como cuarto destino, sin saturar. Portada: cuatro tarjetas en una fila. «Estudiar en el extranjero» (elegido por Jaime, «Dos filas»):
+   arriba, Reino Unido e Irlanda en dos tarjetas anchas con sus datos; debajo, una banda con Estados Unidos y Canadá («opciones bajo consulta», sin datos propios),
+   iguales entre sí, con la foto a un lado y el texto al otro. El azul de «bajo consulta» es el de Estados Unidos. */
+.ext-options-band{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:24px; margin-top:24px;}
+.ext-options-band .ext-option.ext-option--band:nth-child(n){--c:var(--blue);}
+.ext-option--band .ext-option-copy{padding:24px 26px 12px;}
+.ext-option--band .ext-option-status{margin:0 0 10px;}
+.ext-option--band .ext-option-go{min-height:40px;}
+.ext-option[data-destino="estados-unidos"] .ext-option-photo img{object-position:50% 40%;}
 .ext-option[data-destino="canada"] .ext-option-photo img{object-position:50% 70%;}
+@media (min-width:900px){
+  .ext-options{grid-template-columns:repeat(2,minmax(0,1fr));}
+  .ext-options .ext-option-photo{aspect-ratio:16/9;}
+  .ext-option--band{flex-direction:row;}
+  .ext-option--band .ext-option-photo{flex:0 0 40%; aspect-ratio:auto;}
+  .ext-option--band .ext-option-copy{border-top:0; border-left:3px solid var(--c);}
+}
 @media (max-width:899px){
-  .ext-option-pair{grid-template-rows:none; grid-template-columns:repeat(2,minmax(0,1fr));}
-  .ext-option--compact{display:flex;}
-  .ext-option--compact .ext-option-photo{height:150px;}
-  .ext-option--compact .ext-option-copy{border-left:0; border-top:3px solid var(--c); padding:18px 20px 10px;}
+  .ext-options-band{grid-template-columns:minmax(0,1fr); gap:16px; margin-top:16px;}
+  .ext-option--band{display:flex; flex-direction:row;}
+  .ext-option--band .ext-option-photo{flex:0 0 40%; height:auto; aspect-ratio:auto;}
+  .ext-option--band .ext-option-copy{border-top:0; border-left:3px solid var(--c); padding:18px 20px 8px;}
 }
 @media (max-width:560px){
-  .ext-option-pair{grid-template-columns:minmax(0,1fr); gap:16px;}
-  .ext-option--compact{display:grid; grid-template-columns:112px minmax(0,1fr);}
-  .ext-option--compact .ext-option-photo{height:100%; min-height:100%;}
-  .ext-option--compact .ext-option-copy{border-top:0; border-left:3px solid var(--c); padding:16px 16px 6px;}
-  .ext-option--compact h3{font-size:1.3rem;}
-  .ext-option--compact p{font-size:.92rem; line-height:1.45;}
+  .ext-option--band{display:grid; grid-template-columns:112px minmax(0,1fr);}
+  .ext-option--band .ext-option-photo{height:100%; min-height:100%;}
+  .ext-option--band .ext-option-copy{padding:16px 16px 6px;}
+  .ext-option--band h3{font-size:1.3rem;}
+  .ext-option--band p{font-size:.92rem; line-height:1.45;}
 }
-@media (max-width:400px){   /* pantallas muy estrechas: la tarjeta compacta vuelve a ser vertical para que el texto no quede en una columna de 130 px */
-  .ext-option--compact{display:flex; flex-direction:column;}
-  .ext-option--compact .ext-option-photo{height:120px; min-height:0;}
-  .ext-option--compact .ext-option-copy{border-left:0; border-top:3px solid var(--c);}
+@media (max-width:400px){   /* pantallas muy estrechas: la tarjeta vuelve a ser vertical para que el texto no quede en una columna de 130 px */
+  .ext-option--band{display:flex; flex-direction:column;}
+  .ext-option--band .ext-option-photo{flex:none; height:140px; min-height:0;}
+  .ext-option--band .ext-option-copy{border-left:0; border-top:3px solid var(--c);}
 }
