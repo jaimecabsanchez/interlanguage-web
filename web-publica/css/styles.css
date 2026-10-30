@@ -1883,38 +1883,35 @@ picture{display:contents;}
   /* el botón del puente («Ver año o trimestre escolar en el extranjero») es largo: en pantallas estrechas el texto baja de línea en vez de salirse */
   @media (max-width:640px){ .cross-sell-cta{white-space:normal; text-align:left; justify-content:space-between; line-height:1.3;} }
 
-/* 29-10-2026 · Canadá como cuarto destino, sin saturar. Portada: cuatro tarjetas en una fila. «Estudiar en el extranjero» (elegido por Jaime, «Dos filas»):
-   arriba, Reino Unido e Irlanda en dos tarjetas anchas con sus datos; debajo, una banda con Estados Unidos y Canadá («opciones bajo consulta», sin datos propios),
-   iguales entre sí, con la foto a un lado y el texto al otro. El azul de «bajo consulta» es el de Estados Unidos. */
-.ext-options-band{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:24px; margin-top:24px;}
-.ext-options-band .ext-option.ext-option--band:nth-child(n){--c:var(--blue);}
-.ext-option--band .ext-option-copy{padding:24px 26px 12px;}
-.ext-option--band .ext-option-status{margin:0 0 10px;}
-.ext-option--band .ext-option-go{min-height:40px;}
+/* 29-10-2026 · Canadá como cuarto destino. Portada: cuatro tarjetas en una fila.
+   30-10-2026 · «Estudiar en el extranjero»: las cuatro tarjetas (Reino Unido, Irlanda, Estados Unidos y Canadá) van una al lado de otra en una fila
+   que se desliza (tres a la vista en escritorio, dos en tableta, una y un trozo de la siguiente en móvil), con flechas para pasar de una a otra.
+   Estados Unidos y Canadá son «opciones bajo consulta» y no llevan datos propios; su azul es el de esa etiqueta. */
+#ext-opciones .ext-head{margin-bottom:20px;}
+.ext-carousel-bar{display:flex; justify-content:flex-end; margin-bottom:16px;}
+.ext-carousel-arrows{display:flex; gap:10px;}
+.ext-carousel-btn{display:inline-flex; align-items:center; justify-content:center; width:46px; height:46px; padding:0; border:1.5px solid var(--navy); border-radius:50%; background:transparent; color:var(--navy); cursor:pointer; transition:background-color .15s, color .15s, opacity .15s;}
+.ext-carousel-btn svg{width:20px; height:20px;}
+.ext-carousel-btn:focus-visible{outline:3px solid var(--navy); outline-offset:3px;}
+.ext-carousel-btn:disabled{opacity:.3; cursor:default;}
+@media (hover:hover){.ext-carousel-btn:not(:disabled):hover{background:var(--navy); color:#fff;}}
+.ext-options{display:flex; gap:24px; overflow-x:auto; overscroll-behavior-x:contain; scroll-snap-type:x mandatory; scrollbar-width:none; scroll-padding-inline:4px; padding:4px; margin:-4px; position:relative;}   /* position: los textos .sr-only (absolutos) quedan dentro de la fila y no ensanchan la página */
+.ext-options::-webkit-scrollbar{display:none;}
+.ext-options .ext-option{flex:0 0 calc((100% - 56px) / 3); display:flex; flex-direction:column; scroll-snap-align:start;}
+.ext-options .ext-option:nth-child(4){--c:var(--blue);}
+.ext-options .ext-option-photo{height:auto; aspect-ratio:3/2;}
+.ext-options .ext-option-copy{padding:22px 22px 12px; border-left:0; border-top:3px solid var(--c);}
+.ext-options .ext-option h3{font-size:1.6rem;}
+.ext-options .ext-option-status{margin:0 0 10px;}
 .ext-option[data-destino="estados-unidos"] .ext-option-photo img{object-position:50% 40%;}
 .ext-option[data-destino="canada"] .ext-option-photo img{object-position:50% 70%;}
-@media (min-width:900px){
-  .ext-options{grid-template-columns:repeat(2,minmax(0,1fr));}
-  .ext-options .ext-option-photo{aspect-ratio:16/9;}
-  .ext-option--band{flex-direction:row;}
-  .ext-option--band .ext-option-photo{flex:0 0 40%; aspect-ratio:auto;}
-  .ext-option--band .ext-option-copy{border-top:0; border-left:3px solid var(--c);}
-}
+@media (prefers-reduced-motion:no-preference){.ext-options{scroll-behavior:smooth;}}
 @media (max-width:899px){
-  .ext-options-band{grid-template-columns:minmax(0,1fr); gap:16px; margin-top:16px;}
-  .ext-option--band{display:flex; flex-direction:row;}
-  .ext-option--band .ext-option-photo{flex:0 0 40%; height:auto; aspect-ratio:auto;}
-  .ext-option--band .ext-option-copy{border-top:0; border-left:3px solid var(--c); padding:18px 20px 8px;}
+  .ext-options{gap:20px;}
+  .ext-options .ext-option{flex-basis:calc((100% - 24px) / 2);}
 }
-@media (max-width:560px){
-  .ext-option--band{display:grid; grid-template-columns:112px minmax(0,1fr);}
-  .ext-option--band .ext-option-photo{height:100%; min-height:100%;}
-  .ext-option--band .ext-option-copy{padding:16px 16px 6px;}
-  .ext-option--band h3{font-size:1.3rem;}
-  .ext-option--band p{font-size:.92rem; line-height:1.45;}
-}
-@media (max-width:400px){   /* pantallas muy estrechas: la tarjeta vuelve a ser vertical para que el texto no quede en una columna de 130 px */
-  .ext-option--band{display:flex; flex-direction:column;}
-  .ext-option--band .ext-option-photo{flex:none; height:140px; min-height:0;}
-  .ext-option--band .ext-option-copy{border-left:0; border-top:3px solid var(--c);}
+@media (max-width:599px){
+  .ext-options{gap:16px;}
+  .ext-options .ext-option{flex-basis:82%;}
+  .ext-options .ext-option-copy{padding:20px 20px 10px;}
 }

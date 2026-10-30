@@ -273,6 +273,26 @@ window.dataLayer = window.dataLayer || [];
     });
   }
 
+  // fila deslizable de destinos: las flechas avanzan una tarjeta y se desactivan en los extremos
+  document.querySelectorAll('[data-ext-carousel]').forEach(function(box){
+    const track = box.querySelector('.ext-options'), btns = box.querySelectorAll('.ext-carousel-btn');
+    if (!track || !btns.length) return;
+    function update(){
+      const max = track.scrollWidth - track.clientWidth;
+      btns.forEach(function(b){ b.disabled = b.getAttribute('data-dir') === '-1' ? track.scrollLeft <= 2 : track.scrollLeft >= max - 2; });
+      box.classList.toggle('is-static', max <= 2);
+    }
+    btns.forEach(function(b){
+      b.addEventListener('click', function(){
+        const card = track.firstElementChild, gap = parseFloat(getComputedStyle(track).columnGap) || 0;
+        track.scrollBy({ left: Number(b.getAttribute('data-dir')) * (card.getBoundingClientRect().width + gap), behavior: reduceMotion() ? 'auto' : 'smooth' });
+      });
+    });
+    track.addEventListener('scroll', function(){ requestAnimationFrame(update); }, { passive: true });
+    if (window.ResizeObserver) new ResizeObserver(update).observe(track); else window.addEventListener('resize', update);   // también salta al mostrarse la vista, que arranca oculta
+    update();
+  });
+
   // contexto de la consulta: destino y duración elegidos, y vuelta al punto de la página desde el que se pidió
   let extOrigin = null;
   function showExtContext(){
