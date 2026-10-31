@@ -421,17 +421,17 @@ picture{display:contents;}
   .ext-hero-media img{width:100%; height:100%; object-fit:cover; object-position:100% 100%; display:block;}   /* se enseña la parte baja de la foto: los alumnos y el camino */
   .ext-hero-veil{display:none;}   /* sin velo: el texto va en un panel translúcido y la foto se ve limpia */
   .ext-hero-in{display:flex; flex-direction:column; justify-content:center; min-height:clamp(600px, 42vw, 680px); padding-block:10px 48px;}
-  .ext-hero-text{width:fit-content; max-width:760px; background:rgba(22,41,74,.68); -webkit-backdrop-filter:blur(3px); backdrop-filter:blur(3px); padding:34px 42px 38px; border:1px solid rgba(255,255,255,.14); border-radius:var(--r-card);}   /* panel marino translúcido */
+  .ext-hero-text{width:min(700px,100%); max-width:760px; background:rgba(22,41,74,.68); -webkit-backdrop-filter:blur(3px); backdrop-filter:blur(3px); padding:50px 54px 54px; border:1px solid rgba(255,255,255,.14); border-radius:var(--r-card);}   /* panel marino translúcido */
   .ext-hero .svc-back{align-self:flex-start; padding:11px 0; margin:0 0 6px; color:rgba(255,255,255,.88); font-weight:600;}   /* área táctil de 44 px */
   @media (min-width:1200px){ .ext-hero .svc-back{padding:11px 16px; margin-bottom:14px; background:rgba(22,41,74,.62); border-radius:100px; font-size:.92rem; color:#fff;} }   /* sobre la foto, en una píldora para que se lea */
   @media (hover:hover){ .ext-hero .svc-back:hover{color:#fff;} }
   .ext-hero .eyebrow{display:block; margin-bottom:16px; color:var(--accent-soft); font-size:.86rem; letter-spacing:.16em;}
-  .ext-hero h1{font-size:clamp(2.4rem,3.7vw,3.4rem); line-height:1.05; letter-spacing:-.018em; margin:0 0 22px; color:#fff; text-wrap:balance;}
+  .ext-hero h1{font-size:clamp(1.9rem,2.7vw,2.5rem); line-height:1.1; letter-spacing:-.015em; margin:0 0 22px; color:#fff; text-wrap:balance;}
   .ext-hero h1 em{font-style:italic; font-weight:500; display:block;}   /* dos líneas: «Estudiar en el extranjero,» / «con un colegio que encaje» */
-  @media (min-width:900px){ html[lang="en"] .ext-hero h1{font-size:clamp(2.2rem,3.2vw,3rem);} }   /* el titular en inglés es más largo */
-  .ext-hero-lead{font-size:clamp(1.1rem,1.4vw,1.25rem); line-height:1.55; color:rgba(255,255,255,.95); max-width:27em; margin:0 0 28px;}
+  @media (min-width:900px){ html[lang="en"] .ext-hero h1{font-size:clamp(1.8rem,2.5vw,2.35rem);} }   /* el titular en inglés es más largo */
+  .ext-hero-lead{font-size:clamp(1rem,1.15vw,1.0625rem); line-height:1.6; color:rgba(255,255,255,.95); max-width:27em; margin:0 0 28px;}
   .ext-hero-paises{list-style:none; display:flex; flex-wrap:wrap; gap:10px 26px; margin:0 0 20px; padding:0;}   /* los tres países, uno al lado de otro */
-  .ext-hero-paises li{padding-left:12px; border-left:3px solid var(--accent-soft); font-family:var(--font-display); font-weight:600; font-size:clamp(1.3rem,1.8vw,1.6rem); line-height:1.2; letter-spacing:-.012em; color:#fff;}
+  .ext-hero-paises li{padding-left:12px; border-left:3px solid var(--accent-soft); font-family:var(--font-display); font-weight:600; font-size:clamp(1.05rem,1.25vw,1.15rem); line-height:1.2; letter-spacing:-.01em; color:#fff;}
   .ext-hero-cta{display:flex; flex-wrap:wrap; align-items:center; gap:6px 28px;}
   .ext-hero-cta .btn-primary{padding:17px 30px 17px 32px; font-size:1.1rem;}
   .ext-hero-link{display:inline-flex; align-items:center; min-height:48px; font-size:1.1rem; font-weight:700; color:#fff; text-decoration:underline; text-decoration-thickness:1.5px; text-underline-offset:7px; text-decoration-color:rgba(255,255,255,.55); transition:text-decoration-color .2s ease;}
