@@ -1884,34 +1884,46 @@ picture{display:contents;}
   @media (max-width:640px){ .cross-sell-cta{white-space:normal; text-align:left; justify-content:space-between; line-height:1.3;} }
 
 /* 29-10-2026 · Canadá como cuarto destino. Portada: cuatro tarjetas en una fila.
-   30-10-2026 · «Estudiar en el extranjero»: las cuatro tarjetas (Reino Unido, Irlanda, Estados Unidos y Canadá) van una al lado de otra en una fila
-   que se desliza (tres a la vista en escritorio, dos en tableta, una y un trozo de la siguiente en móvil), con flechas para pasar de una a otra.
-   Estados Unidos y Canadá son «opciones bajo consulta» y no llevan datos propios; su azul es el de esa etiqueta. */
-#ext-opciones .ext-head{margin-bottom:20px;}
-.ext-carousel-bar{display:flex; justify-content:flex-end; margin-bottom:16px;}
+   30-10-2026 · «Estudiar en el extranjero»: las cuatro tarjetas (Reino Unido, Irlanda, Estados Unidos y Canadá) se ven a la vez, iguales y alineadas, en una fila
+   de cuatro columnas desde 1080 px. En pantallas más estrechas pasan a una fila que se desliza (dos a la vista en tableta, una y un trozo de la siguiente en móvil)
+   con flechas y un contador («1–2 de 4»). Estados Unidos y Canadá son «opciones bajo consulta»: llevan las mismas filas de datos, con «Según el caso»,
+   para que todo quede alineado sin inventar nada; su azul es el de esa etiqueta. */
+#ext-opciones .ext-head{margin-bottom:24px;}
+.ext-carousel-bar{display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:16px;}
+.ext-carousel-count{font-size:.95rem; font-weight:700; color:var(--ext-t2); font-variant-numeric:tabular-nums;}
 .ext-carousel-arrows{display:flex; gap:10px;}
-.ext-carousel-btn{display:inline-flex; align-items:center; justify-content:center; width:46px; height:46px; padding:0; border:1.5px solid var(--navy); border-radius:50%; background:transparent; color:var(--navy); cursor:pointer; transition:background-color .15s, color .15s, opacity .15s;}
+.ext-carousel-btn{display:inline-flex; align-items:center; justify-content:center; width:48px; height:48px; padding:0; border:1.5px solid var(--navy); border-radius:50%; background:var(--navy); color:#fff; cursor:pointer; transition:background-color .15s, color .15s, opacity .15s;}
 .ext-carousel-btn svg{width:20px; height:20px;}
 .ext-carousel-btn:focus-visible{outline:3px solid var(--navy); outline-offset:3px;}
-.ext-carousel-btn:disabled{opacity:.3; cursor:default;}
-@media (hover:hover){.ext-carousel-btn:not(:disabled):hover{background:var(--navy); color:#fff;}}
-.ext-options{display:flex; gap:24px; overflow-x:auto; overscroll-behavior-x:contain; scroll-snap-type:x mandatory; scrollbar-width:none; scroll-padding-inline:4px; padding:4px; margin:-4px; position:relative;}   /* position: los textos .sr-only (absolutos) quedan dentro de la fila y no ensanchan la página */
+.ext-carousel-btn:disabled{background:transparent; color:var(--navy); opacity:.35; cursor:default;}
+@media (hover:hover){.ext-carousel-btn:not(:disabled):hover{background:var(--accent); border-color:var(--accent);}}
+.ext-options{display:flex; gap:20px; overflow-x:auto; overscroll-behavior-x:contain; scroll-snap-type:x mandatory; scrollbar-width:none; scroll-padding-inline:4px; padding:4px; margin:-4px; position:relative;}   /* position: los textos .sr-only (absolutos) quedan dentro de la fila y no ensanchan la página */
 .ext-options::-webkit-scrollbar{display:none;}
-.ext-options .ext-option{flex:0 0 calc((100% - 56px) / 3); display:flex; flex-direction:column; scroll-snap-align:start;}
+.ext-options .ext-option{flex:0 0 calc((100% - 20px) / 2); display:flex; flex-direction:column; scroll-snap-align:start;}
 .ext-options .ext-option:nth-child(4){--c:var(--blue);}
-.ext-options .ext-option-photo{height:auto; aspect-ratio:3/2;}
-.ext-options .ext-option-copy{padding:22px 22px 12px; border-left:0; border-top:3px solid var(--c);}
-.ext-options .ext-option h3{font-size:1.6rem;}
-.ext-options .ext-option-status{margin:0 0 10px;}
+.ext-options .ext-option-photo{height:auto; aspect-ratio:4/3;}
+.ext-options .ext-option-copy{padding:22px 22px 14px; border-left:0; border-top:3px solid var(--c);}
+.ext-options .ext-option h3{font-size:1.55rem; margin-bottom:10px;}
+.ext-options .ext-option-tag{min-height:calc(2 * 1.28em); font-size:1.1rem;}
+.ext-options .ext-option-tag--status{display:flex; align-items:flex-start;}
+.ext-options .ext-option .ext-option-status{margin:0;}
+.ext-options .ext-option-facts > div{grid-template-columns:minmax(0,1fr); gap:2px; padding:9px 0;}
+.ext-options .ext-option-facts dt{font-size:.8rem; letter-spacing:.02em; text-transform:uppercase;}
+.ext-options .ext-option-facts dd{font-size:.95rem;}
+.ext-options .ext-option-facts--soft dd{font-weight:500; color:var(--ext-t2);}
+.ext-options .ext-option-note{font-size:.92rem; line-height:1.5; margin:0 0 6px;}
+.ext-options .ext-option-details{margin-bottom:4px;}
 .ext-option[data-destino="estados-unidos"] .ext-option-photo img{object-position:50% 40%;}
 .ext-option[data-destino="canada"] .ext-option-photo img{object-position:50% 70%;}
 @media (prefers-reduced-motion:no-preference){.ext-options{scroll-behavior:smooth;}}
-@media (max-width:899px){
-  .ext-options{gap:20px;}
-  .ext-options .ext-option{flex-basis:calc((100% - 24px) / 2);}
-}
 @media (max-width:599px){
   .ext-options{gap:16px;}
   .ext-options .ext-option{flex-basis:82%;}
   .ext-options .ext-option-copy{padding:20px 20px 10px;}
+}
+@media (min-width:1080px){   /* las cuatro a la vez: ya no hace falta deslizar */
+  .ext-carousel-bar{display:none;}
+  .ext-options{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:20px; overflow:visible; scroll-snap-type:none; padding:0; margin:0;}
+  .ext-options .ext-option{flex:none;}
+  .ext-options .ext-option-copy{padding:20px 20px 12px;}
 }

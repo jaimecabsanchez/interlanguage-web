@@ -281,6 +281,12 @@ window.dataLayer = window.dataLayer || [];
       const max = track.scrollWidth - track.clientWidth;
       btns.forEach(function(b){ b.disabled = b.getAttribute('data-dir') === '-1' ? track.scrollLeft <= 2 : track.scrollLeft >= max - 2; });
       box.classList.toggle('is-static', max <= 2);
+      const card = track.firstElementChild, count = box.querySelector('.ext-carousel-count');
+      if (card && count && card.offsetWidth) {
+        const step = card.getBoundingClientRect().width + (parseFloat(getComputedStyle(track).columnGap) || 0), total = track.children.length;
+        const first = Math.min(total, Math.round(track.scrollLeft / step) + 1), last = Math.min(total, first + Math.max(1, Math.floor((track.clientWidth - 8) / step + 0.1 + (step - card.getBoundingClientRect().width) / step)) - 1);
+        count.textContent = (first === last ? first : first + '–' + last) + ' ' + count.getAttribute('data-of') + ' ' + total;
+      }
     }
     btns.forEach(function(b){
       b.addEventListener('click', function(){
