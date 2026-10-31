@@ -1927,3 +1927,17 @@ picture{display:contents;}
   .ext-options .ext-option{flex:none;}
   .ext-options .ext-option-copy{padding:20px 20px 12px;}
 }
+
+/* 31-10-2026 · Escala tipográfica única en escritorio (≥900 px; el móvil ya sigue su propia escala: 32 / 25,6 / 22,4 px).
+   H1 de servicio 42 · H2 de sección 34 · H2 de cierre 30 · H3 destacado 28 · H3 de tarjeta 22 · texto de apoyo 17–18 · nada por debajo de 14 px en el formulario.
+   Se escribe con «body» delante para ganar a las reglas sueltas de cada sección sin usar !important. */
+@media (min-width:900px){
+  body .hero-text h1{font-size:clamp(3rem,4vw,3.5rem);}
+  body .camp-hero-content h1, body #view-service-especialidades .container > h1, body .who-hero-copy h1{font-size:2.625rem;}
+  body section.services .services-head h2, body .age-path-head h2, body .camp-section-head h2, body .ext-head h2, body .ext-cierre h2, body .intl-copy h2, body .who-about-copy h2, body .who-sec-head h2, body .contact-info h2, body #destinos .intl-proceso-title{font-size:2.125rem; line-height:1.15;}
+  body .final-cta h2, body .ideal-block h2, body .vx-money h2{font-size:1.875rem;}
+  body .ext-esc-txt h3, body #ext-caso-t{font-size:1.75rem;}
+  body .vx-prog h3, body .age-card-body h3, body .age-path-steps h3, body .svc-t, body .club-stage, body .vx-camp-top h3, body .vx-day h3, body .vx-trip h3, body .vx-nights h3, body .ext-tl-step h3, body .who-ones h3, body .ext-options .ext-option h3, body .call-title, body .camp-subhead{font-size:1.375rem;}
+  body .who-lead{font-size:1.1rem;}
+  body .lead-reassure, body .lead-recap-label{font-size:.875rem;}
+}
