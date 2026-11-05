@@ -1342,31 +1342,21 @@ window.dataLayer = window.dataLayer || [];
   // ---------- Tarjetas de destino con vídeo (portada, «El inglés se aprende viviéndolo») ----------
   // Estilo «Cine», elegido el 05-11-2026. Escritorio con ratón (≥901 px): los vídeos suenan a la vez, sin sonido y en bucle, mientras la fila
   // está a la vista. Móvil y tableta: solo la tarjeta más cercana al centro de la pantalla, una vez (el último fotograma enlaza con el póster).
-  // A ≤900 px se usa la versión apaisada (data-src-wide). Arrancan solos también con «reducir movimiento» del sistema (decisión de Jaime,
-  // 05-11-2026: son planos lentos, sin sonido ni destellos, y llevan botón de pausa). Solo con ahorro de datos o conexión 2G no arrancan
-  // ni se descarga nada: el botón aparece como «Reproducir vídeos» y suenan si la persona lo pulsa.
-  // Botón «Pausar vídeos» (WCAG 2.2.2): congela el fotograma. La elección (pausa o reproducir) se recuerda en este navegador.
+  // A ≤900 px se usa la versión apaisada (data-src-wide). Arrancan solos también con «reducir movimiento» del sistema y no hay botón de
+  // pausa (decisiones de Jaime, 05-11-2026). Solo con ahorro de datos o conexión 2G no se reproducen ni se descarga nada: queda el póster.
   (function(){
     var grid = document.querySelector('.intl-dest-grid');
     if (!grid || !window.matchMedia) return;
     var cards = Array.prototype.filter.call(grid.querySelectorAll('.intl-dest-card'), function(c){ return !!c.querySelector('.dst-video'); });
     if (!cards.length) return;
-    var btn = document.querySelector('[data-dst-pause]');
-    var desk =window.matchMedia('(hover:hover) and (pointer:fine) and (min-width:901px)');
+    var desk = window.matchMedia('(hover:hover) and (pointer:fine) and (min-width:901px)');
     var wide = window.matchMedia('(max-width:900px)');
     var conn = navigator.connection || {};
-    var KEY = 'il-videos-destinos';
-    var pref = null;   // 'pausa' (la persona pausó) · 'si' (pidió verlos pese al ahorro de datos) · null
-    try { pref = localStorage.getItem(KEY); } catch (e) {}
+    try { localStorage.removeItem('il-videos-destinos'); } catch (e) {}   // la pausa que guardaba el antiguo botón ya no se usa: que nadie se quede sin vídeos
     var gridVisible = false, scrollRaf = 0, ratios = new Map();
 
     function blocked(){ return !!conn.saveData || /(^|-)2g$/.test(conn.effectiveType || ''); }   // solo cuidar los datos del móvil
-    function isPaused(){ return pref === 'pausa' || (pref !== 'si' && blocked()); }
-    function allowed(){ return !isPaused() && !document.hidden; }
-    function savePref(v){
-      pref = v;
-      try { if (v) localStorage.setItem(KEY, v); else localStorage.removeItem(KEY); } catch (e) {}
-    }
+    function allowed(){ return !blocked() && !document.hidden; }
     function vid(c){ return c.querySelector('.dst-video'); }
     function load(c){
       var v = vid(c), want = (wide.matches && v.getAttribute('data-src-wide')) || v.getAttribute('data-src');
@@ -1405,12 +1395,6 @@ window.dataLayer = window.dataLayer || [];
         try { v.currentTime = 0; } catch (e) {}
       }, 1200);
     }
-    function freeze(c){   // pausa pedida con el botón: se queda el fotograma en que estaba
-      var v = vid(c);
-      v._want = false;
-      clearTimeout(v._retry);
-      if (c.classList.contains('is-playing')) v.pause();
-    }
     function stopAll(){ cards.forEach(stop); }
     function pick(){   // móvil y tableta: de las tarjetas que se ven casi enteras, la más cercana al centro
       if (desk.matches || !allowed()) return;
@@ -1424,18 +1408,9 @@ window.dataLayer = window.dataLayer || [];
       if (best && !best.classList.contains('is-playing') && !best.hasAttribute('data-done')) { best.setAttribute('data-done', ''); play(best); }
     }
     function refresh(){
-      syncBtn();
-      if (!allowed()) { if (pref !== 'pausa') stopAll(); return; }   // con la pausa del botón, cada vídeo se queda en su fotograma
+      if (!allowed()) { stopAll(); return; }
       if (desk.matches) { if (gridVisible) cards.forEach(play); else stopAll(); }
       else pick();
-    }
-    function syncBtn(){
-      if (!btn) return;
-      var p = isPaused();
-      btn.hidden = false;
-      btn.classList.toggle('is-paused', p);
-      var label = btn.querySelector('[data-dst-label]');
-      if (label) label.textContent = btn.getAttribute(p ? 'data-label-play' : 'data-label-pause');
     }
 
     cards.forEach(function(c){
@@ -1463,21 +1438,8 @@ window.dataLayer = window.dataLayer || [];
       }, { passive: true });
     }
 
-    if (btn) btn.addEventListener('click', function(){
-      if (isPaused()) {
-        savePref(blocked() ? 'si' : null);   // con ahorro de datos, verlos es una elección expresa y se recuerda
-        cards.forEach(function(c){ c.removeAttribute('data-done'); });
-        refresh();
-      } else {
-        savePref('pausa');
-        cards.forEach(freeze);
-        syncBtn();
-      }
-    });
-
-    document.addEventListener('visibilitychange', function(){ if (document.hidden) { if (pref !== 'pausa') stopAll(); } else refresh(); });
+    document.addEventListener('visibilitychange', function(){ if (document.hidden) stopAll(); else refresh(); });
     function onMQ(mq, fn){ if (mq.addEventListener) mq.addEventListener('change', fn); else if (mq.addListener) mq.addListener(fn); }
     onMQ(desk, function(){ stopAll(); refresh(); });
     onMQ(wide, function(){ stopAll(); refresh(); });   // cambia entre la versión vertical y la apaisada
-    syncBtn();
   })();
