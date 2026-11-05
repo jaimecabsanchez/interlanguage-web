@@ -1342,8 +1342,9 @@ window.dataLayer = window.dataLayer || [];
   // ---------- Tarjetas de destino con vídeo (portada, «El inglés se aprende viviéndolo») ----------
   // Estilo «Cine», elegido el 05-11-2026. Escritorio con ratón (≥901 px): los vídeos suenan a la vez, sin sonido y en bucle, mientras la fila
   // está a la vista. Móvil y tableta: solo la tarjeta más cercana al centro de la pantalla, una vez (el último fotograma enlaza con el póster).
-  // A ≤900 px se usa la versión apaisada (data-src-wide). Con «reducir movimiento», ahorro de datos o conexión 2G no arrancan solos ni se
-  // descarga nada: el botón aparece como «Reproducir vídeos» y solo suenan si la persona lo pulsa.
+  // A ≤900 px se usa la versión apaisada (data-src-wide). Arrancan solos también con «reducir movimiento» del sistema (decisión de Jaime,
+  // 05-11-2026: son planos lentos, sin sonido ni destellos, y llevan botón de pausa). Solo con ahorro de datos o conexión 2G no arrancan
+  // ni se descarga nada: el botón aparece como «Reproducir vídeos» y suenan si la persona lo pulsa.
   // Botón «Pausar vídeos» (WCAG 2.2.2): congela el fotograma. La elección (pausa o reproducir) se recuerda en este navegador.
   (function(){
     var grid = document.querySelector('.intl-dest-grid');
@@ -1351,16 +1352,15 @@ window.dataLayer = window.dataLayer || [];
     var cards = Array.prototype.filter.call(grid.querySelectorAll('.intl-dest-card'), function(c){ return !!c.querySelector('.dst-video'); });
     if (!cards.length) return;
     var btn = document.querySelector('[data-dst-pause]');
-    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
-    var desk = window.matchMedia('(hover:hover) and (pointer:fine) and (min-width:901px)');
+    var desk =window.matchMedia('(hover:hover) and (pointer:fine) and (min-width:901px)');
     var wide = window.matchMedia('(max-width:900px)');
     var conn = navigator.connection || {};
     var KEY = 'il-videos-destinos';
-    var pref = null;   // 'pausa' (la persona pausó) · 'si' (pidió verlos pese a «reducir movimiento» o al ahorro de datos) · null
+    var pref = null;   // 'pausa' (la persona pausó) · 'si' (pidió verlos pese al ahorro de datos) · null
     try { pref = localStorage.getItem(KEY); } catch (e) {}
     var gridVisible = false, raf = 0, scrollRaf = 0, ratios = new Map();
 
-    function blocked(){ return reduce.matches || !!conn.saveData || /(^|-)2g$/.test(conn.effectiveType || ''); }
+    function blocked(){ return !!conn.saveData || /(^|-)2g$/.test(conn.effectiveType || ''); }   // solo cuidar los datos del móvil
     function isPaused(){ return pref === 'pausa' || (pref !== 'si' && blocked()); }
     function allowed(){ return !isPaused() && !document.hidden; }
     function savePref(v){
@@ -1476,7 +1476,7 @@ window.dataLayer = window.dataLayer || [];
 
     if (btn) btn.addEventListener('click', function(){
       if (isPaused()) {
-        savePref(blocked() ? 'si' : null);   // con «reducir movimiento» o ahorro de datos, verlos es una elección expresa y se recuerda
+        savePref(blocked() ? 'si' : null);   // con ahorro de datos, verlos es una elección expresa y se recuerda
         cards.forEach(function(c){ c.removeAttribute('data-done'); });
         refresh();
       } else {
@@ -1488,7 +1488,6 @@ window.dataLayer = window.dataLayer || [];
 
     document.addEventListener('visibilitychange', function(){ if (document.hidden) { if (pref !== 'pausa') stopAll(); } else refresh(); });
     function onMQ(mq, fn){ if (mq.addEventListener) mq.addEventListener('change', fn); else if (mq.addListener) mq.addListener(fn); }
-    onMQ(reduce, refresh);
     onMQ(desk, function(){ stopAll(); refresh(); });
     onMQ(wide, function(){ stopAll(); refresh(); });   // cambia entre la versión vertical y la apaisada
     syncBtn();
