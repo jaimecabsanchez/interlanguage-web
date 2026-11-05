@@ -1358,7 +1358,7 @@ window.dataLayer = window.dataLayer || [];
     var KEY = 'il-videos-destinos';
     var pref = null;   // 'pausa' (la persona pausó) · 'si' (pidió verlos pese al ahorro de datos) · null
     try { pref = localStorage.getItem(KEY); } catch (e) {}
-    var gridVisible = false, raf = 0, scrollRaf = 0, ratios = new Map();
+    var gridVisible = false, scrollRaf = 0, ratios = new Map();
 
     function blocked(){ return !!conn.saveData || /(^|-)2g$/.test(conn.effectiveType || ''); }   // solo cuidar los datos del móvil
     function isPaused(){ return pref === 'pausa' || (pref !== 'si' && blocked()); }
@@ -1373,15 +1373,6 @@ window.dataLayer = window.dataLayer || [];
       if (v.getAttribute('src') !== want) { v.setAttribute('src', want); v.preload = 'auto'; v.load(); }
       return v;
     }
-    function tick(){   // línea de progreso: sigue al vídeo de verdad (cada vídeo dura distinto)
-      raf = 0;
-      var any = false;
-      cards.forEach(function(c){
-        var v = vid(c);
-        if (c.classList.contains('is-playing') && !v.paused && v.duration) { c.style.setProperty('--dst-p', (v.currentTime / v.duration).toFixed(4)); any = true; }
-      });
-      if (any) raf = requestAnimationFrame(tick);
-    }
     function play(c){
       if (!allowed()) return;
       var v = load(c);
@@ -1393,13 +1384,12 @@ window.dataLayer = window.dataLayer || [];
         if (!v._want || !allowed()) return;
         c.classList.add('is-playing');   // se muestra ya: el primer fotograma es el del póster, y WebKit no arranca un vídeo invisible
         var p = v.play();
-        if (p && p.then) p.then(function(){ if (!raf) raf = requestAnimationFrame(tick); }, function(){
+        if (p && p.catch) p.catch(function(){
           if (!v._want) return;
           c.classList.remove('is-playing');
           // WebKit rechaza el arranque mientras la tarjeta aún entra con su fundido (.reveal): se reintenta unos instantes después
           if (++v._tries <= 8) v._retry = setTimeout(start, 450);
         });
-        else if (!raf) raf = requestAnimationFrame(tick);
       }
       if (v.readyState >= 2) start(); else v.addEventListener('canplay', start, { once: true });
     }
@@ -1413,7 +1403,6 @@ window.dataLayer = window.dataLayer || [];
         if (c.classList.contains('is-playing')) return;
         v.pause();
         try { v.currentTime = 0; } catch (e) {}
-        c.style.removeProperty('--dst-p');
       }, 1200);
     }
     function freeze(c){   // pausa pedida con el botón: se queda el fotograma en que estaba
