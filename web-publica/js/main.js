@@ -1338,3 +1338,158 @@ window.dataLayer = window.dataLayer || [];
       update();
     });
   })();
+
+  // ---------- Tarjetas de destino con vídeo (portada, «El inglés se aprende viviéndolo») ----------
+  // Estilo «Cine», elegido el 05-11-2026. Escritorio con ratón (≥901 px): los vídeos suenan a la vez, sin sonido y en bucle, mientras la fila
+  // está a la vista. Móvil y tableta: solo la tarjeta más cercana al centro de la pantalla, una vez (el último fotograma enlaza con el póster).
+  // A ≤900 px se usa la versión apaisada (data-src-wide). Con «reducir movimiento», ahorro de datos o conexión 2G no arrancan solos ni se
+  // descarga nada: el botón aparece como «Reproducir vídeos» y solo suenan si la persona lo pulsa.
+  // Botón «Pausar vídeos» (WCAG 2.2.2): congela el fotograma. La elección (pausa o reproducir) se recuerda en este navegador.
+  (function(){
+    var grid = document.querySelector('.intl-dest-grid');
+    if (!grid || !window.matchMedia) return;
+    var cards = Array.prototype.filter.call(grid.querySelectorAll('.intl-dest-card'), function(c){ return !!c.querySelector('.dst-video'); });
+    if (!cards.length) return;
+    var btn = document.querySelector('[data-dst-pause]');
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+    var desk = window.matchMedia('(hover:hover) and (pointer:fine) and (min-width:901px)');
+    var wide = window.matchMedia('(max-width:900px)');
+    var conn = navigator.connection || {};
+    var KEY = 'il-videos-destinos';
+    var pref = null;   // 'pausa' (la persona pausó) · 'si' (pidió verlos pese a «reducir movimiento» o al ahorro de datos) · null
+    try { pref = localStorage.getItem(KEY); } catch (e) {}
+    var gridVisible = false, raf = 0, scrollRaf = 0, ratios = new Map();
+
+    function blocked(){ return reduce.matches || !!conn.saveData || /(^|-)2g$/.test(conn.effectiveType || ''); }
+    function isPaused(){ return pref === 'pausa' || (pref !== 'si' && blocked()); }
+    function allowed(){ return !isPaused() && !document.hidden; }
+    function savePref(v){
+      pref = v;
+      try { if (v) localStorage.setItem(KEY, v); else localStorage.removeItem(KEY); } catch (e) {}
+    }
+    function vid(c){ return c.querySelector('.dst-video'); }
+    function load(c){
+      var v = vid(c), want = (wide.matches && v.getAttribute('data-src-wide')) || v.getAttribute('data-src');
+      if (v.getAttribute('src') !== want) { v.setAttribute('src', want); v.preload = 'auto'; v.load(); }
+      return v;
+    }
+    function tick(){   // línea de progreso: sigue al vídeo de verdad (cada vídeo dura distinto)
+      raf = 0;
+      var any = false;
+      cards.forEach(function(c){
+        var v = vid(c);
+        if (c.classList.contains('is-playing') && !v.paused && v.duration) { c.style.setProperty('--dst-p', (v.currentTime / v.duration).toFixed(4)); any = true; }
+      });
+      if (any) raf = requestAnimationFrame(tick);
+    }
+    function play(c){
+      if (!allowed()) return;
+      var v = load(c);
+      v.muted = true;
+      v.loop = desk.matches;
+      v._want = true; v._tries = 0;
+      clearTimeout(v._retry); clearTimeout(v._reset);
+      function start(){
+        if (!v._want || !allowed()) return;
+        c.classList.add('is-playing');   // se muestra ya: el primer fotograma es el del póster, y WebKit no arranca un vídeo invisible
+        var p = v.play();
+        if (p && p.then) p.then(function(){ if (!raf) raf = requestAnimationFrame(tick); }, function(){
+          if (!v._want) return;
+          c.classList.remove('is-playing');
+          // WebKit rechaza el arranque mientras la tarjeta aún entra con su fundido (.reveal): se reintenta unos instantes después
+          if (++v._tries <= 8) v._retry = setTimeout(start, 450);
+        });
+        else if (!raf) raf = requestAnimationFrame(tick);
+      }
+      if (v.readyState >= 2) start(); else v.addEventListener('canplay', start, { once: true });
+    }
+    function stop(c){
+      var v = vid(c);
+      v._want = false;
+      clearTimeout(v._retry); clearTimeout(v._reset);
+      c.classList.remove('is-playing');
+      // tras el fundido (1,1 s) vuelve al principio, que es el póster
+      v._reset = setTimeout(function(){
+        if (c.classList.contains('is-playing')) return;
+        v.pause();
+        try { v.currentTime = 0; } catch (e) {}
+        c.style.removeProperty('--dst-p');
+      }, 1200);
+    }
+    function freeze(c){   // pausa pedida con el botón: se queda el fotograma en que estaba
+      var v = vid(c);
+      v._want = false;
+      clearTimeout(v._retry);
+      if (c.classList.contains('is-playing')) v.pause();
+    }
+    function stopAll(){ cards.forEach(stop); }
+    function pick(){   // móvil y tableta: de las tarjetas que se ven casi enteras, la más cercana al centro
+      if (desk.matches || !allowed()) return;
+      var best = null, bestD = Infinity, mid = window.innerHeight / 2;
+      cards.forEach(function(c){
+        if ((ratios.get(c) || 0) < 0.6) return;
+        var r = c.getBoundingClientRect(), d = Math.abs(r.top + r.height / 2 - mid);
+        if (d < bestD) { best = c; bestD = d; }
+      });
+      cards.forEach(function(c){ if (c !== best && c.classList.contains('is-playing')) stop(c); });
+      if (best && !best.classList.contains('is-playing') && !best.hasAttribute('data-done')) { best.setAttribute('data-done', ''); play(best); }
+    }
+    function refresh(){
+      syncBtn();
+      if (!allowed()) { if (pref !== 'pausa') stopAll(); return; }   // con la pausa del botón, cada vídeo se queda en su fotograma
+      if (desk.matches) { if (gridVisible) cards.forEach(play); else stopAll(); }
+      else pick();
+    }
+    function syncBtn(){
+      if (!btn) return;
+      var p = isPaused();
+      btn.hidden = false;
+      btn.classList.toggle('is-paused', p);
+      var label = btn.querySelector('[data-dst-label]');
+      if (label) label.textContent = btn.getAttribute(p ? 'data-label-play' : 'data-label-pause');
+    }
+
+    cards.forEach(function(c){
+      var v = vid(c);
+      v.addEventListener('ended', function(){ if (!desk.matches) { stop(c); c.setAttribute('data-done', ''); } });
+      v.addEventListener('error', function(){ v._want = false; c.classList.remove('is-playing'); });
+    });
+
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function(es){
+        es.forEach(function(e){ gridVisible = e.isIntersecting; });
+        refresh();
+      }, { rootMargin: '200px 0px', threshold: 0 }).observe(grid);
+      var cardIO = new IntersectionObserver(function(es){
+        es.forEach(function(e){
+          ratios.set(e.target, e.intersectionRatio);
+          if (e.intersectionRatio < 0.2) e.target.removeAttribute('data-done');   // al salir de la pantalla se puede volver a ver
+        });
+        pick();
+      }, { threshold: [0, 0.2, 0.4, 0.6, 0.8, 1] });
+      cards.forEach(function(c){ cardIO.observe(c); });
+      window.addEventListener('scroll', function(){   // con dos tarjetas enteras a la vista, la del centro cambia sin cruzar ningún umbral
+        if (desk.matches || !gridVisible || scrollRaf) return;
+        scrollRaf = requestAnimationFrame(function(){ scrollRaf = 0; pick(); });
+      }, { passive: true });
+    }
+
+    if (btn) btn.addEventListener('click', function(){
+      if (isPaused()) {
+        savePref(blocked() ? 'si' : null);   // con «reducir movimiento» o ahorro de datos, verlos es una elección expresa y se recuerda
+        cards.forEach(function(c){ c.removeAttribute('data-done'); });
+        refresh();
+      } else {
+        savePref('pausa');
+        cards.forEach(freeze);
+        syncBtn();
+      }
+    });
+
+    document.addEventListener('visibilitychange', function(){ if (document.hidden) { if (pref !== 'pausa') stopAll(); } else refresh(); });
+    function onMQ(mq, fn){ if (mq.addEventListener) mq.addEventListener('change', fn); else if (mq.addListener) mq.addListener(fn); }
+    onMQ(reduce, refresh);
+    onMQ(desk, function(){ stopAll(); refresh(); });
+    onMQ(wide, function(){ stopAll(); refresh(); });   // cambia entre la versión vertical y la apaisada
+    syncBtn();
+  })();
