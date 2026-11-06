@@ -64,8 +64,8 @@ picture{display:contents;}
   /* ---------- NAVBAR ---------- */
   header.site{position:sticky; top:0; z-index:200; background:#fff; border-bottom:3px solid var(--accent); transition:box-shadow .25s ease;}   /* cabecera blanca con línea de acento (dirección P) */
   header.site.is-scrolled{box-shadow:var(--shadow-2);}
-  .nav{display:flex; align-items:center; justify-content:space-between; padding:16px 24px; max-width:1280px; margin:0 auto;}
-  .brand-logo{height:58px; width:auto;}   /* PNG recortado (logo-3): el texto del logo ocupa todo el alto; antes 58 px eran solo ~31 px de logo visible */
+  .nav{display:flex; align-items:center; justify-content:space-between; padding:12.5px 24px; max-width:1280px; margin:0 auto;}
+  .brand-logo{height:65px; width:auto;}   /* 05-11-2026: +12 % (antes 58 px); el alto de la cabecera sigue en 93 px porque el aire vertical de .nav baja de 16 a 12,5 px */   /* PNG recortado (logo-3): el texto del logo ocupa todo el alto; antes 58 px eran solo ~31 px de logo visible */
   .nav-links{display:flex; gap:24px; font-weight:700; font-size:.9rem; align-items:center;}
   .nav-links a{text-decoration:none; color:var(--navy); opacity:.92; transition:opacity .2s;}
   .nav-links > a:not(.nav-cta), .nav-dropdown-trigger{position:relative;}
@@ -151,11 +151,11 @@ picture{display:contents;}
     linear-gradient(90deg, rgba(22,41,74,.62) 0%, rgba(22,41,74,.54) 26%, rgba(22,41,74,.38) 46%, rgba(22,41,74,.14) 64%, rgba(22,41,74,.03) 80%, rgba(22,41,74,0) 100%);}
   .hero-inner{width:100%; padding-top:0; padding-bottom:clamp(16px,3.2vw,52px);}   /* más aire debajo que encima: el titular queda en el tercio superior-central */
   .hero-text{max-width:min(520px,40vw); text-align:left; text-shadow:0 1px 2px rgba(10,22,44,.22), 0 2px 22px rgba(10,22,44,.42);}   /* ayuda a leer sobre la foto sin oscurecerla */
-  .hero .eyebrow{display:flex; align-items:center; gap:14px; margin-bottom:20px; color:rgba(255,255,255,.88); font-size:.76rem; letter-spacing:.16em;}
+  .hero .eyebrow{display:flex; align-items:center; gap:14px; margin-bottom:20px; color:rgba(255,255,255,.88); font-size:.9rem; letter-spacing:.12em;}   /* 05-11-2026: 14,4 px (antes 12,2) y algo menos de espaciado entre letras */
   .hero .eyebrow::before{content:""; width:32px; height:1.5px; background:currentColor; flex:none;}
   .hero h1{font-size:clamp(2.7rem,4.6vw,4.4rem); font-weight:650; line-height:1.03; letter-spacing:-.016em; color:var(--ivory); margin-bottom:24px; text-wrap:balance;}   /* dos frases cortas: la primera en una línea y la cursiva en dos equilibradas, sin <br>; el tamaño deja libres los rostros de la foto */
   .hero h1 em{display:block; font-style:italic; font-weight:500; color:color-mix(in srgb, var(--forest) 18%, #fff);}
-  .hero p.lead{font-size:clamp(1rem,1.2vw,1.12rem); line-height:1.58; font-weight:500; color:rgba(255,255,255,.9); max-width:24.5em; text-wrap:pretty; margin:0 0 30px;}
+  .hero p.lead{font-size:clamp(1.0625rem,1.3vw,1.2rem); line-height:1.5; font-weight:500; color:rgba(255,255,255,.9); max-width:24.5em; text-wrap:pretty; margin:0 0 30px;}
   .hero-ctas{display:flex; align-items:center; gap:28px; flex-wrap:wrap;}
   .hero-link{color:#fff; font-weight:700; font-size:1rem; text-decoration:none; border-bottom:2px solid rgba(255,255,255,.75); padding-bottom:3px; transition:border-color .15s ease;}
   @media (hover:hover){ .hero-link:hover{border-bottom-color:#fff;} }
@@ -186,6 +186,7 @@ picture{display:contents;}
     .fact-ico{width:30px; height:30px;}
   }
   @media (min-width:601px) and (max-width:1024px){
+    .hero .eyebrow{font-size:.84rem;}   /* tableta: 13,4 px */
     .hero-media{aspect-ratio:2.63; max-height:390px;}
     .hero-inner{padding-bottom:32px; margin-top:0; padding-top:20px;}
     .hero h1{font-size:clamp(3.1rem,2.2vw + 2.275rem,3.75rem);}   /* 601–1024 px: enlaza con el móvil (≤600) y con el escritorio (≥1025) sin saltos */
@@ -193,13 +194,13 @@ picture{display:contents;}
   }
   @media (max-width:600px){
     :root{--header-h:72px;}
-    .nav{padding:12px 24px;}
-    .brand-logo{height:auto; width:136px;}
+    .nav{padding:9.5px 24px;}
+    .brand-logo{height:auto; width:150px;}   /* +10 % (antes 136 px) con el mismo alto de cabecera */
     .hero-media{max-height:none;}
     .hero .eyebrow{font-size:.68rem; letter-spacing:.12em; margin-bottom:16px;}
     .hero .eyebrow::before{width:22px;}
     .hero h1{font-size:clamp(2.35rem,12vw,3.1rem); margin-bottom:16px;}
-    .hero p.lead{font-size:1.02rem; margin-bottom:24px;}
+    .hero p.lead{font-size:1.02rem; line-height:1.58; margin-bottom:24px;}
     .hero-ctas{display:grid; grid-template-columns:1fr; gap:18px; width:100%; justify-items:start;}
     .hero-ctas .btn-primary{width:100%; justify-content:space-between;}
     .hero-facts{gap:16px 18px; padding:24px 0;}
