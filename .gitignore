@@ -15,3 +15,8 @@ dist/
 
 # caché del reescalado con IA (se regenera con scripts/generar-hero-colegio.py)
 scripts/_cache/
+
+# Maquetas y vista previa del rediseño: solo en local (Netlify publica toda web-publica/)
+web-publica/propuestas/
+.claude/
+Ver-rediseno-web.command
