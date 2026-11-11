@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>Formularios · tres versiones</title>
+<link rel="stylesheet" href="base.css">
+<style>
+  body{background:var(--ivory);}
+  .top{background:var(--navy); color:#fff; padding:24px var(--gutter) 20px;}
+  .top-in, .tabs-in, main{max-width:1320px; margin-inline:auto;}
+  .top small{font:700 .72rem/1 var(--sans); letter-spacing:.16em; text-transform:uppercase; color:var(--accent-soft);}
+  .top h1{font:500 clamp(1.5rem,3vw,2.2rem)/1.1 var(--serif); margin-top:10px;}
+  .top p{margin-top:8px; max-width:80ch; color:rgba(255,255,255,.8); font-size:.95rem;}
+  .tabs{position:sticky; top:0; z-index:10; background:var(--ivory); border-bottom:1px solid var(--line); padding:0 var(--gutter);}
+  .tabs-in{display:flex; gap:4px; overflow-x:auto; scrollbar-width:none;} .tabs-in::-webkit-scrollbar{display:none;}
+  .tab{flex:none; padding:16px 16px 14px; border:0; border-bottom:3px solid transparent; background:none; font:600 .95rem/1 var(--sans); color:var(--ink-soft); cursor:pointer; white-space:nowrap;}
+  .tab[aria-selected="true"]{color:var(--navy); border-color:var(--accent);}
+  main{padding:24px var(--gutter) 72px;}
+  .panel{display:none;} .panel.on{display:block;}
+  .ctl{display:grid; gap:12px; margin-bottom:16px;}
+  .ctl-row{display:flex; flex-wrap:wrap; align-items:center; gap:10px 16px;}
+  .ctl-row > b{min-width:84px; font:700 .72rem/1.2 var(--sans); letter-spacing:.12em; text-transform:uppercase; color:var(--ink-soft);}
+  .seg{display:inline-flex; flex-wrap:wrap; padding:4px; border-radius:8px; background:var(--stone);}
+  .seg button{padding:9px 14px; border:0; border-radius:6px; background:none; font:600 .88rem/1 var(--sans); color:var(--ink-soft); cursor:pointer;}
+  .seg button[aria-pressed="true"]{background:#fff; color:var(--navy); box-shadow:0 1px 3px rgba(22,41,74,.14);}
+  .desc{margin:0 0 14px; max-width:86ch; color:var(--ink-soft); font-size:.95rem;} .desc b{color:var(--navy);}
+  .open{font:600 .88rem/1 var(--sans); color:var(--accent); border-bottom:1px solid currentColor; padding-bottom:2px;}
+  .stage{border:1px solid var(--line); border-radius:10px; background:#fff; overflow:hidden;}
+  .stage.is-mob{border:0; background:none; display:grid; justify-items:center; overflow:visible;}
+  .stage iframe{display:block; border:0; background:#fff; transform-origin:0 0;}
+  .phone{border:10px solid var(--ink); border-radius:38px; overflow:hidden; box-shadow:0 18px 50px rgba(22,41,74,.18); background:#fff;}
+  .doc{max-width:860px;}
+  .doc h2{font:500 clamp(1.7rem,3vw,2.4rem)/1.1 var(--serif); color:var(--navy); margin-bottom:10px;} .doc h2 em{color:var(--accent);}
+  .doc h3{font:700 .76rem/1.4 var(--sans); letter-spacing:.14em; text-transform:uppercase; color:var(--forest); margin:28px 0 10px;}
+  .doc ul{display:grid; gap:8px; max-width:74ch;} .doc li{padding-left:18px; position:relative;} .doc li::before{content:""; position:absolute; left:0; top:.7em; width:8px; height:1px; background:var(--accent);}
+  .doc p{max-width:74ch; margin-top:8px;}
+  .next{margin-top:28px; padding:20px 22px; border-left:3px solid var(--accent); background:var(--stone);}
+</style>
+</head>
+<body>
+<header class="top"><div class="top-in">
+  <small>Interlanguage Studies · solo vista previa</small>
+  <h1>Formularios: seis versiones</h1>
+  <p>El mismo formulario en seis formas, para la portada, «Estudiar en el extranjero» y «Campamentos de verano en el extranjero». Pedimos solo lo que necesitamos para asesorar; Madrid y extraescolares llevan directos a su inscripción. Se pueden rellenar de verdad: nada se envía.</p>
+</div></header>
+<nav class="tabs" aria-label="Vistas"><div class="tabs-in" role="tablist">
+  <button class="tab" role="tab" data-tab="ver">Probar los formularios</button>
+  <button class="tab" role="tab" data-tab="que">Qué hacen todas</button>
+  <button class="tab" role="tab" data-tab="reco">Mi recomendación</button>
+</div></nav>
+<main>
+  <section class="panel" id="p-ver">
+    <div class="ctl">
+      <div class="ctl-row"><b>Versión</b><div class="seg" data-k="v"></div></div>
+      <div class="ctl-row"><b>Dónde</b><div class="seg" data-k="ctx"></div></div>
+      <div class="ctl-row"><b>Pantalla</b><div class="seg" data-k="dev"></div><a class="open" id="open" href="#">Abrir solo, a todo el panel</a></div>
+    </div>
+    <p class="desc" id="desc"></p>
+    <div class="stage" id="stage"></div>
+  </section>
+  <section class="panel" id="p-que"><div class="doc">
+    <h2>Lo que hacen <em>todas</em></h2>
+    <h3>Pensado para asesorar</h3>
+    <ul>
+      <li>Solo cinco datos obligatorios: qué os interesa (en la portada), la edad, el nombre, el correo y la casilla de privacidad. El resto es opcional y está marcado.</li>
+      <li>Preguntas distintas según el programa: destino, duración e inicio para estudiar fuera; colegio, semanas y programa de inglés para el campamento.</li>
+      <li>Campamento en Madrid y extraescolares: no piden datos; llevan directos a su inscripción, con un enlace para dudas.</li>
+      <li>En «Estudiar en el extranjero» y «Campamentos» el programa ya viene elegido: una pregunta menos.</li>
+    </ul>
+    <h3>Ayudas que evitan errores</h3>
+    <ul>
+      <li>Avisos con los datos reales: con 8 o 9 años solo admite Strathallan; el liderazgo es de 14 a 17 años y se imparte en Dollar Academy; en el Reino Unido, los trimestres solo en algunos colegios; Estados Unidos y Canadá, bajo consulta.</li>
+      <li>La edad solo ofrece las del programa (9–18 para estudiar, 8–17 para el campamento).</li>
+      <li>Corrección del correo mal escrito («¿Quizá ana@gmail.com?») y teléfono con +34 ya puesto.</li>
+      <li>Errores claros junto a cada campo, y el cursor va al primero que falta.</li>
+      <li>Si la familia cierra la página a medias, al volver recupera lo que había escrito (solo en su navegador) y puede empezar de cero.</li>
+    </ul>
+    <h3>Comodidad</h3>
+    <ul>
+      <li>Intro para avanzar, «Atrás» sin perder nada, autocompletado del navegador en nombre, correo y teléfono, teclados de móvil adecuados (correo y teléfono).</li>
+      <li>Al terminar: agradecimiento con su nombre, cómo y cuándo les contactamos («por teléfono» o «por correo») y el resumen de lo que han enviado.</li>
+      <li>Accesibles con teclado y lector de pantalla; animaciones suaves que se apagan con «Reducir movimiento».</li>
+    </ul>
+    <h3>Ojo</h3>
+    <ul>
+      <li>La casilla de novedades va sin marcar: para enviar información comercial, el RGPD pide un sí activo.</li>
+      <li>«Reservar una llamada» enlazaría al sistema de reservas que ya está programado en la web, pero que aún no está conectado a Google Calendar.</li>
+    </ul>
+  </div></section>
+  <section class="panel" id="p-reco"><div class="doc">
+    <h2>Cómo elegir <em>entre las seis</em></h2>
+    <ul>
+      <li><b>Si queréis el máximo de consultas:</b> V6 · Exprés. Pide lo mínimo; quien quiera cuenta más después. Recibiréis más contactos, algunos con menos información.</li>
+      <li><b>Si queréis consultas con más información:</b> V2 · Tarjeta y resumen o V5 · Con fotos. La familia ve lo que envía y llega mejor preparada a la llamada.</li>
+      <li><b>Para el móvil:</b> V1 · Una pregunta o V4 · Conversación: casi todo se responde con un toque.</li>
+      <li><b>Para quien prefiere verlo todo:</b> V3 · Una sola hoja.</li>
+    </ul>
+    <h3>Mi recomendación</h3>
+    <p><b>V5 en la portada</b> (las fotos dejan claro, de un vistazo, qué es con asesoramiento y qué es inscripción directa) y <b>V2 en «Estudiar en el extranjero» y «Campamentos en el extranjero»</b>, mostrándose como V1 en el móvil. Todas comparten preguntas y validaciones, así que podéis mezclar.</p>
+    <div class="next"><b>Siguiente paso.</b> Dime cuál eliges para cada sitio y qué cambiarías. Después lo aplico en las páginas reales dentro de la copia. Antes de publicar habrá que conectar el envío: hoy, en Netlify, el formulario de la web da error 404.</div>
+  </div></section>
+</main>
+<script>
+(function(){
+  var V=[['v1','V1 · Una pregunta'],['v2','V2 · Tarjeta y resumen'],['v3','V3 · Una sola hoja'],['v4','V4 · Conversación'],['v5','V5 · Con fotos'],['v6','V6 · Exprés']];
+  var X=[['general','Formulario principal (portada)'],['estudiar','Estudiar en el extranjero'],['campamento','Campamentos en el extranjero']];
+  var D=[['desk','Escritorio'],['mob','Móvil']];
+  var DESC={v1:'<b>Una pregunta cada vez.</b> Opciones grandes que avanzan solas al tocarlas, barra de progreso, un resumen que se puede editar y los datos opcionales que se pueden saltar.',
+            v2:'<b>Tarjeta y resumen.</b> Tres pasos (programa, alumno, contacto) en una tarjeta; a la izquierda, «Vuestra consulta» se rellena mientras contestan y explica qué pasa después.',
+            v3:'<b>Una sola hoja.</b> Todo a la vista en tres secciones numeradas que se marcan al completarse; una barra fija abajo dice cuánto falta y envía.',
+            v4:'<b>Conversación.</b> Como un chat con el equipo de Madrid: pregunta a pregunta, con respuestas de un toque. Cada respuesta se puede pulsar para cambiarla.',
+            v5:'<b>Con fotos.</b> Primero se elige el programa con fotos grandes (Madrid y extraescolares marcados como inscripción directa); después, todo el formulario en una sola pantalla junto a la foto del programa.',
+            v6:'<b>Exprés.</b> Solo cuatro datos y «Quiero que me orientéis». Después de enviar, una caja opcional para contar más (duración, nivel, intereses, horario).'};
+  var st={v:'v2',ctx:'general',dev:'desk'};
+  function url(){ return 'form-'+st.v+'.html?ctx='+st.ctx; }
+  function segs(){ [['v',V],['ctx',X],['dev',D]].forEach(function(p){ var el=document.querySelector('[data-k="'+p[0]+'"]'); el.innerHTML=''; p[1].forEach(function(x){ var b=document.createElement('button'); b.type='button'; b.textContent=x[1]; b.setAttribute('aria-pressed',st[p[0]]===x[0]); b.onclick=function(){ st[p[0]]=x[0]; segs(); render(); }; el.appendChild(b); }); });
+    document.getElementById('desc').innerHTML=DESC[st.v]; document.getElementById('open').href=url(); }
+  function fit(f,sc){ try{ var d=f.contentDocument, h=Math.max(d.documentElement.scrollHeight,d.body.scrollHeight,700); f.style.height=h+'px'; f.parentNode.style.height=Math.round(h*sc)+2+'px'; }catch(e){} }
+  function render(){
+    var stg=document.getElementById('stage'), w=stg.parentNode.clientWidth; if(w<120) return;
+    stg.innerHTML=''; stg.className='stage'+(st.dev==='mob'?' is-mob':'');
+    var f=document.createElement('iframe'); f.src=url(); f.title='Formulario';
+    if(st.dev==='desk'){ var sc=Math.min(1,(w-2)/1440); f.style.width='1440px'; f.style.height='900px'; f.style.transform='scale('+sc+')'; stg.style.height=Math.round(900*sc)+2+'px';
+      f.onload=function(){ fit(f,sc); try{ ['click','change','keyup'].forEach(function(ev){ f.contentDocument.addEventListener(ev,function(){ setTimeout(function(){fit(f,sc);},320); }); }); }catch(e){} }; stg.appendChild(f); }
+    else { var s2=Math.min(1,(w-24)/410), ph=document.createElement('div'); ph.className='phone'; ph.style.width=Math.round(390*s2)+20+'px'; ph.style.height=Math.round(800*s2)+20+'px';
+      f.style.width='390px'; f.style.height='800px'; f.style.transform='scale('+s2+')'; ph.appendChild(f); stg.style.height='auto'; stg.appendChild(ph); }
+  }
+  function show(t){ if(!document.getElementById('p-'+t)) t='ver';
+    [].forEach.call(document.querySelectorAll('.tab'),function(b){b.setAttribute('aria-selected',b.dataset.tab===t);});
+    [].forEach.call(document.querySelectorAll('.panel'),function(p){p.classList.toggle('on',p.id==='p-'+t);});
+    if(t==='ver'){ segs(); render(); } if(location.hash.slice(1)!==t) history.replaceState(null,'','#'+t); }
+  [].forEach.call(document.querySelectorAll('.tab'),function(b){ b.onclick=function(){ show(b.dataset.tab); }; });
+  var rt,lastW=-1,m=document.querySelector('main');
+  function redraw(){ var w=m.clientWidth; if(w<120||w===lastW) return; lastW=w; if(document.getElementById('p-ver').classList.contains('on')) render(); }
+  window.addEventListener('resize',function(){ clearTimeout(rt); rt=setTimeout(redraw,180); }); if('ResizeObserver' in window) new ResizeObserver(function(){ clearTimeout(rt); rt=setTimeout(redraw,180); }).observe(m);
+  show(location.hash.slice(1)||'ver'); lastW=m.clientWidth;
+})();
+</script>
+</body>
+</html>

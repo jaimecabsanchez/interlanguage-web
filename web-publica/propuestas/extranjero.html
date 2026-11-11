@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>Estudiar en el extranjero · tres propuestas</title>
+<link rel="stylesheet" href="base.css">
+<style>
+  body{background:var(--ivory);}
+  .top{background:var(--navy); color:#fff; padding:24px var(--gutter) 20px;}
+  .top-in, .tabs-in, main{max-width:1320px; margin-inline:auto;}
+  .top small{font:700 .72rem/1 var(--sans); letter-spacing:.16em; text-transform:uppercase; color:var(--accent-soft);}
+  .top h1{font:500 clamp(1.5rem,3vw,2.2rem)/1.1 var(--serif); margin-top:10px;}
+  .top p{margin-top:8px; max-width:78ch; color:rgba(255,255,255,.8); font-size:.95rem;}
+  .tabs{position:sticky; top:0; z-index:10; background:var(--ivory); border-bottom:1px solid var(--line); padding:0 var(--gutter);}
+  .tabs-in{display:flex; gap:4px; overflow-x:auto; scrollbar-width:none;}
+  .tabs-in::-webkit-scrollbar{display:none;}
+  .tab{flex:none; padding:16px 16px 14px; border:0; border-bottom:3px solid transparent; background:none; font:600 .95rem/1 var(--sans); color:var(--ink-soft); cursor:pointer; white-space:nowrap;}
+  .tab[aria-selected="true"]{color:var(--navy); border-color:var(--accent);}
+  main{padding:26px var(--gutter) 72px;}
+  .panel{display:none;} .panel.on{display:block;}
+  .intro{display:grid; grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr); gap:18px 48px; margin-bottom:20px;}
+  .intro h2{font:500 clamp(1.6rem,2.8vw,2.3rem)/1.1 var(--serif); color:var(--navy);} .intro h2 em{color:var(--accent);}
+  .pts{display:grid; gap:9px; font-size:.92rem;}
+  .pts li{display:grid; grid-template-columns:130px 1fr; gap:12px; padding-bottom:9px; border-bottom:1px solid var(--line);}
+  .pts b{font:700 .72rem/1.5 var(--sans); letter-spacing:.1em; text-transform:uppercase; color:var(--forest);}
+  .pts li.risk b{color:var(--accent);}
+  .bar{display:flex; flex-wrap:wrap; align-items:center; gap:10px 18px; margin-bottom:14px;}
+  .seg{display:inline-flex; padding:4px; border-radius:8px; background:var(--stone);}
+  .seg button{padding:9px 14px; border:0; border-radius:6px; background:none; font:600 .88rem/1 var(--sans); color:var(--ink-soft); cursor:pointer;}
+  .seg button[aria-pressed="true"]{background:#fff; color:var(--navy); box-shadow:0 1px 3px rgba(22,41,74,.14);}
+  .open{font:600 .88rem/1 var(--sans); color:var(--accent); border-bottom:1px solid currentColor; padding-bottom:2px;}
+  .hint{font-size:.82rem; color:var(--ink-soft); margin-left:auto;}
+  .stage{border:1px solid var(--line); border-radius:10px; background:#fff; overflow:hidden;}
+  .stage.is-mob{border:0; background:none; display:grid; justify-items:center; overflow:visible;}
+  .stage iframe{display:block; border:0; background:#fff; transform-origin:0 0;}
+  .phone{border:10px solid var(--ink); border-radius:38px; overflow:hidden; box-shadow:0 18px 50px rgba(22,41,74,.18); background:#fff;}
+  .reco{max-width:820px;}
+  .reco h2{font:500 clamp(1.8rem,3.2vw,2.6rem)/1.1 var(--serif); color:var(--navy); margin-bottom:12px;} .reco h2 em{color:var(--accent);}
+  .reco h3{font:700 .76rem/1.4 var(--sans); letter-spacing:.14em; text-transform:uppercase; color:var(--forest); margin:30px 0 10px;}
+  .reco p{max-width:68ch; margin-top:10px;}
+  .reco ul{display:grid; gap:9px; max-width:68ch;}
+  .reco li{padding-left:18px; position:relative;} .reco li::before{content:""; position:absolute; left:0; top:.7em; width:8px; height:1px; background:var(--accent);}
+  .next{margin-top:30px; padding:20px 22px; border-left:3px solid var(--accent); background:var(--stone);}
+  table{width:100%; border-collapse:collapse; margin-top:22px; font-size:.9rem;}
+  th,td{padding:11px 10px; text-align:left; vertical-align:top; border-bottom:1px solid var(--line);}
+  thead th{font:700 .95rem/1.2 var(--sans); color:var(--navy); border-bottom:2px solid var(--navy);}
+  tbody th{font:700 .72rem/1.5 var(--sans); letter-spacing:.1em; text-transform:uppercase; color:var(--ink-soft); width:120px;}
+  .tbl{overflow-x:auto;} .tbl table{min-width:560px;}
+  @media (max-width:820px){ .intro{grid-template-columns:1fr;} .pts li{grid-template-columns:1fr; gap:2px;} .hint{margin-left:0; width:100%;} }
+</style>
+</head>
+<body>
+<header class="top"><div class="top-in">
+  <small>Interlanguage Studies · solo vista previa</small>
+  <h1>«Estudiar en el extranjero»: versión 3</h1>
+  <p>La foto de portada y sus textos se mantienen tal cual; todo lo de debajo es nuevo. Los textos son los de la web, más cortos, y no hay ningún dato nuevo. Puedes cambiar entre la versión 3 y la 2.</p>
+</div></header>
+
+<nav class="tabs" aria-label="Vistas"><div class="tabs-in" role="tablist">
+  <button class="tab" role="tab" data-tab="ver">Ver la página</button>
+  <button class="tab" role="tab" data-tab="reco">Una página o varias</button>
+</div></nav>
+
+<main>
+  <section class="panel" id="p-ver">
+    <div class="intro">
+      <div><h2>Versión 3: <em>todo en una página, corta y ordenada</em></h2></div>
+      <ul class="pts">
+        <li><b>Países</b><span>Fotos de campus distintas de los vídeos. Pulsar «Pedir orientación» en un país lo deja marcado en el formulario.</span></li>
+        <li><b>Vida en el colegio</b><span>Clases, Deporte y Artes, con el nombre de cada actividad debajo de su foto: «la oferta cambia de un colegio a otro; buscamos aquel donde pueda seguir haciendo lo que le gusta».</span></li>
+        <li><b>Cómo trabajamos</b><span>El perfil del alumno en el centro: lo que tenemos en cuenta, cuatro pasos con su contenido y lo que recibe la familia.</span></li>
+        <li><b>Elegir destino</b><span>Los cuatro países en una tabla con su foto y su frase; en móvil, una ficha por país que se desliza.</span></li>
+        <li><b>Presupuesto y becas</b><span>Un destino o los cuatro a la vez; duración, alojamiento y ocho extras (vuelos, traslados, seguro, visado, apoyo de inglés, guardian, cierres, convalidación) y becas. Pasa al formulario con todo lo elegido.</span></li>
+        <li><b>Formulario</b><span>Tres pasos cortos en la misma página, con barra de progreso, errores claros e Intro para avanzar.</span></li>
+        <li class="risk"><b>Faltan datos</b><span>Los importes: la calculadora muestra «Pendiente» hasta tener vuestros rangos. Y qué becas hay, para quién y de cuánto.</span></li>
+      </ul>
+    </div>
+    <div class="bar" data-bar></div>
+    <div class="stage" data-stage></div>
+    
+  </section>
+
+  <section class="panel" id="p-reco"><div class="reco">
+    <h2>Por qué <em>una sola página</em></h2>
+    <ul>
+      <li>Estados Unidos y Canadá están «bajo consulta»: una landing propia saldría casi vacía y daría peor impresión que una buena ficha.</li>
+      <li>Las familias comparan: tener los cuatro países, la calculadora y el formulario en la misma página evita saltos y abandonos.</li>
+      <li>Cuando haya colegios concretos que enseñar (Reino Unido e Irlanda), sí tendría sentido una página por país.</li>
+    </ul>
+    <h3>Lo que necesito de vosotros</h3>
+    <ul>
+      <li>Un rango orientativo por destino, duración y alojamiento, y el coste aproximado de cada extra.</li>
+      <li>Las becas: si son vuestras o de los colegios, para qué destinos, requisitos e importes aproximados.</li>
+    </ul>
+    <div class="next"><b>Siguiente paso.</b> Dime qué cambiarías. Cuando te convenza, la aplico en la página real dentro de la copia y la revisas en el panel antes de publicar nada.</div>
+  </div></section>
+</main>
+
+<script>
+(function(){
+  var OPTS=[['v3','Versión 3 (nueva)','ext-v3.html'],['d','Versión 2','ext-d.html']];
+  var state={o:'v3',v:'desk'};
+  function file(){return OPTS.filter(function(x){return x[0]===state.o;})[0][2];}
+  function fit(f,scale){ try{ var d=f.contentDocument; var h=Math.max(d.documentElement.scrollHeight,d.body.scrollHeight); f.style.height=h+'px'; f.parentNode.style.height=Math.round(h*scale)+2+'px'; }catch(e){} }
+  function render(){
+    var st=document.querySelector('[data-stage]'), w=st.parentNode.clientWidth; if(w<120) return;
+    st.innerHTML=''; st.className='stage'+(state.v==='mob'?' is-mob':'');
+    var f=document.createElement('iframe'); f.src=file(); f.title='Estudiar en el extranjero';
+    if(state.v==='desk'){
+      var sc=Math.min(1,(w-2)/1440); f.style.width='1440px'; f.style.height='900px'; f.style.transform='scale('+sc+')'; st.style.height=Math.round(900*sc)+2+'px';
+      f.onload=function(){ fit(f,sc); setTimeout(function(){fit(f,sc);},1200); try{ f.contentDocument.addEventListener('click',function(){ setTimeout(function(){fit(f,sc);},120); }); }catch(e){} };
+      st.appendChild(f);
+    } else {
+      var s2=Math.min(1,(w-24)/410), ph=document.createElement('div'); ph.className='phone'; ph.style.width=Math.round(390*s2)+20+'px'; ph.style.height=Math.round(780*s2)+20+'px';
+      f.style.width='390px'; f.style.height='780px'; f.style.transform='scale('+s2+')'; ph.appendChild(f); st.style.height='auto'; st.appendChild(ph);
+    }
+  }
+  function bar(){
+    var b=document.querySelector('[data-bar]'); b.innerHTML='';
+    function seg(label,items,get,set){ var o=document.createElement('div'); o.className='seg'; o.setAttribute('role','group'); o.setAttribute('aria-label',label);
+      items.forEach(function(x){var bt=document.createElement('button'); bt.type='button'; bt.textContent=x[1]; bt.setAttribute('aria-pressed',get()===x[0]); bt.onclick=function(){set(x[0]); bar(); render();}; o.appendChild(bt);}); b.appendChild(o); }
+    seg('Propuesta',OPTS,function(){return state.o;},function(v){state.o=v;});
+    seg('Pantalla',[['desk','Escritorio'],['mob','Móvil']],function(){return state.v;},function(v){state.v=v;});
+    var a=document.createElement('a'); a.className='open'; a.href=file(); a.textContent='Abrir sola, a todo el panel'; b.appendChild(a);
+    var h=document.createElement('span'); h.className='hint'; h.textContent='Puedes desplazarte dentro de la maqueta y pasar el cursor por los países.'; b.appendChild(h);
+  }
+  function show(t){
+    if(!document.getElementById('p-'+t)) t='ver';
+    [].forEach.call(document.querySelectorAll('.tab'),function(b){b.setAttribute('aria-selected',b.dataset.tab===t);});
+    [].forEach.call(document.querySelectorAll('.panel'),function(p){p.classList.toggle('on',p.id==='p-'+t);});
+    if(t==='ver'){bar(); render();}
+    if(location.hash.slice(1)!==t) history.replaceState(null,'','#'+t);
+  }
+  [].forEach.call(document.querySelectorAll('.tab'),function(b){b.onclick=function(){show(b.dataset.tab); window.scrollTo(0,document.querySelector('.tabs').offsetTop);};});
+  window.addEventListener('hashchange',function(){show(location.hash.slice(1));});
+  var rt,lastW=-1,mainEl=document.querySelector('main');
+  function redraw(){var w=mainEl.clientWidth; if(w<120||w===lastW) return; lastW=w; var t=(document.querySelector('.tab[aria-selected="true"]')||{}).dataset; if(t) show(t.tab);}
+  function later(){clearTimeout(rt); rt=setTimeout(redraw,180);}
+  window.addEventListener('resize',later); if('ResizeObserver' in window) new ResizeObserver(later).observe(mainEl);
+  show(location.hash.slice(1)||'ver'); lastW=mainEl.clientWidth;
+})();
+</script>
+</body>
+</html>

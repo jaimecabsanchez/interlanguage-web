@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="robots" content="noindex">
+<title>Formulario · V3 Una sola hoja</title>
+<link rel="stylesheet" href="../css/styles.css?v=144"><link rel="stylesheet" href="fm.css">
+<style>
+  body{background:var(--stone); margin:0;}
+  .v3{padding:clamp(40px,6vw,80px) 20px 0;}
+  .v3-in{display:grid; grid-template-columns:minmax(0,1.35fr) minmax(0,.65fr); gap:clamp(24px,4vw,56px); align-items:start; max-width:1180px; margin:0 auto;}
+  .v3-head{grid-column:1 / -1; display:grid; gap:10px; max-width:720px;}
+  .v3-head p.eb{margin:0; display:flex; align-items:center; gap:14px; font:700 .74rem/1.3 var(--font-body); letter-spacing:.16em; text-transform:uppercase; color:var(--forest);}
+  .v3-head p.eb::before{content:""; width:34px; height:1px; background:currentColor;}
+  .v3-head h2{margin:0; font-family:var(--font-display); font-size:clamp(2rem,3.4vw,2.8rem); line-height:1.06; color:var(--navy);}
+  .v3-head h2 em{font-style:italic; font-weight:500; color:var(--accent);}
+  .v3-head .lead{margin:0; color:var(--ink-soft);}
+  .v3-sheet{background:#fff; border-radius:var(--r-card); border:1px solid var(--line);}
+  .v3-sec{padding:clamp(20px,3vw,34px); border-top:1px solid var(--line);}
+  .v3-sec:first-child{border-top:0;}
+  .v3-sec-h{display:flex; align-items:center; gap:14px; margin-bottom:18px;}
+  .v3-n{display:grid; place-items:center; width:34px; height:34px; border-radius:50%; border:1.5px solid var(--navy); font:600 1.05rem/1 var(--font-display); color:var(--navy); transition:background-color .2s var(--e), color .2s var(--e), border-color .2s var(--e);}
+  .v3-n .fm-ic{width:17px; height:17px; stroke-width:2.6;}
+  .v3-sec.ok .v3-n{background:var(--forest); border-color:var(--forest); color:#fff;}
+  .v3-sec-h h3{margin:0; font:600 1.4rem/1.1 var(--font-display); color:var(--navy);}
+  .v3-sec-h > span:last-child{margin-left:auto; font:700 .74rem/1 var(--font-body); color:var(--ink-soft);}
+  .v3-sec.ok .v3-sec-h > span:last-child{color:var(--forest);}
+  .v3-row{display:grid; grid-template-columns:1fr 1fr; gap:22px 16px;} .v3-row .fm-field + .fm-field{margin-top:0;}
+  .v3-row + .fm-field, .fm-field + .v3-row, .v3-row + .v3-row{margin-top:22px;}
+  .v3-side{position:sticky; top:24px; display:grid; gap:16px;}
+  .v3-box{padding:22px; border-radius:var(--r-card); background:#fff; border:1px solid var(--line);}
+  .v3-box h4{margin:0 0 8px; font:600 1.2rem/1.15 var(--font-display); color:var(--navy);}
+  .v3-box ol{display:grid; margin:0; padding:0; list-style:none;}
+  .v3-box li{display:grid; grid-template-columns:26px 1fr; gap:2px 10px; padding:10px 0; border-top:1px solid var(--line);}
+  .v3-box li b{grid-row:1 / span 2; font:500 1.25rem/1 var(--font-display); color:var(--accent);} .v3-box li strong{font-size:.92rem; color:var(--navy);} .v3-box li span{font-size:.84rem; color:var(--ink-soft);}
+  .v3-box--navy{background:var(--navy); color:#fff; border:0;} .v3-box--navy h4{color:#fff;} .v3-box--navy p{margin:0 0 12px; font-size:.9rem; color:rgba(255,255,255,.8);}
+  .v3-box--navy .fm-btn{width:100%;}
+  .v3-bar{position:sticky; bottom:0; z-index:5; margin-top:28px; background:rgba(255,255,255,.96); backdrop-filter:blur(8px); border-top:1px solid var(--line);}
+  .v3-bar-in{display:flex; align-items:center; gap:18px; max-width:1180px; margin:0 auto; padding:12px 20px;}
+  .v3-prog{display:grid; gap:6px; flex:1; max-width:420px;}
+  .v3-prog span{font:700 .82rem/1 var(--font-body); color:var(--navy);}
+  .v3-prog i{display:block; height:6px; border-radius:6px; background:var(--stone); overflow:hidden;} .v3-prog i b{display:block; height:100%; width:0; background:var(--forest); border-radius:6px; transition:width .3s var(--e);}
+  .v3-bar .fm-btn{margin-left:auto;}
+  .v3-done{padding:clamp(24px,3.4vw,40px);}
+  @media (max-width:960px){ .v3-in{grid-template-columns:1fr;} .v3-side{position:static; grid-row:2;} .v3-box:not(.v3-box--navy){display:none;} .v3-box--navy{display:none;} }
+  @media (max-width:560px){ .v3-row{grid-template-columns:1fr;} .v3-prog{max-width:none;} .v3-bar .fm-btn{padding:0 18px;} }
+</style>
+</head>
+<body>
+<section class="v3 fm">
+  <div class="v3-in">
+    <header class="v3-head" id="head"></header>
+    <div><div id="restore"></div><form class="v3-sheet" id="f" novalidate onsubmit="return false"></form></div>
+    <aside class="v3-side" id="side"></aside>
+  </div>
+  <div class="v3-bar" id="bar"><div class="v3-bar-in"><div class="v3-prog"><span id="pt"></span><i><b id="pb"></b></i></div><button type="button" class="fm-btn fm-btn--p" id="send">Enviar consulta</button></div></div>
+</section>
+<script src="fm-core.js"></script>
+<script>
+(function(){
+  var S=FM.create('v3'), f=document.getElementById('f');
+  var C=FM.CTX[S.ctx]; document.getElementById('head').innerHTML='<p class="eb">'+C.eyebrow+'</p><h2>'+C.h+'</h2><p class="lead">'+C.lead+' Os lleva menos de un minuto.</p>';
+  document.getElementById('side').innerHTML='<div class="v3-box"><h4>Qué pasa después</h4><ol>'+FM.NEXT.map(function(n,i){return '<li><b>'+(i+1)+'</b><strong>'+n[0]+'</strong><span>'+n[1]+'</span></li>';}).join('')+'</ol></div><div class="v3-box v3-box--navy"><h4>¿Preferís hablar ya?</h4><p>Reservad una llamada de 30 minutos, sin compromiso.</p><a class="fm-btn fm-btn--g" href="#">'+FM.ic('phone')+' Reservar una llamada</a></div><p class="fm-secure">'+FM.ic('lock')+' Vuestros datos solo se usan para responder a esta consulta.</p>';
+  if(S.restored){ var r=document.getElementById('restore'); r.innerHTML='<div class="fm-restore" style="margin-bottom:12px; background:#fff"><span>Hemos recuperado lo que empezasteis a rellenar.</span><button type="button">Empezar de cero</button></div>'; r.querySelector('button').onclick=function(){ FM.clear(S); location.reload(); }; }
+  var REQ=['programa','edad','nombre','email','rgpd'];
+  function req(G){ var all=[]; G.forEach(function(g){ g.f.forEach(function(id){ if(REQ.indexOf(id)>=0&&!(id==='programa'&&S.ctx!=='general')) all.push(id); }); }); return all; }
+  function render(){
+    var G=FM.groups(S), titles={que:S.ctx==='general'?'¿Qué buscáis?':(FM.prog(S)==='campamento'?'El campamento':'El programa'),alumno:'Sobre el alumno',contacto:'¿Cómo os contactamos?',direct:'Inscripción directa'};
+    f.innerHTML=G.map(function(g,i){
+      var b='';
+      if(g.id==='direct') b=FM.direct(S);
+      else if(g.id==='alumno') b='<div class="v3-row">'+FM.field(S,'edad')+FM.field(S,'curso')+'</div>'+FM.field(S,'nivel')+FM.field(S,'intereses');
+      else if(g.id==='contacto') b='<div class="v3-row">'+FM.field(S,'nombre')+FM.field(S,'email')+'</div><div class="v3-row">'+FM.field(S,'tel')+FM.field(S,'pref')+'</div>'+FM.field(S,'franja')+FM.field(S,'mensaje')+'<div style="margin-top:22px; display:grid; gap:14px">'+FM.field(S,'rgpd')+FM.field(S,'news')+'</div>';
+      else b=g.f.map(function(id){return FM.field(S,id,{big:id==='programa'});}).join('');
+      return '<section class="v3-sec" data-g="'+g.id+'"><div class="v3-sec-h"><span class="v3-n">'+(i+1)+'</span><h3>'+titles[g.id]+'</h3><span></span></div>'+b+'</section>';
+    }).join('');
+    document.getElementById('bar').hidden=G.some(function(g){return g.id==='direct';});
+    live('init'); status();
+  }
+  function status(){
+    var G=FM.groups(S), R=req(G), done=R.filter(function(id){return !FM.errorOf(S,id);}).length;
+    G.forEach(function(g,i){ var sec=f.querySelector('[data-g="'+g.id+'"]'); if(!sec) return; var r=g.f.filter(function(id){return R.indexOf(id)>=0;}), ok=r.every(function(id){return !FM.errorOf(S,id);}) && (r.length || g.f.some(function(id){var v=S.v[id]; return v&&v.length;}));
+      sec.classList.toggle('ok',!!ok); sec.querySelector('.v3-n').innerHTML=ok?FM.ic('check'):(i+1); sec.querySelector('.v3-sec-h > span:last-child').textContent=ok?'Hecho':(r.length?'Obligatorio':'Opcional'); });
+    var pct=R.length?Math.round(done/R.length*100):0; document.getElementById('pt').textContent=pct===100?'Todo listo para enviar':'Completado: '+done+' de '+R.length+' datos necesarios'; document.getElementById('pb').style.width=pct+'%';
+  }
+  var live=FM.bind(S,f,function(id){ if(id==='programa'){ render(); return; } status(); });
+  document.getElementById('send').onclick=function(){
+    var G=FM.groups(S), R=req(G), errs={}; R.forEach(function(id){ var e=FM.errorOf(S,id); if(e) errs[id]=e; }); var tel=FM.errorOf(S,'tel'); if(tel) errs.tel=tel;
+    if(!FM.showAll(f,errs,R.concat(['tel']))){ var first=f.querySelector('.is-bad'); if(first) first.scrollIntoView({block:'center',behavior:'smooth'}); return; }
+    FM.clear(S); f.innerHTML='<div class="v3-done">'+FM.thanks(S)+'</div>'; document.getElementById('bar').hidden=true; document.getElementById('restore').innerHTML=''; f.querySelector('.fm-done').focus();
+  };
+  render();
+})();
+</script>
+</body>
+</html>

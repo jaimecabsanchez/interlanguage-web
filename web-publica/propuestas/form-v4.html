@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="robots" content="noindex">
+<title>Formulario · V4 Conversación</title>
+<link rel="stylesheet" href="../css/styles.css?v=144"><link rel="stylesheet" href="fm.css">
+<style>
+  body{background:var(--stone); margin:0;}
+  .v4{padding:clamp(36px,5vw,72px) 16px;}
+  .v4-in{max-width:760px; margin:0 auto;}
+  .v4-win{background:#fff; border-radius:16px; border:1px solid var(--line); box-shadow:0 20px 60px rgba(22,41,74,.08); overflow:hidden;}
+  .v4-top{display:flex; align-items:center; gap:12px; padding:16px 20px; background:var(--navy); color:#fff;}
+  .v4-av{display:grid; place-items:center; width:42px; height:42px; border-radius:50%; background:#fff; color:var(--navy); font:600 1.15rem/1 var(--font-display); flex:none;}
+  .v4-top b{display:block; font:600 1.05rem/1.2 var(--font-body);} .v4-top small{display:flex; align-items:center; gap:6px; font-size:.8rem; color:rgba(255,255,255,.78);}
+  .v4-top small::before{content:""; width:7px; height:7px; border-radius:50%; background:#5fd39a;}
+  .v4-top .v4-prog{margin-left:auto; font:700 .78rem/1 var(--font-body); color:rgba(255,255,255,.78);}
+  .v4-thread{display:grid; gap:12px; padding:22px clamp(14px,3vw,26px) 8px; max-height:none;}
+  .v4-b{max-width:82%; padding:12px 15px; border-radius:16px; font-size:.97rem; line-height:1.45;}
+  .v4-b--bot{justify-self:start; background:var(--ivory); color:var(--navy); border-bottom-left-radius:4px;}
+  .v4-b--me{justify-self:end; display:flex; align-items:center; gap:10px; background:var(--navy); color:#fff; border-bottom-right-radius:4px; cursor:pointer; border:0; font:inherit; text-align:left;}
+  .v4-b--me .fm-ic{width:14px; height:14px; opacity:.65;} .v4-b--me:hover .fm-ic{opacity:1;}
+  .v4-typing{display:inline-flex; gap:4px; padding:14px 16px;} .v4-typing i{width:7px; height:7px; border-radius:50%; background:var(--ink-soft); opacity:.4;}
+  @media (prefers-reduced-motion:no-preference){ .v4-typing i{animation:v4-d 1s infinite;} .v4-typing i:nth-child(2){animation-delay:.15s;} .v4-typing i:nth-child(3){animation-delay:.3s;} @keyframes v4-d{0%,60%,100%{opacity:.35; transform:none;} 30%{opacity:1; transform:translateY(-3px);}} .v4-b{animation:fm-in .22s var(--e) both;} }
+  .v4-ans{padding:10px clamp(14px,3vw,26px) 22px;}
+  .v4-ans .fm-opts{justify-content:flex-end;}
+  .v4-ans .fm-opts--wrap .fm-opt-b{border-radius:999px;}
+  .v4-ans .fm-opts--wrap .fm-opt--d .fm-opt-b{border-radius:14px;}
+  .v4-ans .fm-opts:not(.fm-opts--wrap):not(.fm-opts--big){display:flex; flex-wrap:wrap; justify-content:flex-end;}
+  .v4-ans .fm-opts:not(.fm-opts--wrap):not(.fm-opts--big) .fm-opt-b{border-radius:999px; min-height:44px;} .v4-ans .fm-opts:not(.fm-opts--wrap):not(.fm-opts--big) .fm-dot{display:none;}
+  .v4-ans .fm-opts:not(.fm-opts--wrap):not(.fm-opts--big) .fm-opt input:checked + .fm-opt-b{background:var(--navy);} .v4-ans .fm-opts:not(.fm-opts--wrap):not(.fm-opts--big) .fm-opt input:checked + .fm-opt-b b{color:#fff;}
+  .v4-row{display:grid; grid-template-columns:1fr 1fr; gap:14px;} .v4-row .fm-field + .fm-field{margin-top:0;}
+  .v4-act{display:flex; flex-wrap:wrap; align-items:center; justify-content:flex-end; gap:12px; margin-top:16px;}
+  .v4-skip{border:0; background:none; font:700 .9rem/1 var(--font-body); color:var(--ink-soft); cursor:pointer; text-decoration:underline; text-underline-offset:3px;}
+  .v4-foot{display:flex; flex-wrap:wrap; justify-content:center; gap:8px 18px; margin-top:16px;}
+  .v4-done{padding:24px;}
+  @media (max-width:560px){ .v4-row{grid-template-columns:1fr;} .v4-b{max-width:90%;} .v4-act .fm-btn{flex:1;} }
+</style>
+</head>
+<body>
+<section class="v4 fm"><div class="v4-in">
+  <div class="v4-win">
+    <div class="v4-top"><span class="v4-av">IL</span><span><b>Equipo de orientación · Madrid</b><small>Os respondemos personalmente</small></span><span class="v4-prog" id="pg"></span></div>
+    <div class="v4-thread" id="th" aria-live="polite"></div>
+    <form class="v4-ans" id="f" novalidate onsubmit="return false"></form>
+  </div>
+  <div class="v4-foot"><span class="fm-secure" id="sec"></span><span class="fm-note">¿Preferís hablar? <a class="fm-link" href="#">Reservad una llamada</a></span></div>
+</div></section>
+<script src="fm-core.js"></script>
+<script>
+(function(){
+  var S=FM.create('v4'), th=document.getElementById('th'), f=document.getElementById('f'), at=0, reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  document.getElementById('sec').innerHTML=FM.ic('lock')+' Vuestros datos solo se usan para responder a esta consulta';
+  var HELLO={general:'Hola. Somos el equipo de Interlanguage. ¿Qué os interesa?',estudiar:'Hola. Os ayudamos a encontrar el colegio adecuado en el extranjero. Empezamos por el destino:',campamento:'Hola. Os ayudamos a elegir campamento de verano en el extranjero. ¿Cuál os interesa?'};
+  var ASK={programa:null,destino:'¿Qué destino os interesa? Si no lo tenéis claro, os ayudamos a decidir.',duracion:'¿Cuánto tiempo os gustaría que estuviera?',inicio:'¿Cuándo os gustaría empezar?',colegio:null,semanas:'¿Cuántas semanas?',ingles:'¿Y qué programa de inglés? Todos tienen 15 horas a la semana.',edad:'Ahora, sobre el alumno: ¿qué edad tiene?',nivel:'Para afinar la propuesta (opcional): ¿qué nivel de inglés tiene y qué le gusta?',nombre:'Perfecto. ¿Cómo os llamamos y dónde os escribimos?',pref:'Último paso: ¿cómo preferís que os contactemos?'};
+  function screens(){
+    var p=FM.prog(S), s=[];
+    if(S.ctx==='general') s.push({f:['programa'],auto:true});
+    if(!p) return s;
+    if(p==='madrid'||p==='extra'){ s.push({direct:true}); return s; }
+    (p==='campamento'?['colegio','semanas','ingles']:['destino','duracion','inicio']).forEach(function(k){ s.push({f:[k],auto:true}); });
+    s.push({f:['edad','curso'],row:true}); s.push({f:['nivel','intereses'],skip:true}); s.push({f:['nombre','email','tel'],row3:true}); s.push({f:['pref','franja','rgpd','news'],send:true});
+    return s;
+  }
+  function ask(sc,i){ if(sc.direct) return 'Para eso no hace falta asesoramiento: la inscripción es directa y rápida.'; var k=sc.f[0]; if(i===0) return HELLO[S.ctx]; return ASK[k]||FM.F[k].q; }
+  function ans(sc){ if(!sc.f) return ''; return sc.f.map(function(id){ if(['rgpd','news','tel','curso','franja'].indexOf(id)>=0&&id!=='curso') return ''; var l=FM.label(id,S.v[id]); return id==='email'&&l?l:l; }).filter(Boolean).join(' · ')||'Prefiero no indicarlo'; }
+  function render(typing){
+    var sc=screens(), cur=sc[at];
+    var h=''; for(var i=0;i<at;i++) h+='<div class="v4-b v4-b--bot">'+ask(sc[i],i)+'</div><button type="button" class="v4-b v4-b--me" data-edit="'+i+'" aria-label="Cambiar respuesta">'+ans(sc[i])+FM.ic('edit')+'</button>';
+    h+= typing&&!reduce ? '<div class="v4-b v4-b--bot v4-typing" aria-hidden="true"><i></i><i></i><i></i></div>' : '<div class="v4-b v4-b--bot">'+ask(cur,at)+'</div>';
+    th.innerHTML=h;
+    var total=FM.prog(S)?sc.length:Math.max(sc.length,8); document.getElementById('pg').textContent=cur.direct?'':'Paso '+(at+1)+' de '+total;
+    if(typing&&!reduce){ f.innerHTML=''; setTimeout(function(){ render(false); },420); return; }
+    var a='';
+    if(cur.direct) a=FM.direct(S);
+    else{
+      var fields=cur.f.map(function(id){ var big=id==='programa'||id==='colegio'; return FM.field(S,id,{noq:(FM.F[id].type==='choice'||FM.F[id].type==='multi')&&cur.f.length===1, big:id==='programa'}); }).join('');
+      a = cur.row ? '<div class="v4-row">'+fields+'</div>' : cur.row3 ? '<div class="v4-row">'+FM.field(S,'nombre')+FM.field(S,'email')+'</div><div style="margin-top:16px">'+FM.field(S,'tel')+'</div>' : fields;
+      a+='<div class="v4-act">'+(cur.skip?'<button type="button" class="v4-skip" data-next>Saltar</button>':'')+(cur.auto?'':(cur.send?'<button type="button" class="fm-btn fm-btn--p" data-send>Enviar consulta '+FM.ic('arrow')+'</button>':'<button type="button" class="fm-btn fm-btn--p" data-next data-check>Continuar '+FM.ic('arrow')+'</button>'))+'</div>';
+    }
+    f.innerHTML='<div class="fm-anim">'+a+'</div>'; live('init');
+    var x=f.querySelector('select,input[type=text],input[type=email]'); if(x&&at>0) x.focus({preventScroll:true});
+    f.scrollIntoView({block:'nearest'});
+  }
+  function go(i){ at=Math.max(0,Math.min(i,screens().length-1)); render(true); }
+  var live=FM.bind(S,f,function(id,kind,el){ var cur=screens()[at]; if(id==='programa'){ setTimeout(function(){ go(1); },220); return; } if(kind==='change'&&cur&&cur.auto&&el&&el.type==='radio') setTimeout(function(){ go(at+1); },220); });
+  th.addEventListener('click',function(e){ var b=e.target.closest('[data-edit]'); if(b){ at=+b.dataset.edit; render(false); } });
+  f.addEventListener('click',function(e){
+    var cur=screens()[at];
+    var nx=e.target.closest('[data-next]'); if(nx){ if(nx.hasAttribute('data-check')&&!FM.showAll(f,FM.groupErrors(S,{f:cur.f}),cur.f)) return; return go(at+1); }
+    if(e.target.closest('[data-send]')){ if(!FM.showAll(f,FM.groupErrors(S,{f:cur.f}),cur.f)) return; FM.clear(S);
+      th.innerHTML+='<div class="v4-b v4-b--bot">¡Gracias! Ya lo tenemos.</div>'; f.innerHTML='<div class="v4-done">'+FM.thanks(S)+'</div>'; document.getElementById('pg').textContent='Enviado'; f.querySelector('.fm-done').focus(); }
+  });
+  f.addEventListener('keydown',function(e){ if(e.key==='Enter'&&e.target.tagName!=='TEXTAREA'){ e.preventDefault(); var b=f.querySelector('[data-send],[data-next][data-check]'); if(b) b.click(); } });
+  if(S.restored){ var sc=screens(); for(var k=0;k<sc.length-1;k++){ var s=sc[k]; if(!s.f||!s.f.every(function(id){return !FM.errorOf(S,id)&&(S.v[id]||!FM.F[id].req);})) break; if(s.auto&&!S.v[s.f[0]]) break; at=k+1; } }
+  render(false);
+})();
+</script>
+</body>
+</html>

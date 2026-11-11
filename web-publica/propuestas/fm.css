@@ -1,0 +1,98 @@
+/* Piezas comunes de las propuestas de formulario. Tokens de styles.css (colores y fuentes reales de la web). */
+.fm{--e:cubic-bezier(.2,.6,.2,1); font-family:var(--font-body); color:var(--ink);}
+.fm *{box-sizing:border-box; min-width:0;}
+.fm-ic{width:1.2em; height:1.2em; flex:none; fill:none; stroke:currentColor; stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round;}
+.fm-q{margin:0; font:700 .98rem/1.3 var(--font-body); color:var(--navy);}
+.fm-h{margin:4px 0 0; font-size:.88rem; line-height:1.45; color:var(--ink-soft);}
+.fm-optional{font-style:normal; font-weight:500; font-size:.8rem; color:var(--ink-soft);}
+.fm-field{display:grid; gap:10px;}
+.fm-field + .fm-field{margin-top:22px;}
+
+/* opciones */
+.fm-opts{display:grid; gap:8px;}
+.fm-opts--wrap{display:flex; flex-wrap:wrap;}
+.fm-opt{position:relative; display:block; cursor:pointer;}
+.fm-opt input{position:absolute; opacity:0; inset:0; width:100%; height:100%; margin:0; cursor:pointer;}
+.fm-opt-b{display:flex; align-items:center; gap:12px; min-height:48px; padding:11px 14px; border:1.5px solid var(--field-line); border-radius:var(--r-sm); background:#fff; transition:border-color .15s var(--e), background-color .15s var(--e), box-shadow .15s var(--e), transform .15s var(--e);}
+.fm-opt-b > span{display:grid; gap:2px; flex:1;}
+.fm-opt-b b{font:600 .96rem/1.25 var(--font-body); color:var(--navy);}
+.fm-opt-b small{font-size:.82rem; line-height:1.35; color:var(--ink-soft);}
+.fm-dot{flex:none; width:20px; height:20px; border:1.5px solid rgba(22,41,74,.38); border-radius:50%; background:#fff; transition:all .15s var(--e);}
+.fm-tick{flex:none; display:grid; place-items:center; width:20px; height:20px; border:1.5px solid rgba(22,41,74,.38); border-radius:5px; color:transparent; transition:all .15s var(--e);} .fm-tick .fm-ic{width:14px; height:14px; stroke-width:2.6;}
+.fm-opts--wrap .fm-opt-b{min-height:44px; padding:9px 14px;} .fm-opts--wrap .fm-dot{display:none;} .fm-opts--wrap .fm-tick{width:18px; height:18px;}
+@media (hover:hover){ .fm-opt:hover .fm-opt-b{border-color:var(--navy);} }
+.fm-opt:active .fm-opt-b{transform:scale(.99);}
+.fm-opt input:checked + .fm-opt-b{border-color:var(--navy); background:color-mix(in srgb,var(--navy) 5%,#fff); box-shadow:inset 0 0 0 1px var(--navy);}
+.fm-opt input:checked + .fm-opt-b .fm-dot{border-color:var(--accent); background:radial-gradient(circle, var(--accent) 0 5px, #fff 6px);}
+.fm-opt input:checked + .fm-opt-b .fm-tick{background:var(--navy); border-color:var(--navy); color:#fff;}
+.fm-opts--wrap .fm-opt input:checked + .fm-opt-b{background:var(--navy); color:#fff; box-shadow:none;} .fm-opts--wrap .fm-opt input:checked + .fm-opt-b b{color:#fff;} .fm-opts--wrap .fm-opt input:checked + .fm-opt-b small{color:rgba(255,255,255,.8);}
+/* opciones con subtítulo: cuadrícula regular, no una fila que se rompe */
+.fm-opts--wrap:has(.fm-opt--d){display:grid; grid-template-columns:repeat(auto-fill,minmax(170px,1fr));}
+.fm-opts--wrap .fm-opt--d .fm-opt-b{height:100%;} .fm-opts--wrap .fm-opt input:checked + .fm-opt-b .fm-tick{border-color:#fff; background:#fff; color:var(--navy);}
+.fm-opt input:focus-visible + .fm-opt-b{outline:3px solid var(--accent); outline-offset:2px;}
+.fm-opts--big{grid-template-columns:1fr 1fr; gap:10px;}
+.fm-opts--big .fm-opt-b{align-items:flex-start; min-height:96px; padding:16px; flex-wrap:wrap;}
+.fm-opts--big .fm-opt-ic{width:36px; height:36px; padding:7px; border-radius:50%; background:var(--stone); color:var(--navy);}
+.fm-opts--big .fm-opt input:checked + .fm-opt-b .fm-opt-ic{background:var(--navy); color:#fff;}
+.fm-opts--big .fm-opt-b b{font-size:1rem;}
+
+/* campos de texto */
+.fm-lab{display:grid; gap:8px;}
+.fm-lab select, .fm-lab textarea, .fm-inp input{width:100%; min-height:50px; padding:0 14px; border:1.5px solid var(--field-line); border-radius:var(--r-sm); background:#fff; font:400 1rem var(--font-body); color:var(--ink); transition:border-color .15s var(--e), box-shadow .15s var(--e), background-color .15s var(--e); appearance:none; -webkit-appearance:none;}
+.fm-lab select{padding-right:40px; background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='8' fill='none' stroke='%2316294A' stroke-width='1.8'%3E%3Cpath d='M1 1l6 6 6-6'/%3E%3C/svg%3E") right 14px center no-repeat; cursor:pointer;}
+.fm-lab textarea{padding:12px 14px; min-height:90px; resize:vertical; line-height:1.5;}
+.fm-inp{position:relative; display:block;} .fm-inp--pre input{padding-left:56px;}
+.fm-pre{position:absolute; left:1.5px; top:1.5px; bottom:1.5px; display:grid; place-items:center; width:46px; border-right:1px solid var(--line); border-radius:var(--r-sm) 0 0 var(--r-sm); background:var(--ivory); font:600 .92rem/1 var(--font-body); color:var(--navy);}
+.fm-lab select:focus, .fm-lab textarea:focus, .fm-inp input:focus{outline:0; border-color:var(--navy); box-shadow:0 0 0 3px rgba(22,41,74,.14);}
+.fm-field.is-bad select, .fm-field.is-bad textarea, .fm-field.is-bad .fm-inp input, .fm-field.is-bad .fm-opt-b{border-color:var(--error);}
+.fm-field.is-bad .fm-inp input, .fm-field.is-bad select{background-color:#fff8f6;}
+.fm-check{position:relative; display:grid; grid-template-columns:22px 1fr; gap:12px; align-items:start; cursor:pointer; font-size:.9rem; line-height:1.45; color:var(--ink-soft);}
+.fm-check input{position:absolute; opacity:0; width:22px; height:22px; margin:0; cursor:pointer;}
+.fm-box{display:grid; place-items:center; width:22px; height:22px; border:1.5px solid rgba(22,41,74,.4); border-radius:5px; background:#fff; color:transparent; transition:all .15s var(--e);} .fm-box .fm-ic{width:15px; height:15px; stroke-width:2.6;}
+.fm-check input:checked + .fm-box{background:var(--navy); border-color:var(--navy); color:#fff;}
+.fm-check input:focus-visible + .fm-box{outline:3px solid var(--accent); outline-offset:2px;}
+.fm-check a{color:var(--accent); text-decoration:underline;}
+.fm-field.is-bad .fm-box{border-color:var(--error);}
+
+/* avisos y errores */
+.fm-tip{margin:0; display:flex; gap:8px; padding:10px 12px; border-radius:var(--r-sm); background:color-mix(in srgb,var(--forest) 10%,#fff); font-size:.86rem; line-height:1.4; color:var(--forest-dark);}
+.fm-tip a{color:var(--forest-dark); font-weight:700; text-decoration:underline;}
+.fm-err{margin:0; display:flex; align-items:center; gap:8px; font-weight:600; font-size:.85rem; color:var(--error);}
+.fm-err::before{content:"!"; flex:none; display:grid; place-items:center; width:18px; height:18px; border-radius:50%; background:var(--error); color:#fff; font-size:.72rem; font-weight:800;}
+.fm-tip[hidden], .fm-err[hidden]{display:none;}
+
+/* botones */
+.fm-btn{display:inline-flex; align-items:center; justify-content:center; gap:10px; min-height:52px; padding:0 26px; border:1.5px solid transparent; border-radius:var(--r-btn); font:700 1rem/1 var(--font-body); text-decoration:none; cursor:pointer; transition:background-color .15s var(--e), color .15s var(--e), border-color .15s var(--e), transform .15s var(--e);}
+.fm-btn:active{transform:scale(.985);}
+.fm-btn--p{background:var(--accent); color:#fff;} .fm-btn--p:hover{background:var(--accent-dark);}
+.fm-btn--g{border-color:var(--field-line); background:#fff; color:var(--navy);} .fm-btn--g:hover{border-color:var(--navy);}
+.fm-btn .fm-ic{transition:transform .2s var(--e);} .fm-btn:hover .fm-ic{transform:translateX(3px);}
+.fm-back{display:inline-flex; align-items:center; gap:8px; border:0; background:none; padding:8px 2px; font:700 .92rem/1 var(--font-body); color:var(--ink-soft); cursor:pointer;}
+.fm-back:hover{color:var(--navy);} .fm-back:hover .fm-ic{transform:translateX(-3px);} .fm-back .fm-ic{transition:transform .2s var(--e);}
+.fm-link{font:700 .92rem/1.3 var(--font-body); color:var(--accent); text-decoration:none;} .fm-link:hover{text-decoration:underline; text-underline-offset:3px;}
+.fm-row-act{display:flex; flex-wrap:wrap; align-items:center; gap:12px 20px;}
+.fm-note{margin:0; font-size:.84rem; color:var(--ink-soft);}
+.fm-secure{display:flex; align-items:center; gap:8px; font-size:.82rem; color:var(--ink-soft);} .fm-secure .fm-ic{color:var(--forest);}
+
+/* inscripción directa, borrador recuperado y gracias */
+.fm-direct{display:grid; grid-template-columns:auto 1fr; gap:16px; padding:20px; border-radius:var(--r-sm); background:var(--stone); border-left:3px solid var(--forest);}
+.fm-direct-ic{display:grid; place-items:center; width:44px; height:44px; border-radius:50%; background:#fff; color:var(--forest);} .fm-direct-ic .fm-ic{width:22px; height:22px;}
+.fm-direct p{margin:4px 0 12px; font-size:.94rem; color:var(--ink-soft);}
+.fm-restore{display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:8px 16px; padding:10px 14px; border-radius:var(--r-sm); background:var(--ivory); font-size:.86rem; color:var(--navy);}
+.fm-restore button{border:0; background:none; font:700 .86rem/1 var(--font-body); color:var(--accent); cursor:pointer; text-decoration:underline;}
+.fm-done{display:grid; gap:10px; justify-items:start; outline:0;}
+.fm-done-ic{display:grid; place-items:center; width:52px; height:52px; border-radius:50%; background:var(--forest); color:#fff;} .fm-done-ic .fm-ic{width:26px; height:26px; stroke-width:2.4;}
+.fm-done > .fm-q{font:600 1.5rem/1.2 var(--font-display);}
+.fm-done > p{margin:0; color:var(--ink-soft);}
+.fm-recap{display:grid; width:100%; margin:6px 0 0; padding:0; list-style:none; border-top:1px solid var(--line);}
+.fm-recap li{display:grid; grid-template-columns:130px 1fr; gap:10px; padding:9px 0; border-bottom:1px solid var(--line); font-size:.9rem;}
+.fm-recap span{color:var(--ink-soft);} .fm-recap b{color:var(--navy);}
+
+/* entradas suaves; nada con «Reducir movimiento» */
+@media (prefers-reduced-motion:no-preference){
+  @keyframes fm-in{from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:none;}}
+  @keyframes fm-drop{from{opacity:0; transform:translateY(-3px);} to{opacity:1; transform:none;}}
+  .fm-anim{animation:fm-in .25s var(--e) both;}
+  .fm-err:not([hidden]), .fm-tip:not([hidden]){animation:fm-drop .2s var(--e) both;}
+}
+@media (max-width:560px){ .fm-opts--wrap:has(.fm-opt--d){grid-template-columns:1fr 1fr;} .fm-opts--big{grid-template-columns:1fr;} .fm-opts--big .fm-opt-b{min-height:0;} .fm-recap li{grid-template-columns:1fr; gap:2px;} }
