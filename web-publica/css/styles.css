@@ -2014,7 +2014,7 @@ body .age-path-steps h3{display:block; margin:0; color:var(--ap-accent); font-si
 /* ---------- Formulario «¿Hablamos?» · diseño V5 B1 (11-11-2026) ----------
    1) Lista de programas con foto pequeña (etiqueta «Con asesoramiento» / «Inscripción directa»). 2) Panel: foto del programa a la izquierda
    y todo el formulario en una pantalla a la derecha. Fotos distintas de las de «Un programa para cada momento». Ver js/main.js (#leadForm). */
-section.contact.lf{padding:clamp(56px,7vw,96px) 0; color:var(--ink); background:var(--ivory); overflow:visible; overflow:clip;}   /* clip (no hidden): deja que la foto del panel se quede fija */
+section.contact.lf{padding:clamp(56px,7vw,96px) 0; color:var(--ink); background:var(--stone); overflow:visible; overflow:clip;}   /* piedra (11-11-2026): en marfil se confundía con «El destino empieza por vuestro hijo», justo encima. clip (no hidden): deja que la foto del panel se quede fija */
 .lf-in{display:grid; gap:28px;}
 .lf-head{display:grid; gap:12px; max-width:780px;}
 .lf-eb{margin:0; display:flex; align-items:center; gap:14px; font:700 .76rem/1.3 var(--font-body); letter-spacing:.16em; text-transform:uppercase; color:var(--forest);}
