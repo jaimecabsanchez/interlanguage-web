@@ -25,6 +25,9 @@ window.dataLayer = window.dataLayer || [];
       callFailed: 'No hemos podido confirmar la llamada. Tu hora y tus datos siguen aquí: vuelve a intentarlo (no se duplicará la reserva).',
       callMailSent: 'Te hemos enviado un correo con estos datos y el enlace para cancelar.',
       callMailNo: 'Guarda estos datos: si necesitas cancelar, usa el enlace de abajo.',
+      campAge: 'Con {n} años, el único colegio que le admite es Strathallan School (desde los 8).',
+      campLeadAge: 'El programa de liderazgo es de 14 a 17 años. Con {n} años le corresponde Inglés general.',
+      campLeadSchool: 'El programa de liderazgo se imparte en Dollar Academy; en otros colegios, consultadlo.',
       cmpMore: 'Ver matices',
       cmpLess: 'Ocultar'
     },
@@ -50,6 +53,9 @@ window.dataLayer = window.dataLayer || [];
       callFailed: "We couldn't confirm the call. Your time and details are still here: please try again (it won't be booked twice).",
       callMailSent: 'We have emailed you these details and the link to cancel.',
       callMailNo: 'Keep these details: if you need to cancel, use the link below.',
+      campAge: 'At {n}, the only school that accepts them is Strathallan School (from age 8).',
+      campLeadAge: 'The leadership programme is for ages 14 to 17. At {n}, General English is the right choice.',
+      campLeadSchool: 'The leadership programme runs at Dollar Academy; for other schools, please ask us.',
       cmpMore: 'Details',
       cmpLess: 'Hide'
     }
@@ -230,21 +236,28 @@ window.dataLayer = window.dataLayer || [];
   // El contacto (#contacto) es una sola sección y vive en la home. En «Estudiar en el extranjero» se coloca al final de esa página, ya
   // orientado a ese programa: pedir orientación no saca a la familia de ella y la vista, el título y la URL siguen coincidiendo.
   // Al salir de la página vuelve a su sitio en la home.
+  // Lo mismo en «Campamentos de verano en el extranjero»: cada página con hueco propio fija su programa en el formulario.
   const contactSection = document.getElementById('contacto');
-  const contactSlot = document.getElementById('ext-contacto-slot');
+  const CONTACT_SLOTS = {
+    'view-service-extranjero': { slot: 'ext-contacto-slot', service: 'extranjero', cls: 'contact--ext' },
+    'view-service-verano-extranjero': { slot: 'vext-contacto-slot', service: 'verano-extranjero', cls: 'contact--vext' }
+  };
   const contactHome = contactSection ? document.createComment('contacto') : null;
   if (contactHome) contactSection.parentNode.insertBefore(contactHome, contactSection);
-  function isExtVisible(){
-    const v = document.getElementById('view-service-extranjero');
-    return !!v && !v.hidden;
+  // vista visible que lleva el contacto dentro (o null si es la home u otra página)
+  function slotView(){
+    for (const id in CONTACT_SLOTS){ const v = document.getElementById(id); if (v && !v.hidden && document.getElementById(CONTACT_SLOTS[id].slot)) return id; }
+    return null;
   }
+  function slotService(){ const v = slotView(); return v ? CONTACT_SLOTS[v].service : ''; }
+  function isExtVisible(){ return !!slotView(); }   // «el formulario está en la propia página»
   function placeContact(viewId){
-    if (!contactSection || !contactSlot) return;
-    const inExt = viewId === 'view-service-extranjero';
-    if (inExt && contactSection.parentNode !== contactSlot) contactSlot.appendChild(contactSection);
-    if (!inExt && contactSection.parentNode === contactSlot) contactHome.parentNode.insertBefore(contactSection, contactHome.nextSibling);
-    contactSection.classList.toggle('contact--ext', inExt);
-    if (window.ilLead) window.ilLead.lock(inExt);   // en la carga directa el formulario aún no existe: se sincroniza al final de su bloque
+    if (!contactSection) return;
+    const conf = CONTACT_SLOTS[viewId], slot = conf && document.getElementById(conf.slot);
+    if (slot && contactSection.parentNode !== slot) slot.appendChild(contactSection);
+    if (!slot && contactSection.parentNode !== contactHome.parentNode) contactHome.parentNode.insertBefore(contactSection, contactHome.nextSibling);
+    Object.keys(CONTACT_SLOTS).forEach(function(id){ contactSection.classList.toggle(CONTACT_SLOTS[id].cls, !!slot && id === viewId); });
+    if (window.ilLead) window.ilLead.lock(slot ? conf.service : '');   // en la carga directa el formulario aún no existe: se sincroniza al final de su bloque
   }
   // «Estudiar en el extranjero» tiene una dirección por destino (#servicio-extranjero-irlanda): abre la página y lleva a la tarjeta de ese destino.
   // Las direcciones antiguas (#servicio-extranjero) siguen funcionando.
@@ -326,7 +339,7 @@ window.dataLayer = window.dataLayer || [];
     // el formulario tiene su propia entrada de historial: «Atrás» devuelve al punto de la página desde el que se pidió, no a la home
     if (!(history.state && history.state.extForm)){
       history.replaceState(Object.assign({}, history.state, { y: window.scrollY }), '');
-      history.pushState({ view: 'service-extranjero', extForm: true }, '', location.href);
+      history.pushState({ view: (slotView() || 'view-service-extranjero').replace('view-', ''), extForm: true }, '', location.href);
     }
     scrollToExtContact();
   }
@@ -683,8 +696,8 @@ window.dataLayer = window.dataLayer || [];
     document.querySelectorAll('[data-advise]').forEach(function(el){
       el.addEventListener('click', function(e){
         e.preventDefault();
-        const inExt = !!el.closest('#view-service-extranjero');
-        // en la página de extranjero el contacto está al final de la propia página; desde la home se baja al de la home
+        const inExt = Object.keys(CONTACT_SLOTS).some(function(id){ return !!el.closest('#' + id); });
+        // en «Estudiar en el extranjero» y «Campamentos de verano en el extranjero» el contacto está al final de la propia página; desde la home se baja al de la home
         if (!inExt) goHome('contacto', { smooth: true });
         if (window.ilLead){
           window.ilLead.select(el.getAttribute('data-advise'));
@@ -706,8 +719,8 @@ window.dataLayer = window.dataLayer || [];
     link.addEventListener('click', function(e){
       if (!isHomeVisible() && plainClick(e)){
         e.preventDefault();
-        if (targetId === 'contacto' && isExtVisible()){   // en «Estudiar en el extranjero» el contacto está en la propia página
-          if (window.ilLead) window.ilLead.select('extranjero');
+        if (targetId === 'contacto' && isExtVisible()){   // en las páginas con hueco propio el contacto está en la propia página
+          if (window.ilLead) window.ilLead.select(slotService());
           openExtContact(); closeNav();
           return;
         }
@@ -755,7 +768,7 @@ window.dataLayer = window.dataLayer || [];
     if (h.indexOf('servicio-') === 0){
       const r = resolveService(h.replace('servicio-',''));
       if (r){
-        const same = r.view === 'extranjero' && isExtVisible();
+        const same = slotView() === 'view-service-' + r.view;
         showView('view-service-' + r.view, same ? { keepScroll: true, silent: true } : undefined);
         if (same && typeof st.y === 'number'){
           // si el formulario se acaba de abrir, su desplazamiento suave puede seguir en marcha: «instant» lo cancela y se repite un fotograma después
@@ -782,7 +795,11 @@ window.dataLayer = window.dataLayer || [];
     el.addEventListener('click', function(){ pushEvent('clic_cta', { cta_id: el.getAttribute('data-cta'), cta_text: el.textContent.trim() }); });
   });
 
-  // ---- formulario de consulta (#leadForm): servicio en tarjetas + solo los campos que hacen falta + 2 pasos ----
+  // ---- formulario de consulta (#leadForm), diseño V5 · B1 ----
+  // 1) Se elige el programa en una lista con fotos. 2) Aparece un panel con la foto del programa y, al lado, todo el formulario en una
+  // pantalla (programa · alumno · contacto). Estudiar y campamentos en el extranjero llevan asesoramiento; Madrid y el extraescolar son
+  // «inscripción directa»: piden solo lo imprescindible (Madrid, mientras su inscripción esté cerrada, la edad y el contacto). Si la familia prefiere teléfono y la reserva
+  // de llamada está activa, después se elige día y hora (paso 3).
   // Textos (etiquetas, errores, ayudas) en el HTML; el valor de las opciones va siempre en español (es lo que llega al equipo).
   (function(){
     const form = document.getElementById('leadForm');
@@ -791,61 +808,112 @@ window.dataLayer = window.dataLayer || [];
     const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const scrollOpts = function(block){ return { behavior: reduceMotion ? 'auto' : 'smooth', block: block }; };
     const radios = Array.from(form.querySelectorAll('input[name="service"]'));
+    const optBtns = Array.from(form.querySelectorAll('.lf-opt[data-service]'));
     const ctx = $('leadCtx');
     const age = $('leadAge'), school = $('leadSchool'), dest = $('leadDest'), dur = $('leadDur');
     const course = $('leadCourse'), start = $('leadStart'), studentName = $('leadStudentName'), currentSchool = $('leadCurrentSchool'), english = $('leadEnglish');
-    const serviceSet = $('leadServiceSet'), picked = $('leadPicked'), pickedText = $('leadPickedText'), pickedChange = $('leadPickedChange');
+    const serviceSet = $('leadServiceSet'), panel = $('leadPanel'), pickedChange = $('leadPickedChange'), mainStep = $('leadMain');
+    const photo = $('leadPhoto'), photoTitle = $('leadPhotoTitle'), photoList = $('leadPhotoList');
     const prefRadios = Array.from(form.querySelectorAll('input[name="contactPreference"]'));
     const phone = $('phone'), phoneReq = $('phoneReq'), phoneOpt = $('phoneOpt');
-    const steps = Array.from(form.querySelectorAll('.form-step'));
-    const inds = Array.from(form.querySelectorAll('.lead-steps-item'));
-    const nextBtn = $('stepNextBtn'), backBtn = $('stepBackBtn'), submitBtn = $('submitBtn');
-    const msgEl = $('formMsg'), errEl = $('formErrorMsg'), recapEl = $('leadRecap');
+    const submitBtn = $('submitBtn');
+    const msgEl = $('formMsg'), errEl = $('formErrorMsg');
     // Reserva de llamada (paso 3): solo si la reserva está activa (js/reserva-llamada.js con su dirección en el HTML)
-    // y la familia prefiere que la llamemos. Si no, el formulario sigue igual que siempre.
+    // y la familia prefiere que la llamemos. Si no, el formulario se envía directamente.
     const CB = window.ilCallBooking;
     const callStep = $('callStep');
     const callOn = !!(CB && CB.enabled && callStep);
-    const callInd = form.querySelector('.lead-steps-item[data-ind="3"]');
-    const stepsList = $('leadSteps');
     const callErr = $('callError'), callConfirm = $('callConfirmBtn'), callSummary = $('callSummary'), callDone = $('callDone');
     let picker = null, bookKey = null, booking = false;
     const DUNNO = 'Aún no lo sé';
-    const attempted = {};   // pasos en los que ya se intentó avanzar (a partir de ahí se valida en vivo)
+    const attempted = {};   // a partir del primer intento de envío se valida en vivo
     let current = 1;
+    let locked = '', prevService = '';
+    if (photoTitle) photoTitle.setAttribute('tabindex', '-1');
 
     function service(){
       const c = radios.filter(function(r){ return r.checked; })[0];
       return c ? c.value : '';
     }
+    function optFor(s){ return optBtns.filter(function(b){ return b.dataset.service === s; })[0]; }
     function serviceLabel(){
-      const c = radios.filter(function(r){ return r.checked; })[0];
-      const s = c && c.closest('label') && c.closest('label').querySelector('strong');
-      return s ? s.textContent : '';
+      const b = optFor(service());
+      if (!b) return '';
+      return b.dataset.title || ((b.querySelector('strong') || {}).textContent || '');
     }
-    // «Estudiar en el extranjero» es la consulta con más campos: al elegirla, las cuatro tarjetas se recogen en una línea («Estudiar en el extranjero · Cambiar»)
-    // para que el formulario no se haga largo. «Cambiar» las vuelve a abrir; en la página de extranjero (modo fijo) no se muestran ni se recogen.
-    let pickerOpen = false;
+    function radioOf(name){ return Array.from(form.querySelectorAll('input[name="' + name + '"]')).filter(function(r){ return r.checked; })[0] || null; }
+    function radioVal(name){ const r = radioOf(name); return r ? r.value : ''; }
+    function radioText(name){ const r = radioOf(name), b = r && r.closest('label').querySelector('b'); return b ? b.textContent : ''; }
+    function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+
+    // Destino, duración e inicio se eligen con opciones a la vista; el <select> sigue guardando el valor (lo leen las reglas y el envío)
+    // y sus opciones siguen dependiendo del destino (syncAbroadFields), así que las opciones se redibujan cada vez que cambian.
+    const pillRenders = [];
+    function pillify(sel){
+      if (!sel) return;
+      const box = document.createElement('div');
+      box.className = 'lf-pills';
+      box.setAttribute('role', 'radiogroup');
+      const lab = form.querySelector('label[for="' + sel.id + '"]');
+      if (lab){ lab.id = lab.id || 'lab-' + sel.id; box.setAttribute('aria-labelledby', lab.id); }
+      sel.classList.add('lf-src');
+      sel.setAttribute('tabindex', '-1');
+      sel.parentNode.insertBefore(box, sel.nextSibling);
+      function render(){
+        box.hidden = sel.hidden;
+        box.innerHTML = Array.from(sel.options).filter(function(o){ return o.value !== ''; }).map(function(o){
+          return '<label class="lf-pill"><input type="radio" name="' + sel.id + '-p" value="' + esc(o.value) + '"' + (o.value === sel.value ? ' checked' : '') + '><span><b>' + esc(o.text) + '</b></span></label>';
+        }).join('');
+      }
+      box.addEventListener('change', function(e){
+        if (e.target.name !== sel.id + '-p') return;
+        sel.value = e.target.value;
+        sel.dispatchEvent(new Event('change', { bubbles: true }));
+      });
+      sel._pills = box;
+      pillRenders.push(render);
+      render();
+    }
+    function renderPills(){ pillRenders.forEach(function(f){ f(); }); }
+
+    // Lista ↔ panel: con un programa elegido se ve el panel con su foto, su título y sus puntos; «Cambiar de programa» vuelve a la lista.
+    // En las páginas con hueco propio (modo fijo) el programa no se puede cambiar.
     function syncPicker(){
-      const collapsed = service() === 'extranjero' && !locked && !pickerOpen;
-      serviceSet.hidden = collapsed;
-      picked.hidden = !collapsed;
-      if (collapsed) pickedText.textContent = serviceLabel();
+      const s = service();
+      serviceSet.hidden = !!s;
+      panel.hidden = !s;
+      pickedChange.hidden = !!locked;
+      if (!s) return;
+      const b = optFor(s), img = b && b.querySelector('img');
+      if (img){
+        photo.src = img.getAttribute('src');
+        photo.srcset = img.getAttribute('srcset') || '';
+        photo.style.objectPosition = b.dataset.pos || '';
+      }
+      photoTitle.textContent = serviceLabel();
+      photoList.innerHTML = '';
+      (b && b.dataset.points ? b.dataset.points.split('|') : []).forEach(function(p){
+        const li = document.createElement('li');
+        li.textContent = p;
+        photoList.appendChild(li);
+      });
     }
-    // muestra solo los campos del servicio elegido
+    // muestra solo los bloques y campos del programa elegido (data-ctx admite varios, separados por espacios)
     function showCtx(){
       const s = service();
       ctx.hidden = !s;
-      form.querySelectorAll('[data-ctx]').forEach(function(el){ el.hidden = el.getAttribute('data-ctx') !== s; });
+      form.querySelectorAll('[data-ctx]').forEach(function(el){ el.hidden = el.getAttribute('data-ctx').split(' ').indexOf(s) === -1; });
       syncPicker();
       syncAbroadFields();
+      syncCampHints();
+      syncCall();
     }
     // Destination conditions apply to enquiries from this page and from the home.
     // Unknown durations are never presented as available programmes.
     const ageOptions = age.innerHTML;
     const durationOptions = dur.innerHTML;
     const durField = dur.closest('.field'), durLabel = durField.querySelector('label');
-    let savedDuration = DUNNO;   // última duración que la familia eligió de verdad en el desplegable
+    let savedDuration = DUNNO;   // última duración que la familia eligió de verdad
     function syncAbroadFields(){
       const abroad = service() === 'extranjero';
       const campAbroad = service() === 'verano-extranjero';   // campamentos de verano fuera: 8–17 años (data-camp-min / data-camp-max)
@@ -868,7 +936,7 @@ window.dataLayer = window.dataLayer || [];
       }
       // Se recuerda la preferencia, pero solo se envían opciones del destino actual.
       dur.value = Array.from(dur.options).some(function(o){ return o.value === savedDuration; }) ? savedDuration : DUNNO;
-      // con una sola opción («Necesitamos orientación») el desplegable no aporta nada: se muestra solo el título del campo y la ayuda; el valor sigue en el campo oculto
+      // con una sola opción («Necesitamos orientación») no hay nada que elegir: se muestra solo el título del campo y la ayuda
       const onlyOne = dur.options.length < 2;
       dur.hidden = onlyOne;
       durField.classList.toggle('is-note', onlyOne);
@@ -877,10 +945,30 @@ window.dataLayer = window.dataLayer || [];
       if (hint) hint.textContent = dest.value === 'Reino Unido' ? T.durationUK : dest.value === 'Irlanda' ? T.durationIreland : T.durationOther;
       const ageHint = $('hint-leadAge');
       if (ageHint) ageHint.textContent = dest.value === 'Reino Unido' ? T.ageUK : dest.value === 'Irlanda' ? T.ageIreland : T.ageOther;
+      renderPills();
       if (isExtVisible()) showExtContext();
     }
     dest.addEventListener('change', syncAbroadFields);
     dur.addEventListener('change', function(){ savedDuration = dur.value; if (isExtVisible()) showExtContext(); });
+    pillify(dest); pillify(dur); pillify(start);
+
+    // Campamentos en el extranjero: avisos con los datos publicados (edad mínima por colegio y programa de liderazgo)
+    function syncCampHints(){
+      const hc = $('hint-campColegio'), hi = $('hint-campIngles');
+      if (!hc || !hi) return;
+      const on = service() === 'verano-extranjero';
+      const a = parseInt(age.value, 10) || 0, c = radioVal('campColegio'), g = radioVal('campIngles'), help = c === 'Os ayudamos a elegir';
+      let tc = '', ti = '';
+      if (on && a && a < 10 && c && c !== 'Strathallan School' && !help) tc = T.campAge.replace('{n}', a);
+      if (on && g === 'Inglés y liderazgo'){
+        if (a && a < 14) ti = T.campLeadAge.replace('{n}', a);
+        else if (c && c !== 'Dollar Academy' && !help) ti = T.campLeadSchool;
+      }
+      hc.textContent = tc; hc.hidden = !tc;
+      hi.textContent = ti; hi.hidden = !ti;
+    }
+    form.addEventListener('change', function(e){ if (e.target === age || /^camp/.test(e.target.name || '')) syncCampHints(); });
+
     function optText(sel){ return sel.options[sel.selectedIndex] ? sel.options[sel.selectedIndex].text : ''; }
     // forCall = para el evento de Google Calendar: sin el nombre ni el colegio actual del alumno
     function detail(forCall){
@@ -897,6 +985,13 @@ window.dataLayer = window.dataLayer || [];
         if (english.value) bits.push('Nivel de inglés: ' + english.value);
         return bits.join(' · ');
       }
+      if (s === 'verano-extranjero'){
+        const bits = [], c = radioVal('campColegio'), w = radioVal('campSemanas'), g = radioVal('campIngles');
+        if (c) bits.push('Campamento: ' + c);
+        if (w) bits.push('Semanas: ' + w);
+        if (g) bits.push('Programa de inglés: ' + g);
+        return bits.join(' · ');
+      }
       return '';
     }
     function recap(){
@@ -910,6 +1005,7 @@ window.dataLayer = window.dataLayer || [];
         if (course.value) parts.push(optText(course));
         if (start.value && start.value !== 'Aún no lo sabemos') parts.push(optText(start));
       }
+      if (s === 'verano-extranjero') ['campColegio', 'campSemanas', 'campIngles'].forEach(function(n){ const t = radioText(n); if (t) parts.push(t); });
       return parts.filter(Boolean).join(' · ');
     }
 
@@ -928,19 +1024,19 @@ window.dataLayer = window.dataLayer || [];
       phoneOpt.hidden = need;
       phone.required = need;
       phone.setAttribute('aria-required', need ? 'true' : 'false');
-      phone.closest('.field').hidden = !need;
     }
+    function advisory(){ return !!service(); }   // con un programa elegido, todo se envía con este formulario
     function rule(step, id, ok, extra){ return Object.assign({ step: step, id: id, control: $(id), ok: ok }, extra || {}); }
     const rules = [
-      rule(1, 'service', function(){ return !!service(); }, { control: form.querySelector('.choice-grid'), group: true, focusEl: radios[0] }),
-      rule(1, 'leadAge', function(){ return age.value !== ''; }, { applies: function(){ return !!service(); } }),
+      rule(1, 'service', function(){ return !!service(); }, { control: serviceSet.querySelector('.lf-list'), group: true, focusEl: optBtns[0] }),
+      rule(1, 'leadAge', function(){ return age.value !== ''; }, { applies: advisory }),
       rule(1, 'leadStart', function(){ return start.value !== ''; }, { applies: function(){ return service() === 'extranjero'; } }),
       rule(1, 'leadSchool', function(){ return school.value.trim() !== ''; }, { applies: function(){ return service() === 'extraescolar'; } }),
-      rule(2, 'fullName', function(){ return $('fullName').value.trim() !== ''; }),
-      rule(2, 'email', function(){ return RE_EMAIL.test($('email').value.trim()); }),
+      rule(2, 'fullName', function(){ return $('fullName').value.trim() !== ''; }, { applies: advisory }),
+      rule(2, 'email', function(){ return RE_EMAIL.test($('email').value.trim()); }, { applies: advisory }),
       rule(2, 'phone', function(){ const v = phone.value.trim(); return needPhone() ? validTel(v) : (v === '' || validTel(v)); },
-        { applies: needPhone, msg: function(){ return phone.getAttribute(needPhone() && !phone.value.trim() ? 'data-err-req' : 'data-err-fmt'); } }),
-      rule(2, 'rgpd', function(){ return $('rgpd').checked; })
+        { applies: advisory, msg: function(){ return phone.getAttribute(needPhone() && !phone.value.trim() ? 'data-err-req' : 'data-err-fmt'); } }),
+      rule(2, 'rgpd', function(){ return $('rgpd').checked; }, { applies: advisory })
     ];
     const byId = {};
     rules.forEach(function(r){ byId[r.id] = r; });
@@ -948,42 +1044,29 @@ window.dataLayer = window.dataLayer || [];
     function showing(r){ const e = $('err-' + r.id); return !!e && e.classList.contains('show'); }
     function paint(r, bad){
       const e = $('err-' + r.id);
-      if (e) e.classList.toggle('show', bad);
+      if (e){
+        e.classList.toggle('show', bad);
+        if (bad && r.msg) e.textContent = r.msg();
+      }
       r.control.classList.toggle('invalid', bad);
+      if (r.control._pills) r.control._pills.classList.toggle('invalid-group', bad);
       if (r.group) r.control.classList.toggle('invalid-group', bad);
       else r.control.setAttribute('aria-invalid', bad ? 'true' : 'false');
     }
     function check(r){ const bad = active(r) && !r.ok(); paint(r, bad); return !bad; }
-    function validateStep(n){
-      attempted[n] = true;
-      return rules.filter(function(r){ return r.step === n; }).filter(function(r){ return !check(r); });
+    function validateAll(){
+      attempted[1] = attempted[2] = true;
+      return rules.filter(function(r){ return !check(r); });
     }
     rules.forEach(function(r){
-      const targets = r.id === 'service' ? radios : [r.control];
-      targets.forEach(function(t){
-        ['input', 'change'].forEach(function(evt){
-          t.addEventListener(evt, function(){ if (attempted[r.step] || showing(r)) check(r); });
-        });
+      if (r.id === 'service') return;
+      ['input', 'change'].forEach(function(evt){
+        r.control.addEventListener(evt, function(){ if (attempted[r.step] || showing(r)) check(r); });
       });
     });
     ['email', 'phone'].forEach(function(id){   // formato: avisa al salir del campo (si no está vacío)
       const el = $(id);
       el.addEventListener('blur', function(){ if (el.value.trim()) check(byId[id]); });
-    });
-    // al cambiar de servicio se ajustan los campos; los errores solo se muestran si ya se intentó avanzar
-    radios.forEach(function(r){
-      r.addEventListener('change', function(){
-        showCtx();
-        [byId.leadAge, byId.leadSchool, byId.leadStart].forEach(function(x){ if (attempted[1]) check(x); else paint(x, false); });
-      });
-      // un clic en una tarjeta (aunque ya estuviera elegida) vuelve a recoger o abrir la lista según el servicio
-      r.addEventListener('click', function(){ pickerOpen = false; showCtx(); });
-    });
-    pickedChange.addEventListener('click', function(){
-      pickerOpen = true;
-      showCtx();
-      const r = radios.filter(function(x){ return x.checked; })[0];
-      if (r){ serviceSet.scrollIntoView(scrollOpts('nearest')); r.focus({ preventScroll: true }); }
     });
     prefRadios.forEach(function(r){
       r.addEventListener('change', function(){
@@ -993,15 +1076,37 @@ window.dataLayer = window.dataLayer || [];
       });
     });
 
-    // ---- pasos ----
+    // ---- elegir programa ----
+    function choose(value, focus){
+      const r = radios.filter(function(x){ return x.value === value; })[0];
+      if (!r) return;
+      r.checked = true;
+      showCtx();
+      [byId.leadAge, byId.leadSchool, byId.leadStart].forEach(function(x){ if (attempted[1]) check(x); else paint(x, false); });
+      goTo(1, { silent: !focus });
+    }
+    optBtns.forEach(function(b){
+      b.addEventListener('click', function(){
+        choose(b.dataset.service, true);
+        pushEvent('clic_cta', { cta_id: 'form-programa-' + b.dataset.service });
+      });
+    });
+    pickedChange.addEventListener('click', function(){
+      if (locked) return;
+      const prev = service();
+      radios.forEach(function(x){ x.checked = false; });
+      goTo(1, { silent: true });
+      showCtx();
+      const b = optFor(prev) || optBtns[0];
+      form.closest('.form-card').scrollIntoView(scrollOpts('start'));
+      if (b) b.focus({ preventScroll: true });
+    });
+
+    // ---- pantallas: 1 = lista o panel del programa · 3 = elegir día y hora de la llamada ----
     function goTo(n, opts){
       current = n;
-      steps.forEach(function(s){ s.classList.toggle('active', +s.dataset.step === n); });
-      inds.forEach(function(li, i){
-        li.classList.toggle('is-current', i + 1 === n); li.classList.toggle('is-done', i + 1 < n);
-        if (i + 1 === n) li.setAttribute('aria-current', 'step'); else li.removeAttribute('aria-current');
-      });
-      if (n === 2) recapEl.textContent = recap();
+      mainStep.classList.toggle('active', n === 1);
+      if (callStep) callStep.classList.toggle('active', n === 3);
       if (n === 3){
         renderSummary();
         // al volver al paso 3 se comprueba otra vez que la hora elegida sigue libre
@@ -1010,30 +1115,22 @@ window.dataLayer = window.dataLayer || [];
       }
       if (opts && opts.silent) return;
       form.closest('.form-card').scrollIntoView(scrollOpts('start'));
-      const cardsHidden = serviceSet.hidden || form.classList.contains('is-locked');
-      const first = n === 3 ? $('callTitle') : n === 2 ? $('fullName') : (cardsHidden ? age : (radios.filter(function(r){ return r.checked; })[0] || radios[0]));
+      const first = n === 3 ? $('callTitle') : (service() ? photoTitle : optBtns[0]);
       if (first) first.focus({ preventScroll: true });
     }
     function focusFirstBad(bad){
-      const el = bad[0].focusEl || bad[0].control;
-      el.scrollIntoView(scrollOpts('center'));
+      let el = bad[0].focusEl || bad[0].control;
+      if (el._pills) el = el._pills.querySelector('input') || el;   // un <select> con opciones a la vista: el foco va a la primera opción
+      const where = el.closest('.field') || el;
+      where.scrollIntoView(scrollOpts('center'));
       el.focus({ preventScroll: true });
     }
-    nextBtn.addEventListener('click', function(){
-      const bad = validateStep(1);
-      if (bad.length){ setFormError(errEl, ''); focusFirstBad(bad); return; }
-      goTo(2);
-      pushEvent('clic_cta', { cta_id: 'form-paso-2' });
-    });
-    backBtn.addEventListener('click', function(){ goTo(1); });
 
     // ---- reserva de llamada ----
-    function wantsCall(){ return callOn && needPhone(); }
+    function wantsCall(){ return callOn && needPhone() && advisory(); }
     function syncCall(){
       const on = wantsCall();
-      if (callInd) callInd.hidden = !on;
-      if (stepsList) stepsList.classList.toggle('has-call', on);
-      const label = submitBtn.getAttribute(on ? 'data-label-call' : 'data-label-send');
+      const label = submitBtn.getAttribute(on ? 'data-label-call' : service() === 'extraescolar' ? 'data-label-extra' : 'data-label-send');
       if (label && !submitBtn.disabled) submitBtn.textContent = label;
       if (on) ensurePicker();   // los horarios se piden ya, para que el paso 3 aparezca sin esperas
     }
@@ -1084,15 +1181,20 @@ window.dataLayer = window.dataLayer || [];
         consult: { service: service(), serviceLabel: serviceLabel(), studentAge: studentAgeText(), serviceExtra: [detail(false), wantsNews() ? 'Acepta recibir información: Sí' : ''].filter(Boolean).join(' · '), callContext: detail(true), message: $('message').value }
       };
     }
+    // vuelve al formulario y señala lo que falta; devuelve true si todo está bien
+    function readyOrShow(){
+      const bad = validateAll();
+      if (!bad.length) return true;
+      goTo(1, { silent: true });
+      focusFirstBad(bad);
+      return false;
+    }
     function confirmCall(){
       if (booking) return;   // doble clic: la primera petición sigue en marcha
       setFormError(callErr, '');
       const slot = picker && picker.selected();
       if (!slot){ setFormError(callErr, T.callPick); if (picker) picker.focus(); return; }
-      const bad1 = validateStep(1);
-      if (bad1.length){ goTo(1, { silent: true }); focusFirstBad(bad1); return; }
-      const bad2 = validateStep(2);
-      if (bad2.length){ goTo(2, { silent: true }); focusFirstBad(bad2); return; }
+      if (!readyOrShow()) return;
       booking = true;
       const label = callConfirm.textContent;
       callConfirm.disabled = true; callConfirm.textContent = T.callConfirming;
@@ -1116,9 +1218,7 @@ window.dataLayer = window.dataLayer || [];
           }
           if (st === 'invalid' && (b.fields || []).some(function(f){ return ['fullName', 'email', 'phone', 'rgpd'].indexOf(f) !== -1; })){
             done('');
-            goTo(2, { silent: true });
-            const bad = validateStep(2);
-            if (bad.length) focusFirstBad(bad);
+            readyOrShow();
             return;
           }
           if (st === 'too_many'){ done(T.callTooMany); return; }
@@ -1144,27 +1244,19 @@ window.dataLayer = window.dataLayer || [];
       pushEvent('llamada_reservada', { servicio: service() });
     }
     if (callOn){
-      $('callBackBtn').addEventListener('click', function(){ goTo(2); });
+      $('callBackBtn').addEventListener('click', function(){ goTo(1); });
       callConfirm.addEventListener('click', confirmCall);
       // sin hora fija: la consulta se envía como siempre, con la preferencia «por teléfono»
-      $('callNoTimeBtn').addEventListener('click', function(){
-        const bad1 = validateStep(1);
-        if (bad1.length){ goTo(1, { silent: true }); focusFirstBad(bad1); return; }
-        const bad2 = validateStep(2);
-        if (bad2.length){ goTo(2, { silent: true }); focusFirstBad(bad2); return; }
-        sendLead($('callNoTimeBtn'));
-      });
+      $('callNoTimeBtn').addEventListener('click', function(){ if (readyOrShow()) sendLead($('callNoTimeBtn')); });
     }
 
     // ---- envío ----
     form.addEventListener('submit', function(e){
       e.preventDefault();
-      if (current === 1){ nextBtn.click(); return; }   // Intro en el paso 1 avanza; no envía
-      if (current === 3){ confirmCall(); return; }      // Intro en el paso 3 confirma la llamada
-      const bad1 = validateStep(1);
-      if (bad1.length){ goTo(1, { silent: true }); focusFirstBad(bad1); return; }
-      const bad2 = validateStep(2);
-      if (bad2.length){ focusFirstBad(bad2); return; }
+      if (current === 3){ confirmCall(); return; }   // Intro en el paso 3 confirma la llamada
+      if (!advisory()) return;                        // sin programa elegido no hay nada que enviar
+      const bad = validateAll();
+      if (bad.length){ setFormError(errEl, ''); focusFirstBad(bad); return; }
       if (wantsCall()){ goTo(3); pushEvent('clic_cta', { cta_id: 'form-paso-llamada' }); return; }
       sendLead(submitBtn);
     });
@@ -1178,7 +1270,7 @@ window.dataLayer = window.dataLayer || [];
         message: $('message').value,
         fullName: $('fullName').value,
         email: $('email').value,
-        phone: needPhone() ? phone.value : '',
+        phone: phone.value,
         contactPreference: pref(),
         rgpd: $('rgpd').checked ? '1' : '',
         comunicaciones: wantsNews() ? 'Sí' : 'No',   // casilla aparte y opcional: responder a la consulta no implica recibir novedades
@@ -1210,12 +1302,8 @@ window.dataLayer = window.dataLayer || [];
     // API para el resto de la página (CTA de las subpáginas, tarjetas de destino…): dejan el formulario ya orientado
     window.ilLead = {
       select: function(value){
-        const r = radios.filter(function(x){ return x.value === value; })[0];
-        if (!r) return;
-        r.checked = true;
-        pickerOpen = false;
-        showCtx();
-        goTo(1, { silent: true });
+        if (locked && value !== locked) return;   // en una página con hueco propio el programa es el de la página
+        choose(value, false);
       },
       setDestination: function(name){
         if (dest && name){ dest.value = name; syncAbroadFields(); }
@@ -1226,48 +1314,46 @@ window.dataLayer = window.dataLayer || [];
         const d = /^Duración:\s*(.+)$/.exec(text);
         if (d && dur){
           const opt = Array.from(dur.options).filter(function(o){ return o.value === d[1]; })[0];
-          if (opt){ dur.value = opt.value; savedDuration = opt.value; return; }
+          if (opt){ dur.value = opt.value; savedDuration = opt.value; renderPills(); return; }
         }
         const m = $('message');
         if (m && !m.value.trim()) m.value = text;
       },
       // destino y duración que hay elegidos (texto visible en el idioma de la página), para el aviso «Consulta sobre…»
       getContext: function(){
+        if (service() !== 'extranjero') return { destino: '', duracion: '' };
         return {
           destino: dest && dest.value !== DUNNO ? optText(dest) : '',
           duracion: dur && dur.value !== DUNNO ? optText(dur) : ''
         };
       },
-      // Modo «Estudiar en el extranjero» (el contacto colocado al final de esa página): el servicio queda fijo y las edades son las del programa
-      // (data-ext-min / data-ext-max del selector). Al salir se restaura lo que había elegido antes.
-      lock: function(on){
-        on = !!on;
-        if (on === locked) return;
-        locked = on;
-        pickerOpen = false;
-        form.classList.toggle('is-locked', on);
+      // Modo fijo (el contacto colocado al final de «Estudiar en el extranjero» o de «Campamentos de verano en el extranjero»): el programa
+      // es el de la página y las edades son las del programa. Al salir se restaura lo que había elegido antes.
+      lock: function(value){
+        value = value || '';
+        if (value === locked) return;
         const keep = age.value;
-        if (on){
-          prevService = service();
-          const ext = radios.filter(function(x){ return x.value === 'extranjero'; })[0];
-          if (ext) ext.checked = true;
+        if (value){
+          if (!locked) prevService = service();
+          const r = radios.filter(function(x){ return x.value === value; })[0];
+          if (r) r.checked = true;
         } else {
           age.innerHTML = ageOptions;
           const back = radios.filter(function(x){ return x.value === prevService; })[0];
           if (back) back.checked = true; else radios.forEach(function(x){ x.checked = false; });
         }
+        locked = value;
+        form.classList.toggle('is-locked', !!value);
         if (Array.from(age.options).some(function(o){ return o.value === keep; })) age.value = keep;
         showCtx();
         goTo(1, { silent: true });
       }
     };
-    let locked = false, prevService = '';
 
     syncPhoneReq();
-    syncCall();
     showCtx();
     goTo(1, { silent: true });
-    window.ilLead.lock(isExtVisible());   // carga directa de #servicio-extranjero: el formulario se crea después del router
+    window.ilLead.lock(slotService());   // carga directa de una de esas páginas: el formulario se crea después del router
   })();
 
   // ---- «Estudiar en el extranjero»: comparación con dos velocidades e índice de la página ----

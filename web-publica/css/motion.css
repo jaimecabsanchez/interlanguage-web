@@ -1,0 +1,78 @@
+/* ═══════════════════════════════════════════════════════════════════════════════════════════════
+   Sistema de microinteracciones (propuesta del 10-11-2026, rama claude/rediseno-web) · se carga DESPUÉS de styles.css.
+   Alcance: «Estudiar en el extranjero» (#view-service-extranjero), el menú de navegación y los formularios.
+   Reglas del sistema:
+   · Solo opacity y transform (nada que cambie el tamaño ni la posición de otros elementos).
+   · Tres duraciones: 150 ms (respuesta a un gesto), 200 ms (cambios de estado) y 250 ms (entradas). La foto de una tarjeta, que se mueve más, usa 350 ms.
+   · Una sola curva: --mo-ease. Sin 3D, sin parallax, sin animaciones continuas.
+   · TODO va dentro de «prefers-reduced-motion: no-preference»: con «Reducir movimiento» la web queda exactamente como estaba.
+   Para quitarlo: borra este archivo, js/motion.js y sus dos líneas en index.html e index-en.html.
+   ═══════════════════════════════════════════════════════════════════════════════════════════════ */
+:root{
+  --mo-fast:150ms; --mo-base:200ms; --mo-slow:250ms; --mo-photo:350ms;
+  --mo-ease:cubic-bezier(.2,.6,.2,1);
+}
+
+@media (prefers-reduced-motion:no-preference){
+
+  @keyframes mo-fade{from{opacity:0;} to{opacity:1;}}
+  @keyframes mo-rise{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:none;}}
+  @keyframes mo-drop{from{opacity:0; transform:translateY(-4px);} to{opacity:1; transform:none;}}
+
+  /* 1 · Tarjetas de países: la foto se acerca un poco, el borde toma el color del país y la flecha avanza */
+  #view-service-extranjero .ext-option{transition:border-color var(--mo-base) var(--mo-ease), transform var(--mo-slow) var(--mo-ease);}
+  #view-service-extranjero .ext-option-photo{background:var(--stone);}
+  #view-service-extranjero .ext-option-photo img{transition:transform var(--mo-photo) var(--mo-ease), opacity var(--mo-slow) var(--mo-ease);}
+  #view-service-extranjero .ext-option h3{transition:color var(--mo-base) var(--mo-ease);}
+  #view-service-extranjero .ext-option-go svg, #view-service-extranjero .ext-link svg{transition:transform var(--mo-base) var(--mo-ease);}
+  @media (hover:hover){
+    #view-service-extranjero .ext-option:hover{border-color:color-mix(in srgb, var(--c) 60%, var(--line)); transform:translateY(-2px);}
+    #view-service-extranjero .ext-option:hover .ext-option-photo img{transform:scale(1.03);}
+    #view-service-extranjero .ext-option:hover h3{color:var(--c);}
+    #view-service-extranjero .ext-option:hover .ext-option-go svg, #view-service-extranjero .ext-link:hover svg{transform:translateX(4px);}
+  }
+  #view-service-extranjero .ext-option:focus-within{border-color:color-mix(in srgb, var(--c) 60%, var(--line));}
+
+  /* 2 · Botones y enlaces de acción: cambio de color a 150 ms, una pulsación que se nota y el contorno de foco que se abre */
+  #view-service-extranjero .btn-primary, #view-service-extranjero .btn-outline, #view-service-extranjero .ext-option-go, #view-service-extranjero .ext-link,
+  #view-service-extranjero .ext-hero-link, #view-service-extranjero .ext-carousel-btn, #view-service-extranjero .submit-btn, #view-service-extranjero .ext-option-toggle{
+    transition:background-color var(--mo-fast) var(--mo-ease), color var(--mo-fast) var(--mo-ease), border-color var(--mo-fast) var(--mo-ease),
+               transform var(--mo-fast) var(--mo-ease), opacity var(--mo-fast) var(--mo-ease), outline-offset var(--mo-fast) var(--mo-ease);}
+  #view-service-extranjero .btn-primary:active, #view-service-extranjero .btn-outline:active, #view-service-extranjero .submit-btn:active, #view-service-extranjero .ext-carousel-btn:active{transform:scale(.985);}
+  #view-service-extranjero .ext-option-go:active, #view-service-extranjero .ext-link:active{opacity:.78;}
+  .submit-btn:disabled, .submit-btn[aria-disabled="true"]{opacity:.6;}
+
+  /* 3 · Menús: el desplegable y el menú móvil usan los mismos tiempos y la misma curva */
+  body .nav-dropdown-menu{transition:opacity var(--mo-base) var(--mo-ease), transform var(--mo-base) var(--mo-ease), visibility var(--mo-base) var(--mo-ease);}
+  body .nav-dropdown .caret{transition:transform var(--mo-base) var(--mo-ease);}
+  @media (max-width:900px){ body .nav-links{transition:transform var(--mo-slow) var(--mo-ease), visibility var(--mo-slow) var(--mo-ease);} }
+  body .nav-links > a:not(.nav-cta)::after, body .nav-dropdown-trigger::after{transition-duration:var(--mo-base); transition-timing-function:var(--mo-ease);}
+
+  /* 4 · Fotografías: cada foto aparece con un fundido cuando termina de cargar (js/motion.js marca las que aún no han llegado) */
+  html.mo-ready #view-service-extranjero img[data-mo-ld]{opacity:0;}
+  #view-service-extranjero .ext-esc-media, #view-service-extranjero .ext-esc-ph, #view-service-extranjero .ext-carr-it picture{background:var(--stone);}
+  #view-service-extranjero .ext-carr-it img{transition:opacity var(--mo-slow) var(--mo-ease);}
+  #view-service-extranjero .ext-esc-media img, #view-service-extranjero .ext-esc-ph img{transition:opacity var(--mo-slow) var(--mo-ease);}
+
+  /* 5 · Cambios de contenido: la página entra con un fundido, los desplegables abren con un fundido y las flechas de la galería aparecen y desaparecen */
+  .view.mo-enter{animation:mo-fade var(--mo-base) var(--mo-ease) both;}
+  #view-service-extranjero details[open] > :not(summary), .contact--ext details[open] > :not(summary){animation:mo-fade var(--mo-base) var(--mo-ease) both;}
+  #view-service-extranjero .ext-carr-nav{transition:opacity var(--mo-base) var(--mo-ease), visibility 0s linear 0s, background-color var(--mo-fast) var(--mo-ease), color var(--mo-fast) var(--mo-ease);}
+  #view-service-extranjero .ext-carr-nav:disabled{visibility:hidden; opacity:0; pointer-events:none; transition:opacity var(--mo-base) var(--mo-ease), visibility 0s linear var(--mo-base);}
+  #view-service-extranjero .ext-toc-list a{transition:color var(--mo-fast) var(--mo-ease), border-color var(--mo-fast) var(--mo-ease);}
+  #view-service-extranjero .ext-toc-list a::after{transition:opacity var(--mo-fast) var(--mo-ease), transform var(--mo-fast) var(--mo-ease);}
+
+  /* 6 · Formularios: el error y la confirmación entran suavemente, los campos cambian de color a 150 ms y cada paso nuevo aparece con un fundido */
+  .err.show{animation:mo-drop var(--mo-base) var(--mo-ease) both;}
+  .form-error:not([hidden]){animation:mo-drop var(--mo-base) var(--mo-ease) both;}
+  .form-msg.show{animation:mo-rise var(--mo-slow) var(--mo-ease) both;}
+  .lead-form .form-step.active{animation:mo-rise var(--mo-base) var(--mo-ease) both;}
+  .lead-form.is-sent, .camp-form.is-sent{animation:mo-fade var(--mo-base) var(--mo-ease) both;}
+  body .field input, body .field select, body .field textarea{transition:border-color var(--mo-fast) var(--mo-ease), box-shadow var(--mo-fast) var(--mo-ease), background-color var(--mo-fast) var(--mo-ease);}
+  body .choice-card, body .cf-radio-card{transition:border-color var(--mo-fast) var(--mo-ease), background-color var(--mo-fast) var(--mo-ease), box-shadow var(--mo-fast) var(--mo-ease), transform var(--mo-fast) var(--mo-ease);}
+  body .lead-pill span{transition:border-color var(--mo-fast) var(--mo-ease), background-color var(--mo-fast) var(--mo-ease), color var(--mo-fast) var(--mo-ease);}
+
+  /* 7 · Secciones: solo las tarjetas de países, las escenas y los pasos del proceso entran al llegar a la pantalla (js/motion.js decide cuáles) */
+  html.mo-ready .mo-pre{opacity:0; transform:translateY(12px); transition:opacity var(--mo-slow) var(--mo-ease) var(--mo-d,0ms), transform var(--mo-slow) var(--mo-ease) var(--mo-d,0ms);}
+  html.mo-ready .mo-pre.mo-in{opacity:1; transform:none;}
+}
