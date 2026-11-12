@@ -1124,35 +1124,37 @@ picture{display:contents;}
   @media (prefers-reduced-motion:reduce){ .dst-info{transition:none;} }
   @media (max-width:900px){ .dst-info{display:none;} }
 
-  /* acompañamiento internacional: mensaje personal y recorrido compartido */
-  #destinos .intl-proceso{position:relative; display:grid; grid-template-columns:minmax(0,.82fr) minmax(0,1fr); gap:clamp(36px,6vw,84px); align-items:center; margin-top:clamp(36px,4vw,56px); padding-bottom:56px;}
+  /* Acompañamiento: banda marino independiente; el contacto empieza después sobre blanco. */
+  #destinos .intl-proceso-band{margin-top:48px; background:var(--navy); color:var(--white);}
+  #destinos .intl-proceso{position:relative; display:grid; grid-template-columns:minmax(0,.82fr) minmax(0,1fr); gap:clamp(36px,6vw,84px); align-items:center; margin-top:0; padding:64px 0;}
   #destinos .intl-proceso-copy{min-width:0;}
-  #destinos .intl-proceso-eyebrow{display:block; margin-bottom:14px;}
-  #destinos .intl-proceso-title{max-width:none; font-size:clamp(2rem,3.35vw,2.8rem); line-height:1.08; color:var(--navy); margin:0 0 18px; text-wrap:balance;}
-  #destinos .intl-proceso-title em{color:var(--accent); font-weight:500;}
-  #destinos .intl-proceso-copy > p{max-width:44ch; color:var(--ink-soft); font-size:1rem; line-height:1.68; margin:0;}
-  #destinos .intl-proceso-copy > p:not(.intl-proceso-more):not(.intl-team){color:var(--ink); font-size:1.06rem;}
+  #destinos .intl-proceso-eyebrow{display:block; margin-bottom:14px; color:var(--accent-soft);}
+  #destinos .intl-proceso-title{max-width:none; font-size:clamp(2rem,3.35vw,2.8rem); line-height:1.08; color:var(--white); margin:0 0 18px; text-wrap:balance;}
+  #destinos .intl-proceso-title em{color:var(--accent-soft); font-weight:500;}
+  #destinos .intl-proceso-copy > p{max-width:44ch; color:var(--ivory); font-size:1rem; line-height:1.68; margin:0;}
+  #destinos .intl-proceso-copy > p:not(.intl-proceso-more):not(.intl-team){color:var(--white); font-size:1.06rem;}
   #destinos .intl-proceso-copy > p.intl-proceso-more{margin-top:12px;}
-  #destinos .intl-proceso-copy > p.intl-team{display:flex; align-items:center; gap:11px; margin-top:22px; padding-top:18px; border-top:1px solid var(--line); color:var(--navy); font-size:.92rem; font-weight:600; line-height:1.45;}   /* equipo y sedes: discreto, sin direcciones ni datos de contacto */
-  #destinos .intl-team-ico{flex:none; width:22px; height:22px; color:var(--accent);}
+  #destinos .intl-proceso-copy > p.intl-team{display:flex; align-items:center; gap:11px; margin-top:22px; padding-top:18px; border-top:1px solid color-mix(in srgb,var(--white) 24%,transparent); color:var(--white); font-size:.92rem; font-weight:600; line-height:1.45;}   /* equipo y sedes: discreto, sin direcciones ni datos de contacto */
+  #destinos .intl-team-ico{flex:none; width:22px; height:22px; color:var(--accent-soft);}
   #destinos .intl-proceso-actions{display:flex; flex-direction:column; align-items:flex-start; gap:8px; margin-top:24px;}
-  #destinos .intl-proceso .btn-primary{min-height:48px; padding:13px 20px; border-radius:var(--r-btn); background:var(--accent); color:#fff; box-shadow:none; transition:background-color .15s ease, color .15s ease;}
+  #destinos .intl-proceso .btn-primary{min-height:48px; padding:13px 20px; border-radius:var(--r-btn); background:var(--ivory); color:var(--navy); box-shadow:none; transition:background-color .15s ease, color .15s ease;}
   #destinos .intl-proceso .btn-primary svg{transition:none;}
+  @media (hover:none){#destinos .intl-proceso .btn-primary:active{background:var(--white); color:var(--navy);}}
   #destinos .intl-proceso .btn-primary:focus-visible,
-  #destinos .intl-more a:focus-visible{outline:3px solid var(--accent); outline-offset:4px;}
-  #destinos .intl-proceso-note{color:var(--ink-soft); font-size:.82rem; line-height:1.45;}
+  #destinos .intl-more a:focus-visible{outline:3px solid var(--accent-soft); outline-offset:4px;}
+  #destinos .intl-proceso-note{color:var(--ivory); font-size:.82rem; line-height:1.45;}
   #destinos .intl-proceso-points{position:relative; min-width:0;}
   #destinos .intl-steps{position:relative; display:grid; grid-template-columns:minmax(0,1fr); list-style:none; gap:0; margin:0; padding:0;}
   #destinos .intl-step{display:grid; grid-template-columns:10px minmax(0,1fr); align-items:start; column-gap:18px; padding:16px 0 18px;}
-  #destinos .intl-step-dot{position:relative; z-index:1; width:8px; height:8px; margin-top:7px; border-radius:50%; background:var(--accent);}
-  #destinos .intl-step h4{font-size:1.2rem; line-height:1.25; color:var(--navy); margin:0 0 5px;}
-  #destinos .intl-step p{max-width:46ch; color:var(--ink-soft); font-size:.96rem; line-height:1.6; margin:0;}
-  #destinos .intl-step-line{position:absolute; z-index:0; top:27px; bottom:27px; left:3px; width:1px; background:color-mix(in srgb,var(--accent) 38%,var(--line)); pointer-events:none;}
+  #destinos .intl-step-dot{position:relative; z-index:1; width:8px; height:8px; margin-top:7px; border-radius:50%; background:var(--accent-soft);}
+  #destinos .intl-step h4{font-size:1.2rem; line-height:1.25; color:var(--white); margin:0 0 5px;}
+  #destinos .intl-step p{max-width:46ch; color:var(--ivory); font-size:.96rem; line-height:1.6; margin:0;}
+  #destinos .intl-step-line{position:absolute; z-index:0; top:27px; bottom:27px; left:3px; width:1px; background:color-mix(in srgb,var(--accent-soft) 45%,transparent); pointer-events:none;}
   #destinos .intl-more{margin:8px 0 0 28px;}
-  #destinos .intl-more a{display:inline-flex; align-items:center; gap:8px; min-height:44px; color:var(--navy); font-size:.9rem; font-weight:700; text-decoration:none; text-underline-offset:4px;}
-  #destinos .intl-more .intl-arrow{color:var(--accent);}
+  #destinos .intl-more a{display:inline-flex; align-items:center; gap:8px; min-height:44px; color:var(--white); font-size:.9rem; font-weight:700; text-decoration:none; text-underline-offset:4px;}
+  #destinos .intl-more .intl-arrow{color:var(--accent-soft);}
   @media (hover:hover){
-    #destinos .intl-proceso .btn-primary:hover{transform:none; background:var(--accent-dark); box-shadow:none;}
+    #destinos .intl-proceso .btn-primary:hover{transform:none; background:var(--white); color:var(--navy); box-shadow:none;}
     #destinos .intl-proceso .btn-primary:hover svg{transform:none;}
     #destinos .intl-more a:hover{text-decoration:underline;}
   }
@@ -1199,7 +1201,8 @@ picture{display:contents;}
   }
 
   @media (max-width:760px){
-    #destinos .intl-proceso{grid-template-columns:minmax(0,1fr); gap:22px; margin-top:50px;}
+    #destinos .intl-proceso-band{margin-top:40px;}
+    #destinos .intl-proceso{grid-template-columns:minmax(0,1fr); gap:24px; padding:48px 0;}
     #destinos .intl-proceso-title{max-width:14ch; font-size:clamp(2rem,8vw,2.45rem); margin-bottom:14px;}
     #destinos .intl-proceso-copy > p{max-width:54ch; font-size:.96rem;}
     #destinos .intl-proceso-actions{margin-top:18px;}
@@ -1211,7 +1214,7 @@ picture{display:contents;}
     #destinos .intl-more{margin:4px 0 0 25px;}
   }
   @media (max-width:600px){
-    #destinos .intl-proceso{margin-top:42px; gap:16px;}
+    #destinos .intl-proceso{gap:20px;}
     #destinos .intl-proceso .btn-primary{width:100%; justify-content:center; text-align:center;}
   }
 
@@ -2014,7 +2017,7 @@ body .age-path-steps h3{display:block; margin:0; color:var(--ap-accent); font-si
 /* ---------- Contacto · «Actual afinado», elegido por Jaime (12-11-2026) ----------
    Cuatro tarjetas compactas. Asesoramiento de extranjero en una página; programas locales enlazan a sus páginas. */
 section.contact.lf{padding:64px 0; color:var(--ink); background:var(--ivory); overflow:clip;}
-#view-home > section.contact.lf{background:var(--stone); border-top:1px solid var(--line);}
+#view-home > section.contact.lf{background:var(--white); border-top:0;}
 .lf-in{display:grid; gap:28px;}
 .lf-head{display:grid; gap:12px;}
 .lf-eb{margin:0; display:flex; align-items:center; gap:14px; font:700 .75rem/1.3 var(--font-body); letter-spacing:.14em; text-transform:uppercase; color:var(--accent);}
