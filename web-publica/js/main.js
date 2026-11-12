@@ -278,11 +278,13 @@ window.dataLayer = window.dataLayer || [];
   }
   // baja hasta la tarjeta de un destino (sección «Destinos»); «scroll» es 'smooth' o 'auto' (inmediato)
   function showExtDestino(slug, scroll){
-    const card = document.querySelector('#ext-opciones .ext-option[data-destino="' + slug + '"]');
+    if (window.ilDestinations) window.ilDestinations.select(slug);
+    const card = document.querySelector('#ext-opciones .country-panel[data-destino="' + slug + '"], #ext-opciones .ext-option[data-destino="' + slug + '"]');
     if (!card) return;
+    const target = card.closest('.country-guide') || card;
     requestAnimationFrame(function(){
-      if (scroll === 'smooth' && !reduceMotion()) { card.scrollIntoView({ behavior: 'smooth', block: 'start' }); return; }
-      jumpScroll(function(){ card.scrollIntoView({ block: 'start' }); });
+      if (scroll === 'smooth' && !reduceMotion()) { target.scrollIntoView({ behavior: 'smooth', block: 'start' }); return; }
+      jumpScroll(function(){ target.scrollIntoView({ block: 'start' }); });
     });
   }
 
