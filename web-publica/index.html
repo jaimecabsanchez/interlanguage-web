@@ -70,8 +70,8 @@
 <link rel="preload" href="fonts/newsreader-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/newsreader-italic-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/plus-jakarta-sans-wght-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="css/styles.css?v=147" as="style">
-<link rel="stylesheet" href="css/styles.css?v=147">
+<link rel="preload" href="css/styles.css?v=148" as="style">
+<link rel="stylesheet" href="css/styles.css?v=148">
 <link rel="stylesheet" href="css/motion.css?v=1">
 </head>
 <body>
@@ -110,7 +110,7 @@
         </div>
       </div>
       <a href="#servicio-extranjero" data-jump-service="extranjero">Estudiar en el extranjero</a>
-      <a href="#servicio-metodologia" data-jump-service="metodologia">Por qué nosotros</a>
+      <a href="#servicio-metodologia" data-jump-service="metodologia">Quiénes somos</a>
       <a href="#contacto" class="nav-cta" data-cta="nav">Pedir orientación</a>
       <div class="nav-extra">
         <div class="nav-lang" aria-label="Idioma"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.5 4 6 4 9s-1.5 6.5-4 9c-2.5-2.5-4-6-4-9s1.5-6.5 4-9Z"/></svg><span class="lang-active" aria-current="true">Español</span><a href="index-en.html" hreflang="en" lang="en">English</a></div>
@@ -1509,52 +1509,62 @@
   </div>
 </div>
 
-<div id="view-service-metodologia" class="view service-page" data-title="Por qué nosotros" hidden>
+<div id="view-service-metodologia" class="view service-page" data-title="Quiénes somos" hidden>
 
-  <!-- 1 · QUIÉNES SOMOS. FOTO DEL EQUIPO: cuando llegue, pegar el <figure class="team-photo"> (plantilla en
-       web-publica/AGENTS.md) después de .who-hero-copy; el hero pasa solo a dos columnas con :has(). -->
+  <!-- 1 · QUIÉNES SOMOS: titular, fotos del equipo (empresa familiar; orden: la de rojo, la de negro y el chico) y texto con el botón. Los nombres están PENDIENTES (data-pendiente): no publicar sin ellos. -->
   <section class="who-hero">
-    <div class="container who-hero-grid">
-      <div class="who-hero-copy">
-        <a href="#" class="svc-back" data-back>← Volver a servicios</a>
-        <span class="eyebrow">Por qué nosotros</span>
-        <h1>Nos ocupamos de cada alumno, <em>uno por uno</em></h1>
-        <div class="who-hero-intro"><p class="who-lead">Somos el equipo de Interlanguage. Llevamos más de 30 años enseñando inglés en Madrid y trabajamos siempre igual: conocemos a cada alumno, escuchamos a su familia y seguimos de cerca cómo avanza.</p>
-        <a href="#contacto" class="btn-primary" data-cta-service="orientacion" data-cta="porque-hero">Pedir orientación <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div>
+    <div class="container who-top">
+      <a href="#" class="svc-back" data-back>← Volver a servicios</a>
+      <span class="eyebrow">Quiénes somos</span>
+      <h1>Nos ocupamos de cada alumno, <em>uno por uno</em></h1>
+      <div class="who-intro">
+        <div class="who-people">
+          <p class="who-people-h">Somos una empresa familiar</p>
+          <ul class="who-people-list" aria-label="El equipo de Interlanguage">
+            <li><img src="images/equipo/equipo-1-320.webp" srcset="images/equipo/equipo-1-160.webp 160w, images/equipo/equipo-1-320.webp 320w" sizes="(max-width:600px) 92px, 124px" width="124" height="124" alt="" decoding="async"><span class="who-people-n" data-pendiente="nombre">Nombre Apellido</span></li>
+            <li><img src="images/equipo/equipo-2-320.webp" srcset="images/equipo/equipo-2-160.webp 160w, images/equipo/equipo-2-320.webp 320w" sizes="(max-width:600px) 92px, 124px" width="124" height="124" alt="" decoding="async"><span class="who-people-n" data-pendiente="nombre">Nombre Apellido</span></li>
+            <li><img src="images/equipo/equipo-3-320.webp" srcset="images/equipo/equipo-3-160.webp 160w, images/equipo/equipo-3-320.webp 320w" sizes="(max-width:600px) 92px, 124px" width="124" height="124" alt="" decoding="async"><span class="who-people-n" data-pendiente="nombre">Nombre Apellido</span></li>
+          </ul>
+        </div>
+        <div class="who-intro-copy">
+          <p class="who-lead">Llevamos más de 30 años enseñando inglés en Madrid y trabajamos siempre igual: conocemos a cada alumno, escuchamos a su familia y seguimos de cerca cómo avanza.</p>
+          <a href="#contacto" class="btn-primary" data-cta-service="orientacion" data-cta="porque-hero">Pedir orientación <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- 2 · CÓMO CUIDAMOS A CADA ALUMNO (solo hechos ya publicados en la web) -->
-  <section class="who-section">
+  <!-- 2 · NUESTRA HISTORIA (datos que dio Jaime el 12-11-2026: la fundadora montó Interlanguage con 24 años y estudió en Estados Unidos) -->
+  <section class="who-section who-story">
     <div class="container">
       <div class="who-sec-head reveal">
-        <span class="eyebrow">Cómo lo hacemos</span>
-        <h2>Cuatro cosas que cuidamos en cada alumno</h2>
-        <p>Tenemos en cuenta su nivel de inglés, su curso y lo que busca la familia.</p>
+        <span class="eyebrow">Nuestra historia</span>
+        <h2>Todo nace de una experiencia propia</h2>
       </div>
-      <ol class="who-ones">
-        <li class="reveal"><span class="who-n" aria-hidden="true">1</span><h3>Primero, conocer al alumno</h3><p>Antes de proponerte nada, hablamos contigo y conocemos al alumno: su nivel de inglés, su carácter y sus intereses.</p></li>
-        <li class="reveal"><span class="who-n" aria-hidden="true">2</span><h3>Grupos pensados para hablar</h3><p>Trabajamos con grupos reducidos para que todos tengan tiempo real de hablar en inglés.</p></li>
-        <li class="reveal"><span class="who-n" aria-hidden="true">3</span><h3>Seguimos cómo avanza</h3><p>Seguimos su evolución curso a curso y te mantenemos cerca del proceso.</p></li>
-        <li class="reveal"><span class="who-n" aria-hidden="true">4</span><h3>Una persona de referencia</h3><p>Os explicamos quién atiende vuestra consulta y qué acompañamiento incluye el programa.</p></li>
+      <ol class="who-steps reveal">
+        <li><span class="who-step-k">Antes</span><h3>Nuestra fundadora estudia en Estados Unidos</h3><p>Allí descubre lo que da estudiar fuera: tablas y madurez.</p></li>
+        <li><span class="who-step-k">Con 24 años</span><h3>Funda Interlanguage en Madrid</h3><p>Empieza con clases de inglés y campamentos de verano.</p></li>
+        <li><span class="who-step-k">Hoy</span><h3>Seguimos en familia</h3><p>Más de 30 años después, enseñamos inglés en Madrid y también orientamos y gestionamos estancias escolares en el extranjero.</p></li>
       </ol>
     </div>
   </section>
 
-  <!-- 3 · QUIÉNES SOMOS: trayectoria y forma de enseñar -->
+  <!-- 3 · CÓMO LO HACEMOS (solo hechos ya publicados en la web; incluye los de la antigua «Nuestra trayectoria») -->
   <section class="who-section who-section--alt">
-    <div class="container who-about">
-      <div class="who-about-copy reveal">
-        <span class="eyebrow">Quiénes somos</span>
-        <h2>Más de 30 años enseñando inglés en Madrid</h2>
-        <p>Empezamos con clases de inglés y campamentos de verano en Madrid. Hoy también orientamos y gestionamos estancias escolares en el extranjero.</p>
+    <div class="container">
+      <div class="who-sec-head reveal">
+        <span class="eyebrow">Cómo lo hacemos</span>
+        <h2>Lo que cuidamos en cada alumno</h2>
+        <p>Tenemos en cuenta su nivel de inglés, su curso y lo que busca la familia.</p>
       </div>
-      <ul class="who-facts reveal">
-        <li><strong>Profesores 100 % nativos</strong><span>Formados específicamente para enseñar a niños y jóvenes, no solo para hablar el idioma.</span></li>
-        <li><strong>Aprenden hablando</strong><span>El inglés como herramienta, no como un examen que aprobar.</span></li>
-        <li><strong>De los 3 a los 18 años</strong><span>Un programa para cada etapa, con el mismo método.</span></li>
-      </ul>
+      <ol class="who-ones who-ones--6">
+        <li class="reveal"><span class="who-n" aria-hidden="true">1</span><h3>Primero, conocer al alumno</h3><p>Antes de proponerte nada, hablamos contigo y conocemos al alumno: su nivel de inglés, su carácter y sus intereses.</p></li>
+        <li class="reveal"><span class="who-n" aria-hidden="true">2</span><h3>Profesores 100 % nativos</h3><p>Formados específicamente para enseñar a niños y jóvenes, no solo para hablar el idioma.</p></li>
+        <li class="reveal"><span class="who-n" aria-hidden="true">3</span><h3>Grupos pensados para hablar</h3><p>Grupos reducidos para que todos tengan tiempo real de hablar: el inglés como herramienta, no como un examen.</p></li>
+        <li class="reveal"><span class="who-n" aria-hidden="true">4</span><h3>De los 3 a los 18 años</h3><p>Un programa para cada etapa, con el mismo método.</p></li>
+        <li class="reveal"><span class="who-n" aria-hidden="true">5</span><h3>Seguimos cómo avanza</h3><p>Seguimos su evolución curso a curso y te mantenemos cerca del proceso.</p></li>
+        <li class="reveal"><span class="who-n" aria-hidden="true">6</span><h3>Una persona de referencia</h3><p>Os explicamos quién atiende vuestra consulta y qué acompañamiento incluye el programa.</p></li>
+      </ol>
     </div>
   </section>
 
@@ -1594,7 +1604,7 @@
     <div class="footer-col">
       <h3>Navegación</h3>
       <ul>
-        <li><a href="#servicio-metodologia" data-jump-service="metodologia">Por qué nosotros</a></li>
+        <li><a href="#servicio-metodologia" data-jump-service="metodologia">Quiénes somos</a></li>
         <li><a href="#servicios">Servicios</a></li>
         <li><a href="#destinos">Destinos</a></li>
       </ul>
