@@ -469,7 +469,8 @@ window.dataLayer = window.dataLayer || [];
     const scrollOpts = function(block){ return { behavior: reduceMotion ? 'auto' : 'smooth', block: block }; };
     const sedeInputs = Array.from(campForm.querySelectorAll('input[name="sede"]'));
     const weekChecks = Array.from(campForm.querySelectorAll('.camp-week'));
-    const comedor = $('campComedor');
+    const comedor = $('campComedor');   // sede, semanas con precio y comedor solo existen en la inscripción completa (edición anterior);
+                                        // la reserva corta del rediseño (12-11-2026) no los tiene y usa el campo libre #campSemanas
     const msgEl = $('campFormMsg');
     const errEl = $('campFormErrorMsg');
     const submitBtn = $('campSubmitBtn');
@@ -499,7 +500,7 @@ window.dataLayer = window.dataLayer || [];
       let base = null, extra = 0, total = null;
       if (n > 0 && packPrice[n]){
         base = packPrice[n];
-        if (comedor.checked){
+        if (comedor && comedor.checked){
           if (comedorWeek > 0) extra = comedorWeek * n; else base = null;   // sin precio de comedor fiable: no inventamos el total
         }
         if (base !== null) total = base + extra;
@@ -513,7 +514,8 @@ window.dataLayer = window.dataLayer || [];
     // resumen de la inscripción (se actualiza solo al elegir sede, semanas o comedor)
     function render(){
       const s = state();
-      const comedorTxt = comedor.checked ? L.lWithComedor : L.lWithoutComedor;
+      const withComedor = !!(comedor && comedor.checked);
+      const comedorTxt = withComedor ? L.lWithComedor : L.lWithoutComedor;
       const weeksTxt = s.n ? s.picked.map(function(c){
         const small = c.parentNode.querySelector('small');
         return L.lWeek + ' ' + c.value + (small ? ' · ' + small.textContent : '');
@@ -524,14 +526,14 @@ window.dataLayer = window.dataLayer || [];
       else {
         totalTxt = money(s.total);
         note = s.n + ' ' + weeksWord(s.n) + ': ' + money(s.base) +
-          (comedor.checked ? ' + ' + L.lComedor + ' ' + s.n + ' × ' + money(comedorWeek) + ' = ' + money(s.extra) : '');
+          (withComedor ? ' + ' + L.lComedor + ' ' + s.n + ' × ' + money(comedorWeek) + ' = ' + money(s.extra) : '');
       }
       setAll('sede', sedeValue() || L.lNone);
       setAll('weeks', weeksTxt);
       setAll('comedor', comedorTxt);
       setAll('total', totalTxt);
       setAll('breakdown', note);
-      campForm.querySelectorAll('[data-sum="comedor-note"]').forEach(function(el){ el.hidden = !comedor.checked; });
+      campForm.querySelectorAll('[data-sum="comedor-note"]').forEach(function(el){ el.hidden = !withComedor; });
       campForm.querySelectorAll('[data-camp-summary]').forEach(function(el){ el.classList.toggle('is-empty', s.total === null); });
     }
 
@@ -540,18 +542,21 @@ window.dataLayer = window.dataLayer || [];
     function validTel(v){ return /^\+?\d{8,15}$/.test(v.replace(/[\s().-]/g, '')); }
     function filled(id){ return $(id).value.trim() !== ''; }
     function rule(id, ok, extra){ return Object.assign({ id: id, control: $(id), ok: ok }, extra || {}); }
+    const isReq = function(id){ const el = $(id); return !!el && el.required; };
     const rules = [
-      rule('campSede', function(){ return !!sedeValue(); }, { control: $('campSedeField'), group: true, focusEl: sedeInputs[0] }),
-      rule('campWeeks', function(){ return weekChecks.some(function(c){ return c.checked; }); },
+      sedeInputs.length && rule('campSede', function(){ return !!sedeValue(); }, { control: $('campSedeField'), group: true, focusEl: sedeInputs[0] }),
+      weekChecks.length && rule('campWeeks', function(){ return weekChecks.some(function(c){ return c.checked; }); },
            { control: campForm.querySelector('.camp-weeks'), group: true, focusEl: weekChecks[0] }),
       rule('campAlumnoNombre', function(){ return filled('campAlumnoNombre'); }),
-      rule('campAlumnoApellidos', function(){ return filled('campAlumnoApellidos'); }),
-      rule('campColegio', function(){ return filled('campColegio'); }),
+      isReq('campAlumnoApellidos') && rule('campAlumnoApellidos', function(){ return filled('campAlumnoApellidos'); }),
+      isReq('campAlumnoEdad') && rule('campAlumnoEdad', function(){ return filled('campAlumnoEdad'); }),
+      isReq('campColegio') && rule('campColegio', function(){ return filled('campColegio'); }),
       rule('campTutor', function(){ return filled('campTutor'); }),
       rule('campEmail', function(){ return RE_EMAIL.test($('campEmail').value.trim()); }),
       rule('campTelefono', function(){ return validTel($('campTelefono').value.trim()); }),
       rule('campRgpd', function(){ return $('campRgpd').checked; })
-    ];
+    ].filter(Boolean)
+     .sort(function(a, b){ return a.control.compareDocumentPosition(b.control) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1; });   // en el orden de la página
     const byId = {};
     rules.forEach(function(r){ byId[r.id] = r; });
     function showing(r){ const e = $('err-' + r.id); return !!e && e.classList.contains('show'); }
@@ -579,7 +584,7 @@ window.dataLayer = window.dataLayer || [];
     });
     weekChecks.forEach(function(c){ c.addEventListener('change', anyChange); });
     sedeInputs.forEach(function(c){ c.addEventListener('change', anyChange); });
-    comedor.addEventListener('change', anyChange);
+    if (comedor) comedor.addEventListener('change', anyChange);
 
     function focusFirstBad(bad){
       const el = bad[0].focusEl || bad[0].control;
@@ -611,11 +616,12 @@ window.dataLayer = window.dataLayer || [];
       setFormError(errEl, '');
       const s = state();
       const val = function(id){ const el = $(id); return el ? el.value : ''; };
+      const semanas = weekChecks.length ? s.picked.map(function(c){ return c.value; }).join(', ') : val('campSemanas').trim();
       const payload = new URLSearchParams({
         form_type: 'campamento',
         sede: sedeValue(),
-        semanas: s.picked.map(function(c){ return c.value; }).join(', '),
-        comedor: comedor.checked ? 'Sí' : 'No',
+        semanas: semanas,
+        comedor: comedor ? (comedor.checked ? 'Sí' : 'No') : '',
         total: s.total !== null ? String(s.total) : '',
         alumnoNombre: val('campAlumnoNombre'),
         alumnoApellidos: val('campAlumnoApellidos'),
@@ -639,8 +645,8 @@ window.dataLayer = window.dataLayer || [];
           if (!res || !res.ok) throw new Error('resp');
           pushEvent('lead_generado', {
             servicio: 'campamentos',
-            semanas: s.picked.map(function(c){ return c.value; }).join(','),
-            comedor: comedor.checked,
+            semanas: semanas,
+            comedor: !!(comedor && comedor.checked),
             total: s.total
           });
           pushEvent('formulario_enviado', { servicio: 'campamentos-inscripcion' });

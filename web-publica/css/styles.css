@@ -2180,3 +2180,119 @@ section.contact.lf{padding:64px 0; color:var(--ink); background:var(--ivory); ov
 
 /* «Lo que cuidamos en cada alumno»: 6 puntos, tres por fila en escritorio */
 @media (min-width:1000px){ .who-ones--6{grid-template-columns:repeat(3,minmax(0,1fr)); column-gap:48px;} }
+
+/* 12-11-2026 · «Campamentos de verano en Madrid» rediseñado (v3): cabecera con foto del campamento a todo lo ancho y velo marino,
+   «aprenden, se divierten y tú tranquilo» con fotos y la banda «Todo en inglés», retos, grupos por edad, horario del día y reserva (#campForm).
+   Solo transiciones suaves. */
+.camp2-hero{position:relative; overflow:hidden; background:var(--ivory); color:var(--ink); border-bottom:1px solid var(--line);}
+.camp2-hero-bg{position:absolute; inset:0 0 0 50%; display:block;}
+.camp2-hero-bg img{display:block; width:100%; height:100%; object-fit:cover; object-position:50% 58%;}
+.camp2-hero-in{position:relative; z-index:2; display:flex; align-items:center; min-height:clamp(540px,64vh,660px); padding-block:clamp(24px,3.5vw,40px) clamp(56px,7vw,88px);}
+.camp2-hero-copy{min-width:0; max-width:540px;}
+.camp2-hero-copy .svc-back{display:inline-block; padding:11px 0; margin-bottom:4px; color:var(--navy);}
+.camp2-hero-copy .eyebrow{display:block; margin:0 0 10px; color:var(--accent);}
+.camp2-hero-copy h1{margin:0 0 14px; font-size:clamp(2.1rem,4vw,3rem); line-height:1.08; color:var(--navy); text-wrap:balance;}
+.camp2-hero-copy h1 em{font-style:italic; color:var(--accent);}
+.camp2-sub{margin:0 0 24px; max-width:32em; font-size:1.12rem; line-height:1.6; color:var(--ink-soft);}
+.camp2-sub strong{color:var(--navy);}
+.camp2-date{display:inline-flex; flex-wrap:wrap; align-items:center; gap:10px 16px; max-width:100%; margin:0 0 26px; padding:14px 18px; background:#fff; border:1.5px dashed color-mix(in srgb, var(--accent) 45%, transparent); border-radius:var(--r-card); color:var(--ink);}
+.camp2-date > svg{flex:none; width:26px; height:26px; color:var(--accent);}
+.camp2-date-k{display:block; font:700 .72rem/1.3 var(--font-body); letter-spacing:.14em; text-transform:uppercase; color:var(--accent);}
+.camp2-date strong{display:block; font-family:var(--font-display); font-weight:600; font-size:1.18rem; line-height:1.25; color:var(--navy);}
+.camp2-date-tag{padding:5px 11px; border-radius:999px; background:var(--stone); font-size:.8rem; font-weight:700; color:var(--ink-soft); white-space:nowrap;}
+.camp2-hero-copy .svc-page-cta-row{margin-bottom:0;}
+.camp2-hero-copy .btn-outline{border-color:var(--line);}
+.camp2-meta{margin:14px 0 0; font-size:.88rem; color:var(--ink-soft);}
+@media (max-width:759px){   /* móvil: la foto arriba y el texto debajo, sobre marino */
+  .camp2-hero-bg{position:relative; inset:auto; aspect-ratio:16/10;}
+  .camp2-hero-bg img{object-position:50% 55%;}
+  .camp2-hero-in{display:block; min-height:0; padding-block:6px 44px;}
+  .camp2-date{display:flex;}
+  .camp2-hero-copy .svc-page-cta-row .btn-primary, .camp2-hero-copy .svc-page-cta-row .btn-outline{flex:1 1 100%; justify-content:center; text-align:center;}
+}
+
+/* cabeceras de sección comunes */
+.camp2-head{max-width:720px;}
+.camp2-ic{flex:none; display:grid; place-items:center; width:40px; height:40px; border-radius:50%; background:color-mix(in srgb, var(--accent) 12%, #fff); color:var(--accent);}
+.camp2-ic svg, .camp2-tl-ic svg{width:20px; height:20px;}
+
+/* Aprenden, se divierten y tú tranquilo: tres columnas con foto + banda marino «Todo en inglés» */
+.camp2-que{background:#fff;}
+.camp2-pillars{display:grid; gap:30px;}
+.camp2-pillar{min-width:0;}
+.camp2-pillar-ph{aspect-ratio:4/3; max-width:100%; margin-bottom:18px; border-radius:var(--r-card); overflow:hidden; background:var(--stone);}
+.camp2-pillar-ph picture, .camp2-pillar-ph img{display:block; width:100%; height:100%; object-fit:cover;}
+.camp2-pillar h3{margin:0 0 6px; font-size:1.3rem; line-height:1.2; color:var(--navy);}
+.camp2-pillar p{margin:0; max-width:30em; font-size:1rem; line-height:1.6; color:var(--ink-soft);}
+.camp2-acts{display:grid; gap:16px; margin-top:clamp(36px,5vw,56px); padding:clamp(20px,3vw,30px); border-radius:var(--r-card); background:var(--navy); color:#fff;}
+.camp2-acts-lbl{margin:0; font-family:var(--font-display); font-style:italic; font-weight:500; font-size:clamp(1.5rem,2.6vw,1.9rem); line-height:1.1; color:#fff;}
+.camp2-acts-list{list-style:none; margin:0; padding:0; display:flex; flex-wrap:wrap; gap:10px;}
+.camp2-acts-list li{display:inline-flex; align-items:center; gap:10px; padding:7px 16px 7px 7px; border-radius:999px; background:rgba(255,255,255,.1); font-weight:700; font-size:.95rem; line-height:1.2; color:#fff;}
+.camp2-acts-list .camp2-ic{width:34px; height:34px; background:#fff;}
+.camp2-acts-list .camp2-ic svg{width:18px; height:18px;}
+@media (min-width:900px){
+  .camp2-pillars{grid-template-columns:repeat(3,minmax(0,1fr)); gap:36px;}
+  body .camp2-pillar h3{font-size:1.375rem;}
+  .camp2-acts{grid-template-columns:auto minmax(0,1fr); align-items:center; column-gap:36px;}
+}
+
+/* Un reto distinto cada día: ocho tarjetas con su color */
+.camp2-retos-sec{background:#fff; border-top:1px solid var(--line);}
+.camp2-retos{list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px;}
+.camp2-retos li{display:grid; align-content:start; gap:6px; min-width:0; padding:18px; border-radius:var(--r-card); background:var(--ivory); border:1px solid var(--line); border-top:3px solid var(--accent);}
+.camp2-retos li .camp2-ic{margin-bottom:6px;}
+.camp2-retos li.c2{border-top-color:var(--forest);}
+.camp2-retos li.c2 .camp2-ic{background:color-mix(in srgb, var(--forest) 14%, #fff); color:var(--forest);}
+.camp2-retos li.c3{border-top-color:var(--navy);}
+.camp2-retos li.c3 .camp2-ic{background:color-mix(in srgb, var(--navy) 10%, #fff); color:var(--navy);}
+.camp2-retos strong{font-size:1rem; line-height:1.3; color:var(--navy); overflow-wrap:anywhere;}
+.camp2-reto-d{font-size:.88rem; line-height:1.45; color:var(--ink-soft); hyphens:auto;}
+@media (min-width:1000px){ .camp2-retos{grid-template-columns:repeat(4,minmax(0,1fr)); gap:16px;} .camp2-retos li{padding:22px;} }
+
+/* Un día en el campamento: banda marino con una tarjeta por momento (hora de inicio grande); en fila desde 1000 px */
+.camp2-day{background:var(--navy); color:#fff;}
+.camp2-day .camp-section-head h2{color:#fff;}
+.camp2-day .camp-section-head p{color:rgba(255,255,255,.86);}
+.camp2-tl{position:relative; list-style:none; margin:0 0 20px; padding:0; display:grid; gap:12px;}
+.camp2-tl li{position:relative; display:grid; grid-template-columns:auto minmax(0,1fr); column-gap:14px; align-content:start; min-width:0; padding:16px; border-radius:var(--r-card); background:#fff; color:var(--ink);}
+.camp2-tl-ic{grid-row:1 / span 3; display:grid; place-items:center; width:44px; height:44px; border-radius:50%; background:color-mix(in srgb, var(--accent) 12%, #fff); color:var(--accent);}
+.camp2-tl li:nth-child(3n+2) .camp2-tl-ic{background:color-mix(in srgb, var(--forest) 14%, #fff); color:var(--forest);}
+.camp2-tl li:nth-child(3n) .camp2-tl-ic{background:color-mix(in srgb, var(--navy) 10%, #fff); color:var(--navy);}
+.camp2-tl-time{display:flex; align-items:baseline; flex-wrap:wrap; gap:0 2px; font-variant-numeric:tabular-nums;}
+.camp2-tl-time b{font-family:var(--font-display); font-weight:600; font-size:1.4rem; line-height:1.1; color:var(--navy);}
+.camp2-tl-time span{font-size:.86rem; color:var(--ink-soft);}
+.camp2-tl h3{margin:6px 0 4px; font-size:1.06rem; line-height:1.3; color:var(--navy);}
+.camp2-tl p{margin:0; font-size:.9rem; line-height:1.5; color:var(--ink-soft);}
+.camp2-note{margin:0; font-size:.86rem; color:var(--ink-soft);}
+.camp2-day .camp2-note{color:rgba(255,255,255,.78);}
+@media (min-width:1000px){
+  .camp2-tl{grid-template-columns:repeat(6,minmax(0,1fr)); gap:14px; margin-bottom:26px;}
+  .camp2-tl::before{content:""; position:absolute; left:0; right:0; top:50%; border-top:2px dashed rgba(255,255,255,.35);}   /* el hilo del día, entre tarjetas */
+  .camp2-tl li{grid-template-columns:minmax(0,1fr); padding:20px 18px 22px;}
+  .camp2-tl-ic{grid-row:auto; margin-bottom:16px;}
+}
+
+/* Reserva de plaza: texto y preguntas a la izquierda, formulario a la derecha en escritorio */
+.camp2-reserva{background:#fff;}
+.camp2-reserva-grid{display:grid; gap:24px;}
+.camp2-reserva-intro{min-width:0;}
+.camp2-reserva-intro .eyebrow{display:block; margin-bottom:10px;}
+.camp2-reserva-intro h2{margin:0 0 12px; font-size:clamp(1.6rem,3vw,2.125rem); line-height:1.15; text-wrap:balance;}
+.camp2-reserva-intro p{margin:0; max-width:30em; font-size:1.04rem; line-height:1.6; color:var(--ink-soft);}
+.camp2-reserva-intro .camp-faq{margin-top:26px;}
+.camp2-card{min-width:0; padding:clamp(20px,3vw,36px); background:var(--ivory); border:1px solid var(--line); border-radius:var(--r-card); scroll-margin-top:110px;}
+.camp2-card .camp-req-note{margin-bottom:16px;}
+.camp2-card .cf-grid + .form-error{margin-top:16px;}
+.camp2-card .camp-submit{margin-top:22px;}
+.camp2-card .field .opt{font-weight:500; color:var(--ink-soft);}
+@media (min-width:960px){
+  .camp2-reserva-grid{grid-template-columns:minmax(0,4fr) minmax(0,7fr); gap:64px; align-items:start;}
+  .camp2-reserva-intro{position:sticky; top:110px; padding-top:8px;}
+}
+@media (max-width:600px){
+  .camp2-reserva.camp-section{padding:44px 0;}
+  .camp2-reserva .container{padding:0 16px;}
+  .camp2-card{padding:20px 16px;}
+  .camp2-retos li{padding:14px;}
+  .camp2-tl li{padding:14px;}
+}

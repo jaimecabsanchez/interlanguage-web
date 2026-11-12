@@ -70,8 +70,8 @@
 <link rel="preload" href="fonts/newsreader-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/newsreader-italic-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/plus-jakarta-sans-wght-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="css/styles.css?v=149" as="style">
-<link rel="stylesheet" href="css/styles.css?v=149">
+<link rel="preload" href="css/styles.css?v=154" as="style">
+<link rel="stylesheet" href="css/styles.css?v=154">
 <link rel="stylesheet" href="css/motion.css?v=1">
 </head>
 <body>
@@ -515,172 +515,162 @@
 
 <div id="view-service-campamentos" class="view service-page" data-title="Campamentos de verano en Madrid" hidden>
 
-<section class="camp-hero">
-  <div class="container camp-hero-grid">
-    <div class="camp-hero-content">
+<!-- 12-11-2026 · Rediseño de «Campamentos de verano en Madrid» (v3): cabecera con foto del campamento a todo lo ancho y fechas orientativas,
+     «aprenden, se divierten y tú tranquilo» con fotos, retos, grupos por edad, horario visual (el de la última edición; sin «cambio de ropa») y la reserva de plaza
+     (el mismo #campForm y el mismo envío de main.js; la inscripción completa de la edición anterior sigue en <template id="camp-edicion-anterior">). -->
+<section class="camp2-hero">
+  <picture class="camp2-hero-bg"><source type="image/avif" srcset="images/campamentos/grupo-campamento-juntos-480.avif 480w, images/campamentos/grupo-campamento-juntos-800.avif 800w, images/campamentos/grupo-campamento-juntos-1200.avif 1200w, images/campamentos/grupo-campamento-juntos-1448.avif 1448w" sizes="100vw"><source type="image/webp" srcset="images/campamentos/grupo-campamento-juntos-480.webp 480w, images/campamentos/grupo-campamento-juntos-800.webp 800w, images/campamentos/grupo-campamento-juntos-1200.webp 1200w, images/campamentos/grupo-campamento-juntos-1448.webp 1448w" sizes="100vw"><img src="images/campamentos/grupo-campamento-juntos.jpg" alt="Grupo del campamento celebrando juntos" width="1448" height="1086" decoding="async"></picture>
+  <div class="container camp2-hero-in">
+    <div class="camp2-hero-copy">
       <a href="#" class="svc-back" data-back>← Volver a servicios</a>
       <span class="eyebrow">Campamentos de verano en Madrid</span>
-
-      <h1>Un campamento de verano con actividades en inglés</h1>
-      <p class="svc-page-intro">Retos diarios en inglés basados en las ocho inteligencias múltiples, con monitores 100&nbsp;% nativos y grupos por edad. Con el método TalenTalk®, que aplicamos desde 2002.</p>
-      <div class="camp-quickfacts camp-quickfacts--hero">
-        <div class="camp-quickfact"><div class="camp-quickfact-ic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c1-4.5 4-7 7-7s6 2.5 7 7"/></svg></div><div><strong>De 3 a 9 años</strong><span>Grupos por edad</span></div></div>
-        <div class="camp-quickfact"><div class="camp-quickfact-ic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.4-7-11.5A7 7 0 0112 2a7 7 0 017 7.5C19 14.6 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg></div><div><strong>Madrid</strong><span>Sede por confirmar</span></div></div>
-        <div class="camp-quickfact"><div class="camp-quickfact-ic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18"/></svg></div><div><strong>Próximas fechas por confirmar</strong><span>Campamento de verano</span></div></div>
-        <div class="camp-quickfact"><div class="camp-quickfact-ic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 15a2 2 0 0 1-2 2H8l-4 3V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2Z"/><path d="M8 9h8M8 12.5h5"/></svg></div><div><strong>Un reto en inglés cada día</strong><span>Con monitores 100&nbsp;% nativos</span></div></div>
-        <div class="camp-quickfact"><div class="camp-quickfact-ic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9Z"/></svg></div><div><strong>Juegos de agua y actividad especial</strong><span>Parte de cada jornada</span></div></div>
-        <div class="camp-quickfact is-price"><div class="camp-quickfact-ic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 20 10a2 2 0 010 2.8L13.8 19a2 2 0 01-2.8 0L3 11V3h8z"/><circle cx="7" cy="7" r="1.2" fill="currentColor" stroke="none"/></svg></div><div><strong>Tarifa por confirmar</strong><span>Se publicará con la convocatoria</span></div></div>
+      <h1>Un verano para jugar, crear y aprender <em>en inglés</em></h1>
+      <p class="camp2-sub">Para niños y niñas de <strong>3 a 9 años</strong>, en grupos por edad y con monitores 100&nbsp;% nativos.</p>
+      <div class="camp2-date">
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18"/></svg>
+        <div><span class="camp2-date-k">Próximamente</span><strong>Finales de junio a finales de julio</strong></div>
+        <span class="camp2-date-tag">Fechas por confirmar</span>
       </div>
-      <p class="camp-season-note">Todavía no hay convocatoria abierta: publicaremos aquí las fechas, la sede y las tarifas cuando estén confirmadas.</p>
       <div class="svc-page-cta-row">
-        <a href="#camp-fechas" class="btn-primary svc-page-cta" data-cta="camp-hero-consulta">Ver próxima convocatoria</a>
+        <a href="#camp-reserva" class="btn-primary svc-page-cta" data-cta="camp-hero-reserva">Reservar plaza</a>
         <a href="#camp-dia" class="btn-outline">Ver cómo es un día</a>
       </div>
-    </div>
-    <div class="camp-hero-media"><picture><source type="image/avif" srcset="images/campamentos/alumnos-cocinando-banner-480.avif 480w, images/campamentos/alumnos-cocinando-banner-800.avif 800w, images/campamentos/alumnos-cocinando-banner-1087.avif 1087w" sizes="(max-width: 700px) 100vw, 50vw"><source type="image/webp" srcset="images/campamentos/alumnos-cocinando-banner-480.webp 480w, images/campamentos/alumnos-cocinando-banner-800.webp 800w, images/campamentos/alumnos-cocinando-banner-1087.webp 1087w" sizes="(max-width: 700px) 100vw, 50vw"><img src="images/campamentos/alumnos-cocinando-banner.jpg" alt="Alumnos cocinando en equipo durante el campamento de verano" width="1087" height="480" loading="lazy"></picture></div>
-  </div>
-</section>
-
-<!-- PRÓXIMA EDICIÓN (sin convocatoria). Las fechas, la selección de semanas, las tarifas y la inscripción de la edición anterior
-     están intactas en <template id="camp-edicion-anterior"> al final de esta vista: ver «Campamento de Madrid» en web-publica/AGENTS.md. -->
-<section class="camp-section bg-white" id="camp-fechas">
-  <div class="container"><p>Publicaremos aquí la sede, las edades, las semanas y las tarifas cuando se confirme la próxima convocatoria.</p></div>
-</section>
-
-<!-- QUÉ HACEN -->
-<section class="camp-section bg-cream" id="camp-que">
-  <div class="container">
-    <div class="camp-section-head reveal">
-      <h2>Qué hacen en el campamento</h2>
-      <p>Ocho retos distintos, un descubrimiento cada día; cada reto trabaja una inteligencia diferente.</p>
-    </div>
-    <div class="challenge-grid reveal">
-      <div class="challenge-chip c1"><strong>Eureka! Challenge</strong><span>Pequeños descubrimientos científicos</span></div>
-      <div class="challenge-chip c2"><strong>Picasso Challenge</strong><span>Arte y creatividad</span></div>
-      <div class="challenge-chip c3"><strong>Do-Re-Mi Challenge</strong><span>Música y canciones en inglés</span></div>
-      <div class="challenge-chip c4"><strong>Story Challenge</strong><span>Cuentacuentos y lectura en voz alta</span></div>
-      <div class="challenge-chip c1"><strong>Green Challenge</strong><span>Reciclaje y naturaleza</span></div>
-      <div class="challenge-chip c2"><strong>Empathy Challenge</strong><span>Trabajo en equipo y valores</span></div>
-      <div class="challenge-chip c3"><strong>Insight Challenge</strong><span>Gestión emocional</span></div>
-      <div class="challenge-chip c4"><strong>Olympic Challenge</strong><span>Deporte, agua y juegos al aire libre</span></div>
-    </div>
-    <p class="svc-schedule-tagline">Y un reto sorpresa cada día.</p>
-    <div class="camp-subhead reveal">
-      <h3>Grupos por edad</h3>
-      <p>Dos dinámicas distintas, cada una pensada para su momento.</p>
-    </div>
-    <div class="age-groups reveal">
-      <div class="age-card">
-        <div class="age-card-media"><picture><source type="image/avif" srcset="images/campamentos/taller-cocina-limones-480.avif 480w, images/campamentos/taller-cocina-limones-800.avif 800w, images/campamentos/taller-cocina-limones-1122.avif 1122w" sizes="(max-width: 700px) 100vw, 50vw"><source type="image/webp" srcset="images/campamentos/taller-cocina-limones-480.webp 480w, images/campamentos/taller-cocina-limones-800.webp 800w, images/campamentos/taller-cocina-limones-1122.webp 1122w" sizes="(max-width: 700px) 100vw, 50vw"><img src="images/campamentos/taller-cocina-limones.jpg" alt="Taller de cocina, exprimiendo limones" width="1122" height="1402" loading="lazy"></picture></div>
-        <div class="age-card-body">
-          <h3>Los más pequeños</h3>
-          <span class="age-range">Talent Starters</span>
-          <p>Juego guiado, ritmo tranquilo y primeros pasos en cada inteligencia, en grupos por edad.</p>
-        </div>
-      </div>
-      <div class="age-card">
-        <div class="age-card-media"><picture><source type="image/avif" srcset="images/campamentos/taller-manualidades-480.avif 480w, images/campamentos/taller-manualidades-800.avif 800w, images/campamentos/taller-manualidades-1089.avif 1089w" sizes="(max-width: 700px) 100vw, 50vw"><source type="image/webp" srcset="images/campamentos/taller-manualidades-480.webp 480w, images/campamentos/taller-manualidades-800.webp 800w, images/campamentos/taller-manualidades-1089.webp 1089w" sizes="(max-width: 700px) 100vw, 50vw"><img src="images/campamentos/taller-manualidades.jpg" alt="Taller de manualidades en el campamento" width="1089" height="1445" loading="lazy"></picture></div>
-        <div class="age-card-body">
-          <h3>Los mayores</h3>
-          <span class="age-range">Talent Juniors</span>
-          <p>Más autonomía: cada día eligen entre varios retos, en grupos organizados por edad y nivel.</p>
-        </div>
-      </div>
+      <p class="camp2-meta">Madrid · Sede y tarifa por confirmar</p>
     </div>
   </div>
 </section>
 
-<!-- CÓMO ES UN DÍA -->
-<section class="camp-section bg-white" id="camp-dia">
+<!-- APRENDEN, SE DIVIERTEN Y TÚ TRANQUILO -->
+<section class="camp-section camp2-que" id="camp-que">
   <div class="container">
-    <div class="camp-day-media reveal"><picture><source type="image/avif" srcset="images/campamentos/taller-cocina-grupo-480.avif 480w, images/campamentos/taller-cocina-grupo-800.avif 800w, images/campamentos/taller-cocina-grupo-1086.avif 1086w" sizes="(max-width: 700px) 100vw, 50vw"><source type="image/webp" srcset="images/campamentos/taller-cocina-grupo-480.webp 480w, images/campamentos/taller-cocina-grupo-800.webp 800w, images/campamentos/taller-cocina-grupo-1086.webp 1086w" sizes="(max-width: 700px) 100vw, 50vw"><img src="images/campamentos/taller-cocina-grupo.jpg" alt="Taller de cocina en grupo" width="1086" height="1448" loading="lazy"></picture></div>
-    <div class="camp-section-head reveal">
-      <h2>Un día en TalenTalk</h2>
+    <div class="camp-section-head camp2-head reveal">
+      <h2>Aprenden, se divierten y juegan… y todo en inglés</h2>
+      <p>Un verano en el que tu hijo o hija practica inglés sin darse cuenta, mientras canta, juega y crea con otros niños de su edad.</p>
     </div>
-    <div class="day-timeline reveal">
-      <div class="day-step"><span class="day-step-ic">1</span><span>Llegada y asamblea</span></div>
-      <div class="day-step"><span class="day-step-ic">2</span><span>Snack y reto del día</span></div>
-      <div class="day-step"><span class="day-step-ic">3</span><span>Juegos de agua</span></div>
-      <div class="day-step"><span class="day-step-ic">4</span><span>Actividad especial</span></div>
-      <div class="day-step"><span class="day-step-ic">5</span><span>Comida y recogida</span></div>
+    <div class="camp2-pillars reveal">
+      <article class="camp2-pillar"><div class="camp2-pillar-ph"><picture><source type="image/avif" srcset="images/campamentos/taller-cocina-grupo-480.avif 480w, images/campamentos/taller-cocina-grupo-800.avif 800w, images/campamentos/taller-cocina-grupo-1086.avif 1086w" sizes="(min-width:900px) 400px, 100vw"><source type="image/webp" srcset="images/campamentos/taller-cocina-grupo-480.webp 480w, images/campamentos/taller-cocina-grupo-800.webp 800w, images/campamentos/taller-cocina-grupo-1086.webp 1086w" sizes="(min-width:900px) 400px, 100vw"><img src="images/campamentos/taller-cocina-grupo.jpg" alt="Taller de cocina en grupo" width="1086" height="1448" loading="lazy" decoding="async"></picture></div><h3>Aprenden inglés jugando</h3><p>Canciones, cuentos y juegos en inglés, adaptados a su edad.</p></article>
+      <article class="camp2-pillar"><div class="camp2-pillar-ph"><picture><source type="image/avif" srcset="images/campamentos/taller-manualidades-480.avif 480w, images/campamentos/taller-manualidades-800.avif 800w, images/campamentos/taller-manualidades-1089.avif 1089w" sizes="(min-width:900px) 400px, 100vw"><source type="image/webp" srcset="images/campamentos/taller-manualidades-480.webp 480w, images/campamentos/taller-manualidades-800.webp 800w, images/campamentos/taller-manualidades-1089.webp 1089w" sizes="(min-width:900px) 400px, 100vw"><img src="images/campamentos/taller-manualidades.jpg" alt="Taller de manualidades en el campamento" width="1089" height="1445" loading="lazy" decoding="async"></picture></div><h3>Se lo pasan en grande</h3><p>Bailan, dibujan, crean y cada día hay juegos de agua.</p></article>
+      <article class="camp2-pillar"><div class="camp2-pillar-ph"><picture><source type="image/avif" srcset="images/campamentos/taller-cocina-limones-480.avif 480w, images/campamentos/taller-cocina-limones-800.avif 800w, images/campamentos/taller-cocina-limones-1122.avif 1122w" sizes="(min-width:900px) 400px, 100vw"><source type="image/webp" srcset="images/campamentos/taller-cocina-limones-480.webp 480w, images/campamentos/taller-cocina-limones-800.webp 800w, images/campamentos/taller-cocina-limones-1122.webp 1122w" sizes="(min-width:900px) 400px, 100vw"><img src="images/campamentos/taller-cocina-limones.jpg" alt="Taller de cocina, exprimiendo limones" width="1122" height="1402" loading="lazy" decoding="async"></picture></div><h3>Con monitores nativos</h3><p>Monitores 100&nbsp;% nativos, formados para trabajar con niños, en grupos por edad.</p></article>
     </div>
-    <details class="svc-schedule-details">
-      <summary>Ver el horario completo, hora a hora</summary>
-      <div class="schedule-list">
-      <div class="schedule-item">
-        <div class="schedule-dot c1"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 3v2M12 19v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M3 12h2M19 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4" stroke-linecap="round"/></svg></div>
-        <div class="schedule-time">9:15 – 10:30</div>
-        <div class="schedule-body">
-          <h3>Asamblea de la mañana</h3>
-          <p>Booklet de inglés, storytelling y arts &amp; crafts</p>
-        </div>
-      </div>
-      <div class="schedule-item">
-        <div class="schedule-dot c2"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M12 8c-3 0-5 2.5-5 6s2 7 4 7c1 0 1.5-.5 2-.5s1 .5 2 .5c2 0 5-3.5 5-7-2 0-3-1-3-3" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 8c0-2 1-3.5 2.5-4" stroke-linecap="round"/></svg></div>
-        <div class="schedule-time">10:30 – 11:10</div>
-        <div class="schedule-body">
-          <h3>Snack y preparación</h3>
-          <p>Merienda y cambio de ropa para los juegos de agua</p>
-        </div>
-      </div>
-      <div class="schedule-item">
-        <div class="schedule-dot c3"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M12 3c3 4 6 7.5 6 11a6 6 0 01-12 0c0-3.5 3-7 6-11z" stroke-linejoin="round"/></svg></div>
-        <div class="schedule-time">11:10 – 11:40</div>
-        <div class="schedule-body">
-          <h3>Juegos de agua</h3>
-          <p>La actividad más esperada del día</p>
-        </div>
-      </div>
-      <div class="schedule-item">
-        <div class="schedule-dot c4"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M8 4L4 7l2 3 2-1v11h8V9l2 1 2-3-4-3-2 2h-2z" stroke-linejoin="round"/></svg></div>
-        <div class="schedule-time">11:40 – 12:00</div>
-        <div class="schedule-body">
-          <h3>Cambio de ropa</h3>
-          <p>Nos secamos y nos preparamos para seguir</p>
-        </div>
-      </div>
-      <div class="schedule-item">
-        <div class="schedule-dot c1"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M12 3a9 6.5 0 000 13c1 0 1.5-.7 1.5-1.5S13 13 13.5 13H16a4 4 0 004-4c0-3.5-3.5-6-8-6z" stroke-linejoin="round"/><circle cx="8" cy="10" r=".8" fill="#fff" stroke="none"/><circle cx="12" cy="7.5" r=".8" fill="#fff" stroke="none"/><circle cx="16" cy="9" r=".8" fill="#fff" stroke="none"/></svg></div>
-        <div class="schedule-time">12:00 – 13:00</div>
-        <div class="schedule-body">
-          <h3>Actividad especial</h3>
-          <p>Teatro, deporte o experimentos, según el día</p>
-        </div>
-      </div>
-      <div class="schedule-item">
-        <div class="schedule-dot c2"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="4" y="9" width="16" height="11" rx="2"/><path d="M9 9V6a3 3 0 016 0v3" stroke-linecap="round"/></svg></div>
-        <div class="schedule-time">13:00 – 14:30</div>
-        <div class="schedule-body">
-          <h3>Comida y tiempo de relax</h3>
-          <p>Almuerzo y descanso antes de la recogida</p>
-        </div>
-      </div>
-      </div>
-      <p class="vext-note">Horario de la última edición; se confirmará con la próxima convocatoria.</p>
-    </details>
+    <div class="camp2-acts reveal">
+      <p class="camp2-acts-lbl">Todo en inglés</p>
+      <ul class="camp2-acts-list">
+        <li><span class="camp2-ic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></svg></span>Canciones en inglés</li>
+        <li><span class="camp2-ic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16v4Z"/><path d="m13.5 6.5 4 4"/></svg></span>Dibujar y crear</li>
+        <li><span class="camp2-ic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 5h6a4 4 0 0 1 4 4v11a3 3 0 0 0-3-3H2z"/><path d="M22 5h-6a4 4 0 0 0-4 4v11a3 3 0 0 1 3-3h7z"/></svg></span>Aprender según su edad</li>
+        <li><span class="camp2-ic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13" cy="4.5" r="2"/><path d="M9.5 21 12 14.5l2.5 2.5v4"/><path d="M6 10l4-1.5 3.5 1.5 3-2.5"/><path d="M12 14.5 13.5 10"/></svg></span>Bailar</li>
+        <li><span class="camp2-ic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c3 4 6 7.5 6 11a6 6 0 0 1-12 0c0-3.5 3-7 6-11z"/></svg></span>Juegos de agua</li>
+        <li><span class="camp2-ic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M6 18l2.5-2.5M15.5 8.5 18 6"/></svg></span>Y mucho más…</li>
+      </ul>
+    </div>
   </div>
 </section>
 
-<!-- PREGUNTAS FRECUENTES + testimonio -->
-<section class="camp-section bg-white" id="camp-faq">
+<!-- RETOS -->
+<section class="camp-section camp2-retos-sec">
   <div class="container">
-    <div class="camp-section-head reveal">
-      <h2>Preguntas frecuentes</h2>
+    <div class="camp-section-head camp2-head reveal">
+      <h2>Un reto distinto cada día</h2>
+      <p>Ocho retos que se van turnando para que cada día descubran algo nuevo. Y un reto sorpresa cada día.</p>
     </div>
-    <div class="camp-why-layout reveal">
-      <div class="camp-why-media"><picture><source type="image/avif" srcset="images/campamentos/grupo-campamento-juntos-480.avif 480w, images/campamentos/grupo-campamento-juntos-800.avif 800w, images/campamentos/grupo-campamento-juntos-1200.avif 1200w, images/campamentos/grupo-campamento-juntos-1448.avif 1448w" sizes="(max-width: 700px) 100vw, 50vw"><source type="image/webp" srcset="images/campamentos/grupo-campamento-juntos-480.webp 480w, images/campamentos/grupo-campamento-juntos-800.webp 800w, images/campamentos/grupo-campamento-juntos-1200.webp 1200w, images/campamentos/grupo-campamento-juntos-1448.webp 1448w" sizes="(max-width: 700px) 100vw, 50vw"><img src="images/campamentos/grupo-campamento-juntos.jpg" alt="Grupo del campamento celebrando juntos" width="1448" height="1086" loading="lazy"></picture></div>
+    <ul class="camp2-retos reveal">
+      <li class="c1"><span class="camp2-ic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6M10 3v6L4.5 18.5A1.7 1.7 0 0 0 6 21h12a1.7 1.7 0 0 0 1.5-2.5L14 9V3"/><path d="M7.5 15h9"/></svg></span><strong>Eureka! Challenge</strong><span class="camp2-reto-d">Pequeños descubrimientos científicos</span></li>
+      <li class="c2"><span class="camp2-ic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a9 6.5 0 000 13c1 0 1.5-.7 1.5-1.5S13 13 13.5 13H16a4 4 0 004-4c0-3.5-3.5-6-8-6z"/><circle cx="8" cy="10" r=".8" fill="currentColor" stroke="none"/><circle cx="12" cy="7.5" r=".8" fill="currentColor" stroke="none"/><circle cx="16" cy="9" r=".8" fill="currentColor" stroke="none"/></svg></span><strong>Picasso Challenge</strong><span class="camp2-reto-d">Arte y creatividad</span></li>
+      <li class="c3"><span class="camp2-ic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></svg></span><strong>Do-Re-Mi Challenge</strong><span class="camp2-reto-d">Música y canciones en inglés</span></li>
+      <li class="c1"><span class="camp2-ic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 5h6a4 4 0 0 1 4 4v11a3 3 0 0 0-3-3H2z"/><path d="M22 5h-6a4 4 0 0 0-4 4v11a3 3 0 0 1 3-3h7z"/></svg></span><strong>Story Challenge</strong><span class="camp2-reto-d">Cuentacuentos y lectura en voz alta</span></li>
+      <li class="c2"><span class="camp2-ic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 4 13c0-5 4-9 16-9 0 12-4 16-9 16Z"/><path d="M4 20c4-5 7-7 11-9"/></svg></span><strong>Green Challenge</strong><span class="camp2-reto-d">Reciclaje y naturaleza</span></li>
+      <li class="c3"><span class="camp2-ic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.5-7 10-7 10Z"/></svg></span><strong>Empathy Challenge</strong><span class="camp2-reto-d">Trabajo en equipo y valores</span></li>
+      <li class="c1"><span class="camp2-ic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 14.5a4.5 4.5 0 0 0 7 0"/><path d="M9 9.5h.01M15 9.5h.01"/></svg></span><strong>Insight Challenge</strong><span class="camp2-reto-d">Gestión emocional</span></li>
+      <li class="c2"><span class="camp2-ic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0V4Z"/><path d="M17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3"/></svg></span><strong>Olympic Challenge</strong><span class="camp2-reto-d">Deporte, agua y juegos al aire libre</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- UN DÍA EN EL CAMPAMENTO (horario de la última edición) -->
+<section class="camp-section camp2-day" id="camp-dia">
+  <div class="container">
+    <div class="camp-section-head camp2-head reveal">
+      <h2>Un día en el campamento</h2>
+      <p>De 9:15 a 14:30, con tiempo para aprender, jugar y descansar.</p>
+    </div>
+    <ol class="camp2-tl reveal">
+      <li><span class="camp2-tl-ic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 3v2M12 19v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M3 12h2M19 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/></svg></span><span class="camp2-tl-time"><b>9:15</b><span> – 10:30</span></span><h3>Asamblea de la mañana</h3><p>Booklet de inglés, storytelling y arts &amp; crafts</p></li>
+      <li><span class="camp2-tl-ic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8c-3 0-5 2.5-5 6s2 7 4 7c1 0 1.5-.5 2-.5s1 .5 2 .5c2 0 5-3.5 5-7-2 0-3-1-3-3"/><path d="M12 8c0-2 1-3.5 2.5-4"/></svg></span><span class="camp2-tl-time"><b>10:30</b><span> – 11:10</span></span><h3>Snack y preparación</h3><p>Merienda y preparación para los juegos de agua</p></li>
+      <li><span class="camp2-tl-ic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c3 4 6 7.5 6 11a6 6 0 0 1-12 0c0-3.5 3-7 6-11z"/></svg></span><span class="camp2-tl-time"><b>11:10</b><span> – 11:40</span></span><h3>Juegos de agua</h3><p>La actividad más esperada del día</p></li>
+      <li><span class="camp2-tl-ic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 14.5a4.5 4.5 0 0 0 7 0"/><path d="M9 9.5h.01M15 9.5h.01"/></svg></span><span class="camp2-tl-time"><b>11:40</b><span> – 12:00</span></span><h3>Pausa</h3><p>Un momento para descansar antes de seguir</p></li>
+      <li><span class="camp2-tl-ic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a9 6.5 0 000 13c1 0 1.5-.7 1.5-1.5S13 13 13.5 13H16a4 4 0 004-4c0-3.5-3.5-6-8-6z"/><circle cx="8" cy="10" r=".8" fill="currentColor" stroke="none"/><circle cx="12" cy="7.5" r=".8" fill="currentColor" stroke="none"/><circle cx="16" cy="9" r=".8" fill="currentColor" stroke="none"/></svg></span><span class="camp2-tl-time"><b>12:00</b><span> – 13:00</span></span><h3>Actividad especial</h3><p>Teatro, deporte o experimentos, según el día</p></li>
+      <li><span class="camp2-tl-ic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="9" width="16" height="11" rx="2"/><path d="M9 9V6a3 3 0 016 0v3"/></svg></span><span class="camp2-tl-time"><b>13:00</b><span> – 14:30</span></span><h3>Comida y tiempo de relax</h3><p>Almuerzo y descanso antes de la recogida</p></li>
+    </ol>
+    <p class="camp2-note">Horario de la última edición; se confirmará con la próxima convocatoria.</p>
+  </div>
+</section>
+
+<!-- RESERVA DE PLAZA -->
+<section class="camp-section camp2-reserva" id="camp-reserva">
+  <div class="container camp2-reserva-grid">
+    <div class="camp2-reserva-intro">
+      <span class="eyebrow">Reserva de plaza</span>
+      <h2>Reserva su plaza</h2>
+      <p>Déjanos tus datos y te escribimos en cuanto confirmemos las fechas, la sede y la tarifa.</p>
       <div class="camp-faq">
-        <details class="camp-faq-item"><summary>¿Ya hay fechas para el próximo campamento?</summary><p>Todavía no. Cuando estén confirmadas, publicaremos aquí las fechas, la sede y las tarifas. Si quieres consultar algo antes, escríbenos.</p></details>
-        <details class="camp-faq-item"><summary>¿Para qué edades es?</summary><p>Para niños y niñas de 3 a 9 años, en grupos por edad.</p></details>
+        <details class="camp-faq-item"><summary>¿Ya hay fechas?</summary><p>Está previsto de finales de junio a finales de julio. Publicaremos las fechas exactas, la sede y la tarifa en cuanto estén confirmadas.</p></details>
         <details class="camp-faq-item"><summary>¿Quién dirige las actividades?</summary><p>Monitores 100&nbsp;% nativos, formados para trabajar con niños.</p></details>
-        <details class="camp-faq-item"><summary>¿Cómo se reservará la plaza?</summary><p>Cuando haya convocatoria, explicaremos cómo inscribirse. Consultar por el campamento no reserva ni confirma ninguna plaza.</p></details>
+        <details class="camp-faq-item"><summary>¿Reservar ya confirma la plaza?</summary><p>Todavía no: te escribiremos para confirmarla cuando se publiquen las fechas.</p></details>
       </div>
-
     </div>
-    <div class="final-cta reveal">
-      <h2>¿Te interesa el próximo campamento?</h2>
-      <p>Las fechas y la inscripción de la próxima edición se publicarán aquí.</p>
-      <a href="#camp-fechas" class="btn-primary svc-page-cta" data-cta="camp-cierre-consulta">Ver próxima convocatoria</a>
+    <div class="camp2-card" id="form-campamentos">
+      <form id="campForm" class="camp-form" action="form-handler.php" method="POST" novalidate data-l-send-error="No hemos podido enviar la reserva. Tus datos siguen aquí: inténtalo de nuevo en unos segundos o escríbenos a info@interlanguage.es." data-l-sending="Enviando…" data-l-review="Revisa los campos marcados para poder enviar la reserva.">
+        <input type="text" name="website" id="campHp" class="hp-field" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <p class="camp-req-note">* Campos obligatorios</p>
+        <div class="camp-fields">
+        <div class="cf-grid">
+          <div class="field full">
+            <label for="campTutor">Nombre del padre, madre o tutor/a <span class="req" aria-hidden="true">*</span></label>
+            <input type="text" id="campTutor" name="fullName" required aria-describedby="err-campTutor" autocomplete="name" autocapitalize="words" enterkeyhint="next">
+            <span class="err" id="err-campTutor" role="alert">Indica el nombre del padre, madre o tutor/a.</span>
+          </div>
+          <div class="field">
+            <label for="campEmail">Email <span class="req" aria-hidden="true">*</span></label>
+            <input type="email" id="campEmail" name="email" required aria-describedby="err-campEmail" autocomplete="email" inputmode="email" autocapitalize="off" spellcheck="false" enterkeyhint="next">
+            <span class="err" id="err-campEmail" role="alert">Introduce un email válido, por ejemplo nombre@correo.com.</span>
+          </div>
+          <div class="field">
+            <label for="campTelefono">Teléfono <span class="req" aria-hidden="true">*</span></label>
+            <input type="tel" id="campTelefono" name="phone" required aria-describedby="err-campTelefono" autocomplete="tel" inputmode="tel" enterkeyhint="next" placeholder="+34 600 000 000">
+            <span class="err" id="err-campTelefono" role="alert">Introduce un teléfono válido, por ejemplo +34 600 000 000.</span>
+          </div>
+          <div class="field">
+            <label for="campAlumnoNombre">Nombre del niño o la niña <span class="req" aria-hidden="true">*</span></label>
+            <input type="text" id="campAlumnoNombre" name="alumnoNombre" required aria-describedby="err-campAlumnoNombre" autocomplete="off" autocapitalize="words" enterkeyhint="next">
+            <span class="err" id="err-campAlumnoNombre" role="alert">Indica el nombre del niño o la niña.</span>
+          </div>
+          <div class="field">
+            <label for="campAlumnoEdad">Edad <span class="req" aria-hidden="true">*</span></label>
+            <input type="text" id="campAlumnoEdad" name="alumnoEdad" required aria-describedby="err-campAlumnoEdad" autocomplete="off" inputmode="numeric" enterkeyhint="next" placeholder="Ej.: 5 años">
+            <span class="err" id="err-campAlumnoEdad" role="alert">Indica su edad.</span>
+          </div>
+          <div class="field full">
+            <label for="campSemanas">Semanas de interés <span class="opt">(opcional)</span></label>
+            <input type="text" id="campSemanas" name="semanas" autocomplete="off" enterkeyhint="next" placeholder="Ej.: las dos primeras de julio">
+          </div>
+          <div class="field full">
+            <label for="campComentarios">Comentarios</label>
+            <textarea id="campComentarios" name="comentarios" rows="3" placeholder="Opcional"></textarea>
+          </div>
+          <div class="field full">
+            <div class="checkbox-row">
+              <input type="checkbox" id="campRgpd" name="rgpd" required aria-describedby="err-campRgpd">
+              <label for="campRgpd">He leído la <a href="legal.html#privacidad" target="_blank" rel="noopener">política de privacidad</a> y acepto que uséis mis datos para gestionar esta reserva. <span class="req" aria-hidden="true">*</span></label>
+            </div>
+            <span class="err" id="err-campRgpd" role="alert">Marca esta casilla para que podamos gestionar la reserva.</span>
+          </div>
+        </div>
+        <div class="form-error" id="campFormErrorMsg" role="alert" hidden></div>
+        <button type="submit" class="btn-primary camp-submit" id="campSubmitBtn">Reservar plaza</button>
+        <p class="camp-side-note">Te escribiremos para confirmar la plaza cuando se publiquen las fechas.</p>
+        </div>
+        <div class="form-msg" id="campFormMsg" role="status" tabindex="-1">✓ Gracias. Hemos recibido tu solicitud: te escribiremos para confirmar la plaza en cuanto se publiquen las fechas.</div>
+      </form>
     </div>
   </div>
 </section>
@@ -1664,7 +1654,7 @@
 </div>
 
 <script src="js/reserva-llamada.js?v=1" defer></script>
-<script src="js/main.js?v=58" defer></script>
+<script src="js/main.js?v=59" defer></script>
 <script src="js/motion.js?v=4" defer></script>
 </body>
 </html>
