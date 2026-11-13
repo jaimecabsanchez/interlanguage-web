@@ -2295,6 +2295,7 @@ section.contact.lf{padding:64px 0; color:var(--ink); background:var(--ivory); ov
   .camp2-card{padding:20px 16px;}
   .camp2-retos li{padding:14px;}
   .camp2-tl li{padding:14px;}
+}
 /* ---------- Guía de países · ampliación ES (12-11-2026) ----------
    El hero conserva sus reglas y su imagen. Destinos usa la paleta, las fuentes y los detalles nativos existentes. */
 .country-guide{background:var(--white);}
