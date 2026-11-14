@@ -278,6 +278,8 @@ window.dataLayer = window.dataLayer || [];
   }
   // baja hasta la tarjeta de un destino (sección «Destinos»); «scroll» es 'smooth' o 'auto' (inmediato)
   function showExtDestino(slug, scroll){
+    const fichas = document.getElementById('ext-fichas');   // diseño v2: las fichas están cerradas hasta que se elige un destino
+    if (fichas && fichas.hidden) fichas.hidden = false;
     if (window.ilDestinations) window.ilDestinations.select(slug);
     const card = document.querySelector('#ext-opciones .country-panel[data-destino="' + slug + '"], #ext-opciones .ext-option[data-destino="' + slug + '"]');
     if (!card) return;
