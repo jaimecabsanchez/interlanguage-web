@@ -723,6 +723,13 @@ window.dataLayer = window.dataLayer || [];
     document.querySelectorAll('[data-advise]').forEach(function(el){
       el.addEventListener('click', function(e){
         e.preventDefault();
+        // «Estudiar en el extranjero» ya no lleva la consulta larga: su único formulario es el cuestionario, y los botones de la página bajan a él
+        const quiz = el.closest('#view-service-extranjero') && !document.getElementById('ext-contacto-slot') && document.getElementById('ext-encaje');
+        if (quiz){
+          quiz.scrollIntoView({ behavior: reduceMotion() ? 'auto' : 'smooth', block: 'start' });
+          pushEvent('clic_cta', { cta_id: el.getAttribute('data-cta') || 'extranjero-cuestionario' });
+          return;
+        }
         const inExt = Object.keys(CONTACT_SLOTS).some(function(id){ return !!el.closest('#' + id); });
         // en «Estudiar en el extranjero» y «Campamentos de verano en el extranjero» el contacto está al final de la propia página; desde la home se baja al de la home
         if (!inExt) goHome('contacto', { smooth: true });

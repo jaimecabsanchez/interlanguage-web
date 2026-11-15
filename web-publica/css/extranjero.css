@@ -271,7 +271,11 @@
   .x2 .cm,.x2 .cm--3,.x2 .cm--7{height:auto; grid-template-columns:1fr 1fr; grid-template-rows:none; grid-auto-rows:38vw;}
   .x2 .cm,.x2 .cm--3,.x2 .cm--7{grid-auto-rows:34vw;}
   .x2 .cm .cm-big{grid-column:1 / -1; grid-row:span 2;}
+  /* móvil: por capítulo, la foto grande y dos más; el resto se ve al tocar una (el visor recorre todas). La galería entera ocupaba casi cuatro pantallas */
+  .x2 .cm figure:nth-child(n+4){display:none;}
+  .x2 .ch-count::after{content:" · tocad una para verlas todas";}
 }
+.x2 .qz-mail{margin:22px 0 0; text-align:center; color:var(--ink-soft); font-size:.95rem;}
 
 .x2 .tile .ic2{display:grid; place-items:center; width:60px; height:60px; border-radius:50%; background:var(--stone); transition:background-color .2s ease;}
 .x2 .tile .ic2 svg{width:36px; height:36px; fill:none; stroke:var(--navy); stroke-width:1.5; stroke-linecap:round; stroke-linejoin:round;}
