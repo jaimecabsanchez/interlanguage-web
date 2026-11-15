@@ -101,7 +101,23 @@ window.dataLayer = window.dataLayer || [];
 
   // Muestra/oculta el mensaje de error de envío de un formulario.
   function setFormError(el, text){ if (!el) return; el.textContent = text || ''; el.hidden = !text; }
-  var FORM_ENDPOINT = 'form-handler.php';
+  // ---- Envío de formularios: Netlify Forms ----
+  // La web se publica en Netlify, que no ejecuta el PHP de form-handler.php (respondía 404 y no llegaba ninguna solicitud).
+  // Netlify registra los formularios al publicar a partir de las dos definiciones ocultas del final de index.html
+  // (name="consulta" y name="campamento") y recibe el envío como POST url-encoded a la raíz del sitio, con el campo «form-name».
+  // Si añades un campo a un envío, añádelo también a su definición o Netlify lo descartará.
+  // En local (python3 -m http.server) no hay Netlify: el envío falla y sale el aviso de error, que es lo esperado.
+  var FORM_ENDPOINT = '/';
+  function sendForm(name, payload, subject){
+    payload.set('form-name', name);
+    payload.set('subject', subject);   // asunto del correo de aviso que Netlify manda al equipo
+    return fetch(FORM_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: payload.toString()
+    }).then(function(r){ if (!r.ok) throw new Error('http'); });   // sin formulario registrado Netlify responde 404: es un error, nunca «enviado»
+  }
+  window.ilSendForm = sendForm;   // lo usa el cuestionario de «Estudiar en el extranjero» (js/extranjero.js)
 
   // Una sola invitación a contactar: se recoge si ya hay otra visible o se abre el menú.
   (function(){
@@ -643,10 +659,8 @@ window.dataLayer = window.dataLayer || [];
 
       const prevLabel = submitBtn.textContent;
       submitBtn.disabled = true; submitBtn.textContent = L.lSending;
-      fetch(FORM_ENDPOINT, { method: 'POST', body: payload })
-        .then(function(r){ if (!r.ok) throw new Error('http'); return r.json(); })
-        .then(function(res){
-          if (!res || !res.ok) throw new Error('resp');
+      sendForm('campamento', payload, 'Nueva inscripción campamento — ' + val('campTutor').trim())
+        .then(function(){
           pushEvent('lead_generado', {
             servicio: 'campamentos',
             semanas: semanas,
@@ -736,6 +750,17 @@ window.dataLayer = window.dataLayer || [];
           if (window.ilLead) window.ilLead.select(slotService());
           openExtContact(); closeNav();
           return;
+        }
+        if (targetId === 'contacto' && link.matches('.nav-cta, .sticky-cta-btn')){
+          // Páginas con contacto propio (la reserva del campamento de Madrid, el correo del extraescolar; se marcan con data-contact-here):
+          // «Pedir orientación» baja a ese bloque. Antes llevaba al selector de programas de la portada, cuya tarjeta devolvía a esta misma página.
+          const own = document.querySelector('.view.service-page:not([hidden]) [data-contact-here]');
+          if (own){
+            const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            own.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+            closeNav();
+            return;
+          }
         }
         goHome(targetId);
         closeNav();
@@ -1250,10 +1275,8 @@ window.dataLayer = window.dataLayer || [];
       setFormError(errBox, '');
       btn.disabled = true; btn.textContent = T.sending;
 
-      fetch(FORM_ENDPOINT, { method: 'POST', body: payload })
-        .then(function(r){ if (!r.ok) throw new Error('http'); return r.json(); })
-        .then(function(res){
-          if (!res || !res.ok) throw new Error('resp');
+      sendForm('consulta', payload, 'Nueva solicitud web — ' + $('fullName').value.trim())
+        .then(function(){
           pushEvent('lead_generado', { servicio: s, edad_alumno: age.value });
           pushEvent('formulario_enviado', { servicio: s });
           form.classList.add('is-sent');

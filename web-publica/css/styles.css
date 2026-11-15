@@ -910,6 +910,12 @@ picture{display:contents;}
   @media (max-width:640px){ .cross-sell{flex-direction:column; align-items:flex-start;} .cross-sell-cta{width:100%; justify-content:center;} }
   .final-cta h2{font-size:clamp(1.4rem,2.6vw,1.85rem); color:var(--navy); margin:0 0 10px; text-wrap:balance;}
   .final-cta p{color:var(--ink-soft); font-size:1rem; margin:0 0 22px;}
+  .final-cta p + p{margin-top:-10px;}
+  .final-cta[id]{scroll-margin-top:calc(var(--header-h) + 20px);}
+  .final-cta-actions{display:flex; flex-wrap:wrap; justify-content:center; gap:12px;}
+  @media (max-width:600px){ .final-cta-actions > a{display:flex; width:100%; justify-content:center; align-items:center; min-height:52px; text-align:center;} }
+  /* enlace dentro de un texto (el correo de contacto): subrayado y en el color de acento */
+  .txt-link{color:var(--accent); font-weight:600; text-decoration:underline; text-underline-offset:2px;}
 
   .club-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:18px;}
   @media (max-width:1000px){ .club-grid{grid-template-columns:repeat(2,1fr);} }
@@ -1723,8 +1729,9 @@ picture{display:contents;}
   .lead-reassure svg{display:inline-block; vertical-align:-3px; margin-right:6px;}
 
   /* ---------- CAMPAMENTOS EN EL EXTRANJERO (#view-service-verano-extranjero) ---------- */
-  /* texto provisional: se ve resaltado hasta que se sustituye por el dato real (y se quita el <mark>) */
-  mark.fill{background:#FFF1B8; color:inherit; padding:0 .15em; border-radius:3px; box-decoration-break:clone; -webkit-box-decoration-break:clone; outline:1px dashed #C9A227; outline-offset:1px;}
+  /* texto provisional (<mark class="fill">): ya NO se resalta en pantalla, porque las familias veían una nota interna en amarillo.
+     La etiqueta se conserva solo como marca para encontrarlo (grep 'class="fill"'); al llegar el dato real, sustituye el texto y quita el <mark>. */
+  mark.fill{background:none; color:inherit;}
   .vext-dest-grid{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:22px;}
   .vext-dest{display:flex; flex-direction:column; overflow:hidden; background:var(--white); border:1px solid var(--line); border-radius:var(--r-card);}
   .vext-dest-media{aspect-ratio:16/10; overflow:hidden; background:var(--stone);}

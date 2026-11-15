@@ -98,7 +98,7 @@
    - 5 preguntas + paso final. Selección única: avanza sola; múltiple: nunca.
    - Pregunta 2: «Desarrollar sus talentos e intereses» despliega etiquetas de intereses (varias).
    - Respuestas guardadas en sessionStorage (no se pierden al recargar) y conservadas al retroceder.
-   - Envío: mismo destino y campos que la consulta de la web (form-handler.php). Después: reservar llamada
+   - Envío: mismo destino y campos que la consulta de la web (Netlify Forms, formulario «consulta»; ver sendForm en main.js). Después: reservar llamada
      (window.ilCallBooking, si está configurada) o «Prefiero que me contactéis». Sin envíos dobles. */
 (function(){
   'use strict';
@@ -375,9 +375,9 @@
       fullName: C.nombre, email: C.email, phone: C.telefono, contactPreference: C.telefono ? 'Teléfono o correo' : 'Correo',
       rgpd: '1', comunicaciones: 'No', website: $('#qW').value
     });
-    var req = fetch('form-handler.php', { method: 'POST', body: payload }).then(function(r){ if (!r.ok) throw new Error('http'); return r.json(); });
-    req.then(function(res){
-      if (!res || !res.ok) throw new Error('resp');
+    /* mismo envío que la consulta de la web: Netlify Forms, formulario «consulta» (window.ilSendForm está en main.js) */
+    var req = window.ilSendForm ? window.ilSendForm('consulta', payload, 'Nueva solicitud web — ' + C.nombre.trim()) : Promise.reject(new Error('nosend'));
+    req.then(function(){
       sending = false; sent = true; forget();
       if (window.dataLayer) { window.dataLayer.push({ event: 'lead_generado', servicio: 'extranjero', origen: 'cuestionario' }); window.dataLayer.push({ event: 'formulario_enviado', servicio: 'extranjero' }); }
       thanks();

@@ -5,7 +5,7 @@ Repo multiproyecto. **La web pública es el foco de estas tareas: `web-publica/`
 
 ## Stack y tecnologías
 - Sitio **estático**: HTML + CSS + JavaScript vanilla. **Sin framework, sin bundler, sin build.**
-- Formularios servidos por **PHP** (`form-handler.php`) en hosting Arsys (no en Netlify).
+- Formularios enviados con **Netlify Forms** desde el 14-11-2026 (antes, PHP `form-handler.php` para Arsys, que en Netlify daba 404).
 - Despliegue: **Netlify**, publica la carpeta `web-publica/` (ver `netlify.toml` raíz).
 - La plataforma (`plataforma/`) es un proyecto APARTE (app "Interlanguage HOME", Supabase); no tocar salvo encargo explícito.
 
@@ -23,7 +23,7 @@ Repo multiproyecto. **La web pública es el foco de estas tareas: `web-publica/`
 - `404.html`, `robots.txt`, `sitemap.xml`, `fonts/` (fuentes autoalojadas).
 - `css/styles.css` — **única hoja de estilos** (~866 líneas).
 - `js/main.js` — **único JS** (~689 líneas).
-- `form-handler.php` — receptor de formularios (envía email; solo funciona en Arsys).
+- `form-handler.php` — receptor PHP antiguo (solo funcionaría en Arsys; ya no lo usa la web, se conserva como alternativa).
 - `_headers` — seguridad + caché Netlify.
 
 ## Páginas y rutas
@@ -59,10 +59,10 @@ Repo multiproyecto. **La web pública es el foco de estas tareas: `web-publica/`
 ## Formularios existentes
 - `#leadForm` — consulta (2 pasos: qué os interesa → cómo os contactamos).
 - `#campForm` — inscripción a campamento de verano (una página, 3 bloques y resumen fijo).
-- Ambos con `action="form-handler.php"` (POST). Validación en `main.js` + en el PHP.
+- Envío: `sendForm()` de `main.js` → Netlify Forms (formularios `consulta` y `campamento`, definidos ocultos al final de `index.html`). Validación en `main.js`. Detalle y pasos del panel de Netlify en `web-publica/AGENTS.md` («Arreglos urgentes»).
 - `form-handler.php`: honeypot `website`, valida email/nombre/rgpd, envía email a `info@interlanguage.es`
   (`FROM_ADDRESS = no-reply@interlanguage.es`). **Solo funciona desplegado en Arsys (PHP), no en Netlify.**
-  ⚠ Con la web publicada en Netlify (`interlanguage.es` responde con `server: Netlify`) **los dos formularios devuelven 404 y muestran el aviso de error: no llega ninguna solicitud.** `netlify.toml` redirige `/form-handler.php` a la 404 para no servir su código fuente. Decisión pendiente: Netlify Forms, endpoint PHP en Arsys con CORS, u otro servicio.
+  ⚠ Hasta el 14-11-2026, con la web publicada en Netlify **los formularios devolvían 404 y no llegaba ninguna solicitud** (resuelto con Netlify Forms; falta activarlo en el panel). `netlify.toml` redirige `/form-handler.php` a la 404 para no servir su código fuente. Decisión pendiente: Netlify Forms, endpoint PHP en Arsys con CORS, u otro servicio.
 
 ## Datos / configuración
 - No hay base de datos ni backend propio en la web pública (los datos comerciales están escritos en el HTML).

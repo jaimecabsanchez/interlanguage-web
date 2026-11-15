@@ -70,8 +70,8 @@
 <link rel="preload" href="fonts/newsreader-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/newsreader-italic-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/plus-jakarta-sans-wght-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="css/styles.css?v=158" as="style">
-<link rel="stylesheet" href="css/styles.css?v=158">
+<link rel="preload" href="css/styles.css?v=159" as="style">
+<link rel="stylesheet" href="css/styles.css?v=159">
 <link rel="stylesheet" href="css/motion.css?v=1">
 <link rel="stylesheet" href="css/extranjero.css?v=3">
 </head>
@@ -607,7 +607,7 @@
 </section>
 
 <!-- RESERVA DE PLAZA -->
-<section class="camp-section camp2-reserva" id="camp-reserva">
+<section class="camp-section camp2-reserva" id="camp-reserva" data-contact-here>
   <div class="container camp2-reserva-grid">
     <div class="camp2-reserva-intro">
       <span class="eyebrow">Reserva de plaza</span>
@@ -899,7 +899,7 @@
         <div class="camp-quickfact is-price"><div class="camp-quickfact-ic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 20 10a2 2 0 010 2.8L13.8 19a2 2 0 01-2.8 0L3 11V3h8z"/><circle cx="7" cy="7" r="1.2" fill="currentColor" stroke="none"/></svg></div><div><strong>65&nbsp;€/mes</strong><span>Colegio Sagrado Corazón · más 35&nbsp;€ de material al año</span></div></div>
       </div>
       <!-- [DATO PENDIENTE] Confirmar si el horario y el precio son iguales en todos los colegios donde se imparte el extraescolar. De momento se acota al Colegio Sagrado Corazón, que es lo que confirma el folleto. -->
-      <p class="quickfacts-note">Si tu colegio es otro, consúltanos su horario y tarifa.</p>
+      <p class="quickfacts-note">Si tu colegio es otro, escríbenos a <a class="txt-link" href="mailto:info@interlanguage.es?subject=Ingl%C3%A9s%20extraescolar">info@interlanguage.es</a> y te confirmamos su horario y tarifa.</p>
       <div class="svc-page-cta-row">
         <a href="#extraescolar-clubs" class="btn-primary svc-page-cta" data-cta="extra-hero-orientacion">Ver grupos por etapa</a>
       </div>
@@ -997,13 +997,19 @@
       <details class="camp-faq-item"><summary>¿Cómo se organizan los grupos?</summary><p>Por etapa educativa, en grupos reducidos que se abren desde 8 alumnos, para que todos tengan tiempo real de hablar.</p></details>
       <details class="camp-faq-item"><summary>¿Los profesores son realmente nativos?</summary><p>Sí. Todo el claustro es nativo y está formado específicamente para enseñar a niños y jóvenes, no solo para hablar el idioma.</p></details>
       <details class="camp-faq-item"><summary>¿Cuándo empiezan y terminan las clases?</summary><p>El programa va de octubre a mayo, siguiendo el calendario escolar, en horario de tarde dentro del propio colegio.</p></details>
-      <details class="camp-faq-item"><summary>¿Cuánto cuesta y qué incluye?</summary><p>En el Colegio Sagrado Corazón, 65&nbsp;€ al mes más 35&nbsp;€ al año de material. Si tu colegio es otro, escríbenos y te confirmamos las condiciones.</p></details>
+      <details class="camp-faq-item"><summary>¿Cuánto cuesta y qué incluye?</summary><p>En el Colegio Sagrado Corazón, 65&nbsp;€ al mes más 35&nbsp;€ al año de material. Si tu colegio es otro, escríbenos a <a class="txt-link" href="mailto:info@interlanguage.es?subject=Ingl%C3%A9s%20extraescolar">info@interlanguage.es</a> y te confirmamos las condiciones.</p></details>
     </div>
 
-    <div class="final-cta reveal">
+    <!-- Contacto del extraescolar: no hay formulario (la inscripción va por el enlace que envía cada colegio), así que la salida es el correo.
+         data-contact-here: «Pedir orientación» de la cabecera baja a este bloque en vez de ir al selector de programas de la portada. -->
+    <div class="final-cta reveal" id="extraescolar-contacto" data-contact-here>
     <h2>¿Encaja con la edad y el momento de tu hijo?</h2>
     <p>Descubre los grupos. Si vuestro colegio os ha enviado un enlace de inscripción, acceded desde ese enlace.</p>
-    <a href="#extraescolar-clubs" class="btn-primary svc-page-cta" data-cta="extra-cierre-orientacion">Ver grupos por etapa</a>
+    <p>¿Tenéis una duda o queréis saber si damos clase en vuestro colegio? Escribidnos.</p>
+    <div class="final-cta-actions">
+      <a href="mailto:info@interlanguage.es?subject=Ingl%C3%A9s%20extraescolar" class="btn-primary svc-page-cta" data-cta="extra-cierre-correo">Escribir a info@interlanguage.es</a>
+      <a href="#extraescolar-clubs" class="btn-outline svc-page-cta" data-cta="extra-cierre-orientacion">Ver grupos por etapa</a>
+    </div>
     </div>
   </div>
 </section>
@@ -1012,7 +1018,7 @@
 
 <!-- ============ CAMPAMENTOS EN EL EXTRANJERO (#servicio-verano-extranjero) ============
      Lo que está dentro de <mark class="fill">…</mark> es provisional: sustitúyelo por el dato real y quita la etiqueta <mark>.
-     Mientras quede alguno, se ve resaltado en la web. -->
+     En pantalla se lee como texto normal (ya no se resalta en amarillo): para encontrarlo, busca class="fill". -->
 <div id="view-service-verano-extranjero" class="view service-page" data-title="Campamentos de verano en el extranjero" hidden>
 
 <section class="camp-hero">
@@ -1686,10 +1692,28 @@
   </div>
 </div>
 
+<!-- Netlify Forms · definiciones de los formularios. No se ven ni se usan en pantalla: sirven para que Netlify los registre al publicar
+     (hay que tener activado «Form detection» en el panel de Netlify). El envío real lo hace js/main.js (sendForm) con estos mismos nombres
+     de campo, también desde index-en.html; el cuestionario de «Estudiar en el extranjero» usa «consulta».
+     Si añades un campo a un envío, añádelo también aquí o Netlify lo descartará. «website» es el campo trampa contra robots. -->
+<form name="consulta" method="POST" data-netlify="true" netlify-honeypot="website" hidden>
+  <input type="hidden" name="subject" value="Nueva solicitud web">
+  <input name="form_type"><input name="service"><input name="serviceExtra"><input name="studentAge"><textarea name="message"></textarea>
+  <input name="fullName"><input type="email" name="email"><input name="phone"><input name="contactPreference">
+  <input name="rgpd"><input name="comunicaciones"><input name="website">
+</form>
+<form name="campamento" method="POST" data-netlify="true" netlify-honeypot="website" hidden>
+  <input type="hidden" name="subject" value="Nueva inscripción campamento">
+  <input name="form_type"><input name="sede"><input name="semanas"><input name="comedor"><input name="total">
+  <input name="alumnoNombre"><input name="alumnoApellidos"><input name="alumnoEdad"><input name="colegio"><input name="alergias">
+  <input name="fullName"><input type="email" name="email"><input name="phone"><textarea name="comentarios"></textarea>
+  <input name="rgpd"><input name="comunicaciones"><input name="website">
+</form>
+
 <script src="js/reserva-llamada.js?v=1" defer></script>
 <script src="js/destinos.js?v=1" defer></script>
-<script src="js/main.js?v=61" defer></script>
-<script src="js/extranjero.js?v=2" defer></script>
+<script src="js/main.js?v=62" defer></script>
+<script src="js/extranjero.js?v=3" defer></script>
 <script src="js/motion.js?v=4" defer></script>
 </body>
 </html>
