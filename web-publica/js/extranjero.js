@@ -11,7 +11,7 @@
   var esc = function(t){ return String(t).replace(/[&<>"]/g, function(c){ return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
   var IMG = 'images/internacional/';
   /* las 19 fotos de «Así se vive la experiencia» (mismo orden que los data-i del HTML) */
-  var P = [{"src": "images/internacional/ext-gal-remo-1000.webp", "alt": "Alumnas remando en un lago", "cap": "Remo", "cat": "Deporte"}, {"src": "images/internacional/ext-duo-rugby-1080.webp", "alt": "Alumno chutando un balón de rugby", "cap": "Rugby", "cat": "Deporte"}, {"src": "images/internacional/ext-gal-piano-1000.webp", "alt": "Alumna tocando el piano con su profesora", "cap": "Piano", "cat": "Música"}, {"src": "images/internacional/ext-gal-ciencias-1000.webp", "alt": "Alumnos en una clase de ciencias", "cap": "Ciencias", "cat": "Aula y ciencia"}, {"src": "images/internacional/ext-gal-equitacion-1000.webp", "alt": "Alumnas montando a caballo", "cap": "Equitación", "cat": "Deporte"}, {"src": "images/internacional/extranjero-alumnas-1122.webp", "alt": "Cuatro alumnas sonriendo juntas", "cap": "Amistades", "cat": "Convivencia"}, {"src": "images/internacional/ext-gal-tenis-1000.webp", "alt": "Alumnos jugando al tenis con su entrenador", "cap": "Tenis", "cat": "Deporte"}, {"src": "images/internacional/ext-gal-orquesta-1000.webp", "alt": "Alumnos tocando en una orquesta", "cap": "Orquesta", "cat": "Música"}, {"src": "images/internacional/ext-us-aula-1000.webp", "alt": "Alumnos atendiendo en clase", "cap": "Clases", "cat": "Aula y ciencia"}, {"src": "images/internacional/reino-unido-golf-1000.webp", "alt": "Alumno jugando al golf", "cap": "Golf", "cat": "Deporte"}, {"src": "images/internacional/extranjero-kayak-1200.webp", "alt": "Alumnos con kayaks en la orilla del mar", "cap": "Kayak", "cat": "Aire libre"}, {"src": "images/internacional/ext-gal-arte-572.webp", "alt": "Alumnos dibujando en clase de arte", "cap": "Arte", "cat": "Artes"}, {"src": "images/internacional/sala-comun-900.webp", "alt": "Sala común de un internado con sofás y una mesa de billar", "cap": "Sala común", "cat": "Convivencia"}, {"src": "images/internacional/ext-gal-teatro-1000.webp", "alt": "Alumnos en una obra de teatro", "cap": "Teatro", "cat": "Artes"}, {"src": "images/internacional/extranjero-surf-800.webp", "alt": "Alumnos preparando kayaks junto a una escuela de surf", "cap": "Aire libre", "cat": "Aire libre"}, {"src": "images/internacional/ext-gal-robotica-1000.webp", "alt": "Alumnos montando un robot", "cap": "Robótica", "cat": "Aula y ciencia"}, {"src": "images/internacional/ext-gal-cocina-1000.webp", "alt": "Alumnas cocinando", "cap": "Cocina", "cat": "Artes"}, {"src": "images/internacional/extranjero-lab-1200.webp", "alt": "Alumnos con bata en un laboratorio", "cap": "Laboratorio", "cat": "Aula y ciencia"}, {"src": "images/internacional/extranjero-grupo-1200.webp", "alt": "Grupo de alumnos en una excursión", "cap": "Excursiones", "cat": "Aire libre"}];
+  var P = [{"src": "images/internacional/ext-us-aula-1000.webp", "alt": "Alumnos atendiendo en clase", "cap": "Clases", "cat": "Aprender"}, {"src": "images/internacional/ext-gal-ciencias-1000.webp", "alt": "Alumnos en una clase de ciencias", "cap": "Ciencias", "cat": "Aprender"}, {"src": "images/internacional/extranjero-lab-1200.webp", "alt": "Alumnos con bata en un laboratorio", "cap": "Laboratorio", "cat": "Aprender"}, {"src": "images/internacional/ext-gal-robotica-1000.webp", "alt": "Alumnos montando un robot", "cap": "Robótica", "cat": "Aprender"}, {"src": "images/internacional/extranjero-alumnas-1122.webp", "alt": "Cuatro alumnas sonriendo juntas", "cap": "Amistades", "cat": "Convivir"}, {"src": "images/internacional/sala-comun-900.webp", "alt": "Sala común de un internado con sofás y una mesa de billar", "cap": "Sala común", "cat": "Convivir"}, {"src": "images/internacional/ext-gal-cocina-1000.webp", "alt": "Alumnas cocinando", "cap": "Cocina", "cat": "Convivir"}, {"src": "images/internacional/extranjero-grupo-1448.webp", "alt": "Grupo de alumnos en una excursión", "cap": "Excursiones", "cat": "Descubrir"}, {"src": "images/internacional/ext-gal-remo-1000.webp", "alt": "Alumnas remando en un lago", "cap": "Remo", "cat": "Descubrir"}, {"src": "images/internacional/reino-unido-golf-1000.webp", "alt": "Alumno jugando al golf", "cap": "Golf", "cat": "Descubrir"}, {"src": "images/internacional/ext-duo-rugby-1080.webp", "alt": "Alumno chutando un balón de rugby", "cap": "Rugby", "cat": "Crecer"}, {"src": "images/internacional/ext-gal-piano-1000.webp", "alt": "Alumna tocando el piano con su profesora", "cap": "Piano", "cat": "Crecer"}, {"src": "images/internacional/ext-gal-orquesta-1000.webp", "alt": "Alumnos tocando en una orquesta", "cap": "Orquesta", "cat": "Crecer"}];
   /* ---------- tarjetas de destino: vídeo al pasar el ratón (solo escritorio con ratón y sin ahorro de datos) ---------- */
   var fine = window.matchMedia && matchMedia('(hover: hover) and (pointer: fine) and (min-width: 901px)').matches;
   var saveData = navigator.connection && (navigator.connection.saveData || /2g/.test(navigator.connection.effectiveType || ''));
@@ -29,18 +29,41 @@
   var D = {
     uk: { n: 'Reino Unido', c: 'var(--c-uk)', s: '', r: ['Inglés', 'Internado', 'Currículos distintos en Inglaterra y Escocia', 'Tres trimestres: septiembre a julio (Inglaterra) o agosto a junio (Escocia)', 'Europa · 1 h menos', 'Busca una vida de colegio organizada'] },
     ie: { n: 'Irlanda', c: 'var(--c-ie)', s: '', r: ['Inglés, según centro', 'Internado o familia anfitriona', 'Junior Cycle, Senior Cycle y posible Transition Year', 'De finales de agosto o septiembre a mayo o junio', 'Europa · 1 h menos', 'Valora la vida en familia o en internado cerca de España'] },
-    us: { n: 'Estados Unidos', c: 'var(--c-us)', s: 'Bajo consulta', r: ['Inglés', 'Familia anfitriona o internado privado, según programa', 'Materias y créditos; requisitos por estado y distrito', 'De agosto o septiembre a mayo o junio', 'Transatlántico · Nueva York, 6 h menos*', 'Tiene autonomía y curiosidad por la vida escolar norteamericana'] },
-    ca: { n: 'Canadá', c: 'var(--c-ca)', s: 'Bajo consulta', r: ['Inglés o francés, según centro', 'Familia anfitriona o colegio privado con alojamiento', 'Currículo y diploma por provincia', 'De septiembre a junio, a menudo en semestres', 'Transatlántico · Toronto, 6 h menos*', 'Quiere elegir bien provincia, idioma y entorno'] }
+    us: { n: 'Estados Unidos', c: 'var(--c-us)', s: '', r: ['Inglés', 'Familia anfitriona o internado privado, según programa', 'Materias y créditos; requisitos por estado y distrito', 'De agosto o septiembre a mayo o junio', 'Transatlántico · Nueva York, 6 h menos*', 'Tiene autonomía y curiosidad por la vida escolar norteamericana'] },
+    ca: { n: 'Canadá', c: 'var(--c-ca)', s: '', r: ['Inglés o francés, según centro', 'Familia anfitriona o colegio privado con alojamiento', 'Currículo y diploma por provincia', 'De septiembre a junio, a menudo en semestres', 'Transatlántico · Toronto, 6 h menos*', 'Quiere elegir bien provincia, idioma y entorno'] }
   };
   var K = ['Idioma', 'Alojamiento', 'Sistema', 'Calendario', 'Distancia', 'Puede encajar si…'];
+  /* dos paneles, uno por país: foto y color propios; cada dato lleva su etiqueta dentro del panel y las filas quedan alineadas.
+     Si los dos países coinciden en un dato, se marca «Igual en los dos» para que salten a la vista las diferencias. */
+  var PHOTO = { uk: 'uk-campus', ie: 'ie-campus', us: 'us-campus', ca: 'ca-campus' };
+  var KI = [
+    '<path d="M4 5.5h12.5a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H10l-4 3.5v-3.5H4a2 2 0 0 1-2-2v-6a2 2 0 0 1 2-2z"/>',
+    '<path d="M3.5 11.5L12 4.5l8.5 7"/><path d="M6 10v10.5h12V10"/>',
+    '<path d="M2 9.5L12 5l10 4.5L12 14z"/><path d="M6 11.5v4.6c1.7 1.6 3.7 2.4 6 2.4s4.3-.8 6-2.4v-4.6"/>',
+    '<rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/>',
+    '<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>',
+    '<path d="M12 20s-7.5-4.4-7.5-10A4.3 4.3 0 0 1 12 7.4 4.3 4.3 0 0 1 19.5 10c0 5.6-7.5 10-7.5 10z"/>'
+  ];
+  var ki = function(i){ return '<svg viewBox="0 0 24 24" aria-hidden="true">' + KI[i] + '</svg>'; };
   var sa = $('#cmpA', root), sb = $('#cmpB', root), tb = $('#cmpTable', root);
   if (sa && sb && tb) {
     Object.keys(D).forEach(function(k){ sa.add(new Option(D[k].n, k)); sb.add(new Option(D[k].n, k)); });
     sa.value = 'uk'; sb.value = 'ie';
     var render = function(){
-      var a = D[sa.value], b = D[sb.value];
-      var h = '<div class="k" aria-hidden="true"></div><div class="h" style="--c:' + a.c + '">' + a.n + (a.s ? '<small>' + a.s + '</small>' : '') + '</div><div class="h" style="--c:' + b.c + '">' + b.n + (b.s ? '<small>' + b.s + '</small>' : '') + '</div>';
-      K.forEach(function(k, i){ h += '<div class="k">' + k + '</div><div>' + a.r[i] + '</div><div>' + b.r[i] + '</div>'; });
+      var ka = sa.value, kb = sb.value, a = D[ka], b = D[kb];
+      sa.parentNode.style.setProperty('--c', a.c); sb.parentNode.style.setProperty('--c', b.c);
+      tb.style.setProperty('--ca', a.c); tb.style.setProperty('--cb', b.c);
+      var head = function(k, d, side){
+        return '<div class="cx-h cx-' + side + '"><img src="images/internacional/' + PHOTO[k] + '-480.webp" srcset="images/internacional/' + PHOTO[k] + '-480.webp 480w, images/internacional/' + PHOTO[k] + '-960.webp 960w" sizes="(max-width:700px) 46vw, 560px" alt="" loading="lazy" decoding="async"><span class="cx-name">' + d.n + '</span></div>';
+      };
+      var h = head(ka, a, 'a') + head(kb, b, 'b');
+      K.forEach(function(k, i){
+        var same = a.r[i] === b.r[i], last = i === K.length - 1;
+        ['a', 'b'].forEach(function(side){
+          var d = side === 'a' ? a : b;
+          h += '<div class="cx-c cx-' + side + (same ? ' is-same' : '') + (last ? ' is-fit' : '') + '"><span class="cx-l">' + ki(i) + k + (same ? '<em>Igual en los dos</em>' : '') + '</span><p>' + d.r[i] + '</p></div>';
+        });
+      });
       tb.innerHTML = h;
     };
     var swap = function(){ if (reduce) return render(); tb.classList.add('is-swap'); setTimeout(function(){ render(); tb.classList.remove('is-swap'); }, 180); };
@@ -127,8 +150,8 @@
     { k: 'estancia', label: 'Estancia', t: '¿Cómo imagináis su estancia en el extranjero?', multi: false, cols: 4, o: [
       { v: 'En un internado', ic: 'school' }, { v: 'Con una familia anfitriona', ic: 'house' }, { v: 'Estamos abiertos a ambas opciones', ic: 'both' }, { v: 'Preferimos que nos orientéis', ic: 'chat' } ] },
     { k: 'destinos', label: 'Destinos', t: '¿Qué destinos os interesan más?', multi: true, cols: 5, o: [
-      { v: 'Reino Unido', img: 'uk-campus-480.webp' }, { v: 'Irlanda', img: 'ie-campus-480.webp' }, { v: 'Estados Unidos', img: 'us-campus-480.webp', note: 'Bajo consulta' },
-      { v: 'Canadá', img: 'ca-campus-480.webp', note: 'Bajo consulta' }, { v: 'Estamos abiertos a diferentes destinos', ic: 'globe', thumbIc: true, solo: true } ] },
+      { v: 'Reino Unido', img: 'uk-campus-480.webp' }, { v: 'Irlanda', img: 'ie-campus-480.webp' }, { v: 'Estados Unidos', img: 'us-campus-480.webp' },
+      { v: 'Canadá', img: 'ca-campus-480.webp' }, { v: 'Estamos abiertos a diferentes destinos', ic: 'globe', thumbIc: true, solo: true } ] },
     { k: 'duracion', label: 'Duración', t: '¿Cuánto tiempo os gustaría que estudiara en el extranjero?', multi: false, cols: 4, o: [
       { v: 'Un trimestre', seg: 1, cap: '1 de 3 trimestres' }, { v: 'Dos trimestres', seg: 2, cap: '2 de 3 trimestres' }, { v: 'Un curso completo', seg: 3, cap: 'Los 3 trimestres' }, { v: 'Todavía no lo sabemos', seg: 0, cap: 'Lo vemos juntos' } ] }
   ];
@@ -168,10 +191,19 @@
   function list(k){ return A[k].join(' · '); }
 
   /* ---------- pintar ---------- */
+  /* progreso con el nombre de cada paso; los pasos hechos se pueden pulsar para volver a ellos */
+  var STEP_LABELS = Q.map(function(q){ return q.label; }).concat('Vuestros datos');
+  var PHONE = '<svg class="ic" aria-hidden="true" viewBox="0 0 24 24"><path d="M6.6 3.5h2.6l1.5 4-2 1.3a11 11 0 0 0 5.5 5.5l1.3-2 4 1.5v2.6a2 2 0 0 1-2.2 2A15.5 15.5 0 0 1 4.6 5.7a2 2 0 0 1 2-2.2z"/></svg>';
   function bar(){
-    var n = Math.min(step, Q.length) + 1;
-    var segs = ''; for (var i = 1; i <= TOTAL; i++) segs += '<i class="' + (i < n ? 'done' : i === n ? 'now' : '') + '"></i>';
-    return '<div class="qz-top"><span class="qz-count">Paso ' + n + ' de ' + TOTAL + '</span><div class="qz-steps" role="progressbar" aria-valuemin="1" aria-valuemax="' + TOTAL + '" aria-valuenow="' + n + '" aria-label="Paso ' + n + ' de ' + TOTAL + '">' + segs + '</div></div>';
+    var n = Math.min(step, Q.length) + 1, segs = '';
+    for (var i = 1; i <= TOTAL; i++) {
+      var lab = '<i></i><span>' + STEP_LABELS[i - 1] + '</span>';
+      segs += '<li class="' + (i < n ? 'done' : i === n ? 'now' : '') + '"' + (i === n ? ' aria-current="step"' : '') + '>' +
+        (i < n ? '<button type="button" data-go="' + (i - 1) + '" aria-label="Volver a: ' + STEP_LABELS[i - 1] + '">' + lab + '</button>' : lab) + '</li>';
+    }
+    return '<div class="qz-top"><div class="qz-prog"><p class="qz-count">Paso ' + n + ' de ' + TOTAL + '<span class="qz-count-l"> · ' + STEP_LABELS[n - 1] + '</span></p>' +
+      '<ol class="qz-steps" aria-label="Pasos del cuestionario">' + segs + '</ol></div>' +
+      '<button type="button" class="qz-callcta" data-act="call">' + PHONE + '<span>¿Preferís hablar con nosotros? <b>Reservad una llamada</b></span></button></div>';
   }
   function tile(q, o){
     var on = A[q.k].indexOf(o.v) >= 0, inner, cls = 'tile';
@@ -268,6 +300,12 @@
   }
   function showCall(){
     var box = $('#qzAfterBox');
+    if ((!CB || !CB.enabled) && LINK) {
+      /* calendario de reservas externo (enlace en <meta name="il-llamadas-enlace">) */
+      box.innerHTML = '<div class="qz-cal"><h4>Elegid día y hora</h4><p>Se abre nuestro calendario de llamadas en una pestaña nueva. Vuestras respuestas ya nos han llegado.</p>' +
+        '<div class="qz-cal-acts"><a class="btn-primary" href="' + esc(LINK) + '" target="_blank" rel="noopener">Ver horas libres ' + ARROW + '</a><button type="button" class="qz-link" data-path="contact">Prefiero que me llaméis vosotros</button></div></div>';
+      return;
+    }
     if (!CB || !CB.enabled) {
       /* sin calendario configurado: hueco preparado, sin horarios inventados */
       box.innerHTML = '<div class="qz-cal qz-cal--off"><h4>Reserva de llamada</h4><p>La reserva en línea todavía no está disponible. Vuestras respuestas ya nos han llegado: os escribimos para acordar el día y la hora de la llamada.</p>' +
@@ -287,13 +325,13 @@
     var err = $('#qzCallErr'), tel = $('#qTc'), slot = picker && picker.selected();
     err.hidden = true;
     var telOk = tel.value.replace(/\D/g, '').length >= 9;
-    $('[data-f="telcall"]', qz).classList.toggle('is-bad', !telOk);
+    ($('[data-f="telcall"]', qz) || $('[data-f="qTc"]', qz)).classList.toggle('is-bad', !telOk);
     if (!telOk) { tel.focus(); return; }
     if (!slot) { err.textContent = 'Elegid un día y una hora.'; err.hidden = false; if (picker) picker.focus(); return; }
     C.telefono = tel.value.trim();
     var fp = slot.start + '|' + C.telefono;
     if (!bookKey || bookKey.fp !== fp) bookKey = { fp: fp, key: newKey() };   /* misma clave en reintentos: el servidor no duplica */
-    booking = true; var btn = $('#qzBook'), label = btn.textContent; btn.disabled = true; btn.textContent = 'Confirmando…';
+    booking = true; var btn = $('#qzBook') || $('#qzEarlyBook'), label = btn.textContent; btn.disabled = true; btn.textContent = 'Confirmando…';
     CB.api.book({
       idempotencyKey: bookKey.key, slotStart: slot.start, lang: 'es', website: '',
       contact: { fullName: C.nombre, email: C.email, phone: C.telefono, rgpd: true },
@@ -309,6 +347,97 @@
       }
       if (b.status === 'slot_taken' || b.status === 'day_full') { err.textContent = 'Esa hora ya no está libre. Elegid otra.'; picker.clear(); picker.refresh(); }
       else err.textContent = 'No hemos podido reservar la llamada. Vuestras respuestas ya nos han llegado: podéis intentarlo de nuevo o esperar a que os contactemos.';
+      err.hidden = false;
+    });
+  }
+
+  /* ---------- «¿Preferís hablar con nosotros?»: llamada sin terminar el cuestionario ----------
+     1) Reserva integrada (window.ilCallBooking configurada): día y hora reales.
+     2) Enlace a un calendario de reservas externo (<meta name="il-llamadas-enlace" content="https://…">).
+     3) Sin ninguno de los dos: petición de llamada (formulario «consulta» de Netlify), sin horas inventadas. */
+  var LINK = (function(){ var m = document.querySelector('meta[name="il-llamadas-enlace"]'); var u = m ? m.getAttribute('content').trim() : ''; return /^https:\/\//.test(u) ? u : ''; })();
+  var callShownAt = 0, callSending = false;
+  function answeredText(){
+    var out = [];
+    Q.forEach(function(q){ if (A[q.k].length) out.push(q.label + ': ' + list(q.k)); });
+    if (talents().length) out.push('Intereses: ' + talents().join(', '));
+    return out.length ? 'Respuestas del cuestionario hasta ahora:\n' + out.join('\n') : 'Sin respuestas del cuestionario.';
+  }
+  function callField(id, label, type, ac, val, err, opt){
+    return '<div class="field' + (opt === 'full' ? ' full' : '') + '" data-f="' + id + '"><label for="' + id + '">' + label + '</label><input id="' + id + '" type="' + type + '" autocomplete="' + ac + '"' + (type === 'tel' ? ' inputmode="tel"' : type === 'email' ? ' inputmode="email"' : '') + ' value="' + esc(val) + '"><span class="err">' + err + '</span></div>';
+  }
+  var PRIV = '<div class="full check-wrap" data-f="qcP"><label class="check"><input type="checkbox" id="qcP"> <span>He leído la <a href="legal.html#privacidad" target="_blank" rel="noopener">política de privacidad</a> y acepto que uséis mis datos para responder a esta consulta.</span></label><span class="err">Para seguir, aceptad la política de privacidad.</span></div>';
+  function drawCall(){
+    callShownAt = Date.now();
+    var h = '<div class="qz-step qz-call"><button type="button" class="qz-back qz-call-back" data-act="quiz">' + BACK + 'Volver al cuestionario</button>';
+    if (CB && CB.enabled) {
+      h += '<div class="qz-q qz-q--final"><h3 tabindex="-1">Reservad una llamada</h3><p>Elegid día y hora y os llamamos. 30 minutos, sin compromiso. No hace falta terminar el cuestionario: lo que ya hayáis contestado nos llega con la reserva.</p></div>' +
+        '<div id="qzAfterBox"><div class="fgrid">' + callField('qcN', 'Nombre del padre, madre o tutor', 'text', 'name', C.nombre, 'Escribid vuestro nombre.', 'full') +
+        callField('qcE', 'Correo electrónico', 'email', 'email', C.email, 'Revisad el correo: parece incompleto.') +
+        callField('qTc', 'Teléfono para la llamada', 'tel', 'tel', C.telefono, 'Necesitamos un teléfono (mínimo 9 cifras).') + '</div>' +
+        '<div id="qzPicker" class="qz-picker" role="group" aria-label="Día y hora de la llamada"></div>' +
+        '<div class="fgrid">' + PRIV + '</div><div class="qz-alert" id="qzCallErr" role="alert" hidden></div>' +
+        '<div class="qz-cal-acts"><button type="button" class="btn-primary" id="qzEarlyBook">Confirmar llamada</button></div></div></div>';
+      qz.innerHTML = h;
+      picker = CB.mount($('#qzPicker'), { onState: function(st){ var b = $('#qzEarlyBook'); if (b) b.hidden = st === 'off' || st === 'error'; } });
+      picker.load();
+    } else if (LINK) {
+      h += '<div class="qz-q qz-q--final"><h3 tabindex="-1">Reservad una llamada</h3><p>Elegid el día y la hora en nuestro calendario de llamadas: se abre en una pestaña nueva. Si queréis, después podéis volver y terminar el cuestionario.</p></div>' +
+        '<div class="qz-cal-acts"><a class="btn-primary" href="' + esc(LINK) + '" target="_blank" rel="noopener">Ver horas libres ' + ARROW + '</a></div></div>';
+      qz.innerHTML = h;
+    } else {
+      h += '<div class="qz-q qz-q--final"><h3 tabindex="-1">Os llamamos nosotros</h3><p>Todavía no podéis elegir la hora en línea. Dejadnos vuestro teléfono y el momento del día que mejor os venga, y os llamamos. No hace falta terminar el cuestionario: lo que ya hayáis contestado nos llega con vuestra petición.</p></div>' +
+        '<div id="qzAfterBox"><form id="qzCallForm" novalidate><div class="fgrid">' +
+        callField('qcN', 'Nombre del padre, madre o tutor', 'text', 'name', C.nombre, 'Escribid vuestro nombre.', 'full') +
+        callField('qTc', 'Teléfono', 'tel', 'tel', C.telefono, 'Necesitamos un teléfono (mínimo 9 cifras).') +
+        '<div class="field" data-f="qcM"><label for="qcM">¿Cuándo os viene mejor?</label><select id="qcM"><option>Por la mañana</option><option>A mediodía</option><option>Por la tarde</option><option selected>Cualquier momento</option></select></div>' +
+        callField('qcE', 'Correo electrónico <small>(opcional)</small>', 'email', 'email', C.email, 'Revisad el correo: parece incompleto.', 'full') +
+        '<div class="hp" aria-hidden="true"><label for="qcW">Web</label><input id="qcW" tabindex="-1" autocomplete="off"></div>' + PRIV +
+        '</div><div class="qz-cal-acts"><button type="submit" class="btn-primary" id="qzCallSend">Pedir que nos llaméis</button></div>' +
+        '<div class="qz-alert" id="qzCallErr" role="alert" hidden></div></form></div></div>';
+      qz.innerHTML = h;
+    }
+    var t = $('h3', qz); if (t) t.focus({ preventScroll: true });
+    var top = qz.getBoundingClientRect().top;
+    if (top < 70 || top > innerHeight * .6) window.scrollTo({ top: scrollY + top - 150, behavior: reduce ? 'auto' : 'smooth' });
+  }
+  function callCheck(needEmail){
+    var bad = [];
+    var mark = function(f, isBad){ var el = $('[data-f="' + f + '"]', qz); if (!el) return; el.classList.toggle('is-bad', isBad); var inp = $('input', el); if (inp && inp.type !== 'checkbox') inp.setAttribute('aria-invalid', isBad ? 'true' : 'false'); if (isBad) bad.push(el); };
+    var n = $('#qcN').value.trim(), e = $('#qcE').value.trim(), tel = $('#qTc').value.trim();
+    mark('qcN', n.length < 2);
+    mark('qTc', tel.replace(/\D/g, '').length < 9);
+    mark('qcE', needEmail ? !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(e) : (e !== '' && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(e)));
+    mark('qcP', !$('#qcP').checked);
+    if (bad.length) { var inp = $('input', bad[0]); if (inp) inp.focus(); return false; }
+    C.nombre = n; C.email = e; C.telefono = tel; save();
+    return true;
+  }
+  function sendCallRequest(){
+    if (callSending) return;
+    var err = $('#qzCallErr'); err.hidden = true;
+    if (!callCheck(false)) return;
+    var moment = $('#qcM').value;
+    var done = function(){
+      $('#qzAfterBox').innerHTML = '<div class="qz-done"><h4>Recibido. Os llamamos nosotros.</h4><p>Una persona del equipo os llamará al <b>' + esc(C.telefono) + '</b>' + (moment !== 'Cualquier momento' ? ', ' + esc(moment.toLowerCase()) : '') + '.</p>' +
+        '<button type="button" class="qz-link" data-act="quiz">Volver al cuestionario</button></div>';
+    };
+    if ($('#qcW').value || Date.now() - callShownAt < 2500) { done(); return; }   /* robots: parece enviado, no se manda nada */
+    var btn = $('#qzCallSend'); callSending = true; btn.disabled = true; btn.setAttribute('aria-busy', 'true'); btn.innerHTML = '<span class="spin" aria-hidden="true"></span>Enviando…';
+    var payload = new URLSearchParams({
+      form_type: 'lead', service: 'extranjero', serviceExtra: 'Petición de llamada desde el cuestionario «¿Qué colegio podría encajar?»', studentAge: list('edad'),
+      message: 'Quiere que le llamemos. Mejor momento: ' + moment + '\n' + answeredText(),
+      fullName: C.nombre, email: C.email, phone: C.telefono, contactPreference: 'Llamada (' + moment.toLowerCase() + ')',
+      rgpd: '1', comunicaciones: 'No', website: $('#qcW').value
+    });
+    var req = window.ilSendForm ? window.ilSendForm('consulta', payload, 'Petición de llamada — ' + C.nombre) : Promise.reject(new Error('nosend'));
+    req.then(function(){
+      callSending = false;
+      if (window.dataLayer) window.dataLayer.push({ event: 'lead_generado', servicio: 'extranjero', origen: 'peticion_llamada' });
+      done();
+    }).catch(function(){
+      callSending = false; btn.disabled = false; btn.removeAttribute('aria-busy'); btn.textContent = 'Pedir que nos llaméis';
+      err.textContent = 'No hemos podido enviar vuestra petición. Revisad la conexión y volved a intentarlo, o escribidnos a info@interlanguage.es.';
       err.hidden = false;
     });
   }
@@ -355,7 +484,10 @@
       return;
     }
     if (t.id === 'qzBook') { bookCall(); return; }
+    if (t.id === 'qzEarlyBook') { if (callCheck(true)) bookCall(); return; }
     var act = t.getAttribute('data-act');
+    if (act === 'call') { keep(); drawCall(); return; }
+    if (act === 'quiz') { dir = 1; if (sent) { window.ilExtQuiz.reset(); } else draw(true); return; }
     if (act === 'next') { if (A[Q[step].k].length) go(step + 1); return; }
     if (act === 'back') { keep(); go(step - 1); return; }
     if (t.hasAttribute('data-go')) { keep(); go(+t.getAttribute('data-go')); return; }
@@ -364,6 +496,7 @@
   qz.addEventListener('change', function(e){ var f = e.target.closest('.check-wrap'); if (f) f.classList.remove('is-bad'); if ($('#qzForm', qz)) keep(); });
   qz.addEventListener('submit', function(e){
     e.preventDefault();
+    if (e.target.id === 'qzCallForm') { sendCallRequest(); return; }
     if (sending || sent) return;                                        /* sin envíos dobles */
     var alertBox = $('#qzAlert'); alertBox.hidden = true;
     if (!validate()) return;

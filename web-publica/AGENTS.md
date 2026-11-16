@@ -159,3 +159,12 @@ Publicación: Netlify usa `netlify.toml` (`publish = "web-publica"`). Si se sube
 - Bajo el cuestionario, `.qz-mail` con el correo para quien prefiera escribir.
 - **Galería en móvil (≤820 px):** cada capítulo enseña la foto grande y dos más; el resto se ve en el visor al tocar una (`.cm figure:nth-child(n+4){display:none}`). En escritorio siguen las 19.
 
+## «Estudiar en el extranjero» · mejoras del 16-11-2026 (en local, pendiente del OK de Jaime)
+
+- **Fotos separadas por programa:** tenis, kayak, surf, hípica, arte y teatro son de «Campamentos de verano en el extranjero» y ya no salen en «Estudiar en el extranjero». No reutilizar una foto en los dos programas.
+- **«Así se vive la experiencia»:** composición editorial (`.xcs` / `.xc--a…d`, rejilla de 12 columnas con áreas L, P y s1–s3; en móvil, tira deslizable por capítulo). 13 fotos del curso escolar; la lista `P` de `js/extranjero.js` sigue el orden de `data-i`.
+- **Cuestionario:** progreso con el nombre de cada paso (los pasos hechos se pueden pulsar); tarjetas en marfil, elegidas en marino claro con marca burdeos. Botón «¿Preferís hablar con nosotros? Reservad una llamada» sin terminar el cuestionario. Funciona de tres formas: con `window.ilCallBooking` configurada, elige día y hora; con `<meta name="il-llamadas-enlace" content="https://…">`, enlaza al calendario externo; sin ninguna de las dos, es una petición de llamada que se envía a Netlify Forms (formulario «consulta», `contactPreference` = «Llamada (…)»). Nunca se inventan horas.
+- **«Bajo consulta» fuera** de Estados Unidos y Canadá: tarjetas, cabecera, fichas, pestañas, tabla, comparador y cuestionario. En las fichas y pestañas se pone el alojamiento, igual que en Reino Unido e Irlanda. La tarjeta de Canadá de la portada dice «Idiomas y entornos para elegir». La versión EN sigue con «Options on request».
+- **Comparador:** dos paneles (`.cx`), cada uno con la foto y el color de su país; las etiquetas van dentro de cada panel; lo que coincide se marca «Igual en los dos».
+- Versiones: `extranjero.css?v=9`, `extranjero.js?v=4`.
+
