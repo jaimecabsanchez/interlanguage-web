@@ -455,6 +455,12 @@ window.dataLayer = window.dataLayer || [];
       e.preventDefault();
       goToServicePage(link.getAttribute('data-jump-service'));
       closeNav();
+      // data-jump-to: además de abrir la página, baja a ese bloque (p. ej. el formulario de reserva o el contacto)
+      const to = link.getAttribute('data-jump-to');
+      if (to) requestAnimationFrame(function(){
+        const target = document.getElementById(to);
+        if (target) target.scrollIntoView({ behavior: 'auto', block: 'start' });
+      });
     });
   });
 
