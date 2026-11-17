@@ -11,7 +11,7 @@
   var esc = function(t){ return String(t).replace(/[&<>"]/g, function(c){ return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
   var IMG = 'images/internacional/';
   /* las 19 fotos de «Así se vive la experiencia» (mismo orden que los data-i del HTML) */
-  var P = [{"src": "images/internacional/ext-us-aula-1000.webp", "alt": "Alumnos atendiendo en clase", "cap": "Clases", "cat": "Aprender"}, {"src": "images/internacional/ext-gal-ciencias-1000.webp", "alt": "Alumnos en una clase de ciencias", "cap": "Ciencias", "cat": "Aprender"}, {"src": "images/internacional/extranjero-lab-1200.webp", "alt": "Alumnos con bata en un laboratorio", "cap": "Laboratorio", "cat": "Aprender"}, {"src": "images/internacional/ext-gal-robotica-1000.webp", "alt": "Alumnos montando un robot", "cap": "Robótica", "cat": "Aprender"}, {"src": "images/internacional/extranjero-alumnas-1122.webp", "alt": "Cuatro alumnas sonriendo juntas", "cap": "Amistades", "cat": "Convivir"}, {"src": "images/internacional/sala-comun-900.webp", "alt": "Sala común de un internado con sofás y una mesa de billar", "cap": "Sala común", "cat": "Convivir"}, {"src": "images/internacional/ext-gal-cocina-1000.webp", "alt": "Alumnas cocinando", "cap": "Cocina", "cat": "Convivir"}, {"src": "images/internacional/extranjero-grupo-1448.webp", "alt": "Grupo de alumnos en una excursión", "cap": "Excursiones", "cat": "Descubrir"}, {"src": "images/internacional/ext-gal-remo-1000.webp", "alt": "Alumnas remando en un lago", "cap": "Remo", "cat": "Descubrir"}, {"src": "images/internacional/reino-unido-golf-1000.webp", "alt": "Alumno jugando al golf", "cap": "Golf", "cat": "Descubrir"}, {"src": "images/internacional/ext-duo-rugby-1080.webp", "alt": "Alumno chutando un balón de rugby", "cap": "Rugby", "cat": "Crecer"}, {"src": "images/internacional/ext-gal-piano-1000.webp", "alt": "Alumna tocando el piano con su profesora", "cap": "Piano", "cat": "Crecer"}, {"src": "images/internacional/ext-gal-orquesta-1000.webp", "alt": "Alumnos tocando en una orquesta", "cap": "Orquesta", "cat": "Crecer"}];
+  var P = [{"src": "images/internacional/extranjero-lab-1200.webp", "alt": "Alumnos con bata en un laboratorio", "cap": "Laboratorio", "cat": "Aprender"}, {"src": "images/internacional/ext-us-aula-1000.webp", "alt": "Alumnos atendiendo en clase", "cap": "Clases", "cat": "Aprender"}, {"src": "images/internacional/ext-gal-ciencias-1000.webp", "alt": "Alumnos en una clase de ciencias", "cap": "Ciencias", "cat": "Aprender"}, {"src": "images/internacional/ext-gal-robotica-1000.webp", "alt": "Alumnos montando un robot", "cap": "Robótica", "cat": "Aprender"}, {"src": "images/internacional/extranjero-alumnas-1122.webp", "alt": "Cuatro alumnas sonriendo juntas", "cap": "Amistades", "cat": "Convivir"}, {"src": "images/internacional/sala-comun-900.webp", "alt": "Sala común de un internado con sofás y una mesa de billar", "cap": "Sala común", "cat": "Convivir"}, {"src": "images/internacional/ext-gal-cocina-1000.webp", "alt": "Alumnas cocinando", "cap": "Cocina", "cat": "Convivir"}, {"src": "images/internacional/extranjero-grupo-1448.webp", "alt": "Grupo de alumnos en una excursión", "cap": "Excursiones", "cat": "Descubrir"}, {"src": "images/internacional/ext-gal-remo-1000.webp", "alt": "Alumnas remando en un lago", "cap": "Remo", "cat": "Descubrir"}, {"src": "images/internacional/reino-unido-golf-1000.webp", "alt": "Alumno jugando al golf", "cap": "Golf", "cat": "Descubrir"}, {"src": "images/internacional/ext-duo-rugby-1080.webp", "alt": "Alumno chutando un balón de rugby", "cap": "Rugby", "cat": "Crecer"}, {"src": "images/internacional/ext-gal-piano-1000.webp", "alt": "Alumna tocando el piano con su profesora", "cap": "Piano", "cat": "Crecer"}, {"src": "images/internacional/ext-gal-orquesta-1000.webp", "alt": "Alumnos tocando en una orquesta", "cap": "Orquesta", "cat": "Crecer"}];
   /* ---------- tarjetas de destino: vídeo al pasar el ratón (solo escritorio con ratón y sin ahorro de datos) ---------- */
   var fine = window.matchMedia && matchMedia('(hover: hover) and (pointer: fine) and (min-width: 901px)').matches;
   var saveData = navigator.connection && (navigator.connection.saveData || /2g/.test(navigator.connection.effectiveType || ''));
@@ -79,6 +79,60 @@
     fichas.hidden = true;
     var d = $('#ext-destinos'); if (d) d.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
   }); });
+
+  /* ---------- «Así se vive la experiencia»: carrusel centrado (vecinas a los lados, da la vuelta) ---------- */
+  (function(){
+    var xv = $('.xv', root);
+    if (!xv) return;
+    var its = $$('.xv-it', xv), n = its.length, cur = 0, tabs = $$('.xv-tab', root), num = $('#xvN');
+    var cats = its.map(function(it){ var s = $('figcaption span', it); return s ? s.textContent : ''; });
+    function draw(){
+      its.forEach(function(it, i){
+        var o = ((i - cur) % n + n) % n; if (o > n / 2) o -= n;
+        it.style.setProperty('--o', o);
+        it.classList.toggle('is-on', o === 0);
+        it.classList.toggle('is-far', Math.abs(o) > 2);
+        it.setAttribute('aria-hidden', o === 0 ? 'false' : 'true');
+        var b = $('.ph-open', it); if (b) b.tabIndex = o === 0 ? 0 : -1;
+      });
+      if (num) num.textContent = cur + 1;
+      tabs.forEach(function(t){ t.setAttribute('aria-current', t.textContent === cats[cur] ? 'true' : 'false'); });
+    }
+    function go(i){ cur = ((i % n) + n) % n; draw(); }
+    $$('[data-xv]', xv).forEach(function(b){ b.addEventListener('click', function(){ go(cur + (b.getAttribute('data-xv') === 'next' ? 1 : -1)); }); });
+    tabs.forEach(function(t){ t.addEventListener('click', function(){ go(+t.getAttribute('data-go')); }); });
+    xv.addEventListener('keydown', function(e){ if (e.key === 'ArrowRight') { go(cur + 1); e.preventDefault(); } else if (e.key === 'ArrowLeft') { go(cur - 1); e.preventDefault(); } });
+    /* arrastrar (ratón) o deslizar (dedo); si se ha movido, el toque no abre el visor */
+    var down = false, moved = false, sx = 0, dx = 0;
+    xv.addEventListener('pointerdown', function(e){
+      if (e.button !== 0 || e.target.closest('.xv-btn')) return;
+      down = true; moved = false; sx = e.clientX; dx = 0;
+    });
+    xv.addEventListener('pointermove', function(e){
+      if (!down) return;
+      dx = e.clientX - sx;
+      if (!moved && Math.abs(dx) > 8) { moved = true; xv.classList.add('is-drag'); try { xv.setPointerCapture(e.pointerId); } catch (_) {} }
+      if (moved) xv.style.setProperty('--dx', dx + 'px');
+    });
+    function end(){
+      if (!down) return; down = false;
+      if (!moved) return;
+      xv.classList.remove('is-drag'); xv.style.setProperty('--dx', '0px');
+      var on = $('.xv-it.is-on', xv), w = on ? on.getBoundingClientRect().width : 300;
+      if (Math.abs(dx) > 40) go(cur - (dx < 0 ? -1 : 1) * Math.max(1, Math.round(Math.abs(dx) / w)));
+      setTimeout(function(){ moved = false; }, 0);
+    }
+    xv.addEventListener('pointerup', end);
+    xv.addEventListener('pointercancel', end);
+    /* tocar una foto lateral la trae al centro; la del centro abre el visor */
+    xv.addEventListener('click', function(e){
+      if (moved) { e.preventDefault(); e.stopPropagation(); return; }
+      var it = e.target.closest('.xv-it');
+      if (it && !it.classList.contains('is-on')) { e.preventDefault(); e.stopPropagation(); go(+it.getAttribute('data-n')); }
+    }, true);
+    xv.addEventListener('dragstart', function(e){ e.preventDefault(); });
+    draw();
+  })();
 
   /* ---------- fotos: visor a pantalla completa (flechas, teclado y deslizar) ---------- */
   var lb = $('#x2Lb'), cur = 0, opener = null;

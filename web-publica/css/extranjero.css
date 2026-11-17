@@ -439,46 +439,57 @@
 }
 @media (prefers-reduced-motion:reduce){.x2 .qz-sub,.x2 .qz-steps i,.x2 .tile,.x2 .chip{transition:none;}}
 
-/* ---------- «Así se vive la experiencia» · composición editorial (16-11-2026) ----------
-   Cuatro capítulos, cada uno con su propia composición asimétrica sobre una rejilla de 12 columnas:
-   foto principal (L), retrato (P) y secundarias (s1–s3) de tamaños distintos, con el texto como una pieza más.
-   Solo fotos del curso escolar: las de actividades de verano (tenis, kayak, surf, hípica, arte, teatro) son de «Campamentos de verano en el extranjero».
-   Móvil (≤820 px): texto y, debajo, una tira que se desliza con todas las fotos del capítulo. */
-.x2 .xcs{display:grid; gap:clamp(48px,5vw,72px);}
-.x2 .xc{display:grid; grid-template-columns:repeat(12,minmax(0,1fr)); grid-auto-rows:minmax(clamp(64px,6.6vw,96px),auto); gap:12px;}
-.x2 .xc-ph{display:contents;}
-.x2 .xc--a{grid-template-areas:"t t t L L L L L L s1 s1 s1" "t t t L L L L L L s1 s1 s1" "s3 s3 s3 L L L L L L s2 s2 s2" "s3 s3 s3 L L L L L L s2 s2 s2";}
-.x2 .xc--b{grid-template-areas:"P P P P L L L L L t t t" "P P P P L L L L L t t t" "P P P P L L L L L s1 s1 s1" "P P P P L L L L L s1 s1 s1";}
-.x2 .xc--c{grid-template-areas:"L L L L L L t t t P P P" "L L L L L L t t t P P P" "L L L L L L s1 s1 s1 P P P" "L L L L L L s1 s1 s1 P P P";}
-.x2 .xc--d{grid-template-areas:"P P P t t t L L L L L L" "P P P t t t L L L L L L" "P P P s1 s1 s1 L L L L L L" "P P P s1 s1 s1 L L L L L L";}
-.x2 .xc-txt{grid-area:t; align-self:start; padding-top:4px;}
-.x2 .xg-L{grid-area:L;} .x2 .xg-P{grid-area:P;} .x2 .xg-s1{grid-area:s1;} .x2 .xg-s2{grid-area:s2;} .x2 .xg-s3{grid-area:s3;}
-.x2 .xc-n{display:block; font:italic 500 2.25rem/1 var(--font-display); color:var(--accent);}
-.x2 .xc h3{margin:10px 0 8px; font-size:clamp(1.625rem,2.4vw,2.125rem); line-height:1.05; color:var(--navy);}
-.x2 .xc-txt p{font-size:1rem; line-height:1.55; color:var(--ink-soft);}
-.x2 .xc-txt .xc-list{margin-top:12px; padding-top:12px; border-top:1px solid var(--line); font-size:.8125rem; font-weight:700; color:var(--navy);}
-.x2 .xc-swipe{display:none;}
-.x2 .xc figure{position:relative; margin:0; overflow:hidden; border-radius:var(--r-card); background:var(--stone);}
-.x2 .xc figcaption{position:absolute; left:0; right:0; bottom:0; padding:32px 14px 12px; background:linear-gradient(0deg, rgba(8,16,32,.58), rgba(8,16,32,0)); font:600 1rem/1.2 var(--font-display); color:var(--white); pointer-events:none; transition:padding-bottom .3s ease;}
-.x2 .xc .xg-L figcaption{padding:44px 18px 16px; font-size:1.25rem;}
-.x2 .xc .ph-open:focus-visible{outline:3px solid var(--accent); outline-offset:-3px;}
+/* ---------- «Así se vive la experiencia» · carrusel centrado (17-11-2026) ----------
+   Una sola fila: la foto activa en el centro y las vecinas asomando a los dos lados (más claras), así se ve que hay más.
+   Da la vuelta. Se pasa con las flechas, arrastrando, deslizando, con el teclado o tocando una foto lateral.
+   Arriba, los cuatro capítulos (Aprender · Convivir · Descubrir · Crecer) para saltar; se marca el de la foto activa.
+   Todas las fotos al mismo tamaño (3:2; 4:3 en móvil). Solo fotos del curso escolar: las de verano son de campamentos.
+   Para añadir fotos: prop/build_vida_centro.py (PH + CH) → reescribe el HTML y la lista P del visor. */
+.x2 .xpx--cv{--w:min(54vw,760px); --ar:1.5; --g:20px;}
+.x2 .xv-tabs{display:flex; flex-wrap:wrap; justify-content:center; gap:4px 28px; margin-bottom:28px;}
+.x2 .xv-tab{position:relative; padding:8px 0; border:0; background:none; font:600 1.125rem/1.2 var(--font-display); color:var(--ink-soft); cursor:pointer; transition:color .2s ease;}
+.x2 .xv-tab::after{content:""; position:absolute; left:0; right:0; bottom:0; height:2px; background:var(--accent); transform:scaleX(0); transition:transform .25s ease;}
+.x2 .xv-tab[aria-current="true"]{color:var(--navy);}
+.x2 .xv-tab[aria-current="true"]::after{transform:scaleX(1);}
+.x2 .xv-tab:focus-visible{outline:3px solid var(--accent); outline-offset:4px;}
+.x2 .xv{--dx:0px; position:relative; touch-action:pan-y; user-select:none; -webkit-user-select:none;}
+.x2 .xv:focus-visible{outline:none;}
+.x2 .xv:focus-visible .xv-it.is-on .ph-open{outline:3px solid var(--accent); outline-offset:3px;}
+.x2 .xv-stage{position:relative; height:calc(var(--w) / var(--ar) + 48px);}
+.x2 .xv-it{--o:0; position:absolute; top:0; left:50%; width:var(--w); margin:0;
+  transform:translateX(calc(-50% + var(--o) * (var(--w) + var(--g)) + var(--dx))) scale(.9);
+  opacity:.45; transition:transform .55s cubic-bezier(.2,.7,.2,1), opacity .4s ease;}
+.x2 .xv-it.is-on{transform:translateX(calc(-50% + var(--dx))); opacity:1; z-index:1;}
+.x2 .xv-it.is-far{opacity:0; visibility:hidden;}
+.x2 .xv.is-drag .xv-it{transition:none;}
+.x2 .xv-it .ph-open{position:relative; display:block; width:100%; height:auto; aspect-ratio:var(--ar); max-width:100%; padding:0; border:0; overflow:hidden; border-radius:8px; background:var(--stone); cursor:pointer;}
+.x2 .xv-it.is-on .ph-open{cursor:zoom-in;}
+.x2 .xv-it img{position:absolute; inset:0; display:block; width:100%; height:100%; object-fit:cover; -webkit-user-drag:none; pointer-events:none;}
+.x2 .xv-it figcaption{display:flex; justify-content:center; align-items:baseline; gap:10px; margin-top:14px; font:600 1.0625rem/1.2 var(--font-display); color:var(--navy); opacity:0; transition:opacity .3s ease;}
+.x2 .xv-it figcaption span{font:italic 500 1rem/1.2 var(--font-display); color:var(--accent);}
+.x2 .xv-it.is-on figcaption{opacity:1;}
+.x2 .xv-btn{position:absolute; top:calc(var(--w) / var(--ar) / 2); z-index:2; display:grid; place-items:center; width:52px; height:52px; margin-top:-26px; padding:0; border:1px solid var(--field-line); border-radius:6px; background:var(--white); color:var(--navy); cursor:pointer; transition:background .2s ease, color .2s ease;}
+.x2 .xv-prev{left:calc(50% - var(--w) / 2 - 26px);}
+.x2 .xv-next{right:calc(50% - var(--w) / 2 - 26px);}
+.x2 .xv-btn:focus-visible{outline:3px solid var(--accent); outline-offset:2px;}
+.x2 .xv-count{margin-top:6px; text-align:center; font-size:.8125rem; font-weight:700; color:var(--ink-soft); font-variant-numeric:tabular-nums;}
+.x2 .xv-count b{color:var(--navy);}
+.x2 .xv-hint{display:none;}
 @media (hover:hover){
-  .x2 .xc figure:hover img{transform:scale(1.04);}
-  .x2 .xc figure:hover figcaption{padding-bottom:18px;}
+  .x2 .xv-btn:hover{background:var(--navy); color:var(--white);}
+  .x2 .xv-tab:hover{color:var(--navy);}
+  .x2 .xv-it:not(.is-on):not(.is-far):hover{opacity:.7;}
 }
 @media (max-width:820px){
-  .x2 .xcs{gap:44px;}
-  .x2 .xc{display:block;}
-  .x2 .xc-n{font-size:1.75rem;}
-  .x2 .xc-txt .xc-list{display:none;}
-  .x2 .xc-swipe{display:block; margin-top:6px; font-size:.8125rem; font-weight:700; color:var(--ink-soft);}
-  .x2 .xc-ph{display:flex; gap:10px; margin:16px calc(-1 * var(--gut)) 0; padding-inline:var(--gut); overflow-x:auto; scroll-snap-type:x mandatory; scroll-padding-inline:var(--gut); scrollbar-width:none; -webkit-overflow-scrolling:touch;}
-  .x2 .xc-ph::-webkit-scrollbar{display:none;}
-  .x2 .xc figure{flex:0 0 64vw; height:76vw; max-height:420px; scroll-snap-align:start;}
-  .x2 .xc .xg-L{flex-basis:82vw;}
-  .x2 .xc .xg-L figcaption{padding:36px 14px 12px; font-size:1.0625rem;}
+  .x2 .xpx--cv{--w:72vw; --ar:1.3333; --g:6px;}
+  .x2 .xv-tabs{justify-content:flex-start; gap:2px 20px; margin-bottom:18px;}
+  .x2 .xv-tab{font-size:1rem;}
+  .x2 .xv-stage{height:calc(var(--w) / var(--ar) + 44px);}
+  .x2 .xv-btn{display:none;}
+  .x2 .xv-hint{display:inline;}
+  .x2 .xv-it figcaption{margin-top:12px; font-size:1rem;}
 }
-@media (prefers-reduced-motion:reduce){.x2 .xc figcaption{transition:none;}}
+@media (prefers-reduced-motion:reduce){.x2 .xv-it,.x2 .xv-it figcaption,.x2 .xv-tab::after{transition:none;}}
 
 /* ---------- Cuestionario: jerarquía y estados (16-11-2026) ----------
    Tres tonos con función: marino = lo elegido y lo hecho · burdeos = dónde estáis y la acción principal · marfil = lo que se puede pulsar.
