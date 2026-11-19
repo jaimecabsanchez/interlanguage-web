@@ -423,6 +423,15 @@ window.dataLayer = window.dataLayer || [];
     if (!same) setUrl('servicio-' + key, { view: 'service-' + r.view });
   }
 
+  // «Año o trimestre escolar en el extranjero» ya no usa la consulta larga de la portada: abre su página y baja al cuestionario (17-11-2026)
+  function goToExtQuiz(){
+    goToServicePage('extranjero');
+    requestAnimationFrame(function(){
+      const q = document.getElementById('ext-encaje');
+      if (q) q.scrollIntoView({ behavior: 'auto', block: 'start' });
+    });
+  }
+
   // Desde una subpágina a la portada o a una de sus secciones: cambia la pantalla, la dirección y el título, y baja a la sección.
   // 'inicio' es la portada sin ancla (dirección limpia). Si ya se está en la portada solo se desplaza.
   function goHome(anchor, opts){
@@ -733,6 +742,12 @@ window.dataLayer = window.dataLayer || [];
         const quiz = el.closest('#view-service-extranjero') && !document.getElementById('ext-contacto-slot') && document.getElementById('ext-encaje');
         if (quiz){
           quiz.scrollIntoView({ behavior: reduceMotion() ? 'auto' : 'smooth', block: 'start' });
+          pushEvent('clic_cta', { cta_id: el.getAttribute('data-cta') || 'extranjero-cuestionario' });
+          return;
+        }
+        if (el.getAttribute('data-advise') === 'extranjero' && document.getElementById('ext-encaje')){
+          e.stopImmediatePropagation();   // si no, el oyente de anclas de la portada (#contacto) devolvería a la portada
+          goToExtQuiz();
           pushEvent('clic_cta', { cta_id: el.getAttribute('data-cta') || 'extranjero-cuestionario' });
           return;
         }
@@ -1085,6 +1100,7 @@ window.dataLayer = window.dataLayer || [];
     // ---- elegir programa ----
     function choose(value, focus){
       if (value === 'campamentos' || value === 'extraescolar'){ goToServicePage(value); return; }
+      if (value === 'extranjero' && !locked && document.getElementById('ext-encaje')){ goToExtQuiz(); return; }
       const r = radios.filter(function(x){ return x.value === value; })[0];
       if (!r) return;
       r.checked = true;

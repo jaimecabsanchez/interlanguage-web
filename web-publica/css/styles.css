@@ -219,9 +219,15 @@ picture{display:contents;}
   section.services .services-head p{color:var(--ink-soft); font-size:1rem; max-width:52ch; line-height:1.55; font-weight:500; margin:12px 0 0;}
   section.services .svc-index{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:18px; margin-top:28px; align-items:stretch;}
   section.services .svc-card2{min-width:0; display:flex; flex-direction:column; overflow:hidden; background:var(--white); border:1px solid var(--line); border-radius:var(--r-card); color:inherit; text-decoration:none; transition:border-color .18s ease, background .18s ease;}
-  section.services .svc-card2:nth-child(1){--svc-image-position:center 43%;}   /* orden: estudiar fuera, campamentos fuera, extraescolares, campamentos en Madrid */
-  section.services .svc-card2:nth-child(2){--svc-image-position:center 60%;}
-  section.services .svc-card2:nth-child(3){--svc-image-position:center 42%;}
+  section.services .svc-card2[data-service="extranjero"]{--svc-image-position:center 43%;}
+  section.services .svc-card2[data-service="verano-extranjero"]{--svc-image-position:center 60%;}
+  section.services .svc-card2[data-service="extraescolar"]{--svc-image-position:center 42%;}
+  /* 17-11-2026: dos grupos, «En el extranjero» y «En Madrid», cada uno con su línea de color (marino / bosque) */
+  section.services .svc-index--split{grid-template-columns:repeat(2,minmax(0,1fr)); gap:36px;}
+  section.services .svc-grp{display:flex; flex-direction:column; min-width:0;}
+  section.services .svc-grp-t{display:flex; align-items:baseline; gap:10px; margin:0 0 16px; padding-top:12px; border-top:2px solid var(--navy); font:600 1.25rem/1.2 var(--font-display); color:var(--navy); letter-spacing:-.01em;}
+  section.services .svc-grp + .svc-grp .svc-grp-t{border-top-color:var(--forest); color:var(--forest);}
+  section.services .svc-grp-cards{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px; flex:1; align-items:stretch;}
   section.services .svc-photo{display:block; overflow:hidden; aspect-ratio:16/9; background:var(--stone);}
   section.services .svc-photo picture{display:block; width:100%; height:100%;}
   section.services .svc-photo img{display:block; width:100%; height:100%; object-fit:cover; object-position:var(--svc-image-position,center);}
@@ -242,12 +248,14 @@ picture{display:contents;}
   section.services .svc-card2:focus-visible .svc-more{text-decoration:underline; text-underline-offset:4px;}
 
   @media (min-width:1100px){ section.services .svc-meta{min-height:2.9em;} section.services .svc-t h3{min-height:2.4em;} }   /* con cuatro columnas, títulos y edades alineados aunque ocupen dos líneas */
-  @media (max-width:1099px){ section.services .svc-index{grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px;} }
-  @media (min-width:641px) and (max-width:960px){ section.services .svc-index{gap:14px;} section.services .svc-t{padding:16px 14px 0;} section.services .svc-more{margin:10px 14px;} section.services .svc-desc{font-size:.9rem;} }
+  @media (max-width:1099px){ section.services .svc-index{grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px;} section.services .svc-index--split{grid-template-columns:1fr; gap:36px;} }
+  @media (min-width:641px) and (max-width:960px){ section.services .svc-index{gap:14px;} section.services .svc-index--split{gap:32px;} section.services .svc-grp-cards{gap:14px;} section.services .svc-t{padding:16px 14px 0;} section.services .svc-more{margin:10px 14px;} section.services .svc-desc{font-size:.9rem;} }
   @media (max-width:640px){
     section.services{padding:44px 0 52px;}
     section.services .services-head h2{font-size:clamp(1.72rem,7.2vw,2rem);}
     section.services .svc-index{grid-template-columns:1fr; gap:16px; margin-top:22px;}
+    section.services .svc-index--split{gap:32px;}
+    section.services .svc-grp-cards{grid-template-columns:1fr; gap:16px;}
     section.services .svc-photo{aspect-ratio:2/1;}
     section.services .svc-t{padding:18px 18px 0;}
     section.services .svc-more{margin:12px 18px 12px;}

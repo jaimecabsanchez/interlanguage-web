@@ -5,6 +5,7 @@ La web de marketing. HTML/CSS/JS plano, sin build. Es lo que Netlify publica.
 ## Estructura
 
 - **`index.html`** (ES) e **`index-en.html`** (EN) → la web, con el mismo esqueleto. `legal.html` (avisos) y `404.html` (la sirve Netlify en cualquier ruta inexistente; **única excepción a las rutas relativas**: usa `/css/…`). No crees más HTML sueltos en la raíz.
+- **`index-en.html` se genera desde `index.html`** (19-11-2026): `python3 scripts/traduccion-en/build_en.py` desde la raíz del repo. Copia la estructura española entera y cambia solo los textos (memoria de traducción en `scripts/traduccion-en/*.json`; los textos nuevos se añaden a `fixes.json`, el script avisa de los que faltan). No edites `index-en.html` a mano: cambia `index.html` y vuelve a generarlo. Los textos del cuestionario, el comparador y el carrusel de «Estudiar en el extranjero» se traducen dentro de `js/extranjero.js` (`IL_TR`, solo con `<html lang="en">`); lo que recibe el equipo en el formulario sigue en español. Inglés británico, «you» para las familias, «pupils»/«programme».
 - `robots.txt` y `sitemap.xml` → indexación. Si cambia una URL pública o se añade una página, actualiza el sitemap.
 - `fonts/` → **Newsreader (titulares, redonda y cursiva) y Plus Jakarta Sans (texto e interfaz) autoalojadas** (WOFF2 variables, subconjuntos latin y latin-ext). Inter ya no se usa. No vuelvas a enlazar Google Fonts: ralentiza y transfiere la IP del visitante a Google (RGPD). Si **sustituyes el contenido** de una fuente, cámbiale el nombre (`_headers` las marca `immutable`: con el mismo nombre quien ya visitó la web seguiría viendo la antigua).
 - `css/styles.css` → todos los estilos. `js/main.js` → interacciones.
@@ -173,4 +174,9 @@ Publicación: Netlify usa `netlify.toml` (`publish = "web-publica"`). Si se sube
 
 - **«Crecemos con cada alumno»:** 7–11 añade «Estudiar en el extranjero»; 12–18 lleva todos los programas salvo «Campamentos de verano en Madrid» (extraescolar, verano en el extranjero y estudiar en el extranjero).
 - **«¿Qué programa os interesa?»:** «Campamentos de verano en Madrid» e «Inglés extraescolar en el colegio» abren su página y bajan directamente a su bloque de contacto (`data-jump-to`: `#camp-reserva` y `#extraescolar-contacto`; el extraescolar no tiene formulario, su contacto es el correo). `main.js?v=64`.
+- **Segunda ronda (17-11-2026, tarde):**
+  - «Un programa para cada momento» en dos grupos con su línea de color: **En el extranjero** (marino) y **En Madrid** (bosque). `.svc-index--split` > `.svc-grp` > `.svc-grp-cards`; la posición de cada foto va por `data-service`, no por `nth-child`.
+  - «Año o trimestre escolar en el extranjero» en «¿Qué programa os interesa?» y los «Pedir orientación» de la portada con `data-advise="extranjero"` ya no abren la consulta larga: llevan al cuestionario de su página (`goToExtQuiz()`; `#ext-encaje`). «Ayudadme a elegir» y «Campamentos de verano en el extranjero» siguen con la consulta de la portada.
+  - Página «Estudiar en el extranjero»: fuera «¿Internado o familia anfitriona?»; el cuestionario va justo debajo de las fotos (orden: destinos, guía, comparar, experiencia, cuestionario, cómo os ayudamos, preguntas); preguntas frecuentes en dos columnas (`.ext-faq--2`); fotos del carrusel a 420 × 315 px con las flechas debajo, junto a «1 / 13».
+  - Versiones: `styles.css?v=160`, `extranjero.css?v=13`, `main.js?v=66`.
 
