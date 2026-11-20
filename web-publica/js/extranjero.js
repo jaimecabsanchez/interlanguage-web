@@ -288,6 +288,15 @@ function IL_T(s){ return IL_TR[s] || s; }
     if (!xv) return;
     var its = $$('.xv-it', xv), n = its.length, cur = 0, tabs = $$('.xv-tab', root), num = $('#xvN');
     var cats = its.map(function(it){ var s = $('figcaption span', it); return s ? s.textContent : ''; });
+    /* barra de abajo: un tramo por foto, se puede pulsar */
+    var bar = $('#xvBar'), segs = [];
+    if (bar) its.forEach(function(it, i){
+      var cap = $('figcaption', it), sp = cap && $('span', cap), s = document.createElement('button');
+      var name = cap ? cap.textContent.replace(sp ? sp.textContent : '', '').replace(/\s+/g, ' ').trim() : '';
+      s.type = 'button'; s.setAttribute('aria-label', (i + 1) + ' / ' + n + (name ? ': ' + name : ''));
+      s.addEventListener('click', function(){ go(i); });
+      bar.appendChild(s); segs.push(s);
+    });
     function draw(){
       its.forEach(function(it, i){
         var o = ((i - cur) % n + n) % n; if (o > n / 2) o -= n;
@@ -298,6 +307,7 @@ function IL_T(s){ return IL_TR[s] || s; }
         var b = $('.ph-open', it); if (b) b.tabIndex = o === 0 ? 0 : -1;
       });
       if (num) num.textContent = cur + 1;
+      segs.forEach(function(sg, i){ sg.setAttribute('aria-current', i === cur ? 'true' : 'false'); });
       tabs.forEach(function(t){ t.setAttribute('aria-current', t.textContent === cats[cur] ? 'true' : 'false'); });
     }
     function go(i){ cur = ((i % n) + n) % n; draw(); }
@@ -333,6 +343,15 @@ function IL_T(s){ return IL_TR[s] || s; }
       if (it && !it.classList.contains('is-on')) { e.preventDefault(); e.stopPropagation(); go(+it.getAttribute('data-n')); }
     }, true);
     xv.addEventListener('dragstart', function(e){ e.preventDefault(); });
+    /* trackpad: deslizar con dos dedos hacia los lados también pasa las fotos */
+    var acc = 0, lock = 0;
+    xv.addEventListener('wheel', function(e){
+      if (Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return;
+      e.preventDefault();
+      if (Date.now() < lock) return;
+      acc += e.deltaX;
+      if (Math.abs(acc) > 40) { go(cur + (acc > 0 ? 1 : -1)); acc = 0; lock = Date.now() + 450; }
+    }, { passive: false });
     draw();
   })();
 
