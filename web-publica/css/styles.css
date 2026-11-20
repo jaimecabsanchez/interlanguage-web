@@ -45,7 +45,11 @@ picture{display:contents;}
   img,svg{display:block; max-width:100%;}
   a{color:inherit;}
   button{font-family:inherit; cursor:pointer; border:none;}
-  .container{max-width:1280px; margin:0 auto; padding:0 24px;}
+  .container{max-width:var(--site-w, 1280px); margin:0 auto; padding:0 24px;}
+  /* 20-11-2026: en pantallas muy anchas el contenido (menú incluido) se ensancha un poco para no dejar tanto blanco a los lados */
+  :root{--site-w:1280px;}
+  @media (min-width:1680px){ :root{--site-w:1440px;} }
+  @media (min-width:2200px){ :root{--site-w:1600px;} }
   h1,h2,h3,h4{font-family:var(--font-display); font-weight:600; color:var(--navy); line-height:1.1; letter-spacing:-0.012em; word-spacing:.04em; text-wrap:balance;}
   p, li, dd, summary{text-wrap:pretty;}   /* sin palabras sueltas en la última línea (donde el navegador lo admite) */
   h1 em, h2 em{font-style:italic; font-weight:500;}
@@ -64,7 +68,7 @@ picture{display:contents;}
   /* ---------- NAVBAR ---------- */
   header.site{position:sticky; top:0; z-index:200; background:#fff; border-bottom:3px solid var(--accent); transition:box-shadow .25s ease;}   /* cabecera blanca con línea de acento (dirección P) */
   header.site.is-scrolled{box-shadow:var(--shadow-2);}
-  .nav{display:flex; align-items:center; justify-content:space-between; padding:12.5px 24px; max-width:1280px; margin:0 auto;}
+  .nav{display:flex; align-items:center; justify-content:space-between; padding:12.5px 24px; max-width:var(--site-w, 1280px); margin:0 auto;}
   .brand-logo{height:65px; width:auto;}   /* 05-11-2026: +12 % (antes 58 px); el alto de la cabecera sigue en 93 px porque el aire vertical de .nav baja de 16 a 12,5 px */   /* PNG recortado (logo-3): el texto del logo ocupa todo el alto; antes 58 px eran solo ~31 px de logo visible */
   .nav-links{display:flex; gap:24px; font-weight:700; font-size:.9rem; align-items:center;}
   .nav-links a{text-decoration:none; color:var(--navy); opacity:.92; transition:opacity .2s;}
@@ -82,7 +86,7 @@ picture{display:contents;}
     transform:translateY(100%); transition:transform .35s ease;
   }
   .sticky-cta.show{transform:translateY(0);}
-  .sticky-cta-inner{max-width:1280px; margin:0 auto; padding:14px 24px; display:flex; align-items:center; justify-content:space-between; gap:20px;}
+  .sticky-cta-inner{max-width:var(--site-w, 1280px); margin:0 auto; padding:14px 24px; display:flex; align-items:center; justify-content:space-between; gap:20px;}
   .sticky-cta-text{color:#fff; font-size:.95rem;}
   .sticky-cta-text strong{font-weight:700;}
   .sticky-cta-btn{text-decoration:none; background:var(--ivory); color:var(--navy); padding:11px 24px; border-radius:var(--r-btn); font-weight:700; font-size:.9rem; white-space:nowrap; transition:transform .15s ease;}
@@ -753,7 +757,7 @@ picture{display:contents;}
 
   /* ---------- CAMPAMENTOS: hero combinado ---------- */
   .camp-hero{padding:44px 0 56px; background:linear-gradient(180deg, var(--ivory) 0%, var(--stone) 100%); border-bottom:1px solid var(--line);}
-  .camp-hero .container{max-width:1280px;}
+  .camp-hero .container{max-width:var(--site-w, 1280px);}
   .camp-hero-grid{display:grid; grid-template-columns:1.05fr .95fr; gap:48px; align-items:center;}
   @media (max-width:900px){ .camp-hero-grid{grid-template-columns:1fr; gap:32px;} }
   .camp-season-note{font-size:.875rem; line-height:1.55; color:var(--ink-soft); max-width:58ch; margin:4px 0 18px; padding-left:14px; border-left:2px solid var(--accent);}
@@ -1548,7 +1552,7 @@ picture{display:contents;}
   .skip-link{position:absolute; left:12px; top:-60px; z-index:2000; background:var(--navy); color:#fff; padding:10px 16px; border-radius:0 0 10px 10px; font-weight:700; text-decoration:none; transition:top .18s ease;}
   .skip-link:focus{top:0;}
   #main{outline:none;}
-  .nav--wide{max-width:1280px; padding-left:24px; padding-right:24px;}
+  .nav--wide{max-width:var(--site-w, 1280px); padding-left:24px; padding-right:24px;}
 
   /* botón pausa/reproducción del carrusel del hero (WCAG 2.2.2) */
 
