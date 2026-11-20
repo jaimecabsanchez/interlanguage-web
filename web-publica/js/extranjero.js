@@ -807,3 +807,50 @@ function IL_T(s){ return IL_TR[s] || s; }
   window.ilExtQuiz = { reset: function(){ forget(); A = { edad: [], objetivos: [], estancia: [], destinos: [], duracion: [] }; I = []; C = { nombre: '', email: '', telefono: '', inicio: '', comentarios: '', privacidad: false }; step = 0; sent = false; after = ''; draw(false); } };
   draw(false);
 })();
+
+/* Índice «En esta página» (21-11-2026): marca la sección en la que estáis (aria-current) y, en móvil,
+   desliza la fila para que su enlace quede a la vista. El desplazamiento suave al pulsar ya lo da la web (respeta «Reducir movimiento»). */
+(function(){
+  var toc = document.querySelector('.ext-toc');
+  if (!toc) return;
+  var list = toc.querySelector('.ext-toc-list');
+  var links = Array.prototype.slice.call(toc.querySelectorAll('a[href^="#"]'));
+  var secs = links.map(function(a){ return document.getElementById(a.getAttribute('href').slice(1)); });
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var cur = -2, queued = false;
+  function show(i){
+    if (!list || list.scrollWidth <= list.clientWidth + 1) return;
+    var lr = list.getBoundingClientRect(), ar = links[i].getBoundingClientRect();
+    var x = list.scrollLeft + (ar.left - lr.left) - (list.clientWidth - ar.width) / 2;
+    list.scrollTo({ left: Math.max(0, x), behavior: reduce ? 'auto' : 'smooth' });
+  }
+  function spy(){
+    queued = false;
+    if (toc.offsetParent === null) return;   // la página no está a la vista
+    var line = toc.getBoundingClientRect().bottom + Math.min(window.innerHeight * 0.3, 240);
+    var i = -1;
+    secs.forEach(function(s, k){ if (s && s.getClientRects().length && s.getBoundingClientRect().top <= line) i = k; });
+    if (i === cur) return;
+    cur = i;
+    links.forEach(function(a, k){ if (k === i) a.setAttribute('aria-current', 'location'); else a.removeAttribute('aria-current'); });
+    if (i >= 0) show(i);
+  }
+  function queue(){ if (!queued){ queued = true; requestAnimationFrame(spy); } }
+  window.addEventListener('scroll', queue, { passive: true });
+  window.addEventListener('resize', queue, { passive: true });
+  document.addEventListener('il:navigation', function(){ cur = -2; queue(); });
+  spy();
+})();
+
+/* Aparición discreta de los encabezados de sección al llegar a ellos. Sin IntersectionObserver o con «Reducir movimiento», todo se ve desde el principio. */
+(function(){
+  if (!('IntersectionObserver' in window)) return;
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var V = '#view-service-extranjero .x2 ';
+  var els = document.querySelectorAll([V + '.sec-head', V + '.xpx-title', V + '.qz-head', V + '.help', V + '.ppl', V + '.xcta-in'].join(','));
+  if (!els.length) return;
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){ if (e.isIntersecting){ e.target.classList.add('is-in'); io.unobserve(e.target); } });
+  }, { rootMargin: '0px 0px -8% 0px' });
+  els.forEach(function(el){ el.classList.add('x-rv'); io.observe(el); });
+})();

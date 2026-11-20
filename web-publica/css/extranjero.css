@@ -233,92 +233,133 @@
 .x2 .tile .thumb .ic2{background:transparent;}
 .x2 .tile .lt{display:grid; place-items:center; width:34px; height:34px; border:1.5px solid var(--field-line); border-radius:6px; font:600 1.125rem/1 var(--font-display); color:var(--navy); transition:all .2s ease;}
 .x2 .tile[aria-pressed="true"] .lt{background:var(--navy); border-color:var(--navy); color:var(--white);}
-/* ---------- CABECERA (20-11-2026): un solo bloque, como la portada: foto a todo el ancho con el texto encima, sobre un velo marino de izquierda a derecha ---------- */
-.x2 .hx{--hx-pad:max(var(--gut), calc((100vw - var(--wrap)) / 2 + var(--gut))); background:var(--white);}   /* --hx-pad: dónde empieza el texto */
+/* ---------- CABECERA (21-11-2026) ----------
+   Foto a todo el ancho. El velo marino solo oscurece la izquierda, bajo el texto, y se desvanece antes de llegar a los alumnos:
+   la derecha conserva su luz y sus colores. Todo el texto comparte una línea vertical (--hx-pad, la misma que el resto de la página).
+   Título en blanco, subtítulo en cursiva marfil (--stone), un solo botón y, debajo, los destinos como enlaces discretos. */
+.x2 .hx{--hx-pad:max(var(--gut), calc((100vw - var(--wrap)) / 2 + var(--gut))); --hx-col:640px; background:var(--white);}
 .x2 .hx-in{position:relative; isolation:isolate; overflow:hidden; display:flex; align-items:center; background:var(--navy); color:var(--white);
-  min-height:clamp(460px, min(36vw, calc(100svh - var(--header-h, 93px) - 156px)), 860px);}   /* crece con el ancho (la foto no queda como una tira) y deja ver debajo los datos y el índice */
+  min-height:clamp(500px, min(41vw, calc(100svh - var(--header-h, 93px) - 150px)), 820px);}   /* proporción panorámica; debajo se ven los datos y el índice */
 .x2 .hx-photo{position:absolute; inset:0; z-index:-1; background:var(--navy);}
-.x2 .hx-photo img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:70% 60%;}
-.x2 .hx-photo::after{content:""; position:absolute; inset:0; background:linear-gradient(90deg,   /* velo marino sutil que sigue al texto (en pantallas anchas el texto no empieza en el borde) */
-  color-mix(in srgb, var(--navy) 48%, transparent) 0, color-mix(in srgb, var(--navy) 64%, transparent) var(--hx-pad),
-  color-mix(in srgb, var(--navy) 58%, transparent) calc(var(--hx-pad) + 380px), color-mix(in srgb, var(--navy) 38%, transparent) calc(var(--hx-pad) + 640px),
-  color-mix(in srgb, var(--navy) 12%, transparent) calc(var(--hx-pad) + 860px), transparent calc(var(--hx-pad) + 1060px));}
-.x2 .hx-copy{width:100%; max-width:var(--wrap); margin-inline:auto; padding:clamp(40px,5vw,60px) var(--gut); display:flex; flex-direction:column;
-  text-shadow:0 1px 3px color-mix(in srgb, var(--navy) 45%, transparent), 0 2px 24px color-mix(in srgb, var(--navy) 55%, transparent);}
-.x2 .hx-copy > *{max-width:620px;}
-.x2 .hx-back{align-self:flex-start; margin:-8px 0 14px; padding:6px 0; font-size:.875rem; font-weight:600; color:color-mix(in srgb, var(--white) 88%, transparent); text-decoration:none;}
-.x2 .hx .eyebrow{color:var(--accent-soft);}
-.x2 .hx h1{font-size:clamp(2.4rem, 3.7vw, 3.3rem); line-height:1.06; letter-spacing:-.008em; margin-top:12px; color:var(--ivory);}
-.x2 .hx-l1{white-space:nowrap;}
-.x2 .hx h1 em{display:block; font-style:italic; font-weight:500; color:var(--accent-soft);}
-.x2 .hx-lead{max-width:31em; margin-top:18px; font-size:1.125rem; line-height:1.6; font-weight:500; color:var(--white);}
-.x2 .hx-acts{display:flex; flex-wrap:wrap; align-items:center; gap:14px 28px; margin-top:28px;}
-.x2 .hx-cta{gap:10px; min-height:52px; padding:14px 26px; border-radius:6px; text-shadow:none; transition:background-color .2s ease;}
-.x2 .hx-cta .ic{width:18px; height:18px; transition:transform .25s cubic-bezier(.2,.7,.2,1);}
-.x2 .hx-cta:focus-visible,.x2 .hx-back:focus-visible,.x2 .hx-dest a:focus-visible{outline:2px solid var(--accent-soft); outline-offset:3px;}
-.x2 .hx-dest{display:flex; flex-wrap:wrap; align-items:baseline; gap:6px 14px; margin-top:32px; padding-top:16px; border-top:1px solid color-mix(in srgb, var(--white) 24%, transparent);}
-.x2 .hx-dest-l{font-size:.6875rem; font-weight:800; letter-spacing:.14em; text-transform:uppercase; color:color-mix(in srgb, var(--white) 86%, transparent);}
-.x2 .hx-dest ul{display:flex; flex-wrap:wrap; list-style:none; margin:0; padding:0;}
-.x2 .hx-dest li{display:flex; align-items:baseline;}
-.x2 .hx-dest li + li::before{content:""; align-self:center; width:1px; height:12px; margin:0 12px; background:color-mix(in srgb, var(--white) 38%, transparent);}
-.x2 .hx-dest a{font-size:.9063rem; font-weight:600; color:var(--white); text-decoration:underline; text-decoration-color:transparent; text-underline-offset:4px; transition:text-decoration-color .2s ease;}
+.x2 .hx-photo img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:68% 62%;}
+.x2 .hx-photo::after{content:""; position:absolute; inset:0; background:linear-gradient(90deg,
+  color-mix(in srgb, var(--navy) 76%, transparent) 0,
+  color-mix(in srgb, var(--navy) 70%, transparent) var(--hx-pad),
+  color-mix(in srgb, var(--navy) 62%, transparent) calc(var(--hx-pad) + 300px),
+  color-mix(in srgb, var(--navy) 46%, transparent) calc(var(--hx-pad) + 500px),
+  color-mix(in srgb, var(--navy) 24%, transparent) calc(var(--hx-pad) + 670px),
+  color-mix(in srgb, var(--navy) 8%, transparent) calc(var(--hx-pad) + 800px),
+  transparent calc(var(--hx-pad) + 910px));}
+.x2 .hx-copy{width:100%; max-width:var(--wrap); margin-inline:auto; padding:clamp(44px,5vw,72px) var(--gut); display:flex; flex-direction:column; align-items:flex-start;
+  text-shadow:0 1px 2px color-mix(in srgb, var(--navy) 40%, transparent), 0 2px 22px color-mix(in srgb, var(--navy) 50%, transparent);}
+.x2 .hx-copy > *{max-width:var(--hx-col);}
+/* «Volver a servicios»: pequeño y tenue, no compite con el título */
+.x2 .hx-back{display:inline-flex; align-items:center; gap:7px; margin:0 0 clamp(22px,2.6vw,36px); padding:6px 0; font-size:.8125rem; font-weight:600; letter-spacing:.01em; color:color-mix(in srgb, var(--white) 74%, transparent); text-decoration:none; transition:color .2s ease;}
+.x2 .hx-back .ic{width:15px; height:15px; stroke-width:2; transition:transform .25s cubic-bezier(.2,.7,.2,1);}
+.x2 .hx h1{margin:0; font-size:clamp(2.6rem, 3.95vw, 3.75rem); line-height:1.02; letter-spacing:-.015em; color:var(--white); white-space:nowrap;}
+.x2 .hx-sub{margin-top:clamp(6px,.6vw,10px); font:italic 400 clamp(1.6rem, 2.35vw, 2.25rem)/1.18 var(--font-display); letter-spacing:-.005em; color:var(--stone); text-wrap:balance;}
+.x2 .hx-lead{max-width:33em; margin-top:clamp(18px,1.8vw,24px); font-size:clamp(1.0625rem, 1.2vw, 1.1875rem); line-height:1.6; font-weight:400; color:color-mix(in srgb, var(--white) 95%, transparent);}
+/* botón: burdeos; al pasar, más oscuro y la flecha avanza; al pulsar, baja un píxel */
+.x2 .hx-acts{display:flex; flex-direction:column; align-items:flex-start; gap:12px; margin-top:clamp(26px,2.6vw,34px);}
+.x2 .hx-cta{gap:12px; min-height:54px; padding:15px 24px 15px 28px; border-radius:var(--r-btn); font-size:1.0625rem; font-weight:700; text-shadow:none; transition:background-color .2s ease, transform .15s ease;}
+.x2 .hx-cta .ic{width:18px; height:18px; stroke-width:2; transition:transform .25s cubic-bezier(.2,.7,.2,1);}
+.x2 .hx-cta:active{transform:translateY(1px); background:var(--accent-dark);}
+.x2 .hx-note{font-size:.8125rem; line-height:1.45; color:color-mix(in srgb, var(--white) 80%, transparent);}
+.x2 .hx .hx-cta:focus-visible,.x2 .hx-back:focus-visible,.x2 .hx-dest a:focus-visible{outline:2px solid var(--white); outline-offset:3px; border-radius:2px;}
+/* destinos: una línea editorial, en la letra de los títulos, con filetes finos; al pasar, se subraya y asoma una flecha */
+.x2 .hx-dest{display:flex; flex-wrap:wrap; align-items:center; gap:4px 24px; width:100%; margin-top:clamp(30px,3.2vw,44px); padding-top:14px; border-top:1px solid color-mix(in srgb, var(--white) 22%, transparent);}
+.x2 .hx-dest-l{font-size:.6875rem; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:color-mix(in srgb, var(--white) 72%, transparent);}
+.x2 .hx-dest ul{display:flex; flex-wrap:wrap; align-items:center; list-style:none; margin:0; padding:0;}
+.x2 .hx-dest li{display:flex; align-items:center;}
+.x2 .hx-dest li + li::before{content:""; width:1px; height:14px; margin:0 24px 0 22px; background:color-mix(in srgb, var(--white) 30%, transparent);}
+.x2 .hx-dest a{position:relative; display:inline-flex; align-items:center; min-height:44px; font:500 1.1875rem/1.2 var(--font-display); color:var(--white); text-decoration:none;}
+.x2 .hx-dest a::after{content:""; position:absolute; left:0; right:0; bottom:9px; height:1px; background:currentColor; transform:scaleX(0); transform-origin:left; transition:transform .3s cubic-bezier(.2,.7,.2,1);}
+.x2 .hx-dest a .ic{position:absolute; right:-19px; width:14px; height:14px; stroke-width:2; opacity:0; transform:translateX(-5px); transition:opacity .2s ease, transform .25s cubic-bezier(.2,.7,.2,1);}
 @media (hover:hover){
-  .x2 .hx-cta:hover .ic{transform:translateX(3px);}
+  .x2 .hx-cta:hover .ic{transform:translateX(4px);}
   .x2 .hx-back:hover{color:var(--white);}
-  .x2 .hx-dest a:hover{text-decoration-color:var(--accent-soft);}
+  .x2 .hx-back:hover .ic{transform:translateX(-3px);}
+  .x2 .hx-dest a:hover::after{transform:scaleX(1);}
+  .x2 .hx-dest a:hover .ic{opacity:.85; transform:none;}
 }
-/* datos clave: una fila blanca justo debajo */
+.x2 .hx-dest a:focus-visible::after{transform:scaleX(1);}
+/* datos clave: una sola franja blanca bajo la foto, con filetes entre columnas (no son tarjetas) */
 .x2 .hx-facts{border-bottom:1px solid var(--line); background:var(--white);}
 .x2 .hx-facts ul{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); list-style:none; margin:0; padding:0;}
-.x2 .hx-facts li{display:flex; gap:14px; align-items:flex-start; padding:24px 24px 22px; position:relative;}
-.x2 .hx-facts li + li::before{content:""; position:absolute; left:0; top:24px; bottom:22px; width:1px; background:var(--line);}
+/* cada dato: icono y título en la misma línea; la frase debajo, a todo el ancho de la columna (así cabe en una línea) */
+.x2 .hx-facts li{position:relative; display:grid; grid-template-columns:auto minmax(0,1fr); align-items:center; column-gap:10px; row-gap:5px; padding:26px 24px 25px;}
+.x2 .hx-facts li > div{display:contents;}
 .x2 .hx-facts li:first-child{padding-left:0;}
-.x2 .hx-facts .ic{width:24px; height:24px; margin-top:1px; color:var(--accent); stroke-width:1.35;}
-.x2 .hx-facts b{display:block; font:600 1.0625rem/1.25 var(--font-display); color:var(--navy);}
-.x2 .hx-facts small{display:block; margin-top:4px; font-size:.8125rem; line-height:1.45; color:var(--ink-soft);}
+.x2 .hx-facts li:last-child{padding-right:0;}
+.x2 .hx-facts li + li::before{content:""; position:absolute; left:0; top:26px; bottom:25px; width:1px; background:var(--line);}
+.x2 .hx-facts .ic{width:20px; height:20px; color:var(--accent); stroke-width:1.6;}
+.x2 .hx-facts b{font:600 1.0625rem/1.3 var(--font-display); color:var(--navy);}
+.x2 .hx-facts small{grid-column:1 / -1; font-size:.8125rem; line-height:1.45; color:var(--ink-soft);}
+/* pantallas medianas: la foto se desplaza para que los alumnos queden a la derecha del texto */
 @media (max-width:1100px) and (min-width:861px){
-  .x2 .hx-photo img{object-position:76% 60%;}
+  .x2 .hx{--hx-col:560px;}
+  .x2 .hx-in{min-height:clamp(480px, 52vw, 560px);}
+  .x2 .hx-photo img{object-position:78% 62%;}
   .x2 .hx-photo::after{background:linear-gradient(90deg,
-    color-mix(in srgb, var(--navy) 72%, transparent) 0%, color-mix(in srgb, var(--navy) 62%, transparent) 40%,
-    color-mix(in srgb, var(--navy) 32%, transparent) 60%, transparent 85%);}
-  .x2 .hx-copy > *{max-width:540px;}
+    color-mix(in srgb, var(--navy) 76%, transparent) 0%, color-mix(in srgb, var(--navy) 68%, transparent) 34%,
+    color-mix(in srgb, var(--navy) 46%, transparent) 50%, color-mix(in srgb, var(--navy) 18%, transparent) 64%, transparent 78%);}
+  .x2 .hx h1{font-size:clamp(2.5rem, 4.7vw, 3rem);}
+  .x2 .hx-sub{font-size:clamp(1.5rem, 2.8vw, 1.875rem);}
   .x2 .hx-lead{font-size:1.0625rem;}
-  .x2 .hx-facts li{padding:20px 16px 18px;}
-  .x2 .hx-facts li:first-child{padding-left:0;}
+  .x2 .hx-dest li + li::before{margin:0 20px 0 18px;}
+  .x2 .hx-dest a{font-size:1.125rem;}
 }
-/* tableta vertical y móvil: la foto arriba se funde con el marino y el texto sigue debajo, en el mismo bloque */
-@media (max-width:860px){
-  .x2 .hx-in{display:flex; flex-direction:column; align-items:stretch; min-height:0;}
-  .x2 .hx-photo{position:relative; z-index:0; order:-1; aspect-ratio:16/9;}
-  .x2 .hx-photo img{object-position:80% 55%;}
-  .x2 .hx-photo::after{background:linear-gradient(180deg, transparent 50%, color-mix(in srgb, var(--navy) 70%, transparent) 78%, var(--navy) 100%);}
-  .x2 .hx-copy{position:relative; z-index:1; margin-top:-28px; padding:0 var(--gut) 34px; text-shadow:none;}
-  .x2 .hx-copy > *{max-width:640px;}
-  .x2 .hx h1{font-size:clamp(2.1rem, 5.6vw, 2.9rem);}
-  .x2 .hx-l1{white-space:normal;}
+/* hasta 1100 px: los cuatro datos en dos filas, para que ningún título se parta */
+@media (max-width:1100px){
   .x2 .hx-facts ul{grid-template-columns:repeat(2,minmax(0,1fr));}
-  .x2 .hx-facts li{padding:18px 16px;}
+  .x2 .hx-facts li,.x2 .hx-facts li:last-child{padding:20px 24px;}
   .x2 .hx-facts li:nth-child(odd){padding-left:0;}
   .x2 .hx-facts li:nth-child(odd)::before{display:none;}
   .x2 .hx-facts li:nth-child(n+3){border-top:1px solid var(--line);}
-  .x2 .hx-facts li:nth-child(n+3)::before{top:18px;}
+  .x2 .hx-facts li:nth-child(n+3)::before{top:20px; bottom:20px;}
+}
+/* tableta vertical y móvil: la foto arriba (encuadre propio, centrado en los alumnos) se funde con el marino; el texto sigue debajo */
+@media (max-width:860px){
+  .x2 .hx{--hx-col:600px;}
+  .x2 .hx-in{flex-direction:column; align-items:stretch; min-height:0;}
+  .x2 .hx-photo{position:relative; z-index:0; order:-1; aspect-ratio:16/9;}
+  .x2 .hx-photo img{object-position:80% 64%;}
+  .x2 .hx-photo::after{background:linear-gradient(180deg, transparent 52%, color-mix(in srgb, var(--navy) 66%, transparent) 80%, var(--navy) 100%);}
+  .x2 .hx-copy{position:relative; z-index:1; margin-top:-30px; padding:0 var(--gut) 40px; text-shadow:none;}
+  .x2 .hx-back{margin-bottom:18px;}
+  .x2 .hx h1{font-size:clamp(2.25rem, 6.4vw, 3rem); line-height:1.06; white-space:normal; text-wrap:balance;}
+  .x2 .hx-sub{font-size:clamp(1.5rem, 4vw, 1.875rem);}
+  .x2 .hx-dest{display:block; padding-top:16px;}
+  .x2 .hx-dest-l{display:block; margin-bottom:4px;}
+  .x2 .hx-dest ul{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); column-gap:24px;}
+  .x2 .hx-dest li{border-bottom:1px solid color-mix(in srgb, var(--white) 14%, transparent);}
+  .x2 .hx-dest li + li::before{display:none;}
+  .x2 .hx-dest a{justify-content:space-between; width:100%; min-height:50px; font-size:1.125rem;}
+  .x2 .hx-dest a::after{display:none;}
+  .x2 .hx-dest a .ic{position:static; opacity:.6; transform:none;}
+  .x2 .hx-facts li,.x2 .hx-facts li:last-child{padding:18px 18px;}
+  .x2 .hx-facts li:nth-child(odd){padding-left:0;}
 }
 @media (max-width:560px){
   .x2 .hx-photo{aspect-ratio:4/3;}
-  .x2 .hx-copy{margin-top:-22px; padding-bottom:28px;}
-  .x2 .hx h1{font-size:2.05rem; line-height:1.1; margin-top:10px;}
-  .x2 .hx-lead{margin-top:14px; font-size:1rem; line-height:1.55;}
-  .x2 .hx-acts{margin-top:22px; gap:14px 20px;}
-  .x2 .hx-cta{flex:1 1 100%; justify-content:center;}
-  .x2 .hx-dest{margin-top:24px; padding-top:14px;}
-  .x2 .hx-dest-l{flex-basis:100%;}
-  .x2 .hx-dest ul{gap:4px 18px;}
-  .x2 .hx-dest li + li::before{display:none;}
-  .x2 .hx-facts li{gap:10px; padding:14px 10px;}
-  .x2 .hx-facts li:nth-child(odd){padding-left:0;}
-  .x2 .hx-facts .ic{width:20px; height:20px;}
-  .x2 .hx-facts b{font-size:.9688rem;}
-  .x2 .hx-facts small{font-size:.75rem;}
+  .x2 .hx-photo img{object-position:86% 66%;}
+  .x2 .hx-copy{margin-top:-26px; padding-bottom:32px;}
+  .x2 .hx-back{margin-bottom:14px;}
+  .x2 .hx h1{font-size:2.25rem;}
+  .x2 .hx-sub{margin-top:6px; font-size:1.5rem; line-height:1.2;}
+  .x2 .hx-lead{margin-top:16px; font-size:1rem; line-height:1.6;}
+  .x2 .hx-acts{align-items:stretch; margin-top:24px; gap:10px;}
+  .x2 .hx-cta{justify-content:center;}
+  .x2 .hx-dest{margin-top:30px;}
+  .x2 .hx-dest ul{column-gap:18px;}
+  .x2 .hx-dest a{min-height:48px; font-size:1.0625rem;}
+  /* datos: una lista, una fila por dato */
+  .x2 .hx-facts ul{grid-template-columns:1fr;}
+  .x2 .hx-facts li,.x2 .hx-facts li:nth-child(odd),.x2 .hx-facts li:last-child{column-gap:14px; row-gap:2px; padding:15px 0;}
+  .x2 .hx-facts li + li{border-top:1px solid var(--line);}
+  .x2 .hx-facts li::before,.x2 .hx-facts li + li::before,.x2 .hx-facts li:nth-child(n+3)::before{display:none;}
+  .x2 .hx-facts .ic{grid-row:1 / span 2; align-self:start; margin-top:2px;}
+  .x2 .hx-facts small{grid-column:2;}
 }
 .x2 .dcard{scroll-margin-top:150px;}
 /* «Así se vive la experiencia»: fondo marfil (versión C2) */
@@ -646,3 +687,47 @@
 .x2 .tile .thumb--flag, .x2 .tiles--5 .tile .thumb--ic{background:var(--stone);}
 .x2 .tile .thumb--flag .flg{display:block; width:100%; height:100%; filter:saturate(.88);}
 .x2 .tile.is-thumb .tick{z-index:2;}
+
+/* ---------- Índice «En esta página» (21-11-2026) ----------
+   Fijo bajo el menú; marca la sección en la que estáis (aria-current, desde js/extranjero.js). Sin flechas: parecían menús desplegables. */
+.ext-toc-in{gap:32px;}
+.ext-toc-t{font-size:.6875rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-soft);}
+.ext-toc-t::after{content:none;}
+.ext-toc-list{gap:30px;}
+.ext-toc-list a{min-height:54px; font-size:.9063rem; font-weight:600; color:var(--ink-soft);}
+.ext-toc-list a::after{content:none;}
+.ext-toc-list a[aria-current]{color:var(--navy); border-bottom-color:var(--accent);}
+@media (hover:hover){
+  .ext-toc-list a:hover{color:var(--navy); border-bottom-color:color-mix(in srgb, var(--navy) 28%, transparent);}
+  .ext-toc-list a[aria-current]:hover{border-bottom-color:var(--accent);}
+}
+@media (max-width:760px){.ext-toc-list{gap:24px;} .ext-toc-list a{min-height:50px; font-size:.875rem;}}
+
+/* ---------- Coherencia del resto de la página (21-11-2026) ---------- */
+/* pasos: número editorial en burdeos, sin círculo */
+.x2 .help li::before{content:counter(s, decimal-leading-zero); display:block; width:auto; height:auto; margin-bottom:14px; border-radius:0; background:none; color:var(--accent); font:500 1.625rem/1 var(--font-display); font-variant-numeric:tabular-nums;}
+@media (max-width:520px){.x2 .help li,.x2 .help li + li{grid-template-columns:40px minmax(0,1fr);} .x2 .help li::before{margin:2px 0 0; font-size:1.375rem;}}
+/* presupuesto: una línea propia bajo los pasos */
+.x2 .help-budget{max-width:60em; margin-top:24px; font-size:.9375rem; line-height:1.6; color:var(--ink-soft);}
+.x2 .help-budget b{color:var(--navy);}
+/* equipo: subtítulo (h3) con el mismo aspecto que antes */
+.x2 .ppl h3{font-size:clamp(1.6rem,2.6vw,2rem);}
+
+/* cierre: la misma invitación que en la cabecera, sobre marino */
+.x2 .xcta{padding-block:clamp(56px,6vw,84px); background:var(--navy); color:var(--white);}
+.x2 .xcta-in{display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:28px 56px;}
+.x2 .xcta-copy{max-width:36em;}
+.x2 .xcta h2{font-size:clamp(2rem,3.4vw,2.75rem); line-height:1.08; color:var(--white); text-wrap:balance;}
+.x2 .xcta-copy p{margin-top:12px; font-size:1.0625rem; line-height:1.6; color:color-mix(in srgb, var(--white) 82%, transparent);}
+.x2 .xcta-acts{display:flex; flex-direction:column; align-items:flex-start; gap:12px;}
+.x2 .xcta-acts p{font-size:.875rem; color:color-mix(in srgb, var(--white) 76%, transparent);}
+.x2 .xcta-acts p a{color:var(--white); font-weight:600; text-decoration:underline; text-decoration-color:color-mix(in srgb, var(--white) 45%, transparent); text-underline-offset:3px; transition:text-decoration-color .2s ease;}
+.x2 .xcta .hx-cta:focus-visible,.x2 .xcta-acts p a:focus-visible{outline:2px solid var(--white); outline-offset:3px;}
+@media (hover:hover){.x2 .xcta .hx-cta:hover .ic{transform:translateX(4px);} .x2 .xcta-acts p a:hover{text-decoration-color:var(--white);}}
+@media (max-width:560px){.x2 .xcta-acts{align-items:stretch; width:100%;} .x2 .xcta .hx-cta{justify-content:center;}}
+
+/* aparición discreta de los encabezados al llegar a ellos (solo si el sistema no pide reducir el movimiento; la clase la pone js/extranjero.js) */
+@media (prefers-reduced-motion:no-preference){
+  .x2 .x-rv{opacity:0; transform:translateY(14px); transition:opacity .6s ease, transform .7s cubic-bezier(.2,.7,.2,1);}
+  .x2 .x-rv.is-in{opacity:1; transform:none;}
+}
