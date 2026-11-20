@@ -638,8 +638,11 @@
   .x2 .ext-faq--2 .ext-faq-col + .ext-faq-col{border-top:0;}
 }
 
-/* Destinos: la bandera sustituye a la foto y llena toda la tarjeta, sin marcos ni sombras */
-.x2 .tile .thumb--flag{position:relative; background:var(--stone);}
-.x2 .tile .thumb--flag .flg{display:block; width:100%; height:100%; filter:saturate(.92);}
-.x2 .tile .thumb--flag::after{content:''; position:absolute; inset:0; border-radius:inherit; box-shadow:inset 0 0 0 1px rgba(22,41,74,.14); pointer-events:none;}
+/* Destinos (opción 11): la bandera sustituye a la foto, en un rectángulo 4:3 de esquinas muy redondeadas sobre tarjeta blanca */
+.x2 .tiles--5 .tile.is-thumb{padding:12px 12px 18px; gap:16px; background:var(--white);}
+.x2 .tiles--5 .tile.is-thumb[aria-pressed="true"]{background:var(--white);}
+.x2 .tiles--5 .tile.is-thumb b{padding-inline:6px;}
+.x2 .tiles--5 .tile .thumb--flag, .x2 .tiles--5 .tile .thumb--ic{aspect-ratio:4/3; border-radius:22px;}
+.x2 .tile .thumb--flag, .x2 .tiles--5 .tile .thumb--ic{background:var(--stone);}
+.x2 .tile .thumb--flag .flg{display:block; width:100%; height:100%; filter:saturate(.88);}
 .x2 .tile.is-thumb .tick{z-index:2;}
