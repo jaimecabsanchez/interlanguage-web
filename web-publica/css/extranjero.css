@@ -637,3 +637,7 @@
   .x2 .ext-faq--2{grid-template-columns:1fr;}
   .x2 .ext-faq--2 .ext-faq-col + .ext-faq-col{border-top:0;}
 }
+
+/* Banderas junto al nombre del destino (cuestionario) */
+.x2 .tile.is-thumb b{display:flex; align-items:center; gap:8px;}
+.x2 .tile .flg{flex:none; width:24px; height:16px; border-radius:2px; box-shadow:0 0 0 1px rgba(22,41,74,.18); display:block;}

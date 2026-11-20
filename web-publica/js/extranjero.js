@@ -416,6 +416,14 @@ function IL_T(s){ return IL_TR[s] || s; }
     { g: IL_T('Deporte'), o: [IL_T('Fútbol'), IL_T('Tenis'), 'Rugby', IL_T('Baloncesto'), IL_T('Natación'), IL_T('Otros deportes')] },
     { g: IL_T('Artes, comunicación y tecnología'), o: [IL_T('Música'), IL_T('Teatro e interpretación'), IL_T('Arte y creatividad'), IL_T('Hablar en público y comunicación'), IL_T('Tecnología y programación'), IL_T('Otros intereses')] }
   ];
+  /* banderas de los destinos (dibujos propios, sin imágenes externas) */
+  var FLAGS = {
+    uk: '<rect width="60" height="40" fill="#012169"/><path d="M0 0 60 40M60 0 0 40" stroke="#fff" stroke-width="8"/><path d="M0 0 60 40M60 0 0 40" stroke="#C8102E" stroke-width="3"/><path d="M30 0v40M0 20h60" stroke="#fff" stroke-width="12"/><path d="M30 0v40M0 20h60" stroke="#C8102E" stroke-width="7"/>',
+    ie: '<rect width="60" height="40" fill="#fff"/><rect width="20" height="40" fill="#169B62"/><rect x="40" width="20" height="40" fill="#FF883E"/>',
+    us: '<rect width="60" height="40" fill="#B22234"/><rect y="3.08" width="60" height="3.08" fill="#fff"/><rect y="9.23" width="60" height="3.08" fill="#fff"/><rect y="15.38" width="60" height="3.08" fill="#fff"/><rect y="21.54" width="60" height="3.08" fill="#fff"/><rect y="27.69" width="60" height="3.08" fill="#fff"/><rect y="33.85" width="60" height="3.08" fill="#fff"/><rect width="26" height="21.54" fill="#3C3B6E"/><circle cx="4" cy="4" r="1.2" fill="#fff"/><circle cx="10" cy="4" r="1.2" fill="#fff"/><circle cx="16" cy="4" r="1.2" fill="#fff"/><circle cx="22" cy="4" r="1.2" fill="#fff"/><circle cx="4" cy="10" r="1.2" fill="#fff"/><circle cx="10" cy="10" r="1.2" fill="#fff"/><circle cx="16" cy="10" r="1.2" fill="#fff"/><circle cx="22" cy="10" r="1.2" fill="#fff"/><circle cx="4" cy="16" r="1.2" fill="#fff"/><circle cx="10" cy="16" r="1.2" fill="#fff"/><circle cx="16" cy="16" r="1.2" fill="#fff"/><circle cx="22" cy="16" r="1.2" fill="#fff"/>',
+    ca: '<rect width="60" height="40" fill="#fff"/><rect width="15" height="40" fill="#D80621"/><rect x="45" width="15" height="40" fill="#D80621"/><path fill="#D80621" d="M30 6l2.6 5.5 2.9-1.5-.9 7.2 4.9-2.7-.9 2.8 3.4 1.7-4.4 4.4.8 2.2-7.4-1.4V33h-2v-8.8l-7.4 1.4.8-2.2-4.4-4.4 3.4-1.7-.9-2.8 4.9 2.7-.9-7.2 2.9 1.5z"/>'
+  };
+  var flag = function(k){ return FLAGS[k] ? '<svg class="flg" viewBox="0 0 60 40" aria-hidden="true" focusable="false">' + FLAGS[k] + '</svg>' : ''; };
   var Q = [
     { k: 'edad', label: IL_T('Edad al empezar'), t: IL_T('¿Qué edad tendrá vuestro hijo o hija al comenzar la experiencia?'), multi: false, cols: 4, o: [
       { v: IL_T('9–11 años'), big: '9–11' }, { v: IL_T('12–14 años'), big: '12–14' }, { v: IL_T('15–16 años'), big: '15–16' }, { v: IL_T('17–18 años'), big: '17–18' } ] },
@@ -425,8 +433,8 @@ function IL_T(s){ return IL_TR[s] || s; }
     { k: 'estancia', label: IL_T('Estancia'), t: IL_T('¿Cómo imagináis su estancia en el extranjero?'), multi: false, cols: 4, o: [
       { v: IL_T('En un internado'), ic: 'school' }, { v: IL_T('Con una familia anfitriona'), ic: 'house' }, { v: IL_T('Estamos abiertos a ambas opciones'), ic: 'both' }, { v: IL_T('Preferimos que nos orientéis'), ic: 'chat' } ] },
     { k: 'destinos', label: IL_T('Destinos'), t: IL_T('¿Qué destinos os interesan más?'), multi: true, cols: 5, o: [
-      { v: IL_T('Reino Unido'), img: 'uk-campus-480.webp' }, { v: IL_T('Irlanda'), img: 'ie-campus-480.webp' }, { v: IL_T('Estados Unidos'), img: 'us-campus-480.webp' },
-      { v: IL_T('Canadá'), img: 'ca-campus-480.webp' }, { v: IL_T('Estamos abiertos a diferentes destinos'), ic: 'globe', thumbIc: true, solo: true } ] },
+      { v: IL_T('Reino Unido'), img: 'uk-campus-480.webp', flag: 'uk' }, { v: IL_T('Irlanda'), img: 'ie-campus-480.webp', flag: 'ie' }, { v: IL_T('Estados Unidos'), img: 'us-campus-480.webp', flag: 'us' },
+      { v: IL_T('Canadá'), img: 'ca-campus-480.webp', flag: 'ca' }, { v: IL_T('Estamos abiertos a diferentes destinos'), ic: 'globe', thumbIc: true, solo: true } ] },
     { k: 'duracion', label: IL_T('Duración'), t: IL_T('¿Cuánto tiempo os gustaría que estudiara en el extranjero?'), multi: false, cols: 4, o: [
       { v: IL_T('Un trimestre'), seg: 1, cap: IL_T('1 de 3 trimestres') }, { v: IL_T('Dos trimestres'), seg: 2, cap: IL_T('2 de 3 trimestres') }, { v: IL_T('Un curso completo'), seg: 3, cap: IL_T('Los 3 trimestres') }, { v: IL_T('Todavía no lo sabemos'), seg: 0, cap: IL_T('Lo vemos juntos') } ] }
   ];
@@ -482,7 +490,7 @@ function IL_T(s){ return IL_TR[s] || s; }
   }
   function tile(q, o){
     var on = A[q.k].indexOf(o.v) >= 0, inner, cls = 'tile';
-    if (o.img) { inner = '<span class="thumb"><img src="' + IMG + o.img + '" alt="" loading="lazy" width="480" height="300"></span><b>' + o.v + '</b>' + (o.note ? '<small class="tnote">' + o.note + '</small>' : ''); cls += ' is-thumb'; }
+    if (o.img) { inner = '<span class="thumb"><img src="' + IMG + o.img + '" alt="" loading="lazy" width="480" height="300"></span><b>' + (o.flag ? flag(o.flag) : '') + o.v + '</b>' + (o.note ? '<small class="tnote">' + o.note + '</small>' : ''); cls += ' is-thumb'; }
     else if (o.thumbIc) { inner = '<span class="thumb thumb--ic">' + svg(o.ic) + '</span><b>' + o.v + '</b>'; cls += ' is-thumb'; }
     else if (o.big) { inner = '<span class="big">' + o.big + '</span><span class="sub">' + IL_T('años') + '</span>'; cls += ' is-age'; }
     else if (o.seg !== undefined) { inner = '<span class="tl' + (o.seg ? '' : ' tl--open') + '" aria-hidden="true">' + [1, 2, 3].map(function(n){ return '<i class="' + (n <= o.seg ? 'on' : '') + '"></i>'; }).join('') + '</span><b>' + o.v + '</b><small class="tnote">' + o.cap + '</small>'; cls += ' is-time'; }
