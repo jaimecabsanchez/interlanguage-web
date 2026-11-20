@@ -638,6 +638,7 @@
   .x2 .ext-faq--2 .ext-faq-col + .ext-faq-col{border-top:0;}
 }
 
-/* Banderas junto al nombre del destino (cuestionario) */
-.x2 .tile.is-thumb b{display:flex; align-items:center; gap:8px;}
-.x2 .tile .flg{flex:none; width:24px; height:16px; border-radius:2px; box-shadow:0 0 0 1px rgba(22,41,74,.18); display:block;}
+/* Destinos: la bandera sustituye a la foto. Proporción real, colores apagados y sombra suave sobre un fondo de piedra */
+.x2 .tile .thumb--flag{display:grid; place-items:center; background:var(--stone);}
+.x2 .tile .thumb--flag .flg{display:block; width:68%; height:auto; border-radius:3px; filter:saturate(.9); box-shadow:0 0 0 1px rgba(22,41,74,.14), 0 8px 18px -6px rgba(22,41,74,.28);}
+.x2 .tile[aria-pressed="true"] .thumb--flag{background:var(--white);}

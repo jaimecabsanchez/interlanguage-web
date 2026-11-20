@@ -168,7 +168,7 @@ Publicación: Netlify usa `netlify.toml` (`publish = "web-publica"`). Si se sube
 - **«Bajo consulta» fuera** de Estados Unidos y Canadá: tarjetas, cabecera, fichas, pestañas, tabla, comparador y cuestionario. En las fichas y pestañas se pone el alojamiento, igual que en Reino Unido e Irlanda. La tarjeta de Canadá de la portada dice «Idiomas y entornos para elegir». La versión EN sigue con «Options on request».
 - **Comparador:** dos paneles (`.cx`), cada uno con la foto y el color de su país; las etiquetas van dentro de cada panel; lo que coincide se marca «Igual en los dos».
 - **«Así se vive la experiencia», 17-11-2026 (sustituye a la composición editorial):** un solo carrusel centrado (`.xpx--cv` / `.xv`): foto activa en el centro y las vecinas asomando a ambos lados (más claras), da la vuelta; flechas, arrastrar con ratón, deslizar con el dedo, teclado y tocar una lateral para traerla. Arriba, Aprender · Convivir · Descubrir · Crecer para saltar (se marca el de la foto activa); debajo «1 / 13». Todas las fotos al mismo tamaño (3:2; 4:3 en móvil). Laboratorio la primera. Jaime irá pasando más fotos: se añaden a la misma fila, por capítulos (la lista `P` del visor va en el mismo orden que el HTML). Rechazados: composición editorial, Índice, filas por capítulo con fotos de tamaños distintos y carrusel por capítulo.
-- Versiones: `extranjero.css?v=18`, `extranjero.js?v=9` (las tarjetas de destino llevan bandera: dibujos propios en `FLAGS` de `js/extranjero.js`).
+- Versiones: `extranjero.css?v=19`, `extranjero.js?v=10` (en las tarjetas de destino la bandera sustituye a la foto: dibujos propios en `FLAGS` de `js/extranjero.js`).
 
 ## Home · ajustes del 17-11-2026
 
