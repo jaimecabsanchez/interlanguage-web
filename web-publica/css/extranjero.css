@@ -731,3 +731,30 @@
   .x2 .x-rv{opacity:0; transform:translateY(14px); transition:opacity .6s ease, transform .7s cubic-bezier(.2,.7,.2,1);}
   .x2 .x-rv.is-in{opacity:1; transform:none;}
 }
+
+/* ---------- Móvil · revisión del 22-11-2026 ---------- */
+/* iOS amplía la página al tocar un campo con letra de menos de 16 px */
+@media (max-width:700px){.x2 .cmp-sel select{font-size:1rem;}}
+/* textos mínimos de 12 px */
+.x2 .hx-dest-l{font-size:.75rem;}
+.x2 .cx-l em{font-size:.75rem;}
+@media (max-width:600px){
+  /* Edad: el número usa todo el ancho y la casilla baja a la línea de «años» (antes tapaba el «4» de «12–14» y el «8» de «17–18») */
+  .x2 .tile.is-age .big{font-size:clamp(1.375rem,7vw,2.1rem); white-space:nowrap;}
+  .x2 .tile.is-age .tick{top:auto; bottom:14px;}
+  /* Comparador: sin el marco de tarjeta, cada país gana unos 45 px de ancho */
+  .x2 .cmp{padding:28px 0 0; border:0; border-top:1px solid var(--line); border-radius:0; background:none;}
+  /* áreas táctiles de 44 px */
+  .x2 .hx-back{padding:12px 0; margin-top:-6px; margin-bottom:8px;}
+  .x2 .xv-tab{padding:13px 0;}
+  .x2 .xv-bar button{height:40px;}
+  .x2 .ppl .link{padding-block:10px; margin-top:4px;}
+  /* «Estamos abiertos a diferentes destinos»: fila compacta (icono pequeño + texto) en vez de un recuadro beis a todo el ancho */
+  .x2 .tiles--5 .tile.is-thumb:last-child{flex-direction:row; align-items:center; gap:14px; min-height:0; padding:12px 48px 12px 12px;}
+  .x2 .tiles--5 .tile.is-thumb:last-child .thumb{flex:none; width:60px; border-radius:12px;}
+  .x2 .tiles--5 .tile.is-thumb:last-child .thumb .qic{width:26px; height:26px;}
+  .x2 .tiles--5 .tile.is-thumb:last-child b{text-wrap:balance;}
+  .x2 .tiles--5 .tile.is-thumb:last-child b{padding-inline:0;}
+  .x2 .tiles--5 .tile.is-thumb:last-child .tick{top:50%; right:14px; margin-top:-12px;}
+}
+@media (max-width:360px){.x2 .cmp-sel select{padding:10px 26px 10px 8px; background-position:right 8px center;}}

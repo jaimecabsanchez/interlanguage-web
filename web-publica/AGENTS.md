@@ -180,3 +180,12 @@ Publicación: Netlify usa `netlify.toml` (`publish = "web-publica"`). Si se sube
   - Página «Estudiar en el extranjero»: fuera «¿Internado o familia anfitriona?»; el cuestionario va justo debajo de las fotos (orden: destinos, guía, comparar, experiencia, cuestionario, cómo os ayudamos, preguntas); preguntas frecuentes en dos columnas (`.ext-faq--2`); fotos del carrusel a 420 × 315 px con las flechas debajo, junto a «1 / 13».
   - Versiones: `styles.css?v=160`, `extranjero.css?v=13`, `main.js?v=66`.
 
+
+## Móvil · revisión del 22-11-2026
+
+- **Campos de formulario a 16 px como mínimo** en móvil (`input`, `select`, `textarea`): con menos, el iPhone amplía la página al tocarlos (pasaba con los desplegables del comparador de extranjero).
+- **Áreas táctiles de 44 px** en enlaces sueltos y botones pequeños (padding vertical, no cambiar el aspecto). Excepción aceptada: los segmentos del carrusel (15 × 40 px), porque se pasa deslizando.
+- **Texto mínimo de 12 px**, también en etiquetas y pastillas.
+- Sin guiones automáticos (`hyphens:auto`) en tarjetas estrechas: Safari parte palabras como «descu-brimientos».
+- Revisar siempre a **320, 360 y 390 px** con WebKit (`p.devices['iPhone 13']`): desborde horizontal, solapes y zoom de campos.
+- Versiones: `styles.css?v=162` (en las cinco páginas), `extranjero.css?v=23`, `extranjero.js?v=13`.

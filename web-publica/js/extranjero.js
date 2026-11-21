@@ -263,7 +263,7 @@ function IL_T(s){ return IL_TR[s] || s; }
         var same = a.r[i] === b.r[i], last = i === K.length - 1;
         ['a', 'b'].forEach(function(side){
           var d = side === 'a' ? a : b;
-          h += '<div class="cx-c cx-' + side + (same ? ' is-same' : '') + (last ? ' is-fit' : '') + '"><span class="cx-l">' + ki(i) + k + (same ? '<em>' + IL_T('Igual en los dos') + '</em>' : '') + '</span><p>' + d.r[i] + '</p></div>';
+          h += '<div class="cx-c cx-' + side + (same ? ' is-same' : '') + (last ? ' is-fit' : '') + '"><span class="cx-l">' + ki(i) + k + (same ? '<em>' + IL_T('Igual en los dos') + '</em>' : '') + '</span><p>' + d.r[i].replace(/(\d) h\b/g, '$1\u00a0h') + '</p></div>';
         });
       });
       tb.innerHTML = h;

@@ -2514,3 +2514,18 @@ section.contact.lf{padding:64px 0; color:var(--ink); background:var(--ivory); ov
   .cg-end .btn-primary{justify-content:center; text-align:center; white-space:normal;}
   .country-guide .country-panel > .country-source{margin:16px 20px 24px;}
 }
+
+/* ---------- Móvil · revisión del 22-11-2026 ---------- */
+/* Retos del campamento: sin guiones a mitad de palabra («descu-brimientos científi-cos») */
+.camp2-reto-d{hyphens:manual; overflow-wrap:break-word;}
+@media (max-width:600px){
+  /* pie: los enlaces de dos líneas («Campamentos de verano en Madrid») ya no se pegan entre sí */
+  .footer-col a{padding-block:6px; line-height:1.35;}
+  .vx-sup{font-size:.75rem;}
+}
+@media (max-width:430px){
+  /* «¿Qué programa os interesa?»: el título fluye en dos líneas en vez de dejar «verano» solo en una */
+  .lf-opt-t strong{font-size:1.25rem; line-height:1.15;}
+  .lf-opt-t strong > span{display:inline;}
+}
+@media (max-width:360px){.camp2-retos li{padding:14px 12px;}}
