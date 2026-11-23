@@ -76,6 +76,7 @@
 <link rel="stylesheet" href="css/styles.css?v=162">
 <link rel="stylesheet" href="css/motion.css?v=1">
 <link rel="stylesheet" href="css/extranjero.css?v=23">
+<link rel="stylesheet" href="css/recorridos.css?v=1">
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
@@ -343,10 +344,10 @@
         <div class="lf-pick" id="leadServiceSet" role="group" aria-label="What are you interested in?">
           <div class="lf-radios" hidden><input type="radio" name="service" value="extranjero" tabindex="-1" aria-hidden="true"><input type="radio" name="service" value="verano-extranjero" tabindex="-1" aria-hidden="true"><input type="radio" name="service" value="campamentos" tabindex="-1" aria-hidden="true"><input type="radio" name="service" value="extraescolar" tabindex="-1" aria-hidden="true"><input type="radio" name="service" value="orientacion" tabindex="-1" aria-hidden="true"></div>
           <div class="lf-list">
-            <button class="lf-opt" type="button" data-service="extranjero" data-title="School year or term abroad"><picture><source type="image/avif" srcset="images/programas/avanzar-clase-300.avif 300w, images/programas/avanzar-clase-480.avif 480w, images/programas/avanzar-clase-800.avif 800w, images/programas/avanzar-clase-1200.avif 1200w" sizes="200px"><source type="image/webp" srcset="images/programas/avanzar-clase-300.webp 300w, images/programas/avanzar-clase-480.webp 480w, images/programas/avanzar-clase-800.webp 800w, images/programas/avanzar-clase-1200.webp 1200w" sizes="200px"><img src="images/programas/avanzar-clase.jpg" alt="" width="96" height="106" loading="lazy" decoding="async" style="object-position:50% 40%"></picture><span class="lf-opt-t"><strong>School year or term <span>abroad</span></strong><small>Ages 9–18</small><span class="lf-option-action">Ask for guidance<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></button>
-            <button class="lf-opt" type="button" data-service="verano-extranjero" data-title="Summer camps abroad"><picture><source type="image/avif" srcset="images/internacional/extranjero-alumnas-480.avif 480w, images/internacional/extranjero-alumnas-800.avif 800w, images/internacional/extranjero-alumnas-1122.avif 1122w" sizes="200px"><source type="image/webp" srcset="images/internacional/extranjero-alumnas-480.webp 480w, images/internacional/extranjero-alumnas-800.webp 800w, images/internacional/extranjero-alumnas-1122.webp 1122w" sizes="200px"><img src="images/internacional/extranjero-alumnas.jpg" alt="" width="96" height="106" loading="lazy" decoding="async" style="object-position:50% 37%"></picture><span class="lf-opt-t"><strong>Summer camps <span>abroad</span></strong><small>Ages 8–17, depending on school</small><span class="lf-option-action">Ask for guidance<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></button>
+            <a class="lf-opt" href="#servicio-extranjero" data-jump-service="extranjero" data-jump-to="ext-encaje"><picture><source type="image/avif" srcset="images/programas/avanzar-clase-300.avif 300w, images/programas/avanzar-clase-480.avif 480w, images/programas/avanzar-clase-800.avif 800w, images/programas/avanzar-clase-1200.avif 1200w" sizes="200px"><source type="image/webp" srcset="images/programas/avanzar-clase-300.webp 300w, images/programas/avanzar-clase-480.webp 480w, images/programas/avanzar-clase-800.webp 800w, images/programas/avanzar-clase-1200.webp 1200w" sizes="200px"><img src="images/programas/avanzar-clase.jpg" alt="" width="96" height="106" loading="lazy" decoding="async" style="object-position:50% 40%"></picture><span class="lf-opt-t"><strong>School year or term <span>abroad</span></strong><small>Ages 9–18</small><span class="lf-option-action">Ask for guidance<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></a>
+            <a class="lf-opt" href="#servicio-verano-extranjero" data-jump-service="verano-extranjero" data-jump-to="vext-encaje"><picture><source type="image/avif" srcset="images/internacional/extranjero-alumnas-480.avif 480w, images/internacional/extranjero-alumnas-800.avif 800w, images/internacional/extranjero-alumnas-1122.avif 1122w" sizes="200px"><source type="image/webp" srcset="images/internacional/extranjero-alumnas-480.webp 480w, images/internacional/extranjero-alumnas-800.webp 800w, images/internacional/extranjero-alumnas-1122.webp 1122w" sizes="200px"><img src="images/internacional/extranjero-alumnas.jpg" alt="" width="96" height="106" loading="lazy" decoding="async" style="object-position:50% 37%"></picture><span class="lf-opt-t"><strong>Summer camps <span>abroad</span></strong><small>Ages 8–17, depending on school</small><span class="lf-option-action">Ask for guidance<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></a>
             <a class="lf-opt" href="#servicio-campamentos" data-jump-service="campamentos" data-jump-to="camp-reserva"><picture><source type="image/avif" srcset="images/campamentos/alumnos-cocinando-banner-480.avif 480w, images/campamentos/alumnos-cocinando-banner-800.avif 800w, images/campamentos/alumnos-cocinando-banner-1087.avif 1087w" sizes="200px"><source type="image/webp" srcset="images/campamentos/alumnos-cocinando-banner-480.webp 480w, images/campamentos/alumnos-cocinando-banner-800.webp 800w, images/campamentos/alumnos-cocinando-banner-1087.webp 1087w" sizes="200px"><img src="images/campamentos/alumnos-cocinando-banner.jpg" alt="" width="96" height="106" loading="lazy" decoding="async" style="object-position:35% 50%"></picture><span class="lf-opt-t"><strong>Summer camps <span>in Madrid</span></strong><small>Ages 3–9 · Dates to be confirmed</small><span class="lf-option-action">View programme<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></a>
-            <a class="lf-opt" href="#servicio-extraescolar" data-jump-service="extraescolar" data-jump-to="extraescolar-contacto"><picture><source type="image/avif" srcset="images/programas/profesor-ritmo-en-300.avif 300w, images/programas/profesor-ritmo-en-480.avif 480w, images/programas/profesor-ritmo-en-800.avif 800w, images/programas/profesor-ritmo-en-1200.avif 1200w" sizes="200px"><source type="image/webp" srcset="images/programas/profesor-ritmo-en-300.webp 300w, images/programas/profesor-ritmo-en-480.webp 480w, images/programas/profesor-ritmo-en-800.webp 800w, images/programas/profesor-ritmo-en-1200.webp 1200w" sizes="200px"><img src="images/programas/profesor-ritmo-en.jpg" alt="" width="96" height="106" loading="lazy" decoding="async" style="object-position:50% 62%"></picture><span class="lf-opt-t"><strong>After-school English <span>at school</span></strong><small>Ages 6–12</small><span class="lf-option-action">View programme<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></a>
+            <a class="lf-opt" href="#servicio-extraescolar" data-jump-service="extraescolar" data-jump-to="extraescolar-encaje"><picture><source type="image/avif" srcset="images/programas/profesor-ritmo-en-300.avif 300w, images/programas/profesor-ritmo-en-480.avif 480w, images/programas/profesor-ritmo-en-800.avif 800w, images/programas/profesor-ritmo-en-1200.avif 1200w" sizes="200px"><source type="image/webp" srcset="images/programas/profesor-ritmo-en-300.webp 300w, images/programas/profesor-ritmo-en-480.webp 480w, images/programas/profesor-ritmo-en-800.webp 800w, images/programas/profesor-ritmo-en-1200.webp 1200w" sizes="200px"><img src="images/programas/profesor-ritmo-en.jpg" alt="" width="96" height="106" loading="lazy" decoding="async" style="object-position:50% 62%"></picture><span class="lf-opt-t"><strong>After-school English <span>at school</span></strong><small>Ages 6–12</small><span class="lf-option-action">View programme<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></a>
           </div>
           <button type="button" class="lf-opt--plain lf-opt" data-service="orientacion" data-title="Guidance on programmes abroad">Help me choose a programme abroad<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
           <span class="err" id="err-service" role="alert">Choose an option to continue.</span>
@@ -618,74 +619,23 @@
   </div>
 </section>
 
-<!-- RESERVA DE PLAZA -->
-<section class="camp-section camp2-reserva" id="camp-reserva" data-contact-here>
-  <div class="container camp2-reserva-grid">
-    <div class="camp2-reserva-intro">
-      <span class="eyebrow">Booking</span>
-      <h2>Book a place</h2>
-      <p>Leave us your details and we will write to you as soon as the dates, venue and fee are confirmed.</p>
-      <div class="camp-faq">
+<!-- RESERVA DE PLAZA · recorrido «Foto al lado» (23-11-2026). js/recorridos.js pinta el formulario en [data-rx="madrid"] (Netlify «campamento»).
+     data-estado="hoy" mientras no haya convocatoria. Con convocatoria: actualiza fechas, sedes y tarifas en js/recorridos.js y pon data-estado="abierta". -->
+<section class="rx-host" id="camp-reserva" data-contact-here aria-labelledby="camp-reserva-t">
+  <div class="x2"><div class="sec rx-sec"><div class="wrap">
+    <div class="rx-shell">
+      <aside class="rx-aside">
+        <figure class="rx-ph"><img src="images/campamentos/ninos-pintando-800.webp" alt="" width="800" height="1067" loading="lazy" decoding="async" style="object-position:45% 50%"><figcaption class="rx-cap"><span class="rx-eb">Booking</span><h2 id="camp-reserva-t">Book their place</h2><p>Choose the weeks and tell us who is coming. We will write to you as soon as dates, venue and fees are confirmed.</p><span class="rx-trust">Ages 3 to 9 · native-speaking instructors</span></figcaption></figure>
+        <div class="rx-sum rx-sum--aside" hidden></div>
+      </aside>
+      <div class="qz" data-rx="madrid" data-estado="hoy"></div>
+    </div>
+    <div class="camp-faq rx-faq">
         <details class="camp-faq-item"><summary>Are there dates yet?</summary><p>It is planned from late June to late July. We will publish the exact dates, venue and fee as soon as they are confirmed.</p></details>
         <details class="camp-faq-item"><summary>Who leads the activities?</summary><p>100% native monitors, trained to work with children.</p></details>
         <details class="camp-faq-item"><summary>Does booking confirm the place?</summary><p>Not yet: we will write to you to confirm it once the dates are published.</p></details>
       </div>
-    </div>
-    <div class="camp2-card" id="form-campamentos">
-      <form id="campForm" class="camp-form" action="form-handler.php" method="POST" novalidate data-l-send-error="No hemos podido enviar la reserva. Tus datos siguen aquí: inténtalo de nuevo en unos segundos o escríbenos a info@interlanguage.es." data-l-sending="Enviando…" data-l-review="Revisa los campos marcados para poder enviar la reserva.">
-        <input type="text" name="website" id="campHp" class="hp-field" tabindex="-1" autocomplete="off" aria-hidden="true">
-        <p class="camp-req-note">* Required fields</p>
-        <div class="camp-fields">
-        <div class="cf-grid">
-          <div class="field full">
-            <label for="campTutor">Parent or guardian's name <span class="req" aria-hidden="true">*</span></label>
-            <input type="text" id="campTutor" name="fullName" required aria-describedby="err-campTutor" autocomplete="name" autocapitalize="words" enterkeyhint="next">
-            <span class="err" id="err-campTutor" role="alert">Please enter the parent or guardian's name.</span>
-          </div>
-          <div class="field">
-            <label for="campEmail">Email <span class="req" aria-hidden="true">*</span></label>
-            <input type="email" id="campEmail" name="email" required aria-describedby="err-campEmail" autocomplete="email" inputmode="email" autocapitalize="off" spellcheck="false" enterkeyhint="next">
-            <span class="err" id="err-campEmail" role="alert">Please enter a valid email address, e.g. name@example.com.</span>
-          </div>
-          <div class="field">
-            <label for="campTelefono">Phone <span class="req" aria-hidden="true">*</span></label>
-            <input type="tel" id="campTelefono" name="phone" required aria-describedby="err-campTelefono" autocomplete="tel" inputmode="tel" enterkeyhint="next" placeholder="+34 600 000 000">
-            <span class="err" id="err-campTelefono" role="alert">Please enter a valid phone number, e.g. +34 600 000 000.</span>
-          </div>
-          <div class="field">
-            <label for="campAlumnoNombre">Child's name <span class="req" aria-hidden="true">*</span></label>
-            <input type="text" id="campAlumnoNombre" name="alumnoNombre" required aria-describedby="err-campAlumnoNombre" autocomplete="off" autocapitalize="words" enterkeyhint="next">
-            <span class="err" id="err-campAlumnoNombre" role="alert">Please enter the child's name.</span>
-          </div>
-          <div class="field">
-            <label for="campAlumnoEdad">Age <span class="req" aria-hidden="true">*</span></label>
-            <input type="text" id="campAlumnoEdad" name="alumnoEdad" required aria-describedby="err-campAlumnoEdad" autocomplete="off" inputmode="numeric" enterkeyhint="next" placeholder="e.g. 5">
-            <span class="err" id="err-campAlumnoEdad" role="alert">Please enter the child's age.</span>
-          </div>
-          <div class="field full">
-            <label for="campSemanas">Weeks you are interested in <span class="opt">(optional)</span></label>
-            <input type="text" id="campSemanas" name="semanas" autocomplete="off" enterkeyhint="next" placeholder="e.g. the first two weeks of July">
-          </div>
-          <div class="field full">
-            <label for="campComentarios">Comments</label>
-            <textarea id="campComentarios" name="comentarios" rows="3" placeholder="Optional"></textarea>
-          </div>
-          <div class="field full">
-            <div class="checkbox-row">
-              <input type="checkbox" id="campRgpd" name="rgpd" required aria-describedby="err-campRgpd">
-              <label for="campRgpd">I have read the <a href="legal.html#privacidad" target="_blank" rel="noopener">privacy policy</a> and agree to my details being used to process this booking. <span class="req" aria-hidden="true">*</span></label>
-            </div>
-            <span class="err" id="err-campRgpd" role="alert">Please tick this box so that we can process the booking.</span>
-          </div>
-        </div>
-        <div class="form-error" id="campFormErrorMsg" role="alert" hidden></div>
-        <button type="submit" class="btn-primary camp-submit" id="campSubmitBtn">Book a place</button>
-        <p class="camp-side-note">We will write to you to confirm the place once the dates are published.</p>
-        </div>
-        <div class="form-msg" id="campFormMsg" role="status" tabindex="-1">✓ Thank you. We've received your request: we will write to you to confirm the place as soon as the dates are published.</div>
-      </form>
-    </div>
-  </div>
+  </div></div></div>
 </section>
 
 <!-- PUENTE A INTERNACIONAL -->
@@ -913,7 +863,7 @@
       <!-- [DATO PENDIENTE] Confirmar si el horario y el precio son iguales en todos los colegios donde se imparte el extraescolar. De momento se acota al Colegio Sagrado Corazón, que es lo que confirma el folleto. -->
       <p class="quickfacts-note">If your child’s school is a different one, email us at <a class="txt-link" href="mailto:info@interlanguage.es?subject=After-school%20English">info@interlanguage.es</a> and we’ll confirm its timetable and fees.</p>
       <div class="svc-page-cta-row">
-        <a href="#extraescolar-clubs" class="btn-primary svc-page-cta" data-cta="extra-hero-orientacion">View groups by stage</a>
+        <a href="#extraescolar-encaje" class="btn-primary svc-page-cta" data-cta="extra-hero-plaza">Find their group</a>
       </div>
     </div>
     <div class="camp-hero-media"><picture><source type="image/avif" srcset="images/programas/profesor-ritmo-en-480.avif 480w, images/programas/profesor-ritmo-en-800.avif 800w, images/programas/profesor-ritmo-en-1200.avif 1200w, images/programas/profesor-ritmo-en-1207.avif 1207w" sizes="(max-width: 900px) 100vw, 45vw"><source type="image/webp" srcset="images/programas/profesor-ritmo-en-480.webp 480w, images/programas/profesor-ritmo-en-800.webp 800w, images/programas/profesor-ritmo-en-1200.webp 1200w, images/programas/profesor-ritmo-en-1207.webp 1207w" sizes="(max-width: 900px) 100vw, 45vw"><img src="images/programas/profesor-ritmo-en.jpg" alt="A native Interlanguage teacher leading a speaking activity with their pupils" width="1207" height="1086" style="object-position:center 38%" loading="lazy"></picture></div>
@@ -987,6 +937,19 @@
 
 
 
+<!-- ENCONTRAR SU GRUPO · recorrido «Foto al lado» (23-11-2026): curso exacto → club, colegio, días preferidos y datos (js/recorridos.js, Netlify «consulta»). -->
+<section class="rx-host" id="extraescolar-encaje" data-contact-here aria-labelledby="extra-encaje-t">
+  <div class="x2"><div class="sec rx-sec"><div class="wrap">
+    <div class="rx-shell">
+      <aside class="rx-aside">
+        <figure class="rx-ph"><img src="images/programas/profesor-ritmo-en-800.webp" alt="" width="800" height="720" loading="lazy" decoding="async" style="object-position:42% 45%"><figcaption class="rx-cap"><span class="rx-eb">After-school English at school</span><h2 id="extra-encaje-t">Find their group</h2><p>Their school year, their school and the days that suit you best. No commitment.</p><span class="rx-trust">Native-speaking teachers · small groups</span></figcaption></figure>
+        <div class="rx-sum rx-sum--aside" hidden></div>
+      </aside>
+      <div class="qz" data-rx="extraescolar"></div>
+    </div>
+  </div></div></div>
+</section>
+
 <!-- PUENTE A INTERNACIONAL -->
 <section class="camp-section cross-sell-band">
   <div class="container cross-sell">
@@ -1012,15 +975,14 @@
       <details class="camp-faq-item"><summary>How much does it cost and what's included?</summary><p>At Colegio Sagrado Corazón, €65 a month plus €35 a year for materials. If your school is a different one, email us at <a class="txt-link" href="mailto:info@interlanguage.es?subject=After-school%20English">info@interlanguage.es</a> and we'll confirm the terms.</p></details>
     </div>
 
-    <!-- Contacto del extraescolar: no hay formulario (la inscripción va por el enlace que envía cada colegio), así que la salida es el correo.
-         data-contact-here: «Pedir orientación» de la cabecera baja a este bloque en vez de ir al selector de programas de la portada. -->
-    <div class="final-cta reveal" id="extraescolar-contacto" data-contact-here>
+    <!-- Cierre del extraescolar: la solicitud de plaza está en «Encontrad su grupo» (#extraescolar-encaje, data-contact-here); aquí, el correo. -->
+    <div class="final-cta reveal" id="extraescolar-contacto">
     <h2>Is it right for your child's age and stage?</h2>
     <p>Explore the groups. If your school has sent you a registration link, use that link to enrol.</p>
     <p>Have a question, or want to know whether we teach at your school? Write to us.</p>
     <div class="final-cta-actions">
-      <a href="mailto:info@interlanguage.es?subject=After-school%20English" class="btn-primary svc-page-cta" data-cta="extra-cierre-correo">Email info@interlanguage.es</a>
-      <a href="#extraescolar-clubs" class="btn-outline svc-page-cta" data-cta="extra-cierre-orientacion">View groups by stage</a>
+      <a href="#extraescolar-encaje" class="btn-primary svc-page-cta" data-cta="extra-cierre-plaza">Request a place</a>
+      <a href="mailto:info@interlanguage.es?subject=After-school%20English" class="btn-outline svc-page-cta" data-cta="extra-cierre-correo">Email info@interlanguage.es</a>
     </div>
     </div>
   </div>
@@ -1050,7 +1012,7 @@
       </div>
       <p class="camp-season-note">2027 dates. Availability depends on the school.</p>
       <div class="svc-page-cta-row">
-        <a href="#contacto" class="btn-primary svc-page-cta" data-advise="verano-extranjero" data-cta="vext-hero">Ask for guidance</a>
+        <a href="#vext-encaje" class="btn-primary svc-page-cta" data-cta="vext-hero">Ask for guidance</a>
         <a href="#vext-dia" class="btn-outline">See what a day looks like</a>
       </div>
     </div>
@@ -1208,13 +1170,23 @@
     <div class="final-cta reveal">
       <h2>Shall we find their camp?</h2>
       <p>Tell us their age, their level and the dates you have in mind, and we will suggest the school that fits best. Our guidance is free.</p>
-      <a href="#contacto" class="btn-primary svc-page-cta" data-advise="verano-extranjero" data-cta="vext-cierre">Ask for guidance</a>
+      <a href="#vext-encaje" class="btn-primary svc-page-cta" data-cta="vext-cierre">Ask for guidance</a>
     </div>
   </div>
 </section>
 
-<!-- aquí se coloca el contacto (#contacto) mientras se ve esta página, ya orientado a los campamentos en el extranjero -->
-<div id="vext-contacto-slot"></div>
+<!-- ENCONTRAR CAMPAMENTO · recorrido «Foto al lado» (23-11-2026): cuestionario de js/recorridos.js (Netlify «consulta»). Sustituye al formulario de contacto que se colocaba aquí. -->
+<section class="rx-host" id="vext-encaje" data-contact-here aria-labelledby="vext-encaje-t">
+  <div class="x2"><div class="sec rx-sec"><div class="wrap">
+    <div class="rx-shell">
+      <aside class="rx-aside">
+        <figure class="rx-ph"><img src="images/internacional/extranjero-alumnas-800.webp" alt="" width="800" height="1000" loading="lazy" decoding="async" style="object-position:50% 30%"><figcaption class="rx-cap"><span class="rx-eb">Find a camp</span><h2 id="vext-encaje-t">Which camp would suit your child?</h2><p>A few questions, and our team will prepare several options for you, with dates and prices.</p><span class="rx-trust">A member of our team replies</span></figcaption></figure>
+      </aside>
+      <div class="qz" data-rx="verano" aria-live="polite"></div>
+    </div>
+    <p class="qz-mail">Prefer to write to us? <a class="txt-link" href="mailto:info@interlanguage.es?subject=Campamentos%20de%20verano%20en%20el%20extranjero">info@interlanguage.es</a></p>
+  </div></div></div>
+</section>
 
 <section class="camp-section cross-sell-band">
   <div class="container cross-sell">
@@ -1457,13 +1429,14 @@
 
 <!-- ENCONTRAR COLEGIO: el cuestionario va justo debajo de las fotos (17-11-2026; antes cerraba la página) y es su único formulario. La consulta larga ya no se coloca aquí:
      los botones «Pedir orientación» de esta página bajan al cuestionario (data-contact-here y data-advise en main.js). -->
-<section class="sec qz-sec" id="ext-encaje" data-contact-here aria-labelledby="ext-encaje-t">
+<section class="sec qz-sec rx-sec" id="ext-encaje" data-contact-here aria-labelledby="ext-encaje-t">
   <div class="wrap">
-    <div class="qz-head">
-      <div><span class="eyebrow">Find a school</span><h2 id="ext-encaje-t">Which school could suit your child?</h2><p>Five questions and your details. With that, we prepare initial guidance for your family.</p></div>
-      <div class="qz-trust"><span><svg class="ic"><use href="#x2-i-clock"/></svg>2 minutes</span><span><svg class="ic"><use href="#x2-i-shield"/></svg>No commitment</span><span><svg class="ic"><use href="#x2-i-user"/></svg>A member of our team replies</span></div>
+    <div class="rx-shell">
+      <aside class="rx-aside">
+        <figure class="rx-ph"><img src="images/internacional/ext-esc-campus-960.webp" alt="" width="960" height="720" loading="lazy" decoding="async" style="object-position:50% 45%"><figcaption class="rx-cap"><span class="rx-eb">Find a school</span><h2 id="ext-encaje-t">Which school could suit your child?</h2><p>Five questions and your details. With that, we prepare initial guidance for your family.</p><span class="rx-trust">A member of our team replies</span></figcaption></figure>
+      </aside>
+      <div class="qz" id="qz" aria-live="polite"></div>
     </div>
-    <div class="qz" id="qz" aria-live="polite"></div>
     <ol class="after" id="qzAfter">
       <li><div><b>We study your answers</b>A member of our team in Madrid reviews your case.</div></li>
       <li><div><b>We contact you the way you prefer</b>By phone or by email, to answer your questions.</div></li>
@@ -1716,22 +1689,25 @@
      Si añades un campo a un envío, añádelo también aquí o Netlify lo descartará. «website» es el campo trampa contra robots. -->
 <form name="consulta" method="POST" data-netlify="true" netlify-honeypot="website" hidden>
   <input type="hidden" name="subject" value="Nueva solicitud web">
-  <input name="form_type"><input name="service"><input name="serviceExtra"><input name="studentAge"><textarea name="message"></textarea>
+  <input name="form_type"><input name="recorrido"><input name="service"><input name="serviceExtra"><input name="studentAge"><textarea name="message"></textarea>
   <input name="fullName"><input type="email" name="email"><input name="phone"><input name="contactPreference">
   <input name="rgpd"><input name="comunicaciones"><input name="website">
 </form>
 <form name="campamento" method="POST" data-netlify="true" netlify-honeypot="website" hidden>
   <input type="hidden" name="subject" value="Nueva inscripción campamento">
-  <input name="form_type"><input name="sede"><input name="semanas"><input name="comedor"><input name="total">
+  <input name="form_type"><input name="recorrido"><input name="sede"><input name="semanas"><input name="comedor"><input name="total">
   <input name="alumnoNombre"><input name="alumnoApellidos"><input name="alumnoEdad"><input name="colegio"><input name="alergias">
   <input name="fullName"><input type="email" name="email"><input name="phone"><textarea name="comentarios"></textarea>
   <input name="rgpd"><input name="comunicaciones"><input name="website">
 </form>
 
+<datalist id="rxSchools"><option value="Sagrado Corazón Rosales"><option value="Sagrado Corazón Chamartín"><option value="Colegio Base"><option value="Colegio Retamar"><option value="Colegio Montealto"><option value="Colegio Estudio"><option value="Runamore"><option value="British Council School"><option value="Colegio Brains"></datalist>
+
 <script src="js/reserva-llamada.js?v=1" defer></script>
 <script src="js/destinos.js?v=1" defer></script>
 <script src="js/main.js?v=66" defer></script>
-<script src="js/extranjero.js?v=13" defer></script>
+<script src="js/extranjero.js?v=14" defer></script>
+<script src="js/recorridos.js?v=1" defer></script>
 <script src="js/motion.js?v=4" defer></script>
 </body>
 </html>

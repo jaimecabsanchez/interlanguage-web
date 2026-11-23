@@ -1,0 +1,189 @@
+/* Recorridos de orientación, plaza e inscripción · diseño «Foto al lado» (23-11-2026, elegido por Jaime).
+   Mismo marco para los cuatro programas: ficha blanca con la foto real del programa a la izquierda (título encima y,
+   cuando lo hay, el resumen de lo elegido sobre marino) y las preguntas o el formulario a la derecha. Sin fondo piedra.
+   Reutiliza las piezas del cuestionario de css/extranjero.css (.tile, .chip, .qz-steps, .qz-sum, .field…). Todo bajo .x2 y solo con tokens. */
+
+/* ---------- marco ---------- */
+.x2 .rx-sec{background:var(--white);}
+.x2 .rx-shell{display:grid; grid-template-columns:minmax(0,380px) minmax(0,1fr); border:1px solid var(--line); border-radius:16px; overflow:hidden; background:var(--white); box-shadow:var(--shadow-2);}
+.x2 .rx-aside{display:flex; flex-direction:column; min-width:0; background:var(--navy);}
+.x2 .rx-ph{position:relative; display:flex; flex-direction:column; flex:1; min-height:460px; margin:0; overflow:hidden;}
+.x2 .rx-aside:has(.rx-sum--aside:not([hidden])) .rx-ph{flex:none; height:520px; min-height:0;}
+.x2 .rx-ph img{position:absolute; inset:0; display:block; width:100%; height:100%; object-fit:cover;}
+.x2 .rx-ph::after{content:""; position:absolute; inset:0; background:linear-gradient(180deg, transparent 28%, color-mix(in srgb, var(--navy) 62%, transparent) 55%, color-mix(in srgb, var(--navy) 96%, transparent) 100%);}
+.x2 .rx-cap{position:absolute; left:0; right:0; bottom:0; z-index:1; display:grid; gap:10px; padding:30px 30px 28px;}
+.x2 .rx-eb{font-size:.75rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--accent-soft);}
+.x2 .rx-cap h2{font:600 clamp(1.9rem,2.5vw,2.4rem)/1.1 var(--font-display); color:var(--white); text-wrap:balance;}
+.x2 .rx-cap p{font-size:1rem; line-height:1.55; color:color-mix(in srgb, var(--white) 86%, transparent);}
+.x2 .rx-trust{padding-top:12px; border-top:1px solid color-mix(in srgb, var(--white) 22%, transparent); font-size:.8125rem; font-weight:700; color:var(--white);}
+.x2 .rx-shell .qz{border-radius:0; box-shadow:none; padding:clamp(24px,3.2vw,44px);}
+.x2 .rx-still,.x2 .rx-still .qz-step{animation:none;}
+.x2 .rx-below{display:flex; flex-wrap:wrap; justify-content:space-between; gap:12px 32px; margin-top:22px;}
+
+/* ---------- resumen (bajo la foto en escritorio; antes del botón en móvil) ---------- */
+.x2 .rx-sum[hidden]{display:none;}
+.x2 .rx-sum{padding:20px 22px;}
+.x2 .rx-sum:empty{display:none;}
+.x2 .rx-sum-t{margin-bottom:10px; font:600 1.25rem/1.2 var(--font-display); color:var(--navy);}
+.x2 .rx-sum-dl{display:grid; margin:0;}
+.x2 .rx-sum-dl div{display:grid; grid-template-columns:96px minmax(0,1fr); gap:10px; padding:9px 0; border-top:1px solid var(--line); font-size:.875rem; line-height:1.4;}
+.x2 .rx-sum-dl dt{font-weight:600; color:var(--ink-soft);}
+.x2 .rx-sum-dl dd{margin:0; font-weight:700; color:var(--navy); overflow-wrap:anywhere;}
+.x2 .rx-sum-dl small{font-weight:600; color:var(--ink-soft);}
+.x2 .rx-sum-empty{font-weight:500; color:var(--ink-soft);}
+.x2 .rx-sum-tot{display:flex; justify-content:space-between; align-items:baseline; gap:12px; padding-top:12px; border-top:1px solid var(--line);}
+.x2 .rx-sum-tot span{font-size:.875rem; font-weight:700; color:var(--navy);}
+.x2 .rx-sum-tot strong{font:600 1.9rem/1.05 var(--font-display); color:var(--navy); font-variant-numeric:tabular-nums; text-align:right;}
+.x2 .rx-sum-n{margin-top:6px; font-size:.8125rem; line-height:1.45; color:var(--ink-soft);}
+.x2 .rx-sum--inline,.x2 .rx-sum--ok{margin-bottom:18px; border:1px solid var(--line); border-radius:12px; background:var(--ivory);}
+.x2 .rx-sum--ok{margin:22px 0 0;}
+.x2 .rx-sum--aside{padding:24px 30px 30px;}
+.x2 .rx-sum--aside .rx-sum-t,.x2 .rx-sum--aside dd,.x2 .rx-sum--aside .rx-sum-tot span,.x2 .rx-sum--aside .rx-sum-tot strong{color:var(--white);}
+.x2 .rx-sum--aside dt,.x2 .rx-sum--aside .rx-sum-empty,.x2 .rx-sum--aside small{color:var(--accent-soft);}
+.x2 .rx-sum--aside .rx-sum-n{color:color-mix(in srgb, var(--white) 78%, transparent);}
+.x2 .rx-sum--aside .rx-sum-dl div,.x2 .rx-sum--aside .rx-sum-tot{border-top-color:color-mix(in srgb, var(--white) 16%, transparent);}
+
+/* ---------- bloques de una página (Madrid y extraescolar) ---------- */
+.x2 .rx-blk{padding-block:28px; border-top:1px solid var(--line);}
+.x2 form > .rx-blk:first-child,.x2 .rx-status + .rx-blk{border-top:0; padding-top:6px;}
+.x2 .rx-blk:last-child{padding-bottom:0;}
+.x2 .rx-blk-h{margin-bottom:16px;}
+.x2 .rx-blk-t{font:600 clamp(1.35rem,2vw,1.6rem)/1.2 var(--font-display); color:var(--navy);}
+.x2 .rx-blk-hint{margin-top:4px; font-size:.9375rem; line-height:1.5; color:var(--ink-soft);}
+.x2 .rx-lab{display:block; margin-bottom:8px; font-size:.875rem; font-weight:700; color:var(--navy);}
+.x2 .rx-lab-s{font-weight:500; color:var(--ink-soft);}
+.x2 .rx-sub + .rx-sub{margin-top:24px;}
+.x2 .rx-err{display:none; margin-top:8px; font-size:.8125rem; font-weight:600; color:var(--error);}
+.x2 .rx-sub.is-bad .rx-err{display:block;}
+.x2 .rx-sub.is-bad .tile{border-color:var(--error);}
+.x2 .rx-mt{margin-top:14px;}
+.x2 .rx-mini{min-height:44px; padding:6px 2px; font-size:.8125rem; font-weight:700; color:var(--accent); text-decoration:underline; text-underline-offset:3px;}
+.x2 .rx-row{display:flex; flex-wrap:wrap; align-items:center; gap:8px 16px; margin-top:12px;}
+.x2 .rx-switch{margin-top:18px;}
+.x2 .tile.is-card{min-height:84px; justify-content:center; gap:6px; padding-right:46px;}
+.x2 .tile.is-card .tnote{margin-top:0;}
+.x2 .tiles--2{grid-template-columns:repeat(2,minmax(0,1fr));}
+
+/* semanas: una tarjeta por semana, sueltas o seguidas */
+.x2 .rx-wkbar{display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:8px;}
+.x2 .rx-wkbar .rx-lab{margin:0;}
+.x2 .rx-wks{display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:10px;}
+.x2 .tile.rx-wk{min-height:88px; justify-content:center; gap:4px; padding:14px 12px;}
+.x2 .tile.rx-wk b{font-size:1rem;}
+.x2 .rx-wk-d{font-size:.8125rem; font-weight:600; line-height:1.3; color:var(--ink-soft);}
+.x2 .tile.rx-wk .tick{top:10px; right:10px; width:22px; height:22px;}
+.x2 .rx-tarifas{display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); margin:16px 0 6px; border:1px solid var(--line); border-radius:10px; overflow:hidden;}
+.x2 .rx-tarifas div{padding:10px 8px; border-left:1px solid var(--line); background:var(--white); text-align:center; transition:background-color .15s ease;}
+.x2 .rx-tarifas div:first-child{border-left:0;}
+.x2 .rx-tarifas dt{font-size:.75rem; font-weight:600; line-height:1.3; color:var(--ink-soft);}
+.x2 .rx-tarifas dd{margin:2px 0 0; font:600 1.125rem/1.2 var(--font-display); color:var(--navy); font-variant-numeric:tabular-nums;}
+.x2 .rx-tarifas .is-on{background:var(--navy);}
+.x2 .rx-tarifas .is-on dt{color:var(--accent-soft);}
+.x2 .rx-tarifas .is-on dd{color:var(--white);}
+.x2 .rx-note{margin-top:14px; font-size:.875rem; line-height:1.55; color:var(--ink-soft);}
+.x2 .rx-note--in{margin:0; font-size:.8125rem;}
+.x2 .rx-live{display:flex; flex-wrap:wrap; align-items:baseline; gap:4px 14px; margin-top:16px; padding:16px 20px; border-radius:10px; background:var(--navy); color:var(--white);}
+.x2 .rx-live span{font-size:.75rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--accent-soft);}
+.x2 .rx-live strong{font:600 1.9rem/1 var(--font-display); font-variant-numeric:tabular-nums;}
+.x2 .rx-live small{font-size:.875rem; font-weight:600; color:color-mix(in srgb, var(--white) 80%, transparent);}
+
+/* niños: un bloque por hijo */
+.x2 .rx-kid{padding:18px 18px 20px; border:1px solid var(--line); border-radius:12px; background:var(--ivory);}
+.x2 .rx-kid + .rx-kid{margin-top:12px;}
+.x2 .rx-kid-h{display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:10px;}
+.x2 .rx-kid-t{font:600 1.125rem/1.2 var(--font-display); color:var(--navy);}
+.x2 .rx-age{display:grid; grid-template-columns:repeat(7,minmax(0,52px)); gap:6px;}
+.x2 .rx-age button{display:grid; place-items:center; height:50px; border:1.5px solid var(--field-line); border-radius:var(--r-sm); background:var(--white); color:var(--navy); transition:background-color .15s ease, border-color .15s ease, color .15s ease;}
+.x2 .rx-age button b{font:600 1.3rem/1 var(--font-display);}
+.x2 .rx-age button[aria-checked="true"]{border-color:var(--navy); background:var(--navy); color:var(--white);}
+@media (hover:hover){.x2 .rx-age button:hover{border-color:var(--navy);}}
+.x2 .rx-agef.is-bad .rx-age button{border-color:var(--error);}
+.x2 .rx-add{width:100%; min-height:50px; margin-top:12px; border:1.5px dashed var(--field-line); border-radius:10px; font-size:.9375rem; font-weight:700; color:var(--accent);}
+@media (hover:hover){.x2 .rx-add:hover{border-color:var(--navy); background:var(--ivory);}}
+
+/* extraescolar: el curso exacto, por etapas */
+.x2 .rx-crs{display:grid; gap:10px;}
+.x2 .rx-crs-row{display:grid; grid-template-columns:170px minmax(0,1fr); align-items:center; gap:14px; padding:12px 14px; border:1px solid var(--line); border-radius:12px; background:var(--ivory);}
+.x2 .rx-crs-g b{display:block; font:600 1.0625rem/1.25 var(--font-display); color:var(--navy);}
+.x2 .rx-crs-g span{font-size:.8125rem; font-weight:600; color:var(--ink-soft);}
+.x2 .rx-crs-o{display:grid; grid-template-columns:repeat(6,minmax(0,1fr)); gap:8px;}
+.x2 .tile.rx-crs-b{min-height:52px; padding:8px; align-items:center; justify-content:center;}
+.x2 .tile.rx-crs-b b{font:600 1.25rem/1 var(--font-display);}
+.x2 .tile.rx-crs-b .tick{display:none;}
+.x2 .tile.rx-crs-b[aria-pressed="true"]{border-color:var(--navy); background:var(--navy); box-shadow:none; color:var(--white);}
+.x2 .tile.rx-crs-b[aria-pressed="true"] b{color:var(--white);}
+.x2 .rx-club{display:grid; gap:4px; margin-top:16px; padding:20px 22px; border-radius:12px; background:var(--navy);}
+.x2 .rx-club-k{font-size:.75rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--accent-soft);}
+.x2 .rx-club h4{font:600 1.5rem/1.2 var(--font-display); color:var(--white);}
+.x2 .rx-club p{font-size:.9375rem; line-height:1.5; color:color-mix(in srgb, var(--white) 84%, transparent);}
+.x2 .rx-facts{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:10px; margin:18px 0 0;}
+.x2 .rx-facts div{display:grid; gap:4px; padding:14px 16px; border:1px solid var(--line); border-radius:10px; background:var(--white);}
+.x2 .rx-facts dt{font-size:.75rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-soft);}
+.x2 .rx-facts dd{margin:0; font-size:1rem; font-weight:700; line-height:1.35; color:var(--navy);}
+.x2 .rx-facts dd small{display:block; font-size:.8125rem; font-weight:600; color:var(--ink-soft);}
+
+/* aviso de convocatoria (Madrid): el mismo recuadro discontinuo de la cabecera del campamento */
+.x2 .rx-status{display:flex; align-items:center; gap:14px; margin-bottom:22px; padding:14px 16px; border:1.5px dashed var(--field-line); border-radius:10px; background:var(--ivory);}
+.x2 .rx-status .ic{color:var(--accent);}
+.x2 .rx-status div{display:grid; gap:2px;}
+.x2 .rx-status b{font-size:.9375rem; color:var(--navy);}
+.x2 .rx-status span{font-size:.8125rem; font-weight:600; color:var(--ink-soft);}
+
+/* ---------- cuestionarios por pasos ---------- */
+.x2 .rx-part + .rx-part{margin-top:26px;}
+.x2 .rx-part-t{margin:0 0 12px; font:600 1.125rem/1.3 var(--font-display); color:var(--navy);}
+.x2 .rx-part-t small{margin-left:8px; font:600 .75rem/1 var(--font-body); color:var(--ink-soft);}
+.x2 .qz-ini{margin-top:24px;}
+.x2 .tile .thumb{position:relative;}
+.x2 .tiles--3 .tile.is-thumb .thumb{aspect-ratio:16/10;}
+.x2 .rx-sup{position:absolute; left:8px; bottom:8px; padding:3px 8px; border-radius:var(--r-sm); background:var(--white); font-size:.75rem; font-weight:700; color:var(--navy);}
+.x2 .rx-more{min-height:44px; padding:8px 0; font-size:.9063rem; font-weight:700; color:var(--accent); text-align:left; text-decoration:underline; text-underline-offset:4px;}
+.x2 .rx-sendnote{margin-top:10px; font-size:.8125rem; line-height:1.5; color:var(--ink-soft);}
+.x2 .rx-send1{flex-direction:column; align-items:flex-start; justify-content:flex-start; gap:4px;}
+.x2 .rx-send1 .btn-primary{min-width:280px;}
+.x2 .rx-after{margin-top:22px;}
+
+@media (prefers-reduced-motion:reduce){.x2 .rx-age button,.x2 .rx-tarifas div{transition:none;}}
+@media (min-width:1000px){.x2 .rx-sum--inline{display:none;}}
+@media (max-width:999px){
+  .x2 .rx-shell{grid-template-columns:minmax(0,1fr);}
+  .x2 .rx-sum--aside{display:none !important;}
+  .x2 .rx-ph,.x2 .rx-aside:has(.rx-sum--aside:not([hidden])) .rx-ph{flex:none; height:auto; min-height:0;}
+  .x2 .rx-ph img{position:static; height:220px;}
+  .x2 .rx-ph::after{display:none;}
+  .x2 .rx-cap{position:static; padding:22px 24px 24px;}
+  .x2 .rx-facts{grid-template-columns:repeat(2,minmax(0,1fr));}
+  .x2 .tiles--3:has(.is-age){grid-template-columns:repeat(3,minmax(0,1fr));}
+  .x2 .tiles--3 .tile.is-thumb:last-child:nth-child(odd){grid-column:1 / -1; flex-direction:row; align-items:center; gap:14px; min-height:0; padding:12px 48px 12px 12px;}
+  .x2 .tiles--3 .tile.is-thumb:last-child:nth-child(odd) .thumb{flex:none; width:60px; aspect-ratio:4/3; border-radius:12px;}
+  .x2 .tiles--3 .tile.is-thumb:last-child:nth-child(odd) .thumb .qic{width:26px; height:26px;}
+  .x2 .tiles--3 .tile.is-thumb:last-child:nth-child(odd) .tick{top:50%; right:14px; margin-top:-12px;}
+}
+@media (max-width:600px){
+  .x2 .rx-sec .wrap{padding-inline:12px;}
+  .x2 .rx-shell .qz{padding:22px 16px 26px;}
+  .x2 .rx-ph img{height:180px;}
+  .x2 .rx-cap{padding:20px 18px 22px;}
+  .x2 .rx-cap h2{font-size:1.85rem;}
+  .x2 .rx-cap p{font-size:.9375rem;}
+  .x2 .rx-wks{grid-template-columns:minmax(0,1fr); gap:8px;}
+  .x2 .tile.rx-wk{flex-direction:row; align-items:center; justify-content:flex-start; gap:12px; min-height:56px; padding:12px 50px 12px 16px;}
+  .x2 .tile.rx-wk b{min-width:78px;}
+  .x2 .tile.rx-wk .tick{top:50%; margin-top:-11px; right:14px;}
+  .x2 .rx-tarifas div{padding:8px 4px;}
+  .x2 .rx-tarifas dt{font-size:.6875rem;}
+  .x2 .rx-tarifas dd{font-size:1rem;}
+  .x2 .rx-kid{padding:14px 12px 16px;}
+  .x2 .rx-age{grid-template-columns:repeat(7,minmax(0,1fr)); gap:4px;}
+  .x2 .rx-age button{height:48px;}
+  .x2 .rx-crs-row{grid-template-columns:minmax(0,1fr); gap:8px; padding:12px;}
+  .x2 .rx-crs-o{gap:5px;}
+  .x2 .tile.rx-crs-b{min-height:48px; padding:6px 2px;}
+  .x2 .tile.is-card{padding:14px 40px 14px 14px;}
+  .x2 .rx-facts{gap:8px;}
+  .x2 .rx-facts div{padding:12px;}
+  .x2 .rx-send1 .btn-primary{width:100%; min-width:0;}
+  .x2 .rx-status{align-items:flex-start;}
+  .x2 .rx-live strong{font-size:1.6rem;}
+}
+.x2 .rx-faq{max-width:760px; margin-top:28px;}

@@ -2,6 +2,8 @@
    Los textos que recibe el equipo en el formulario se quedan en español. */
 var IL_EN = (document.documentElement.lang || '').slice(0, 2) === 'en';
 var IL_TR = IL_EN ? {
+  '¿Cuándo os gustaría que empezara?': 'When would you like them to start?',
+  'Añadir un comentario (curso actual, nivel de inglés, dudas…)': 'Add a comment (current school year, English level, questions…)',
 "Reino Unido": "United Kingdom",
 "Irlanda": "Ireland",
 "Estados Unidos": "United States",
@@ -435,7 +437,7 @@ function IL_T(s){ return IL_TR[s] || s; }
     { k: 'destinos', label: IL_T('Destinos'), t: IL_T('¿Qué destinos os interesan más?'), multi: true, cols: 5, o: [
       { v: IL_T('Reino Unido'), img: 'uk-campus-480.webp', flag: 'uk' }, { v: IL_T('Irlanda'), img: 'ie-campus-480.webp', flag: 'ie' }, { v: IL_T('Estados Unidos'), img: 'us-campus-480.webp', flag: 'us' },
       { v: IL_T('Canadá'), img: 'ca-campus-480.webp', flag: 'ca' }, { v: IL_T('Estamos abiertos a diferentes destinos'), ic: 'globe', thumbIc: true, solo: true } ] },
-    { k: 'duracion', label: IL_T('Duración'), t: IL_T('¿Cuánto tiempo os gustaría que estudiara en el extranjero?'), multi: false, cols: 4, o: [
+    { k: 'duracion', label: IL_T('Duración'), t: IL_T('¿Cuánto tiempo os gustaría que estudiara en el extranjero?'), multi: false, stay: true, cols: 4, o: [
       { v: IL_T('Un trimestre'), seg: 1, cap: IL_T('1 de 3 trimestres') }, { v: IL_T('Dos trimestres'), seg: 2, cap: IL_T('2 de 3 trimestres') }, { v: IL_T('Un curso completo'), seg: 3, cap: IL_T('Los 3 trimestres') }, { v: IL_T('Todavía no lo sabemos'), seg: 0, cap: IL_T('Lo vemos juntos') } ] }
   ];
   var STARTS = [IL_T('Lo antes posible'), IL_T('Curso 2027-2028'), IL_T('Curso 2028-2029'), IL_T('Más adelante'), IL_T('Todavía no lo sabemos')];
@@ -460,13 +462,15 @@ function IL_T(s){ return IL_TR[s] || s; }
   var BACK = '<svg class="ic" aria-hidden="true" viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>';
 
   /* estado */
-  var A = { edad: [], objetivos: [], estancia: [], destinos: [], duracion: [] };
+  var A = { edad: [], objetivos: [], estancia: [], destinos: [], duracion: [], inicio: [] };
   var I = [];                                   /* intereses concretos (solo cuentan si está marcado TALENT) */
   var C = { nombre: '', email: '', telefono: '', inicio: '', comentarios: '', privacidad: false };
-  var step = 0, dir = 1, finalShownAt = 0, sending = false, sent = false, after = '';
+  var step = 0, dir = 1, finalShownAt = 0, sending = false, sent = false, after = '', openCom = false;
+  /* listo para seguir: respondida la pregunta y, en la duración, también el comienzo */
+  function ready(q){ return A[q.k].length > 0 && (q.k !== 'duracion' || A.inicio.length > 0); }
   try {
     var saved = JSON.parse(sessionStorage.getItem(STORE) || 'null');
-    if (saved && saved.A) { A = saved.A; I = saved.I || []; C = saved.C || C; step = Math.min(saved.step || 0, Q.length); C.privacidad = false; }
+    if (saved && saved.A) { A = saved.A; I = saved.I || []; C = saved.C || C; step = Math.min(saved.step || 0, Q.length); C.privacidad = false; if (!A.inicio) A.inicio = C.inicio ? [C.inicio] : []; }
   } catch (e) {}
   function save(){ try { sessionStorage.setItem(STORE, JSON.stringify({ A: A, I: I, C: { nombre: C.nombre, email: C.email, telefono: C.telefono, inicio: C.inicio, comentarios: C.comentarios }, step: step })); } catch (e) {} }
   function forget(){ try { sessionStorage.removeItem(STORE); } catch (e) {} }
@@ -506,9 +510,14 @@ function IL_T(s){ return IL_TR[s] || s; }
         g.o.map(function(v){ return '<button type="button" class="chip" data-chip="' + esc(v) + '" aria-pressed="' + (I.indexOf(v) >= 0) + '">' + v + '</button>'; }).join('') + '</div>'; }).join('') +
       '</div></div></div>';
   }
+  /* duración: debajo de las tarjetas, cuándo empezaría (antes era un desplegable opcional al final) */
+  function startChips(){
+    return '<div class="qz-ini"><p class="qz-sub-t">' + IL_T('¿Cuándo os gustaría que empezara?') + '</p><div class="qz-chips" role="group" aria-label="' + IL_T('¿Cuándo os gustaría que empezara?') + '">' +
+      STARTS.map(function(v){ return '<button type="button" class="chip" data-ini="' + esc(v) + '" aria-pressed="' + (A.inicio.indexOf(v) >= 0) + '">' + v + '</button>'; }).join('') + '</div></div>';
+  }
   function summary(){
     return '<aside class="qz-sum" aria-labelledby="qzSumT"><h4 id="qzSumT">' + IL_T('Vuestras respuestas') + '</h4><ol>' + Q.map(function(q, i){
-      var vals = A[q.k].slice(), extra = '';
+      var vals = q.k === 'duracion' ? A.duracion.concat(A.inicio) : A[q.k].slice(), extra = '';
       if (q.k === 'objetivos' && talents().length) extra = '<span class="qz-sum-sub">' + talents().map(function(t){ return '<em>' + esc(t) + '</em>'; }).join('') + '</span>';
       return '<li><span class="qz-sum-k">' + q.label + '</span><span class="qz-sum-v">' + vals.map(function(v){ return '<span>' + esc(v) + '</span>'; }).join('') + extra + '</span><button type="button" class="qz-sum-edit" data-go="' + i + '" aria-label="' + IL_T('Cambiar: ') + q.label + '">' + IL_T('Cambiar') + '</button></li>';
     }).join('') + '</ol></aside>';
@@ -521,9 +530,9 @@ function IL_T(s){ return IL_TR[s] || s; }
       var tcls = 'tiles' + (q.cols === 4 ? ' tiles--4' : q.cols === 5 ? ' tiles--5' : '');
       qz.innerHTML = bar() + '<div class="' + cls + '"><div class="qz-q"><h3 tabindex="-1">' + q.t + '</h3><small>' + (q.multi ? IL_T('Podéis elegir varias') : IL_T('Elegid una')) + '</small></div>' +
         '<div class="' + tcls + '" role="group" aria-label="' + esc(q.t) + '">' + q.o.map(function(o){ return tile(q, o); }).join('') + '</div>' +
-        (q.k === 'objetivos' ? chips() : '') +
+        (q.k === 'objetivos' ? chips() : '') + (q.k === 'duracion' ? startChips() : '') +
         '<div class="qz-nav"><button type="button" class="qz-back" data-act="back"' + (step ? '' : ' disabled') + '>' + BACK + IL_T('Anterior') + '</button>' +
-        '<button type="button" class="btn-primary qz-next" data-act="next"' + (A[q.k].length ? '' : ' disabled') + '>' + IL_T('Siguiente') + ' ' + ARROW + '</button></div></div>';
+        '<button type="button" class="btn-primary qz-next" data-act="next"' + (ready(q) ? '' : ' disabled') + '>' + IL_T('Siguiente') + ' ' + ARROW + '</button></div></div>';
     } else {
       finalShownAt = Date.now();
       qz.innerHTML = bar() + '<div class="' + cls + '"><div class="qz-q qz-q--final"><h3 tabindex="-1">' + IL_T('Ya conocemos un poco mejor lo que estáis buscando') + '</h3><p>' + IL_T('Dejadnos vuestros datos y os preparamos una primera orientación.') + '</p></div>' +
@@ -532,8 +541,7 @@ function IL_T(s){ return IL_TR[s] || s; }
           '<div class="field full" data-f="nombre"><label for="qN">' + IL_T('Nombre del padre, madre o tutor') + '</label><input id="qN" name="fullName" autocomplete="name" required aria-describedby="qNe" value="' + esc(C.nombre) + '"><span class="err" id="qNe">' + IL_T('Escribid vuestro nombre.') + '</span></div>' +
           '<div class="field" data-f="email"><label for="qE">' + IL_T('Correo electrónico') + '</label><input id="qE" name="email" type="email" autocomplete="email" inputmode="email" required aria-describedby="qEe" value="' + esc(C.email) + '"><span class="err" id="qEe">' + IL_T('Revisad el correo: parece incompleto.') + '</span></div>' +
           '<div class="field" data-f="telefono"><label for="qT">' + IL_T('Teléfono') + ' <small>' + IL_T('(opcional)') + '</small></label><input id="qT" name="phone" type="tel" autocomplete="tel" inputmode="tel" aria-describedby="qTe" value="' + esc(C.telefono) + '"><span class="err" id="qTe">' + IL_T('Revisad el teléfono (mínimo 9 cifras).') + '</span></div>' +
-          '<div class="field full"><label for="qI">' + IL_T('¿Cuándo os gustaría empezar?') + ' <small>' + IL_T('(opcional)') + '</small></label><select id="qI" name="inicio"><option value="">' + IL_T('Elegid una opción') + '</option>' + STARTS.map(function(s){ return '<option' + (C.inicio === s ? ' selected' : '') + '>' + s + '</option>'; }).join('') + '</select></div>' +
-          '<div class="field full"><label for="qC">' + IL_T('Comentarios') + ' <small>' + IL_T('(opcional)') + '</small></label><textarea id="qC" name="message" maxlength="1500" placeholder="' + IL_T('Curso actual, nivel de inglés, dudas…') + '">' + esc(C.comentarios) + '</textarea></div>' +
+          (openCom || C.comentarios ? '<div class="field full"><label for="qC">' + IL_T('Comentarios') + ' <small>' + IL_T('(opcional)') + '</small></label><textarea id="qC" name="message" maxlength="1500" placeholder="' + IL_T('Curso actual, nivel de inglés, dudas…') + '">' + esc(C.comentarios) + '</textarea></div>' : '<div class="full"><button type="button" class="rx-more" data-act="com">+ ' + IL_T('Añadir un comentario (curso actual, nivel de inglés, dudas…)') + '</button></div>') +
           '<div class="hp" aria-hidden="true"><label for="qW">Web</label><input id="qW" name="website" tabindex="-1" autocomplete="off"></div>' +
           '<div class="full check-wrap" data-f="privacidad"><label class="check"><input type="checkbox" id="qP" required> <span>' + IL_T('He leído la') + ' <a href="legal.html#privacidad" target="_blank" rel="noopener">' + IL_T('política de privacidad') + '</a> ' + IL_T('y acepto que uséis mis datos para responder a esta consulta.') + '</span></label><span class="err">' + IL_T('Para enviarlo, aceptad la política de privacidad.') + '</span></div>' +
         '</div>' +
@@ -552,7 +560,7 @@ function IL_T(s){ return IL_TR[s] || s; }
   function keep(){
     if (!$('#qzForm', qz)) return;
     C.nombre = $('#qN').value.trim(); C.email = $('#qE').value.trim(); C.telefono = $('#qT').value.trim();
-    C.inicio = $('#qI').value; C.comentarios = $('#qC').value.trim(); C.privacidad = $('#qP').checked;
+    if ($('#qC')) C.comentarios = $('#qC').value.trim(); C.privacidad = $('#qP').checked;
     save();
   }
   function validate(){
@@ -644,6 +652,7 @@ function IL_T(s){ return IL_TR[s] || s; }
   function answeredText(){
     var out = [];
     Q.forEach(function(q){ if (A[q.k].length) out.push(q.label + ': ' + list(q.k)); });
+    if (A.inicio.length) out.push('Inicio: ' + list('inicio'));
     if (talents().length) out.push('Intereses: ' + talents().join(', '));
     return out.length ? 'Respuestas del cuestionario hasta ahora:\n' + out.join('\n') : 'Sin respuestas del cuestionario.';
   }
@@ -709,7 +718,7 @@ function IL_T(s){ return IL_TR[s] || s; }
     if ($('#qcW').value || Date.now() - callShownAt < 2500) { done(); return; }   /* robots: parece enviado, no se manda nada */
     var btn = $('#qzCallSend'); callSending = true; btn.disabled = true; btn.setAttribute('aria-busy', 'true'); btn.innerHTML = '<span class="spin" aria-hidden="true"></span>' + IL_T('Enviando…');
     var payload = new URLSearchParams({
-      form_type: 'lead', service: 'extranjero', serviceExtra: 'Petición de llamada desde el cuestionario «¿Qué colegio podría encajar?»', studentAge: list('edad'),
+      form_type: 'lead', recorrido: 'llamada-extranjero', service: 'extranjero', serviceExtra: 'Petición de llamada desde el cuestionario «¿Qué colegio podría encajar?»', studentAge: list('edad'),
       message: 'Quiere que le llamemos. Mejor momento: ' + moment + '\n' + answeredText(),
       fullName: C.nombre, email: C.email, phone: C.telefono, contactPreference: 'Llamada (' + moment.toLowerCase() + ')',
       rgpd: '1', comunicaciones: 'No', website: $('#qcW').value
@@ -727,12 +736,12 @@ function IL_T(s){ return IL_TR[s] || s; }
   }
 
   /* ---------- texto que recibe Interlanguage ---------- */
-  function extraLine(){ return 'Cuestionario «¿Qué colegio podría encajar?» · Estancia: ' + list('estancia') + ' · Destinos: ' + list('destinos') + ' · Duración: ' + list('duracion'); }
+  function extraLine(){ return 'Cuestionario «¿Qué colegio podría encajar?» · Estancia: ' + list('estancia') + ' · Destinos: ' + list('destinos') + ' · Duración: ' + list('duracion') + ' · Inicio: ' + (list('inicio') || '—'); }
   function messageText(){
     return 'Objetivos: ' + list('objetivos') +
       (talents().length ? '\nIntereses: ' + talents().join(', ') : '') +
       '\nEstancia: ' + list('estancia') + '\nDestinos: ' + list('destinos') + '\nDuración: ' + list('duracion') +
-      '\nInicio aproximado: ' + (C.inicio || '—') + '\nComentarios: ' + (C.comentarios || '—');
+      '\nInicio aproximado: ' + (list('inicio') || '—') + '\nComentarios: ' + (C.comentarios || '—');
   }
 
   /* ---------- eventos ---------- */
@@ -750,10 +759,16 @@ function IL_T(s){ return IL_TR[s] || s; }
       $$('.tile', qz).forEach(function(b){ var on = A[q.k].indexOf(b.getAttribute('data-v')) >= 0; b.setAttribute('aria-pressed', on ? 'true' : 'false'); if (b.hasAttribute('aria-expanded')) b.setAttribute('aria-expanded', on ? 'true' : 'false'); });
       var sub = $('#qzSub', qz);
       if (sub) { var open = A.objetivos.indexOf(TALENT) >= 0; sub.classList.toggle('is-open', open); if (open) sub.removeAttribute('inert'); else sub.setAttribute('inert', ''); }
-      var nx = $('.qz-next', qz); if (nx) nx.disabled = !A[q.k].length;
+      var nx = $('.qz-next', qz); if (nx) nx.disabled = !ready(q);
       save();
-      if (!q.multi) setTimeout(function(){ if (Q[step] === q) go(step + 1); }, reduce ? 0 : 220);
+      if (!q.multi && !q.stay) setTimeout(function(){ if (Q[step] === q) go(step + 1); }, reduce ? 0 : 220);
       return;
+    }
+    if (t.hasAttribute('data-ini')) {
+      A.inicio = [t.getAttribute('data-ini')];
+      $$('[data-ini]', qz).forEach(function(b){ b.setAttribute('aria-pressed', b === t ? 'true' : 'false'); });
+      var nx2 = $('.qz-next', qz); if (nx2) nx2.disabled = !ready(Q[step]);
+      save(); return;
     }
     if (t.hasAttribute('data-chip')) {
       var c = t.getAttribute('data-chip'), j = I.indexOf(c);
@@ -772,7 +787,8 @@ function IL_T(s){ return IL_TR[s] || s; }
     var act = t.getAttribute('data-act');
     if (act === 'call') { keep(); drawCall(); return; }
     if (act === 'quiz') { dir = 1; if (sent) { window.ilExtQuiz.reset(); } else draw(true); return; }
-    if (act === 'next') { if (A[Q[step].k].length) go(step + 1); return; }
+    if (act === 'next') { if (ready(Q[step])) go(step + 1); return; }
+    if (act === 'com') { keep(); openCom = true; draw(false); var c = $('#qC'); if (c) c.focus(); return; }
     if (act === 'back') { keep(); go(step - 1); return; }
     if (t.hasAttribute('data-go')) { keep(); go(+t.getAttribute('data-go')); return; }
   });
@@ -788,12 +804,12 @@ function IL_T(s){ return IL_TR[s] || s; }
     var btn = $('#qzSend');
     sending = true; btn.setAttribute('aria-busy', 'true'); btn.disabled = true; btn.innerHTML = '<span class="spin" aria-hidden="true"></span>' + IL_T('Enviando…');
     var payload = new URLSearchParams({
-      form_type: 'lead', service: 'extranjero', serviceExtra: extraLine(), studentAge: list('edad'), message: messageText(),
+      form_type: 'lead', recorrido: 'cuestionario-extranjero', service: 'extranjero', serviceExtra: extraLine(), studentAge: list('edad'), message: messageText(),
       fullName: C.nombre, email: C.email, phone: C.telefono, contactPreference: C.telefono ? 'Teléfono o correo' : 'Correo',
       rgpd: '1', comunicaciones: 'No', website: $('#qW').value
     });
     /* mismo envío que la consulta de la web: Netlify Forms, formulario «consulta» (window.ilSendForm está en main.js) */
-    var req = window.ilSendForm ? window.ilSendForm('consulta', payload, 'Nueva solicitud web — ' + C.nombre.trim()) : Promise.reject(new Error('nosend'));
+    var req = window.ilSendForm ? window.ilSendForm('consulta', payload, 'Orientación · Estudiar en el extranjero — ' + C.nombre.trim()) : Promise.reject(new Error('nosend'));
     req.then(function(){
       sending = false; sent = true; forget();
       if (window.dataLayer) { window.dataLayer.push({ event: 'lead_generado', servicio: 'extranjero', origen: 'cuestionario' }); window.dataLayer.push({ event: 'formulario_enviado', servicio: 'extranjero' }); }
@@ -804,7 +820,7 @@ function IL_T(s){ return IL_TR[s] || s; }
       alertBox.hidden = false;
     });
   });
-  window.ilExtQuiz = { reset: function(){ forget(); A = { edad: [], objetivos: [], estancia: [], destinos: [], duracion: [] }; I = []; C = { nombre: '', email: '', telefono: '', inicio: '', comentarios: '', privacidad: false }; step = 0; sent = false; after = ''; draw(false); } };
+  window.ilExtQuiz = { reset: function(){ forget(); A = { edad: [], objetivos: [], estancia: [], destinos: [], duracion: [], inicio: [] }; I = []; openCom = false; C = { nombre: '', email: '', telefono: '', inicio: '', comentarios: '', privacidad: false }; step = 0; sent = false; after = ''; draw(false); } };
   draw(false);
 })();
 
