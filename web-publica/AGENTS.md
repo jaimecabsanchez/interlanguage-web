@@ -198,4 +198,5 @@ Publicación: Netlify usa `netlify.toml` (`publish = "web-publica"`). Si se sube
 - **Inglés extraescolar** (`#extraescolar-encaje`, nuevo, con `data-contact-here`): curso exacto (1.º–3.º de Infantil, 1.º–6.º de Primaria, 1.º–4.º de ESO) → su club → colegio → en el Sagrado Corazón, horario publicado (16:30–17:25) y **días preferidos** (los días de cada grupo no están publicados: no inventar opciones cerradas) → datos para la plaza. El cierre `#extraescolar-contacto` queda solo con «Solicitar plaza» y el correo.
 - «¿Qué programa os interesa?» de la portada: las cuatro tarjetas abren su página y bajan a su recorrido (`data-jump-to`). La consulta larga `#leadForm` queda para «Ayudadme a elegir un programa en el extranjero».
 - Envío: `window.ilSendForm` (Netlify «consulta» y «campamento»; las dos definiciones llevan el campo nuevo `recorrido`). Campo trampa + 2,5 s mínimo; sin envíos dobles; si falla, se conserva lo escrito. Respuestas guardadas en `sessionStorage` (`il-rx-*`). Textos ES/EN en línea con `t('es', 'en')`.
-- Versiones: `recorridos.css?v=1`, `recorridos.js?v=1`, `extranjero.js?v=14`.
+- Semanas de Madrid: la marca va en la esquina (como la inscripción anterior), para que no pise el texto en tarjetas estrechas (1000–1200 px y tableta).
+- Versiones: `recorridos.css?v=2`, `recorridos.js?v=1`, `extranjero.js?v=14`.
