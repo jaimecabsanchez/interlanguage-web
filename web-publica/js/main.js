@@ -254,6 +254,8 @@ window.dataLayer = window.dataLayer || [];
 
   // ---- navegación SPA: home <-> subpáginas de servicio ----
   const allViews = Array.from(document.querySelectorAll('.view'));
+  // Páginas independientes (p. ej. /estudiar-en-el-extranjero/): no tienen la portada dentro, así que no se enruta por #servicio-…
+  const STANDALONE = !document.getElementById('view-home');
   const homeAnchors = ['inicio','servicios','progresion','destinos','por-que','contacto'];   // ids reales de las secciones de view-home
 
   const HOME_TITLE = document.title;
@@ -825,7 +827,7 @@ window.dataLayer = window.dataLayer || [];
   // carga directa con hash tipo #servicio-campamentos o #servicio-extranjero-irlanda
   (function(){
     const hash = window.location.hash.replace('#','');
-    if (hash.indexOf('servicio-') === 0){
+    if (!STANDALONE && hash.indexOf('servicio-') === 0){
       const r = resolveService(hash.replace('servicio-',''));
       if (r){
         showView('view-service-' + r.view, { silent: true });
@@ -864,7 +866,7 @@ window.dataLayer = window.dataLayer || [];
     const target = h && document.getElementById(h);
     if (target && target.closest('#view-home')) requestAnimationFrame(function(){ jumpScroll(function(){ target.scrollIntoView({ block: 'start' }); }); });
   }
-  window.addEventListener('popstate', syncViewFromHash);
+  if (!STANDALONE) window.addEventListener('popstate', syncViewFromHash);
 
   document.querySelectorAll('[data-cta]:not([data-cta-service]):not([data-advise])').forEach(function(el){   // los que llevan data-cta-service o data-advise ya lo miden arriba
     el.addEventListener('click', function(){ pushEvent('clic_cta', { cta_id: el.getAttribute('data-cta'), cta_text: el.textContent.trim() }); });

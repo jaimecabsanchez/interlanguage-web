@@ -16,7 +16,7 @@
   var $ = function(s, r){ return (r || document).querySelector(s); };
   var $$ = function(s, r){ return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
   var esc = function(s){ return String(s == null ? '' : s).replace(/[&<>"]/g, function(c){ return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
-  var IMG = 'images/', EUR = ' €';
+  var IMG = '/images/', EUR = ' €';
   var money = function(n){ return EN ? '€' + n : String(n) + EUR; };
 
   /* ---------- piezas comunes (mismo marcado que el cuestionario de js/extranjero.js) ---------- */
