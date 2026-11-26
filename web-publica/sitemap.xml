@@ -15,4 +15,52 @@
   <url>
     <loc>https://interlanguage.es/legal.html</loc>
   </url>
+  <url>
+    <loc>https://interlanguage.es/estudiar-en-el-extranjero/reino-unido/</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://interlanguage.es/estudiar-en-el-extranjero/reino-unido/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://interlanguage.es/en/study-abroad/united-kingdom/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://interlanguage.es/estudiar-en-el-extranjero/reino-unido/"/>
+  </url>
+  <url>
+    <loc>https://interlanguage.es/en/study-abroad/united-kingdom/</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://interlanguage.es/estudiar-en-el-extranjero/reino-unido/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://interlanguage.es/en/study-abroad/united-kingdom/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://interlanguage.es/estudiar-en-el-extranjero/reino-unido/"/>
+  </url>
+  <url>
+    <loc>https://interlanguage.es/estudiar-en-el-extranjero/irlanda/</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://interlanguage.es/estudiar-en-el-extranjero/irlanda/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://interlanguage.es/en/study-abroad/ireland/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://interlanguage.es/estudiar-en-el-extranjero/irlanda/"/>
+  </url>
+  <url>
+    <loc>https://interlanguage.es/en/study-abroad/ireland/</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://interlanguage.es/estudiar-en-el-extranjero/irlanda/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://interlanguage.es/en/study-abroad/ireland/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://interlanguage.es/estudiar-en-el-extranjero/irlanda/"/>
+  </url>
+  <url>
+    <loc>https://interlanguage.es/estudiar-en-el-extranjero/canada/</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://interlanguage.es/estudiar-en-el-extranjero/canada/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://interlanguage.es/en/study-abroad/canada/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://interlanguage.es/estudiar-en-el-extranjero/canada/"/>
+  </url>
+  <url>
+    <loc>https://interlanguage.es/en/study-abroad/canada/</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://interlanguage.es/estudiar-en-el-extranjero/canada/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://interlanguage.es/en/study-abroad/canada/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://interlanguage.es/estudiar-en-el-extranjero/canada/"/>
+  </url>
+  <url>
+    <loc>https://interlanguage.es/estudiar-en-el-extranjero/estados-unidos/</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://interlanguage.es/estudiar-en-el-extranjero/estados-unidos/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://interlanguage.es/en/study-abroad/united-states/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://interlanguage.es/estudiar-en-el-extranjero/estados-unidos/"/>
+  </url>
+  <url>
+    <loc>https://interlanguage.es/en/study-abroad/united-states/</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://interlanguage.es/estudiar-en-el-extranjero/estados-unidos/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://interlanguage.es/en/study-abroad/united-states/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://interlanguage.es/estudiar-en-el-extranjero/estados-unidos/"/>
+  </url>
 </urlset>

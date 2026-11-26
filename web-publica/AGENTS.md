@@ -218,3 +218,19 @@ Publicación: Netlify usa `netlify.toml` (`publish = "web-publica"`). Si se sube
   - Debajo hay cuatro dudas plegadas: edad, vuelta, convalidación y presupuesto.
   - **Datos con fuente oficial en `docs/fuentes-comparador-destinos.md`:** no cambies un dato sin actualizar ese archivo. No inventes rankings, precios ni actividades «en todos los colegios».
 - Versiones: `styles.css?v=163` (en las cinco páginas), `main.js?v=67`, `recorridos.css?v=4`, `recorridos.js?v=2`, `extranjero.css?v=27`, `extranjero.js?v=18`.
+
+## Páginas de país de «Estudiar en el extranjero» (publicadas el 26-11-2026)
+- **Rutas reales:**
+  - `/estudiar-en-el-extranjero/{reino-unido,irlanda,canada,estados-unidos}/`.
+  - En inglés, `/en/study-abroad/{united-kingdom,ireland,canada,united-states}/`.
+- **La página general sigue siendo la vista `#servicio-extranjero` de `index.html`.**
+  - `/estudiar-en-el-extranjero/` y `/en/study-abroad/` solo redirigen a ella.
+  - Sus tarjetas de destino y las de la portada llevan a cada país («Descubrir Reino Unido»…).
+  - Desde un país se vuelve a una sección con `/?ir=ext-cmp#servicio-extranjero`.
+- **Generadas, no se editan a mano.** Primero `python3 scripts/traduccion-en/build_en.py` y **después** `python3 scripts/estudiar-en-el-extranjero/build.py --publicar`. El orden importa: `build.py` retoca también `index.html` e `index-en.html`.
+- **Contenido bilingüe** en `scripts/estudiar-en-el-extranjero/contenido.py`. Fuentes oficiales en `docs/fuentes-comparador-destinos.md`.
+- **`js/rutas.js`** (en el `<head>`) lleva `#servicio-extranjero-<país>` a su página.
+- **Modo vista previa:** sin `--publicar`, `build.py` añade `noindex` y `il-preview`, que simula los envíos. **Nunca debe llegar a producción.** Compruébalo antes de publicar: `grep -rl il-preview web-publica` debe salir vacío.
+- **`main.js`** no enruta en páginas sin `#view-home`. Las fotos de `extranjero.js` y `recorridos.js` usan rutas absolutas (`/images/…`).
+- Versiones: `main.js?v=68`, `extranjero.js?v=20`, `recorridos.js?v=3`, `rutas.js?v=1`, `estudiar.js?v=1`, `estudiar.css?v=1`.
+- Detalle y pendientes: `docs/estudiar-en-el-extranjero-v2/README.md`.

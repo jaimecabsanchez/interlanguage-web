@@ -69,6 +69,12 @@ def balanced(src, start_pat):
     raise ValueError(start_pat)
 
 
+def go(k, L):
+    """«Descubrir Reino Unido» / «Discover the United Kingdom»."""
+    n = tr(P[k]['n'], L)
+    return '%s %s' % (tr(C['descubrir'], L), ('the ' + n) if (L == 'en' and k in ('uk', 'us')) else n)
+
+
 def ver(src, name):
     m = re.search(re.escape(name) + r'\?v=(\d+)', src)
     return m.group(1) if m else '1'
@@ -357,8 +363,8 @@ def pais(L, pz, k):
     considera = ''.join('<div><dt>%s</dt><dd>%s</dd></div>' % (e(tr(a, L)), e(tr(b, L))) for a, b in d['considera'])
     fuentes = ' · '.join('<a href="%s" target="_blank" rel="noopener">%s</a>' % (u, e(t)) for t, u in d['fuentes'])
     tz = '<p class="note">%s</p>' % e(U('tz_nota')) if k in ('ca', 'us') else ''
-    otros = ''.join('<a class="po-card" href="%s" style="--pc:var(--cx-%s)">%s<span><b>%s</b><small>%s</small><em>%s %s %s</em></span></a>' % (
-        url(L, o), o, picture(P[o]['hero'], [480, 720], tr(P[o]['hero_alt'], L), '(min-width:900px) 30vw, 100vw'), e(tr(P[o]['n'], L)), e(tr(P[o]['tag'], L)), e(tr(C['descubrir'], L)), e(tr(P[o]['n'], L)), ARROW)
+    otros = ''.join('<a class="po-card" href="%s" style="--pc:var(--cx-%s)">%s<span><b>%s</b><small>%s</small><em>%s %s</em></span></a>' % (
+        url(L, o), o, picture(P[o]['hero'], [480, 720], tr(P[o]['hero_alt'], L), '(min-width:900px) 30vw, 100vw'), e(tr(P[o]['n'], L)), e(tr(P[o]['tag'], L)), e(go(o, L)), ARROW)
         for o in ORDEN if o != k)
     body = f'''
 <div class="x2 pc pc--{k}" style="--pc:var(--cx-{k}); --pc-bg:var(--cx-{k}-bg)">
@@ -470,7 +476,7 @@ def patch_index(fname, L):
     names = {kk: tr(P[kk]['n'], L) for kk in P}
     for kk in ORDEN:
         pat = re.compile(r'(<a class="dcard" href="%s"[^>]*>.*?<span class="dcard-go">)[^<]*' % re.escape(url(L, kk)), re.S)
-        s = pat.sub(lambda m: m.group(1) + '%s %s ' % (tr(C['descubrir'], L), names[kk]), s, count=1)
+        s = pat.sub(lambda m: m.group(1) + go(kk, L) + ' ', s, count=1)
     rutas = '<meta name="il-rutas" content="1">\n<script src="js/rutas.js?v=%s"></script>\n' % JS_V
     prev = '<meta name="robots" content="noindex, nofollow">\n<meta name="il-preview" content="1">\n'
     s = s.replace(prev, '')
