@@ -75,7 +75,7 @@
 <link rel="preload" href="css/styles.css?v=163" as="style">
 <link rel="stylesheet" href="css/styles.css?v=163">
 <link rel="stylesheet" href="css/motion.css?v=1">
-<link rel="stylesheet" href="css/extranjero.css?v=26">
+<link rel="stylesheet" href="css/extranjero.css?v=27">
 <link rel="stylesheet" href="css/recorridos.css?v=3">
 </head>
 <body>
@@ -1275,16 +1275,28 @@
         <span class="dcard-body"><span class="dcard-name">Canadá</span><span class="dcard-tag">Idiomas y entornos para elegir</span><span class="dcard-txt">En inglés o en francés, en provincias y entornos muy distintos.</span><span class="dcard-go">Ver destino <svg class="ic"><use href="#x2-i-arrow"/></svg></span></span>
       </a>
     </div>
+    <!-- COMPARADOR (26-11-2026): datos en js/extranjero.js, contrastados con fuentes oficiales (docs/fuentes-comparador-destinos.md, en la raíz del repo) -->
     <div class="cmp" id="ext-cmp">
       <div class="cmp-head">
-        <div><h3>Comparad dos destinos</h3><p>Elegid dos países: cada uno con su color, y lo que coincide, marcado.</p></div>
+        <h3 id="ext-cmp-t">Cuatro destinos. Diferentes formas de aprender y crecer.</h3>
+        <p>Descubrid las diferencias entre sus sistemas educativos, su vida escolar y las oportunidades que ofrece cada destino.</p>
       </div>
       <div class="cmp-pick2">
-        <div class="cmp-sel"><label for="cmpA">Primer destino</label><select id="cmpA"></select></div>
-        <div class="cmp-sel"><label for="cmpB">Segundo destino</label><select id="cmpB"></select></div>
+        <div class="cmp-sel"><label for="cmpA">Primer destino</label><div class="cmp-chips" data-cmp-pick="a" role="group" aria-label="Primer destino"></div><select id="cmpA"></select></div>
+        <div class="cmp-sel"><label for="cmpB">Segundo destino</label><div class="cmp-chips" data-cmp-pick="b" role="group" aria-label="Segundo destino"></div><select id="cmpB"></select></div>
       </div>
-      <div class="cx" id="cmpTable" aria-live="polite"></div>
-      <p class="note" style="margin-top:14px">Orientativo: alojamiento, materias, actividades y plazas se confirman con cada colegio. *En Norteamérica la diferencia horaria cambia según la zona.</p>
+      <div class="cx" id="cmpTable" aria-labelledby="ext-cmp-t" role="region"></div>
+      <p class="note cmp-note">Información orientativa. Los programas académicos, actividades, modalidades de alojamiento y requisitos de admisión pueden variar según el colegio y el destino. *La diferencia horaria con Norteamérica cambia unos días al año con los cambios de hora.</p>
+      <div class="cmp-cta">
+        <div><h4>¿Todavía no tenéis claro qué destino elegir?</h4><p>Cada alumno es diferente. Os ayudamos a encontrar el país y el colegio que mejor encajen con su personalidad, intereses y necesidades.</p></div>
+        <a class="btn-primary" href="#ext-encaje" data-cmp-quiz data-cta="comparador-cuestionario">Encontrar el colegio adecuado</a>
+      </div>
+      <div class="cmp-faq">
+        <details class="cmp-q"><summary>¿Cuál es la mejor edad para estudiar en el extranjero?</summary><p>No hay una edad ideal para todos. Influyen su madurez, su nivel de inglés y el momento de sus estudios, y cada colegio fija sus edades de admisión. Conviene pensar desde el principio en el curso al que volverá.</p></details>
+        <details class="cmp-q"><summary>¿Qué ocurre cuando vuelve a España?</summary><p>Lo planificamos antes de elegir colegio: qué curso hará fuera y a cuál se incorporará al volver, para que la experiencia encaje en su recorrido académico.</p></details>
+        <details class="cmp-q"><summary>¿Necesitará convalidar sus estudios?</summary><p>Para incorporarse a cualquier curso de Primaria o de la ESO no hace falta convalidar. Para Bachillerato y otros estudios que exigen el título de la ESO, hay que homologar o convalidar lo cursado fuera. Lo revisamos caso por caso. <a class="txt-link" href="https://www.educacionfpydeportes.gob.es/servicios-al-ciudadano/catalogo/general/05/051270/ficha/051270.html" target="_blank" rel="noopener">Información oficial del Ministerio</a></p></details>
+        <details class="cmp-q"><summary>¿Qué presupuesto debemos tener en cuenta?</summary><p>Depende del destino, el colegio, la duración y el alojamiento. Os preparamos un presupuesto personalizado que detalla qué incluye y qué se paga aparte. <a class="txt-link" href="#ext-dudas">Más preguntas frecuentes</a></p></details>
+      </div>
     </div>
   </div>
 </section>
@@ -1695,7 +1707,7 @@
 <script src="js/reserva-llamada.js?v=1" defer></script>
 <script src="js/destinos.js?v=1" defer></script>
 <script src="js/main.js?v=67" defer></script>
-<script src="js/extranjero.js?v=16" defer></script>
+<script src="js/extranjero.js?v=18" defer></script>
 <script src="js/recorridos.js?v=2" defer></script>
 <script src="js/motion.js?v=4" defer></script>
 </body>

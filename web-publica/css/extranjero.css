@@ -786,3 +786,105 @@
 @media (max-width:600px){
   .x2 #ext-encaje .qz-foot .qz-callcta{justify-content:flex-start;}
 }
+
+/* ---------- Comparador de destinos (26-11-2026): selectores por botones, foto más baja, nombre y lema debajo,
+   fondos muy claros por país, detalles prácticos plegados y «Puede encajar si…» al final ---------- */
+.x2 #ext-cmp{
+  --cx-uk:var(--navy);   --cx-uk-bg:#F0F3F7;
+  --cx-ie:var(--forest); --cx-ie-bg:#EFF4F1;
+  --cx-us:#385578;       --cx-us-bg:#EFF3F8;
+  --cx-ca:#864745;       --cx-ca-bg:#F7F0EF;
+}
+.x2 #ext-cmp .cmp-head{display:block; margin-bottom:22px;}
+.x2 #ext-cmp .cmp-head h3{font-size:clamp(1.5rem,2.4vw,1.875rem); line-height:1.2; text-wrap:balance;}
+.x2 #ext-cmp .cmp-head p{max-width:62ch; margin-top:8px; font-size:1rem; line-height:1.55;}
+/* selectores: botones en escritorio, desplegable nativo en móvil */
+.x2 #ext-cmp .cmp-pick2{margin-bottom:16px;}
+.x2 #ext-cmp .cmp-chips{display:flex; flex-wrap:wrap; gap:8px;}
+.x2 #ext-cmp .cmp-sel select{display:none;}
+.x2 .cmp-chip{display:inline-flex; align-items:center; gap:8px; min-height:44px; padding:9px 14px; border:1px solid var(--field-line); border-radius:var(--r-btn); background:var(--white); font:inherit; font-size:.9375rem; font-weight:600; color:var(--navy); cursor:pointer; transition:border-color .2s ease, background-color .2s ease, color .2s ease;}
+.x2 .cmp-dot{width:8px; height:8px; border-radius:50%; background:var(--c);}
+.x2 .cmp-chip[aria-pressed="true"]{border-color:var(--c); background:color-mix(in srgb, var(--c) 9%, var(--white)); color:var(--c); box-shadow:inset 0 0 0 1px var(--c);}
+.x2 .cmp-chip:disabled{opacity:.4; cursor:not-allowed;}
+.x2 .cmp-chip:focus-visible{outline:3px solid color-mix(in srgb, var(--accent) 45%, transparent); outline-offset:2px;}
+@media (hover:hover){.x2 .cmp-chip:not(:disabled):not([aria-pressed="true"]):hover{border-color:var(--c); color:var(--c);}}
+/* tarjetas: fondo claro de cada país */
+.x2 #ext-cmp .cx::before{background:var(--ta);}
+.x2 #ext-cmp .cx::after{background:var(--tb);}
+.x2 #ext-cmp .cx-h{aspect-ratio:auto; overflow:visible; border-radius:var(--r-card) var(--r-card) 0 0; background:none;}
+.x2 #ext-cmp .cx-h::after{content:none;}
+.x2 #ext-cmp .cx-h img{display:block; width:100%; height:auto; aspect-ratio:16/5.5; object-fit:cover; border-radius:var(--r-card) var(--r-card) 0 0;}
+.x2 #ext-cmp .cx-name{position:static; display:block; padding:16px 20px 4px; font:600 clamp(1.375rem,2vw,1.75rem)/1.15 var(--font-display); color:var(--c);}
+.x2 #ext-cmp .cx-name small{display:block; margin-top:4px; font:italic 500 1rem/1.35 var(--font-display); color:var(--ink-soft);}
+.x2 #ext-cmp .cx-h + .cx-h + .cx-c,.x2 #ext-cmp .cx-h + .cx-h + .cx-c + .cx-c{padding-top:14px; border-top:1px solid color-mix(in srgb, var(--c) 14%, transparent);}
+.x2 #ext-cmp .cx-l{color:var(--c);}
+.x2 #ext-cmp .cx-c p{color:var(--ink);}
+/* «Lo que lo hace especial»: el rasgo de cada país, con su explicación plegada */
+.x2 #ext-cmp .cx-c .cx-sp{font:600 1.125rem/1.35 var(--font-display); color:var(--navy);}
+.x2 .cx-more{display:inline-flex; align-items:center; gap:4px; min-height:32px; margin-top:4px; padding:4px 0; border:0; background:none; font:inherit; font-size:.875rem; font-weight:600; color:var(--accent); cursor:pointer;}
+.x2 .cx-more svg{width:16px; height:16px; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; transition:transform .2s ease;}
+.x2 .cx-more[aria-expanded="true"] svg{transform:rotate(180deg);}
+.x2 .cx-more:focus-visible,.x2 .cx-prac-btn:focus-visible{outline:3px solid color-mix(in srgb, var(--accent) 45%, transparent); outline-offset:2px; border-radius:2px;}
+@media (hover:hover){.x2 .cx-more:hover{text-decoration:underline; text-underline-offset:3px;}}
+.x2 #ext-cmp .cx-c .cx-morep{margin-top:6px; font-size:.9375rem; color:var(--ink-soft);}
+/* «Ver más detalles prácticos»: franja blanca a lo ancho de las dos columnas */
+.x2 .cx-prac{grid-column:1 / -1; position:relative; z-index:1; display:flex; justify-content:center; padding:10px 0; background:var(--white);}
+.x2 .cx-prac-btn{display:inline-flex; align-items:center; gap:8px; min-height:44px; padding:10px 18px; border:1px solid var(--field-line); border-radius:var(--r-btn); background:var(--white); font:inherit; font-size:.9375rem; font-weight:600; color:var(--navy); cursor:pointer;}
+.x2 .cx-prac-btn svg{width:18px; height:18px; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; transition:transform .2s ease;}
+.x2 .cx-prac-btn[aria-expanded="true"] svg{transform:rotate(180deg);}
+@media (hover:hover){.x2 .cx-prac-btn:hover{border-color:var(--navy);}}
+.x2 #ext-cmp .cx-prac + .cx-c,.x2 #ext-cmp .cx-prac + .cx-c + .cx-c{border-top:0;}
+/* «Puede encajar si vuestro hijo…»: siempre al final, con un poco más de color y la serif */
+.x2 #ext-cmp .cx-c.is-fit{padding-top:18px; padding-bottom:22px; border-top:0; background:color-mix(in srgb, var(--c) 7%, transparent); border-radius:0 0 var(--r-card) var(--r-card);}
+.x2 #ext-cmp .cx-c.is-fit p{margin-top:8px; font:italic 500 1.1875rem/1.45 var(--font-display); color:var(--navy);}
+.x2 #ext-cmp .cmp-note{margin-top:14px;}
+/* cierre: enlace al cuestionario */
+.x2 .cmp-cta{display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:16px 32px; margin-top:28px; padding-top:24px; border-top:1px solid var(--line);}
+.x2 .cmp-cta > div{flex:1 1 420px; min-width:0;}
+.x2 .cmp-cta h4{margin:0; font:600 1.375rem/1.25 var(--font-display); color:var(--navy);}
+.x2 .cmp-cta p{max-width:62ch; margin-top:6px; color:var(--ink-soft);}
+/* dudas frecuentes, plegadas */
+.x2 .cmp-faq{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); column-gap:32px; margin-top:24px; border-top:1px solid var(--line);}
+.x2 .cmp-q{border-bottom:1px solid var(--line);}
+.x2 .cmp-q summary{display:flex; align-items:center; gap:12px; min-height:56px; padding:12px 0; list-style:none; font-weight:600; color:var(--navy); cursor:pointer;}
+.x2 .cmp-q summary::-webkit-details-marker{display:none;}
+.x2 .cmp-q summary::after{content:'+'; margin-left:auto; flex:none; font-size:1.4rem; font-weight:500; line-height:1; color:var(--accent); transition:transform .2s ease;}
+.x2 .cmp-q[open] summary::after{transform:rotate(45deg);}
+.x2 .cmp-q p{padding:0 0 16px; font-size:.9375rem; line-height:1.6; color:var(--ink-soft);}
+@media (hover:hover){.x2 .cmp-q summary:hover{color:var(--accent);}}
+@media (prefers-reduced-motion:reduce){.x2 .cmp-chip,.x2 .cx-more svg,.x2 .cx-prac-btn svg,.x2 .cmp-q summary::after{transition:none;}}
+@media (max-width:700px){
+  .x2 #ext-cmp .cmp-chips{display:none;}
+  .x2 #ext-cmp .cmp-sel select{display:block;}
+  .x2 #ext-cmp .cx-h img{aspect-ratio:3/2;}
+  .x2 #ext-cmp .cx-name{padding:12px 12px 2px; font-size:1.25rem;}
+  .x2 #ext-cmp .cx-name small{font-size:.875rem;}
+  .x2 #ext-cmp .cx-c .cx-sp{font-size:1rem;}
+  .x2 #ext-cmp .cx-c.is-fit p{font-size:1rem;}
+  .x2 #ext-cmp .cx-c .cx-morep{font-size:.875rem;}
+  .x2 .cx-prac-btn{width:100%; justify-content:center;}
+  .x2 .cmp-faq{grid-template-columns:1fr;}
+  .x2 .cmp-cta .btn-primary{width:100%; justify-content:center;}
+}
+
+/* móvil: los dos países de cada apartado, uno debajo del otro (columnas de 160 px no se leen bien) */
+.x2 .cx-who{display:none;}
+@media (max-width:700px){
+  .x2 #ext-cmp .cx{row-gap:0;}
+  .x2 #ext-cmp .cx::before,.x2 #ext-cmp .cx::after{content:none;}
+  .x2 #ext-cmp .cx-h{background:var(--t);}
+  .x2 #ext-cmp .cx-a{--t:var(--ta);} .x2 #ext-cmp .cx-b{--t:var(--tb);}
+  .x2 #ext-cmp .cx-c{grid-column:1 / -1; padding:10px 14px 12px; border-top:0; border-left:3px solid var(--c); background:var(--t);}
+  .x2 #ext-cmp .cx-c.cx-a{margin-top:18px; border-radius:0;}
+  .x2 #ext-cmp .cx-c.cx-b{border-radius:0 0 var(--r-card) var(--r-card);}
+  .x2 #ext-cmp .cx-h + .cx-h + .cx-c{margin-top:16px;}
+  .x2 #ext-cmp .cx-c .cx-l{margin:-10px -14px 10px -17px; padding:0 0 6px; background:var(--white); color:var(--navy);}
+  .x2 #ext-cmp .cx-c.cx-b .cx-l{display:none;}
+  .x2 #ext-cmp .cx-who{display:block; font-size:.75rem; font-weight:700; letter-spacing:.04em; text-transform:uppercase; color:var(--c);}
+  .x2 #ext-cmp .cx-c p{margin-top:3px; font-size:.9375rem;}
+  .x2 #ext-cmp .cx-c.is-fit{padding-top:10px; padding-bottom:14px; background:color-mix(in srgb, var(--c) 9%, var(--white));}
+  .x2 #ext-cmp .cx-c.is-fit.cx-a{border-radius:0;}
+  .x2 #ext-cmp .cx-c.is-fit.cx-b{border-radius:0 0 var(--r-card) var(--r-card);}
+  .x2 #ext-cmp .cx-c.is-fit p{font-size:1.0625rem;}
+  .x2 #ext-cmp .cx-prac{margin-top:18px; padding:0;}
+}

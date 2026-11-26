@@ -229,50 +229,158 @@ function IL_T(s){ return IL_TR[s] || s; }
     card.addEventListener('mouseleave', function(){ if (v) { v.pause(); card.classList.remove('is-playing'); } });
   });
 
-  /* ---------- comparador de dos destinos (orientativo) ---------- */
+  /* ---------- comparador de dos destinos (orientativo; rehecho el 26-11-2026) ----------
+     Dos columnas, una por país, con su foto y su color. Las celdas de una misma fila comparten la fila de la rejilla,
+     así que miden lo mismo en los dos países. Seis apartados a la vista, cinco prácticos plegados y «Puede encajar si…»
+     siempre al final. Los datos están contrastados con fuentes oficiales: ver docs/fuentes-comparador-destinos.md (raíz del repo). */
+  var EN = (document.documentElement.lang || '').slice(0, 2) === 'en';
+  var L = function(es, en){ return EN ? en : es; };
+  var ORDER = ['uk', 'ie', 'us', 'ca'];
+  /* textos cortos (una idea por celda); lo que necesita explicación va en «Qué significa» (objetos { t, more }) */
   var D = {
-    uk: { n: IL_T('Reino Unido'), c: 'var(--c-uk)', s: '', r: [IL_T('Inglés'), IL_T('Internado'), IL_T('Currículos distintos en Inglaterra y Escocia'), IL_T('Tres trimestres: septiembre a julio (Inglaterra) o agosto a junio (Escocia)'), IL_T('Europa · 1 h menos'), IL_T('Busca una vida de colegio organizada')] },
-    ie: { n: IL_T('Irlanda'), c: 'var(--c-ie)', s: '', r: [IL_T('Inglés, según centro'), IL_T('Internado o familia anfitriona'), IL_T('Junior Cycle, Senior Cycle y posible Transition Year'), IL_T('De finales de agosto o septiembre a mayo o junio'), IL_T('Europa · 1 h menos'), IL_T('Valora la vida en familia o en internado cerca de España')] },
-    us: { n: IL_T('Estados Unidos'), c: 'var(--c-us)', s: '', r: [IL_T('Inglés'), IL_T('Familia anfitriona o internado privado, según programa'), IL_T('Materias y créditos; requisitos por estado y distrito'), IL_T('De agosto o septiembre a mayo o junio'), IL_T('Transatlántico · Nueva York, 6 h menos*'), IL_T('Tiene autonomía y curiosidad por la vida escolar norteamericana')] },
-    ca: { n: IL_T('Canadá'), c: 'var(--c-ca)', s: '', r: [IL_T('Inglés o francés, según centro'), IL_T('Familia anfitriona o colegio privado con alojamiento'), IL_T('Currículo y diploma por provincia'), IL_T('De septiembre a junio, a menudo en semestres'), IL_T('Transatlántico · Toronto, 6 h menos*'), IL_T('Quiere elegir bien provincia, idioma y entorno')] }
+    uk: { n: L('Reino Unido', 'United Kingdom'), tag: L('Tradición y formación integral', 'Tradition and all-round education'), photo: 'uk-campus',
+      r: [L('Formación integral que se especializa poco a poco', 'All-round education that gradually specialises'),
+        { t: L('GCSE (16 años) y A-Levels (18). Escocia, el suyo', 'GCSEs (age 16) and A-Levels (18). Scotland has its own'), more: L('Son los exámenes oficiales al final de cada etapa en Inglaterra. Escocia tiene su propio sistema: National 5, Higher y Advanced Higher.', 'They are the official exams at the end of each stage in England. Scotland has its own system: National 5, Higher and Advanced Higher.') },
+        L('Deporte, música, teatro, arte y debate', 'Sport, music, drama, art and debating'),
+        { t: L('La vida de internado (boarding school)', 'Boarding school life'), more: L('Los alumnos viven en el colegio: estudian, conviven y participan en sus actividades. Cada colegio organiza a su manera la residencia y las actividades.', 'Pupils live at school: they study, live together and take part in its activities. Each school organises its boarding and activities in its own way.') },
+        L('Internado', 'Boarding'),
+        L('Inglés', 'English'),
+        L('Septiembre a julio; en Escocia, agosto a junio', 'September to July; in Scotland, August to June'),
+        L('Europa · 1 h menos', 'Europe · 1 hour behind'),
+        L('Más de 6 meses: visado Child Student. Hasta 6: ETA', 'Over 6 months: Child Student visa. Up to 6: ETA'),
+        L('Escocia tiene su propio sistema educativo', 'Scotland has its own education system'),
+        L('Busca una comunidad escolar estructurada donde desarrollar sus capacidades académicas, deportivas y artísticas.', 'Is looking for a structured school community in which to develop their academic, sporting and artistic abilities.')] },
+    ie: { n: L('Irlanda', 'Ireland'), tag: L('Inmersión y crecimiento personal', 'Immersion and personal growth'), photo: 'ie-campus',
+      r: [L('Estudio y desarrollo personal, con proyectos', 'Study and personal development, with projects'),
+        { t: L('Junior Cycle, Transition Year y Leaving Certificate', 'Junior Cycle, Transition Year and Leaving Certificate'), more: L('Junior Cycle: los tres primeros cursos, con examen hacia los 15 años. Transition Year: un curso opcional. Leaving Certificate: los dos últimos cursos, con examen final.', 'Junior Cycle: the first three years, with an exam at around 15. Transition Year: an optional year. Leaving Certificate: the last two years, with a final exam.') },
+        L('Deporte, creatividad, música y orientación profesional', 'Sport, creativity, music and career exploration'),
+        { t: L('El Transition Year, donde se ofrece', 'Transition Year, where offered'), more: L('Un curso opcional, habitualmente hacia los 15–16 años, con proyectos, prácticas en empresas y actividades para descubrir intereses. La mayoría de los colegios lo ofrecen, no todos.', 'An optional year, usually at around 15–16, with projects, work experience and activities to discover interests. Most schools offer it, not all.') },
+        L('Familia anfitriona o internado', 'Host family or boarding'),
+        L('Inglés; el irlandés es obligatorio, salvo exención', 'English; Irish is compulsory unless exempt'),
+        L('De finales de agosto o septiembre a mayo o junio', 'Late August or September to May or June'),
+        L('Europa · 1 h menos', 'Europe · 1 hour behind'),
+        L('Sin visado: es de la Unión Europea', 'No visa: it is in the European Union'),
+        L('No todos los colegios tienen Transition Year', 'Not every school has Transition Year'),
+        L('Quiere ganar confianza, mejorar su inglés, descubrir nuevos intereses y vivir una experiencia internacional cerca de España.', 'Wants to gain confidence, improve their English, discover new interests and have an international experience close to Spain.')] },
+    us: { n: L('Estados Unidos', 'United States'), tag: L('Talento e iniciativa', 'Talent and initiative'), photo: 'us-campus',
+      r: [L('Asignaturas a elegir y una vida escolar activa', 'Subject choice and an active school life'),
+        { t: L('High School Diploma; requisitos según el estado', 'High School Diploma; requirements by state'), more: L('Es el título de secundaria. Cada estado y distrito fija sus requisitos. Algunos colegios ofrecen cursos AP: asignaturas de nivel universitario con examen.', 'It is the secondary school diploma. Each state and district sets its requirements. Some schools offer AP courses: college-level subjects with an exam.') },
+        L('Deporte, artes, tecnología y liderazgo', 'Sport, the arts, technology and leadership'),
+        { t: L('La experiencia del high school', 'The high school experience'), more: L('Asignaturas obligatorias y optativas, clubes, deporte, artes y participación en la comunidad escolar. La oferta depende de cada colegio.', 'Required and elective subjects, clubs, sport, the arts and taking part in the school community. What is on offer depends on each school.') },
+        L('Familia anfitriona o internado', 'Host family or boarding'),
+        L('Inglés', 'English'),
+        L('Agosto o septiembre a mayo o junio', 'August or September to May or June'),
+        L('Norteamérica · 6 a 9 h menos*', 'North America · 6 to 9 hours behind*'),
+        L('Visado F-1; en colegio público, máximo 12 meses', 'F-1 visa; at a public school, 12 months at most'),
+        L('No hay un currículo nacional', 'There is no national curriculum'),
+        L('Quiere explorar sus intereses, desarrollar sus talentos y participar activamente en la vida escolar.', 'Wants to explore their interests, develop their talents and take an active part in school life.')] },
+    ca: { n: L('Canadá', 'Canada'), tag: L('Flexibilidad y diversidad', 'Flexibility and diversity'), photo: 'ca-campus',
+      r: [L('Materias a elegir y aprendizaje aplicado', 'Subject choice and applied learning'),
+        { t: L('Diploma de secundaria de cada provincia', 'Each province’s secondary school diploma'), more: L('Cada provincia fija su currículo. El diploma se obtiene al completar materias obligatorias y optativas.', 'Each province sets its curriculum. The diploma is awarded on completing required and optional courses.') },
+        L('Ciencias, tecnología, deporte y naturaleza', 'Science, technology, sport and the outdoors'),
+        { t: L('Flexibilidad para elegir materias', 'Flexibility in choosing subjects'), more: L('Permite explorar distintas materias, programas y actividades. Cada provincia tiene su sistema, y los programas varían de un colegio a otro.', 'Students can explore different subjects, programmes and activities. Each province has its own system, and programmes vary between schools.') },
+        L('Familia anfitriona o internado', 'Host family or boarding'),
+        L('Inglés o francés, según la provincia', 'English or French, depending on the province'),
+        L('Septiembre a junio, según la provincia', 'September to June, depending on the province'),
+        L('Norteamérica · 4,5 a 9 h menos*', 'North America · 4.5 to 9 hours behind*'),
+        L('Permiso de estudios (más de 6 meses), tutor legal si es menor de 17 y eTA', 'Study permit (over 6 months), a custodian if under 17, and an eTA'),
+        L('Elegid a la vez provincia e idioma', 'Choose the province and language together'),
+        L('Disfruta descubriendo nuevas materias, valora la diversidad y quiere desarrollar su independencia.', 'Enjoys discovering new subjects, values diversity and wants to become more independent.')] }
   };
-  var K = [IL_T('Idioma'), IL_T('Alojamiento'), IL_T('Sistema'), IL_T('Calendario'), IL_T('Distancia'), IL_T('Puede encajar si…')];
-  /* dos paneles, uno por país: foto y color propios; cada dato lleva su etiqueta dentro del panel y las filas quedan alineadas.
-     Si los dos países coinciden en un dato, se marca «Igual en los dos» para que salten a la vista las diferencias. */
-  var PHOTO = { uk: 'uk-campus', ie: 'ie-campus', us: 'us-campus', ca: 'ca-campus' };
+  /* apartados: cinco a la vista; cinco en «Ver más detalles prácticos»; «Puede encajar si…», siempre al final */
+  var K = [L('Enfoque y forma de aprender', 'Approach and way of learning'), L('Sistema académico', 'Academic system'), L('Talentos, según el colegio', 'Talents, depending on the school'), L('Lo que lo hace especial', 'What makes it special'), L('Alojamiento', 'Accommodation'),
+    L('Idioma', 'Language'), L('Calendario escolar', 'School year'), L('Diferencia horaria', 'Time difference'), L('Visados y trámites', 'Visas and paperwork'), L('A tener en cuenta', 'Worth knowing'),
+    L('Puede encajar si vuestro hijo…', 'It may suit your child if they…')];
+  var NMAIN = 5, NPRAC = 5, SPECIAL = 3;
+  /* iconos de trazo fino, todos con la misma rejilla de 24 px */
   var KI = [
-    '<path d="M4 5.5h12.5a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H10l-4 3.5v-3.5H4a2 2 0 0 1-2-2v-6a2 2 0 0 1 2-2z"/>',
-    '<path d="M3.5 11.5L12 4.5l8.5 7"/><path d="M6 10v10.5h12V10"/>',
+    '<circle cx="12" cy="12" r="8.5"/><path d="M15.3 8.7l-2 4.6-4.6 2 2-4.6z"/>',
     '<path d="M2 9.5L12 5l10 4.5L12 14z"/><path d="M6 11.5v4.6c1.7 1.6 3.7 2.4 6 2.4s4.3-.8 6-2.4v-4.6"/>',
+    '<path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.8l-5.2 2.8 1-5.8L3.5 9.7l5.9-.9z"/>',
+    '<path d="M12 3v3M12 18v3M3 12h3M18 12h3"/><circle cx="12" cy="12" r="4"/>',
+    '<path d="M3.5 11.5L12 4.5l8.5 7"/><path d="M6 10v10.5h12V10"/>',
+    '<path d="M4 5.5h12.5a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H10l-4 3.5v-3.5H4a2 2 0 0 1-2-2v-6a2 2 0 0 1 2-2z"/>',
     '<rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/>',
     '<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>',
+    '<rect x="5" y="3.5" width="14" height="17" rx="2"/><path d="M9 8h6M9 12h6M9 16h3"/>',
+    '<circle cx="12" cy="12" r="8.5"/><path d="M12 11v5M12 8v.01"/>',
     '<path d="M12 20s-7.5-4.4-7.5-10A4.3 4.3 0 0 1 12 7.4 4.3 4.3 0 0 1 19.5 10c0 5.6-7.5 10-7.5 10z"/>'
   ];
   var ki = function(i){ return '<svg viewBox="0 0 24 24" aria-hidden="true">' + KI[i] + '</svg>'; };
-  var sa = $('#cmpA', root), sb = $('#cmpB', root), tb = $('#cmpTable', root);
-  if (sa && sb && tb) {
-    Object.keys(D).forEach(function(k){ sa.add(new Option(D[k].n, k)); sb.add(new Option(D[k].n, k)); });
-    sa.value = 'uk'; sb.value = 'ie';
-    var render = function(){
-      var ka = sa.value, kb = sb.value, a = D[ka], b = D[kb];
-      sa.parentNode.style.setProperty('--c', a.c); sb.parentNode.style.setProperty('--c', b.c);
-      tb.style.setProperty('--ca', a.c); tb.style.setProperty('--cb', b.c);
-      var head = function(k, d, side){
-        return '<div class="cx-h cx-' + side + '"><img src="images/internacional/' + PHOTO[k] + '-480.webp" srcset="images/internacional/' + PHOTO[k] + '-480.webp 480w, images/internacional/' + PHOTO[k] + '-960.webp 960w" sizes="(max-width:700px) 46vw, 560px" alt="" loading="lazy" decoding="async"><span class="cx-name">' + d.n + '</span></div>';
-      };
-      var h = head(ka, a, 'a') + head(kb, b, 'b');
-      K.forEach(function(k, i){
-        var same = a.r[i] === b.r[i], last = i === K.length - 1;
-        ['a', 'b'].forEach(function(side){
-          var d = side === 'a' ? a : b;
-          h += '<div class="cx-c cx-' + side + (same ? ' is-same' : '') + (last ? ' is-fit' : '') + '"><span class="cx-l">' + ki(i) + k + (same ? '<em>' + IL_T('Igual en los dos') + '</em>' : '') + '</span><p>' + d.r[i].replace(/(\d) h\b/g, '$1\u00a0h') + '</p></div>';
+  var cmp = $('#ext-cmp', root), tb = $('#cmpTable', root), sa = $('#cmpA', root), sb = $('#cmpB', root);
+  if (cmp && tb && sa && sb) {
+    var S = { a: 'uk', b: 'ie' }, prac = false, more = {};
+    var chips = { a: $('[data-cmp-pick="a"]', cmp), b: $('[data-cmp-pick="b"]', cmp) };
+    ORDER.forEach(function(k){
+      sa.add(new Option(D[k].n, k)); sb.add(new Option(D[k].n, k));
+      ['a', 'b'].forEach(function(side){
+        if (!chips[side]) return;
+        var bt = document.createElement('button');
+        bt.type = 'button'; bt.className = 'cmp-chip'; bt.setAttribute('data-k', k); bt.style.setProperty('--c', 'var(--cx-' + k + ')');
+        bt.innerHTML = '<span class="cmp-dot" aria-hidden="true"></span>' + D[k].n;
+        chips[side].appendChild(bt);
+      });
+    });
+    var nb = function(t){ return String(t).replace(/(\d) h\b/g, '$1 h'); };
+    function cell(k, side, i){
+      var d = D[k], v = d.r[i], cls = 'cx-c cx-' + side + (i >= NMAIN && i < NMAIN + NPRAC ? ' is-prac' : '') + (i === K.length - 1 ? ' is-fit' : '') + (i === SPECIAL ? ' is-special' : '');
+      var body = typeof v === 'string' ? '<p>' + nb(v) + '</p>'
+        : '<p' + (i === SPECIAL ? ' class="cx-sp"' : '') + '>' + nb(v.t) + '</p><button type="button" class="cx-more" data-cmp-more="' + i + '" aria-expanded="' + !!more[i] + '">' + L('Qué significa', 'What it means') + '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button><p class="cx-morep"' + (more[i] ? '' : ' hidden') + '>' + v.more + '</p>';
+      return '<div class="' + cls + '"' + (cls.indexOf('is-prac') >= 0 && !prac ? ' hidden' : '') + '><span class="cx-l">' + ki(i) + K[i] + '</span><span class="cx-who">' + d.n + '</span>' + body + '</div>';
+    }
+    function head(k, side){
+      var d = D[k];
+      return '<div class="cx-h cx-' + side + '"><img src="images/internacional/' + d.photo + '-480.webp" srcset="images/internacional/' + d.photo + '-480.webp 480w, images/internacional/' + d.photo + '-960.webp 960w" sizes="(max-width:700px) 46vw, 600px" alt="" loading="lazy" decoding="async"><span class="cx-name">' + d.n + '<small>' + d.tag + '</small></span></div>';
+    }
+    function render(){
+      var ka = S.a, kb = S.b;
+      cmp.style.setProperty('--ca', 'var(--cx-' + ka + ')'); cmp.style.setProperty('--cb', 'var(--cx-' + kb + ')');
+      cmp.style.setProperty('--ta', 'var(--cx-' + ka + '-bg)'); cmp.style.setProperty('--tb', 'var(--cx-' + kb + '-bg)');
+      var h = head(ka, 'a') + head(kb, 'b');
+      for (var i = 0; i < K.length; i++) {
+        if (i === NMAIN) h += '<div class="cx-prac"><button type="button" class="cx-prac-btn" data-cmp-prac aria-expanded="' + prac + '">' + (prac ? L('Ocultar los detalles prácticos', 'Hide the practical details') : L('Ver más detalles prácticos', 'See more practical details')) + '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button></div>';
+        h += cell(ka, 'a', i) + cell(kb, 'b', i);
+      }
+      tb.innerHTML = h;
+      sa.value = ka; sb.value = kb;
+      ['a', 'b'].forEach(function(side){
+        var other = S[side === 'a' ? 'b' : 'a'];
+        Array.prototype.forEach.call((side === 'a' ? sa : sb).options, function(o){ o.disabled = o.value === other; });
+        if (chips[side]) $$('.cmp-chip', chips[side]).forEach(function(bt){
+          var k = bt.getAttribute('data-k');
+          bt.setAttribute('aria-pressed', k === S[side] ? 'true' : 'false');
+          bt.disabled = k === other;
+          bt.title = k === other ? L('Ya está en la otra columna', 'Already in the other column') : '';
         });
       });
-      tb.innerHTML = h;
-    };
-    var swap = function(){ if (reduce) return render(); tb.classList.add('is-swap'); setTimeout(function(){ render(); tb.classList.remove('is-swap'); }, 180); };
-    sa.addEventListener('change', function(){ if (sa.value === sb.value) sb.value = Object.keys(D).filter(function(k){ return k !== sa.value; })[0]; swap(); });
-    sb.addEventListener('change', function(){ if (sa.value === sb.value) sa.value = Object.keys(D).filter(function(k){ return k !== sb.value; })[0]; swap(); });
+    }
+    /* cambiar de país sin que la página salte: se mantiene en su sitio el control que se ha tocado */
+    function pick(side, k, anchor){
+      if (!D[k] || S[side] === k || S[side === 'a' ? 'b' : 'a'] === k) return;
+      var top = anchor ? anchor.getBoundingClientRect().top : 0;
+      S[side] = k;
+      var done = function(){ render(); if (anchor) { var el = anchor.isConnected ? anchor : $('[data-cmp-pick="' + side + '"] [data-k="' + k + '"]', cmp) || (side === 'a' ? sa : sb); var dy = el.getBoundingClientRect().top - top; if (Math.abs(dy) > 1) window.scrollBy(0, dy); } };
+      if (reduce) return done();
+      tb.classList.add('is-swap'); setTimeout(function(){ done(); tb.classList.remove('is-swap'); }, 160);
+    }
+    sa.addEventListener('change', function(){ pick('a', sa.value, sa); });
+    sb.addEventListener('change', function(){ pick('b', sb.value, sb); });
+    cmp.addEventListener('click', function(e){
+      var bt = e.target.closest('button'); if (!bt || !cmp.contains(bt)) return;
+      if (bt.classList.contains('cmp-chip')) { var side = bt.closest('[data-cmp-pick]').getAttribute('data-cmp-pick'); pick(side, bt.getAttribute('data-k'), bt); return; }
+      if (bt.hasAttribute('data-cmp-prac')) {
+        prac = !prac; bt.setAttribute('aria-expanded', prac);
+        bt.firstChild.nodeValue = prac ? L('Ocultar los detalles prácticos', 'Hide the practical details') : L('Ver más detalles prácticos', 'See more practical details');
+        $$('.cx-c.is-prac', tb).forEach(function(c){ c.hidden = !prac; });
+        return;
+      }
+      if (bt.hasAttribute('data-cmp-more')) {   /* se abre a la vez en los dos países: la fila sigue alineada */
+        var row = bt.getAttribute('data-cmp-more'); more[row] = !more[row];
+        $$('[data-cmp-more="' + row + '"]', tb).forEach(function(b){ b.setAttribute('aria-expanded', more[row]); b.nextElementSibling.hidden = !more[row]; });
+      }
+    });
+    /* «Encontrar el colegio adecuado»: los dos países que se comparaban pasan a la pregunta de destinos, si aún no la habéis contestado */
+    $$('[data-cmp-quiz]', root).forEach(function(a){ a.addEventListener('click', function(){ if (window.ilExtQuiz && window.ilExtQuiz.preset) window.ilExtQuiz.preset([S.a, S.b]); }); });
     render();
   }
 
@@ -821,7 +929,14 @@ function IL_T(s){ return IL_TR[s] || s; }
       alertBox.hidden = false;
     });
   });
-  window.ilExtQuiz = { reset: function(){ forget(); A = { edad: [], objetivos: [], estancia: [], destinos: [], duracion: [], inicio: [] }; I = []; openCom = false; C = { nombre: '', email: '', telefono: '', inicio: '', comentarios: '', privacidad: false }; step = 0; sent = false; after = ''; draw(false); } };
+  /* desde el comparador: preselecciona los destinos que se estaban comparando, solo si la pregunta sigue sin contestar */
+  function preset(keys){
+    if (sent || A.destinos.length) return;
+    var qd = Q.filter(function(q){ return q.k === 'destinos'; })[0]; if (!qd) return;
+    A.destinos = qd.o.filter(function(o){ return o.flag && keys.indexOf(o.flag) >= 0; }).map(function(o){ return o.v; });
+    save(); draw(false);
+  }
+  window.ilExtQuiz = { preset: preset, reset: function(){ forget(); A = { edad: [], objetivos: [], estancia: [], destinos: [], duracion: [], inicio: [] }; I = []; openCom = false; C = { nombre: '', email: '', telefono: '', inicio: '', comentarios: '', privacidad: false }; step = 0; sent = false; after = ''; draw(false); } };
   draw(false);
 })();
 

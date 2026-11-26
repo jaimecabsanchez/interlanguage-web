@@ -75,7 +75,7 @@
 <link rel="preload" href="css/styles.css?v=163" as="style">
 <link rel="stylesheet" href="css/styles.css?v=163">
 <link rel="stylesheet" href="css/motion.css?v=1">
-<link rel="stylesheet" href="css/extranjero.css?v=26">
+<link rel="stylesheet" href="css/extranjero.css?v=27">
 <link rel="stylesheet" href="css/recorridos.css?v=3">
 </head>
 <body>
@@ -1275,16 +1275,28 @@
         <span class="dcard-body"><span class="dcard-name">Canada</span><span class="dcard-tag">Languages and settings to choose from</span><span class="dcard-txt">In English or French, in very different provinces and settings.</span><span class="dcard-go">View destination <svg class="ic"><use href="#x2-i-arrow"/></svg></span></span>
       </a>
     </div>
+    <!-- COMPARADOR (26-11-2026): datos en js/extranjero.js, contrastados con fuentes oficiales (docs/fuentes-comparador-destinos.md, en la raíz del repo) -->
     <div class="cmp" id="ext-cmp">
       <div class="cmp-head">
-        <div><h3>Compare two destinations</h3><p>Choose two countries: each has its own colour, and what they share is highlighted.</p></div>
+        <h3 id="ext-cmp-t">Four destinations. Different ways to learn and grow.</h3>
+        <p>Discover the differences between their education systems, their school life and the opportunities each destination offers.</p>
       </div>
       <div class="cmp-pick2">
-        <div class="cmp-sel"><label for="cmpA">First destination</label><select id="cmpA"></select></div>
-        <div class="cmp-sel"><label for="cmpB">Second destination</label><select id="cmpB"></select></div>
+        <div class="cmp-sel"><label for="cmpA">First destination</label><div class="cmp-chips" data-cmp-pick="a" role="group" aria-label="First destination"></div><select id="cmpA"></select></div>
+        <div class="cmp-sel"><label for="cmpB">Second destination</label><div class="cmp-chips" data-cmp-pick="b" role="group" aria-label="Second destination"></div><select id="cmpB"></select></div>
       </div>
-      <div class="cx" id="cmpTable" aria-live="polite"></div>
-      <p class="note" style="margin-top:14px">For guidance only: accommodation, subjects, activities and places are confirmed with each school. *In North America the time difference varies by region.</p>
+      <div class="cx" id="cmpTable" aria-labelledby="ext-cmp-t" role="region"></div>
+      <p class="note cmp-note">For guidance only. Academic programmes, activities, accommodation options and admission requirements may vary by school and destination. *The time difference with North America changes for a few days a year when the clocks change.</p>
+      <div class="cmp-cta">
+        <div><h4>Still not sure which destination to choose?</h4><p>Every student is different. We help you find the country and the school that best suit their personality, interests and needs.</p></div>
+        <a class="btn-primary" href="#ext-encaje" data-cmp-quiz data-cta="comparador-cuestionario">Find the right school</a>
+      </div>
+      <div class="cmp-faq">
+        <details class="cmp-q"><summary>What is the best age to study abroad?</summary><p>There is no ideal age for everyone. Their maturity, their English and the stage of their studies all matter, and each school sets its own admission ages. It is worth thinking from the start about the school year they will return to.</p></details>
+        <details class="cmp-q"><summary>What happens when they come back to Spain?</summary><p>We plan it before choosing a school: which year they will do abroad and which year they will join on their return, so the experience fits into their education.</p></details>
+        <details class="cmp-q"><summary>Will their studies need to be recognised?</summary><p>No recognition is needed to join any year of Primary or ESO (compulsory secondary). For Bachillerato and other studies that require the ESO certificate, the studies done abroad must be officially recognised (homologación or convalidación). We review each case. <a class="txt-link" href="https://www.educacionfpydeportes.gob.es/servicios-al-ciudadano/catalogo/general/05/051270/ficha/051270.html" target="_blank" rel="noopener">Official information from the Spanish Ministry</a></p></details>
+        <details class="cmp-q"><summary>What budget should we plan for?</summary><p>It depends on the destination, the school, the length of stay and the accommodation. We prepare a personalised budget that sets out what is included and what is paid separately. <a class="txt-link" href="#ext-dudas">More frequently asked questions</a></p></details>
+      </div>
     </div>
   </div>
 </section>
@@ -1695,7 +1707,7 @@
 <script src="js/reserva-llamada.js?v=1" defer></script>
 <script src="js/destinos.js?v=1" defer></script>
 <script src="js/main.js?v=67" defer></script>
-<script src="js/extranjero.js?v=16" defer></script>
+<script src="js/extranjero.js?v=18" defer></script>
 <script src="js/recorridos.js?v=2" defer></script>
 <script src="js/motion.js?v=4" defer></script>
 </body>

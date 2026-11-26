@@ -208,4 +208,13 @@ Publicación: Netlify usa `netlify.toml` (`publish = "web-publica"`). Si se sube
 - **Sin píldoras ni círculos detrás de los iconos** en las dos páginas de campamentos (etiquetas de los internados como texto separado por «·», iconos sueltos). Reglas al final de `styles.css`.
 - **Móvil:** la cabecera se esconde al bajar y vuelve al subir (≤1024 px; clase `is-away` en `header.site` y `hdr-away` en `<html>`, que sube el índice de la página de extranjero). Internados y tardes (≤640 px) y los destinos de la portada (≤600 px) se deslizan en fila.
 - **Cuestionario de «Estudiar en el extranjero» sin foto** (`#ext-encaje`): título centrado encima (28–37 px según el ancho), la frase «Cinco preguntas para conocer mejor a vuestro hijo y orientaros personalmente», los indicadores «2 minutos» y «Sin compromiso», y la ficha al ancho del resto de la página (al principio 950 px: a Jaime le parecía pequeño), sin sombra, sobre crema. Progreso: «Paso n de 6 · Fase» y seis segmentos (los nombres de cada paso, solo para lectores de pantalla). «Reservad una llamada» va abajo a la izquierda (`callFoot()` en `extranjero.js`), como enlace secundario. Los tres bloques de debajo pasan a ser una frase (`.qz-human`). Estilos al final de `extranjero.css`, todos con `#ext-encaje`. Preguntas, lógica y envío, sin cambios.
-- Versiones: `styles.css?v=163` (en las cinco páginas), `main.js?v=67`, `recorridos.css?v=3`, `recorridos.js?v=2`, `extranjero.css?v=26`, `extranjero.js?v=16`.
+- **Comparador de destinos (26-11-2026)**, dentro de `#ext-destinos`: «Cuatro destinos. Diferentes formas de aprender y crecer.».
+  - Se eligen dos países con botones en escritorio y desplegables en móvil, y un mismo país no puede ir en las dos columnas.
+  - Cada columna lleva la foto (más baja), el nombre y el lema del país, y un fondo claro propio: `--cx-uk|ie|us|ca` y `-bg`, definidos solo en `#ext-cmp`.
+  - A la vista hay cinco apartados, en frases cortas: «Enfoque y forma de aprender», «Sistema académico» y «Lo que lo hace especial», estos dos con un «Qué significa» que se abre en los dos países a la vez.
+  - «Ver más detalles prácticos» despliega cinco apartados más. «Puede encajar si vuestro hijo…» va siempre al final.
+  - En escritorio, las celdas de una fila comparten fila de la rejilla y miden lo mismo. En móvil, los dos países van uno debajo del otro.
+  - «Encontrar el colegio adecuado» lleva a `#ext-encaje` y preselecciona los dos países en «Destinos» (`window.ilExtQuiz.preset`), solo si esa pregunta está vacía.
+  - Debajo hay cuatro dudas plegadas: edad, vuelta, convalidación y presupuesto.
+  - **Datos con fuente oficial en `docs/fuentes-comparador-destinos.md`:** no cambies un dato sin actualizar ese archivo. No inventes rankings, precios ni actividades «en todos los colegios».
+- Versiones: `styles.css?v=163` (en las cinco páginas), `main.js?v=67`, `recorridos.css?v=3`, `recorridos.js?v=2`, `extranjero.css?v=27`, `extranjero.js?v=18`.
