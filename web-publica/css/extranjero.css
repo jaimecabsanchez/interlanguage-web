@@ -758,3 +758,31 @@
   .x2 .tiles--5 .tile.is-thumb:last-child .tick{top:50%; right:14px; margin-top:-12px;}
 }
 @media (max-width:360px){.x2 .cmp-sel select{padding:10px 26px 10px 8px; background-position:right 8px center;}}
+
+/* ---------- «¿Qué colegio podría encajar…?» sin foto: título discreto encima, cuestionario centrado (25-11-2026, pedido por Jaime) ---------- */
+.x2 #ext-encaje{background:var(--white);}
+/* cabecera como el resto de secciones de la página (.sec-head: etiqueta, título y texto a la izquierda) */
+.x2 #ext-encaje .qz-intro{max-width:720px;}
+.x2 #ext-encaje .qz-meta{display:flex; flex-wrap:wrap; gap:8px 24px; margin:16px 0 0; padding:0; list-style:none;}
+.x2 #ext-encaje .qz-meta li{display:inline-flex; align-items:center; gap:7px; font-size:.875rem; font-weight:600; color:var(--navy);}
+.x2 #ext-encaje .qz-meta svg{width:16px; height:16px; flex:none; fill:none; stroke:var(--accent); stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round;}
+.x2 #ext-encaje .rx-shell.qz-solo{grid-template-columns:minmax(0,1fr); max-width:none; margin-inline:auto; box-shadow:none;}
+/* progreso: «Paso 2 de 6 · Fase» y seis segmentos, sin el nombre de cada paso debajo */
+.x2 #ext-encaje .qz-top{display:block; margin-bottom:24px; padding-bottom:18px;}
+.x2 #ext-encaje .qz-count-l{display:inline;}
+.x2 #ext-encaje .qz-steps li > span,.x2 #ext-encaje .qz-steps button > span{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap;}
+.x2 #ext-encaje .qz-steps li{display:flex; align-items:center; min-height:20px;}
+.x2 #ext-encaje .qz-steps li > i{flex:1;}
+.x2 #ext-encaje .qz-steps button{flex:1; min-height:20px; display:flex; align-items:center;}
+.x2 #ext-encaje .qz-steps button i{flex:1;}
+/* llamada: abajo a la izquierda, como enlace secundario */
+.x2 #ext-encaje .qz-foot{display:flex; justify-content:flex-start; margin-top:6px;}
+.x2 #ext-encaje .qz-final + .qz-foot{margin-top:18px; padding-top:12px; border-top:1px solid var(--line);}
+.x2 #ext-encaje .qz-foot .qz-callcta{min-height:44px; padding:8px 0; border:0; border-radius:0; background:none; font-weight:500; color:var(--ink-soft); text-align:left;}
+.x2 #ext-encaje .qz-foot .qz-callcta b{font-weight:600;}
+@media (hover:hover){.x2 #ext-encaje .qz-foot .qz-callcta:hover{background:none; color:var(--navy);}}
+.x2 #ext-encaje .qz-human{max-width:none; margin:20px 0 0; font-size:.9375rem; color:var(--ink-soft);}
+.x2 #ext-encaje .qz-human + .qz-mail{margin-top:6px; text-align:left;}
+@media (max-width:600px){
+  .x2 #ext-encaje .qz-foot .qz-callcta{justify-content:flex-start;}
+}

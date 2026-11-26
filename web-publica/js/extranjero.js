@@ -489,9 +489,10 @@ function IL_T(s){ return IL_TR[s] || s; }
         (i < n ? '<button type="button" data-go="' + (i - 1) + '" aria-label="' + IL_T('Volver a: ') + STEP_LABELS[i - 1] + '">' + lab + '</button>' : lab) + '</li>';
     }
     return '<div class="qz-top"><div class="qz-prog"><p class="qz-count">' + IL_T('Paso') + ' ' + n + ' ' + IL_T('de') + ' ' + TOTAL + '<span class="qz-count-l"> · ' + STEP_LABELS[n - 1] + '</span></p>' +
-      '<ol class="qz-steps" aria-label="' + IL_T('Pasos del cuestionario') + '">' + segs + '</ol></div>' +
-      '<button type="button" class="qz-callcta" data-act="call">' + PHONE + '<span>' + IL_T('¿Preferís hablar con nosotros? <b>Reservad una llamada</b>') + '</span></button></div>';
+      '<ol class="qz-steps" aria-label="' + IL_T('Pasos del cuestionario') + '">' + segs + '</ol></div></div>';
   }
+  /* «Reservad una llamada»: abajo a la izquierda, por debajo de «Siguiente» en importancia (25-11-2026) */
+  function callFoot(){ return '<div class="qz-foot"><button type="button" class="qz-callcta" data-act="call">' + PHONE + '<span>' + IL_T('¿Preferís hablar con nosotros? <b>Reservad una llamada</b>') + '</span></button></div>'; }
   function tile(q, o){
     var on = A[q.k].indexOf(o.v) >= 0, inner, cls = 'tile';
     if (o.flag) { inner = '<span class="thumb thumb--flag">' + flag(o.flag) + '</span><b>' + o.v + '</b>'; cls += ' is-thumb'; }
@@ -532,7 +533,7 @@ function IL_T(s){ return IL_TR[s] || s; }
         '<div class="' + tcls + '" role="group" aria-label="' + esc(q.t) + '">' + q.o.map(function(o){ return tile(q, o); }).join('') + '</div>' +
         (q.k === 'objetivos' ? chips() : '') + (q.k === 'duracion' ? startChips() : '') +
         '<div class="qz-nav"><button type="button" class="qz-back" data-act="back"' + (step ? '' : ' disabled') + '>' + BACK + IL_T('Anterior') + '</button>' +
-        '<button type="button" class="btn-primary qz-next" data-act="next"' + (ready(q) ? '' : ' disabled') + '>' + IL_T('Siguiente') + ' ' + ARROW + '</button></div></div>';
+        '<button type="button" class="btn-primary qz-next" data-act="next"' + (ready(q) ? '' : ' disabled') + '>' + IL_T('Siguiente') + ' ' + ARROW + '</button></div>' + callFoot() + '</div>';
     } else {
       finalShownAt = Date.now();
       qz.innerHTML = bar() + '<div class="' + cls + '"><div class="qz-q qz-q--final"><h3 tabindex="-1">' + IL_T('Ya conocemos un poco mejor lo que estáis buscando') + '</h3><p>' + IL_T('Dejadnos vuestros datos y os preparamos una primera orientación.') + '</p></div>' +
@@ -547,7 +548,7 @@ function IL_T(s){ return IL_TR[s] || s; }
         '</div>' +
         '<div class="qz-send"><button type="button" class="qz-back" data-act="back">' + BACK + IL_T('Anterior') + '</button><button type="submit" class="btn-primary" id="qzSend">' + SEND + '</button></div>' +
         '<div id="qzAlert" class="qz-alert" role="alert" hidden></div>' +
-        '</form></div></div>';
+        '</form></div>' + callFoot() + '</div>';
     }
     save();
     if (focus) {
@@ -726,7 +727,7 @@ function IL_T(s){ return IL_TR[s] || s; }
     var req = window.ilSendForm ? window.ilSendForm('consulta', payload, 'Petición de llamada — ' + C.nombre) : Promise.reject(new Error('nosend'));
     req.then(function(){
       callSending = false;
-      if (window.dataLayer) window.dataLayer.push({ event: 'lead_generado', servicio: 'extranjero', origen: 'peticion_llamada' });
+      if (window.ilTrack) window.ilTrack('lead_generado', { servicio: 'extranjero', origen: 'peticion_llamada' });
       done();
     }).catch(function(){
       callSending = false; btn.disabled = false; btn.removeAttribute('aria-busy'); btn.textContent = IL_T('Pedir que nos llaméis');
@@ -812,7 +813,7 @@ function IL_T(s){ return IL_TR[s] || s; }
     var req = window.ilSendForm ? window.ilSendForm('consulta', payload, 'Orientación · Estudiar en el extranjero — ' + C.nombre.trim()) : Promise.reject(new Error('nosend'));
     req.then(function(){
       sending = false; sent = true; forget();
-      if (window.dataLayer) { window.dataLayer.push({ event: 'lead_generado', servicio: 'extranjero', origen: 'cuestionario' }); window.dataLayer.push({ event: 'formulario_enviado', servicio: 'extranjero' }); }
+      if (window.ilTrack) { window.ilTrack('lead_generado', { servicio: 'extranjero', origen: 'cuestionario' }); window.ilTrack('formulario_enviado', { servicio: 'extranjero' }); }
       thanks();
     }).catch(function(){
       sending = false; btn.removeAttribute('aria-busy'); btn.disabled = false; btn.textContent = SEND;

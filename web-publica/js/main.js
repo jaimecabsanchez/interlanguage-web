@@ -68,6 +68,7 @@ window.dataLayer = window.dataLayer || [];
     if (IL_CONSENT !== 'accepted') return;
     window.dataLayer.push(Object.assign({event: name}, params || {}));
   }
+  window.ilTrack = pushEvent;   // extranjero.js y recorridos.js miden solo a través de aquí (respeta el consentimiento)
   window.addEventListener('DOMContentLoaded', function(){ pushEvent('pagina_cargada', { page_path: window.location.pathname }); });
 
   // Aviso de cookies: se muestra si aún no hay decisión; al aceptar, activa la analítica.
@@ -159,7 +160,15 @@ window.dataLayer = window.dataLayer || [];
   (function(){
     var bar = document.querySelector('header.site');
     if (!bar) return;
-    function onScroll(){ bar.classList.toggle('is-scrolled', window.scrollY > 8); }
+    var lastY = window.scrollY, mq = window.matchMedia('(max-width:1024px)');
+    function onScroll(){
+      var y = window.scrollY;
+      bar.classList.toggle('is-scrolled', y > 8);
+      // móvil y tableta: al bajar se esconde para dejar más pantalla; al subir (o con el menú abierto) vuelve
+      var away = mq.matches && y > 160 && y > lastY + 2 && !(navLinks && navLinks.classList.contains('open')) && !bar.contains(document.activeElement);
+      if (away || y < lastY - 2 || y <= 160 || !mq.matches) { bar.classList.toggle('is-away', away); document.documentElement.classList.toggle('hdr-away', away); }
+      lastY = y;
+    }
     window.addEventListener('scroll', onScroll, { passive:true });
     onScroll();
   })();

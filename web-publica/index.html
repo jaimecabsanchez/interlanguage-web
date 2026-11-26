@@ -72,11 +72,11 @@
 <link rel="preload" href="fonts/newsreader-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/newsreader-italic-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/plus-jakarta-sans-wght-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="css/styles.css?v=162" as="style">
-<link rel="stylesheet" href="css/styles.css?v=162">
+<link rel="preload" href="css/styles.css?v=163" as="style">
+<link rel="stylesheet" href="css/styles.css?v=163">
 <link rel="stylesheet" href="css/motion.css?v=1">
-<link rel="stylesheet" href="css/extranjero.css?v=23">
-<link rel="stylesheet" href="css/recorridos.css?v=2">
+<link rel="stylesheet" href="css/extranjero.css?v=26">
+<link rel="stylesheet" href="css/recorridos.css?v=3">
 </head>
 <body>
 <a class="skip-link" href="#main">Saltar al contenido</a>
@@ -349,7 +349,7 @@
             <a class="lf-opt" href="#servicio-campamentos" data-jump-service="campamentos" data-jump-to="camp-reserva"><picture><source type="image/avif" srcset="images/campamentos/alumnos-cocinando-banner-480.avif 480w, images/campamentos/alumnos-cocinando-banner-800.avif 800w, images/campamentos/alumnos-cocinando-banner-1087.avif 1087w" sizes="200px"><source type="image/webp" srcset="images/campamentos/alumnos-cocinando-banner-480.webp 480w, images/campamentos/alumnos-cocinando-banner-800.webp 800w, images/campamentos/alumnos-cocinando-banner-1087.webp 1087w" sizes="200px"><img src="images/campamentos/alumnos-cocinando-banner.jpg" alt="" width="96" height="106" loading="lazy" decoding="async" style="object-position:35% 50%"></picture><span class="lf-opt-t"><strong>Campamentos de verano <span>en Madrid</span></strong><small>3–9 años · Fechas por confirmar</small><span class="lf-option-action">Ver programa<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></a>
             <a class="lf-opt" href="#servicio-extraescolar" data-jump-service="extraescolar" data-jump-to="extraescolar-encaje"><picture><source type="image/avif" srcset="images/programas/profesor-ritmo-en-300.avif 300w, images/programas/profesor-ritmo-en-480.avif 480w, images/programas/profesor-ritmo-en-800.avif 800w, images/programas/profesor-ritmo-en-1200.avif 1200w" sizes="200px"><source type="image/webp" srcset="images/programas/profesor-ritmo-en-300.webp 300w, images/programas/profesor-ritmo-en-480.webp 480w, images/programas/profesor-ritmo-en-800.webp 800w, images/programas/profesor-ritmo-en-1200.webp 1200w" sizes="200px"><img src="images/programas/profesor-ritmo-en.jpg" alt="" width="96" height="106" loading="lazy" decoding="async" style="object-position:50% 62%"></picture><span class="lf-opt-t"><strong>Inglés extraescolar <span>en el colegio</span></strong><small>6–12 años</small><span class="lf-option-action">Ver programa<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></a>
           </div>
-          <button type="button" class="lf-opt--plain lf-opt" data-service="orientacion" data-title="Orientación sobre programas en el extranjero">Ayudadme a elegir un programa en el extranjero<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <button type="button" class="lf-opt--plain" data-orient-open aria-controls="orientEncaje">Ayudadme a elegir un programa en el extranjero<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
           <span class="err" id="err-service" role="alert">Elegid una opción para continuar.</span>
         </div>
 
@@ -515,6 +515,16 @@
         <p class="call-done-mail" id="callDoneMail" hidden></p>
         <p class="call-done-cancel"><a id="callCancelLink" href="#">Cancelar la llamada</a> <span>Si no puedes atendernos, cancélala y reserva otra hora.</span></p>
       </div>
+    </div>
+    <div class="lf-orient" id="orientEncaje" hidden>
+      <button type="button" class="lf-orient-back" data-orient-close><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M11 6l-6 6 6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>Ver los cuatro programas</button>
+      <div class="x2"><div class="rx-shell">
+        <aside class="rx-aside">
+          <figure class="rx-ph"><img src="images/internacional/extranjero-grupo-800.webp" alt="" width="800" height="600" loading="lazy" decoding="async" style="object-position:50% 55%"><figcaption class="rx-cap"><span class="rx-eb">Orientación</span><h2 id="orientEncaje-t">Os ayudamos a elegir</h2><p>Cuatro preguntas rápidas y os escribimos con los programas en el extranjero que encajan con vuestro hijo.</p><span class="rx-trust">Os responde una persona del equipo</span></figcaption></figure>
+        </aside>
+        <div class="qz" data-rx="orientacion" aria-live="polite"></div>
+      </div>
+      <p class="qz-mail">¿Preferís escribirnos? <a class="txt-link" href="mailto:info@interlanguage.es?subject=Orientaci%C3%B3n%20sobre%20programas%20en%20el%20extranjero">info@interlanguage.es</a></p></div>
     </div>
 
     <div class="lf-next reveal">
@@ -1027,31 +1037,21 @@
   </div>
 </section>
 
-<section class="camp-section bg-white" id="vext-precio"><div class="container"><div class="camp-section-head reveal"><h2>Duración y presupuesto</h2><p>De una a cuatro semanas. Consultad el precio según el colegio y las fechas. El presupuesto debe detallar alojamiento, actividades y suplementos.</p><p>El traslado y algunas actividades se abonan aparte. Consultad también el coste de una noche extra.</p></div></div></section>
 
-<section class="camp-section bg-cream" id="vext-cuidado">
-  <div class="container">
-    <div class="camp-section-head reveal"><h2>Alojamiento, cuidado y contacto con casa</h2></div>
-    <div class="club-grid vx-seg reveal">
-      <div class="club-card"><h3 class="club-stage">En la residencia</h3><p>Habitación individual o compartida, con baños compartidos y limpieza diaria. Un equipo vive con los alumnos las 24 horas, guarda su pasaporte, su dinero y sus medicinas, y les da la medicación a su hora.</p></div>
-      <div class="club-card"><h3 class="club-stage">Llegada y traslados</h3><p>Les esperan en la salida del aeropuerto y los llevan al colegio en minibús desde Edimburgo, Heathrow o Gatwick. El traslado tiene un coste aparte.</p></div>
-      <div class="club-card"><h3 class="club-stage">El viaje</h3><p>Consultad cómo se organiza el vuelo y qué acompañamiento está disponible antes de reservar.</p></div>
-      <div class="club-card"><h3 class="club-stage">Contacto con casa</h3><p><mark class="fill">Consultad el horario y el canal de contacto con casa antes de reservar.</mark></p></div>
-      <div class="club-card"><h3 class="club-stage">Móviles</h3><p>No se usan en clase, en las actividades, en las comidas ni por la noche. El equipo los guarda; la familia puede pedir otra cosa por escrito.</p></div>
-      <div class="club-card"><h3 class="club-stage">Normas claras</h3><p>Sin alcohol, tabaco ni vapeo. Chicos y chicas solo coinciden en las zonas comunes. Tolerancia cero con el acoso.</p></div>
-    </div>
-  </div>
-</section>
 
-<section class="camp-section bg-white">
+
+
+<section class="camp-section bg-white" id="vext-destinos">
   <div class="container">
-    <div class="camp-section-head reveal"><h2>Por qué este campamento</h2><p>El inglés deja de ser una asignatura y se convierte en la lengua de todo el día.</p></div>
-    <div class="pillar-grid reveal">
-      <div class="pillar-card"><span class="pillar-ic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 15a2 2 0 0 1-2 2H8l-4 3V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2Z"/><path d="M8 9h8M8 12.5h5"/></svg></span><h3>Inglés con proyectos</h3><p>Cada mañana, de 9:00 a 12:30, en grupos reducidos y con profesores cualificados. Aprenden presentando, creando y trabajando en equipo.</p></div>
-      <div class="pillar-card"><span class="pillar-ic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.5 4 6 4 9s-1.5 6.5-4 9c-2.5-2.5-4-6-4-9s1.5-6.5 4-9Z"/></svg></span><h3>Amigos de todo el mundo</h3><p>Conviven con chicos y chicas de más de 20 países. El inglés es lo que tienen en común.</p></div>
-      <div class="pillar-card"><span class="pillar-ic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9Z"/></svg></span><h3>Tardes que eligen ellos</h3><p>Deporte, aventura al aire libre, golf, hípica, arte o descubrir el país: cada uno elige su plan.</p></div>
-      <div class="pillar-card"><span class="pillar-ic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4 6v6c0 4.5 3.4 8.3 8 9 4.6-.7 8-4.5 8-9V6l-8-3Z"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg></span><h3>Cuidados las 24 horas</h3><p>Un equipo vive en la residencia con los alumnos: conoce a cada uno y está pendiente de él día y noche.</p></div>
+    <div class="camp-section-head reveal"><h2>Cuatro internados para elegir</h2><p>Colegios británicos con residencia, instalaciones deportivas y campus seguros. Os ayudamos a elegir el que mejor encaja con su edad y lo que le gusta.</p></div>
+    <p class="vx-swipe-hint" aria-hidden="true">Deslizad para ver más →</p>
+    <div class="vx-camps reveal">
+      <article class="vx-camp vx-camp--sc"><div class="vx-camp-top"><span class="vx-camp-reg">Escocia</span><h3>Dollar Academy</h3><p class="vx-camp-loc"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.4-7-11.5A7 7 0 0112 2a7 7 0 017 7.5C19 14.6 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>Dollar · a 45 min de Edimburgo</p></div><dl class="vx-camp-facts"><div><dt><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18"/></svg></dt><dd>27 jun. – 25 jul. 2027</dd></div><div><dt><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c1-4.5 4-7 7-7s6 2.5 7 7"/></svg></dt><dd>10–17 años</dd></div><div><dt><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.5 13.5 3 11l1.5-1.5 8 1 4-4.5a2 2 0 0 1 3 3L15 13.5l1 8L14.5 23l-2.5-7.5"/></svg></dt><dd>Aeropuerto de Edimburgo, a 40 min</dd></div></dl><ul class="vx-tags"><li>Piscina</li><li>Pistas de tenis</li><li>Pabellón deportivo</li></ul><p class="vx-camp-hi">Único colegio con el programa de inglés y liderazgo.</p></article>
+      <article class="vx-camp vx-camp--sc"><div class="vx-camp-top"><span class="vx-camp-reg">Escocia</span><h3>Strathallan School</h3><p class="vx-camp-loc"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.4-7-11.5A7 7 0 0112 2a7 7 0 017 7.5C19 14.6 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>Perthshire · a 1 h de Edimburgo</p></div><dl class="vx-camp-facts"><div><dt><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18"/></svg></dt><dd>4 jul. – 1 ago. 2027</dd></div><div><dt><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c1-4.5 4-7 7-7s6 2.5 7 7"/></svg></dt><dd>8–17 años</dd></div><div><dt><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.5 13.5 3 11l1.5-1.5 8 1 4-4.5a2 2 0 0 1 3 3L15 13.5l1 8L14.5 23l-2.5-7.5"/></svg></dt><dd>Aeropuerto de Edimburgo, a 45 min</dd></div></dl><ul class="vx-tags"><li>Campus de 62 hectáreas</li><li>Piscina</li><li>Deporte cubierto</li></ul><p class="vx-camp-hi">El único que admite desde los 8 años.</p></article>
+      <article class="vx-camp vx-camp--sc"><div class="vx-camp-top"><span class="vx-camp-reg">Escocia</span><h3>Loretto School</h3><p class="vx-camp-loc"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.4-7-11.5A7 7 0 0112 2a7 7 0 017 7.5C19 14.6 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>Musselburgh · a 8 min en tren de Edimburgo</p></div><dl class="vx-camp-facts"><div><dt><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18"/></svg></dt><dd>4 jul. – 15 ago. 2027</dd></div><div><dt><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c1-4.5 4-7 7-7s6 2.5 7 7"/></svg></dt><dd>10–17 años</dd></div><div><dt><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.5 13.5 3 11l1.5-1.5 8 1 4-4.5a2 2 0 0 1 3 3L15 13.5l1 8L14.5 23l-2.5-7.5"/></svg></dt><dd>Aeropuerto de Edimburgo, a 40 min</dd></div></dl><ul class="vx-tags"><li>Academia de golf</li><li>Playa a 5 min a pie</li><li>Jardines</li></ul><p class="vx-camp-hi">Junto al mar y con la temporada más larga.</p></article>
+      <article class="vx-camp vx-camp--en"><div class="vx-camp-top"><span class="vx-camp-reg">Inglaterra</span><h3>Prior’s Field</h3><p class="vx-camp-loc"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.4-7-11.5A7 7 0 0112 2a7 7 0 017 7.5C19 14.6 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>Godalming (Surrey) · a 45 min de Londres</p></div><dl class="vx-camp-facts"><div><dt><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18"/></svg></dt><dd>7 jul. – 4 ago. 2027</dd></div><div><dt><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c1-4.5 4-7 7-7s6 2.5 7 7"/></svg></dt><dd>10–17 años</dd></div><div><dt><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.5 13.5 3 11l1.5-1.5 8 1 4-4.5a2 2 0 0 1 3 3L15 13.5l1 8L14.5 23l-2.5-7.5"/></svg></dt><dd>Heathrow, a 45 min</dd></div></dl><ul class="vx-tags"><li>Piscina</li><li>Pistas de tenis</li><li>Hípica</li></ul><p class="vx-camp-hi">Para quien quiere conocer Londres.</p></article>
     </div>
+    <p class="vext-note reveal"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11 12 4l9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-5h4v5"/></svg> Habitaciones individuales o compartidas, con baños compartidos. Limpieza diaria.</p>
   </div>
 </section>
 
@@ -1066,22 +1066,10 @@
   </div>
 </section>
 
-<section class="camp-section bg-white" id="vext-destinos">
-  <div class="container">
-    <div class="camp-section-head reveal"><h2>Cuatro internados para elegir</h2><p>Colegios británicos con residencia, instalaciones deportivas y campus seguros. Os ayudamos a elegir el que mejor encaja con su edad y lo que le gusta.</p></div>
-    <div class="vx-camps reveal">
-      <article class="vx-camp vx-camp--sc"><div class="vx-camp-top"><span class="vx-camp-reg">Escocia</span><h3>Dollar Academy</h3><p class="vx-camp-loc"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.4-7-11.5A7 7 0 0112 2a7 7 0 017 7.5C19 14.6 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>Dollar · a 45 min de Edimburgo</p></div><dl class="vx-camp-facts"><div><dt><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18"/></svg></dt><dd>27 jun. – 25 jul. 2027</dd></div><div><dt><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c1-4.5 4-7 7-7s6 2.5 7 7"/></svg></dt><dd>10–17 años</dd></div><div><dt><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.5 13.5 3 11l1.5-1.5 8 1 4-4.5a2 2 0 0 1 3 3L15 13.5l1 8L14.5 23l-2.5-7.5"/></svg></dt><dd>Aeropuerto de Edimburgo, a 40 min</dd></div></dl><ul class="vx-tags"><li>Piscina</li><li>Pistas de tenis</li><li>Pabellón deportivo</li></ul><p class="vx-camp-hi">Único colegio con el programa de inglés y liderazgo.</p></article>
-      <article class="vx-camp vx-camp--sc"><div class="vx-camp-top"><span class="vx-camp-reg">Escocia</span><h3>Strathallan School</h3><p class="vx-camp-loc"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.4-7-11.5A7 7 0 0112 2a7 7 0 017 7.5C19 14.6 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>Perthshire · a 1 h de Edimburgo</p></div><dl class="vx-camp-facts"><div><dt><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18"/></svg></dt><dd>4 jul. – 1 ago. 2027</dd></div><div><dt><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c1-4.5 4-7 7-7s6 2.5 7 7"/></svg></dt><dd>8–17 años</dd></div><div><dt><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.5 13.5 3 11l1.5-1.5 8 1 4-4.5a2 2 0 0 1 3 3L15 13.5l1 8L14.5 23l-2.5-7.5"/></svg></dt><dd>Aeropuerto de Edimburgo, a 45 min</dd></div></dl><ul class="vx-tags"><li>Campus de 62 hectáreas</li><li>Piscina</li><li>Deporte cubierto</li></ul><p class="vx-camp-hi">El único que admite desde los 8 años.</p></article>
-      <article class="vx-camp vx-camp--sc"><div class="vx-camp-top"><span class="vx-camp-reg">Escocia</span><h3>Loretto School</h3><p class="vx-camp-loc"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.4-7-11.5A7 7 0 0112 2a7 7 0 017 7.5C19 14.6 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>Musselburgh · a 8 min en tren de Edimburgo</p></div><dl class="vx-camp-facts"><div><dt><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18"/></svg></dt><dd>4 jul. – 15 ago. 2027</dd></div><div><dt><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c1-4.5 4-7 7-7s6 2.5 7 7"/></svg></dt><dd>10–17 años</dd></div><div><dt><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.5 13.5 3 11l1.5-1.5 8 1 4-4.5a2 2 0 0 1 3 3L15 13.5l1 8L14.5 23l-2.5-7.5"/></svg></dt><dd>Aeropuerto de Edimburgo, a 40 min</dd></div></dl><ul class="vx-tags"><li>Academia de golf</li><li>Playa a 5 min a pie</li><li>Jardines</li></ul><p class="vx-camp-hi">Junto al mar y con la temporada más larga.</p></article>
-      <article class="vx-camp vx-camp--en"><div class="vx-camp-top"><span class="vx-camp-reg">Inglaterra</span><h3>Prior’s Field</h3><p class="vx-camp-loc"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.4-7-11.5A7 7 0 0112 2a7 7 0 017 7.5C19 14.6 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>Godalming (Surrey) · a 45 min de Londres</p></div><dl class="vx-camp-facts"><div><dt><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18"/></svg></dt><dd>7 jul. – 4 ago. 2027</dd></div><div><dt><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c1-4.5 4-7 7-7s6 2.5 7 7"/></svg></dt><dd>10–17 años</dd></div><div><dt><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.5 13.5 3 11l1.5-1.5 8 1 4-4.5a2 2 0 0 1 3 3L15 13.5l1 8L14.5 23l-2.5-7.5"/></svg></dt><dd>Heathrow, a 45 min</dd></div></dl><ul class="vx-tags"><li>Piscina</li><li>Pistas de tenis</li><li>Hípica</li></ul><p class="vx-camp-hi">Para quien quiere conocer Londres.</p></article>
-    </div>
-    <p class="vext-note reveal"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11 12 4l9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-5h4v5"/></svg> Habitaciones individuales o compartidas, con baños compartidos. Limpieza diaria.</p>
-  </div>
-</section>
-
-<section class="camp-section bg-cream">
+<section class="camp-section bg-white">
   <div class="container">
     <div class="camp-section-head reveal"><h2>Por la tarde, cada uno elige</h2><p>Las tardes son para descubrir aficiones. Algunas opciones tienen un suplemento.</p></div>
+    <p class="vx-swipe-hint" aria-hidden="true">Deslizad para ver más →</p>
     <div class="vx-elecs reveal">
       <article class="vx-elec"><div class="vx-elec-media"><picture><source type="image/avif" srcset="images/internacional/ext-gal-tenis-360.avif 360w, images/internacional/ext-gal-tenis-520.avif 520w, images/internacional/ext-gal-tenis-720.avif 720w, images/internacional/ext-gal-tenis-1000.avif 1000w" sizes="(min-width:1100px) 290px, (min-width:641px) 45vw, 100vw"><source type="image/webp" srcset="images/internacional/ext-gal-tenis-360.webp 360w, images/internacional/ext-gal-tenis-520.webp 520w, images/internacional/ext-gal-tenis-720.webp 720w, images/internacional/ext-gal-tenis-1000.webp 1000w" sizes="(min-width:1100px) 290px, (min-width:641px) 45vw, 100vw"><img src="images/internacional/ext-gal-tenis-1000.webp" alt="" width="1000" height="770" loading="lazy" decoding="async"></picture></div><div class="vx-elec-body"><h3>Deportes de verano</h3><p>Fútbol, tenis, baloncesto, natación… cada día, el que prefieran.</p></div></article>
       <article class="vx-elec"><div class="vx-elec-media"><picture><source type="image/avif" srcset="images/internacional/campamento-extranjero-kayak-470.avif 470w, images/internacional/campamento-extranjero-kayak-710.avif 710w, images/internacional/campamento-extranjero-kayak-1030.avif 1030w, images/internacional/campamento-extranjero-kayak-1447.avif 1447w" sizes="(min-width:1100px) 290px, (min-width:641px) 45vw, 100vw"><source type="image/webp" srcset="images/internacional/campamento-extranjero-kayak-470.webp 470w, images/internacional/campamento-extranjero-kayak-710.webp 710w, images/internacional/campamento-extranjero-kayak-1030.webp 1030w, images/internacional/campamento-extranjero-kayak-1447.webp 1447w" sizes="(min-width:1100px) 290px, (min-width:641px) 45vw, 100vw"><img src="images/internacional/campamento-extranjero-kayak.jpg" alt="" width="1447" height="814" loading="lazy" decoding="async"></picture></div><div class="vx-elec-body"><h3>Multiaventura</h3><p>Retos en equipo, juegos al aire libre y actividades creativas.</p></div></article>
@@ -1095,7 +1083,7 @@
   </div>
 </section>
 
-<section class="camp-section bg-white" id="vext-dia">
+<section class="camp-section bg-cream" id="vext-dia">
   <div class="container">
     <div class="camp-section-head reveal"><h2>Un día en el campamento</h2><p>El mismo horario en los cuatro colegios.</p></div>
     <div class="vx-days reveal">
@@ -1106,13 +1094,7 @@
     <details class="svc-schedule-details vx-more reveal"><summary>Ver las actividades de noche</summary>
       <div class="vx-nights"><h3><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9Z"/></svg>Las noches</h3><ul class="vx-tags vx-tags--lg"><li>Noches culturales con música y baile tradicional</li><li>Cine</li><li>Concurso de talentos</li><li>Torneos deportivos</li><li>Paseos, búsquedas del tesoro y estrellas</li><li>Talleres de manualidades</li><li>Juegos de mesa y trivial</li><li>Discoteca</li></ul></div>
     </details>
-  </div>
-</section>
-
-<section class="camp-section bg-cream">
-  <div class="container">
-    <div class="camp-section-head reveal"><h2>Dos excursiones de día completo cada semana</h2><p>Los fines de semana salen a conocer el país. Además, entre semana hay salidas de media tarde.</p></div>
-    <details class="svc-schedule-details vx-more reveal"><summary>Ver ejemplos de excursiones</summary>
+    <details class="svc-schedule-details vx-more reveal"><summary>Dos excursiones de día completo cada semana: ver ejemplos</summary>
       <div class="vx-trips">
       <div class="vx-trip"><h3><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="13" rx="2"/><path d="M4 11h16M8 21v-4M16 21v-4"/></svg>Desde Escocia</h3><ul><li>Edimburgo: la Royal Mile, Arthur’s Seat y el Museo Nacional</li><li>Glasgow y el Museo Kelvingrove</li><li>Stirling y el Monumento a Wallace</li><li>St Andrews y su playa</li><li>Loch Lomond</li><li>The Kelpies y la Falkirk Wheel</li></ul></div>
       <div class="vx-trip"><h3><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="13" rx="2"/><path d="M4 11h16M8 21v-4M16 21v-4"/></svg>Desde Inglaterra</h3><ul><li>Londres: Big Ben, el London Eye y Tower Bridge</li><li>El castillo de Windsor</li><li>Oxford o Cambridge</li><li>Hampton Court</li><li>La playa de Brighton</li></ul></div>
@@ -1122,35 +1104,56 @@
   </div>
 </section>
 
-<section class="camp-section bg-mint">
+<!-- ENCONTRAR CAMPAMENTO · recorrido «Foto al lado» (23-11-2026): cuestionario de js/recorridos.js (Netlify «consulta»). Sustituye al formulario de contacto que se colocaba aquí. -->
+<section class="rx-host" id="vext-encaje" data-contact-here aria-labelledby="vext-encaje-t">
+  <div class="x2"><div class="sec rx-sec"><div class="wrap">
+    <div class="rx-shell">
+      <aside class="rx-aside">
+        <figure class="rx-ph"><img src="images/internacional/extranjero-alumnas-800.webp" alt="" width="800" height="1000" loading="lazy" decoding="async" style="object-position:50% 30%"><figcaption class="rx-cap"><span class="rx-eb">Encontrar campamento</span><h2 id="vext-encaje-t">¿Qué campamento encaja con vuestro hijo?</h2><p>Unas pocas preguntas y nuestro equipo os prepara varias propuestas, con fechas y precio.</p><span class="rx-trust">Os responde una persona del equipo</span></figcaption></figure>
+      </aside>
+      <div class="qz" data-rx="verano" aria-live="polite"></div>
+    </div>
+    <p class="qz-mail">¿Preferís escribirnos? <a class="txt-link" href="mailto:info@interlanguage.es?subject=Campamentos%20de%20verano%20en%20el%20extranjero">info@interlanguage.es</a></p>
+  </div></div></div>
+</section>
+
+
+
+
+
+<!-- LO PRÁCTICO (25-11-2026): presupuesto, cuidado, qué incluye, equipaje y reserva, plegados para acortar la página -->
+<section class="camp-section bg-cream vx-prac" id="vext-practico">
   <div class="container">
-    <div class="ideal-layout">
-      <div class="ideal-block reveal"><h2>Qué incluye</h2><ul><li>15 horas de inglés a la semana y materiales</li><li>Actividad de tarde y programa de noches</li><li>Dos excursiones de día completo a la semana</li><li>Alojamiento, pensión completa, ropa de cama y wifi</li><li>Lavandería semanal en estancias de 2 semanas o más</li><li>Pack de bienvenida</li><li>Certificado y ceremonia de graduación</li></ul></div>
-      <div class="ideal-block vext-noinc reveal"><h2>Qué no incluye</h2><ul><li>Vuelos</li><li>Traslado desde el aeropuerto (importe por confirmar por trayecto)</li><li>Seguro médico y de viaje (obligatorio; se puede contratar con el campamento)</li><li>Actividades de tarde con suplemento</li><li>Dinero de bolsillo</li><li>Fianza de la tarjeta de la habitación (importe por confirmar, se devuelve)</li></ul></div>
+    <div class="camp-section-head reveal"><h2>Lo práctico</h2><p>Presupuesto, cuidado, qué incluye y cómo se reserva. Abrid lo que os interese.</p></div>
+    <div class="vx-prac-list reveal">
+      <details class="vx-prac-item" id="vext-precio"><summary>Duración y presupuesto</summary><div class="vx-prac-b"><p>De una a cuatro semanas. Consultad el precio según el colegio y las fechas. El presupuesto debe detallar alojamiento, actividades y suplementos.</p><p>El traslado y algunas actividades se abonan aparte. Consultad también el coste de una noche extra.</p></div></details>
+      <details class="vx-prac-item" id="vext-cuidado"><summary>Alojamiento, cuidado y contacto con casa</summary><div class="vx-prac-b"><div class="club-grid vx-seg reveal">
+      <div class="club-card"><h3 class="club-stage">En la residencia</h3><p>Habitación individual o compartida, con baños compartidos y limpieza diaria. Un equipo vive con los alumnos las 24 horas, guarda su pasaporte, su dinero y sus medicinas, y les da la medicación a su hora.</p></div>
+      <div class="club-card"><h3 class="club-stage">Llegada y traslados</h3><p>Les esperan en la salida del aeropuerto y los llevan al colegio en minibús desde Edimburgo, Heathrow o Gatwick. El traslado tiene un coste aparte.</p></div>
+      <div class="club-card"><h3 class="club-stage">El viaje</h3><p>Consultad cómo se organiza el vuelo y qué acompañamiento está disponible antes de reservar.</p></div>
+      <div class="club-card"><h3 class="club-stage">Contacto con casa</h3><p><mark class="fill">Consultad el horario y el canal de contacto con casa antes de reservar.</mark></p></div>
+      <div class="club-card"><h3 class="club-stage">Móviles</h3><p>No se usan en clase, en las actividades, en las comidas ni por la noche. El equipo los guarda; la familia puede pedir otra cosa por escrito.</p></div>
+      <div class="club-card"><h3 class="club-stage">Normas claras</h3><p>Sin alcohol, tabaco ni vapeo. Chicos y chicas solo coinciden en las zonas comunes. Tolerancia cero con el acoso.</p></div>
+    </div></details>
+      <details class="vx-prac-item" id="vext-incluye"><summary>Qué incluye y qué no</summary><div class="vx-prac-b"><div class="ideal-layout">
+      <div class="ideal-block reveal"><h3>Qué incluye</h3><ul><li>15 horas de inglés a la semana y materiales</li><li>Actividad de tarde y programa de noches</li><li>Dos excursiones de día completo a la semana</li><li>Alojamiento, pensión completa, ropa de cama y wifi</li><li>Lavandería semanal en estancias de 2 semanas o más</li><li>Pack de bienvenida</li><li>Certificado y ceremonia de graduación</li></ul></div>
+      <div class="ideal-block vext-noinc reveal"><h3>Qué no incluye</h3><ul><li>Vuelos</li><li>Traslado desde el aeropuerto (importe por confirmar por trayecto)</li><li>Seguro médico y de viaje (obligatorio; se puede contratar con el campamento)</li><li>Actividades de tarde con suplemento</li><li>Dinero de bolsillo</li><li>Fianza de la tarjeta de la habitación (importe por confirmar, se devuelve)</li></ul></div>
     </div>
     <div class="vx-grad reveal"><span class="vx-grad-ic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9l10-5 10 5-10 5Z"/><path d="M6 11v5c3 2 9 2 12 0v-5"/><path d="M22 9v6"/></svg></span><div><h3>Graduación y camiseta de recuerdo</h3><p>El último día reciben su certificado en una ceremonia de graduación y diseñan su propia camiseta, firmada por los amigos que han hecho.</p></div></div>
-  </div>
-</section>
-
-<section class="camp-section bg-white">
-  <div class="container">
-    <details class="svc-schedule-details"><summary>Preparar la estancia: equipaje y dinero de bolsillo</summary><div class="vx-prep reveal">
-      <div class="vx-money"><h2>Dinero de bolsillo recomendado</h2><ul><li><span>8 a 10 años</span><strong>25 – 35 £</strong></li><li><span>11 a 14 años</span><strong>35 – 50 £</strong></li><li><span>15 a 17 años</span><strong>50 – 60 £</strong></li></ul><p class="vx-money-u">por semana</p><p class="vext-note">Hay tienda en el campus y tiempo para compras en las excursiones. El equipo guarda el dinero.</p></div>
-      <div class="ideal-block vx-bag"><h2>Qué llevar</h2><ul><li>Pasaporte en vigor y ETA (autorización para entrar en el Reino Unido)</li><li>Autorización de los padres para viajar</li><li>Toallas, también para la piscina</li><li>Ropa de deporte, chubasquero y un conjunto arreglado para las noches</li><li>Bañador y calzado que se pueda mojar</li><li>Adaptador de enchufe británico (tipo G)</li></ul><p class="vext-note">Mejor sin objetos caros. Si toma medicinas o tiene alergias, avisadnos antes.</p></div>
-    </div></details>
-  </div>
-</section>
-
-<section class="camp-section bg-cream">
-  <div class="container">
-    <div class="camp-section-head reveal"><h2>Cómo se reserva</h2></div>
-    <ol class="vext-steps reveal">
+  </div></details>
+      <details class="vx-prac-item" id="vext-equipaje"><summary>Equipaje y dinero de bolsillo</summary><div class="vx-prac-b"><div class="vx-prep reveal">
+      <div class="vx-money"><h3>Dinero de bolsillo recomendado</h3><ul><li><span>8 a 10 años</span><strong>25 – 35 £</strong></li><li><span>11 a 14 años</span><strong>35 – 50 £</strong></li><li><span>15 a 17 años</span><strong>50 – 60 £</strong></li></ul><p class="vx-money-u">por semana</p><p class="vext-note">Hay tienda en el campus y tiempo para compras en las excursiones. El equipo guarda el dinero.</p></div>
+      <div class="ideal-block vx-bag"><h3>Qué llevar</h3><ul><li>Pasaporte en vigor y ETA (autorización para entrar en el Reino Unido)</li><li>Autorización de los padres para viajar</li><li>Toallas, también para la piscina</li><li>Ropa de deporte, chubasquero y un conjunto arreglado para las noches</li><li>Bañador y calzado que se pueda mojar</li><li>Adaptador de enchufe británico (tipo G)</li></ul><p class="vext-note">Mejor sin objetos caros. Si toma medicinas o tiene alergias, avisadnos antes.</p></div>
+    </div></div></details>
+      <details class="vx-prac-item" id="vext-reserva"><summary>Cómo se reserva y cancelación</summary><div class="vx-prac-b"><ol class="vext-steps reveal">
       <li><span class="vext-step-n" aria-hidden="true">1</span><div><h3>Nos contáis qué buscáis</h3><p>Edad, nivel de inglés, fechas y lo que le gusta.</p></div></li>
       <li><span class="vext-step-n" aria-hidden="true">2</span><div><h3>Os proponemos colegio y fechas</h3><p>Con el precio cerrado y lo que incluye.</p></div></li>
       <li><span class="vext-step-n" aria-hidden="true">3</span><div><h3>Reserváis la plaza</h3><p>Consultad el importe de la señal y el calendario de pagos antes de reservar.</p></div></li>
       <li><span class="vext-step-n" aria-hidden="true">4</span><div><h3>Preparamos la salida</h3><p>Documentación, maleta y vuelos, para que viaje tranquilo.</p></div></li>
     </ol>
     <p class="vext-note reveal">Cancelación: hasta 30 días antes de la llegada se devuelve todo salvo la señal; después, no hay devolución.</p>
+  </div></details>
+    </div>
   </div>
 </section>
 
@@ -1167,26 +1170,10 @@
       <details class="camp-faq-item"><summary>¿Cómo llegan desde el aeropuerto?</summary><p>Hay traslados en minibús desde Edimburgo, Heathrow y Gatwick, con coste aparte. Les esperan en la salida con un cartel.</p></details>
       <details class="camp-faq-item"><summary>¿Cuándo hay que reservar?</summary><p>Consultad la disponibilidad y los plazos de pago del colegio elegido.</p></details>
     </div>
-    <div class="final-cta reveal">
-      <h2>¿Le buscamos su campamento?</h2>
-      <p>Contadnos su edad, su nivel y qué fechas tenéis en mente, y os proponemos el colegio que mejor encaja. La orientación es gratuita.</p>
-      <a href="#vext-encaje" class="btn-primary svc-page-cta" data-cta="vext-cierre">Pedir orientación</a>
-    </div>
+    <p class="vx-faq-more reveal">¿Otra duda? <a class="txt-link" href="#vext-encaje" data-cta="vext-cierre">Contádnosla en el cuestionario</a> o escribid a <a class="txt-link" href="mailto:info@interlanguage.es">info@interlanguage.es</a>.</p>
   </div>
 </section>
 
-<!-- ENCONTRAR CAMPAMENTO · recorrido «Foto al lado» (23-11-2026): cuestionario de js/recorridos.js (Netlify «consulta»). Sustituye al formulario de contacto que se colocaba aquí. -->
-<section class="rx-host" id="vext-encaje" data-contact-here aria-labelledby="vext-encaje-t">
-  <div class="x2"><div class="sec rx-sec"><div class="wrap">
-    <div class="rx-shell">
-      <aside class="rx-aside">
-        <figure class="rx-ph"><img src="images/internacional/extranjero-alumnas-800.webp" alt="" width="800" height="1000" loading="lazy" decoding="async" style="object-position:50% 30%"><figcaption class="rx-cap"><span class="rx-eb">Encontrar campamento</span><h2 id="vext-encaje-t">¿Qué campamento encaja con vuestro hijo?</h2><p>Unas pocas preguntas y nuestro equipo os prepara varias propuestas, con fechas y precio.</p><span class="rx-trust">Os responde una persona del equipo</span></figcaption></figure>
-      </aside>
-      <div class="qz" data-rx="verano" aria-live="polite"></div>
-    </div>
-    <p class="qz-mail">¿Preferís escribirnos? <a class="txt-link" href="mailto:info@interlanguage.es?subject=Campamentos%20de%20verano%20en%20el%20extranjero">info@interlanguage.es</a></p>
-  </div></div></div>
-</section>
 
 <section class="camp-section cross-sell-band">
   <div class="container cross-sell">
@@ -1431,17 +1418,19 @@
      los botones «Pedir orientación» de esta página bajan al cuestionario (data-contact-here y data-advise en main.js). -->
 <section class="sec qz-sec rx-sec" id="ext-encaje" data-contact-here aria-labelledby="ext-encaje-t">
   <div class="wrap">
-    <div class="rx-shell">
-      <aside class="rx-aside">
-        <figure class="rx-ph"><img src="images/internacional/ext-esc-campus-960.webp" alt="" width="960" height="720" loading="lazy" decoding="async" style="object-position:50% 45%"><figcaption class="rx-cap"><span class="rx-eb">Encontrar colegio</span><h2 id="ext-encaje-t">¿Qué colegio podría encajar con vuestro hijo?</h2><p>Cinco preguntas y vuestros datos. Con eso preparamos una primera orientación para vuestra familia.</p><span class="rx-trust">Os responde una persona del equipo</span></figcaption></figure>
-      </aside>
+    <header class="sec-head qz-intro">
+      <span class="eyebrow">Encontrar colegio</span>
+      <h2 id="ext-encaje-t">¿Qué colegio podría encajar con vuestro hijo?</h2>
+      <p>Cinco preguntas para conocer mejor a vuestro hijo y orientaros personalmente.</p>
+      <ul class="qz-meta">
+        <li><svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>2 minutos</li>
+        <li><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Sin compromiso</li>
+      </ul>
+    </header>
+    <div class="rx-shell qz-solo">
       <div class="qz" id="qz" aria-live="polite"></div>
     </div>
-    <ol class="after" id="qzAfter">
-      <li><div><b>Estudiamos vuestras respuestas</b>Una persona del equipo, en Madrid, revisa vuestro caso.</div></li>
-      <li><div><b>Os contactamos como prefiráis</b>Por teléfono o por correo, para resolver dudas.</div></li>
-      <li><div><b>Os orientamos</b>Qué opciones encajan y por qué. La decisión es vuestra.</div></li>
-    </ol>
+    <p class="qz-human">Una persona de nuestro equipo estudiará vuestras respuestas.</p>
     <p class="qz-mail">¿Preferís escribirnos? <a class="txt-link" href="mailto:info@interlanguage.es?subject=Estudiar%20en%20el%20extranjero">info@interlanguage.es</a></p>
   </div>
 </section>
@@ -1705,9 +1694,9 @@
 
 <script src="js/reserva-llamada.js?v=1" defer></script>
 <script src="js/destinos.js?v=1" defer></script>
-<script src="js/main.js?v=66" defer></script>
-<script src="js/extranjero.js?v=14" defer></script>
-<script src="js/recorridos.js?v=1" defer></script>
+<script src="js/main.js?v=67" defer></script>
+<script src="js/extranjero.js?v=16" defer></script>
+<script src="js/recorridos.js?v=2" defer></script>
 <script src="js/motion.js?v=4" defer></script>
 </body>
 </html>

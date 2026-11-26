@@ -191,3 +191,11 @@
   .x2 .rx-live strong{font-size:1.6rem;}
 }
 .x2 .rx-faq{max-width:760px; margin-top:28px;}
+
+/* ---------- «Ayudadme a elegir» en la portada (25-11-2026) ---------- */
+#contacto .lf-card[hidden], #contacto .lf-head[hidden]{display:none !important;}
+.lf-orient{display:grid; gap:16px;}
+.lf-orient-back{justify-self:start; display:inline-flex; align-items:center; gap:8px; min-height:44px; padding:10px 0; border:0; background:transparent; color:var(--accent); font:inherit; font-size:.95rem; font-weight:600; cursor:pointer;}
+.lf-orient-back svg{width:20px; height:20px; flex:none;}
+@media (hover:hover){.lf-orient-back:hover{color:var(--navy);}}
+@media (max-width:900px){.x2 [data-rx="orientacion"] .tiles > .tile.is-card:last-child:nth-child(odd){grid-column:1 / -1;}}

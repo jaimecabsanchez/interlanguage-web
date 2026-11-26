@@ -80,7 +80,7 @@
     o.btn.disabled = true; o.btn.setAttribute('aria-busy', 'true'); o.btn.innerHTML = '<span class="spin" aria-hidden="true"></span>' + t('Enviando…', 'Sending…');
     o.alert.hidden = true;
     var req = window.ilSendForm ? window.ilSendForm(o.form, new URLSearchParams(o.fields), o.subject) : Promise.reject(new Error('nosend'));
-    req.then(o.onOk).catch(function(){
+    req.then(function(){ if (window.ilTrack) { window.ilTrack('lead_generado', { servicio: o.fields.service || o.form, origen: o.fields.recorrido || '' }); window.ilTrack('formulario_enviado', { servicio: o.fields.service || o.form }); } o.onOk(); }).catch(function(){
       o.btn.disabled = false; o.btn.removeAttribute('aria-busy'); o.btn.textContent = label;
       o.alert.textContent = t('No hemos podido enviarlo. Revisad la conexión y volved a intentarlo: lo que habéis escrito se conserva. También podéis escribirnos a info@interlanguage.es.', 'We could not send it. Please check your connection and try again: everything you have written is kept. You can also email us at info@interlanguage.es.');
       o.alert.hidden = false; o.alert.focus();
@@ -159,6 +159,49 @@
         afterList([[t('Os enviamos propuestas', 'We send you options'), t('Colegios y fechas que encajan, con el precio y lo que incluye.', 'Schools and dates that fit, with the price and what is included.')],
           [t('Elegís y reserváis', 'You choose and book'), t('Os explicamos la señal y el calendario de pagos antes.', 'We explain the deposit and payment schedule first.')],
           [t('Preparamos la salida', 'We prepare the trip'), t('Documentación, maleta y vuelos.', 'Documents, packing and flights.')]]));
+    }
+  };
+
+  /* =====================================================================
+     «AYUDADME A ELEGIR» (portada) · orientación general sobre programas en el extranjero */
+  var CURSO = t('Un curso escolar fuera', 'A school term or year abroad'), VERANOX = t('Un campamento de verano', 'A summer camp');
+  var ORIENTA = {
+    store: 'il-rx-orienta-v1', service: 'orientacion',
+    steps: [
+      { k: 'edad', label: t('Edad', 'Age'), t: t('¿Qué edad tiene vuestro hijo o hija?', 'How old is your child?'), cols: 3, o: [
+        { v: t('8–9 años', '8–9 years old'), big: '8–9' }, { v: t('10–13 años', '10–13 years old'), big: '10–13' }, { v: t('14–18 años', '14–18 years old'), big: '14–18' } ] },
+      { k: 'tipo', label: t('Experiencia', 'Experience'), t: t('¿Qué tipo de experiencia os planteáis?', 'What kind of experience are you considering?'), cols: 3, o: [
+        { v: CURSO, cap: t('Un trimestre, dos o el curso completo en un colegio · 9 a 18 años', 'One term, two or the full year at a school · ages 9 to 18') },
+        { v: VERANOX, cap: t('Semanas de julio y agosto en un colegio · 8 a 17 años, según colegio', 'Weeks in July and August at a school · ages 8 to 17, depending on the school') },
+        { v: t('Aún no lo tenemos claro', 'We are not sure yet'), cap: t('Os explicamos las dos opciones', 'We will explain both options') } ] },
+      { k: 'destino', label: t('Destino', 'Destination'), t: t('¿Algún destino en mente?', 'Any destination in mind?'), multi: true, cols: 5, when: function(A){ return (A.tipo || [])[0] !== VERANOX; }, o: [
+        { v: t('Reino Unido', 'United Kingdom') }, { v: t('Irlanda', 'Ireland') }, { v: t('Estados Unidos', 'United States') }, { v: t('Canadá', 'Canada') },
+        { v: t('Sin preferencia', 'No preference'), solo: true } ] },
+      { k: 'cuando', label: t('Cuándo', 'When'), t: t('¿Cuándo os gustaría que fuera?', 'When would you like them to go?'), cols: 5, o: [
+        { v: t('Durante este curso', 'During this school year'), cap: '2026–2027' }, { v: t('Verano de 2027', 'Summer 2027') }, { v: t('Curso 2027–2028', '2027–2028 school year') }, { v: t('Más adelante', 'Later on') },
+        { v: t('Aún no lo sabemos', 'We do not know yet') } ] },
+      { type: 'final', label: t('Vuestros datos', 'Your details'),
+        t: t('Os orientamos sin compromiso', 'We will advise you, with no commitment'),
+        lead: t('Una persona del equipo revisa vuestras respuestas y os escribe con las opciones que encajan. Solo nos falta saber cómo contactaros.', 'A member of our team reviews your answers and writes to you with the options that fit. We just need to know how to reach you.'),
+        send: t('Enviar y recibir orientación', 'Send and get advice'),
+        fields: [F_NOMBRE, F_EMAIL, F_TEL_OPT,
+          { id: 'C', k: 'comentarios', name: 'message', area: true, label: t('Comentarios', 'Comments'), opt: true, fold: t('Añadir un comentario (curso actual, nivel de inglés, dudas…)', 'Add a comment (current school year, English level, questions…)'), ph: t('Curso actual, nivel de inglés, lo que os preocupa…', 'Current school year, English level, what worries you…') } ] }
+    ],
+    payload: function(A, C){
+      var L = function(k){ return (A[k] || []).join(' · '); };
+      return { form: 'consulta', subject: 'Orientación · Ayuda para elegir programa en el extranjero — ' + C.nombre, fields: {
+        form_type: 'lead', service: 'orientacion', recorrido: 'ayuda-elegir-extranjero',
+        serviceExtra: 'Experiencia: ' + L('tipo') + (A.destino && A.destino.length ? ' · Destino: ' + L('destino') : '') + ' · Cuándo: ' + L('cuando'),
+        studentAge: L('edad'),
+        message: 'Comentarios: ' + (C.comentarios || '—'),
+        fullName: C.nombre, email: C.email, phone: C.telefono || '', contactPreference: C.telefono ? 'Teléfono o correo' : 'Correo', rgpd: '1', comunicaciones: 'No' } };
+    },
+    thanks: function(A, C){
+      return okHTML(t('Gracias, ', 'Thank you, ') + first(C.nombre) + t('. Estudiamos vuestro caso.', '. We are looking at your case.'),
+        t('Una persona del equipo revisa vuestras respuestas y os escribe a ', 'A member of our team will review your answers and write to you at ') + '<b>' + esc(C.email) + '</b>' + t(' con las opciones que encajan.', ' with the options that fit.'),
+        afterList([[t('Os escribimos', 'We write to you'), t('Con los programas que encajan por edad, fechas y lo que buscáis.', 'With the programmes that fit their age, your dates and what you are looking for.')],
+          [t('Hablamos', 'We talk'), t('Resolvemos vuestras dudas por correo o por teléfono, como prefiráis.', 'We answer your questions by email or phone, as you prefer.')],
+          [t('Decidís sin prisa', 'You decide at your own pace'), t('Sin compromiso: la orientación no os obliga a nada.', 'No commitment: the advice does not bind you to anything.')]]));
     }
   };
 
@@ -496,10 +539,29 @@
     draw();
   }
 
+  /* «Ayudadme a elegir» de la portada: abre el recorrido de orientación en lugar de la tarjeta de programas */
+  (function(){
+    var box = document.getElementById('orientEncaje'); if (!box) return;
+    var sec = box.closest('section'), card = sec && $('.lf-card', sec), head = sec && $('.lf-head', sec);
+    function show(open){
+      box.hidden = !open; if (card) card.hidden = open; if (head) head.hidden = open;
+      var target = open ? $('h2', box) : $('[data-orient-open]', sec);
+      if (target) { if (open) target.setAttribute('tabindex', '-1'); target.focus({ preventScroll: true }); }
+      var top = (open ? box : sec).getBoundingClientRect().top;
+      window.scrollTo({ top: scrollY + top - 90, behavior: reduce ? 'auto' : 'smooth' });
+      if (open && window.ilTrack) window.ilTrack('clic_cta', { cta_id: 'form-programa-orientacion' });
+    }
+    document.addEventListener('click', function(e){
+      if (e.target.closest('[data-orient-open]')) { e.preventDefault(); show(true); }
+      else if (e.target.closest('[data-orient-close]')) { e.preventDefault(); show(false); }
+    });
+  })();
+
   /* ---------- arranque ---------- */
   $$('[data-rx]').forEach(function(m){
     var k = m.getAttribute('data-rx');
     if (k === 'verano') Wizard(VERANO, m, 'vx');
+    else if (k === 'orientacion') Wizard(ORIENTA, m, 'or');
     else if (k === 'madrid') Madrid(m, 'md', m.getAttribute('data-estado') === 'abierta');
     else if (k === 'extraescolar') Extra(m, 'ex');
   });
