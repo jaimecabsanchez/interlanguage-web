@@ -217,4 +217,4 @@ Publicación: Netlify usa `netlify.toml` (`publish = "web-publica"`). Si se sube
   - «Encontrar el colegio adecuado» lleva a `#ext-encaje` y preselecciona los dos países en «Destinos» (`window.ilExtQuiz.preset`), solo si esa pregunta está vacía.
   - Debajo hay cuatro dudas plegadas: edad, vuelta, convalidación y presupuesto.
   - **Datos con fuente oficial en `docs/fuentes-comparador-destinos.md`:** no cambies un dato sin actualizar ese archivo. No inventes rankings, precios ni actividades «en todos los colegios».
-- Versiones: `styles.css?v=163` (en las cinco páginas), `main.js?v=67`, `recorridos.css?v=3`, `recorridos.js?v=2`, `extranjero.css?v=27`, `extranjero.js?v=18`.
+- Versiones: `styles.css?v=163` (en las cinco páginas), `main.js?v=67`, `recorridos.css?v=4`, `recorridos.js?v=2`, `extranjero.css?v=27`, `extranjero.js?v=18`.
