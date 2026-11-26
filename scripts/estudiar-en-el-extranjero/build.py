@@ -53,6 +53,11 @@ def url(L, k=None):
     return r['base'] + (r[k] if k else '')
 
 
+def actual(L, sec=None):
+    """La página «Estudiar en el extranjero» de siempre (vista de index.html); sec = sección a la que bajar."""
+    return RUTAS[L]['home'] + ('?ir=%s' % sec if sec else '') + '#servicio-extranjero'
+
+
 def balanced(src, start_pat):
     """Devuelve el elemento <div …> que empieza en start_pat, con sus div anidados."""
     i = src.index(start_pat)
@@ -97,8 +102,9 @@ def fix_links(s, L, local_ids, lang_href):
         h = m.group(1)
         mm = re.match(r'#servicio-extranjero(?:-([a-z-]+))?$', h)
         if mm:
-            k = slug_from_es.get(mm.group(1)) if mm.group(1) else None
-            return 'href="%s"' % url(L, k)
+            if not mm.group(1):
+                return 'href="%s"' % actual(L)
+            return 'href="%s"' % url(L, slug_from_es.get(mm.group(1)))
         if h in ('#inicio', '#'):
             return 'href="%s"' % home
         if h == '#contacto':
@@ -182,7 +188,7 @@ def page(L, pz, body, title, desc, canon_es, canon_en, ld, destino=''):
     lang_href = canon_en if L == 'es' else canon_es
     local = set(re.findall(r'id="([^"]+)"', body))
     hdr = fix_links(pz.header, L, local, lang_href)
-    hdr = re.sub(r'(<a href="%s")' % re.escape(url(L)), r'\1 aria-current="page"', hdr, count=1)
+    hdr = re.sub(r'(<a href="%s")' % re.escape(actual(L)), r'\1 aria-current="page"', hdr, count=1)
     ftr = fix_links(pz.footer, L, local, lang_href)
     v = pz.v
     skip = 'Saltar al contenido' if L == 'es' else 'Skip to content'
@@ -342,7 +348,7 @@ def pais(L, pz, k):
     T = lambda key: tr(d[key], L)
     U = lambda key: tr(PC[key], L)
     n = T('n')
-    cr = [(tr(C['inicio'], L), RUTAS[L]['home']), (tr(C['seccion'], L), url(L)), (n, url(L, k))]
+    cr = [(tr(C['inicio'], L), RUTAS[L]['home']), (tr(C['seccion'], L), actual(L)), (n, url(L, k))]
     hechos = ''.join('<div><dt>%s</dt><dd>%s</dd></div>' % (e(tr(a, L)), e(tr(b, L))) for a, b in d['hechos'])
     porque = ''.join('<li>%s</li>' % e(tr(x, L)) for x in d['porque'])
     fotos = ''.join('<figure>%s</figure>' % picture(img, ws, tr(alt, L), '(min-width:1000px) 26vw, 50vw') for img, ws, alt in d['fotos'])
@@ -366,7 +372,7 @@ def pais(L, pz, k):
       <p class="pc-lead">{e(T('lead'))}</p>
       <div class="pg-acts">
         <a class="btn-primary hx-cta" href="#ext-encaje" data-cta="pais-{SLUGS_ES[k]}-hero">{e(tr(C['hablemos'], L))} {ARROW}</a>
-        <a class="btn-outline pg-btn2" href="{url(L)}#ext-cmp">{e(tr(C['comparar'], L))}</a>
+        <a class="btn-outline pg-btn2" href="{actual(L, 'ext-cmp')}">{e(tr(C['comparar'], L))}</a>
       </div>
     </div>
     <div class="pc-hero-photo">{picture(d['hero'], [720, 960, 1122], T('hero_alt'), '(min-width:1000px) 50vw, 100vw', eager=True)}</div>
@@ -390,7 +396,7 @@ def pais(L, pz, k):
   <div class="wrap">
     <div class="sec-head"><h2 id="pc-sistema-t">{e(T('sistema_h2'))}</h2></div>
     <dl class="pc-dl">{sistema}</dl>
-    <div class="pc-dur"><h3>{e(U('duracion_h3'))}</h3><p>{e(T('duracion'))} <a class="txt-link" href="{url(L)}#ext-modalidad">{'Comparar trimestre y curso' if L == 'es' else 'Compare a term and a full year'}</a></p></div>
+    <div class="pc-dur"><h3>{e(U('duracion_h3'))}</h3><p>{e(T('duracion'))}</p></div>
   </div>
 </section>
 
@@ -419,7 +425,7 @@ def pais(L, pz, k):
     <div class="pc-acomp">
       <h2>{e(U('acomp_h2'))}</h2>
       <p>{e(U('acomp_p'))}</p>
-      <a class="link" href="{url(L)}#ext-metodo">{e(U('acomp_link'))}</a>
+      <a class="link" href="{actual(L, 'ext-ayuda')}">{e(U('acomp_link'))}</a>
     </div>
   </div>
 </section>
@@ -430,7 +436,7 @@ def pais(L, pz, k):
     <div class="camp-faq ext-faq">
       {faq_list(d['faq'], L)}
     </div>
-    <p class="pc-more"><a class="link" href="{url(L)}#ext-dudas">{e(U('faq_link'))}</a></p>
+    <p class="pc-more"><a class="link" href="{actual(L, 'ext-dudas')}">{e(U('faq_link'))}</a></p>
   </div>
 </section>
 
@@ -438,7 +444,7 @@ def pais(L, pz, k):
 
 <section class="sec sec--ivory" id="pc-otros" aria-labelledby="pc-otros-t">
   <div class="wrap">
-    <div class="pc-otros-head"><h2 id="pc-otros-t">{e(U('otros_h2'))}</h2><a class="link" href="{url(L)}#ext-cmp">{e(U('otros_cmp'))}</a></div>
+    <div class="pc-otros-head"><h2 id="pc-otros-t">{e(U('otros_h2'))}</h2><a class="link" href="{actual(L, 'ext-cmp')}">{e(U('otros_cmp'))}</a></div>
     <div class="po">{otros}</div>
   </div>
 </section>
@@ -454,23 +460,33 @@ def patch_index(fname, L):
     slug_from_es = {v: kk for kk, v in SLUGS_ES.items()}
 
     def rep(m):
-        k = slug_from_es.get(m.group(1)) if m.group(1) else None
-        to = m.group(2)
-        return 'href="%s%s"' % (url(L, k), ('#' + to) if to else '')
-    # enlaces con data-jump-service a «Estudiar en el extranjero» (menú, pie, destinos y tarjetas de la portada) → rutas reales
-    s = re.sub(r'href="#servicio-extranjero(?:-([a-z-]+))?" data-jump-service="extranjero(?:-[a-z-]+)?"(?: data-jump-to="([^"]*)")?', rep, s)
+        return 'href="%s"' % url(L, slug_from_es[m.group(1)])
+    # enlaces a un país (#servicio-extranjero-irlanda con data-jump-service): tarjetas de la portada y de la página, y la cabecera → páginas de país
+    s = re.sub(r'href="#servicio-extranjero-([a-z-]+)" data-jump-service="extranjero-[a-z-]+"(?: data-jump-to="[^"]*")?', rep, s)
     if L == 'en':   # build_en.py copia las rutas en español: se pasan a las inglesas
         for kk in ['uk', 'ie', 'ca', 'us']:
             s = s.replace('href="%s' % url('es', kk), 'href="%s' % url('en', kk))
-        s = s.replace('href="%s' % url('es'), 'href="%s' % url('en'))
+    # en las tarjetas de destino de «Estudiar en el extranjero», «Ver destino» pasa a «Descubrir Reino Unido»
+    names = {kk: tr(P[kk]['n'], L) for kk in P}
+    for kk in ORDEN:
+        pat = re.compile(r'(<a class="dcard" href="%s"[^>]*>.*?<span class="dcard-go">)[^<]*' % re.escape(url(L, kk)), re.S)
+        s = pat.sub(lambda m: m.group(1) + '%s %s ' % (tr(C['descubrir'], L), names[kk]), s, count=1)
     rutas = '<meta name="il-rutas" content="1">\n<script src="js/rutas.js?v=%s"></script>\n' % JS_V
     prev = '<meta name="robots" content="noindex, nofollow">\n<meta name="il-preview" content="1">\n'
-    s = re.sub(r'<meta name="robots" content="noindex, nofollow">\n<meta name="il-preview" content="1">\n', '', s)
+    s = s.replace(prev, '')
     if 'name="il-rutas"' not in s:
         s = s.replace('<link rel="preload" href="fonts/', rutas + '<link rel="preload" href="fonts/', 1)
     if PREVIEW:
         s = s.replace('<meta name="il-rutas" content="1">\n', prev + '<meta name="il-rutas" content="1">\n', 1)
     write(fname, s)
+
+
+def redirect_page(L):
+    """/estudiar-en-el-extranjero/ (y /en/study-abroad/) llevan a la página de siempre, que sigue en index.html."""
+    to = actual(L)
+    return ('<!DOCTYPE html>\n<html lang="%s">\n<head>\n<meta charset="UTF-8">\n<meta name="robots" content="noindex">\n'
+            '<link rel="canonical" href="%s%s">\n<meta http-equiv="refresh" content="0; url=%s">\n<title>%s</title>\n</head>\n'
+            '<body><p><a href="%s">%s</a></p></body>\n</html>\n') % (L, SITE, RUTAS[L]['home'], to, e(tr(C['seccion'], L)), to, e(tr(C['seccion'], L)))
 
 
 def main():
@@ -479,7 +495,7 @@ def main():
     for L in ('es', 'en'):
         pz = Piezas(L)
         r = RUTAS[L]['base'].strip('/')
-        write(r + '/index.html', general(L, pz))
+        write(r + '/index.html', redirect_page(L))
         for k in ORDEN:
             write(r + '/' + RUTAS[L][k] + 'index.html', pais(L, pz, k))
     print('Hecho:', 'VISTA PREVIA (noindex, formularios simulados)' if PREVIEW else 'PUBLICACIÓN')

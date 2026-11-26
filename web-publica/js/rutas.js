@@ -3,8 +3,8 @@
 
    1) Enlaces antiguos: los fragmentos (#…) no llegan al servidor, así que se resuelven aquí, en el navegador.
       Solo en las páginas que llevan <meta name="il-rutas" content="1"> (index.html e index-en.html).
-        #servicio-extranjero               → /estudiar-en-el-extranjero/
         #servicio-extranjero-irlanda       → /estudiar-en-el-extranjero/irlanda/      (y el resto de destinos)
+      #servicio-extranjero (la página general) no cambia: sigue siendo la vista de index.html.
       En inglés, a /en/study-abroad/…
 
    2) Vista previa: con <meta name="il-preview" content="1"> ningún formulario envía nada. Se intercepta cualquier POST
@@ -19,8 +19,13 @@
     var base = en ? '/en/study-abroad/' : '/estudiar-en-el-extranjero/';
     var SLUG = en ? { 'reino-unido': 'united-kingdom/', 'irlanda': 'ireland/', 'estados-unidos': 'united-states/', 'canada': 'canada/' }
                   : { 'reino-unido': 'reino-unido/', 'irlanda': 'irlanda/', 'estados-unidos': 'estados-unidos/', 'canada': 'canada/' };
-    var m = /^#servicio-extranjero(?:-([a-z-]+))?$/.exec(location.hash);
-    if (m && (!m[1] || SLUG[m[1]])) { location.replace(base + (m[1] ? SLUG[m[1]] : '')); return; }
+    var m = /^#servicio-extranjero-([a-z-]+)$/.exec(location.hash);
+    if (m && SLUG[m[1]]) { location.replace(base + SLUG[m[1]]); return; }
+    /* desde una página de país se vuelve a una sección de «Estudiar en el extranjero»: /?ir=ext-cmp#servicio-extranjero */
+    var ir = (/[?&]ir=([a-z0-9-]+)/.exec(location.search) || [])[1];
+    if (ir) window.addEventListener('load', function(){
+      setTimeout(function(){ var el = d.getElementById(ir); if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.pageYOffset - 138, behavior: 'auto' });   /* 138 px: cabecera e índice fijos, como el resto de secciones */ }, 60);
+    });
   }
 
   if (meta('il-preview') === '1' && window.fetch) {

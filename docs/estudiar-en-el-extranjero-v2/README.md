@@ -2,6 +2,14 @@
 
 Rama `preview/extranjero-v2`, creada a partir de `main` (a7b75e5). La rama no sigue a `origin/main` ni se ha subido a GitHub. **Nada de esto está en producción.**
 
+> **Decisión de Jaime (26-11-2026): la página general «Estudiar en el extranjero» se queda como está** (la vista `#servicio-extranjero` de `index.html`). Solo se añaden las cuatro páginas de país:
+> - Sus tarjetas de destino, y los destinos de la cabecera y de la portada, llevan a cada página de país. «Ver destino» pasa a «Descubrir Reino Unido», etc.
+> - Desde cada país se vuelve a la página de siempre: las migas, «Comparar destinos» (`/?ir=ext-cmp#servicio-extranjero`), «Ver cómo trabajamos» (`?ir=ext-ayuda`) y «Todas las preguntas frecuentes» (`?ir=ext-dudas`).
+> - `/estudiar-en-el-extranjero/` y `/en/study-abroad/` solo redirigen a la página de siempre (meta refresh, noindex).
+> - Los enlaces antiguos de país (`#servicio-extranjero-irlanda`) llevan a la página del país; `#servicio-extranjero` no cambia.
+>
+> La página general rediseñada (cabecera nueva, mosaico, metodología, equipo…) se descartó. Queda en el commit 70b04de por si se quiere recuperar.
+
 ## Cómo verla en local
 
 ```
